@@ -1,0 +1,11 @@
+version: 1
+packages:
+  - path: "internal/db"
+    name: "db"
+    engine: "postgresql"
+    sql_package: "pgx/v4"
+    schema: "migrations/default/1646425409271_init/up.sql"
+    queries: "internal/db/queries.sql"
+    overrides:
+      - column: "mergestat.repo_imports.import_interval"
+        go_type: "database/sql.NullString"

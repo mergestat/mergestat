@@ -1,0 +1,18 @@
+table:
+  name: commits
+  schema: public
+object_relationships:
+- name: repo
+  using:
+    foreign_key_constraint_on: repo_id
+array_relationships:
+- name: commit_stats
+  using:
+    manual_configuration:
+      column_mapping:
+        hash: commit_hash
+        repo_id: repo_id
+      insertion_order: null
+      remote_table:
+        name: commit_stats
+        schema: public

@@ -1,0 +1,12 @@
+table:
+  name: repo_sync_log_types
+  schema: mergestat
+is_enum: true
+array_relationships:
+- name: repo_sync_logs
+  using:
+    foreign_key_constraint_on:
+      column: log_type
+      table:
+        name: repo_sync_logs
+        schema: mergestat

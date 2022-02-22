@@ -1,0 +1,3 @@
+table:
+  name: latest_repo_syncs
+  schema: mergestat

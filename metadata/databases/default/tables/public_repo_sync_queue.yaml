@@ -1,0 +1,21 @@
+table:
+  name: repo_sync_queue
+  schema: public
+object_relationships:
+- name: repo
+  using:
+    foreign_key_constraint_on: repo_id
+- name: repo_sync_queue_status_type
+  using:
+    foreign_key_constraint_on: status
+- name: repo_sync_type
+  using:
+    foreign_key_constraint_on: sync_type
+array_relationships:
+- name: repo_sync_logs
+  using:
+    foreign_key_constraint_on:
+      column: repo_sync_queue_id
+      table:
+        name: repo_sync_logs
+        schema: public

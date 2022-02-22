@@ -1,0 +1,11 @@
+SET check_function_bodies = false;
+INSERT INTO mergestat.repo_import_types (type, description) VALUES ('GITHUB_ORG', 'Import all repos in a GitHub org');
+INSERT INTO mergestat.repo_import_types (type, description) VALUES ('GITHUB_USER', 'Import all repos belonging to a GitHub user');
+INSERT INTO mergestat.repo_sync_log_types (type, description) VALUES ('INFO', 'Log line from a sync run');
+INSERT INTO mergestat.repo_sync_log_types (type, description) VALUES ('ERROR', 'Error from a sync run');
+INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('QUEUED', 'Sync job is queued');
+INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('RUNNING', 'Syng job is running');
+INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('DONE', 'Sync job is done');
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_REPO_METADATA', 'Get metadata from GitHub about a repo');
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('COMMITS', 'Get commit history of a repo');
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('COMMIT_STATS', 'Get commit stats for a repo');

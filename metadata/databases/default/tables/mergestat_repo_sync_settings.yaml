@@ -1,0 +1,7 @@
+table:
+  name: repo_sync_settings
+  schema: mergestat
+object_relationships:
+- name: repo
+  using:
+    foreign_key_constraint_on: repo_id

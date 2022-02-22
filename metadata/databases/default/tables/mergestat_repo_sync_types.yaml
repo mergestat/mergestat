@@ -1,0 +1,12 @@
+table:
+  name: repo_sync_types
+  schema: mergestat
+is_enum: true
+array_relationships:
+- name: repo_syncs
+  using:
+    foreign_key_constraint_on:
+      column: sync_type
+      table:
+        name: repo_syncs
+        schema: mergestat

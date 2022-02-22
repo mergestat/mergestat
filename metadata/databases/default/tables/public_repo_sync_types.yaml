@@ -1,0 +1,19 @@
+table:
+  name: repo_sync_types
+  schema: public
+is_enum: true
+array_relationships:
+- name: repo_sync_queues
+  using:
+    foreign_key_constraint_on:
+      column: sync_type
+      table:
+        name: repo_sync_queue
+        schema: public
+- name: repo_sync_settings
+  using:
+    foreign_key_constraint_on:
+      column: sync_type
+      table:
+        name: repo_sync_settings
+        schema: public

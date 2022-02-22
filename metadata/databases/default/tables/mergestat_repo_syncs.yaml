@@ -1,0 +1,18 @@
+table:
+  name: repo_syncs
+  schema: mergestat
+object_relationships:
+- name: repo
+  using:
+    foreign_key_constraint_on: repo_id
+- name: repo_sync_type
+  using:
+    foreign_key_constraint_on: sync_type
+array_relationships:
+- name: repo_sync_queues
+  using:
+    foreign_key_constraint_on:
+      column: repo_sync_id
+      table:
+        name: repo_sync_queue
+        schema: mergestat

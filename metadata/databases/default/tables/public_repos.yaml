@@ -1,0 +1,36 @@
+table:
+  name: repos
+  schema: public
+object_relationships:
+- name: github_repo_info
+  using:
+    foreign_key_constraint_on:
+      column: repo_id
+      table:
+        name: github_repo_info
+        schema: public
+- name: repo_import
+  using:
+    foreign_key_constraint_on: repo_import_id
+array_relationships:
+- name: commit_stats
+  using:
+    foreign_key_constraint_on:
+      column: repo_id
+      table:
+        name: commit_stats
+        schema: public
+- name: commits
+  using:
+    foreign_key_constraint_on:
+      column: repo_id
+      table:
+        name: commits
+        schema: public
+- name: repo_sync_settings
+  using:
+    foreign_key_constraint_on:
+      column: repo_id
+      table:
+        name: repo_syncs
+        schema: mergestat
