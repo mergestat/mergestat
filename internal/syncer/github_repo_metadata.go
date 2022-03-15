@@ -45,7 +45,11 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted}); err != nil {
 		return err
 	}
-	defer tx.Rollback(ctx)
+	defer func() {
+		if err := tx.Rollback(ctx); err != nil {
+			w.logger.Err(err).Msgf("could not rollback transaction")
+		}
+	}()
 
 	if err := w.db.WithTx(tx).UpsertGitHubRepoInfo(ctx, db.UpsertGitHubRepoInfoParams{
 		RepoID: j.RepoID,

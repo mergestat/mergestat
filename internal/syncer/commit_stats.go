@@ -79,7 +79,11 @@ func (w *worker) handleCommitStats(ctx context.Context, j *db.DequeueSyncJobRow)
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted}); err != nil {
 		return err
 	}
-	defer tx.Rollback(ctx)
+	defer func() {
+		if err := tx.Rollback(ctx); err != nil {
+			w.logger.Err(err).Msgf("could not rollback transaction")
+		}
+	}()
 
 	if _, err := tx.Exec(ctx, "DELETE FROM commit_stats WHERE repo_id = $1;", j.RepoID.String()); err != nil {
 		return err
@@ -97,9 +101,11 @@ func (w *worker) handleCommitStats(ctx context.Context, j *db.DequeueSyncJobRow)
 
 	w.logger.Info().Msgf("marked as done")
 
-	w.sendBatchLogMessages(ctx, []*syncLog{
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{
 		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "finished!"},
-	})
+	}); err != nil {
+		return err
+	}
 
 	return tx.Commit(ctx)
 }
