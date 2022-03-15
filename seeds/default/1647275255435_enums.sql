@@ -7,5 +7,5 @@ INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('
 INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('RUNNING', 'Syng job is running');
 INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('DONE', 'Sync job is done');
 INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_REPO_METADATA', 'Get metadata from GitHub about a repo');
-INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('COMMITS', 'Get commit history of a repo');
-INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('COMMIT_STATS', 'Get commit stats for a repo');
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_COMMITS', 'Get commit history of a repo');
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_COMMIT_STATS', 'Get commit stats for a repo');

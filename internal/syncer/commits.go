@@ -58,7 +58,7 @@ FROM commits(?);
 `
 
 func (w *worker) handleCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
-	w.logger.Info().Msgf("received COMMITS job for repo=%s", j.Repo)
+	w.logger.Info().Msgf("received GIT_COMMITS job for repo=%s", j.Repo)
 
 	tmpPath, err := ioutil.TempDir("", "mergestat-repo-")
 	if err != nil {

@@ -19,8 +19,8 @@ import (
 
 const (
 	syncTypeGitHubRepoMetadata = "GITHUB_REPO_METADATA"
-	syncTypeCommits            = "COMMITS"
-	syncTypeCommitStats        = "COMMIT_STATS"
+	syncTypeCommits            = "GIT_COMMITS"
+	syncTypeCommitStats        = "GIT_COMMIT_STATS"
 )
 
 type worker struct {

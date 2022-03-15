@@ -12,8 +12,8 @@ It's intended purpose is to enable "operational analytics for engineering teams,
 ### Sync Types
 
 - [x] `GITHUB_REPO_METADATA`
-- [x] `COMMITS`
-- [x] `COMMIT_STATS`
+- [x] `GIT_COMMITS`
+- [x] `GIT_COMMITS`
 - [ ] `GIT_TAGS` ([#1](https://github.com/mergestat/fuse/issues/1))
 - [ ] `GITHUB_REPO_PRS` ([#2](https://github.com/mergestat/fuse/issues/2))
 - [ ] `GITHUB_REPO_ISSUES` ([#2](https://github.com/mergestat/fuse/issues/2))
