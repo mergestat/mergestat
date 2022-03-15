@@ -27,7 +27,7 @@ import (
 
 var (
 	postgresConnection = os.Getenv("POSTGRES_CONNECTION")
-	baseCloneDir       = os.Getenv("BASE_CLONE_DIR")
+	// baseCloneDir       = os.Getenv("BASE_CLONE_DIR")
 )
 
 func repoLocator(cloneToken string) services.RepoLocator {
