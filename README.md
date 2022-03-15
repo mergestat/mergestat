@@ -16,7 +16,7 @@ It's intended purpose is to enable "operational analytics for engineering teams,
 
 - [x] `GITHUB_REPO_METADATA`
 - [x] `GIT_COMMITS`
-- [x] `GIT_COMMITS`
+- [x] `GIT_COMMIT_STATS`
 - [ ] `GIT_TAGS` ([#1](https://github.com/mergestat/fuse/issues/1))
 - [ ] `GITHUB_REPO_PRS` ([#2](https://github.com/mergestat/fuse/issues/2))
 - [ ] `GITHUB_REPO_ISSUES` ([#2](https://github.com/mergestat/fuse/issues/2))
