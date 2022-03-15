@@ -1,3 +1,6 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/mergestat/fuse)](https://goreportcard.com/report/github.com/mergestat/fuse)
+[![CI](https://github.com/mergestat/fuse/actions/workflows/ci.yaml/badge.svg)](https://github.com/mergestat/fuse/actions/workflows/ci.yaml)
+
 # fuse
 
 **experimental / beta**
