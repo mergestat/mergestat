@@ -2,6 +2,7 @@ package syncer
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/url"
 	"strings"
@@ -47,7 +48,9 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	}
 	defer func() {
 		if err := tx.Rollback(ctx); err != nil {
-			w.logger.Err(err).Msgf("could not rollback transaction")
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				w.logger.Err(err).Msgf("could not rollback transaction")
+			}
 		}
 	}()
 

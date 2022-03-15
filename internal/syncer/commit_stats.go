@@ -3,6 +3,7 @@ package syncer
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"io/ioutil"
 	"os"
 
@@ -81,7 +82,9 @@ func (w *worker) handleCommitStats(ctx context.Context, j *db.DequeueSyncJobRow)
 	}
 	defer func() {
 		if err := tx.Rollback(ctx); err != nil {
-			w.logger.Err(err).Msgf("could not rollback transaction")
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				w.logger.Err(err).Msgf("could not rollback transaction")
+			}
 		}
 	}()
 
