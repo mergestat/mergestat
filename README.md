@@ -11,7 +11,7 @@ It's intended purpose is to enable "operational analytics for engineering teams,
 
 ## Testing locally
 
-Fuse can be easily tested locally with docker compose.
+Try Fuse out with `docker-compose` by running the following locally:
 
 ```sh
 # Initialize postgres and hasura
@@ -33,10 +33,11 @@ Access grafana with http://localhost:3000
 
 ### Sync Types
 
-- [x] `GITHUB_REPO_METADATA`
 - [x] `GIT_COMMITS`
 - [x] `GIT_COMMIT_STATS`
 - [ ] `GIT_TAGS` ([#1](https://github.com/mergestat/fuse/issues/1))
-- [ ] `GITHUB_REPO_PRS` ([#2](https://github.com/mergestat/fuse/issues/2))
+- [ ] `GIT_BRANCHES` ([#1](https://github.com/mergestat/fuse/issues/1))
+- [x] `GITHUB_REPO_METADATA`
+- [X] `GITHUB_REPO_PRS` ([#2](https://github.com/mergestat/fuse/issues/2))
 - [ ] `GITHUB_REPO_ISSUES` ([#2](https://github.com/mergestat/fuse/issues/2))
 - [ ] `GITHUB_REPO_STARS` ([#2](https://github.com/mergestat/fuse/issues/2))
