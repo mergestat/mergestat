@@ -97,15 +97,37 @@ CREATE TABLE mergestat.repo_syncs (
     settings jsonb DEFAULT jsonb_build_object() NOT NULL,
     id uuid DEFAULT public.gen_random_uuid() NOT NULL
 );
-CREATE TABLE public.commit_stats (
+CREATE TABLE public.git_refs (
+    repo_id uuid NOT NULL,
+    full_name text NOT NULL,
+    hash text,
+    name text,
+    remote text,
+    target text,
+    type text,
+    tag_commit_hash text
+);
+COMMENT ON TABLE public.git_refs IS 'Refs for a Git repo';
+CREATE VIEW public.git_branches AS
+ SELECT git_refs.repo_id,
+    git_refs.full_name,
+    git_refs.hash,
+    git_refs.name,
+    git_refs.remote,
+    git_refs.target,
+    git_refs.type,
+    git_refs.tag_commit_hash
+   FROM public.git_refs
+  WHERE (git_refs.type = 'branch'::text);
+CREATE TABLE public.git_commit_stats (
     repo_id uuid NOT NULL,
     commit_hash text NOT NULL,
     file_path text NOT NULL,
     additions integer NOT NULL,
     deletions integer NOT NULL
 );
-COMMENT ON TABLE public.commit_stats IS 'Commit stats';
-CREATE TABLE public.commits (
+COMMENT ON TABLE public.git_commit_stats IS 'Commit stats';
+CREATE TABLE public.git_commits (
     repo_id uuid NOT NULL,
     hash text NOT NULL,
     message text NOT NULL,
@@ -117,7 +139,18 @@ CREATE TABLE public.commits (
     committer_when timestamp with time zone NOT NULL,
     parents integer NOT NULL
 );
-COMMENT ON TABLE public.commits IS 'Git repository commits';
+COMMENT ON TABLE public.git_commits IS 'Git repository commits';
+CREATE VIEW public.git_tags AS
+ SELECT git_refs.repo_id,
+    git_refs.full_name,
+    git_refs.hash,
+    git_refs.name,
+    git_refs.remote,
+    git_refs.target,
+    git_refs.type,
+    git_refs.tag_commit_hash
+   FROM public.git_refs
+  WHERE (git_refs.type = 'tag'::text);
 CREATE TABLE public.github_pull_requests (
     repo_id uuid NOT NULL,
     additions integer,
@@ -198,8 +231,10 @@ ALTER TABLE ONLY mergestat.repo_sync_types
     ADD CONSTRAINT repo_sync_types_pkey PRIMARY KEY (type);
 ALTER TABLE ONLY mergestat.repo_syncs
     ADD CONSTRAINT repo_syncs_repo_id_sync_type_key UNIQUE (repo_id, sync_type);
-ALTER TABLE ONLY public.commits
+ALTER TABLE ONLY public.git_commits
     ADD CONSTRAINT commits_pkey PRIMARY KEY (repo_id, hash);
+ALTER TABLE ONLY public.git_refs
+    ADD CONSTRAINT git_refs_pkey PRIMARY KEY (repo_id, full_name);
 ALTER TABLE ONLY public.github_pull_requests
     ADD CONSTRAINT github_pull_requests_pkey PRIMARY KEY (repo_id, database_id);
 ALTER TABLE ONLY public.github_repo_info
@@ -208,7 +243,7 @@ ALTER TABLE ONLY public.github_repo_info
     ADD CONSTRAINT github_repo_info_pkey PRIMARY KEY (repo_id);
 ALTER TABLE ONLY public.repos
     ADD CONSTRAINT repos_pkey PRIMARY KEY (id);
-CREATE INDEX commits_author_when_idx ON public.commits USING btree (repo_id, author_when);
+CREATE INDEX commits_author_when_idx ON public.git_commits USING btree (repo_id, author_when);
 CREATE UNIQUE INDEX repos_repo_ref_unique ON public.repos USING btree (repo, ((ref IS NULL))) WHERE (ref IS NULL);
 CREATE TRIGGER repo_sync_queue_status_update_trigger BEFORE UPDATE ON mergestat.repo_sync_queue FOR EACH ROW EXECUTE FUNCTION public.repo_sync_queue_status_update_trigger();
 CREATE TRIGGER set_mergestat_repo_imports_updated_at BEFORE UPDATE ON mergestat.repo_imports FOR EACH ROW EXECUTE FUNCTION mergestat.set_current_timestamp_updated_at();
@@ -227,11 +262,11 @@ ALTER TABLE ONLY mergestat.repo_syncs
     ADD CONSTRAINT repo_sync_settings_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY mergestat.repo_syncs
     ADD CONSTRAINT repo_syncs_sync_type_fkey FOREIGN KEY (sync_type) REFERENCES mergestat.repo_sync_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
-ALTER TABLE ONLY public.commit_stats
-    ADD CONSTRAINT commit_stats_repo_id_commit_hash_fkey FOREIGN KEY (repo_id, commit_hash) REFERENCES public.commits(repo_id, hash) ON UPDATE RESTRICT ON DELETE CASCADE;
-ALTER TABLE ONLY public.commit_stats
+ALTER TABLE ONLY public.git_commit_stats
+    ADD CONSTRAINT commit_stats_repo_id_commit_hash_fkey FOREIGN KEY (repo_id, commit_hash) REFERENCES public.git_commits(repo_id, hash) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY public.git_commit_stats
     ADD CONSTRAINT commit_stats_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE CASCADE;
-ALTER TABLE ONLY public.commits
+ALTER TABLE ONLY public.git_commits
     ADD CONSTRAINT commits_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE ONLY public.github_pull_requests
     ADD CONSTRAINT github_pull_requests_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;

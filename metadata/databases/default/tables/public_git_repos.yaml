@@ -1,5 +1,5 @@
 table:
-  name: repos
+  name: git_repos
   schema: public
 object_relationships:
 - name: github_repo_info

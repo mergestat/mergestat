@@ -35,8 +35,7 @@ Access grafana with http://localhost:3000
 
 - [x] `GIT_COMMITS`
 - [x] `GIT_COMMIT_STATS`
-- [ ] `GIT_TAGS` ([#1](https://github.com/mergestat/fuse/issues/1))
-- [ ] `GIT_BRANCHES` ([#1](https://github.com/mergestat/fuse/issues/1))
+- [x] `GIT_REFS` ([#1](https://github.com/mergestat/fuse/issues/1))
 - [x] `GITHUB_REPO_METADATA`
 - [X] `GITHUB_REPO_PRS` ([#2](https://github.com/mergestat/fuse/issues/2))
 - [ ] `GITHUB_REPO_ISSUES` ([#2](https://github.com/mergestat/fuse/issues/2))

@@ -1,0 +1,3 @@
+table:
+  name: git_refs
+  schema: public

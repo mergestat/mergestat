@@ -14,31 +14,43 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// sendBatchGitBranches uses the pg COPY protocol to send a batch of git branches
-func (w *worker) sendBatchGitBranches(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*branch) error {
+// sendBatchGitRefs uses the pg COPY protocol to send a batch of git refs
+func (w *worker) sendBatchGitRefs(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*ref) error {
 	inputs := make([][]interface{}, 0, len(batch))
-	for _, b := range batch {
+	for _, r := range batch {
 		var repoID uuid.UUID
 		var err error
 		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
 			return err
 		}
-		input := []interface{}{repoID, b.FullName.String, b.Name.String}
+		input := []interface{}{repoID, r.FullName.String, r.Name.String}
 
-		if b.Hash.Valid {
-			input = append(input, b.Hash.String)
+		if r.Hash.Valid {
+			input = append(input, r.Hash.String)
 		} else {
 			input = append(input, nil)
 		}
 
-		if b.Remote.Valid {
-			input = append(input, b.Remote.String)
+		if r.Remote.Valid {
+			input = append(input, r.Remote.String)
 		} else {
 			input = append(input, nil)
 		}
 
-		if b.Target.Valid {
-			input = append(input, b.Target.String)
+		if r.Target.Valid {
+			input = append(input, r.Target.String)
+		} else {
+			input = append(input, nil)
+		}
+
+		if r.Type.Valid {
+			input = append(input, r.Type.String)
+		} else {
+			input = append(input, nil)
+		}
+
+		if r.TagCommitHash.Valid {
+			input = append(input, r.TagCommitHash.String)
 		} else {
 			input = append(input, nil)
 		}
@@ -46,26 +58,25 @@ func (w *worker) sendBatchGitBranches(ctx context.Context, tx pgx.Tx, j *db.Dequ
 		inputs = append(inputs, input)
 	}
 
-	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_branches"}, []string{"repo_id", "full_name", "name", "hash", "remote", "target"}, pgx.CopyFromRows(inputs)); err != nil {
+	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_refs"}, []string{"repo_id", "full_name", "name", "hash", "remote", "target", "type", "tag_commit_hash"}, pgx.CopyFromRows(inputs)); err != nil {
 		return err
 	}
 	return nil
 }
 
-type branch struct {
-	FullName sql.NullString `db:"full_name"`
-	Hash     sql.NullString `db:"hash"`
-	Name     sql.NullString `db:"name"`
-	Remote   sql.NullString `db:"remote"`
-	Target   sql.NullString `db:"target"`
-	Type     sql.NullString `db:"type"`
+type ref struct {
+	FullName      sql.NullString `db:"full_name"`
+	Hash          sql.NullString `db:"hash"`
+	Name          sql.NullString `db:"name"`
+	Remote        sql.NullString `db:"remote"`
+	Target        sql.NullString `db:"target"`
+	Type          sql.NullString `db:"type"`
+	TagCommitHash sql.NullString `db:"tag_commit_hash"`
 }
 
-const selectBranches = `
-SELECT * FROM refs(?) WHERE type = 'branch';
-`
+const selectRefs = `SELECT *, (CASE type WHEN 'tag' THEN COALESCE(COMMIT_FROM_TAG(tag), hash) END) AS tag_commit_hash FROM refs(?);`
 
-func (w *worker) handleGitBranches(ctx context.Context, j *db.DequeueSyncJobRow) error {
+func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
 	tmpPath, err := ioutil.TempDir("", "mergestat-repo-")
@@ -85,17 +96,17 @@ func (w *worker) handleGitBranches(ctx context.Context, j *db.DequeueSyncJobRow)
 
 	// indicate that we're starting query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "starting to execute branches query"},
+		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "starting to execute refs query"},
 	}); err != nil {
 		return err
 	}
 
-	branches := make([]*branch, 0)
-	if err = w.mergestat.SelectContext(ctx, &branches, selectBranches, tmpPath); err != nil {
+	refs := make([]*ref, 0)
+	if err = w.mergestat.SelectContext(ctx, &refs, selectRefs, tmpPath); err != nil {
 		return err
 	}
 
-	l.Info().Msgf("retrieved branches: %d", len(branches))
+	l.Info().Msgf("retrieved refs: %d", len(refs))
 
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted}); err != nil {
@@ -109,15 +120,15 @@ func (w *worker) handleGitBranches(ctx context.Context, j *db.DequeueSyncJobRow)
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM git_branches WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	if _, err := tx.Exec(ctx, "DELETE FROM git_refs WHERE repo_id = $1;", j.RepoID.String()); err != nil {
 		return err
 	}
 
-	if err := w.sendBatchGitBranches(ctx, tx, j, branches); err != nil {
+	if err := w.sendBatchGitRefs(ctx, tx, j, refs); err != nil {
 		return err
 	}
 
-	l.Info().Msgf("sent batch of %d branches", len(branches))
+	l.Info().Msgf("sent batch of %d refs", len(refs))
 
 	if err := w.db.SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err

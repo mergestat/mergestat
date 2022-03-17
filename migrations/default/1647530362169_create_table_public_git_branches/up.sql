@@ -1,1 +1,0 @@
-CREATE TABLE "public"."git_branches" ("repo_id" uuid NOT NULL, "full_name" text NOT NULL, "hash" text, "name" text, "remote" text, "target" text, PRIMARY KEY ("repo_id","full_name") );COMMENT ON TABLE "public"."git_branches" IS E'Branches of Git repos';

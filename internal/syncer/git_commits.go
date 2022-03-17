@@ -31,7 +31,7 @@ func (w *worker) sendBatchCommits(ctx context.Context, tx pgx.Tx, j *db.DequeueS
 		inputs = append(inputs, input)
 	}
 
-	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"commits"}, []string{"repo_id", "hash", "message", "author_name", "author_email", "author_when", "committer_name", "committer_email", "committer_when", "parents"}, pgx.CopyFromRows(inputs)); err != nil {
+	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_commits"}, []string{"repo_id", "hash", "message", "author_name", "author_email", "author_when", "committer_name", "committer_email", "committer_when", "parents"}, pgx.CopyFromRows(inputs)); err != nil {
 		return err
 	}
 	return nil
@@ -58,7 +58,7 @@ SELECT
 FROM commits(?);
 `
 
-func (w *worker) handleCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
+func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
 	tmpPath, err := ioutil.TempDir("", "mergestat-repo-")
@@ -104,7 +104,7 @@ func (w *worker) handleCommits(ctx context.Context, j *db.DequeueSyncJobRow) err
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM commits WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	if _, err := tx.Exec(ctx, "DELETE FROM git_commits WHERE repo_id = $1;", j.RepoID.String()); err != nil {
 		return err
 	}
 
