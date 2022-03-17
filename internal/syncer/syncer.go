@@ -18,10 +18,10 @@ import (
 )
 
 const (
-	syncTypeGitCommits         = "GIT_COMMITS"
-	syncTypeGitCommitStats     = "GIT_COMMIT_STATS"
-	syncTypeGitBranches        = "GIT_BRANCHES"
-	syncTypeGitTags            = "GIT_TAGS"
+	syncTypeGitCommits     = "GIT_COMMITS"
+	syncTypeGitCommitStats = "GIT_COMMIT_STATS"
+	syncTypeGitBranches    = "GIT_BRANCHES"
+	// syncTypeGitTags            = "GIT_TAGS"
 	syncTypeGitHubRepoMetadata = "GITHUB_REPO_METADATA"
 	syncTypeGitHubRepoPRs      = "GITHUB_REPO_PRS"
 )
