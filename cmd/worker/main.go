@@ -69,7 +69,8 @@ func main() {
 			options.WithRepoLocator(locator.CachedLocator(repoLocator(os.Getenv("GITHUB_TOKEN")))), // TODO figure out token situation
 			options.WithGitHub(),
 			options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
-			options.WithContextValue("githubPerPage", "25"),
+			options.WithContextValue("githubPerPage", "10"),
+			options.WithContextValue("githubRateLimit", "1/5"),
 			options.WithNPM(),
 			options.WithLogger(&l),
 		),
@@ -96,7 +97,7 @@ func main() {
 		defer wg.Done()
 		// TODO this should be made idempotent and generally improved
 		// so it's not just a dumb "sync everything"
-		scheduler.NewScheduler(&logger, pool).Start(ctx, time.Hour)
+		scheduler.New(&logger, pool).Start(ctx, time.Hour)
 	}()
 
 	go func() {
@@ -106,7 +107,7 @@ func main() {
 
 	go func() {
 		defer wg.Done()
-		syncer.New(pool, db, &logger, 10, 3*time.Second).Start(ctx)
+		syncer.New(pool, db, &logger, 2, 3*time.Second).Start(ctx)
 	}()
 
 	wg.Wait()

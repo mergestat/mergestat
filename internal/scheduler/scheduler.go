@@ -15,7 +15,7 @@ type scheduler struct {
 	db     *db.Queries
 }
 
-func NewScheduler(logger *zerolog.Logger, pool *pgxpool.Pool) *scheduler {
+func New(logger *zerolog.Logger, pool *pgxpool.Pool) *scheduler {
 	return &scheduler{
 		logger: logger,
 		pool:   pool,

@@ -59,7 +59,7 @@ FROM commits(?);
 `
 
 func (w *worker) handleCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
-	w.logger.Info().Msgf("received GIT_COMMITS job for repo=%s", j.Repo)
+	l := w.loggerForJob(j)
 
 	tmpPath, err := ioutil.TempDir("", "mergestat-repo-")
 	if err != nil {
@@ -90,7 +90,7 @@ func (w *worker) handleCommits(ctx context.Context, j *db.DequeueSyncJobRow) err
 		return err
 	}
 
-	w.logger.Info().Msgf("retrieved commits: %d total", len(commits))
+	l.Info().Msgf("retrieved commits: %d", len(commits))
 
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted}); err != nil {
@@ -112,13 +112,11 @@ func (w *worker) handleCommits(ctx context.Context, j *db.DequeueSyncJobRow) err
 		return err
 	}
 
-	w.logger.Info().Msgf("sent batch of %d commits", len(commits))
+	l.Info().Msgf("sent batch of %d commits", len(commits))
 
 	if err := w.db.SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err
 	}
-
-	w.logger.Info().Msgf("marked as done")
 
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
 		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "finished!"},
