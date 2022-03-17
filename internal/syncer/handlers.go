@@ -8,10 +8,6 @@ import (
 	"github.com/rs/zerolog"
 )
 
-type Handler interface {
-	Handle(context.Context, *db.DequeueSyncJobRow)
-}
-
 type syncLogType string
 
 const (

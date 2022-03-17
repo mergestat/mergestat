@@ -21,7 +21,7 @@ db_add_repo(){
     echo "Created Repo ($repo_id)" >&2
     psql -xc "SELECT * $from_repo"
 
-    local sync_types="GIT_COMMITS GIT_COMMIT_STATS"
+    local sync_types="GIT_COMMITS GIT_COMMIT_STATS GIT_BRANCHES"
 
     if [ "$is_github" == "true" ]; then
         sync_types+=" GITHUB_REPO_METADATA"

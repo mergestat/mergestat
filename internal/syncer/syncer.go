@@ -18,9 +18,11 @@ import (
 )
 
 const (
+	syncTypeGitCommits         = "GIT_COMMITS"
+	syncTypeGitCommitStats     = "GIT_COMMIT_STATS"
+	syncTypeGitBranches        = "GIT_BRANCHES"
+	syncTypeGitTags            = "GIT_TAGS"
 	syncTypeGitHubRepoMetadata = "GITHUB_REPO_METADATA"
-	syncTypeCommits            = "GIT_COMMITS"
-	syncTypeCommitStats        = "GIT_COMMIT_STATS"
 	syncTypeGitHubRepoPRs      = "GITHUB_REPO_PRS"
 )
 
@@ -130,12 +132,14 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	w.loggerForJob(j).Info().Msg("handling job")
 
 	switch j.SyncType {
+	case syncTypeGitCommits:
+		return w.handleCommits(ctx, j)
+	case syncTypeGitCommitStats:
+		return w.handleCommitStats(ctx, j)
+	case syncTypeGitBranches:
+		return w.handleGitBranches(ctx, j)
 	case syncTypeGitHubRepoMetadata:
 		return w.handleGitHubRepoMetadata(ctx, j)
-	case syncTypeCommits:
-		return w.handleCommits(ctx, j)
-	case syncTypeCommitStats:
-		return w.handleCommitStats(ctx, j)
 	case syncTypeGitHubRepoPRs:
 		return w.handleGitHubRepoPRs(ctx, j)
 	default:

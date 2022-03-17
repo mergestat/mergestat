@@ -9,6 +9,7 @@
 - "!include mergestat_repo_syncs.yaml"
 - "!include public_commit_stats.yaml"
 - "!include public_commits.yaml"
+- "!include public_git_branches.yaml"
 - "!include public_github_pull_requests.yaml"
 - "!include public_github_repo_info.yaml"
 - "!include public_repos.yaml"
