@@ -1,0 +1,12 @@
+FROM debian:buster-slim
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive \
+        apt-get install -y curl postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+
+COPY scripts/docker-init-entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
