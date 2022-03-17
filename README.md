@@ -9,6 +9,25 @@ MergeStat `fuse` is an experimental project to sync data from [`mergestat`](http
 It behaves similar to an ETL tool, taking data from git repositories and the GitHub API and regularly updating tables in a database.
 It's intended purpose is to enable "operational analytics for engineering teams," where downstream tools may consume the data from the PostgreSQL database.
 
+## Testing locally
+
+Fuse can be easily tested locally with docker compose.
+
+```sh
+# Initialize postgres and hasura
+docker-compose up init
+
+# Add a repo to be synced
+docker-compose run --rm init add-repo https://github.com/mergestat/mergestat
+
+# Start worker and grafana
+docker-compose up -d worker grafana
+```
+
+Depending on the size of the repo, it should only take short period of time to sync.
+Afterwards you should be able to pull up grafana and see some some graphs.
+
+Access grafana with http://localhost:3000
 
 ## Roadmap
 
