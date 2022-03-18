@@ -1,0 +1,3 @@
+table:
+  name: git_tags
+  schema: public

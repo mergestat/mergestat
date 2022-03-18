@@ -70,7 +70,7 @@ func main() {
 			options.WithGitHub(),
 			options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
 			options.WithContextValue("githubPerPage", "10"),
-			options.WithContextValue("githubRateLimit", "1/5"),
+			options.WithContextValue("githubRateLimit", "1/2"),
 			options.WithNPM(),
 			options.WithLogger(&l),
 		),

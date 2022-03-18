@@ -50,6 +50,8 @@ services:
       - postgres
     environment:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres
+    env_file:
+      - .env
 
   grafana:
     image: grafana/grafana-oss:latest

@@ -27,12 +27,26 @@ array_relationships:
       table:
         name: git_commits
         schema: public
+- name: github_issues
+  using:
+    foreign_key_constraint_on:
+      column: repo_id
+      table:
+        name: github_issues
+        schema: public
 - name: github_pull_requests
   using:
     foreign_key_constraint_on:
       column: repo_id
       table:
         name: github_pull_requests
+        schema: public
+- name: github_stargazers
+  using:
+    foreign_key_constraint_on:
+      column: repo_id
+      table:
+        name: github_stargazers
         schema: public
 - name: repo_sync_settings
   using:

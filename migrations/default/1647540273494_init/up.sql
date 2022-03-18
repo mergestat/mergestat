@@ -151,6 +151,32 @@ CREATE VIEW public.git_tags AS
     git_refs.tag_commit_hash
    FROM public.git_refs
   WHERE (git_refs.type = 'tag'::text);
+CREATE TABLE public.github_issues (
+    repo_id uuid NOT NULL,
+    author_login text,
+    body text,
+    closed boolean,
+    closed_at timestamp with time zone,
+    comment_count integer,
+    created_at timestamp with time zone,
+    created_via_email boolean,
+    database_id integer NOT NULL,
+    editor_login text,
+    includes_created_edit boolean,
+    label_count integer,
+    last_edited_at timestamp with time zone,
+    locked boolean,
+    milestone_count integer,
+    number integer NOT NULL,
+    participant_count integer,
+    published_at timestamp with time zone,
+    reaction_count integer,
+    state text,
+    title text,
+    updated_at timestamp with time zone,
+    url text
+);
+COMMENT ON TABLE public.github_issues IS 'GitHub issues';
 CREATE TABLE public.github_pull_requests (
     repo_id uuid NOT NULL,
     additions integer,
@@ -194,12 +220,30 @@ CREATE TABLE public.github_pull_requests (
     updated_at timestamp with time zone,
     url text
 );
+COMMENT ON TABLE public.github_pull_requests IS 'GitHub pull requests';
 CREATE TABLE public.github_repo_info (
     repo_id uuid NOT NULL,
     owner text NOT NULL,
     name text NOT NULL,
     metadata jsonb NOT NULL
 );
+COMMENT ON TABLE public.github_repo_info IS 'GitHub metadata about a repo';
+CREATE TABLE public.github_stargazers (
+    repo_id uuid NOT NULL,
+    login text NOT NULL,
+    email text,
+    name text,
+    bio text,
+    company text,
+    avatar_url text,
+    created_at timestamp with time zone,
+    updated_at timestamp with time zone,
+    twitter text,
+    website text,
+    location text,
+    starred_at timestamp with time zone
+);
+COMMENT ON TABLE public.github_stargazers IS 'GitHub stargazers for a repo';
 CREATE TABLE public.repos (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     repo text NOT NULL,
@@ -235,12 +279,16 @@ ALTER TABLE ONLY public.git_commits
     ADD CONSTRAINT commits_pkey PRIMARY KEY (repo_id, hash);
 ALTER TABLE ONLY public.git_refs
     ADD CONSTRAINT git_refs_pkey PRIMARY KEY (repo_id, full_name);
+ALTER TABLE ONLY public.github_issues
+    ADD CONSTRAINT github_issues_pkey PRIMARY KEY (repo_id, database_id);
 ALTER TABLE ONLY public.github_pull_requests
     ADD CONSTRAINT github_pull_requests_pkey PRIMARY KEY (repo_id, database_id);
 ALTER TABLE ONLY public.github_repo_info
     ADD CONSTRAINT github_repo_info_owner_name_key UNIQUE (owner, name);
 ALTER TABLE ONLY public.github_repo_info
     ADD CONSTRAINT github_repo_info_pkey PRIMARY KEY (repo_id);
+ALTER TABLE ONLY public.github_stargazers
+    ADD CONSTRAINT github_stargazers_pkey PRIMARY KEY (repo_id, login);
 ALTER TABLE ONLY public.repos
     ADD CONSTRAINT repos_pkey PRIMARY KEY (id);
 CREATE INDEX commits_author_when_idx ON public.git_commits USING btree (repo_id, author_when);
@@ -268,9 +316,13 @@ ALTER TABLE ONLY public.git_commit_stats
     ADD CONSTRAINT commit_stats_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 ALTER TABLE ONLY public.git_commits
     ADD CONSTRAINT commits_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY public.github_issues
+    ADD CONSTRAINT github_issues_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.github_pull_requests
     ADD CONSTRAINT github_pull_requests_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.github_repo_info
     ADD CONSTRAINT github_repo_info_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY public.github_stargazers
+    ADD CONSTRAINT github_stargazers_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.repos
     ADD CONSTRAINT repos_repo_import_id_fkey FOREIGN KEY (repo_import_id) REFERENCES mergestat.repo_imports(id) ON UPDATE RESTRICT ON DELETE RESTRICT;

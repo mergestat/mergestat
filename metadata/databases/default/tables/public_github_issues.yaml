@@ -1,0 +1,7 @@
+table:
+  name: github_issues
+  schema: public
+object_relationships:
+- name: repo
+  using:
+    foreign_key_constraint_on: repo_id

@@ -2,11 +2,11 @@ package syncer
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/fuse/internal/db"
@@ -16,45 +16,45 @@ import (
 const selectGitHubRepoPRs = `SELECT * FROM github_repo_prs(?)`
 
 type githubRepoPR struct {
-	Additions           sql.NullInt64  `db:"additions"`
-	AuthorLogin         sql.NullString `db:"author_login"`
-	AuthorAssociation   sql.NullString `db:"author_association"`
-	AuthorAvatarURL     sql.NullString `db:"author_avatar_url"`
-	AuthorName          sql.NullString `db:"author_name"`
-	BaseRefOID          sql.NullString `db:"base_ref_oid"`
-	BaseRefName         sql.NullString `db:"base_ref_name"`
-	BaseRepositoryName  sql.NullString `db:"base_repository_name"`
-	Body                sql.NullString `db:"body"`
-	ChangedFiles        sql.NullInt64  `db:"changed_files"`
-	Closed              sql.NullBool   `db:"closed"`
-	ClosedAt            sql.NullTime   `db:"closed_at"`
-	CommentCount        sql.NullInt64  `db:"comment_count"`
-	CommitCount         sql.NullInt64  `db:"commit_count"`
-	CreatedAt           sql.NullTime   `db:"created_at"`
-	CreatedViaEmail     sql.NullBool   `db:"created_via_email"`
-	DatabaseID          sql.NullInt64  `db:"database_id"`
-	Deletions           sql.NullInt64  `db:"deletions"`
-	EditorLogin         sql.NullString `db:"editor_login"`
-	HeadRefName         sql.NullString `db:"head_ref_name"`
-	HeadRefOID          sql.NullString `db:"head_ref_oid"`
-	HeadRepositoryName  sql.NullString `db:"head_repository_name"`
-	IsDraft             sql.NullBool   `db:"is_draft"`
-	LabelCount          sql.NullInt64  `db:"label_count"`
-	LastEditedAt        sql.NullTime   `db:"last_edited_at"`
-	Locked              sql.NullBool   `db:"locked"`
-	MaintainerCanModify sql.NullBool   `db:"maintainer_can_modify"`
-	Mergeable           sql.NullString `db:"mergeable"`
-	Merged              sql.NullBool   `db:"merged"`
-	MergedAt            sql.NullTime   `db:"merged_at"`
-	MergedBy            sql.NullString `db:"merged_by"`
-	Number              sql.NullInt64  `db:"number"`
-	ParticipantCount    sql.NullInt64  `db:"participant_count"`
-	PublishedAt         sql.NullTime   `db:"published_at"`
-	ReviewDecision      sql.NullString `db:"review_decision"`
-	State               sql.NullString `db:"state"`
-	Title               sql.NullString `db:"title"`
-	UpdatedAt           sql.NullTime   `db:"updated_at"`
-	URL                 sql.NullString `db:"url"`
+	Additions           *int       `db:"additions"`
+	AuthorLogin         *string    `db:"author_login"`
+	AuthorAssociation   *string    `db:"author_association"`
+	AuthorAvatarURL     *string    `db:"author_avatar_url"`
+	AuthorName          *string    `db:"author_name"`
+	BaseRefOID          *string    `db:"base_ref_oid"`
+	BaseRefName         *string    `db:"base_ref_name"`
+	BaseRepositoryName  *string    `db:"base_repository_name"`
+	Body                *string    `db:"body"`
+	ChangedFiles        *int       `db:"changed_files"`
+	Closed              *bool      `db:"closed"`
+	ClosedAt            *time.Time `db:"closed_at"`
+	CommentCount        *int       `db:"comment_count"`
+	CommitCount         *int       `db:"commit_count"`
+	CreatedAt           *time.Time `db:"created_at"`
+	CreatedViaEmail     *bool      `db:"created_via_email"`
+	DatabaseID          *int       `db:"database_id"`
+	Deletions           *int       `db:"deletions"`
+	EditorLogin         *string    `db:"editor_login"`
+	HeadRefName         *string    `db:"head_ref_name"`
+	HeadRefOID          *string    `db:"head_ref_oid"`
+	HeadRepositoryName  *string    `db:"head_repository_name"`
+	IsDraft             *bool      `db:"is_draft"`
+	LabelCount          *int       `db:"label_count"`
+	LastEditedAt        *time.Time `db:"last_edited_at"`
+	Locked              *bool      `db:"locked"`
+	MaintainerCanModify *bool      `db:"maintainer_can_modify"`
+	Mergeable           *string    `db:"mergeable"`
+	Merged              *bool      `db:"merged"`
+	MergedAt            *time.Time `db:"merged_at"`
+	MergedBy            *string    `db:"merged_by"`
+	Number              *int       `db:"number"`
+	ParticipantCount    *int       `db:"participant_count"`
+	PublishedAt         *time.Time `db:"published_at"`
+	ReviewDecision      *string    `db:"review_decision"`
+	State               *string    `db:"state"`
+	Title               *string    `db:"title"`
+	UpdatedAt           *time.Time `db:"updated_at"`
+	URL                 *string    `db:"url"`
 }
 
 // sendBatchGitHubRepoPRs uses the pg COPY protocol to send a batch of GitHub repo PRs
@@ -109,13 +109,14 @@ func (w *worker) sendBatchGitHubRepoPRs(ctx context.Context, tx pgx.Tx, j *db.De
 		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
 			return err
 		}
-		input := []interface{}{repoID, pr.Additions.Int64, pr.AuthorLogin, pr.AuthorAssociation.String, pr.AuthorAvatarURL.String, pr.AuthorName.String, pr.BaseRefOID.String,
-			pr.BaseRefName.String, pr.BaseRepositoryName.String, pr.Body.String, pr.ChangedFiles.Int64, pr.Closed.Bool, pr.ClosedAt.Time, pr.CommentCount.Int64,
-			pr.CommitCount.Int64, pr.CreatedAt.Time, pr.CreatedViaEmail.Bool, pr.DatabaseID.Int64, pr.Deletions.Int64, pr.EditorLogin.String,
-			pr.HeadRefName.String, pr.HeadRefOID.String, pr.HeadRepositoryName.String, pr.IsDraft.Bool, pr.LabelCount.Int64, pr.LastEditedAt.Time, pr.Locked.Bool,
-			pr.MaintainerCanModify.Bool, pr.Mergeable.String, pr.Merged.Bool, pr.MergedAt.Time, pr.MergedBy.String, pr.Number.Int64, pr.ParticipantCount.Int64, pr.PublishedAt.Time,
-			pr.ReviewDecision.String, pr.State.String, pr.Title.String, pr.UpdatedAt.Time, pr.URL,
+		input := []interface{}{repoID, pr.Additions, pr.AuthorLogin, pr.AuthorAssociation, pr.AuthorAvatarURL, pr.AuthorName, pr.BaseRefOID,
+			pr.BaseRefName, pr.BaseRepositoryName, pr.Body, pr.ChangedFiles, pr.Closed, pr.ClosedAt, pr.CommentCount,
+			pr.CommitCount, pr.CreatedAt, pr.CreatedViaEmail, pr.DatabaseID, pr.Deletions, pr.EditorLogin,
+			pr.HeadRefName, pr.HeadRefOID, pr.HeadRepositoryName, pr.IsDraft, pr.LabelCount, pr.LastEditedAt, pr.Locked,
+			pr.MaintainerCanModify, pr.Mergeable, pr.Merged, pr.MergedAt, pr.MergedBy, pr.Number, pr.ParticipantCount, pr.PublishedAt,
+			pr.ReviewDecision, pr.State, pr.Title, pr.UpdatedAt, pr.URL,
 		}
+
 		inputs = append(inputs, input)
 	}
 
