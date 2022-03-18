@@ -67,6 +67,34 @@ type GitTag struct {
 	TagCommitHash sql.NullString
 }
 
+// GitHub issues
+type GithubIssue struct {
+	RepoID              uuid.UUID
+	AuthorLogin         sql.NullString
+	Body                sql.NullString
+	Closed              sql.NullBool
+	ClosedAt            sql.NullTime
+	CommentCount        sql.NullInt32
+	CreatedAt           sql.NullTime
+	CreatedViaEmail     sql.NullBool
+	DatabaseID          int32
+	EditorLogin         sql.NullString
+	IncludesCreatedEdit sql.NullBool
+	LabelCount          sql.NullInt32
+	LastEditedAt        sql.NullTime
+	Locked              sql.NullBool
+	MilestoneCount      sql.NullInt32
+	Number              int32
+	ParticipantCount    sql.NullInt32
+	PublishedAt         sql.NullTime
+	ReactionCount       sql.NullInt32
+	State               sql.NullString
+	Title               sql.NullString
+	UpdatedAt           sql.NullTime
+	Url                 sql.NullString
+}
+
+// GitHub pull requests
 type GithubPullRequest struct {
 	RepoID              uuid.UUID
 	Additions           sql.NullInt32
@@ -111,11 +139,54 @@ type GithubPullRequest struct {
 	Url                 sql.NullString
 }
 
+// GitHub metadata about a repo
 type GithubRepoInfo struct {
-	RepoID   uuid.UUID
-	Owner    string
-	Name     string
-	Metadata pgtype.JSONB
+	RepoID                   uuid.UUID
+	Owner                    string
+	Name                     string
+	Metadata                 pgtype.JSONB
+	CreatedAt                sql.NullTime
+	DefaultBranchName        sql.NullString
+	Description              sql.NullString
+	DiskUsage                sql.NullInt32
+	ForkCount                sql.NullInt32
+	HomepageUrl              sql.NullString
+	IsArchived               sql.NullBool
+	IsDisabled               sql.NullBool
+	IsMirror                 sql.NullBool
+	IsPrivate                sql.NullBool
+	TotalIssuesCount         sql.NullInt32
+	LatestReleaseAuthor      sql.NullString
+	LatestReleaseCreatedAt   sql.NullTime
+	LatestReleaseName        sql.NullString
+	LatestReleasePublishedAt sql.NullTime
+	LicenseKey               sql.NullString
+	LicenseName              sql.NullString
+	LicenseNickname          sql.NullString
+	OpenGraphImageUrl        sql.NullString
+	PrimaryLanguage          sql.NullString
+	PushedAt                 sql.NullTime
+	ReleasesCount            sql.NullInt32
+	StargazersCount          sql.NullInt32
+	UpdatedAt                sql.NullTime
+	WatchersCount            sql.NullInt32
+}
+
+// GitHub stargazers for a repo
+type GithubStargazer struct {
+	RepoID    uuid.UUID
+	Login     string
+	Email     sql.NullString
+	Name      sql.NullString
+	Bio       sql.NullString
+	Company   sql.NullString
+	AvatarUrl sql.NullString
+	CreatedAt sql.NullTime
+	UpdatedAt sql.NullTime
+	Twitter   sql.NullString
+	Website   sql.NullString
+	Location  sql.NullString
+	StarredAt sql.NullTime
 }
 
 type MergestatLatestRepoSync struct {

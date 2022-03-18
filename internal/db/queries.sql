@@ -49,10 +49,21 @@ JOIN mergestat.repo_syncs ON mergestat.repo_syncs.id = dequeued.repo_sync_id
 JOIN repos ON repos.id = mergestat.repo_syncs.repo_id
 ;
 
--- name: UpsertGitHubRepoInfo :exec
-INSERT INTO public.github_repo_info (repo_id, owner, name, metadata) VALUES($1, $2, $3, $4)
-ON CONFLICT ON CONSTRAINT github_repo_info_pkey
-DO UPDATE SET metadata = $4;
+-- name: DeleteGitHubRepoInfo :exec
+DELETE FROM public.github_repo_info WHERE repo_id = $1;
+
+-- name: InsertGitHubRepoInfo :exec
+INSERT INTO public.github_repo_info (
+	repo_id, owner, name,
+	created_at, default_branch_name, description, disk_usage, fork_count, homepage_url,
+	is_archived, is_disabled, is_mirror, is_private, total_issues_count, latest_release_author,
+	latest_release_created_at, latest_release_name, latest_release_published_at, license_key,
+	license_name, license_nickname, open_graph_image_url, primary_language, pushed_at, releases_count,
+	stargazers_count, updated_at, watchers_count
+) VALUES(
+	$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
+	$23, $24, $25, $26, $27, $28
+);
 
 -- name: InsertSyncJobLog :exec
 INSERT INTO mergestat.repo_sync_logs (log_type, message, repo_sync_queue_id) VALUES ($1, $2, $3);
