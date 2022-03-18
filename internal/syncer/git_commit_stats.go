@@ -27,7 +27,7 @@ func (w *worker) sendBatchCommitStats(ctx context.Context, tx pgx.Tx, j *db.Dequ
 		inputs = append(inputs, input)
 	}
 
-	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"commit_stats"}, []string{"repo_id", "commit_hash", "file_path", "additions", "deletions"}, pgx.CopyFromRows(inputs)); err != nil {
+	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_commit_stats"}, []string{"repo_id", "commit_hash", "file_path", "additions", "deletions"}, pgx.CopyFromRows(inputs)); err != nil {
 		return err
 	}
 	return nil
@@ -42,8 +42,8 @@ type commitStat struct {
 
 const selectCommitStats = `SELECT commits.hash AS commit_hash, stats.file_path, stats.additions, stats.deletions FROM commits(?), stats(?, commits.hash);`
 
-func (w *worker) handleCommitStats(ctx context.Context, j *db.DequeueSyncJobRow) error {
-	w.logger.Info().Msgf("received GIT_COMMIT_STATS job for repo=%s", j.Repo)
+func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobRow) error {
+	l := w.loggerForJob(j)
 
 	tmpPath, err := ioutil.TempDir("", "mergestat-repo-")
 	if err != nil {
@@ -74,7 +74,7 @@ func (w *worker) handleCommitStats(ctx context.Context, j *db.DequeueSyncJobRow)
 		return err
 	}
 
-	w.logger.Info().Msgf("retrieved stats: %d total", len(stats))
+	l.Info().Msgf("retrieved stats: %d", len(stats))
 
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted}); err != nil {
@@ -88,7 +88,7 @@ func (w *worker) handleCommitStats(ctx context.Context, j *db.DequeueSyncJobRow)
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM commit_stats WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	if _, err := tx.Exec(ctx, "DELETE FROM git_commit_stats WHERE repo_id = $1;", j.RepoID.String()); err != nil {
 		return err
 	}
 
@@ -96,13 +96,11 @@ func (w *worker) handleCommitStats(ctx context.Context, j *db.DequeueSyncJobRow)
 		return err
 	}
 
-	w.logger.Info().Msgf("sent batch of %d commit stats", len(stats))
+	l.Info().Msgf("sent batch of %d commit stats", len(stats))
 
 	if err := w.db.SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err
 	}
-
-	w.logger.Info().Msgf("marked as done")
 
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
 		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "finished!"},

@@ -10,8 +10,19 @@ import (
 	"github.com/jackc/pgtype"
 )
 
+type GitBranch struct {
+	RepoID        uuid.UUID
+	FullName      string
+	Hash          sql.NullString
+	Name          sql.NullString
+	Remote        sql.NullString
+	Target        sql.NullString
+	Type          sql.NullString
+	TagCommitHash sql.NullString
+}
+
 // Git repository commits
-type Commit struct {
+type GitCommit struct {
 	RepoID         uuid.UUID
 	Hash           string
 	Message        string
@@ -25,12 +36,79 @@ type Commit struct {
 }
 
 // Commit stats
-type CommitStat struct {
+type GitCommitStat struct {
 	RepoID     uuid.UUID
 	CommitHash string
 	FilePath   string
 	Additions  int32
 	Deletions  int32
+}
+
+// Refs for a Git repo
+type GitRef struct {
+	RepoID        uuid.UUID
+	FullName      string
+	Hash          sql.NullString
+	Name          sql.NullString
+	Remote        sql.NullString
+	Target        sql.NullString
+	Type          sql.NullString
+	TagCommitHash sql.NullString
+}
+
+type GitTag struct {
+	RepoID        uuid.UUID
+	FullName      string
+	Hash          sql.NullString
+	Name          sql.NullString
+	Remote        sql.NullString
+	Target        sql.NullString
+	Type          sql.NullString
+	TagCommitHash sql.NullString
+}
+
+type GithubPullRequest struct {
+	RepoID              uuid.UUID
+	Additions           sql.NullInt32
+	AuthorLogin         sql.NullString
+	AuthorAssociation   sql.NullString
+	AuthorAvatarUrl     sql.NullString
+	AuthorName          sql.NullString
+	BaseRefOid          sql.NullString
+	BaseRefName         sql.NullString
+	BaseRepositoryName  sql.NullString
+	Body                sql.NullString
+	ChangedFiles        sql.NullInt32
+	Closed              sql.NullBool
+	ClosedAt            sql.NullTime
+	CommentCount        sql.NullInt32
+	CommitCount         sql.NullInt32
+	CreatedAt           sql.NullTime
+	CreatedViaEmail     sql.NullBool
+	DatabaseID          int32
+	Deletions           sql.NullInt32
+	EditorLogin         sql.NullString
+	HeadRefName         sql.NullString
+	HeadRefOid          sql.NullString
+	HeadRepositoryName  sql.NullString
+	IsDraft             sql.NullBool
+	LabelCount          sql.NullInt32
+	LastEditedAt        sql.NullTime
+	Locked              sql.NullBool
+	MaintainerCanModify sql.NullBool
+	MantainerCanModify  sql.NullBool
+	Mergeable           sql.NullString
+	Merged              sql.NullBool
+	MergedAt            sql.NullTime
+	MergedBy            sql.NullString
+	Number              sql.NullInt32
+	ParticipantCount    sql.NullInt32
+	PublishedAt         sql.NullTime
+	ReviewDecision      sql.NullString
+	State               sql.NullString
+	Title               sql.NullString
+	UpdatedAt           sql.NullTime
+	Url                 sql.NullString
 }
 
 type GithubRepoInfo struct {

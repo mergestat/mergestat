@@ -12,7 +12,7 @@ services:
       POSTGRES_PASSWORD: password
 
   graphql-engine:
-    image: hasura/graphql-engine:v2.2.0
+    image: hasura/graphql-engine:v2.4.0-beta.1
     ports:
       - 8080:8080
     depends_on:
@@ -50,6 +50,8 @@ services:
       - postgres
     environment:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres
+    env_file:
+      - .env
 
   grafana:
     image: grafana/grafana-oss:latest

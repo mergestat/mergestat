@@ -15,7 +15,7 @@ import (
 const selectSingleGitHubRepo = `SELECT github_repo(?) AS repo`
 
 func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSyncJobRow) error {
-	w.logger.Info().Msgf("received GITHUB_REPO_METADATA job for repo=%s", j.Repo)
+	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
@@ -40,7 +40,7 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 		return err
 	}
 
-	w.logger.Info().Msgf("repo info: %s", string(repoInfo))
+	l.Info().Msgf("retrieved repo info as JSON")
 
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted}); err != nil {

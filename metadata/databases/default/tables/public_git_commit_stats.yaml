@@ -1,5 +1,5 @@
 table:
-  name: commit_stats
+  name: git_commit_stats
   schema: public
 object_relationships:
 - name: commit

@@ -18,9 +18,13 @@ import (
 )
 
 const (
+	syncTypeGitCommits         = "GIT_COMMITS"
+	syncTypeGitCommitStats     = "GIT_COMMIT_STATS"
+	syncTypeGitRefs            = "GIT_REFS"
 	syncTypeGitHubRepoMetadata = "GITHUB_REPO_METADATA"
-	syncTypeCommits            = "GIT_COMMITS"
-	syncTypeCommitStats        = "GIT_COMMIT_STATS"
+	syncTypeGitHubRepoPRs      = "GITHUB_REPO_PRS"
+	syncTypeGitHubRepoIssues   = "GITHUB_REPO_ISSUES"
+	syncTypeGitHubRepoStars    = "GITHUB_REPO_STARS"
 )
 
 type worker struct {
@@ -88,7 +92,8 @@ func (w *worker) exec(ctx context.Context, id string) {
 
 				w.logger.Err(err).Msgf("error dequeuing job: %v", err)
 			}
-			w.logger.Info().Msgf("dequeued job: %v", j)
+
+			w.loggerForJob(j).Info().Msg("dequeued job")
 
 			if err := w.handle(ctx, j); err != nil {
 				if !errors.Is(err, context.Canceled) {
@@ -125,13 +130,23 @@ func (w *worker) exec(ctx context.Context, id string) {
 
 // handle maps jobs to the right handler (see handlers.go)
 func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
+	w.loggerForJob(j).Info().Msg("handling job")
+
 	switch j.SyncType {
+	case syncTypeGitCommits:
+		return w.handleGitCommits(ctx, j)
+	case syncTypeGitCommitStats:
+		return w.handleGitCommitStats(ctx, j)
+	case syncTypeGitRefs:
+		return w.handleGitRefs(ctx, j)
 	case syncTypeGitHubRepoMetadata:
-		return w.handleGitHubRepoMetadata(context.TODO(), j)
-	case syncTypeCommits:
-		return w.handleCommits(context.TODO(), j)
-	case syncTypeCommitStats:
-		return w.handleCommitStats(context.TODO(), j)
+		return w.handleGitHubRepoMetadata(ctx, j)
+	case syncTypeGitHubRepoPRs:
+		return w.handleGitHubRepoPRs(ctx, j)
+	case syncTypeGitHubRepoIssues:
+		return w.handleGitHubRepoIssues(ctx, j)
+	case syncTypeGitHubRepoStars:
+		return w.handleGitHubRepoStars(ctx, j)
 	default:
 		return fmt.Errorf("unknown sync type: %s for job ID: %d", j.SyncType, j.ID)
 	}

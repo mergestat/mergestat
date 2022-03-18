@@ -5,11 +5,8 @@ import (
 
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/fuse/internal/db"
+	"github.com/rs/zerolog"
 )
-
-type Handler interface {
-	Handle(context.Context, *db.DequeueSyncJobRow)
-}
 
 type syncLogType string
 
@@ -29,7 +26,6 @@ func (w *worker) sendBatchLogMessages(ctx context.Context, batch []*syncLog) err
 	inputs := make([][]interface{}, 0, len(batch))
 	for _, l := range batch {
 		input := []interface{}{l.Type, l.Message, l.RepoSyncQueueID}
-		w.logger.Info().Msgf("input: %v", input)
 		inputs = append(inputs, input)
 	}
 
@@ -37,4 +33,9 @@ func (w *worker) sendBatchLogMessages(ctx context.Context, batch []*syncLog) err
 		return err
 	}
 	return nil
+}
+
+func (w *worker) loggerForJob(j *db.DequeueSyncJobRow) *zerolog.Logger {
+	l := w.logger.With().Str("job-type", j.SyncType).Str("repo", j.Repo).Logger()
+	return &l
 }
