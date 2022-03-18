@@ -12,6 +12,15 @@ import (
 	"github.com/jackc/pgtype"
 )
 
+const deleteGitHubRepoInfo = `-- name: DeleteGitHubRepoInfo :exec
+DELETE FROM public.github_repo_info WHERE repo_id = $1
+`
+
+func (q *Queries) DeleteGitHubRepoInfo(ctx context.Context, repoID uuid.UUID) error {
+	_, err := q.db.Exec(ctx, deleteGitHubRepoInfo, repoID)
+	return err
+}
+
 const dequeueSyncJob = `-- name: DequeueSyncJob :one
 WITH dequeued AS (
 	UPDATE mergestat.repo_sync_queue SET status = 'RUNNING'
@@ -99,6 +108,85 @@ func (q *Queries) GetRepoImportByID(ctx context.Context, id uuid.UUID) (Mergesta
 	return i, err
 }
 
+const insertGitHubRepoInfo = `-- name: InsertGitHubRepoInfo :exec
+INSERT INTO public.github_repo_info (
+	repo_id, owner, name,
+	created_at, default_branch_name, description, disk_usage, fork_count, homepage_url,
+	is_archived, is_disabled, is_mirror, is_private, total_issues_count, latest_release_author,
+	latest_release_created_at, latest_release_name, latest_release_published_at, license_key,
+	license_name, license_nickname, open_graph_image_url, primary_language, pushed_at, releases_count,
+	stargazers_count, updated_at, watchers_count
+) VALUES(
+	$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
+	$23, $24, $25, $26, $27, $28
+)
+`
+
+type InsertGitHubRepoInfoParams struct {
+	RepoID                   uuid.UUID
+	Owner                    string
+	Name                     string
+	CreatedAt                sql.NullTime
+	DefaultBranchName        sql.NullString
+	Description              sql.NullString
+	DiskUsage                sql.NullInt32
+	ForkCount                sql.NullInt32
+	HomepageUrl              sql.NullString
+	IsArchived               sql.NullBool
+	IsDisabled               sql.NullBool
+	IsMirror                 sql.NullBool
+	IsPrivate                sql.NullBool
+	TotalIssuesCount         sql.NullInt32
+	LatestReleaseAuthor      sql.NullString
+	LatestReleaseCreatedAt   sql.NullTime
+	LatestReleaseName        sql.NullString
+	LatestReleasePublishedAt sql.NullTime
+	LicenseKey               sql.NullString
+	LicenseName              sql.NullString
+	LicenseNickname          sql.NullString
+	OpenGraphImageUrl        sql.NullString
+	PrimaryLanguage          sql.NullString
+	PushedAt                 sql.NullTime
+	ReleasesCount            sql.NullInt32
+	StargazersCount          sql.NullInt32
+	UpdatedAt                sql.NullTime
+	WatchersCount            sql.NullInt32
+}
+
+func (q *Queries) InsertGitHubRepoInfo(ctx context.Context, arg InsertGitHubRepoInfoParams) error {
+	_, err := q.db.Exec(ctx, insertGitHubRepoInfo,
+		arg.RepoID,
+		arg.Owner,
+		arg.Name,
+		arg.CreatedAt,
+		arg.DefaultBranchName,
+		arg.Description,
+		arg.DiskUsage,
+		arg.ForkCount,
+		arg.HomepageUrl,
+		arg.IsArchived,
+		arg.IsDisabled,
+		arg.IsMirror,
+		arg.IsPrivate,
+		arg.TotalIssuesCount,
+		arg.LatestReleaseAuthor,
+		arg.LatestReleaseCreatedAt,
+		arg.LatestReleaseName,
+		arg.LatestReleasePublishedAt,
+		arg.LicenseKey,
+		arg.LicenseName,
+		arg.LicenseNickname,
+		arg.OpenGraphImageUrl,
+		arg.PrimaryLanguage,
+		arg.PushedAt,
+		arg.ReleasesCount,
+		arg.StargazersCount,
+		arg.UpdatedAt,
+		arg.WatchersCount,
+	)
+	return err
+}
+
 const insertSyncJobLog = `-- name: InsertSyncJobLog :exec
 INSERT INTO mergestat.repo_sync_logs (log_type, message, repo_sync_queue_id) VALUES ($1, $2, $3)
 `
@@ -184,29 +272,6 @@ type SetSyncJobStatusParams struct {
 
 func (q *Queries) SetSyncJobStatus(ctx context.Context, arg SetSyncJobStatusParams) error {
 	_, err := q.db.Exec(ctx, setSyncJobStatus, arg.Status, arg.ID)
-	return err
-}
-
-const upsertGitHubRepoInfo = `-- name: UpsertGitHubRepoInfo :exec
-INSERT INTO public.github_repo_info (repo_id, owner, name, metadata) VALUES($1, $2, $3, $4)
-ON CONFLICT ON CONSTRAINT github_repo_info_pkey
-DO UPDATE SET metadata = $4
-`
-
-type UpsertGitHubRepoInfoParams struct {
-	RepoID   uuid.UUID
-	Owner    string
-	Name     string
-	Metadata pgtype.JSONB
-}
-
-func (q *Queries) UpsertGitHubRepoInfo(ctx context.Context, arg UpsertGitHubRepoInfoParams) error {
-	_, err := q.db.Exec(ctx, upsertGitHubRepoInfo,
-		arg.RepoID,
-		arg.Owner,
-		arg.Name,
-		arg.Metadata,
-	)
 	return err
 }
 

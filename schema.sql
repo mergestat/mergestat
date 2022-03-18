@@ -225,7 +225,31 @@ CREATE TABLE public.github_repo_info (
     repo_id uuid NOT NULL,
     owner text NOT NULL,
     name text NOT NULL,
-    metadata jsonb NOT NULL
+    created_at timestamp with time zone,
+    default_branch_name text,
+    description text,
+    disk_usage integer,
+    fork_count integer,
+    homepage_url text,
+    is_archived boolean,
+    is_disabled boolean,
+    is_mirror boolean,
+    is_private boolean,
+    total_issues_count integer,
+    latest_release_author text,
+    latest_release_created_at timestamp with time zone,
+    latest_release_name text,
+    latest_release_published_at timestamp with time zone,
+    license_key text,
+    license_name text,
+    license_nickname text,
+    open_graph_image_url text,
+    primary_language text,
+    pushed_at timestamp with time zone,
+    releases_count integer,
+    stargazers_count integer,
+    updated_at timestamp with time zone,
+    watchers_count integer
 );
 COMMENT ON TABLE public.github_repo_info IS 'GitHub metadata about a repo';
 CREATE TABLE public.github_stargazers (
