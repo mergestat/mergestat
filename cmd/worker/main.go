@@ -14,7 +14,6 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	repos "github.com/mergestat/fuse/internal/repos"
-	"github.com/mergestat/fuse/internal/scheduler"
 	"github.com/mergestat/fuse/internal/syncer"
 	"github.com/mergestat/mergestat/extensions"
 	"github.com/mergestat/mergestat/extensions/options"
@@ -89,16 +88,16 @@ func main() {
 	}()
 
 	var wg sync.WaitGroup
-	wg.Add(3)
+	wg.Add(2)
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars
-	go func() {
-		defer wg.Done()
-		// TODO this should be made idempotent and generally improved
-		// so it's not just a dumb "sync everything"
-		scheduler.New(&logger, pool).Start(ctx, time.Hour)
-	}()
+	// go func() {
+	// 	defer wg.Done()
+	// 	// TODO this should be made idempotent and generally improved
+	// 	// so it's not just a dumb "sync everything"
+	// 	// scheduler.New(&logger, pool).Start(ctx, time.Hour)
+	// }()
 
 	go func() {
 		defer wg.Done()
