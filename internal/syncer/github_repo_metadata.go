@@ -211,7 +211,7 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 		return err
 	}
 
-	if err := w.db.SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
+	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err
 	}
 

@@ -114,7 +114,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 
 	l.Info().Msgf("sent batch of %d commits", len(commits))
 
-	if err := w.db.SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
+	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err
 	}
 
