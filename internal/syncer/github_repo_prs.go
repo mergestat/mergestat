@@ -173,7 +173,7 @@ func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRo
 		return err
 	}
 
-	if err := w.db.SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
+	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err
 	}
 
