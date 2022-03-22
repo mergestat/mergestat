@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strconv"
 	"sync"
 	"syscall"
 	"time"
@@ -27,6 +28,7 @@ import (
 var (
 	postgresConnection = os.Getenv("POSTGRES_CONNECTION")
 	// baseCloneDir       = os.Getenv("BASE_CLONE_DIR")
+	concurrencyEnv = os.Getenv("CONCURRENCY")
 )
 
 func repoLocator(cloneToken string) services.RepoLocator {
@@ -68,8 +70,8 @@ func main() {
 			options.WithRepoLocator(locator.CachedLocator(repoLocator(os.Getenv("GITHUB_TOKEN")))), // TODO figure out token situation
 			options.WithGitHub(),
 			options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
-			options.WithContextValue("githubPerPage", "10"),
-			options.WithContextValue("githubRateLimit", "1/2"),
+			options.WithContextValue("githubPerPage", os.Getenv("GITHUB_PER_PAGE")),
+			options.WithContextValue("githubRateLimit", os.Getenv("GITHUB_RATE_LIMIT")),
 			options.WithNPM(),
 			options.WithLogger(&l),
 		),
@@ -104,9 +106,16 @@ func main() {
 		repos.NewImporter(&logger, pool, db).Start(ctx, time.Minute)
 	}()
 
+	concurrency := 2
+	if concurrencyEnv != "" {
+		if concurrency, err = strconv.Atoi(concurrencyEnv); err != nil {
+			logger.Err(err).Msgf("could nt parse CONCURRENCY env into an int: %s", concurrencyEnv)
+		}
+	}
+
 	go func() {
 		defer wg.Done()
-		syncer.New(pool, db, &logger, 2, 3*time.Second).Start(ctx)
+		syncer.New(pool, db, &logger, concurrency, 3*time.Second).Start(ctx)
 	}()
 
 	wg.Wait()
