@@ -64,6 +64,24 @@ func main() {
 
 	l := logger.Level(zerolog.InfoLevel).With().Bool("mergestat-query-exec", true).Logger()
 
+	ratelimitHandler := func(rlr *options.GitHubRateLimitResponse) {
+		cost := float64(rlr.Cost)
+		remaining := rlr.Remaining - 400 // include a 400 pt buffer
+		secondsRemaining := time.Until(rlr.ResetAt.Time).Seconds()
+		secondsPerCallOfCostRemaining := float64(secondsRemaining) / (float64(remaining) / cost)
+		delayDur := time.Duration(int(secondsPerCallOfCostRemaining)) * time.Second
+
+		logger.Info().
+			Int("cost", rlr.Cost).
+			Int("remaining", rlr.Remaining).
+			Time("resets", rlr.ResetAt.Time).
+			Str("until-reset", time.Until(rlr.ResetAt.Time).String()).
+			Float64("delay-seconds", delayDur.Seconds()).
+			Msgf("received rate limit info from GitHub API")
+
+		time.Sleep(delayDur)
+	}
+
 	sqlite.Register(
 		extensions.RegisterFn(
 			options.WithExtraFunctions(),
@@ -72,6 +90,7 @@ func main() {
 			options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
 			options.WithContextValue("githubPerPage", os.Getenv("GITHUB_PER_PAGE")),
 			options.WithContextValue("githubRateLimit", os.Getenv("GITHUB_RATE_LIMIT")),
+			options.WithGitHubRateLimitHandler(ratelimitHandler),
 			options.WithNPM(),
 			options.WithLogger(&l),
 		),
