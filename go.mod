@@ -10,7 +10,7 @@ require (
 
 require (
 	github.com/mattn/go-sqlite3 v1.14.12
-	github.com/mergestat/mergestat v0.5.6-0.20220322155011-f45e09020e63
+	github.com/mergestat/mergestat v0.5.6-0.20220322205753-910a1afd5639
 )
 
 require (

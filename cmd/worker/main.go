@@ -82,6 +82,15 @@ func main() {
 		time.Sleep(delayDur)
 	}
 
+	var githubRequestMutex sync.Mutex
+	githubPreRequestHook := func() {
+		githubRequestMutex.Lock()
+	}
+
+	githubPostRequestHook := func() {
+		githubRequestMutex.Unlock()
+	}
+
 	sqlite.Register(
 		extensions.RegisterFn(
 			options.WithExtraFunctions(),
@@ -91,6 +100,8 @@ func main() {
 			options.WithContextValue("githubPerPage", os.Getenv("GITHUB_PER_PAGE")),
 			options.WithContextValue("githubRateLimit", os.Getenv("GITHUB_RATE_LIMIT")),
 			options.WithGitHubRateLimitHandler(ratelimitHandler),
+			options.WithGitHubPreRequestHook(githubPreRequestHook),
+			options.WithGitHubPostRequestHook(githubPostRequestHook),
 			options.WithNPM(),
 			options.WithLogger(&l),
 		),
