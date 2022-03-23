@@ -78,7 +78,7 @@ func main() {
 			Time("resets", rlr.ResetAt.Time).
 			Str("until-reset", untilResetDur.String()).
 			Float64("delay-seconds", delayDur.Seconds()).
-			Msgf("received rate limit info from GitHub API: %d remaining in next %ds", rlr.Remaining, secondsRemaining)
+			Msgf("received rate limit info from GitHub API: %d remaining in next %ds", rlr.Remaining, int(secondsRemaining))
 
 		time.Sleep(delayDur)
 	}
