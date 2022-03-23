@@ -67,21 +67,24 @@ func main() {
 	ratelimitHandler := func(rlr *options.GitHubRateLimitResponse) {
 		cost := float64(rlr.Cost)
 		remaining := rlr.Remaining - 400 // include a 400 pt buffer
-		secondsRemaining := time.Until(rlr.ResetAt.Time).Seconds()
-		secondsPerCallOfCostRemaining := float64(secondsRemaining) / (float64(remaining) / cost)
-		delayDur := time.Duration(int(secondsPerCallOfCostRemaining)) * time.Second
+		untilResetDur := time.Until(rlr.ResetAt.Time)
+		secondsRemaining := untilResetDur.Seconds()
+		maxCallsPerSecond := (float64(remaining) / cost) / float64(secondsRemaining)
+		delayDur := time.Duration(int(cost/maxCallsPerSecond)) * time.Second
 
 		logger.Info().
 			Int("cost", rlr.Cost).
 			Int("remaining", rlr.Remaining).
 			Time("resets", rlr.ResetAt.Time).
-			Str("until-reset", time.Until(rlr.ResetAt.Time).String()).
+			Str("until-reset", untilResetDur.String()).
 			Float64("delay-seconds", delayDur.Seconds()).
-			Msgf("received rate limit info from GitHub API")
+			Msgf("received rate limit info from GitHub API: %d remaining in next %ds", rlr.Remaining, secondsRemaining)
 
 		time.Sleep(delayDur)
 	}
 
+	// See here: https://docs.github.com/en/rest/guides/best-practices-for-integrators#dealing-with-secondary-rate-limits
+	// THe GitHub API does not want users making concurrent API calls, on top of their point-based rate limiting
 	var githubRequestMutex sync.Mutex
 	githubPreRequestHook := func() {
 		githubRequestMutex.Lock()
