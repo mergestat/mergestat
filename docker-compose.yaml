@@ -46,6 +46,7 @@ services:
   worker:
     build:
       context: .
+    stop_grace_period: 10m
     depends_on:
       - postgres
     environment:

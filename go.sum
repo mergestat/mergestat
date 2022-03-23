@@ -428,8 +428,8 @@ github.com/mattn/go-sqlite3 v1.14.6/go.mod h1:NyWgC/yNuGj7Q9rpYnZvas74GogHl5/Z4A
 github.com/mattn/go-sqlite3 v1.14.12 h1:TJ1bhYJPV44phC+IMu1u2K/i5RriLTPe+yc68XDJ1Z0=
 github.com/mattn/go-sqlite3 v1.14.12/go.mod h1:NyWgC/yNuGj7Q9rpYnZvas74GogHl5/Z4A/KQRfk6bU=
 github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5Ld7szi9bcBfOoFv/3dc6xSMkL2PC0=
-github.com/mergestat/mergestat v0.5.6-0.20220322155011-f45e09020e63 h1:rScexm2uO5eL/YOOR8n/iCASi9OwKLOWvVtTfJL4c1g=
-github.com/mergestat/mergestat v0.5.6-0.20220322155011-f45e09020e63/go.mod h1:rKQm7JhnCV4ubEckBjF1Pc9J9g20BB0pgH2J3e1igAY=
+github.com/mergestat/mergestat v0.5.6-0.20220322205753-910a1afd5639 h1:eE4VnqBvatKeyb1//xwQYJZXOBSU/uvykVdu4lxiOQE=
+github.com/mergestat/mergestat v0.5.6-0.20220322205753-910a1afd5639/go.mod h1:rKQm7JhnCV4ubEckBjF1Pc9J9g20BB0pgH2J3e1igAY=
 github.com/mergestat/timediff v0.0.3 h1:ucCNh4/ZrTPjFZ081PccNbhx9spymCJkFxSzgVuPU+Y=
 github.com/mergestat/timediff v0.0.3/go.mod h1:yvMUaRu2oetc+9IbPLYBJviz6sA7xz8OXMDfhBl7YSI=
 github.com/miekg/dns v1.0.14/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
