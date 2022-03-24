@@ -77,7 +77,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 	l.Info().Msgf("retrieved stats: %d", len(stats))
 
 	var tx pgx.Tx
-	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted}); err != nil {
+	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return err
 	}
 	defer func() {

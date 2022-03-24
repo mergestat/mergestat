@@ -117,7 +117,7 @@ func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJo
 	l.Info().Msgf("retrieved repo issues: %d", len(issues))
 
 	var tx pgx.Tx
-	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted}); err != nil {
+	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return err
 	}
 	defer func() {
