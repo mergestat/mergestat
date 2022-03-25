@@ -74,3 +74,6 @@ UPDATE mergestat.repo_sync_queue SET status = $1 WHERE id = $2;
 -- name: EnqueueAllSyncs :exec
 INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
 SELECT id, 'QUEUED' FROM mergestat.repo_syncs;
+
+-- name: SetLatestKeepAliveForJob :exec
+UPDATE mergestat.repo_sync_queue SET last_keep_alive = now() WHERE id = $1;
