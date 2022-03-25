@@ -132,6 +132,9 @@ func (w *worker) exec(ctx context.Context, id string) {
 func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	w.loggerForJob(j).Info().Msg("handling job")
 
+	done := w.startKeepAlives(j, 30*time.Second)
+	defer done()
+
 	switch j.SyncType {
 	case syncTypeGitCommits:
 		return w.handleGitCommits(ctx, j)

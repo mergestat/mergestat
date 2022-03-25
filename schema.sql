@@ -29,7 +29,8 @@ CREATE TABLE mergestat.repo_sync_queue (
     repo_sync_id uuid NOT NULL,
     status text NOT NULL,
     started_at timestamp with time zone,
-    done_at timestamp with time zone
+    done_at timestamp with time zone,
+    last_keep_alive timestamp with time zone
 );
 CREATE VIEW mergestat.latest_repo_syncs AS
  SELECT DISTINCT ON (repo_sync_queue.repo_sync_id) repo_sync_queue.id,

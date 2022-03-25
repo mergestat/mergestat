@@ -144,7 +144,6 @@ type GithubRepoInfo struct {
 	RepoID                   uuid.UUID
 	Owner                    string
 	Name                     string
-	Metadata                 pgtype.JSONB
 	CreatedAt                sql.NullTime
 	DefaultBranchName        sql.NullString
 	Description              sql.NullString
@@ -237,12 +236,13 @@ type MergestatRepoSyncLogType struct {
 }
 
 type MergestatRepoSyncQueue struct {
-	ID         int64
-	CreatedAt  time.Time
-	RepoSyncID uuid.UUID
-	Status     string
-	StartedAt  sql.NullTime
-	DoneAt     sql.NullTime
+	ID            int64
+	CreatedAt     time.Time
+	RepoSyncID    uuid.UUID
+	Status        string
+	StartedAt     sql.NullTime
+	DoneAt        sql.NullTime
+	LastKeepAlive sql.NullTime
 }
 
 type MergestatRepoSyncQueueStatusType struct {

@@ -261,6 +261,15 @@ func (q *Queries) MarkRepoImportAsUpdated(ctx context.Context, id uuid.UUID) err
 	return err
 }
 
+const setLatestKeepAliveForJob = `-- name: SetLatestKeepAliveForJob :exec
+UPDATE mergestat.repo_sync_queue SET last_keep_alive = now() WHERE id = $1
+`
+
+func (q *Queries) SetLatestKeepAliveForJob(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, setLatestKeepAliveForJob, id)
+	return err
+}
+
 const setSyncJobStatus = `-- name: SetSyncJobStatus :exec
 UPDATE mergestat.repo_sync_queue SET status = $1 WHERE id = $2
 `
