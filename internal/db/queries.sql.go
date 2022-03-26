@@ -271,7 +271,8 @@ func (q *Queries) SetLatestKeepAliveForJob(ctx context.Context, id int64) error 
 }
 
 const setSyncJobStatus = `-- name: SetSyncJobStatus :exec
-UPDATE mergestat.repo_sync_queue SET status = $1 WHERE id = $2
+UPDATE mergestat.repo_sync_queue SET status = $1 
+WHERE id = (SELECT id FROM mergestat.repo_sync_queue WHERE repo_sync_queue.id = $2 LIMIT 1)
 `
 
 type SetSyncJobStatusParams struct {

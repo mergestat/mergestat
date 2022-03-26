@@ -69,7 +69,8 @@ INSERT INTO public.github_repo_info (
 INSERT INTO mergestat.repo_sync_logs (log_type, message, repo_sync_queue_id) VALUES ($1, $2, $3);
 
 -- name: SetSyncJobStatus :exec
-UPDATE mergestat.repo_sync_queue SET status = $1 WHERE id = $2;
+UPDATE mergestat.repo_sync_queue SET status = $1 
+WHERE id = (SELECT id FROM mergestat.repo_sync_queue WHERE repo_sync_queue.id = $2 LIMIT 1);
 
 -- name: EnqueueAllSyncs :exec
 INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
