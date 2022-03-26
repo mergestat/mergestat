@@ -104,6 +104,11 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		}
 	}()
 
+	// use the repos table to take a lock
+	if _, err := tx.Exec(ctx, "SELECT id FROM repos WHERE id = $1 FOR UPDATE;", j.RepoID.String()); err != nil {
+		return err
+	}
+
 	if _, err := tx.Exec(ctx, "DELETE FROM git_commits WHERE repo_id = $1;", j.RepoID.String()); err != nil {
 		return err
 	}
