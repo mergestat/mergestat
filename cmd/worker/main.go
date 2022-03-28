@@ -72,6 +72,10 @@ func main() {
 		maxCallsPerSecond := (float64(remaining) / cost) / float64(secondsRemaining)
 		delayDur := time.Duration(int(cost/maxCallsPerSecond)) * time.Second
 
+		if delayDur < 500*time.Millisecond {
+			delayDur = 500 * time.Millisecond
+		}
+
 		logger.Info().
 			Int("cost", rlr.Cost).
 			Int("remaining", rlr.Remaining).
