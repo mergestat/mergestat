@@ -128,7 +128,7 @@ func main() {
 	}()
 
 	var wg sync.WaitGroup
-	wg.Add(2)
+	wg.Add(3)
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars
