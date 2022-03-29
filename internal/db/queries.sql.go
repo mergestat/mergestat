@@ -77,6 +77,24 @@ func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
 	return i, err
 }
 
+const enqueueAllCompletedSyncs = `-- name: EnqueueAllCompletedSyncs :exec
+INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
+SELECT repo_sync_id, 'QUEUED' FROM (
+	SELECT DISTINCT ON (repo_sync_queue.repo_sync_id) repo_sync_queue.id, created_at, repo_sync_id, status, started_at, done_at, last_keep_alive, repo_id, sync_type, settings, repo_syncs.id
+	FROM mergestat.repo_sync_queue
+	JOIN mergestat.repo_syncs
+	ON (mergestat.repo_sync_queue.repo_sync_id = mergestat.repo_syncs.id)
+	ORDER BY repo_sync_queue.repo_sync_id, repo_sync_queue.created_at DESC
+) AS latest
+WHERE status = 'DONE'
+ORDER BY done_at ASC
+`
+
+func (q *Queries) EnqueueAllCompletedSyncs(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, enqueueAllCompletedSyncs)
+	return err
+}
+
 const enqueueAllSyncs = `-- name: EnqueueAllSyncs :exec
 INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
 SELECT id, 'QUEUED' FROM mergestat.repo_syncs
