@@ -79,7 +79,8 @@ const selectRefs = `SELECT *, (CASE type WHEN 'tag' THEN COALESCE(COMMIT_FROM_TA
 func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	tmpPath, err := ioutil.TempDir("", "mergestat-repo-")
+	// TODO(patrickdevivo) uplift the following os.Getenv call to one place, pass value down as a param
+	tmpPath, err := ioutil.TempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
 	if err != nil {
 		return err
 	}
