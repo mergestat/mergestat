@@ -10,6 +10,7 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"github.com/jackc/pgx/v4"
+	"github.com/jmoiron/sqlx"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
@@ -68,14 +69,15 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		return err
 	}
 
-	// execute mergestat query
-	// even for large repos, we should be able to hold all commits in mem easily?
-	stats := make([]*commitStat, 0)
-	if err = w.mergestat.SelectContext(ctx, &stats, selectCommitStats, tmpPath, tmpPath); err != nil {
+	var rows *sqlx.Rows
+	if rows, err = w.mergestat.QueryxContext(ctx, selectCommitStats, tmpPath, tmpPath); err != nil {
 		return err
 	}
-
-	l.Info().Msgf("retrieved stats: %d", len(stats))
+	defer func() {
+		if err := rows.Close(); err != nil {
+			w.logger.Err(err).Msgf("could not closed rows: %v", err)
+		}
+	}()
 
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
@@ -93,11 +95,29 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		return err
 	}
 
-	if err := w.sendBatchCommitStats(ctx, tx, j, stats); err != nil {
-		return err
+	// TODO(patrickdevivo) make batch size configurable?
+	batchSize := 500
+	batch := make([]*commitStat, 0, batchSize)
+	totalCount := 0
+	for rows.Next() {
+		totalCount++
+		var r commitStat
+		if err := rows.StructScan(&r); err != nil {
+			return err
+		}
+
+		if len(batch) >= batchSize {
+			if err := w.sendBatchCommitStats(ctx, tx, j, batch); err != nil {
+				return err
+			}
+
+			batch = make([]*commitStat, 0, batchSize)
+		} else {
+			batch = append(batch, &r)
+		}
 	}
 
-	l.Info().Msgf("sent batch of %d commit stats", len(stats))
+	l.Info().Msgf("imported %d commit stats", totalCount)
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err
