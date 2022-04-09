@@ -14,5 +14,8 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 # install Hasura CLI
 RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 
+# for pprof and prom metrics over http
+EXPOSE 8080
+
 COPY --from=builder /src/.build/worker /worker
 ENTRYPOINT [ "/worker" ]
