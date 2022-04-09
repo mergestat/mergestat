@@ -53,6 +53,8 @@ services:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres
     env_file:
       - .env
+    ports:
+      - 3301:8080
 
   grafana:
     image: grafana/grafana-oss:latest

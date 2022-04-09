@@ -18,6 +18,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgconn v1.11.0
 	github.com/jmoiron/sqlx v1.3.4
+	github.com/prometheus/client_golang v1.12.1
 	github.com/satori/go.uuid v1.2.0
 	go.riyazali.net/sqlite v0.0.0-20220326124836-471d5aaa9b7b
 )
@@ -28,6 +29,8 @@ require (
 	github.com/ProtonMail/go-crypto v0.0.0-20220407094043-a94812496cf5 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/augmentable-dev/vtab v0.0.0-20210915151038-6572bfc4e313 // indirect
+	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/clbanning/mxj/v2 v2.5.5 // indirect
 	github.com/emirpasic/gods v1.12.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -48,9 +51,13 @@ require (
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/libgit2/git2go/v33 v33.0.9 // indirect
 	github.com/mattn/go-pointer v0.0.1 // indirect
+	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/mergestat/timediff v0.0.3 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/prometheus/client_model v0.2.0 // indirect
+	github.com/prometheus/common v0.32.1 // indirect
+	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/shurcooL/githubv4 v0.0.0-20220115235240-a14260e6f8a2 // indirect
 	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect

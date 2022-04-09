@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"os/signal"
 	"strconv"
@@ -22,6 +24,7 @@ import (
 	"github.com/mergestat/mergestat/extensions/services"
 	"github.com/mergestat/mergestat/pkg/locator"
 	_ "github.com/mergestat/mergestat/pkg/sqlite"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"go.riyazali.net/sqlite"
 )
@@ -153,6 +156,15 @@ func main() {
 		defer wg.Done()
 		syncer.New(pool, db, &logger, concurrency, 3*time.Second).Start(ctx)
 	}()
+
+	if os.Getenv("DEBUG") != "" {
+		go func() {
+			http.Handle("/metrics", promhttp.Handler())
+			if err := http.ListenAndServe(":8080", nil); err != nil {
+				logger.Err(err).Msgf("could not start HTTP handler")
+			}
+		}()
+	}
 
 	wg.Wait()
 }
