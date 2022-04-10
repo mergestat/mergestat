@@ -7,9 +7,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"github.com/jackc/pgx/v4"
+	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
@@ -91,9 +90,26 @@ func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) err
 	}()
 
 	// TODO figure out this token thing
-	if _, err := git.PlainCloneContext(ctx, tmpPath, true, &git.CloneOptions{URL: j.Repo, Auth: &http.BasicAuth{Username: os.Getenv("GITHUB_TOKEN")}}); err != nil {
+	var creds *libgit2.Credential
+	if creds, err = libgit2.NewCredentialUsername(os.Getenv("GITHUB_TOKEN")); err != nil {
 		return err
 	}
+	defer creds.Free()
+
+	var repo *libgit2.Repository
+	if repo, err = libgit2.Clone(j.Repo, tmpPath, &libgit2.CloneOptions{
+		Bare: true,
+		FetchOptions: libgit2.FetchOptions{
+			RemoteCallbacks: libgit2.RemoteCallbacks{
+				CredentialsCallback: func(url string, username_from_url string, allowed_types libgit2.CredentialType) (*libgit2.Credential, error) {
+					return creds, nil
+				},
+			},
+		},
+	}); err != nil {
+		return err
+	}
+	defer repo.Free()
 
 	// indicate that we're starting query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{

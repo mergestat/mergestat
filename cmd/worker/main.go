@@ -45,6 +45,16 @@ func repoLocator(cloneToken string) services.RepoLocator {
 	})
 }
 
+// type mutexRoundTripper struct {
+// 	mut sync.Mutex
+// }
+
+// func (t *mutexRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
+// 	t.mut.Lock()
+// 	defer t.mut.Unlock()
+// 	return http.DefaultTransport.RoundTrip(r)
+// }
+
 func main() {
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
 
@@ -76,8 +86,8 @@ func main() {
 		maxCallsPerSecond := (float64(remaining) / cost) / float64(secondsRemaining)
 		delayDur := time.Duration(int(cost/maxCallsPerSecond)) * time.Second
 
-		if delayDur < 500*time.Millisecond {
-			delayDur = 500 * time.Millisecond
+		if delayDur < 800*time.Millisecond {
+			delayDur = 800 * time.Millisecond
 		}
 
 		logger.Info().
@@ -92,7 +102,7 @@ func main() {
 	}
 
 	// See here: https://docs.github.com/en/rest/guides/best-practices-for-integrators#dealing-with-secondary-rate-limits
-	// THe GitHub API does not want users making concurrent API calls, on top of their point-based rate limiting
+	// The GitHub API does not want users making concurrent API calls, on top of their point-based rate limiting
 	var githubRequestMutex sync.Mutex
 	githubPreRequestHook := func() {
 		githubRequestMutex.Lock()
@@ -102,17 +112,26 @@ func main() {
 		githubRequestMutex.Unlock()
 	}
 
+	// githubClientGetter := func() *githubv4.Client {
+	// 	httpClient := oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(
+	// 		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
+	// 	))
+	// 	httpClient.Transport = &mutexRoundTripper{}
+	// 	return githubv4.NewClient(httpClient)
+	// }
+
 	sqlite.Register(
 		extensions.RegisterFn(
 			options.WithExtraFunctions(),
 			options.WithRepoLocator(locator.CachedLocator(repoLocator(os.Getenv("GITHUB_TOKEN")))), // TODO figure out token situation
 			options.WithGitHub(),
-			options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
+			// options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
 			options.WithContextValue("githubPerPage", os.Getenv("GITHUB_PER_PAGE")),
 			options.WithContextValue("githubRateLimit", os.Getenv("GITHUB_RATE_LIMIT")),
 			options.WithGitHubRateLimitHandler(ratelimitHandler),
 			options.WithGitHubPreRequestHook(githubPreRequestHook),
 			options.WithGitHubPostRequestHook(githubPostRequestHook),
+			// options.WithGitHubClientGetter(githubClientGetter),
 			options.WithNPM(),
 			options.WithLogger(&l),
 		),
@@ -148,7 +167,7 @@ func main() {
 	concurrency := 2
 	if concurrencyEnv != "" {
 		if concurrency, err = strconv.Atoi(concurrencyEnv); err != nil {
-			logger.Err(err).Msgf("could nt parse CONCURRENCY env into an int: %s", concurrencyEnv)
+			logger.Err(err).Msgf("could not parse CONCURRENCY env into an int: %s", concurrencyEnv)
 		}
 	}
 
