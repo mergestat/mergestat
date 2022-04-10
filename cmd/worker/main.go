@@ -125,7 +125,7 @@ func main() {
 			options.WithExtraFunctions(),
 			options.WithRepoLocator(locator.CachedLocator(repoLocator(os.Getenv("GITHUB_TOKEN")))), // TODO figure out token situation
 			options.WithGitHub(),
-			// options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
+			options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
 			options.WithContextValue("githubPerPage", os.Getenv("GITHUB_PER_PAGE")),
 			options.WithContextValue("githubRateLimit", os.Getenv("GITHUB_RATE_LIMIT")),
 			options.WithGitHubRateLimitHandler(ratelimitHandler),
