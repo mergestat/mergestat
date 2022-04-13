@@ -336,8 +336,6 @@ ALTER TABLE ONLY mergestat.repo_syncs
 ALTER TABLE ONLY mergestat.repo_syncs
     ADD CONSTRAINT repo_syncs_sync_type_fkey FOREIGN KEY (sync_type) REFERENCES mergestat.repo_sync_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.git_commit_stats
-    ADD CONSTRAINT commit_stats_repo_id_commit_hash_fkey FOREIGN KEY (repo_id, commit_hash) REFERENCES public.git_commits(repo_id, hash) ON UPDATE RESTRICT ON DELETE CASCADE;
-ALTER TABLE ONLY public.git_commit_stats
     ADD CONSTRAINT commit_stats_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 ALTER TABLE ONLY public.git_commits
     ADD CONSTRAINT commits_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;

@@ -11,6 +11,8 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
     ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
+COPY scripts/init.sh /init.sh
+
 # install Hasura CLI
 RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 
