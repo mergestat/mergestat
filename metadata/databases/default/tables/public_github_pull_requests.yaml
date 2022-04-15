@@ -1,7 +1,7 @@
 table:
-  name: github_pull_requests
   schema: public
+  name: github_pull_requests
 object_relationships:
-- name: repo
-  using:
-    foreign_key_constraint_on: repo_id
+  - name: repo
+    using:
+      foreign_key_constraint_on: repo_id

@@ -25,6 +25,7 @@ const (
 	syncTypeGitHubRepoPRs      = "GITHUB_REPO_PRS"
 	syncTypeGitHubRepoIssues   = "GITHUB_REPO_ISSUES"
 	syncTypeGitHubRepoStars    = "GITHUB_REPO_STARS"
+	syncTypeGitHubPRReviews    = "GITHUB_PR_REVIEWS"
 )
 
 type worker struct {
@@ -150,6 +151,8 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 		return w.handleGitHubRepoIssues(ctx, j)
 	case syncTypeGitHubRepoStars:
 		return w.handleGitHubRepoStars(ctx, j)
+	case syncTypeGitHubPRReviews:
+		return w.handleGitHubPRReviews(ctx, j)
 	default:
 		return fmt.Errorf("unknown sync type: %s for job ID: %d", j.SyncType, j.ID)
 	}
