@@ -1,17 +1,17 @@
 table:
-  name: git_commit_stats
   schema: public
+  name: git_commit_stats
 object_relationships:
-- name: commit
-  using:
-    manual_configuration:
-      column_mapping:
-        commit_hash: hash
-        repo_id: repo_id
-      insertion_order: null
-      remote_table:
-        name: git_commits
-        schema: public
-- name: repo
-  using:
-    foreign_key_constraint_on: repo_id
+  - name: commit
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: git_commits
+        insertion_order: null
+        column_mapping:
+          commit_hash: hash
+          repo_id: repo_id
+  - name: repo
+    using:
+      foreign_key_constraint_on: repo_id
