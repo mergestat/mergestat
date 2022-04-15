@@ -40,3 +40,4 @@ Access grafana with http://localhost:3000
 - [x] `GITHUB_REPO_PRS` ([#2](https://github.com/mergestat/fuse/issues/2))
 - [x] `GITHUB_REPO_ISSUES` ([#2](https://github.com/mergestat/fuse/issues/2))
 - [x] `GITHUB_REPO_STARS` ([#2](https://github.com/mergestat/fuse/issues/2))
+- [x] `GITHUB_PR_REVIEWS` ([#18](https://github.com/mergestat/fuse/issues/18)) 
