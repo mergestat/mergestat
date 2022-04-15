@@ -1,15 +1,15 @@
 table:
-  name: repo_imports
   schema: mergestat
+  name: repo_imports
 object_relationships:
-- name: repo_import_type
-  using:
-    foreign_key_constraint_on: type
+  - name: repo_import_type
+    using:
+      foreign_key_constraint_on: type
 array_relationships:
-- name: repos
-  using:
-    foreign_key_constraint_on:
-      column: repo_import_id
-      table:
-        name: repos
-        schema: public
+  - name: repos
+    using:
+      foreign_key_constraint_on:
+        column: repo_import_id
+        table:
+          schema: public
+          name: repos

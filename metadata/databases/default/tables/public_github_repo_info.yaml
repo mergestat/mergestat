@@ -1,7 +1,7 @@
 table:
-  name: github_repo_info
   schema: public
+  name: github_repo_info
 object_relationships:
-- name: repo
-  using:
-    foreign_key_constraint_on: repo_id
+  - name: repo
+    using:
+      foreign_key_constraint_on: repo_id

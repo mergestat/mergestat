@@ -51,6 +51,7 @@ services:
       - postgres
     environment:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres
+      GITHUB_RATE_LIMIT: 1/2
     env_file:
       - .env
     ports:
