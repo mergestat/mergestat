@@ -48,6 +48,7 @@ services:
       context: .
     stop_grace_period: 10m
     depends_on:
+      - init
       - postgres
     environment:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres
