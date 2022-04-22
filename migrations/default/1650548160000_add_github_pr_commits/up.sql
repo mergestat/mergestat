@@ -11,7 +11,7 @@ CREATE TABLE public.github_pull_request_commits (
     additions integer,
     deletions integer,
     changed_files integer,
-    url	TEXT,
+    url	TEXT
 );
 COMMENT ON TABLE public.github_pull_request_commits IS 'GitHub pull request commits';
 
