@@ -199,9 +199,10 @@ CREATE TABLE public.github_pull_request_reviews (
 );
 COMMENT ON TABLE public.github_pull_request_reviews IS 'GitHub pull request reviews';
 CREATE TABLE public.github_pull_request_commits (
-    id text NOT NULL,
+    repo_id uuid NOT NULL,
+    pr_number integer NOT NULL,
     hash text,	
-    messaage text,	
+    message text,	
     author_name text,	
     author_email text,	
     author_when timestamp with time zone,

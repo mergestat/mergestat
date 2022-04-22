@@ -13,11 +13,12 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-const selectGitHubPRCommits = `SELECT * FROM github_repo_commits(?)`
+const selectGitHubPRCommits = `SELECT github_prs.number AS pr_number, github_pr_commits.* FROM github_prs(?), github_pr_commits(?, github_prs.number)`
 
 type githubPRCommit struct {
+	PRNumber       *int       `db:"pr_number"`
 	Hash           *string    `db:"hash"`
-	Messaage       *string    `db:"messaage"`
+	Message        *string    `db:"message"`
 	AuthorName     *string    `db:"author_name"`
 	AuthorEmail    *string    `db:"author_email"`
 	AuthorWhen     *time.Time `db:"author_when"`
@@ -34,8 +35,9 @@ type githubPRCommit struct {
 func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*githubPRCommit) error {
 	cols := []string{
 		"repo_id",
+		"pr_number",
 		"hash",
-		"messaage",
+		"message",
 		"author_name",
 		"author_email",
 		"author_when",
@@ -53,13 +55,14 @@ func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, j *db.
 		var repoID uuid.UUID
 		var err error
 		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
-			return err
+			return fmt.Errorf("uuid: %w", err)
 		}
 
 		input := []interface{}{
 			repoID,
+			r.PRNumber,
 			r.Hash,
-			r.Messaage,
+			r.Message,
 			r.AuthorName,
 			r.AuthorEmail,
 			r.AuthorWhen,
@@ -75,7 +78,7 @@ func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, j *db.
 	}
 
 	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"github_pull_request_commits"}, cols, pgx.CopyFromRows(inputs)); err != nil {
-		return err
+		return fmt.Errorf("tx copy from: %w", err)
 	}
 	return nil
 }
@@ -91,13 +94,13 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 			Message:         "starting to execute GitHub PR commits lookup query",
 		},
 	}); err != nil {
-		return err
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	var u *url.URL
 	var err error
 	if u, err = url.Parse(j.Repo); err != nil {
-		return fmt.Errorf("could not parse repo: %v", err)
+		return fmt.Errorf("url parse: %v", err)
 	}
 
 	components := strings.Split(u.Path, "/")
@@ -107,14 +110,14 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 
 	commits := make([]*githubPRCommit, 0)
 	if err := w.mergestat.SelectContext(ctx, &commits, selectGitHubPRCommits, repoFullName, repoFullName); err != nil {
-		return err
+		return fmt.Errorf("mergestat select: %w", err)
 	}
 
 	l.Info().Msgf("retrieved PR commits: %d", len(commits))
 
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
-		return err
+		return fmt.Errorf("begin tx: %w", err)
 	}
 	defer func() {
 		if err := tx.Rollback(ctx); err != nil {
@@ -125,15 +128,15 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 	}()
 
 	if _, err := tx.Exec(ctx, "DELETE FROM github_pull_request_commits WHERE repo_id = $1;", j.RepoID.String()); err != nil {
-		return err
+		return fmt.Errorf("exec delete: %w", err)
 	}
 
 	if err := w.sendBatchGitHubPRCommits(ctx, tx, j, commits); err != nil {
-		return err
+		return fmt.Errorf("github pr commits: %w", err)
 	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
-		return err
+		return fmt.Errorf("update status done: %w", err)
 	}
 
 	return tx.Commit(ctx)
