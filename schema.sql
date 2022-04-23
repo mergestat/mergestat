@@ -346,7 +346,7 @@ ALTER TABLE ONLY public.github_issues
 ALTER TABLE ONLY public.github_pull_request_reviews
     ADD CONSTRAINT github_pull_request_reviews_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.github_pull_request_commits
-    ADD CONSTRAINT github_pull_request_commits_pkey PRIMARY KEY (repo_id, hash);
+    ADD CONSTRAINT github_pull_request_commits_pkey PRIMARY KEY (repo_id, pr_number, hash);
 ALTER TABLE ONLY public.github_pull_requests
     ADD CONSTRAINT github_pull_requests_pkey PRIMARY KEY (repo_id, database_id);
 ALTER TABLE ONLY public.github_repo_info

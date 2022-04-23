@@ -60,11 +60,12 @@ func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, j *db.
 			return fmt.Errorf("uuid: %w", err)
 		}
 
-		if duplicated[*r.Hash] {
-			w.logger.Warn().Msgf("duplicated input: %s, %s", repoID.String(), *r.Hash)
+		key := fmt.Sprintf("%d-%s", *r.PRNumber, *r.Hash)
+		if duplicated[key] {
+			w.logger.Warn().Msgf("duplicated input: %s, %s", repoID.String(), key)
 			continue
 		} else {
-			duplicated[*r.Hash] = true
+			duplicated[key] = true
 		}
 
 		input := []interface{}{

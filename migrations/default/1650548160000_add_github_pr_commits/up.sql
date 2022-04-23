@@ -16,4 +16,4 @@ CREATE TABLE public.github_pull_request_commits (
 );
 COMMENT ON TABLE public.github_pull_request_commits IS 'GitHub pull request commits';
 
-ALTER TABLE ONLY public.github_pull_request_commits ADD CONSTRAINT github_pull_request_commits_pkey PRIMARY KEY (repo_id, hash);
+ALTER TABLE ONLY public.github_pull_request_commits ADD CONSTRAINT github_pull_request_commits_pkey PRIMARY KEY (repo_id, pr_number, hash);
