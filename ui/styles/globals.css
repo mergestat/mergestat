@@ -1,16 +1,22 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@import "@mergestat/blocks/styles/askgit.css";
+@import "@mergestat/icons/styles/main.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.content-area {
+  height: calc(100% - theme("height.14")); /* Nav height is h-14 */
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.Selectable {
+  width: max-content;
 }
-
-* {
-  box-sizing: border-box;
+.Selectable
+  .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+  background-color: #f0f8ff !important;
+  color: #4a90e2;
+}
+.Selectable .DayPicker-Day {
+  border-radius: 0 !important;
 }
