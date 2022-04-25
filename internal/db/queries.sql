@@ -86,7 +86,10 @@ SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE id NOT IN (SELECT repo_sync_
 
 -- name: MarkSyncsAsTimedOut :many
 WITH timed_out_sync_jobs AS (
-	UPDATE mergestat.repo_sync_queue SET status = 'DONE' WHERE status = 'RUNNING' AND last_keep_alive < now() - '10 minutes'::interval
+	UPDATE mergestat.repo_sync_queue SET status = 'DONE' WHERE status = 'RUNNING' AND (
+		(last_keep_alive < now() - '10 minutes'::interval)
+		OR
+		(last_keep_alive IS NULL AND created_at < now() - '10 minutes'::interval)) -- if worker crashed before last_keep_alive was first set
 	RETURNING *
 )
 INSERT INTO mergestat.repo_sync_logs (repo_sync_queue_id, log_type, message)
