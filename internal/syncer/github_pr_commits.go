@@ -50,22 +50,12 @@ func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, j *db.
 		"url",
 	}
 
-	duplicated := make(map[string]bool)
-
 	inputs := make([][]interface{}, 0, len(batch))
 	for _, r := range batch {
 		var repoID uuid.UUID
 		var err error
 		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
 			return fmt.Errorf("uuid: %w", err)
-		}
-
-		key := fmt.Sprintf("%d-%s", *r.PRNumber, *r.Hash)
-		if duplicated[key] {
-			w.logger.Warn().Msgf("duplicated input: %s, %s", repoID.String(), key)
-			continue
-		} else {
-			duplicated[key] = true
 		}
 
 		input := []interface{}{
