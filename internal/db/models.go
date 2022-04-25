@@ -141,6 +141,24 @@ type GithubPullRequest struct {
 	Url                 sql.NullString
 }
 
+// GitHub pull request commits
+type GithubPullRequestCommit struct {
+	RepoID         uuid.UUID
+	PrNumber       int32
+	Hash           sql.NullString
+	Message        sql.NullString
+	AuthorName     sql.NullString
+	AuthorEmail    sql.NullString
+	AuthorWhen     sql.NullTime
+	CommitterName  sql.NullString
+	CommitterEmail sql.NullString
+	CommitterWhen  sql.NullTime
+	Additions      sql.NullInt32
+	Deletions      sql.NullInt32
+	ChangedFiles   sql.NullInt32
+	Url            sql.NullString
+}
+
 // GitHub pull request reviews
 type GithubPullRequestReview struct {
 	RepoID                    uuid.UUID
