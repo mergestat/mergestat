@@ -273,6 +273,36 @@ func (q *Queries) MarkRepoImportAsUpdated(ctx context.Context, id uuid.UUID) err
 	return err
 }
 
+const markSyncsAsTimedOut = `-- name: MarkSyncsAsTimedOut :many
+WITH timed_out_sync_jobs AS (
+	UPDATE mergestat.repo_sync_queue SET status = 'DONE' WHERE status = 'RUNNING' AND last_keep_alive < now() - '10 minutes'::interval
+	RETURNING id, created_at, repo_sync_id, status, started_at, done_at, last_keep_alive
+)
+INSERT INTO mergestat.repo_sync_logs (repo_sync_queue_id, log_type, message)
+SELECT id, 'ERROR', 'No response from job within reasonable interval. Timing out.' FROM timed_out_sync_jobs
+RETURNING repo_sync_queue_id
+`
+
+func (q *Queries) MarkSyncsAsTimedOut(ctx context.Context) ([]int64, error) {
+	rows, err := q.db.Query(ctx, markSyncsAsTimedOut)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int64
+	for rows.Next() {
+		var repo_sync_queue_id int64
+		if err := rows.Scan(&repo_sync_queue_id); err != nil {
+			return nil, err
+		}
+		items = append(items, repo_sync_queue_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const setLatestKeepAliveForJob = `-- name: SetLatestKeepAliveForJob :exec
 UPDATE mergestat.repo_sync_queue SET last_keep_alive = now() WHERE id = $1
 `

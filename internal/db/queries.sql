@@ -84,3 +84,12 @@ INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
 SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
 ;
 
+-- name: MarkSyncsAsTimedOut :many
+WITH timed_out_sync_jobs AS (
+	UPDATE mergestat.repo_sync_queue SET status = 'DONE' WHERE status = 'RUNNING' AND last_keep_alive < now() - '10 minutes'::interval
+	RETURNING *
+)
+INSERT INTO mergestat.repo_sync_logs (repo_sync_queue_id, log_type, message)
+SELECT id, 'ERROR', 'No response from job within reasonable interval. Timing out.' FROM timed_out_sync_jobs
+RETURNING repo_sync_queue_id
+;
