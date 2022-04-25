@@ -14,6 +14,7 @@
 - "!include public_git_tags.yaml"
 - "!include public_github_issues.yaml"
 - "!include public_github_pull_request_reviews.yaml"
+- "!include public_github_pull_request_commits.yaml"
 - "!include public_github_pull_requests.yaml"
 - "!include public_github_repo_info.yaml"
 - "!include public_github_stargazers.yaml"
