@@ -11,6 +11,12 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
     ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
+# copy over Hasura config data
+COPY config.yaml config.yaml
+COPY metadata metadata
+COPY migrations migrations
+COPY seeds seeds
+
 COPY scripts/init.sh /init.sh
 
 RUN apt-get update \
