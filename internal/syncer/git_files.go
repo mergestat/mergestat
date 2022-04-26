@@ -91,7 +91,7 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	var rows *sqlx.Rows
-	if rows, err = w.mergestat.QueryxContext(ctx, selectCommits, tmpPath, tmpPath); err != nil {
+	if rows, err = w.mergestat.QueryxContext(ctx, selectFiles, tmpPath, tmpPath); err != nil {
 		return fmt.Errorf("mergestat query files: %w", err)
 	}
 	defer func() {
