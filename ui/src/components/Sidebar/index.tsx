@@ -11,14 +11,14 @@ const SidebarView: React.FC = () => {
 
   return (
     <Sidebar>
-      <Link href={`#`} passHref>
+      <Link href="/repos" passHref>
         <Sidebar.Item
           label="Repos"
           active={isSidebarActive("repos")}
           icon={<RepositoryIcon />}
         />
       </Link>
-      <Link href={`#`} passHref>
+      <Link href="/connect" passHref>
         <Sidebar.Item
           label="Connect"
           active={isSidebarActive("connect")}
@@ -26,7 +26,7 @@ const SidebarView: React.FC = () => {
         />
       </Link>
       <Sidebar.Divider />
-      <Link href={`#`} passHref>
+      <Link href='/settings' passHref>
         <Sidebar.Item
           label="Settings"
           active={isSidebarActive("settings")}
