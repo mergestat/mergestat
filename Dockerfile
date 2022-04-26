@@ -13,6 +13,11 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 
 COPY scripts/init.sh /init.sh
 
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive \
+        apt-get install -y curl \
+    && rm -rf /var/lib/apt/lists/*
+
 # install Hasura CLI
 RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 
