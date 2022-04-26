@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   Button,
   Input,
@@ -8,22 +8,27 @@ import {
 } from "@mergestat/blocks"
 import { GithubIcon, XIcon } from "@mergestat/icons"
 
-type RadioType = {
-  startIcon: React.ReactNode
-  isSelected: boolean
-  label: string
+enum SYNC_REPO_METHOD {
+  GH_ORG,
+  GH_USER,
 }
 
-const AUTO_IMPORT_STATE: RadioType[] = [
+type ImportRadioType = {
+  startIcon: React.ReactNode
+  label: string
+  type: SYNC_REPO_METHOD
+}
+
+const IMPORT_TYPE_RADIO_GROUP: ImportRadioType[] = [
   {
     startIcon: <GithubIcon />,
-    isSelected: true,
     label: "Add from GitHub Org",
+    type: SYNC_REPO_METHOD.GH_ORG
   },
   {
     startIcon: <GithubIcon />,
-    isSelected: false,
     label: "Add from GitHub User",
+    type: SYNC_REPO_METHOD.GH_USER
   },
 ]
 
@@ -32,6 +37,8 @@ type SyncRepoModalProps = {
 }
 
 const SyncRepoModal = ({onClose}: SyncRepoModalProps) => {
+  const [importType, setImportType] = useState<SYNC_REPO_METHOD>(SYNC_REPO_METHOD.GH_ORG)
+
   return (
     <Modal open onClose={onClose}>
       <Modal.Header>
@@ -60,26 +67,28 @@ const SyncRepoModal = ({onClose}: SyncRepoModalProps) => {
               organization or GitHub User.
             </p>
           </div>
-          <div className="p-8 pb-0">
-            <p className="text-lg font-semibold mb-2">Choose method</p>
+          <div className="px-8">
+            <p className="text-lg font-semibold mb-2">Import type</p>
             <div className="flex gap-8">
-              {AUTO_IMPORT_STATE.map((radio, index) => {
+              {IMPORT_TYPE_RADIO_GROUP.map((radio, index) => {
                 return (
                   <RadioCard
                     key={index}
-                    isSelected={radio.isSelected}
+                    isSelected={radio.type === importType}
                     label={radio.label}
                     startIcon={radio.startIcon}
-                    onChange={() => console.log("sdf")}
+                    onChange={() => setImportType(radio.type)}
                   />
                 )
               })}
             </div>
           </div>
           <div className="p-8 w-full">
-            <p className="text-lg font-semibold mb-2">Organization name</p>
+            <p className="text-lg font-semibold mb-2">
+              {importType === SYNC_REPO_METHOD.GH_ORG ? "Organization name" : "User name"}
+            </p>
             <div className="flex w-full items-center gap-2">
-              <Input placeholder="Organization name" />
+              <Input placeholder={importType === SYNC_REPO_METHOD.GH_ORG ? "organization-name" : "user-name"} />
             </div>
           </div>
         </div>
@@ -98,7 +107,7 @@ const SyncRepoModal = ({onClose}: SyncRepoModalProps) => {
                 className="ml-2"
                 skin="primary"
                 onClick={() => {
-                  
+                  onClose()
                 }}
               >
                 Create Auto Import
