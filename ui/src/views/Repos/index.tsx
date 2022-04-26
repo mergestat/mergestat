@@ -47,14 +47,6 @@ const Repos: React.FC = () => {
                 </div>
               }
             />
-            {isAlertInfo && (
-              <Button
-                skin="secondary"
-                className="absolute right-8 text-sm font-medium text-gray-500"
-              >
-                (Prototype only) Advance to screen where repos are loaded
-              </Button>
-            )}
           </div>
         ) : (
           <AddedRepoTable />
