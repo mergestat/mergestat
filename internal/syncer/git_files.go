@@ -137,6 +137,12 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 		}
 	}
 
+	if len(batch) > 0 {
+		if err := w.sendBatchFiles(ctx, tx, j, batch); err != nil {
+			return fmt.Errorf("send batch files: %w", err)
+		}
+	}
+
 	l.Info().Msgf("sent batch of %d files", totalCount)
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
