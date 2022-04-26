@@ -81,12 +81,18 @@ UPDATE mergestat.repo_sync_queue SET last_keep_alive = now() WHERE id = $1;
 
 -- name: EnqueueAllCompletedSyncs :exec
 INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
-SELECT repo_sync_id, 'QUEUED' FROM (
-	SELECT DISTINCT ON (repo_sync_queue.repo_sync_id) *
-	FROM mergestat.repo_sync_queue
-	JOIN mergestat.repo_syncs
-	ON (mergestat.repo_sync_queue.repo_sync_id = mergestat.repo_syncs.id)
-	ORDER BY repo_sync_queue.repo_sync_id, repo_sync_queue.created_at DESC
-) AS latest
-WHERE status = 'DONE'
-ORDER BY done_at ASC;
+SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
+;
+
+-- name: MarkSyncsAsTimedOut :many
+WITH timed_out_sync_jobs AS (
+	UPDATE mergestat.repo_sync_queue SET status = 'DONE' WHERE status = 'RUNNING' AND (
+		(last_keep_alive < now() - '10 minutes'::interval)
+		OR
+		(last_keep_alive IS NULL AND created_at < now() - '10 minutes'::interval)) -- if worker crashed before last_keep_alive was first set
+	RETURNING *
+)
+INSERT INTO mergestat.repo_sync_logs (repo_sync_queue_id, log_type, message)
+SELECT id, 'ERROR', 'No response from job within reasonable interval. Timing out.' FROM timed_out_sync_jobs
+RETURNING repo_sync_queue_id
+;

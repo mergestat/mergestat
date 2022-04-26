@@ -19,6 +19,7 @@ import (
 	repos "github.com/mergestat/fuse/internal/repos"
 	"github.com/mergestat/fuse/internal/scheduler"
 	"github.com/mergestat/fuse/internal/syncer"
+	"github.com/mergestat/fuse/internal/timeout"
 	"github.com/mergestat/mergestat/extensions"
 	"github.com/mergestat/mergestat/extensions/options"
 	"github.com/mergestat/mergestat/extensions/services"
@@ -150,7 +151,7 @@ func main() {
 	}()
 
 	var wg sync.WaitGroup
-	wg.Add(3)
+	wg.Add(4)
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars
@@ -162,6 +163,11 @@ func main() {
 	go func() {
 		defer wg.Done()
 		repos.NewImporter(&logger, pool, db).Start(ctx, time.Minute)
+	}()
+
+	go func() {
+		defer wg.Done()
+		timeout.New(&logger, pool).Start(ctx, time.Minute)
 	}()
 
 	concurrency := 2
