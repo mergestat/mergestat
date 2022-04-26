@@ -21,6 +21,7 @@ const (
 	syncTypeGitCommits         = "GIT_COMMITS"
 	syncTypeGitCommitStats     = "GIT_COMMIT_STATS"
 	syncTypeGitRefs            = "GIT_REFS"
+	syncTypeGitFiles           = "GIT_FILES"
 	syncTypeGitHubRepoMetadata = "GITHUB_REPO_METADATA"
 	syncTypeGitHubRepoPRs      = "GITHUB_REPO_PRS"
 	syncTypeGitHubRepoIssues   = "GITHUB_REPO_ISSUES"
@@ -140,6 +141,8 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	switch j.SyncType {
 	case syncTypeGitCommits:
 		return w.handleGitCommits(ctx, j)
+	case syncTypeGitFiles:
+		return w.handleGitFiles(ctx, j)
 	case syncTypeGitCommitStats:
 		return w.handleGitCommitStats(ctx, j)
 	case syncTypeGitRefs:

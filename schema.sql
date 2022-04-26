@@ -141,6 +141,13 @@ CREATE TABLE public.git_commits (
     parents integer NOT NULL
 );
 COMMENT ON TABLE public.git_commits IS 'Git repository commits';
+CREATE TABLE public.git_files (
+    repo_id uuid NOT NULL,
+    path text NOT NULL,
+    executable boolean,
+    contents text NOT NULL
+);
+COMMENT ON TABLE public.git_files IS 'Git repository files';
 CREATE VIEW public.git_tags AS
  SELECT git_refs.repo_id,
     git_refs.full_name,
@@ -339,6 +346,8 @@ ALTER TABLE ONLY mergestat.repo_syncs
     ADD CONSTRAINT repo_syncs_repo_id_sync_type_key UNIQUE (repo_id, sync_type);
 ALTER TABLE ONLY public.git_commits
     ADD CONSTRAINT commits_pkey PRIMARY KEY (repo_id, hash);
+ALTER TABLE ONLY public.git_files
+    ADD CONSTRAINT files_pkey PRIMARY KEY (repo_id, path);
 ALTER TABLE ONLY public.git_refs
     ADD CONSTRAINT git_refs_pkey PRIMARY KEY (repo_id, full_name);
 ALTER TABLE ONLY public.github_issues
@@ -380,6 +389,8 @@ ALTER TABLE ONLY public.git_commit_stats
     ADD CONSTRAINT commit_stats_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 ALTER TABLE ONLY public.git_commits
     ADD CONSTRAINT commits_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY public.git_files
+    ADD CONSTRAINT files_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE ONLY public.github_issues
     ADD CONSTRAINT github_issues_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.github_pull_requests

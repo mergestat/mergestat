@@ -8,6 +8,7 @@ INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('
 INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('DONE', 'Sync job is done') ON CONFLICT DO NOTHING;
 INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_REPO_METADATA', 'Get metadata from GitHub about a repo') ON CONFLICT DO NOTHING;
 INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_COMMITS', 'Get commit history of a repo') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_FILES', 'Files for a git repo') ON CONFLICT DO NOTHING;
 INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_COMMIT_STATS', 'Get commit stats for a repo') ON CONFLICT DO NOTHING;
 INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_REPO_PRS', 'Get pull requests from a GitHub repo') ON CONFLICT DO NOTHING;
 INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_REPO_ISSUES', 'Get issues from a GitHub repo') ON CONFLICT DO NOTHING;

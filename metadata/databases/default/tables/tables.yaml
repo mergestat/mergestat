@@ -10,6 +10,7 @@
 - "!include public_git_branches.yaml"
 - "!include public_git_commit_stats.yaml"
 - "!include public_git_commits.yaml"
+- "!include public_git_files.yaml"
 - "!include public_git_refs.yaml"
 - "!include public_git_tags.yaml"
 - "!include public_github_issues.yaml"
