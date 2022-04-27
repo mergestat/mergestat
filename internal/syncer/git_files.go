@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"unicode/utf8"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jmoiron/sqlx"
@@ -23,7 +24,14 @@ func (w *worker) sendBatchFiles(ctx context.Context, tx pgx.Tx, j *db.DequeueSyn
 		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
 			return fmt.Errorf("uuid: %w", err)
 		}
-		input := []interface{}{repoID, c.Path.String, c.Executable.Bool, c.Contents.String}
+
+		var contents interface{}
+		if utf8.ValidString(c.Contents.String) {
+			contents = c.Contents.String
+		} else {
+			contents = nil
+		}
+		input := []interface{}{repoID, c.Path.String, c.Executable.Bool, contents}
 		inputs = append(inputs, input)
 	}
 

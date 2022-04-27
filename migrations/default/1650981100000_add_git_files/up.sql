@@ -1,8 +1,8 @@
 CREATE TABLE public.git_files (
     repo_id uuid NOT NULL,
     path text NOT NULL,
-    executable boolean,
-    contents text NOT NULL
+    executable boolean NOT NULL,
+    contents text
 );
 COMMENT ON TABLE public.git_files IS 'Git repository files';
 ALTER TABLE ONLY public.git_files
