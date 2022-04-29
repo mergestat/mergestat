@@ -116,12 +116,14 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM github_pull_request_reviews WHERE repo_id = $1;", j.RepoID.String()); err != nil {
-		return err
-	}
+	if len(reviews) > 0 {
+		if _, err := tx.Exec(ctx, "DELETE FROM github_pull_request_reviews WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+			return err
+		}
 
-	if err := w.sendBatchGitHubPRReviews(ctx, tx, j, reviews); err != nil {
-		return err
+		if err := w.sendBatchGitHubPRReviews(ctx, tx, j, reviews); err != nil {
+			return err
+		}
 	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {

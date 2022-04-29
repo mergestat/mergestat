@@ -32,7 +32,7 @@ type githubPRCommit struct {
 }
 
 // sendBatchGitHubPRCommits uses the pg COPY protocol to send a batch of GitHub pr commits
-func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*githubPRCommit) error {
+func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, repo uuid.UUID, batch []*githubPRCommit) error {
 	cols := []string{
 		"repo_id",
 		"pr_number",
@@ -52,14 +52,8 @@ func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, j *db.
 
 	inputs := make([][]interface{}, 0, len(batch))
 	for _, r := range batch {
-		var repoID uuid.UUID
-		var err error
-		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
-			return fmt.Errorf("uuid: %w", err)
-		}
-
 		input := []interface{}{
-			repoID,
+			repo,
 			r.PRNumber,
 			r.Hash,
 			r.Message,
@@ -97,12 +91,14 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	var u *url.URL
-	var err error
-	if u, err = url.Parse(j.Repo); err != nil {
+	id, err := uuid.FromString(j.RepoID.String())
+	if err != nil {
+		return fmt.Errorf("parse uuid: %w", err)
+	}
+	u, err := url.Parse(j.Repo)
+	if err != nil {
 		return fmt.Errorf("url parse: %v", err)
 	}
-
 	components := strings.Split(u.Path, "/")
 	repoOwner := components[1]
 	repoName := components[2]
@@ -127,16 +123,18 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM github_pull_request_commits WHERE repo_id = $1;", j.RepoID.String()); err != nil {
-		return fmt.Errorf("exec delete: %w", err)
-	}
+	if len(commits) > 0 {
+		if _, err := tx.Exec(ctx, "DELETE FROM github_pull_request_commits WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+			return fmt.Errorf("exec delete: %w", err)
+		}
 
-	if err := w.sendBatchGitHubPRCommits(ctx, tx, j, commits); err != nil {
-		return fmt.Errorf("github pr commits: %w", err)
+		if err := w.sendBatchGitHubPRCommits(ctx, tx, id, commits); err != nil {
+			return fmt.Errorf("batch insert pr commits: %w", err)
+		}
 	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
-		return fmt.Errorf("update status done: %w", err)
+		return fmt.Errorf("sync job done: %w", err)
 	}
 
 	return tx.Commit(ctx)
