@@ -2,18 +2,12 @@ import React, { useState } from "react"
 import dynamic from "next/dynamic"
 import { Button, Modal, RadioCard, Toolbar } from "@mergestat/blocks"
 import { GithubIcon, LinkIcon, TableIcon, XIcon } from "@mergestat/icons"
+import { ADD_REPO_METHOD, useReposContext } from './useAddRepoContext'
 
 const AddFromUrl = dynamic(() => import('./AddFromUrl'))
 const AddFromGitOrg = dynamic(() => import('./AddFromOrg'))
 const AddFromGitUser = dynamic(() => import('./AddFromUser'))
 const AddFromCsv = dynamic(() => import('./AddFromCsv'))
-
-enum ADD_REPO_METHOD {
-  URL,
-  GH_ORG,
-  GH_USER,
-  CSV
-}
 
 type MethodRadioType = {
   startIcon: React.ReactNode
@@ -46,13 +40,14 @@ const METHOD_RADIO_GROUP: MethodRadioType[] = [
 
 type AddRepoModalPropsT = {
   handleOnClose: () => void;
-};
+}
 
 const AddRepoModal = ({
   handleOnClose,
 }: AddRepoModalPropsT) => {
-  const [addRepoMethod, setAddRepoMethod] = useState<ADD_REPO_METHOD>(ADD_REPO_METHOD.URL)
-  const [addButtonText, setAddButtonText] = useState<string>("Add Repository")
+  const [{ addRepoMethod, addedRepos }, setReposState] = useReposContext()
+
+  const [repoCount, setRepoCount] = useState<number>(0)
 
   return (
     <Modal open onClose={handleOnClose} size="lg">
@@ -86,19 +81,24 @@ const AddRepoModal = ({
                   isSelected={radio.type === addRepoMethod}
                   label={radio.label}
                   startIcon={radio.startIcon}
-                  onChange={() => setAddRepoMethod(radio.type)}
+                  onChange={() => {
+                    setReposState(prevState => ({
+                      ...prevState,
+                      addRepoMethod: radio.type
+                    }))
+                  }}
                 />
               )
             })}
           </div>
           {addRepoMethod === ADD_REPO_METHOD.GH_ORG ? (
-            <AddFromGitOrg setAddButtonText={setAddButtonText} />
+            <AddFromGitOrg setRepoCount={setRepoCount} />
           ) : addRepoMethod === ADD_REPO_METHOD.GH_USER ? (
-            <AddFromGitUser setAddButtonText={setAddButtonText} />
+            <AddFromGitUser setRepoCount={setRepoCount} />
           ) : addRepoMethod === ADD_REPO_METHOD.CSV ? (
-            <AddFromCsv setAddButtonText={setAddButtonText} />
+            <AddFromCsv setRepoCount={setRepoCount} />
           ) : (
-            <AddFromUrl setAddButtonText={setAddButtonText} />
+            <AddFromUrl />
           )}
         </div>
       </Modal.Body>
@@ -112,10 +112,18 @@ const AddRepoModal = ({
               <Button
                 className="ml-2"
                 skin="primary"
-                disabled={true}
+                disabled={
+                  addRepoMethod === ADD_REPO_METHOD.URL
+                    ? addedRepos.length === 0
+                    : true
+                }
                 onClick={handleOnClose}
               >
-                {addButtonText}
+                {addRepoMethod === ADD_REPO_METHOD.URL ? (
+                  addedRepos.length === 0 ? 'Add Repository' : `Add ${addedRepos.length} Repositories`
+                ) : (
+                  'Add Repository'
+                )}
               </Button>
             </Toolbar.Item>
           </Toolbar.Right>

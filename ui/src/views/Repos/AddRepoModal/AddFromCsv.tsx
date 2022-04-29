@@ -1,13 +1,12 @@
 import React from "react"
 
 type AddFromCsvPropsT = {
-  setAddButtonText: (text: string) => void
+  setRepoCount: (num: number) => void
 }
 
 const AddFromCsv = ({
-  setAddButtonText
+  setRepoCount
 }: AddFromCsvPropsT) => {
-  setAddButtonText("Add Repostory")
 
   return (
     <div className="p-8 w-full">

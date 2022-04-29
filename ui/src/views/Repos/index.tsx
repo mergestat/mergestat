@@ -2,6 +2,7 @@ import { Fragment, useState } from "react"
 import dynamic from "next/dynamic"
 import { Alert, Button, EmptyState } from "@mergestat/blocks"
 import { PlusIcon, RepositoryIcon } from "@mergestat/icons"
+import { ReposProvider } from './AddRepoModal/useAddRepoContext'
 
 const AddRepoModal = dynamic(() => import('./AddRepoModal'))
 const AddedRepoTable = dynamic(() => import('./AddedRepoTable'))
@@ -54,9 +55,11 @@ const Repos: React.FC = () => {
       </main>
 
       {addRepoModalOpen && (
-        <AddRepoModal
-          handleOnClose={closeModal}
-        />
+        <ReposProvider>
+          <AddRepoModal
+            handleOnClose={closeModal}
+          />
+        </ReposProvider>
       )}
     </Fragment>
   )

@@ -1,6 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button, Checkbox, Input } from "@mergestat/blocks"
 import { SearchIcon } from "@mergestat/icons"
+import { EmptyComponent } from './EmptyComponent'
 
 type RepoType = {
   title: string
@@ -19,14 +20,17 @@ const INIT_REPOS: RepoType[] = [
 ]
 
 type AddFromGitOrgPropsT = {
-  setAddButtonText: (text: string) => void
+  setRepoCount: (num: number) => void
 }
 
 const AddFromGitOrg = ({
-  setAddButtonText
+  setRepoCount
 }: AddFromGitOrgPropsT) => {
-  const isEmpty = true
-  setAddButtonText("Add 294 Repostories")
+  const [repos, setRepos] = useState<Array<RepoType>>([])
+
+  useEffect(() => {
+    setRepoCount(repos.length)
+  }, [repos])
 
   return (
     <div className="p-8 w-full">
@@ -46,12 +50,8 @@ const AddFromGitOrg = ({
           Find Repos
         </Button>
       </div>
-      {isEmpty ? (
-        <div className="py-10 flex justify-center mt-8 border border-gray">
-          <p className="text-sm text-gray-400">
-            Enter GitHub organization to select repositories
-          </p>
-        </div>
+      {repos.length === 0 ? (
+        <EmptyComponent label="Enter GitHub organization to select repositoriest" />
       ) : (
         <div className="m-8 border border-gray-100 rounded">
           <div className="flex border-b border-gray-100 p-2 justify-between gap-8">
