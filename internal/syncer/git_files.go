@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 	"unicode/utf8"
 
 	"github.com/jackc/pgx/v4"
@@ -27,7 +28,7 @@ func (w *worker) sendBatchFiles(ctx context.Context, tx pgx.Tx, j *db.DequeueSyn
 
 		var contents interface{}
 		if utf8.ValidString(c.Contents.String) {
-			contents = c.Contents.String
+			contents = strings.ReplaceAll(c.Contents.String, "\u0000", "")
 		} else {
 			contents = nil
 		}
