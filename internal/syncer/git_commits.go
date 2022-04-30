@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -142,10 +143,14 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 			if err := w.sendBatchCommits(ctx, tx, j, batch); err != nil {
 				return err
 			}
-
 			batch = make([]*commit, 0, batchSize)
 		} else {
 			batch = append(batch, &r)
+		}
+	}
+	if len(batch) > 0 {
+		if err := w.sendBatchCommits(ctx, tx, j, batch); err != nil {
+			return fmt.Errorf("send batch commits: %w", err)
 		}
 	}
 
