@@ -75,7 +75,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 
 	// TODO figure out this token thing
 	var creds *libgit2.Credential
-	if creds, err = libgit2.NewCredentialUsername(os.Getenv("GITHUB_TOKEN")); err != nil {
+	if creds, err = libgit2.NewCredentialUserpassPlaintext(os.Getenv("GITHUB_TOKEN"), ""); err != nil {
 		return err
 	}
 	defer creds.Free()
