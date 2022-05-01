@@ -69,7 +69,7 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 
 	// TODO(alonlong) figure out this token thing
 	var creds *libgit2.Credential
-	if creds, err = libgit2.NewCredentialUsername(os.Getenv("GITHUB_TOKEN")); err != nil {
+	if creds, err = libgit2.NewCredentialUserpassPlaintext(os.Getenv("GITHUB_TOKEN"), ""); err != nil {
 		return fmt.Errorf("new credentail: %w", err)
 	}
 	defer creds.Free()
