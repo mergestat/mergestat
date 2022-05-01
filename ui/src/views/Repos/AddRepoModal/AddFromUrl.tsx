@@ -11,24 +11,24 @@ type AddFromUrlPropsT = {
 
 const AddFromUrl = ({
 }: AddFromUrlPropsT) => {  
-  const [{ addedRepos }, setReposState] = useReposContext()
+  const [{ addedReposFromURL }, setReposState] = useReposContext()
   const [newRepoUrl, setNewRepoUrl] = useState<string>('')
 
   const checkRepoValid = useCallback(() => {
     return (checkRepoValidate(newRepoUrl))
-      ? addedRepos.find((repo) =>
+      ? addedReposFromURL.find((repo) =>
           repo.url.replace(/((http|https):\/\/)?(www\.)?/, '') === newRepoUrl.replace(/((http|https):\/\/)?(www\.)?/, '')
         ) !== undefined
       : true
-  }, [newRepoUrl, addedRepos])
+  }, [newRepoUrl, addedReposFromURL])
 
-  const handleAddRepo = () => {
+  const handleAddRepo = useCallback(() => {
     const repoInfo = getRepoFromUrl(newRepoUrl)
 
     setReposState(prevState => ({
       ...prevState,
-      addedRepos: [
-        ...addedRepos,
+      addedReposFromURL: [
+        ...addedReposFromURL,
         {
           name: repoInfo.replace(/[a-zA-Z0-9\-]+[\/]/, ''),
           subline: repoInfo,
@@ -46,14 +46,14 @@ const AddFromUrl = ({
     }))
 
     setNewRepoUrl('')
-  }
+  }, [newRepoUrl])
 
   const handleDeleteItem = (index: number) => {
-    addedRepos.splice(index, 1)
+    addedReposFromURL.splice(index, 1)
 
     setReposState(prevState => ({
       ...prevState,
-      addedRepos: [...addedRepos]
+      addedReposFromURL: [...addedReposFromURL]
     }))
   }
 
@@ -83,17 +83,17 @@ const AddFromUrl = ({
       </div>
 
       <div className="overflow-y-auto">
-        {addedRepos.length === 0 ? (
+        {addedReposFromURL.length === 0 ? (
           <EmptyComponent label="No repository added yet" />
         ) : (
           <div className="border border-gray-100 rounded">
-            {addedRepos.map((repo, index) => (
+            {addedReposFromURL.map((repo, index) => (
               <ListItem
                 key={index}
                 title={repo.name}
                 subline={repo.subline}
                 startIcon={repo.icon}
-                className={`p-2${index !== addedRepos.length - 1 ? ' border-b' : ''}`}
+                className={`p-2${index !== addedReposFromURL.length - 1 ? ' border-b' : ''}`}
                 onClick={() => setNewRepoUrl(repo.url)}
                 onCloseClick={() => handleDeleteItem(index)}
               />

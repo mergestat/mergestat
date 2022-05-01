@@ -45,7 +45,11 @@ type AddRepoModalPropsT = {
 const AddRepoModal = ({
   handleOnClose,
 }: AddRepoModalPropsT) => {
-  const [{ addRepoMethod, addedRepos }, setReposState] = useReposContext()
+  const [{
+    addRepoMethod,
+    addedReposFromURL,
+    reposFromOrg,
+  }, setReposState] = useReposContext()
 
   const [repoCount, setRepoCount] = useState<number>(0)
 
@@ -71,7 +75,7 @@ const AddRepoModal = ({
       </Modal.Header>
       <Modal.Body>
         <div className="w-full flex">
-          <div className="border-r-gray-400 border-r p-8">
+          <div className="border-r-gray-400 border-r p-6">
             <p className="text-lg font-semibold mb-8">Choose method</p>
             {METHOD_RADIO_GROUP.map((radio, index) => {
               return (
@@ -92,7 +96,7 @@ const AddRepoModal = ({
             })}
           </div>
           {addRepoMethod === ADD_REPO_METHOD.GH_ORG ? (
-            <AddFromGitOrg setRepoCount={setRepoCount} />
+            <AddFromGitOrg />
           ) : addRepoMethod === ADD_REPO_METHOD.GH_USER ? (
             <AddFromGitUser setRepoCount={setRepoCount} />
           ) : addRepoMethod === ADD_REPO_METHOD.CSV ? (
@@ -114,13 +118,21 @@ const AddRepoModal = ({
                 skin="primary"
                 disabled={
                   addRepoMethod === ADD_REPO_METHOD.URL
-                    ? addedRepos.length === 0
-                    : true
+                    ? addedReposFromURL.length === 0
+                    : addRepoMethod === ADD_REPO_METHOD.GH_ORG
+                      ? reposFromOrg.filter((repo) => repo.checked).length === 0
+                      : true
                 }
                 onClick={handleOnClose}
               >
                 {addRepoMethod === ADD_REPO_METHOD.URL ? (
-                  addedRepos.length === 0 ? 'Add Repository' : `Add ${addedRepos.length} Repositories`
+                  addedReposFromURL.length === 0
+                    ? 'Add Repository'
+                    : `Add ${addedReposFromURL.length} Repositories`
+                ) : addRepoMethod === ADD_REPO_METHOD.GH_ORG ? (
+                  reposFromOrg.filter((repo) => repo.checked).length === 0
+                    ? 'Add Repository'
+                    : `Add ${reposFromOrg.filter((repo) => repo.checked).length} Repositories`
                 ) : (
                   'Add Repository'
                 )}

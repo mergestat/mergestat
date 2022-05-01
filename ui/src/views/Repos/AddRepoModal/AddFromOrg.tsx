@@ -1,120 +1,140 @@
-import React, { useEffect, useState } from "react"
-import { Button, Checkbox, Input } from "@mergestat/blocks"
+import React, { useCallback, useState } from "react"
+import {
+  Button,
+  Checkbox,
+  CHECKBOX_STATES,
+  ColoredBox,
+  HelpText,
+  Input,
+  Label,
+  Panel
+} from "@mergestat/blocks"
 import { SearchIcon } from "@mergestat/icons"
+import { getReposFromOrgName } from './useAddRepoContext'
 import { EmptyComponent } from './EmptyComponent'
-
-type RepoType = {
-  title: string
-  checked: boolean
-  img: null,
-}
-
-const INIT_REPOS: RepoType[] = [
-  { title: "mergestat/mergestat", checked: true, img: null },
-  { title: "mergestat/docs", checked: false, img: null },
-  { title: "mergestat/blocks", checked: true, img: null },
-  { title: "mergestat/fuse", checked: false, img: null },
-  { title: "mergestat/time-diff", checked: true, img: null },
-  { title: "mergestat/helm-charts", checked: false, img: null },
-  { title: "mergestat/homebrew-mergestat", checked: true, img: null },
-]
+import { useReposContext } from './useAddRepoContext'
 
 type AddFromGitOrgPropsT = {
-  setRepoCount: (num: number) => void
 }
 
 const AddFromGitOrg = ({
-  setRepoCount
 }: AddFromGitOrgPropsT) => {
-  const [repos, setRepos] = useState<Array<RepoType>>([])
+  const [{ reposFromOrg }, setReposState] = useReposContext()
+  const [orgName, setOrgName] = useState<string>('')
 
-  useEffect(() => {
-    setRepoCount(repos.length)
-  }, [repos])
+  const handleFindRepos = () => {
+    const repos = getReposFromOrgName(orgName)
+
+    setReposState(prevState => ({
+      ...prevState,
+      reposFromOrg: repos,
+    }))
+  }
+
+  const selectedState = useCallback(() => {
+    const selectedRepos = reposFromOrg.filter(repo => repo.checked)
+
+    if (selectedRepos.length === 0) return CHECKBOX_STATES.Empty
+    if (selectedRepos.length === reposFromOrg.length) return CHECKBOX_STATES.Checked
+    return CHECKBOX_STATES.Indeterminate
+  }, [reposFromOrg])
 
   return (
-    <div className="p-8 w-full">
-      <p className="text-lg font-semibold mb-8">
-        Add from GitHub organization
-      </p>
-      <div className="flex w-full items-center gap-2">
-        <p className="whitespace-nowrap mr-4 text-gray-500 font-medium">
-          GitHub organization
-        </p>
-        <Input placeholder="GitHub organization" />
-        <Button
-          skin="secondary"
-          className="whitespace-nowrap"
-          // onClick={}
-        >
-          Find Repos
-        </Button>
-      </div>
-      {repos.length === 0 ? (
-        <EmptyComponent label="Enter GitHub organization to select repositoriest" />
-      ) : (
-        <div className="m-8 border border-gray-100 rounded">
-          <div className="flex border-b border-gray-100 p-2 justify-between gap-8">
-            <label
-              // onClick={() => {
-              //   let newRepos = repos
-              //   newRepos.map((repo) => (repo.checked = !isAllChecked))
-              //   setRepos([...newRepos])
-              // }}
-            >
-              <Checkbox checked={true} onChange={() => {}} />
-              <div
-                className="cursor-pointer whitespace-nowrap text-gray-500 w-full"
-                onClick={() => {
-                  // let newRepos = repos
-                  // newRepos.map(
-                  //   (repo) => (repo.checked = !isAllChecked)
-                  // )
-                  // setRepos([...newRepos])
-                }}
-              >
-                <span className="text-gray-900">
-                  1
-                </span>{" "}
-                out of 7 repositories selected
-              </div>
-            </label>
-            <label className="relative">
-              <SearchIcon className="t-icon absolute left-2 text-gray-400" />
-              <Input placeholder="Search..." className="pl-8" />
-            </label>
-          </div>
-          <div>
-            {INIT_REPOS.map((repo, index) => {
-              return (
-                <div
-                  key={`key6_${index}`}
-                  className="border-b border-gray-100 p-2 w-full"
-                  //onClick={() =>
-                    // onChangeRadio(index, "addRepoCheckbox")
-                  //}
-                >
-                  <label>
-                    <Checkbox
-                      checked={repo.checked}
-                      onChange={() => {}}
-                    />
-                    {repo.img && <img src={repo.img} />}
-                    <p
-                      className="cursor-pointer whitespace-nowrap text-gray-500 w-full"
-                      //onClick={() =>
-                        //onChangeRadio(index, "addRepoCheckbox")
-                      //}
-                    >
-                      {repo.title}
-                    </p>
-                  </label>
-                </div>
-              )
-            })}
-          </div>
+    <div className="p-6 w-full grid grid-rows-content-layout">
+      <div className="mb-5">
+        <h3 className="t-h3 mb-3">Add from GitHub organization</h3>          
+        <div className="flex items-center gap-2">
+          <Label htmlFor="orgName" className="whitespace-nowrap">GitHub organization</Label>
+          <Input
+            id="orgName"
+            value={orgName}
+            type="text"
+            placeholder="orgnization-name"
+            onChange={(e) => setOrgName(e.currentTarget.value)}
+          />
+          <Button
+            skin="secondary"
+            className="whitespace-nowrap"
+            disabled={orgName === ""}
+            onClick={handleFindRepos}
+          >
+            Find Repos
+          </Button>
         </div>
-      )}
+      </div>
+
+      <div className="overflow-y-auto">
+        {reposFromOrg.length === 0 ? (
+          <EmptyComponent label="Enter GitHub organization to select repositoriest" />
+        ) : (
+          <Panel>
+            <Panel.Header className="justify-between p-2">
+              <div className="flex">
+                <Checkbox
+                  value={selectedState()}
+                  onClick={(e) => {
+                    const checked = (e.currentTarget.checked)
+                    setReposState(prevState => {
+                      const repos = prevState.reposFromOrg
+                      return {
+                        ...prevState,
+                        reposFromOrg: [...repos.map(repo => ({
+                          ...repo,
+                          checked: checked
+                        }))],
+                      }
+                    })
+                  }}
+                />
+                <HelpText>
+                  {reposFromOrg.filter(repo => repo.checked).length} of {reposFromOrg.length} repositories selected
+                </HelpText>
+              </div>
+
+              <Input
+                placeholder="Search..."
+                startIcon={(
+                  <SearchIcon className="t-icon t-icon-heroicons-search" />
+                )}
+                // onChange={(e) => handleSearch(e.currentTarget.value)}
+              />
+            </Panel.Header>
+            <Panel.Body className="p-0 h-80 overflow-y-auto">
+              {reposFromOrg.map((repo, index) => {
+                return (
+                  <div key="index" className="flex items-center p-3 border-t">
+                    <Checkbox
+                      id={"repo_" + index}
+                      checked={repo.checked}
+                      onChange={(e) => {
+                        const checked = (e.currentTarget.checked)
+                        setReposState(prevState => {
+                          const repos = prevState.reposFromOrg
+                          repos[index].checked = checked
+                          return {
+                            ...prevState,
+                            reposFromOrg: [...repos],
+                          }
+                        })
+                      }}
+                    />
+                    <ColoredBox
+                      size='8'
+                      className="mr-2"
+                      skin="default"
+                    >
+                      {repo.icon}
+                    </ColoredBox>
+                    <Label htmlFor={"repo_" + index}>
+                      {repo.subline}
+                    </Label>
+                  </div> 
+                )
+              })}
+            </Panel.Body>
+          </Panel>
+        )}
+      </div>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import * as React from "react"
+import { RepositoryIcon } from "@mergestat/icons"
 
 import { createGenericContext } from "lib/createGenericContext"
 
@@ -12,18 +13,23 @@ export enum ADD_REPO_METHOD {
 export type RepoType = {
   name: string
   subline?: string
-  icon: React.ReactNode
+  icon: React.ReactElement
   url: string
+  checked?: boolean
 }
 
 type RepoStateProps = {
   addRepoMethod: ADD_REPO_METHOD,
-  addedRepos: Array<RepoType>
+  addedReposFromURL: Array<RepoType>,
+  reposFromOrg: Array<RepoType>,
+  reposFromUser: Array<RepoType>,
 }
 
 const initialState: RepoStateProps = {
   addRepoMethod: ADD_REPO_METHOD.URL,
-  addedRepos: []
+  addedReposFromURL: [],
+  reposFromOrg: [],
+  reposFromUser: [],
 }
 
 export type UseRepoStateT = [
@@ -55,7 +61,18 @@ const ReposProvider = ({ children }: Props) => {
   )
 }
 
+const getReposFromOrgName = (orgName: string) => {
+  return Array.from({ length: 100 }).map((_) => ({
+    name: "example-repo-name",
+    subline: orgName + '/example-repo-name',
+    icon: <RepositoryIcon className="t-icon" />,
+    url: 'github.com/'+ orgName + '/example-repo-name',
+    checked: false,
+  }))
+}
+
 export {
+  getReposFromOrgName,
   useReposContext,
   ReposProvider
 }
