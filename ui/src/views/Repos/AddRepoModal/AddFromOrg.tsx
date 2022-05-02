@@ -47,6 +47,12 @@ const AddFromGitOrg = () => {
             type="text"
             placeholder="orgnization-name"
             onChange={(e) => setOrgName(e.currentTarget.value)}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                if (orgName !== "") handleFindRepos()
+              }
+            }}
           />
           <Button
             skin="secondary"

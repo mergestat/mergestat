@@ -49,6 +49,12 @@ const AddFromGitUser = () => {
             type="text"
             placeholder="user-name"
             onChange={(e) => setUserName(e.currentTarget.value)}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                if (userName !== "") handleFindRepos()
+              }
+            }}
           />
           <Button
             skin="secondary"

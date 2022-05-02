@@ -69,6 +69,12 @@ const AddFromUrl = ({
             type="text"
             placeholder="github.com/owner/repo"
             onChange={(e) => setNewRepoUrl(e.currentTarget.value)}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                if (!checkRepoValid()) handleAddRepo()
+              }
+            }}
           />
           <Button
             skin="secondary"
