@@ -1,119 +1,135 @@
-import React, { useEffect, useState } from "react"
-import { Button, Checkbox, Input } from "@mergestat/blocks"
+import React, { useCallback, useState } from "react"
+import {
+  Button,
+  Checkbox,
+  CHECKBOX_STATES,
+  ColoredBox,
+  HelpText,
+  Input,
+  Label,
+  Panel
+} from "@mergestat/blocks"
 import { SearchIcon } from "@mergestat/icons"
+import { getReposFromUserName } from './useAddRepoContext'
 import { EmptyComponent } from './EmptyComponent'
+import { useReposContext } from './useAddRepoContext'
 
-type RepoType = {
-  title: string
-  checked: boolean
-  img: null,
-}
+const AddFromGitUser = () => {
+  const [{ reposFromUser }, setReposState] = useReposContext()
+  const [userName, setUserName] = useState<string>('')
 
-const INIT_REPOS: RepoType[] = [
-  { title: "mergestat/mergestat", checked: true, img: null },
-  { title: "mergestat/docs", checked: false, img: null },
-  { title: "mergestat/blocks", checked: true, img: null },
-  { title: "mergestat/fuse", checked: false, img: null },
-  { title: "mergestat/time-diff", checked: true, img: null },
-  { title: "mergestat/helm-charts", checked: false, img: null },
-  { title: "mergestat/homebrew-mergestat", checked: true, img: null },
-]
+  const handleFindRepos = () => {
+    const repos = getReposFromUserName(userName)
 
-type AddFromGitUserPropsT = {
-  setRepoCount: (num: number) => void
-}
+    setReposState(prevState => ({
+      ...prevState,
+      reposFromUser: repos,
+    }))
+  }
 
-const AddFromGitUser = ({
-  setRepoCount
-}: AddFromGitUserPropsT) => {
-  const [repos, setRepos] = useState<Array<RepoType>>([])
+  const selectedState = useCallback(() => {
+    const selectedRepos = reposFromUser.filter(repo => repo.checked)
 
-  useEffect(() => {
-    setRepoCount(repos.length)
-  }, [repos])
+    if (selectedRepos.length === 0) return CHECKBOX_STATES.Unchecked
+    if (selectedRepos.length === reposFromUser.length) return CHECKBOX_STATES.Checked
+    return CHECKBOX_STATES.Indeterminate
+  }, [reposFromUser])
 
   return (
-    <div className="p-8 w-full">
-      <p className="text-lg font-semibold mb-8">
-        Add from GitHub user
-      </p>
-      <div className="flex w-full items-center gap-2">
-        <p className="whitespace-nowrap mr-4 text-gray-500 font-medium">
-          Username
-        </p>
-        <Input placeholder="user-name" />
-        <Button
-          skin="secondary"
-          className="whitespace-nowrap"
-          // onClick={}
-        >
-          Find Repos
-        </Button>
+    <div className="p-6 w-full grid grid-rows-content-layout">
+      <div className="mb-5">
+        <h3 className="t-h3 mb-3">Add from GitHub user</h3>          
+        <div className="flex items-center gap-2">
+          <Label htmlFor="userName" className="whitespace-nowrap">
+            Username
+          </Label>
+          <Input
+            id="userName"
+            value={userName}
+            type="text"
+            placeholder="user-name"
+            onChange={(e) => setUserName(e.currentTarget.value)}
+          />
+          <Button
+            skin="secondary"
+            className="whitespace-nowrap"
+            disabled={userName === ""}
+            onClick={handleFindRepos}
+          >
+            Find Repos
+          </Button>
+        </div>
       </div>
-      {repos.length === 0 ? (
-        <EmptyComponent label="Enter GitHub username to select repositories" />
+
+      {reposFromUser.length === 0 ? (
+        <EmptyComponent label="Enter GitHub username to select repositoriest" />
       ) : (
-        <div className="m-8 border border-gray-100 rounded">
-          <div className="flex border-b border-gray-100 p-2 justify-between gap-8">
-            <label
-              // onClick={() => {
-              //   let newRepos = repos
-              //   newRepos.map((repo) => (repo.checked = !isAllChecked))
-              //   setRepos([...newRepos])
-              // }}
-            >
-              <Checkbox checked={true} onChange={() => {}} />
-              <div
-                className="cursor-pointer whitespace-nowrap text-gray-500 w-full"
-                onClick={() => {
-                  // let newRepos = repos
-                  // newRepos.map(
-                  //   (repo) => (repo.checked = !isAllChecked)
-                  // )
-                  // setRepos([...newRepos])
+        <Panel className="h-80">
+          <Panel.Header className="justify-between">
+            <div className="flex">
+              <Checkbox
+                value={selectedState()}
+                onClick={(e) => {
+                  const checked = (e.currentTarget.checked)
+                  setReposState(prevState => {
+                    const repos = prevState.reposFromUser
+                    return {
+                      ...prevState,
+                      reposFromUser: [...repos.map(repo => ({
+                        ...repo,
+                        checked: checked
+                      }))],
+                    }
+                  })
                 }}
-              >
-                <span className="text-gray-900">
-                  1
-                </span>{" "}
-                out of 7 repositories selected
-              </div>
-            </label>
-            <label className="relative">
-              <SearchIcon className="t-icon absolute left-2 text-gray-400" />
-              <Input placeholder="Search..." className="pl-8" />
-            </label>
-          </div>
-          <div>
-            {INIT_REPOS.map((repo, index) => {
+              />
+              <HelpText>
+                {reposFromUser.filter(repo => repo.checked).length} of {reposFromUser.length} repositories selected
+              </HelpText>
+            </div>
+
+            <Input
+              placeholder="Search..."
+              startIcon={(
+                <SearchIcon className="t-icon t-icon-heroicons-search" />
+              )}
+              // onChange={(e) => handleSearch(e.currentTarget.value)}
+            />
+          </Panel.Header>
+          <Panel.Body className="p-0 overflow-y-auto">
+            {reposFromUser.map((repo, index) => {
               return (
-                <div
-                  key={`key6_${index}`}
-                  className="border-b border-gray-100 p-2 w-full"
-                  //onClick={() =>
-                    // onChangeRadio(index, "addRepoCheckbox")
-                  //}
-                >
-                  <label>
-                    <Checkbox
-                      checked={repo.checked}
-                      onChange={() => {}}
-                    />
-                    {repo.img && <img src={repo.img} />}
-                    <p
-                      className="cursor-pointer whitespace-nowrap text-gray-500 w-full"
-                      //onClick={() =>
-                        //onChangeRadio(index, "addRepoCheckbox")
-                      //}
-                    >
-                      {repo.title}
-                    </p>
-                  </label>
-                </div>
+                <div key="index" className="flex items-center px-6 py-3 border-t">
+                  <Checkbox
+                    id={"repo_" + index}
+                    checked={repo.checked}
+                    onChange={(e) => {
+                      const checked = (e.currentTarget.checked)
+                      setReposState(prevState => {
+                        const repos = prevState.reposFromUser
+                        repos[index].checked = checked
+                        return {
+                          ...prevState,
+                          reposFromUser: [...repos],
+                        }
+                      })
+                    }}
+                  />
+                  <ColoredBox
+                    size='8'
+                    className="mr-2"
+                    skin="default"
+                  >
+                    {repo.icon}
+                  </ColoredBox>
+                  <Label htmlFor={"repo_" + index}>
+                    {repo.subline}
+                  </Label>
+                </div> 
               )
             })}
-          </div>
-        </div>
+          </Panel.Body>
+        </Panel>
       )}
     </div>
   )

@@ -10,7 +10,7 @@ type AddFromUrlPropsT = {
 }
 
 const AddFromUrl = ({
-}: AddFromUrlPropsT) => {  
+}: AddFromUrlPropsT) => {
   const [{ addedReposFromURL }, setReposState] = useReposContext()
   const [newRepoUrl, setNewRepoUrl] = useState<string>('')
 
@@ -82,7 +82,7 @@ const AddFromUrl = ({
         </div>
       </div>
 
-      <div className="overflow-y-auto">
+      <div className="overflow-y-auto h-80">
         {addedReposFromURL.length === 0 ? (
           <EmptyComponent label="No repository added yet" />
         ) : (

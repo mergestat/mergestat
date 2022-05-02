@@ -1,26 +1,28 @@
-import React from "react"
+import React, { useState } from "react"
+import { HelpText, Textarea } from "@mergestat/blocks"
+import { useReposContext } from './useAddRepoContext'
 
-type AddFromCsvPropsT = {
-  setRepoCount: (num: number) => void
-}
-
-const AddFromCsv = ({
-  setRepoCount
-}: AddFromCsvPropsT) => {
+const AddFromCsv = () => {
+  const [{ reposFromCSV }, setReposState] = useReposContext()
 
   return (
-    <div className="p-8 w-full">
-      <p className="text-lg font-semibold mb-8">
-        Add from CSV
-      </p>
-      <div className="flex w-full items-center gap-2">
-        <p className="whitespace-nowrap mr-4 text-gray-500 font-medium">
-          Paste CSV
-        </p>
+    <div className="p-6 w-full grid grid-rows-content-layout">
+      <div className="mb-1">
+        <h3 className="t-h3 mb-3">Add from CSV</h3>     
+        <HelpText>Paste CSV</HelpText>
       </div>
-      <div className="py-10 flex justify-center mt-8 border border-gray">
 
-      </div>
+      <Textarea
+        className="h-84"
+        defaultValue={reposFromCSV.join('\n')}
+        onChange={(e) => {
+          const repos = e.currentTarget.value.split('\n')
+          setReposState(prevState => ({
+            ...prevState,
+            reposFromCSV: repos,
+          }))
+        }}
+      />
     </div>
   )
 }

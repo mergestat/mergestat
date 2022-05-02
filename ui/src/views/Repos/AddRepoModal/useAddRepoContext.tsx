@@ -23,6 +23,7 @@ type RepoStateProps = {
   addedReposFromURL: Array<RepoType>,
   reposFromOrg: Array<RepoType>,
   reposFromUser: Array<RepoType>,
+  reposFromCSV: Array<string>,
 }
 
 const initialState: RepoStateProps = {
@@ -30,6 +31,7 @@ const initialState: RepoStateProps = {
   addedReposFromURL: [],
   reposFromOrg: [],
   reposFromUser: [],
+  reposFromCSV: [],
 }
 
 export type UseRepoStateT = [
@@ -71,8 +73,19 @@ const getReposFromOrgName = (orgName: string) => {
   }))
 }
 
+const getReposFromUserName = (userName: string) => {
+  return Array.from({ length: 100 }).map((_) => ({
+    name: "example-repo-name",
+    subline: userName + '/example-repo-name',
+    icon: <RepositoryIcon className="t-icon" />,
+    url: 'github.com/'+ userName + '/example-repo-name',
+    checked: false,
+  }))
+}
+
 export {
   getReposFromOrgName,
+  getReposFromUserName,
   useReposContext,
   ReposProvider
 }

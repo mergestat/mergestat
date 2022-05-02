@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import dynamic from "next/dynamic"
 import { Button, Modal, RadioCard, Toolbar } from "@mergestat/blocks"
 import { GithubIcon, LinkIcon, TableIcon, XIcon } from "@mergestat/icons"
@@ -49,9 +49,9 @@ const AddRepoModal = ({
     addRepoMethod,
     addedReposFromURL,
     reposFromOrg,
+    reposFromUser,
+    reposFromCSV,
   }, setReposState] = useReposContext()
-
-  const [repoCount, setRepoCount] = useState<number>(0)
 
   return (
     <Modal open onClose={handleOnClose} size="lg">
@@ -98,9 +98,9 @@ const AddRepoModal = ({
           {addRepoMethod === ADD_REPO_METHOD.GH_ORG ? (
             <AddFromGitOrg />
           ) : addRepoMethod === ADD_REPO_METHOD.GH_USER ? (
-            <AddFromGitUser setRepoCount={setRepoCount} />
+            <AddFromGitUser />
           ) : addRepoMethod === ADD_REPO_METHOD.CSV ? (
-            <AddFromCsv setRepoCount={setRepoCount} />
+            <AddFromCsv />
           ) : (
             <AddFromUrl />
           )}
@@ -121,7 +121,9 @@ const AddRepoModal = ({
                     ? addedReposFromURL.length === 0
                     : addRepoMethod === ADD_REPO_METHOD.GH_ORG
                       ? reposFromOrg.filter((repo) => repo.checked).length === 0
-                      : true
+                      : addRepoMethod === ADD_REPO_METHOD.GH_USER
+                        ? reposFromUser.filter((repo) => repo.checked).length === 0
+                        : reposFromCSV.length === 0
                 }
                 onClick={handleOnClose}
               >
@@ -133,8 +135,14 @@ const AddRepoModal = ({
                   reposFromOrg.filter((repo) => repo.checked).length === 0
                     ? 'Add Repository'
                     : `Add ${reposFromOrg.filter((repo) => repo.checked).length} Repositories`
+                ) : addRepoMethod === ADD_REPO_METHOD.GH_USER ? (
+                  reposFromUser.filter((repo) => repo.checked).length === 0
+                    ? 'Add Repository'
+                    : `Add ${reposFromUser.filter((repo) => repo.checked).length} Repositories`
                 ) : (
-                  'Add Repository'
+                  reposFromCSV.length === 0
+                    ? 'Add Repository'
+                    : `Add ${reposFromCSV.length} Repositories`
                 )}
               </Button>
             </Toolbar.Item>
