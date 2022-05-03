@@ -2,6 +2,7 @@ package syncer
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"net/url"
@@ -9,11 +10,12 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4"
+	"github.com/jmoiron/sqlx"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
 
-const selectGitHubRepoStars = `SELECT * FROM github_stargazers(?)`
+const selectGitHubRepoStars = `SELECT * FROM github_stargazers(?) ORDER BY starred_at DESC`
 
 type githubRepoStar struct {
 	Login     *string    `db:"login"`
@@ -31,7 +33,7 @@ type githubRepoStar struct {
 }
 
 // sendBatchGitHubRepoStars uses the pg COPY protocol to send a batch of GitHub repo stars
-func (w *worker) sendBatchGitHubRepoStars(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*githubRepoStar) error {
+func (w *worker) sendBatchGitHubRepoStars(ctx context.Context, tx pgx.Tx, repo uuid.UUID, batch []*githubRepoStar) error {
 	cols := []string{
 		"repo_id",
 		"login",
@@ -50,13 +52,20 @@ func (w *worker) sendBatchGitHubRepoStars(ctx context.Context, tx pgx.Tx, j *db.
 
 	inputs := make([][]interface{}, 0, len(batch))
 	for _, s := range batch {
-		var repoID uuid.UUID
-		var err error
-		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
-			return err
-		}
-		input := []interface{}{repoID, s.Login, s.Email, s.Name, s.Bio, s.Company, s.AvatarUrl,
-			s.CreatedAt, s.UpdatedAt, s.Twitter, s.Website, s.Location, s.StarredAt,
+		input := []interface{}{
+			repo,
+			s.Login,
+			s.Email,
+			s.Name,
+			s.Bio,
+			s.Company,
+			s.AvatarUrl,
+			s.CreatedAt,
+			s.UpdatedAt,
+			s.Twitter,
+			s.Website,
+			s.Location,
+			s.StarredAt,
 		}
 		inputs = append(inputs, input)
 	}
@@ -67,55 +76,104 @@ func (w *worker) sendBatchGitHubRepoStars(ctx context.Context, tx pgx.Tx, j *db.
 	return nil
 }
 
+const selectLatestStarLogin = "SELECT login FROM github_stargazers WHERE repo_id = $1 ORDER BY starred_at DESC LIMIT 1"
+
+// queryLatestStarLogin retrieves the login of the latest stargazer for a repo
+func (w *worker) queryLatestStarLogin(ctx context.Context, repoID string) (string, error) {
+	var login sql.NullString
+	row := w.pool.QueryRow(ctx, selectLatestStarLogin, repoID)
+	if err := row.Scan(&login); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return "", nil
+		}
+		return "", err
+	}
+	return login.String, nil
+}
+
 func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	// indicate that we're starting query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "starting to execute GitHub repo stargazers lookup query"},
+		{
+			Type:            SyncLogTypeInfo,
+			RepoSyncQueueID: j.ID,
+			Message:         "starting to execute GitHub repo stargazers lookup query",
+		},
 	}); err != nil {
-		return err
+		return fmt.Errorf("log messages: %w", err)
 	}
 
-	var u *url.URL
-	var err error
-	if u, err = url.Parse(j.Repo); err != nil {
-		return fmt.Errorf("could not parse repo: %v", err)
+	id, err := uuid.FromString(j.RepoID.String())
+	if err != nil {
+		return fmt.Errorf("parse uuid: %w", err)
 	}
-
+	u, err := url.Parse(j.Repo)
+	if err != nil {
+		return fmt.Errorf("url parse: %w", err)
+	}
 	components := strings.Split(u.Path, "/")
 	repoOwner := components[1]
 	repoName := components[2]
 
-	stars := make([]*githubRepoStar, 0)
-	if err := w.mergestat.SelectContext(ctx, &stars, selectGitHubRepoStars, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
-		return err
+	latestStarLogin, err := w.queryLatestStarLogin(ctx, id.String())
+	if err != nil {
+		return fmt.Errorf("could not retrieve latest star login from pg: %w", err)
 	}
 
-	l.Info().Msgf("retrieved repo stargazers: %d", len(stars))
+	var rows *sqlx.Rows
+	if rows, err = w.mergestat.QueryxContext(ctx, selectGitHubRepoStars, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
+		return fmt.Errorf("mergestat query: %w", err)
+	}
+	defer func() {
+		if err := rows.Close(); err != nil {
+			w.logger.Err(err).Msgf("close rows: %v", err)
+		}
+	}()
 
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
-		return err
+		return fmt.Errorf("begin tx: %w", err)
 	}
 	defer func() {
 		if err := tx.Rollback(ctx); err != nil {
 			if !errors.Is(err, pgx.ErrTxClosed) {
-				w.logger.Err(err).Msgf("could not rollback transaction")
+				w.logger.Err(err).Msgf("rollback transaction: %v", err)
 			}
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM github_stargazers WHERE repo_id = $1;", j.RepoID.String()); err != nil {
-		return err
+	batchSize := 500
+	batch := make([]*githubRepoStar, 0, batchSize)
+	totalCount := 0
+	for rows.Next() {
+		var r githubRepoStar
+		if err := rows.StructScan(&r); err != nil {
+			return fmt.Errorf("row scan: %w", err)
+		}
+		if len(batch) >= batchSize {
+			if err := w.sendBatchGitHubRepoStars(ctx, tx, id, batch); err != nil {
+				return fmt.Errorf("batch insert stars: %w", err)
+			}
+			batch = make([]*githubRepoStar, 0, batchSize)
+		} else {
+			if *r.Login == latestStarLogin {
+				break
+			}
+			batch = append(batch, &r)
+		}
+		totalCount++
+	}
+	if len(batch) > 0 {
+		if err := w.sendBatchGitHubRepoStars(ctx, tx, id, batch); err != nil {
+			return fmt.Errorf("batch insert stars: %w", err)
+		}
 	}
 
-	if err := w.sendBatchGitHubRepoStars(ctx, tx, j, stars); err != nil {
-		return err
-	}
+	l.Info().Msgf("retrieved new repo stargazers: %d", totalCount)
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
-		return err
+		return fmt.Errorf("sync job done: %w", err)
 	}
 
 	return tx.Commit(ctx)
