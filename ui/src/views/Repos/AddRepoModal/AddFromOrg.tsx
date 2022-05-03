@@ -106,7 +106,7 @@ const AddFromGitOrg = ({
             />
           </Panel.Header>
           <Panel.Body className="p-0 overflow-y-auto">
-            <InlineBanner className="bg-white">
+            <InlineBanner>
               Want to automatically add repos from this organization?<br />
               <a onClick={openAutoImportView}>Auto import</a> repos from organization instead
             </InlineBanner>
