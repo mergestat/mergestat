@@ -5,6 +5,7 @@ import {
   CHECKBOX_STATES,
   ColoredBox,
   HelpText,
+  InlineBanner,
   Input,
   Label,
   Panel
@@ -14,7 +15,11 @@ import { getReposFromUserName } from './useAddRepoContext'
 import { EmptyComponent } from './EmptyComponent'
 import { useReposContext } from './useAddRepoContext'
 
-const AddFromGitUser = () => {
+const AddFromGitUser = ({
+  openAutoImportView
+}: {
+  openAutoImportView: () => void
+}) => {
   const [{ reposFromUser }, setReposState] = useReposContext()
   const [userName, setUserName] = useState<string>('')
 
@@ -103,9 +108,13 @@ const AddFromGitUser = () => {
             />
           </Panel.Header>
           <Panel.Body className="p-0 overflow-y-auto">
+            <InlineBanner className="bg-white">
+              Want to automatically add repos from this organization?<br />
+              <a onClick={openAutoImportView}>Auto import</a> repos from organization instead
+            </InlineBanner>
             {reposFromUser.map((repo, index) => {
               return (
-                <div key="index" className="flex items-center px-6 py-3 border-t">
+                <div key={index} className="flex items-center px-6 py-3 border-t">
                   <Checkbox
                     id={"repo_" + index}
                     checked={repo.checked}

@@ -6,10 +6,15 @@ import { ReposProvider } from './AddRepoModal/useAddRepoContext'
 
 const AddRepoModal = dynamic(() => import('./AddRepoModal'))
 const AddedRepoTable = dynamic(() => import('./AddedRepoTable'))
+const AutoImportManage = dynamic(() => import('./AutoImportManage'))
 const ReposNavBar = dynamic(() => import('./ReposNavBar'))
+const SyncRepoModal = dynamic(() => import('./SyncRepoModal'))
 
 const Repos: React.FC = () => {
   const [addRepoModalOpen, setAddRepoModalOpen] = useState(false)
+  const [autoImportView, setAutoImportView] = useState(false)
+  const [syncModalOpen, setSyncModalOpen] = useState(false)
+
   const [isEmpty, setIsEmpty] = useState(true)
   const [isAlertInfo, setIsAlertInfo] = useState(true)
 
@@ -20,7 +25,11 @@ const Repos: React.FC = () => {
   return (
     <Fragment>
       <main className="w-full bg-gray-100 ">
-        <ReposNavBar onAddRepo={() => setAddRepoModalOpen(true)}/>
+        <ReposNavBar
+          onAddRepo={() => setAddRepoModalOpen(true)}
+          onSyncModalOpen={() => setSyncModalOpen(true)}
+          onOpenAutoImport={() => setAutoImportView(true)}
+        />
         {isEmpty ? (
           <div className="h-4/5 p-8">
             {isAlertInfo && (
@@ -58,8 +67,26 @@ const Repos: React.FC = () => {
         <ReposProvider>
           <AddRepoModal
             handleOnClose={closeModal}
+            openAutoImportView={() => {
+              setAddRepoModalOpen(false)
+              setAutoImportView(true)
+            }}
           />
         </ReposProvider>
+      )}
+
+      {autoImportView && (
+        <AutoImportManage
+          onClose={() => setAutoImportView(false)}
+          onSyncModalOpen={() => {
+            // setAutoImportView(false)
+            setSyncModalOpen(true)
+          }}
+        />
+      )}
+
+      {syncModalOpen && (
+        <SyncRepoModal onClose={()=>setSyncModalOpen(false)} />
       )}
     </Fragment>
   )

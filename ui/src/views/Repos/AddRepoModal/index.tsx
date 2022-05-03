@@ -40,10 +40,12 @@ const METHOD_RADIO_GROUP: MethodRadioType[] = [
 
 type AddRepoModalPropsT = {
   handleOnClose: () => void;
+  openAutoImportView: () => void;
 }
 
 const AddRepoModal = ({
   handleOnClose,
+  openAutoImportView,
 }: AddRepoModalPropsT) => {
   const [{
     addRepoMethod,
@@ -96,9 +98,9 @@ const AddRepoModal = ({
             })}
           </div>
           {addRepoMethod === ADD_REPO_METHOD.GH_ORG ? (
-            <AddFromGitOrg />
+            <AddFromGitOrg  openAutoImportView={openAutoImportView} />
           ) : addRepoMethod === ADD_REPO_METHOD.GH_USER ? (
-            <AddFromGitUser />
+            <AddFromGitUser openAutoImportView={openAutoImportView} />
           ) : addRepoMethod === ADD_REPO_METHOD.CSV ? (
             <AddFromCsv />
           ) : (
