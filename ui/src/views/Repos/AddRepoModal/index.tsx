@@ -56,7 +56,7 @@ const AddRepoModal = ({
   }, setReposState] = useReposContext()
 
   return (
-    <Modal open onClose={handleOnClose} size="lg">
+    <Modal open onClose={handleOnClose} size="lg" className="max-w-6xl">
       <Modal.Header>
         <Toolbar className="h-16 px-6">
           <Toolbar.Left>

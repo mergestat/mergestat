@@ -109,7 +109,7 @@ const AddFromGitUser = ({
           </Panel.Header>
           <Panel.Body className="p-0 overflow-y-auto">
             <InlineBanner>
-              Want to automatically add repos from this user?<br />
+              Want to automatically add repos from this user?{' '}
               <a onClick={openAutoImportView}>Auto import</a> repos from this user instead
             </InlineBanner>
             {reposFromUser.map((repo, index) => {
