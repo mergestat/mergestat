@@ -76,11 +76,12 @@ func (w *worker) sendBatchGitHubRepoStars(ctx context.Context, tx pgx.Tx, repo u
 	return nil
 }
 
-const selectLatestStarLogin = "SELECT login FROM github_stargazers WHERE repo_id = $1 ORDER BY starred_at DESC limit 1"
+const selectLatestStarLogin = "SELECT login FROM github_stargazers WHERE repo_id = $1 ORDER BY starred_at DESC LIMIT 1"
 
-func (w *worker) queryLatestStarLogin(ctx context.Context, repo string) (string, error) {
+// queryLatestStarLogin retrieves the login of the latest stargazer for a repo
+func (w *worker) queryLatestStarLogin(ctx context.Context, repoID string) (string, error) {
 	var login sql.NullString
-	row := w.pool.QueryRow(ctx, selectLatestStarLogin, repo)
+	row := w.pool.QueryRow(ctx, selectLatestStarLogin, repoID)
 	if err := row.Scan(&login); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return "", nil
@@ -115,9 +116,9 @@ func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJob
 	repoOwner := components[1]
 	repoName := components[2]
 
-	login, err := w.queryLatestStarLogin(ctx, id.String())
+	latestStarLogin, err := w.queryLatestStarLogin(ctx, id.String())
 	if err != nil {
-		return fmt.Errorf("max starred time: %w", err)
+		return fmt.Errorf("could not retrieve latest star login from pg: %w", err)
 	}
 
 	var rows *sqlx.Rows
@@ -156,7 +157,7 @@ func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJob
 			}
 			batch = make([]*githubRepoStar, 0, batchSize)
 		} else {
-			if *r.Login == login {
+			if *r.Login == latestStarLogin {
 				break
 			}
 			batch = append(batch, &r)
