@@ -9,7 +9,6 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/jmoiron/sqlx"
 	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
@@ -102,16 +101,6 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return err
 	}
 
-	var rows *sqlx.Rows
-	if rows, err = w.mergestat.QueryxContext(ctx, selectCommits, tmpPath, tmpPath); err != nil {
-		return err
-	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			w.logger.Err(err).Msgf("could not close rows: %v", err)
-		}
-	}()
-
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return err
@@ -132,22 +121,46 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 	batchSize := 500
 	batch := make([]*commit, 0, batchSize)
 	totalCount := 0
-	for rows.Next() {
+
+	walk, err := repo.Walk()
+	if err != nil {
+		return err
+	}
+	defer walk.Free()
+
+	if err := walk.PushHead(); err != nil {
+		return err
+	}
+
+	if err := walk.Iterate(func(c *libgit2.Commit) bool {
+		defer c.Free()
 		totalCount++
+
 		var r commit
-		if err := rows.StructScan(&r); err != nil {
-			return err
-		}
+		r.Hash = sql.NullString{String: c.Id().String(), Valid: true}
+		r.Message = sql.NullString{String: c.Message(), Valid: true}
+		r.AuthorName = sql.NullString{String: c.Author().Name, Valid: true}
+		r.AuthorEmail = sql.NullString{String: c.Author().Email, Valid: true}
+		r.AuthorWhen = sql.NullTime{Time: c.Author().When, Valid: true}
+		r.CommitterName = sql.NullString{String: c.Committer().Name, Valid: true}
+		r.CommitterEmail = sql.NullString{String: c.Committer().Email, Valid: true}
+		r.CommitterWhen = sql.NullTime{Time: c.Committer().When, Valid: true}
+		r.Parents = sql.NullInt32{Int32: int32(c.ParentCount()), Valid: true}
 
 		if len(batch) >= batchSize {
 			if err := w.sendBatchCommits(ctx, tx, j, batch); err != nil {
-				return err
+				return false
 			}
 			batch = make([]*commit, 0, batchSize)
 		} else {
 			batch = append(batch, &r)
 		}
+
+		return true
+	}); err != nil {
+		return err
 	}
+
 	if len(batch) > 0 {
 		if err := w.sendBatchCommits(ctx, tx, j, batch); err != nil {
 			return fmt.Errorf("send batch commits: %w", err)
