@@ -49,15 +49,6 @@ type commit struct {
 	Parents        sql.NullInt32  `db:"parents"`
 }
 
-const selectCommits = `
-SELECT
-	hash, message,
-	author_name, author_email, author_when,
-	committer_name, committer_email, committer_when,
-	parents
-FROM commits(?);
-`
-
 func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
