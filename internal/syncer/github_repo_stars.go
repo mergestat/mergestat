@@ -118,7 +118,7 @@ func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJob
 
 	latestStarLogin, err := w.queryLatestStarLogin(ctx, id.String())
 	if err != nil {
-		return fmt.Errorf("could not retrieve latest star login from pg: %w", err)
+		return fmt.Errorf("query latest star login: %w", err)
 	}
 
 	var rows *sqlx.Rows
