@@ -208,7 +208,7 @@ func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJo
 		}
 	}
 
-	l.Info().Msgf("retrieved new repo issues: %d", totalCount)
+	l.Info().Msgf("retrieved repo issues: %d", totalCount)
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)
