@@ -15,7 +15,11 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-const selectGitHubRepoIssues = `SELECT * FROM github_repo_issues(?) ORDER BY created_at DESC`
+const (
+	issuesFullSyncDays = "90" // 90 days
+
+	selectGitHubRepoIssues = `SELECT * FROM github_repo_issues(?) ORDER BY created_at DESC`
+)
 
 type githubRepoIssue struct {
 	AuthorLogin         *string    `db:"author_login"`
@@ -109,7 +113,7 @@ func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, repo 
 const selectLatestIssueDatabaseId = "SELECT database_id FROM github_issues WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
 
 func (w *worker) queryLatestIssueDatabaseId(ctx context.Context, repoID string) (int, error) {
-	var databaseId sql.NullInt16
+	var databaseId sql.NullInt32
 	row := w.pool.QueryRow(ctx, selectLatestIssueDatabaseId, repoID)
 	if err := row.Scan(&databaseId); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -117,7 +121,7 @@ func (w *worker) queryLatestIssueDatabaseId(ctx context.Context, repoID string) 
 		}
 		return 0, err
 	}
-	return int(databaseId.Int16), nil
+	return int(databaseId.Int32), nil
 }
 
 func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJobRow) error {
@@ -157,8 +161,8 @@ func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJo
 		}
 	}()
 
-	// delete the recent rows within 90 days for github_issues in PG
-	if _, err := tx.Exec(ctx, "DELETE FROM github_issues WHERE repo_id = $1 and created_at > (now() - interval '90 day');", j.RepoID.String()); err != nil {
+	// delete the recent rows within days for github_issues in PG
+	if _, err := tx.Exec(ctx, "DELETE FROM github_issues WHERE repo_id = $1 and created_at > (now() - interval '"+issuesFullSyncDays+" day');", j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
 	}
 
