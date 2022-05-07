@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	pullRequestsFullSyncDays = "90" // 90 days
+	pullRequestsFullSyncDays = 90 // 90 days
 
 	selectGitHubRepoPRs = `SELECT * FROM github_repo_prs(?) ORDER BY created_at DESC`
 )
@@ -213,7 +213,8 @@ func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRo
 	}()
 
 	// delete the recent rows within days for github_pull_requests in PG
-	if _, err := tx.Exec(ctx, "DELETE FROM github_pull_requests WHERE repo_id = $1 and created_at > (now() - interval '"+pullRequestsFullSyncDays+" day');", j.RepoID.String()); err != nil {
+	sql := fmt.Sprintf("DELETE FROM github_pull_requests WHERE repo_id = $1 and created_at > (now() - interval '%d day');", pullRequestsFullSyncDays)
+	if _, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
 	}
 
