@@ -1,12 +1,6 @@
-import React, { useState } from "react"
-import {
-  Button,
-  Input,
-  Modal,
-  RadioCard,
-  Toolbar,
-} from "@mergestat/blocks"
-import { GithubIcon, XIcon } from "@mergestat/icons"
+import React, { useState } from 'react'
+import { Button, Input, Modal, RadioCard, Toolbar } from '@mergestat/blocks'
+import { GithubIcon, XIcon } from '@mergestat/icons'
 
 enum SYNC_REPO_METHOD {
   GH_ORG,
@@ -22,25 +16,27 @@ type ImportRadioType = {
 const IMPORT_TYPE_RADIO_GROUP: ImportRadioType[] = [
   {
     startIcon: <GithubIcon />,
-    label: "Add from GitHub Org",
-    type: SYNC_REPO_METHOD.GH_ORG
+    label: 'Add from GitHub Org',
+    type: SYNC_REPO_METHOD.GH_ORG,
   },
   {
     startIcon: <GithubIcon />,
-    label: "Add from GitHub User",
-    type: SYNC_REPO_METHOD.GH_USER
+    label: 'Add from GitHub User',
+    type: SYNC_REPO_METHOD.GH_USER,
   },
 ]
 
 type SyncRepoModalProps = {
-  onClose: () => void;
+  onClose: () => void
 }
 
-const SyncRepoModal = ({onClose}: SyncRepoModalProps) => {
-  const [importType, setImportType] = useState<SYNC_REPO_METHOD>(SYNC_REPO_METHOD.GH_ORG)
+const SyncRepoModal = ({ onClose }: SyncRepoModalProps) => {
+  const [importType, setImportType] = useState<SYNC_REPO_METHOD>(
+    SYNC_REPO_METHOD.GH_ORG
+  )
 
   return (
-    <Modal open onClose={onClose}>
+    <Modal open onClose={onClose} className="z-50">
       <Modal.Header>
         <Toolbar className="h-16 px-6">
           <Toolbar.Left>
@@ -85,10 +81,18 @@ const SyncRepoModal = ({onClose}: SyncRepoModalProps) => {
           </div>
           <div className="p-8 w-full">
             <p className="text-lg font-semibold mb-2">
-              {importType === SYNC_REPO_METHOD.GH_ORG ? "Organization name" : "User name"}
+              {importType === SYNC_REPO_METHOD.GH_ORG
+                ? 'Organization name'
+                : 'User name'}
             </p>
             <div className="flex w-full items-center gap-2">
-              <Input placeholder={importType === SYNC_REPO_METHOD.GH_ORG ? "organization-name" : "user-name"} />
+              <Input
+                placeholder={
+                  importType === SYNC_REPO_METHOD.GH_ORG
+                    ? 'organization-name'
+                    : 'user-name'
+                }
+              />
             </div>
           </div>
         </div>
@@ -97,10 +101,7 @@ const SyncRepoModal = ({onClose}: SyncRepoModalProps) => {
         <Toolbar className="h-16 px-6">
           <Toolbar.Right>
             <Toolbar.Item>
-              <Button
-                skin="secondary"
-                onClick={onClose}
-              >
+              <Button skin="secondary" onClick={onClose}>
                 Cancel
               </Button>
               <Button

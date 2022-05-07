@@ -1,14 +1,14 @@
-import React from "react"
-import { Button, Table } from "@mergestat/blocks"
+import React from 'react'
+import { Button, Table } from '@mergestat/blocks'
 import {
   AutoImportIcon,
   CircleCheckFilledIcon,
   GithubIcon,
   TrashIcon,
   XIcon,
-} from "@mergestat/icons"
+} from '@mergestat/icons'
 
-type ColumnsT= {
+type ColumnsT = {
   title?: string | undefined
   dataIndex?: any
   className?: string | undefined
@@ -20,37 +20,40 @@ type AutoImportManagePropsT = {
   onClose: () => void
   onSyncModalOpen: () => void
 }
-const AutoImportManage = ({ onClose, onSyncModalOpen }: AutoImportManagePropsT) => {
+const AutoImportManage = ({
+  onClose,
+  onSyncModalOpen,
+}: AutoImportManagePropsT) => {
   const columns: ColumnsT[] = [
     {
-      title: "",
-      className: "w-4",
-      dataIndex: "successIcon",
-      key: "successIcon",
+      title: '',
+      className: 'w-4',
+      dataIndex: 'successIcon',
+      key: 'successIcon',
     },
     {
-      title: "Source",
-      className: "col",
-      dataIndex: "source",
-      key: "source",
+      title: 'Source',
+      className: 'col',
+      dataIndex: 'source',
+      key: 'source',
     },
     {
-      title: "Import type",
-      className: "col",
-      dataIndex: "type",
-      key: "type",
+      title: 'Import type',
+      className: 'col',
+      dataIndex: 'type',
+      key: 'type',
     },
     {
-      title: "Last sync",
-      className: "text-gray-300",
-      dataIndex: "last",
-      key: "last",
+      title: 'Last sync',
+      className: 'text-gray-300',
+      dataIndex: 'last',
+      key: 'last',
     },
     {
-      title: "",
-      className: "w-4",
-      dataIndex: "delIcon",
-      key: "delIcon",
+      title: '',
+      className: 'w-4',
+      dataIndex: 'delIcon',
+      key: 'delIcon',
     },
   ]
 
@@ -63,38 +66,38 @@ const AutoImportManage = ({ onClose, onSyncModalOpen }: AutoImportManagePropsT) 
   }[] = [
     {
       successIcon: <CircleCheckFilledIcon className="text-green-600" />,
-      source: "user-name",
+      source: 'user-name',
       type: (
         <p className="flex items-center gap">
           <GithubIcon className="mr-2" />
           GitHub User
         </p>
       ),
-      last: "2 hours ago",
+      last: '2 hours ago',
       delIcon: <TrashIcon />,
     },
     {
       successIcon: <CircleCheckFilledIcon className="text-green-600" />,
-      source: "organization-name",
+      source: 'organization-name',
       type: (
         <p className="flex items-center gap">
           <GithubIcon className="mr-2" />
           GitHub Organization
         </p>
       ),
-      last: "2 hours ago",
+      last: '2 hours ago',
       delIcon: <TrashIcon />,
     },
     {
       successIcon: <CircleCheckFilledIcon className="text-green-600" />,
-      source: "organization-name",
+      source: 'organization-name',
       type: (
         <p className="flex items-center gap">
           <GithubIcon className="mr-2" />
           GitHub Organization
         </p>
       ),
-      last: "2 hours ago",
+      last: '2 hours ago',
       delIcon: <TrashIcon />,
     },
   ]

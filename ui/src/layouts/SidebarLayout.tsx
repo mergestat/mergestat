@@ -1,8 +1,8 @@
-import React from "react"
-import dynamic from "next/dynamic"
+import React from 'react'
+import dynamic from 'next/dynamic'
 
-const NavHeader = dynamic(() => import("../components/NavHeader"))
-const Sidebar = dynamic(() => import("../components/Sidebar"))
+const NavHeader = dynamic(() => import('../components/NavHeader'))
+const Sidebar = dynamic(() => import('../components/Sidebar'))
 
 const SidebarLayout: React.FC = ({ children }) => {
   return (

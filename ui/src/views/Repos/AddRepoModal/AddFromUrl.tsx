@@ -1,23 +1,23 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useState } from 'react'
 import Image from 'next/image'
-import { Button, Input, Label, ListItem } from "@mergestat/blocks"
-import { PlusIcon, RepositoryIcon } from "@mergestat/icons"
+import { Button, Input, Label, ListItem } from '@mergestat/blocks'
+import { PlusIcon, RepositoryIcon } from '@mergestat/icons'
 import { checkRepoValidate, getRepoFromUrl } from 'utils'
 import { EmptyComponent } from './EmptyComponent'
 import { useReposContext } from './useAddRepoContext'
 
-type AddFromUrlPropsT = {
-}
+type AddFromUrlPropsT = {}
 
-const AddFromUrl = ({
-}: AddFromUrlPropsT) => {
+const AddFromUrl = ({}: AddFromUrlPropsT) => {
   const [{ addedReposFromURL }, setReposState] = useReposContext()
   const [newRepoUrl, setNewRepoUrl] = useState<string>('')
 
   const checkRepoValid = useCallback(() => {
-    return (checkRepoValidate(newRepoUrl))
-      ? addedReposFromURL.find((repo) =>
-          repo.url.replace(/((http|https):\/\/)?(www\.)?/, '') === newRepoUrl.replace(/((http|https):\/\/)?(www\.)?/, '')
+    return checkRepoValidate(newRepoUrl)
+      ? addedReposFromURL.find(
+          (repo) =>
+            repo.url.replace(/((http|https):\/\/)?(www\.)?/, '') ===
+            newRepoUrl.replace(/((http|https):\/\/)?(www\.)?/, '')
         ) !== undefined
       : true
   }, [newRepoUrl, addedReposFromURL])
@@ -25,23 +25,25 @@ const AddFromUrl = ({
   const handleAddRepo = useCallback(() => {
     const repoInfo = getRepoFromUrl(newRepoUrl)
 
-    setReposState(prevState => ({
+    setReposState((prevState) => ({
       ...prevState,
       addedReposFromURL: [
         ...addedReposFromURL,
         {
           name: repoInfo.replace(/[a-zA-Z0-9\-]+[\/]/, ''),
           subline: repoInfo,
-          icon: newRepoUrl.startsWith('github.com')
-            ? <Image
-                src={`https://github.com/${repoInfo.split('/')[0]}.png?size=40`}
-                width={40}
-                height={40}
-                loader={({ src }) => `${src}?w=1&q=50`}
-              />
-            : <RepositoryIcon className="text-gray-500" />,
-          url: newRepoUrl
-        }
+          icon: newRepoUrl.startsWith('github.com') ? (
+            <Image
+              src={`https://github.com/${repoInfo.split('/')[0]}.png?size=40`}
+              width={40}
+              height={40}
+              loader={({ src }) => `${src}?w=1&q=50`}
+            />
+          ) : (
+            <RepositoryIcon className="text-gray-500" />
+          ),
+          url: newRepoUrl,
+        },
       ],
     }))
 
@@ -51,16 +53,16 @@ const AddFromUrl = ({
   const handleDeleteItem = (index: number) => {
     addedReposFromURL.splice(index, 1)
 
-    setReposState(prevState => ({
+    setReposState((prevState) => ({
       ...prevState,
-      addedReposFromURL: [...addedReposFromURL]
+      addedReposFromURL: [...addedReposFromURL],
     }))
   }
 
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
       <div className="mb-5">
-        <h3 className="t-h3 mb-3">Add from URL</h3>          
+        <h3 className="t-h3 mb-3">Add from URL</h3>
         <div className="flex w-full items-center gap-2">
           <Label htmlFor="repoUrl">URL</Label>
           <Input
@@ -99,7 +101,9 @@ const AddFromUrl = ({
                 title={repo.name}
                 subline={repo.subline}
                 startIcon={repo.icon}
-                className={`p-2${index !== addedReposFromURL.length - 1 ? ' border-b' : ''}`}
+                className={`p-2${
+                  index !== addedReposFromURL.length - 1 ? ' border-b' : ''
+                }`}
                 onClick={() => setNewRepoUrl(repo.url)}
                 onCloseClick={() => handleDeleteItem(index)}
               />

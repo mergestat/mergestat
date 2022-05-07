@@ -1,4 +1,4 @@
-import { Fragment, useState, ReactNode } from "react"
+import { Fragment, useState, ReactNode } from 'react'
 import {
   Checkbox,
   Filter,
@@ -8,7 +8,7 @@ import {
   Spinner,
   Table,
   Tooltip,
-} from "@mergestat/blocks"
+} from '@mergestat/blocks'
 import {
   AutoImportIcon,
   CaretDownIcon,
@@ -20,37 +20,37 @@ import {
   GithubIcon,
   SearchIcon,
   TrashIcon,
-} from "@mergestat/icons"
+} from '@mergestat/icons'
 
 const AddedRepoTable: React.FC = () => {
-  const [openMenuIndex, setOpenMenuIndex] = useState("")
+  const [openMenuIndex, setOpenMenuIndex] = useState('')
 
-  const reposColumns: {}[] = [
+  const reposColumns: Array<Record<string, any>> = [
     {
       title: <Checkbox />,
-      className: "w-4",
-      dataIndex: "checkbox",
-      key: "checkbox",
+      className: 'w-4',
+      dataIndex: 'checkbox',
+      key: 'checkbox',
     },
     {
       title: (
         <p className="whiteSpace-nowrap flex items-center gap-4">
-          Repository{" "}
+          Repository{' '}
           <span>
             <CaretUpIcon />
             <CaretDownIcon className="-mt-3" />
           </span>
         </p>
       ),
-      className: "",
-      dataIndex: "repository",
-      key: "repository",
+      className: '',
+      dataIndex: 'repository',
+      key: 'repository',
     },
     {
-      title: "Tags",
-      className: "",
-      dataIndex: "tags",
-      key: "tags",
+      title: 'Tags',
+      className: '',
+      dataIndex: 'tags',
+      key: 'tags',
     },
     {
       title: (
@@ -58,21 +58,21 @@ const AddedRepoTable: React.FC = () => {
           Last sync <CaretDownIcon />
         </p>
       ),
-      className: "",
-      dataIndex: "last",
-      key: "last",
+      className: '',
+      dataIndex: 'last',
+      key: 'last',
     },
     {
-      title: "",
-      className: "",
-      dataIndex: "status",
-      key: "status",
+      title: '',
+      className: '',
+      dataIndex: 'status',
+      key: 'status',
     },
     {
-      title: "",
-      className: "w-4",
-      dataIndex: "option",
-      key: "option",
+      title: '',
+      className: 'w-4',
+      dataIndex: 'option',
+      key: 'option',
     },
   ]
 
@@ -80,32 +80,32 @@ const AddedRepoTable: React.FC = () => {
     repositoryName: string
     lastUpdate: string
     icons: ReactNode[]
-    tags: { title: string, checked: boolean }[]
-    status: { icon: string, count: number }[]
+    tags: { title: string; checked: boolean }[]
+    status: { icon: string; count: number }[]
     lastSync: string
   }[] = [
     {
-      repositoryName: "marko-js/marko",
-      lastUpdate: "Last updated today",
+      repositoryName: 'marko-js/marko',
+      lastUpdate: 'Last updated today',
       icons: [<GithubIcon />],
       tags: [
-        { title: "javascript", checked: true },
-        { title: "nodejs", checked: true },
-        { title: "virtual-dom", checked: true },
-        { title: "virtual-dom", checked: false },
-        { title: "nodejs", checked: false },
-        { title: "virtual-dom", checked: false },
+        { title: 'javascript', checked: true },
+        { title: 'nodejs', checked: true },
+        { title: 'virtual-dom', checked: true },
+        { title: 'virtual-dom', checked: false },
+        { title: 'nodejs', checked: false },
+        { title: 'virtual-dom', checked: false },
       ],
       status: [
-        { icon: "error", count: 2 },
-        { icon: "loading", count: 1 },
-        { icon: "check", count: 1 },
+        { icon: 'error', count: 2 },
+        { icon: 'loading', count: 1 },
+        { icon: 'check', count: 1 },
       ],
-      lastSync: "3 minutes ago",
+      lastSync: '3 minutes ago',
     },
     {
-      repositoryName: "marko-js/marko",
-      lastUpdate: "Last updated today",
+      repositoryName: 'marko-js/marko',
+      lastUpdate: 'Last updated today',
       icons: [
         <GithubIcon />,
         <Tooltip content="Auto imported from user-name" placement="bottom">
@@ -113,23 +113,23 @@ const AddedRepoTable: React.FC = () => {
         </Tooltip>,
       ],
       tags: [
-        { title: "javascript", checked: true },
-        { title: "nodejs", checked: true },
-        { title: "virtual-dom", checked: false },
-        { title: "virtual-dom", checked: false },
-        { title: "nodejs", checked: false },
-        { title: "virtual-dom", checked: false },
+        { title: 'javascript', checked: true },
+        { title: 'nodejs', checked: true },
+        { title: 'virtual-dom', checked: false },
+        { title: 'virtual-dom', checked: false },
+        { title: 'nodejs', checked: false },
+        { title: 'virtual-dom', checked: false },
       ],
       status: [
-        { icon: "error", count: 1 },
-        { icon: "loading", count: 2 },
-        { icon: "check", count: 1 },
+        { icon: 'error', count: 1 },
+        { icon: 'loading', count: 2 },
+        { icon: 'check', count: 1 },
       ],
-      lastSync: "3 minutes ago",
+      lastSync: '3 minutes ago',
     },
     {
-      repositoryName: "marko-js/marko",
-      lastUpdate: "Last updated today",
+      repositoryName: 'marko-js/marko',
+      lastUpdate: 'Last updated today',
       icons: [
         <GithubIcon />,
         <Tooltip content="Auto imported from user-name" placement="bottom">
@@ -137,22 +137,22 @@ const AddedRepoTable: React.FC = () => {
         </Tooltip>,
       ],
       tags: [
-        { title: "javascript", checked: false },
-        { title: "nodejs", checked: false },
-        { title: "virtual-dom", checked: true },
-        { title: "virtual-dom", checked: false },
-        { title: "nodejs", checked: false },
-        { title: "virtual-dom", checked: false },
+        { title: 'javascript', checked: false },
+        { title: 'nodejs', checked: false },
+        { title: 'virtual-dom', checked: true },
+        { title: 'virtual-dom', checked: false },
+        { title: 'nodejs', checked: false },
+        { title: 'virtual-dom', checked: false },
       ],
       status: [
-        { icon: "error", count: 1 },
-        { icon: "check", count: 5 },
+        { icon: 'error', count: 1 },
+        { icon: 'check', count: 5 },
       ],
-      lastSync: "3 minutes ago",
+      lastSync: '3 minutes ago',
     },
     {
-      repositoryName: "marko-js/marko",
-      lastUpdate: "Last updated today",
+      repositoryName: 'marko-js/marko',
+      lastUpdate: 'Last updated today',
       icons: [
         <GithubIcon />,
         <Tooltip content="Auto imported from user-name" placement="bottom">
@@ -160,18 +160,18 @@ const AddedRepoTable: React.FC = () => {
         </Tooltip>,
       ],
       tags: [
-        { title: "javascript", checked: true },
-        { title: "nodejs", checked: true },
-        { title: "virtual-dom", checked: true },
-        { title: "virtual-dom", checked: false },
-        { title: "nodejs", checked: false },
-        { title: "virtual-dom", checked: false },
+        { title: 'javascript', checked: true },
+        { title: 'nodejs', checked: true },
+        { title: 'virtual-dom', checked: true },
+        { title: 'virtual-dom', checked: false },
+        { title: 'nodejs', checked: false },
+        { title: 'virtual-dom', checked: false },
       ],
       status: [
-        { icon: "loading", count: 1 },
-        { icon: "check", count: 3 },
+        { icon: 'loading', count: 1 },
+        { icon: 'check', count: 3 },
       ],
-      lastSync: "3 minutes ago",
+      lastSync: '3 minutes ago',
     },
   ]
 
@@ -205,8 +205,8 @@ const AddedRepoTable: React.FC = () => {
       tags: (
         <div className="flex items-center gap-2 relative">
           {item.tags
-            .filter((tag: { title: string, checked: boolean }) => tag.checked)
-            .map((tag: { title: string, checked: boolean }, ind: number) => {
+            .filter((tag: { title: string; checked: boolean }) => tag.checked)
+            .map((tag: { title: string; checked: boolean }, ind: number) => {
               return (
                 <div key={`key8_${ind}`} className="">
                   {ind < 2 && (
@@ -216,16 +216,16 @@ const AddedRepoTable: React.FC = () => {
                   )}
                   {ind === 2 && (
                     <div className="flex items-center gap-2 border border-gray-300 rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
-                      +{" "}
+                      +{' '}
                       {item.tags.filter(
-                        (tag: { title: string, checked: boolean }) =>
+                        (tag: { title: string; checked: boolean }) =>
                           tag.checked
-                      ).length - 2}{" "}
+                      ).length - 2}{' '}
                       <DotsHorizontalIcon
                         onClick={() =>
                           openMenuIndex !== `multiSelect_${index}`
                             ? setOpenMenuIndex(`multiSelect_${index}`)
-                            : setOpenMenuIndex("")
+                            : setOpenMenuIndex('')
                         }
                       />
                       <div className="absolute bg-white py-2 w-100  top-full left-1/3 z-10">
@@ -250,7 +250,7 @@ const AddedRepoTable: React.FC = () => {
       status: (
         <div className="flex items-center justify-end gap-2">
           {item.status.map((i: any, index: number) => {
-            if (i.icon === "error") {
+            if (i.icon === 'error') {
               return (
                 <div
                   key={`key2_${index}`}
@@ -261,7 +261,7 @@ const AddedRepoTable: React.FC = () => {
                 </div>
               )
             }
-            if (i.icon === "loading") {
+            if (i.icon === 'loading') {
               return (
                 <div
                   key={`key3_${index}`}
@@ -272,7 +272,7 @@ const AddedRepoTable: React.FC = () => {
                 </div>
               )
             }
-            if (i.icon === "check") {
+            if (i.icon === 'check') {
               return (
                 <div
                   key={`key4_${index}`}
@@ -295,7 +295,7 @@ const AddedRepoTable: React.FC = () => {
           {openMenuIndex === `menu_${index}` && (
             <Menu
               className={`absolute z-1 whitespace-nowrap right-0  ${
-                index === reposData.length - 1 && "bottom-0 "
+                index === reposData.length - 1 && 'bottom-0 '
               }`}
             >
               <Menu.Item

@@ -1,8 +1,8 @@
-import React from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { HelpText, Icon, Navbar, Toolbar } from "@mergestat/blocks"
-import { BookIcon, CaretDownIcon } from "@mergestat/icons"
+import React from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { HelpText, Icon, Navbar, Toolbar } from '@mergestat/blocks'
+import { BookIcon, CaretDownIcon } from '@mergestat/icons'
 
 const NavHeader: React.FC = () => {
   return (

@@ -1,9 +1,11 @@
-import { Fragment } from "react"
-import type { NextPage } from "next"
+import { Fragment } from 'react'
+import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import Head from "next/head"
+import Head from 'next/head'
+import { RepositoriesProvider } from '../src/state/contexts/repositories.context'
 
-const Repos = dynamic(() => import('src/views/Repos'))
+const Repos = dynamic(() => import('src/views/repositories'))
+
 
 const ReposPage: NextPage = () => {
   return (
@@ -11,8 +13,9 @@ const ReposPage: NextPage = () => {
       <Head>
         <title>MergeStat | Repos</title>
       </Head>
-
-      <Repos />
+      <RepositoriesProvider>
+        <Repos />
+      </RepositoriesProvider>
     </Fragment>
   )
 }

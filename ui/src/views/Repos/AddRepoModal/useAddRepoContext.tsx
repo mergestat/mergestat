@@ -1,13 +1,13 @@
-import * as React from "react"
-import { RepositoryIcon } from "@mergestat/icons"
+import * as React from 'react'
+import { RepositoryIcon } from '@mergestat/icons'
 
-import { createGenericContext } from "lib/createGenericContext"
+import { createGenericContext } from 'lib/createGenericContext'
 
 export enum ADD_REPO_METHOD {
   URL,
   GH_ORG,
   GH_USER,
-  CSV
+  CSV,
 }
 
 export type RepoType = {
@@ -19,11 +19,11 @@ export type RepoType = {
 }
 
 type RepoStateProps = {
-  addRepoMethod: ADD_REPO_METHOD,
-  addedReposFromURL: Array<RepoType>,
-  reposFromOrg: Array<RepoType>,
-  reposFromUser: Array<RepoType>,
-  reposFromCSV: Array<string>,
+  addRepoMethod: ADD_REPO_METHOD
+  addedReposFromURL: Array<RepoType>
+  reposFromOrg: Array<RepoType>
+  reposFromUser: Array<RepoType>
+  reposFromCSV: Array<string>
 }
 
 const initialState: RepoStateProps = {
@@ -37,7 +37,7 @@ const initialState: RepoStateProps = {
 export type UseRepoStateT = [
   RepoStateProps,
   React.Dispatch<React.SetStateAction<RepoStateProps>>
-];
+]
 
 export function useRepoState(): UseRepoStateT {
   const [state, setState] = React.useState<RepoStateProps>(initialState)
@@ -50,7 +50,8 @@ interface Props {
 }
 
 // Generate context
-const [useReposContext, ReposContextProvider] = createGenericContext<UseRepoStateT>()
+const [useReposContext, ReposContextProvider] =
+  createGenericContext<UseRepoStateT>()
 
 // Generate provider
 const ReposProvider = ({ children }: Props) => {
@@ -65,20 +66,20 @@ const ReposProvider = ({ children }: Props) => {
 
 const getReposFromOrgName = (orgName: string) => {
   return Array.from({ length: 100 }).map((_) => ({
-    name: "example-repo-name",
+    name: 'example-repo-name',
     subline: orgName + '/example-repo-name',
     icon: <RepositoryIcon className="t-icon" />,
-    url: 'github.com/'+ orgName + '/example-repo-name',
+    url: 'github.com/' + orgName + '/example-repo-name',
     checked: false,
   }))
 }
 
 const getReposFromUserName = (userName: string) => {
   return Array.from({ length: 100 }).map((_) => ({
-    name: "example-repo-name",
+    name: 'example-repo-name',
     subline: userName + '/example-repo-name',
     icon: <RepositoryIcon className="t-icon" />,
-    url: 'github.com/'+ userName + '/example-repo-name',
+    url: 'github.com/' + userName + '/example-repo-name',
     checked: false,
   }))
 }
@@ -87,5 +88,5 @@ export {
   getReposFromOrgName,
   getReposFromUserName,
   useReposContext,
-  ReposProvider
+  ReposProvider,
 }

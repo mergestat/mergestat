@@ -1,7 +1,7 @@
-import { Fragment, useState } from "react"
-import dynamic from "next/dynamic"
-import { Alert, Button, EmptyState } from "@mergestat/blocks"
-import { PlusIcon, RepositoryIcon } from "@mergestat/icons"
+import { Fragment, useState } from 'react'
+import dynamic from 'next/dynamic'
+import { Alert, Button, EmptyState } from '@mergestat/blocks'
+import { PlusIcon, RepositoryIcon } from '@mergestat/icons'
 import { ReposProvider } from './AddRepoModal/useAddRepoContext'
 
 const AddRepoModal = dynamic(() => import('./AddRepoModal'))
@@ -15,7 +15,7 @@ const Repos: React.FC = () => {
   const [autoImportView, setAutoImportView] = useState(false)
   const [syncModalOpen, setSyncModalOpen] = useState(false)
 
-  const [isEmpty, setIsEmpty] = useState(true)
+  const [isEmpty, setIsEmpty] = useState(false)
   const [isAlertInfo, setIsAlertInfo] = useState(true)
 
   const closeModal = () => {
@@ -86,7 +86,7 @@ const Repos: React.FC = () => {
       )}
 
       {syncModalOpen && (
-        <SyncRepoModal onClose={()=>setSyncModalOpen(false)} />
+        <SyncRepoModal onClose={() => setSyncModalOpen(false)} />
       )}
     </Fragment>
   )

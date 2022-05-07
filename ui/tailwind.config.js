@@ -1,38 +1,40 @@
-const colors = require("tailwindcss/colors");
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   purge: {
     content: [
-      "./pages/**/*.{js,ts,jsx,tsx}",
-      "./src/**/*.{js,ts,jsx,tsx}",
-      "./node_modules/@mergestat/blocks/**/*.{js,ts,jsx,tsx}",
+      './pages/**/*.{js,ts,jsx,tsx}',
+      './src/**/*.{js,ts,jsx,tsx}',
+      './node_modules/@mergestat/blocks/**/*.{js,ts,jsx,tsx}',
     ],
     options: {
-      safelist: [/w-\d\/\d/, "md_w-1/2", /^w-/, /^h-/],
+      safelist: [/w-\d\/\d/, 'md_w-1/2', /^w-/, /^h-/],
     },
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
+        primary:'rgb(55, 65, 81)',
         gray: {
-          150: "#EBECEF",
+          150: '#EBECEF',
+          text:'#727C8D',
         },
       },
       gridTemplateRows: {
-        "content-layout": "auto 1fr",
+        'content-layout': 'auto 1fr',
       },
       minHeight: {
-        40: "10rem",
+        40: '10rem',
       },
       height: {
         84: '21rem',
-      }
+      },
     },
     colors: {
-      transparent: "transparent",
-      current: "currentColor",
-      gray: colors.coolGray,
+      transparent: 'transparent',
+      current: 'currentColor',
+      gray: colors.gray,
       green: colors.emerald,
       lime: colors.lime,
       red: colors.red,
@@ -43,12 +45,12 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ["active"],
-      backgroundImage: ["active"],
-      boxShadow: ["active"],
-      gradientColorStops: ["active"],
+      backgroundColor: ['active'],
+      backgroundImage: ['active'],
+      boxShadow: ['active'],
+      gradientColorStops: ['active'],
     },
   },
   plugins: [],
-  separator: "_",
-};
+  separator: '_',
+}

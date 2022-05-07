@@ -1,7 +1,7 @@
-import React from "react"
-import dynamic from "next/dynamic"
-import { Button, Modal, RadioCard, Toolbar } from "@mergestat/blocks"
-import { GithubIcon, LinkIcon, TableIcon, XIcon } from "@mergestat/icons"
+import React from 'react'
+import dynamic from 'next/dynamic'
+import { Button, Modal, RadioCard, Toolbar } from '@mergestat/blocks'
+import { GithubIcon, LinkIcon, TableIcon, XIcon } from '@mergestat/icons'
 import { ADD_REPO_METHOD, useReposContext } from './useAddRepoContext'
 
 const AddFromUrl = dynamic(() => import('./AddFromUrl'))
@@ -18,42 +18,45 @@ type MethodRadioType = {
 const METHOD_RADIO_GROUP: MethodRadioType[] = [
   {
     startIcon: <LinkIcon />,
-    label: "Add from URL",
-    type: ADD_REPO_METHOD.URL
+    label: 'Add from URL',
+    type: ADD_REPO_METHOD.URL,
   },
   {
     startIcon: <GithubIcon />,
-    label: "Add from GitHub org",
-    type: ADD_REPO_METHOD.GH_ORG
+    label: 'Add from GitHub org',
+    type: ADD_REPO_METHOD.GH_ORG,
   },
   {
     startIcon: <GithubIcon />,
-    label: "Add from GitHub user",
-    type: ADD_REPO_METHOD.GH_USER
+    label: 'Add from GitHub user',
+    type: ADD_REPO_METHOD.GH_USER,
   },
   {
     startIcon: <TableIcon />,
-    label: "Add Add from CSV",
-    type: ADD_REPO_METHOD.CSV
+    label: 'Add Add from CSV',
+    type: ADD_REPO_METHOD.CSV,
   },
 ]
 
 type AddRepoModalPropsT = {
-  handleOnClose: () => void;
-  openAutoImportView: () => void;
+  handleOnClose: () => void
+  openAutoImportView: () => void
 }
 
 const AddRepoModal = ({
   handleOnClose,
   openAutoImportView,
 }: AddRepoModalPropsT) => {
-  const [{
-    addRepoMethod,
-    addedReposFromURL,
-    reposFromOrg,
-    reposFromUser,
-    reposFromCSV,
-  }, setReposState] = useReposContext()
+  const [
+    {
+      addRepoMethod,
+      addedReposFromURL,
+      reposFromOrg,
+      reposFromUser,
+      reposFromCSV,
+    },
+    setReposState,
+  ] = useReposContext()
 
   return (
     <Modal open onClose={handleOnClose} size="lg" className="max-w-6xl">
@@ -88,9 +91,9 @@ const AddRepoModal = ({
                   label={radio.label}
                   startIcon={radio.startIcon}
                   onChange={() => {
-                    setReposState(prevState => ({
+                    setReposState((prevState) => ({
                       ...prevState,
-                      addRepoMethod: radio.type
+                      addRepoMethod: radio.type,
                     }))
                   }}
                 />
@@ -98,7 +101,7 @@ const AddRepoModal = ({
             })}
           </div>
           {addRepoMethod === ADD_REPO_METHOD.GH_ORG ? (
-            <AddFromGitOrg  openAutoImportView={openAutoImportView} />
+            <AddFromGitOrg openAutoImportView={openAutoImportView} />
           ) : addRepoMethod === ADD_REPO_METHOD.GH_USER ? (
             <AddFromGitUser openAutoImportView={openAutoImportView} />
           ) : addRepoMethod === ADD_REPO_METHOD.CSV ? (
@@ -122,30 +125,32 @@ const AddRepoModal = ({
                   addRepoMethod === ADD_REPO_METHOD.URL
                     ? addedReposFromURL.length === 0
                     : addRepoMethod === ADD_REPO_METHOD.GH_ORG
-                      ? reposFromOrg.filter((repo) => repo.checked).length === 0
-                      : addRepoMethod === ADD_REPO_METHOD.GH_USER
-                        ? reposFromUser.filter((repo) => repo.checked).length === 0
-                        : reposFromCSV.length === 0
+                    ? reposFromOrg.filter((repo) => repo.checked).length === 0
+                    : addRepoMethod === ADD_REPO_METHOD.GH_USER
+                    ? reposFromUser.filter((repo) => repo.checked).length === 0
+                    : reposFromCSV.length === 0
                 }
                 onClick={handleOnClose}
               >
-                {addRepoMethod === ADD_REPO_METHOD.URL ? (
-                  addedReposFromURL.length === 0
+                {addRepoMethod === ADD_REPO_METHOD.URL
+                  ? addedReposFromURL.length === 0
                     ? 'Add Repository'
                     : `Add ${addedReposFromURL.length} Repositories`
-                ) : addRepoMethod === ADD_REPO_METHOD.GH_ORG ? (
-                  reposFromOrg.filter((repo) => repo.checked).length === 0
+                  : addRepoMethod === ADD_REPO_METHOD.GH_ORG
+                  ? reposFromOrg.filter((repo) => repo.checked).length === 0
                     ? 'Add Repository'
-                    : `Add ${reposFromOrg.filter((repo) => repo.checked).length} Repositories`
-                ) : addRepoMethod === ADD_REPO_METHOD.GH_USER ? (
-                  reposFromUser.filter((repo) => repo.checked).length === 0
+                    : `Add ${
+                        reposFromOrg.filter((repo) => repo.checked).length
+                      } Repositories`
+                  : addRepoMethod === ADD_REPO_METHOD.GH_USER
+                  ? reposFromUser.filter((repo) => repo.checked).length === 0
                     ? 'Add Repository'
-                    : `Add ${reposFromUser.filter((repo) => repo.checked).length} Repositories`
-                ) : (
-                  reposFromCSV.length === 0
-                    ? 'Add Repository'
-                    : `Add ${reposFromCSV.length} Repositories`
-                )}
+                    : `Add ${
+                        reposFromUser.filter((repo) => repo.checked).length
+                      } Repositories`
+                  : reposFromCSV.length === 0
+                  ? 'Add Repository'
+                  : `Add ${reposFromCSV.length} Repositories`}
               </Button>
             </Toolbar.Item>
           </Toolbar.Right>

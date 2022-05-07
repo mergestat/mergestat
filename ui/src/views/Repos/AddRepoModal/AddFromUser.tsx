@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useState } from 'react'
 import {
   Button,
   Checkbox,
@@ -8,15 +8,15 @@ import {
   InlineBanner,
   Input,
   Label,
-  Panel
-} from "@mergestat/blocks"
-import { SearchIcon } from "@mergestat/icons"
+  Panel,
+} from '@mergestat/blocks'
+import { SearchIcon } from '@mergestat/icons'
 import { getReposFromUserName } from './useAddRepoContext'
 import { EmptyComponent } from './EmptyComponent'
 import { useReposContext } from './useAddRepoContext'
 
 const AddFromGitUser = ({
-  openAutoImportView
+  openAutoImportView,
 }: {
   openAutoImportView: () => void
 }) => {
@@ -26,24 +26,25 @@ const AddFromGitUser = ({
   const handleFindRepos = () => {
     const repos = getReposFromUserName(userName)
 
-    setReposState(prevState => ({
+    setReposState((prevState) => ({
       ...prevState,
       reposFromUser: repos,
     }))
   }
 
   const selectedState = useCallback(() => {
-    const selectedRepos = reposFromUser.filter(repo => repo.checked)
+    const selectedRepos = reposFromUser.filter((repo) => repo.checked)
 
     if (selectedRepos.length === 0) return CHECKBOX_STATES.Unchecked
-    if (selectedRepos.length === reposFromUser.length) return CHECKBOX_STATES.Checked
+    if (selectedRepos.length === reposFromUser.length)
+      return CHECKBOX_STATES.Checked
     return CHECKBOX_STATES.Indeterminate
   }, [reposFromUser])
 
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
       <div className="mb-5">
-        <h3 className="t-h3 mb-3">Add from GitHub user</h3>          
+        <h3 className="t-h3 mb-3">Add from GitHub user</h3>
         <div className="flex items-center gap-2">
           <Label htmlFor="userName" className="whitespace-nowrap">
             Username
@@ -57,14 +58,14 @@ const AddFromGitUser = ({
             onKeyUp={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault()
-                if (userName !== "") handleFindRepos()
+                if (userName !== '') handleFindRepos()
               }
             }}
           />
           <Button
             skin="secondary"
             className="whitespace-nowrap"
-            disabled={userName === ""}
+            disabled={userName === ''}
             onClick={handleFindRepos}
           >
             Find Repos
@@ -81,46 +82,53 @@ const AddFromGitUser = ({
               <Checkbox
                 value={selectedState()}
                 onClick={(e) => {
-                  const checked = (e.currentTarget.checked)
-                  setReposState(prevState => {
+                  const checked = e.currentTarget.checked
+                  setReposState((prevState) => {
                     const repos = prevState.reposFromUser
                     return {
                       ...prevState,
-                      reposFromUser: [...repos.map(repo => ({
-                        ...repo,
-                        checked: checked
-                      }))],
+                      reposFromUser: [
+                        ...repos.map((repo) => ({
+                          ...repo,
+                          checked: checked,
+                        })),
+                      ],
                     }
                   })
                 }}
               />
               <HelpText>
-                {reposFromUser.filter(repo => repo.checked).length} of {reposFromUser.length} repositories selected
+                {reposFromUser.filter((repo) => repo.checked).length} of{' '}
+                {reposFromUser.length} repositories selected
               </HelpText>
             </div>
 
             <Input
               placeholder="Search..."
-              startIcon={(
+              startIcon={
                 <SearchIcon className="t-icon t-icon-heroicons-search" />
-              )}
+              }
               // onChange={(e) => handleSearch(e.currentTarget.value)}
             />
           </Panel.Header>
           <Panel.Body className="p-0 overflow-y-auto">
             <InlineBanner>
               Want to automatically add repos from this user?{' '}
-              <a onClick={openAutoImportView}>Auto import</a> repos from this user instead
+              <a onClick={openAutoImportView}>Auto import</a> repos from this
+              user instead
             </InlineBanner>
             {reposFromUser.map((repo, index) => {
               return (
-                <div key={index} className="flex items-center px-6 py-3 border-t">
+                <div
+                  key={index}
+                  className="flex items-center px-6 py-3 border-t"
+                >
                   <Checkbox
-                    id={"repo_" + index}
+                    id={'repo_' + index}
                     checked={repo.checked}
                     onChange={(e) => {
-                      const checked = (e.currentTarget.checked)
-                      setReposState(prevState => {
+                      const checked = e.currentTarget.checked
+                      setReposState((prevState) => {
                         const repos = prevState.reposFromUser
                         repos[index].checked = checked
                         return {
@@ -130,17 +138,11 @@ const AddFromGitUser = ({
                       })
                     }}
                   />
-                  <ColoredBox
-                    size='8'
-                    className="mr-2"
-                    skin="default"
-                  >
+                  <ColoredBox size="8" className="mr-2" skin="default">
                     {repo.icon}
                   </ColoredBox>
-                  <Label htmlFor={"repo_" + index}>
-                    {repo.subline}
-                  </Label>
-                </div> 
+                  <Label htmlFor={'repo_' + index}>{repo.subline}</Label>
+                </div>
               )
             })}
           </Panel.Body>
