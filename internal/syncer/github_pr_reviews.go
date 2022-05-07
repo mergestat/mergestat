@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	reviewsFullSyncDays = "90" // 90 days
+	reviewsFullSyncDays = 90 // 90 days
 
 	selectGitHubPRReviews = `SELECT github_prs.number AS pr_number, github_pr_reviews.* FROM github_prs(?), github_pr_reviews(?, github_prs.number) ORDER BY github_pr_reviews.created_at DESC`
 )
@@ -146,7 +146,8 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 	}()
 
 	// delete the recent rows within days for github_pull_request_reviews in PG
-	if _, err := tx.Exec(ctx, "DELETE FROM github_pull_request_reviews WHERE repo_id = $1 and created_at > (now() - interval '"+reviewsFullSyncDays+" day');", j.RepoID.String()); err != nil {
+	sql := fmt.Sprintf("DELETE FROM github_pull_request_reviews WHERE repo_id = $1 and created_at > (now() - interval '%d day');", reviewsFullSyncDays)
+	if _, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
 	}
 
