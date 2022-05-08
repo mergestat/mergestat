@@ -112,9 +112,9 @@ func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, repo 
 
 const selectLatestIssueDatabaseId = "SELECT database_id FROM github_issues WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
 
-func (w *worker) queryLatestIssueDatabaseId(ctx context.Context, repoID string) (int, error) {
+func (w *worker) queryLatestIssueDatabaseId(ctx context.Context, tx pgx.Tx, repoID string) (int, error) {
 	var databaseId sql.NullInt32
-	row := w.pool.QueryRow(ctx, selectLatestIssueDatabaseId, repoID)
+	row := tx.QueryRow(ctx, selectLatestIssueDatabaseId, repoID)
 	if err := row.Scan(&databaseId); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return 0, nil
@@ -163,11 +163,13 @@ func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJo
 
 	// delete the recent rows within days for github_issues in PG
 	sql := fmt.Sprintf("DELETE FROM github_issues WHERE repo_id = $1 and created_at > (now() - interval '%d day');", issuesFullSyncDays)
-	if _, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
+	if res, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
+	} else {
+		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
 	}
 
-	databaseId, err := w.queryLatestIssueDatabaseId(ctx, id.String())
+	databaseId, err := w.queryLatestIssueDatabaseId(ctx, tx, id.String())
 	if err != nil {
 		return fmt.Errorf("query latest issue database id: %w", err)
 	}
