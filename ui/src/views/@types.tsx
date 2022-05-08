@@ -1,0 +1,1 @@
+export type repSyncState = "disabled" | "syncing" | "not_sync"|"error"

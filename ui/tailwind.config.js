@@ -27,8 +27,14 @@ module.exports = {
       minHeight: {
         40: '10rem',
       },
+      width:{
+        100:"25rem"
+      },
       height: {
         84: '21rem',
+      },
+      margin:{
+        0.5:"2px"
       },
     },
     colors: {

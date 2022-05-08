@@ -116,6 +116,7 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
 
             {repositories.map((repo, index) => (
               <RepositoryRow
+                key={index}
                 username={username}
                 name={repo.name}
                 selected={repo.selected}

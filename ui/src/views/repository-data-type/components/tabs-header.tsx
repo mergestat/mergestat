@@ -1,0 +1,13 @@
+import React from 'react'
+import { Tabs } from '@mergestat/blocks'
+
+export const TabsHeader: React.FC = (props) => {
+  return (
+    <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
+      <Tabs.List>
+        <Tabs.Item className=' ring-transparent focus_ring-transparent '>Logs</Tabs.Item>
+        <Tabs.Item>Sync Settings</Tabs.Item>
+      </Tabs.List>
+    </div>
+  )
+}

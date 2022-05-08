@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import Image from 'next/image'
 import { Button, Input, Label, ListItem } from '@mergestat/blocks'
 import { PlusIcon, RepositoryIcon } from '@mergestat/icons'
-import { checkRepoValidate, getRepoFromUrl } from 'utils'
+import { checkRepoValidate, getRepoFromUrl } from 'src/utils'
 import { EmptyComponent } from './EmptyComponent'
 import { useReposContext } from './useAddRepoContext'
 

@@ -8,7 +8,9 @@
 .content-area {
   height: calc(100% - theme('height.14')); /* Nav height is h-14 */
 }
-
+thead{
+  z-index: 0;
+}
 .Selectable {
   width: max-content;
 }

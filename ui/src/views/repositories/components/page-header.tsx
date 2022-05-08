@@ -3,7 +3,7 @@ import { AutoImportIcon, CogIcon, PlusIcon } from '@mergestat/icons'
 import React, { useState } from 'react'
 import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 
-const PageHeader: React.FC = (props) => {
+export const PageHeader: React.FC = (props) => {
   const {
     setShowAddRepositoryModal,
     setShowAutoImportModal,
@@ -43,4 +43,4 @@ const PageHeader: React.FC = (props) => {
   )
 }
 
-export default PageHeader
+
