@@ -9,11 +9,16 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4"
+	"github.com/jmoiron/sqlx"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
 
-const selectGitHubRepoIssues = `SELECT * FROM github_repo_issues(?)`
+const (
+	issuesFullSyncDays = 90 // 90 days
+
+	selectGitHubRepoIssues = `SELECT * FROM github_repo_issues(?) ORDER BY created_at DESC`
+)
 
 type githubRepoIssue struct {
 	AuthorLogin         *string    `db:"author_login"`
@@ -41,7 +46,7 @@ type githubRepoIssue struct {
 }
 
 // sendBatchGitHubRepoIssues uses the pg COPY protocol to send a batch of GitHub repo issues
-func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*githubRepoIssue) error {
+func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, repo uuid.UUID, batch []*githubRepoIssue) error {
 	cols := []string{
 		"repo_id",
 		"author_login",
@@ -69,16 +74,31 @@ func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, j *db
 	}
 
 	inputs := make([][]interface{}, 0, len(batch))
-	for _, is := range batch {
-		var repoID uuid.UUID
-		var err error
-		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
-			return err
-		}
-
-		input := []interface{}{repoID, is.AuthorLogin, is.Body, is.Closed, is.ClosedAt, is.CommentCount, is.CreatedAt, is.CreatedViaEmail, is.DatabaseID,
-			is.EditorLogin, is.IncludesCreatedEdit, is.LabelCount, is.LastEditedAt, is.Locked, is.MilestoneCount, is.Number, is.ParticipantCount,
-			is.PublishedAt, is.ReactionCount, is.State, is.Title, is.UpdatedAt, is.URL,
+	for _, issue := range batch {
+		input := []interface{}{
+			repo,
+			issue.AuthorLogin,
+			issue.Body,
+			issue.Closed,
+			issue.ClosedAt,
+			issue.CommentCount,
+			issue.CreatedAt,
+			issue.CreatedViaEmail,
+			issue.DatabaseID,
+			issue.EditorLogin,
+			issue.IncludesCreatedEdit,
+			issue.LabelCount,
+			issue.LastEditedAt,
+			issue.Locked,
+			issue.MilestoneCount,
+			issue.Number,
+			issue.ParticipantCount,
+			issue.PublishedAt,
+			issue.ReactionCount,
+			issue.State,
+			issue.Title,
+			issue.UpdatedAt,
+			issue.URL,
 		}
 		inputs = append(inputs, input)
 	}
@@ -92,52 +112,97 @@ func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, j *db
 func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	// indicate that we're starting query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "starting to execute GitHub repo issues lookup query"},
+		{
+			Type:            SyncLogTypeInfo,
+			RepoSyncQueueID: j.ID,
+			Message:         "starting to execute GitHub repo issues lookup query",
+		},
 	}); err != nil {
-		return err
+		return fmt.Errorf("log messages: %w", err)
 	}
 
-	var u *url.URL
-	var err error
-	if u, err = url.Parse(j.Repo); err != nil {
-		return fmt.Errorf("could not parse repo: %v", err)
+	id, err := uuid.FromString(j.RepoID.String())
+	if err != nil {
+		return fmt.Errorf("parse uuid: %w", err)
 	}
-
+	u, err := url.Parse(j.Repo)
+	if err != nil {
+		return fmt.Errorf("url parse: %w", err)
+	}
 	components := strings.Split(u.Path, "/")
 	repoOwner := components[1]
 	repoName := components[2]
 
-	issues := make([]*githubRepoIssue, 0)
-	if err := w.mergestat.SelectContext(ctx, &issues, selectGitHubRepoIssues, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
-		return err
-	}
-
-	l.Info().Msgf("retrieved repo issues: %d", len(issues))
-
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
-		return err
+		return fmt.Errorf("begin tx: %w", err)
 	}
 	defer func() {
 		if err := tx.Rollback(ctx); err != nil {
 			if !errors.Is(err, pgx.ErrTxClosed) {
-				w.logger.Err(err).Msgf("could not rollback transaction")
+				w.logger.Err(err).Msgf("rollback transaction: %v", err)
 			}
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM github_issues WHERE repo_id = $1;", j.RepoID.String()); err != nil {
-		return err
+	// delete the recent rows within days for github_issues in PG
+	sql := fmt.Sprintf("DELETE FROM github_issues WHERE repo_id = $1 and created_at > (now() - interval '%d day');", issuesFullSyncDays)
+	if res, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
+		return fmt.Errorf("delete rows: %w", err)
+	} else {
+		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
 	}
 
-	if err := w.sendBatchGitHubRepoIssues(ctx, tx, j, issues); err != nil {
-		return err
+	sql = "SELECT database_id FROM github_issues WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
+	var databaseId int
+	if err := tx.QueryRow(ctx, sql, id.String()).Scan(&databaseId); err != nil {
+		if !errors.Is(err, pgx.ErrNoRows) {
+			return fmt.Errorf("query row: %w", err)
+		}
 	}
+
+	var rows *sqlx.Rows
+	if rows, err = w.mergestat.QueryxContext(ctx, selectGitHubRepoIssues, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
+		return fmt.Errorf("mergestat query: %w", err)
+	}
+	defer func() {
+		if err := rows.Close(); err != nil {
+			w.logger.Err(err).Msgf("close rows: %v", err)
+		}
+	}()
+
+	batchSize := 500
+	batch := make([]*githubRepoIssue, 0, batchSize)
+	totalCount := 0
+	for rows.Next() {
+		var r githubRepoIssue
+		if err := rows.StructScan(&r); err != nil {
+			return fmt.Errorf("row scan: %w", err)
+		}
+		if len(batch) >= batchSize {
+			if err := w.sendBatchGitHubRepoIssues(ctx, tx, id, batch); err != nil {
+				return fmt.Errorf("batch insert issues: %w", err)
+			}
+			batch = make([]*githubRepoIssue, 0, batchSize)
+		} else {
+			if *r.DatabaseID == databaseId {
+				break
+			}
+			batch = append(batch, &r)
+		}
+		totalCount++
+	}
+	if len(batch) > 0 {
+		if err := w.sendBatchGitHubRepoIssues(ctx, tx, id, batch); err != nil {
+			return fmt.Errorf("batch insert issues: %w", err)
+		}
+	}
+
+	l.Info().Msgf("retrieved repo issues: %d", totalCount)
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
-		return err
+		return fmt.Errorf("sync job done: %w", err)
 	}
 
 	return tx.Commit(ctx)
