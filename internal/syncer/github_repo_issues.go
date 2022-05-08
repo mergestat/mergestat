@@ -2,7 +2,6 @@ package syncer
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 	"net/url"
@@ -110,20 +109,6 @@ func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, repo 
 	return nil
 }
 
-const selectLatestIssueDatabaseId = "SELECT database_id FROM github_issues WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
-
-func (w *worker) queryLatestIssueDatabaseId(ctx context.Context, tx pgx.Tx, repoID string) (int, error) {
-	var databaseId sql.NullInt32
-	row := tx.QueryRow(ctx, selectLatestIssueDatabaseId, repoID)
-	if err := row.Scan(&databaseId); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return 0, nil
-		}
-		return 0, err
-	}
-	return int(databaseId.Int32), nil
-}
-
 func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
@@ -169,9 +154,12 @@ func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJo
 		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
 	}
 
-	databaseId, err := w.queryLatestIssueDatabaseId(ctx, tx, id.String())
-	if err != nil {
-		return fmt.Errorf("query latest issue database id: %w", err)
+	sql = "SELECT database_id FROM github_issues WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
+	var databaseId int
+	if err := tx.QueryRow(ctx, sql, id.String()).Scan(&databaseId); err != nil {
+		if !errors.Is(err, pgx.ErrNoRows) {
+			return fmt.Errorf("query row: %w", err)
+		}
 	}
 
 	var rows *sqlx.Rows
@@ -207,7 +195,7 @@ func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJo
 	}
 	if len(batch) > 0 {
 		if err := w.sendBatchGitHubRepoIssues(ctx, tx, id, batch); err != nil {
-			return fmt.Errorf("batch insert stars: %w", err)
+			return fmt.Errorf("batch insert issues: %w", err)
 		}
 	}
 
