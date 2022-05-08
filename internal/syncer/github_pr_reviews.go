@@ -94,9 +94,9 @@ func (w *worker) sendBatchGitHubPRReviews(ctx context.Context, tx pgx.Tx, repo u
 
 const selectLatestPRReviewId = "SELECT id FROM github_pull_request_reviews WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
 
-func (w *worker) queryLatestPRReviewId(ctx context.Context, repoID string) (string, error) {
+func (w *worker) queryLatestPRReviewId(ctx context.Context, tx pgx.Tx, repoID string) (string, error) {
 	var id sql.NullString
-	row := w.pool.QueryRow(ctx, selectLatestPRReviewId, repoID)
+	row := tx.QueryRow(ctx, selectLatestPRReviewId, repoID)
 	if err := row.Scan(&id); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return "", nil
@@ -147,11 +147,13 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 
 	// delete the recent rows within days for github_pull_request_reviews in PG
 	sql := fmt.Sprintf("DELETE FROM github_pull_request_reviews WHERE repo_id = $1 and created_at > (now() - interval '%d day');", reviewsFullSyncDays)
-	if _, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
+	if res, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
+	} else {
+		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
 	}
 
-	reviewId, err := w.queryLatestPRReviewId(ctx, id.String())
+	reviewId, err := w.queryLatestPRReviewId(ctx, tx, id.String())
 	if err != nil {
 		return fmt.Errorf("query latest pr review id: %w", err)
 	}
