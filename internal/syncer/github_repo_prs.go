@@ -2,7 +2,6 @@ package syncer
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 	"net/url"
@@ -161,20 +160,6 @@ func (w *worker) sendBatchGitHubRepoPRs(ctx context.Context, tx pgx.Tx, repo uui
 	return nil
 }
 
-const selectLatestPRDatabaseId = "SELECT database_id FROM github_pull_requests WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
-
-func (w *worker) queryLatestPRDatabaseId(ctx context.Context, repoID string) (int, error) {
-	var databaseId sql.NullInt32
-	row := w.pool.QueryRow(ctx, selectLatestPRDatabaseId, repoID)
-	if err := row.Scan(&databaseId); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return 0, nil
-		}
-		return 0, err
-	}
-	return int(databaseId.Int32), nil
-}
-
 func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
@@ -214,13 +199,18 @@ func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRo
 
 	// delete the recent rows within days for github_pull_requests in PG
 	sql := fmt.Sprintf("DELETE FROM github_pull_requests WHERE repo_id = $1 and created_at > (now() - interval '%d day');", pullRequestsFullSyncDays)
-	if _, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
+	if res, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
+	} else {
+		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
 	}
 
-	databaseId, err := w.queryLatestPRDatabaseId(ctx, id.String())
-	if err != nil {
-		return fmt.Errorf("query latest pull request database id: %w", err)
+	var databaseId int
+	sql = "SELECT database_id FROM github_pull_requests WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
+	if err := tx.QueryRow(ctx, sql, id.String()).Scan(&databaseId); err != nil {
+		if !errors.Is(err, pgx.ErrNoRows) {
+			return fmt.Errorf("query row: %w", err)
+		}
 	}
 
 	var rows *sqlx.Rows
