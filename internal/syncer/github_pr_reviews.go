@@ -2,7 +2,6 @@ package syncer
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 	"net/url"
@@ -92,20 +91,6 @@ func (w *worker) sendBatchGitHubPRReviews(ctx context.Context, tx pgx.Tx, repo u
 	return nil
 }
 
-const selectLatestPRReviewId = "SELECT id FROM github_pull_request_reviews WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
-
-func (w *worker) queryLatestPRReviewId(ctx context.Context, tx pgx.Tx, repoID string) (string, error) {
-	var id sql.NullString
-	row := tx.QueryRow(ctx, selectLatestPRReviewId, repoID)
-	if err := row.Scan(&id); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return "", nil
-		}
-		return "", err
-	}
-	return id.String, nil
-}
-
 func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
@@ -153,9 +138,12 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
 	}
 
-	reviewId, err := w.queryLatestPRReviewId(ctx, tx, id.String())
-	if err != nil {
-		return fmt.Errorf("query latest pr review id: %w", err)
+	sql = "SELECT id FROM github_pull_request_reviews WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
+	var reviewId string
+	if err := tx.QueryRow(ctx, sql, id.String()).Scan(&reviewId); err != nil {
+		if !errors.Is(err, pgx.ErrNoRows) {
+			return fmt.Errorf("query row: %w", err)
+		}
 	}
 
 	var rows *sqlx.Rows
