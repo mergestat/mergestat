@@ -5,7 +5,7 @@ import React from 'react'
 export const columns: Array<Record<string, any>> = [
   {
     title: '',
-    className: 'w-4 ',
+    className: 'pl-5 pr-0 gap-0 w-4',
     dataIndex: 'collapse',
     key: 'collapse',
   },

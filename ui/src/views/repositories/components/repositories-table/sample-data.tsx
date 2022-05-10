@@ -7,7 +7,7 @@ export const sampleRepositoriesData: {
   repositoryName: string
   lastUpdate: string
   icons: ReactNode[]
-  tags: { title: string; checked: boolean }[]
+  tags: { title: string; checked: boolean,color?:string }[]
   status: { icon: repoDataStatus; count: number }[]
   lastSync: string
 }[] = [
@@ -16,8 +16,8 @@ export const sampleRepositoriesData: {
     lastUpdate: 'Last updated today',
     icons: [<GithubIcon />],
     tags: [
-      { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: true },
+      { title: 'javascript', checked: true,color: "#8652E0" },
+      { title: 'nodejs', checked: true,color:"#F59E0B" },
       { title: 'virtual-dom', checked: true },
       { title: 'virtual-dom', checked: false },
       { title: 'nodejs', checked: false },
@@ -40,8 +40,8 @@ export const sampleRepositoriesData: {
       </Tooltip>,
     ],
     tags: [
-      { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: true },
+      { title: 'javascript', checked: true,color: "#8652E0" },
+      { title: 'nodejs', checked: true,color:"#F59E0B" },
       { title: 'virtual-dom', checked: false },
       { title: 'mongo-db', checked: true },
       { title: 'nodejs', checked: false },
@@ -64,8 +64,8 @@ export const sampleRepositoriesData: {
       </Tooltip>,
     ],
     tags: [
-      { title: 'javascript', checked: false },
-      { title: 'nodejs', checked: false },
+      { title: 'javascript', checked: true,color: "#8652E0" },
+      { title: 'nodejs', checked: true,color:"#F59E0B" },
       { title: 'virtual-dom', checked: true },
       { title: 'virtual-dom', checked: false },
       { title: 'nodejs', checked: false },
@@ -87,8 +87,8 @@ export const sampleRepositoriesData: {
       </Tooltip>,
     ],
     tags: [
-      { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: true },
+      { title: 'javascript', checked: true,color: "#8652E0" },
+      { title: 'nodejs', checked: true,color:"#F59E0B" },
       { title: 'virtual-dom', checked: true },
       { title: 'virtual-dom', checked: false },
       { title: 'nodejs', checked: false },

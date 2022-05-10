@@ -20,7 +20,7 @@ export const RepositoriesView: React.FC = () => {
   } = useRepositoriesContext()
 
   return (
-    <main className="w-full bg-gray-100">
+    <main className="w-full flex flex-col bg-gray-100">
       <PageHeader />
       <FilterHeader />
       {false && <EmptyRepositoryTable />}

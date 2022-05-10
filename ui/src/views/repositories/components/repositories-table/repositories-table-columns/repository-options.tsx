@@ -4,7 +4,7 @@ import { RepositoryAdditionalActionsDropDown } from 'src/views/repositories/drop
 export const RepositoryOptions: React.FC = (props) => {
   return (
     <Fragment>
-      <RepositoryAdditionalActionsDropDown />
+
     </Fragment>
   )
 }

@@ -6,13 +6,15 @@ type RepositoryTagItemProps = {
   title: string
   checked: boolean
   index: number
+  color?:string
 }
 
 export const RepositoryTagItem: React.FC<RepositoryTagItemProps> = (props) => {
   return (
     <div key={props.index} className="">
       {props.index < 2 && (
-        <div className="border border-gray-300 rounded px-2 py-1 text-sm w-max bg-gray-100 cursor-pointer">
+        <div className="flex gap-1.5  items-center border  border-gray-300 rounded px-2 py-1 text-sm w-max bg-gray-100 cursor-pointer">
+          { <div className=' w-2 h-2 rounded-full' style={{backgroundColor:props.color}} />}
           {props.title}
         </div>
       )}
@@ -21,7 +23,7 @@ export const RepositoryTagItem: React.FC<RepositoryTagItemProps> = (props) => {
 }
 
 export type RepositoryTagListProps = {
-  tags: Array<{ title: string; checked: boolean }>
+  tags: Array<{ title: string; checked: boolean; color?:string }>
 }
 
 export const RepositoryTagList: React.FC<RepositoryTagListProps> = (props) => {

@@ -5,7 +5,7 @@ import React from 'react'
 export const columns: Array<Record<string, any>> = [
   {
     title: <Checkbox />,
-    className: 'w-4',
+    className: 'pl-2 pr-0 gap-0 w-4',
     dataIndex: 'checkbox',
     key: 'checkbox',
   },

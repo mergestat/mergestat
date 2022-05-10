@@ -28,9 +28,11 @@ module.exports = {
         40: '10rem',
       },
       width: {
+        1.5:'6px',
         100: '25rem',
       },
       height: {
+        1.5:'6px',
         84: '21rem',
       },
       margin: {

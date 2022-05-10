@@ -1,10 +1,13 @@
 import { Dropdown, Menu } from '@mergestat/blocks'
-import { CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
+import { CaretRightIcon, CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
+import { TagsListDropDown } from './tags-list-drop-down'
 
-type RepositoryAdditionalActionsProps = {}
+type RepositoryAdditionalActionsProps = {
+
+}
 
 export const RepositoryAdditionalActionsDropDown: React.FC<RepositoryAdditionalActionsProps> =
-  (prpos) => {
+  (props) => {
     return (
       <Dropdown
         alignEnd
@@ -15,6 +18,19 @@ export const RepositoryAdditionalActionsDropDown: React.FC<RepositoryAdditionalA
               text="Repo settings"
               withIcon
               icon={<CogIcon className="mr-2" />}
+            />
+            <TagsListDropDown
+              trigger={
+                <div className=' relative  text-gray-600'>
+                  <Menu.Item
+                    className=' w-full'
+                    text="Tags"
+                    withIcon
+                    icon={<CogIcon className="mr-2" />}
+                  />
+                  <CaretRightIcon className=' absolute right-3 top-3' />
+                </div>
+	            }
             />
             <Menu.Divider />
             <Menu.Item

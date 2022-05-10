@@ -1,6 +1,8 @@
-import { Checkbox, Table } from '@mergestat/blocks'
-import React from 'react'
+import { Button, Checkbox, EmptyState, Table } from '@mergestat/blocks'
+import { PlusIcon, RepositoryIcon } from '@mergestat/icons'
+import React, { useState } from 'react'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
+import { EmptyRepositoryTable } from '../empty-repository-table'
 import { columns } from './columns'
 import {
   RepositoryLastSync,
@@ -15,7 +17,7 @@ import { sampleRepositoriesData } from './sample-data'
 export const RepositoriesTable: React.FC = (props) => {
   // TODO: export this logic to a hook
   const processedData = sampleRepositoriesData.map((item, index) => ({
-    checkbox: <Checkbox />,
+    checkbox: <Checkbox className=' gap-0' />,
     repository: (
       <RepositoryName
         name={item.repositoryName}
@@ -26,10 +28,11 @@ export const RepositoriesTable: React.FC = (props) => {
     tags: <RepositoryTagList tags={item.tags} />,
     last: <RepositoryLastSync>{item.lastSync}</RepositoryLastSync>,
     status: <RepositoryStatus status={item.status} />,
-    option: <RepositoryOptions />,
+    option: <RepositoryAdditionalActionsDropDown  />,
   }))
+
   return (
-    <div className="mx-8 my-6 rounded-md">
+    <div className="mx-8 my-6 rounded-md flex-grow ">
       <Table
         borderless
         noWrapHeaders
@@ -41,3 +44,4 @@ export const RepositoriesTable: React.FC = (props) => {
     </div>
   )
 }
+
