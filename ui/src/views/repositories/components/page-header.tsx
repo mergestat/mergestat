@@ -17,11 +17,12 @@ export const PageHeader: React.FC = (props) => {
   return (
     <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
       <div className="text-xl font-semibold">
-        {/*<BreadcrumbNav
+        {
+          /*<BreadcrumbNav
           data={[{ text: 'Repos', onClick: () => router.push('/repos') }]}
         />*/
-        <AutoManagedBreadCrumb/>
-          }
+          <AutoManagedBreadCrumb />
+        }
       </div>
       <div className="flex justify-between gap-3 items-center">
         <div className="relative">

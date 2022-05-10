@@ -32,7 +32,7 @@ export const columns: Array<Record<string, any>> = [
   {
     title: (
       <p className="flex items-center gap-4">
-        Last sync <CaretDownIcon className=' text-blue-400'/>
+        Last sync <CaretDownIcon className=" text-blue-400" />
       </p>
     ),
     className: 'text-gray-500',

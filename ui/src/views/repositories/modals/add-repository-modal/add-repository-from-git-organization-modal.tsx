@@ -45,7 +45,9 @@ const RepositoryRow: React.FC<RepositoryRowProps> = (props) => {
       <ColoredBox size="8" className="mr-2" skin="default">
         <RepositoryIcon className="t-icon" />
       </ColoredBox>
-      <Label htmlFor={'repo_' + repName}>{organization}/{repName}</Label>
+      <Label htmlFor={'repo_' + repName}>
+        {organization}/{repName}
+      </Label>
     </div>
   )
 }
@@ -103,12 +105,12 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
               </HelpText>
             </div>
             <Input
-            className=' flex-grow max-w-sm'
+              className="flex-grow max-w-sm"
               placeholder="Search..."
               startIcon={
                 <SearchIcon className="t-icon t-icon-heroicons-search" />
               }
-            // onChange={(e) => handleSearch(e.currentTarget.value)}
+              // onChange={(e) => handleSearch(e.currentTarget.value)}
             />
           </Panel.Header>
           <Panel.Body className="p-0 overflow-y-auto">
@@ -132,8 +134,6 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
   )
 }
 
-
-
 const useGitOrganizations = () => {
   const [repositories, setRepositories] = React.useState<
     Array<{ name: string; selected: boolean }>
@@ -141,7 +141,9 @@ const useGitOrganizations = () => {
 
   const fetchRepositories = (organisation: string) => {
     setRepositories(
-      Array(294).fill(null).map((_, i) => ({ name: `rep${i + 1}`, selected: false }))
+      Array(294)
+        .fill(null)
+        .map((_, i) => ({ name: `rep${i + 1}`, selected: false }))
     )
   }
 

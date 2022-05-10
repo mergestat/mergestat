@@ -15,10 +15,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary:'rgb(55, 65, 81)',
+        primary: 'rgb(55, 65, 81)',
         gray: {
           150: '#EBECEF',
-          text:'#727C8D',
+          text: '#727C8D',
         },
       },
       gridTemplateRows: {
@@ -27,14 +27,14 @@ module.exports = {
       minHeight: {
         40: '10rem',
       },
-      width:{
-        100:"25rem"
+      width: {
+        100: '25rem',
       },
       height: {
         84: '21rem',
       },
-      margin:{
-        0.5:"2px"
+      margin: {
+        0.5: '2px',
       },
     },
     colors: {

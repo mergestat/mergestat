@@ -74,7 +74,7 @@ export const ManageAutoImportReposModal = ({
         </p>
       ),
       last: '2 hours ago',
-      delIcon: <TrashIcon  />,
+      delIcon: <TrashIcon />,
     },
     {
       successIcon: <CircleCheckFilledIcon className="text-green-600" />,
@@ -86,7 +86,7 @@ export const ManageAutoImportReposModal = ({
         </p>
       ),
       last: '2 hours ago',
-      delIcon: <TrashIcon/>,
+      delIcon: <TrashIcon />,
     },
     {
       successIcon: <CircleCheckFilledIcon className="text-green-600" />,
@@ -98,7 +98,7 @@ export const ManageAutoImportReposModal = ({
         </p>
       ),
       last: '2 hours ago',
-      delIcon: <TrashIcon/>,
+      delIcon: <TrashIcon />,
     },
   ]
 

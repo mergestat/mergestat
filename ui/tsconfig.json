@@ -16,6 +16,11 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/views/repository-data-details/components/repo-data-type-sync-settings/settings-table"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/views/repository-data-details/components/repo-data-type-sync-settings/settings-table"
+  ],
   "exclude": ["node_modules"]
 }

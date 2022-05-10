@@ -4,9 +4,9 @@ import { SyncSettingsForm } from './sync-settings-form'
 
 export const SyncSettings = () => {
   return (
-    <div className=' flex flex-col gap-8'>
-        <SyncSettingsForm/>
-        <SettingsTable/>
+    <div className=" flex flex-col gap-8">
+      <SyncSettingsForm />
+      <SettingsTable />
     </div>
   )
 }

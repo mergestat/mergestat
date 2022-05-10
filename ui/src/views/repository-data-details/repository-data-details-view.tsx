@@ -70,9 +70,9 @@ export const getRepositorySyncIcon = (syncStatus: repSyncState) => {
   switch (syncStatus) {
     case 'disabled':
       return <CircleInformationFilledIcon className=" text-gray-500" />
-    case "check":
+    case 'check':
       return <CircleCheckFilledIcon className=" text-green-600" />
-    case "loading":
+    case 'loading':
       return <Spinner size="sm" />
     case 'error':
       return <CircleErrorFilledIcon className=" text-red-600" />

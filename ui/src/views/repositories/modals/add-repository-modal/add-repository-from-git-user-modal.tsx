@@ -11,7 +11,6 @@ import {
 import { RepositoryIcon, SearchIcon } from '@mergestat/icons'
 import React from 'react'
 
-
 const EmptyRepositories: React.FC = () => {
   return (
     <div className="h-80">
@@ -25,14 +24,14 @@ const EmptyRepositories: React.FC = () => {
 }
 
 type RepositoryRowProps = {
-  username:string
+  username: string
   name: string
   selected: boolean
   onChecked: (checked?: boolean) => void
 }
 
 const RepositoryRow: React.FC<RepositoryRowProps> = (props) => {
-  const {name:repName,selected,onChecked,username}=props
+  const { name: repName, selected, onChecked, username } = props
   return (
     <div className="flex items-center px-6 py-3 border-t">
       <Checkbox
@@ -46,7 +45,9 @@ const RepositoryRow: React.FC<RepositoryRowProps> = (props) => {
       <ColoredBox size="8" className="mr-2" skin="default">
         <RepositoryIcon className="t-icon" />
       </ColoredBox>
-      <Label htmlFor={'repo_' + repName}>{username}/{repName}</Label>
+      <Label htmlFor={'repo_' + repName}>
+        {username}/{repName}
+      </Label>
     </div>
   )
 }
@@ -104,7 +105,7 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
               </HelpText>
             </div>
             <Input
-            className=' flex-grow max-w-sm' 
+              className=" flex-grow max-w-sm"
               placeholder="Search..."
               startIcon={
                 <SearchIcon className="t-icon t-icon-heroicons-search" />
@@ -113,7 +114,6 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
             />
           </Panel.Header>
           <Panel.Body className="p-0 overflow-y-auto">
-
             {repositories.map((repo, index) => (
               <RepositoryRow
                 key={index}
@@ -133,11 +133,13 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
 const useGitUser = () => {
   const [repositories, setRepositories] = React.useState<
     Array<{ name: string; selected: boolean }>
-    >([])
+  >([])
 
-  const fetchRepositories = (username:string) => {
+  const fetchRepositories = (username: string) => {
     setRepositories(
-      Array(294).fill(null).map((_,i) =>({name: `rep${i+1}`, selected: false}))
+      Array(294)
+        .fill(null)
+        .map((_, i) => ({ name: `rep${i + 1}`, selected: false }))
     )
   }
 

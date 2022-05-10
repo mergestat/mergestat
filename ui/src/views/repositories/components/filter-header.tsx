@@ -5,9 +5,7 @@ import { TagsFilterDropDown } from '../drop-downs'
 
 import { RepositoryTagListProps } from './repositories-table/repositories-table-columns'
 
-
-export const FilterHeader: React.FC = (props) => 
-{
+export const FilterHeader: React.FC = (props) => {
   return (
     <div className="flex h-14 bg-white items-center justify-between px-8">
       <div className="flex gap-2">

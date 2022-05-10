@@ -10,7 +10,7 @@ export const columns: Array<Record<string, any>> = [
     key: 'collapse',
   },
   {
-    title: "Sync Type",
+    title: 'Sync Type',
     className: '',
     dataIndex: 'sync_type',
     key: 'stync_type',
@@ -39,5 +39,4 @@ export const columns: Array<Record<string, any>> = [
     dataIndex: 'options',
     key: 'options',
   },
-
 ]

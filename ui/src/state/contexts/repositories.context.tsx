@@ -15,16 +15,16 @@ interface RepositoriesContext {
 
 export const RepositoriesContext = React.createContext<RepositoriesContext>({
   showOpenRepositoryModal: false,
-  setShowOpenRepositoryModal: (show: boolean) => { },
+  setShowOpenRepositoryModal: (show: boolean) => {},
 
   showAutoImportModal: false,
-  setShowAutoImportModal: (show: boolean) => { },
+  setShowAutoImportModal: (show: boolean) => {},
 
   showAddRepositoryModal: false,
-  setShowAddRepositoryModal: (show: boolean) => { },
+  setShowAddRepositoryModal: (show: boolean) => {},
 
   showSyncRepoModal: false,
-  setShowSyncRepoModal: (show: boolean) => { },
+  setShowSyncRepoModal: (show: boolean) => {},
 })
 
 export const useRepositoriesContext = (): RepositoriesContext =>
@@ -36,8 +36,7 @@ export const RepositoriesProvider: React.FC = (props) => {
   const [showAutoImportModal, setShowAutoImportModal] = React.useState(false)
   const [showAddRepositoryModal, setShowAddRepositoryModal] =
     React.useState(false)
-  const [showSyncRepoModal, setShowSyncRepoModal] =
-    React.useState(false)
+  const [showSyncRepoModal, setShowSyncRepoModal] = React.useState(false)
 
   return (
     <RepositoriesContext.Provider
@@ -49,7 +48,7 @@ export const RepositoriesProvider: React.FC = (props) => {
         showAddRepositoryModal,
         setShowAddRepositoryModal,
         showSyncRepoModal,
-        setShowSyncRepoModal
+        setShowSyncRepoModal,
       }}
     >
       {props.children}

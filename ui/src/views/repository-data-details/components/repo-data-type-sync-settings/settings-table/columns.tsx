@@ -10,7 +10,7 @@ export const columns: Array<Record<string, any>> = [
     key: 'checked',
   },
   {
-    title: "Column",
+    title: 'Column',
     className: '',
     dataIndex: 'column',
     key: 'column',
@@ -21,5 +21,4 @@ export const columns: Array<Record<string, any>> = [
     dataIndex: 'type',
     key: 'type',
   },
-
 ]

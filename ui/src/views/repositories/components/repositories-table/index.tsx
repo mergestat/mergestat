@@ -2,7 +2,13 @@ import { Checkbox, Table } from '@mergestat/blocks'
 import React from 'react'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
 import { columns } from './columns'
-import { RepositoryLastSync, RepositoryName, RepositoryOptions, RepositoryStatus, RepositoryTagList } from './repositories-table-columns'
+import {
+  RepositoryLastSync,
+  RepositoryName,
+  RepositoryOptions,
+  RepositoryStatus,
+  RepositoryTagList,
+} from './repositories-table-columns'
 
 import { sampleRepositoriesData } from './sample-data'
 
@@ -18,26 +24,20 @@ export const RepositoriesTable: React.FC = (props) => {
       />
     ),
     tags: <RepositoryTagList tags={item.tags} />,
-    last: (
-      <RepositoryLastSync>
-        {item.lastSync}
-      </RepositoryLastSync>
-    ),
+    last: <RepositoryLastSync>{item.lastSync}</RepositoryLastSync>,
     status: <RepositoryStatus status={item.status} />,
-    option: <RepositoryOptions/>,
+    option: <RepositoryOptions />,
   }))
   return (
-    <div className="mx-8 my-6 rounded-md overflow-hidden ">
+    <div className="mx-8 my-6 rounded-md">
       <Table
-        scrollY={'100%'}
-        responsive
         borderless
         noWrapHeaders
-        className="overflow-visible relative z-0"
+        tableWrapperClassName="overflow-visible"
+        className="overflow-visible relative z-0 over"
         columns={columns}
         dataSource={processedData}
       />
     </div>
   )
 }
-

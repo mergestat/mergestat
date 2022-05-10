@@ -1,1 +1,1 @@
-export type repSyncState = "disabled" | "loading" | "check" | "error"
+export type repSyncState = 'disabled' | 'loading' | 'check' | 'error'

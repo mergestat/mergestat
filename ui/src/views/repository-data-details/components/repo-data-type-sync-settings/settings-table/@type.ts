@@ -1,5 +1,5 @@
-export type SettingsDataType={
-    checked:boolean
-    column:string
-    type:string
+export type SettingsDataType = {
+  checked: boolean
+  column: string
+  type: string
 }

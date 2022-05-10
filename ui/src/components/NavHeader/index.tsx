@@ -10,7 +10,7 @@ const NavHeader: React.FC = () => {
       <Toolbar className="h-14">
         <Toolbar.Left>
           <Toolbar.Item className="mr-3">
-            <Link href={`/repos`} >
+            <Link href={`/repos`}>
               <a>
                 <Icon
                   as="/logo-inverse.svg"

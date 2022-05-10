@@ -1,1 +1,1 @@
-export * from "./repositories-view"
+export * from './repositories-view'

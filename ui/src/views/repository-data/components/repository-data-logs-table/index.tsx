@@ -19,43 +19,46 @@ export const RepositoryTable: React.FC = (props) => {
       <RepositoryData
         name={item.Data.title}
         brief={item.Data.brief}
-        syncStatus={item.syncNow.syncState} />
+        syncStatus={item.syncNow.syncState}
+      />
     ),
     latest_run: (
       <RepositoryLatestSyncRun
         time_ago={item.latest_run}
-        disabled={item.syncNow.syncState === "disabled"} />
+        disabled={item.syncNow.syncState === 'disabled'}
+      />
     ),
     status: (
       <RepositorySyncStatus
         Graph={item.status.graphNode}
-        disabled={item.syncNow.syncState === "disabled"} />
+        disabled={item.syncNow.syncState === 'disabled'}
+      />
     ),
     syncNow: (
       <RepositorySyncNow
         syncStatus={item.syncNow.syncState}
-        doSync={item.syncNow.doSync} />
+        doSync={item.syncNow.doSync}
+      />
     ),
     options: (
       <RepositoryTableRowOptions
-        disabled={item.syncNow.syncState === "disabled"}
-        syncing={item.syncNow.syncState === "loading"}
+        disabled={item.syncNow.syncState === 'disabled'}
+        syncing={item.syncNow.syncState === 'loading'}
       />
-    )
+    ),
   }))
   return (
-    <div className='rounded-md overflow-hidden '>
+    <div className="rounded-md">
       <Table
         scrollY={'100%'}
-        responsive
         borderless
         noWrapHeaders
-        className="overflow-visible relative z-0"
+        tableWrapperClassName="overflow-visible overflow-y-visible"
+        className="relative z-0"
         columns={columns}
         dataSource={processedData}
       />
     </div>
-
   )
 }
 

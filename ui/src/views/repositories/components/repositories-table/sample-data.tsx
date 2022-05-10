@@ -2,13 +2,13 @@ import { Tooltip } from '@mergestat/blocks'
 import { AutoImportIcon, GithubIcon } from '@mergestat/icons'
 import React, { ReactNode } from 'react'
 
-export type repoDataStatus='error'|'loading'|'check'
+export type repoDataStatus = 'error' | 'loading' | 'check'
 export const sampleRepositoriesData: {
   repositoryName: string
   lastUpdate: string
   icons: ReactNode[]
   tags: { title: string; checked: boolean }[]
-  status: { icon:repoDataStatus ; count: number }[]
+  status: { icon: repoDataStatus; count: number }[]
   lastSync: string
 }[] = [
   {
@@ -100,5 +100,4 @@ export const sampleRepositoriesData: {
     ],
     lastSync: '3 minutes ago',
   },
-  
 ]

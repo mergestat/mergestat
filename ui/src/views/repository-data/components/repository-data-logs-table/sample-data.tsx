@@ -3,49 +3,60 @@ import { CircleCheckFilledIcon } from '@mergestat/icons'
 import React from 'react'
 import { RepoSyncDataType } from './@type'
 
-
-
-
 export const sampleRepositoryData: RepoSyncDataType[] = [
   {
     syncStateIcon: <Spinner size="sm" />,
-    Data: { title: "Commit stats", brief: 'Stores git commits for this repo in the "git_commits" table' },
-    latest_run: "Now",
+    Data: {
+      title: 'Commit stats',
+      brief: 'Stores git commits for this repo in the "git_commits" table',
+    },
+    latest_run: 'Now',
     status: { disabled: false, graphNode: <div>Graphe</div> },
-    syncNow: { syncState: "loading" },
+    syncNow: { syncState: 'loading' },
     options: <ThreeDots />,
   },
   {
     syncStateIcon: <CircleCheckFilledIcon className=" text-green-600" />,
-    Data: { title: "Pull Requests", brief: 'Stores git commits for this repo in the "git_commits" table' },
-    latest_run: "Now",
+    Data: {
+      title: 'Pull Requests',
+      brief: 'Stores git commits for this repo in the "git_commits" table',
+    },
+    latest_run: 'Now',
     status: { disabled: false, graphNode: <div>Graphe</div> },
-    syncNow: { syncState: "check" },
+    syncNow: { syncState: 'check' },
     options: <ThreeDots />,
   },
   {
     syncStateIcon: <Spinner size="sm" />,
-    Data: { title: "Commit stats", brief: 'Stores git commits for this repo in the "git_commits" table' },
-    latest_run: "Now",
+    Data: {
+      title: 'Commit stats',
+      brief: 'Stores git commits for this repo in the "git_commits" table',
+    },
+    latest_run: 'Now',
     status: { disabled: false, graphNode: <div>Graphe</div> },
-    syncNow: { syncState: "disabled" },
+    syncNow: { syncState: 'disabled' },
     options: <ThreeDots />,
   },
   {
     syncStateIcon: <Spinner size="sm" />,
-    Data: { title: "Commit stats", brief: 'Stores git commits for this repo in the "git_commits" table' },
-    latest_run: "Now",
+    Data: {
+      title: 'Commit stats',
+      brief: 'Stores git commits for this repo in the "git_commits" table',
+    },
+    latest_run: 'Now',
     status: { disabled: false, graphNode: <div>Graphe</div> },
-    syncNow: { syncState: "loading" },
+    syncNow: { syncState: 'loading' },
     options: <ThreeDots />,
   },
   {
     syncStateIcon: <Spinner size="sm" />,
-    Data: { title: "Forks", brief: 'Stores git commits for this repo in the "git_commits" table' },
-    latest_run: "Now",
+    Data: {
+      title: 'Forks',
+      brief: 'Stores git commits for this repo in the "git_commits" table',
+    },
+    latest_run: 'Now',
     status: { disabled: false, graphNode: <div>Graphe</div> },
-    syncNow: { syncState: "error" },
+    syncNow: { syncState: 'error' },
     options: <ThreeDots />,
   },
-
 ]

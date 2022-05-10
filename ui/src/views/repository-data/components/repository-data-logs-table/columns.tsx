@@ -10,7 +10,7 @@ export const columns: Array<Record<string, any>> = [
     key: 'syncStateIcon',
   },
   {
-    title: "Data",
+    title: 'Data',
     className: '',
     dataIndex: 'Data',
     key: 'Data',
@@ -22,7 +22,7 @@ export const columns: Array<Record<string, any>> = [
     key: 'latest_run',
   },
   {
-    title:"Status",
+    title: 'Status',
     className: 'text-gray-500 ',
     dataIndex: 'status',
     key: 'status',
