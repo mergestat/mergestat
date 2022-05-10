@@ -104,7 +104,7 @@ func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, repo 
 	}
 
 	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"github_issues"}, cols, pgx.CopyFromRows(inputs)); err != nil {
-		return err
+		return fmt.Errorf("tx copy from: %w", err)
 	}
 	return nil
 }

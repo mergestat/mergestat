@@ -9,11 +9,16 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4"
+	"github.com/jmoiron/sqlx"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
 
-const selectGitHubPRCommits = `SELECT github_prs.number AS pr_number, github_pr_commits.* FROM github_prs(?), github_pr_commits(?, github_prs.number)`
+const (
+	prCommitsFullSyncDays = 90 // 90 days
+
+	selectGitHubPRCommits = `SELECT github_prs.number AS pr_number, github_pr_commits.* FROM github_prs(?), github_pr_commits(?, github_prs.number) ORDER BY github_pr_commits.committer_when DESC`
+)
 
 type githubPRCommit struct {
 	PRNumber       *int       `db:"pr_number"`
@@ -51,22 +56,22 @@ func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, repo u
 	}
 
 	inputs := make([][]interface{}, 0, len(batch))
-	for _, r := range batch {
+	for _, commit := range batch {
 		input := []interface{}{
 			repo,
-			r.PRNumber,
-			r.Hash,
-			r.Message,
-			r.AuthorName,
-			r.AuthorEmail,
-			r.AuthorWhen,
-			r.CommitterName,
-			r.CommitterEmail,
-			r.CommitterWhen,
-			r.Additions,
-			r.Deletions,
-			r.ChangedFiles,
-			r.URL,
+			commit.PRNumber,
+			commit.Hash,
+			commit.Message,
+			commit.AuthorName,
+			commit.AuthorEmail,
+			commit.AuthorWhen,
+			commit.CommitterName,
+			commit.CommitterEmail,
+			commit.CommitterWhen,
+			commit.Additions,
+			commit.Deletions,
+			commit.ChangedFiles,
+			commit.URL,
 		}
 		inputs = append(inputs, input)
 	}
@@ -80,7 +85,6 @@ func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, repo u
 func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	// indicate that we're starting query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
 		{
 			Type:            SyncLogTypeInfo,
@@ -104,13 +108,6 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 	repoName := components[2]
 	repoFullName := fmt.Sprintf("%s/%s", repoOwner, repoName)
 
-	commits := make([]*githubPRCommit, 0)
-	if err := w.mergestat.SelectContext(ctx, &commits, selectGitHubPRCommits, repoFullName, repoFullName); err != nil {
-		return fmt.Errorf("mergestat select: %w", err)
-	}
-
-	l.Info().Msgf("retrieved PR commits: %d", len(commits))
-
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -118,20 +115,66 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 	defer func() {
 		if err := tx.Rollback(ctx); err != nil {
 			if !errors.Is(err, pgx.ErrTxClosed) {
-				w.logger.Err(err).Msgf("could not rollback transaction")
+				w.logger.Err(err).Msgf("rollback transaction: %v", err)
 			}
 		}
 	}()
 
-	if len(commits) > 0 {
-		if _, err := tx.Exec(ctx, "DELETE FROM github_pull_request_commits WHERE repo_id = $1;", j.RepoID.String()); err != nil {
-			return fmt.Errorf("exec delete: %w", err)
-		}
+	// delete the recent rows within days for github_pull_request_commits in PG
+	sql := fmt.Sprintf("DELETE FROM github_pull_request_commits WHERE repo_id = $1 and committer_when > (now() - interval '%d day');", prCommitsFullSyncDays)
+	if res, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
+		return fmt.Errorf("delete rows: %w", err)
+	} else {
+		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
+	}
 
-		if err := w.sendBatchGitHubPRCommits(ctx, tx, id, commits); err != nil {
+	var prNumber int
+	var hash string
+	sql = "SELECT pr_number, hash FROM github_pull_request_commits WHERE repo_id = $1 ORDER BY committer_when DESC LIMIT 1"
+	if err := tx.QueryRow(ctx, sql, id.String()).Scan(&prNumber, &hash); err != nil {
+		if !errors.Is(err, pgx.ErrNoRows) {
+			return fmt.Errorf("query row: %w", err)
+		}
+	}
+
+	var rows *sqlx.Rows
+	if rows, err = w.mergestat.QueryxContext(ctx, selectGitHubPRCommits, repoFullName, repoFullName); err != nil {
+		return fmt.Errorf("mergestat query: %w", err)
+	}
+	defer func() {
+		if err := rows.Close(); err != nil {
+			w.logger.Err(err).Msgf("close rows: %v", err)
+		}
+	}()
+
+	batchSize := 500
+	batch := make([]*githubPRCommit, 0, batchSize)
+	totalCount := 0
+	for rows.Next() {
+		var r githubPRCommit
+		if err := rows.StructScan(&r); err != nil {
+			return fmt.Errorf("row scan: %w", err)
+		}
+		if len(batch) >= batchSize {
+			if err := w.sendBatchGitHubPRCommits(ctx, tx, id, batch); err != nil {
+				return fmt.Errorf("batch insert pr commits: %w", err)
+			}
+			batch = make([]*githubPRCommit, 0, batchSize)
+		} else {
+			if *r.PRNumber == prNumber && *r.Hash == hash {
+				break
+			}
+			batch = append(batch, &r)
+		}
+		totalCount++
+	}
+	if len(batch) > 0 {
+		if err := w.sendBatchGitHubPRCommits(ctx, tx, id, batch); err != nil {
 			return fmt.Errorf("batch insert pr commits: %w", err)
 		}
 	}
+
+	l.Info().Msgf("retrieved PR commits: %d", totalCount)
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)

@@ -86,7 +86,7 @@ func (w *worker) sendBatchGitHubPRReviews(ctx context.Context, tx pgx.Tx, repo u
 	}
 
 	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"github_pull_request_reviews"}, cols, pgx.CopyFromRows(inputs)); err != nil {
-		return err
+		return fmt.Errorf("tx copy from: %w", err)
 	}
 	return nil
 }
@@ -183,7 +183,7 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 		}
 	}
 
-	l.Info().Msgf("retrieved PR review: %d", totalCount)
+	l.Info().Msgf("retrieved PR reviews: %d", totalCount)
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)

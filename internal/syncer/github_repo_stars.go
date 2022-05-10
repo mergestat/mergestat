@@ -71,7 +71,7 @@ func (w *worker) sendBatchGitHubRepoStars(ctx context.Context, tx pgx.Tx, repo u
 	}
 
 	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"github_stargazers"}, cols, pgx.CopyFromRows(inputs)); err != nil {
-		return err
+		return fmt.Errorf("tx copy from: %w", err)
 	}
 	return nil
 }

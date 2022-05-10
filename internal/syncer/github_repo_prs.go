@@ -155,7 +155,7 @@ func (w *worker) sendBatchGitHubRepoPRs(ctx context.Context, tx pgx.Tx, repo uui
 	}
 
 	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"github_pull_requests"}, cols, pgx.CopyFromRows(inputs)); err != nil {
-		return err
+		return fmt.Errorf("tx copy from: %w", err)
 	}
 	return nil
 }
