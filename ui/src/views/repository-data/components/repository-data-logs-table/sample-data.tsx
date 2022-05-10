@@ -12,7 +12,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
     Data: { title: "Commit stats", brief: 'Stores git commits for this repo in the "git_commits" table' },
     latest_run: "Now",
     status: { disabled: false, graphNode: <div>Graphe</div> },
-    syncNow: { syncState: "syncing" },
+    syncNow: { syncState: "loading" },
     options: <ThreeDots />,
   },
   {
@@ -20,7 +20,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
     Data: { title: "Pull Requests", brief: 'Stores git commits for this repo in the "git_commits" table' },
     latest_run: "Now",
     status: { disabled: false, graphNode: <div>Graphe</div> },
-    syncNow: { syncState: "not_sync" },
+    syncNow: { syncState: "check" },
     options: <ThreeDots />,
   },
   {
@@ -36,7 +36,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
     Data: { title: "Commit stats", brief: 'Stores git commits for this repo in the "git_commits" table' },
     latest_run: "Now",
     status: { disabled: false, graphNode: <div>Graphe</div> },
-    syncNow: { syncState: "syncing" },
+    syncNow: { syncState: "loading" },
     options: <ThreeDots />,
   },
   {

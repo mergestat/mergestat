@@ -2,6 +2,7 @@ import React from 'react'
 import { BreadcrumbNav, Button, SplitButton } from '@mergestat/blocks'
 import { AutoImportIcon, CogIcon, PlusIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
+import { AutoManagedBreadCrumb } from 'src/components/bread-crumb'
 import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 
 export const PageHeader: React.FC = (props) => {
@@ -11,17 +12,22 @@ export const PageHeader: React.FC = (props) => {
     setShowOpenRepositoryModal,
     setShowSyncRepoModal,
   } = useRepositoriesContext()
-  const router=useRouter()
+  const router = useRouter()
 
   return (
     <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
       <div className="text-xl font-semibold">
-        <BreadcrumbNav data={[{ text: 'Repos',onClick:()=>router.push("/repos") }]} />
+        {/*<BreadcrumbNav
+          data={[{ text: 'Repos', onClick: () => router.push('/repos') }]}
+        />*/
+        <AutoManagedBreadCrumb/>
+          }
       </div>
       <div className="flex justify-between gap-3 items-center">
         <div className="relative">
           <SplitButton
             text="Create Auto Import"
+            className="z-20"
             startIcon={<AutoImportIcon className="t-icon" />}
             onButtonClick={() => setShowSyncRepoModal(true)}
             items={[
@@ -44,5 +50,3 @@ export const PageHeader: React.FC = (props) => {
     </div>
   )
 }
-
-

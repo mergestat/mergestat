@@ -16,7 +16,7 @@ const RepoDetailsPage: NextPage = () => {
       <Head>
         <title>MergeStat | {repoName}</title>
       </Head>
-        <RepositoryDetailsView repoName={repoName} />
+      <RepositoryDetailsView repoName={repoName} />
     </Fragment>
   )
 }

@@ -2,6 +2,7 @@ import { BreadcrumbNav, Button, SplitButton } from '@mergestat/blocks'
 import { AutoImportIcon, CogIcon, PlusIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import { AutoManagedBreadCrumb } from 'src/components/bread-crumb'
 
 export type RepoDetailsHeaderProps = {
     repo: {
@@ -10,7 +11,7 @@ export type RepoDetailsHeaderProps = {
         endIcon?: React.ReactNode;
         onClick?: (() => void) | undefined;
     },
-   
+
 }
 
 export const PageHeader: React.FC<RepoDetailsHeaderProps> = (props) => {
@@ -19,15 +20,18 @@ export const PageHeader: React.FC<RepoDetailsHeaderProps> = (props) => {
     return (
         <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
             <div className="text-xl font-semibold">
-                <BreadcrumbNav
-                    data={[
-                        
-                        { 
-                            text: 'Repos',
-                            onClick:()=>router.push('/repos'),
-                        },
-                        { ...repo }]}
-                />
+                
+                    {/* <BreadcrumbNav
+                        data={[
+                            {
+                                text: 'Repos',
+                                onClick: () => router.push('/repos'),
+                            },
+                            { ...repo }
+                        ]}
+                    /> */}
+                
+                <AutoManagedBreadCrumb />
             </div>
         </div>
     )

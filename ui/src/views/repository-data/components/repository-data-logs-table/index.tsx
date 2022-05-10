@@ -39,7 +39,7 @@ export const RepositoryTable: React.FC = (props) => {
     options: (
       <RepositoryTableRowOptions
         disabled={item.syncNow.syncState === "disabled"}
-        syncing={item.syncNow.syncState === "syncing"}
+        syncing={item.syncNow.syncState === "loading"}
       />
     )
   }))

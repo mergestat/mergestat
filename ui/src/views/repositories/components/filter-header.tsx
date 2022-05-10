@@ -9,7 +9,7 @@ import { RepositoryTagListProps } from './repositories-table/repositories-table-
 export const FilterHeader: React.FC = (props) => 
 {
   return (
-    <div className="flex h-14 bg-white items-center justify-between px-8 relative z-10">
+    <div className="flex h-14 bg-white items-center justify-between px-8">
       <div className="flex gap-2">
         <TagsFilterDropDown />
         <Filter>Filter label</Filter>

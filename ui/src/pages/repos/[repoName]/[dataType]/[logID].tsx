@@ -3,12 +3,15 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { RepositoryDataLogsDetailsView } from 'src/views/repository-data-logs-details'
 
-const LogsDetailsPage:NextPage = () => {
-  const router = useRouter()
-  const { repoName,dataType,logDetails } = router.query
 
+const LogsDetailsPage: NextPage = () => {
+  const router = useRouter()
+  const { repoName, dataType, logID } = router.query
+
+  if (typeof (logID) !== "string") return <></>
+  
   return (
-    <RepositoryDataLogsDetailsView />
+    <RepositoryDataLogsDetailsView logID={logID} />
   )
 }
 

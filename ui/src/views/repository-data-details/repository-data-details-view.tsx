@@ -1,66 +1,82 @@
-import { Spinner, Tabs } from "@mergestat/blocks";
-import { CaretUpIcon, CircleCheckFilledIcon, CircleErrorFilledIcon, CircleInformationFilledIcon, ExternalLinkIcon } from "@mergestat/icons";
-import { useRouter } from "next/router";
-import React from "react";
-import { repSyncState } from "../@types";
-import { PageHeader, RepoDataLogs, SyncSettings, TabsHeader } from "./components";
-
+import { Spinner, Tabs } from '@mergestat/blocks'
+import {
+  CaretUpIcon,
+  CircleCheckFilledIcon,
+  CircleErrorFilledIcon,
+  CircleInformationFilledIcon,
+  ExternalLinkIcon,
+} from '@mergestat/icons'
+import { useRouter } from 'next/router'
+import React from 'react'
+import { repSyncState } from '../@types'
+import {
+  PageHeader,
+  RepoDataLogs,
+  SyncSettings,
+  TabsHeader,
+} from './components'
 
 type RepositoryDataTypeViewProps = {
-    repoName: string
-    DataType: string
-    syncState: repSyncState
+  repoName: string
+  DataType: string
+  syncState: repSyncState
 }
-export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (props) => {
-    const {repoName, DataType, syncState}=props
-    const router = useRouter()
-    router.back
-    return (
-        <main className="w-full bg-gray-100">
-            <PageHeader
-                repo={{
-                    startIcon: <div className="t-black-white"><CaretUpIcon className="t-icon" /></div>,
-                    text: repoName,
-                    endIcon: <ExternalLinkIcon className="t-icon t-gray" />,
-                    onClick: router.back
-                }}
-                datatype={{
-                    startIcon:getRepositorySyncIcon(syncState),
-                    text: DataType,
-                }}
-            />
-            <Tabs.Group>
-                <TabsHeader />
-                <Tabs.Panels>
-                    <Tabs.Panels className="py-4 px-6">
-                        <Tabs.Panel>
-                            <RepoDataLogs dataTypeName={DataType} />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <SyncSettings />
-                        </Tabs.Panel>
-                    </Tabs.Panels>
-                    {/*<RepositoryTable />
+export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
+  props
+) => {
+  const { repoName, DataType, syncState } = props
+  const router = useRouter()
+  router.back
+  return (
+    <main className="w-full bg-gray-100">
+      <PageHeader
+        repo={{
+          startIcon: (
+            <div className="t-black-white">
+              <CaretUpIcon className="t-icon" />
+            </div>
+          ),
+          text: repoName,
+          endIcon: <ExternalLinkIcon className="t-icon t-gray" />,
+          onClick: router.back,
+        }}
+        datatype={{
+          startIcon: getRepositorySyncIcon(syncState),
+          text: DataType,
+        }}
+      />
+      <Tabs.Group>
+        <TabsHeader />
+        <Tabs.Panels>
+          <Tabs.Panels className="py-4 px-6">
+            <Tabs.Panel>
+              <RepoDataLogs dataTypeName={DataType} />
+            </Tabs.Panel>
+            <Tabs.Panel>
+              <SyncSettings />
+            </Tabs.Panel>
+          </Tabs.Panels>
+          {/*<RepositoryTable />
                     <RepositorySettings />*/}
-                </Tabs.Panels>
-            </Tabs.Group>
+        </Tabs.Panels>
+      </Tabs.Group>
 
-            {/*false && <EmptyRepositoryTable />*/}
-            {/*true && */}
-        </main>
-    )
+      {/*false && <EmptyRepositoryTable />*/}
+      {/*true && */}
+    </main>
+  )
 }
-export const getRepositorySyncIcon= (syncStatus: repSyncState) => {
-    switch (syncStatus) {
-        case "disabled":
-            return <CircleInformationFilledIcon className=' text-gray-500' />
-        case "not_sync":
-            return <CircleCheckFilledIcon className=' text-green-600' />
-        case "syncing":
-            return <Spinner size="sm" />
-        case "error":
-            return <CircleErrorFilledIcon className=" text-red-600"/>
-        default:
-            return <></>
-    }
+export const getRepositorySyncIcon = (syncStatus: repSyncState) => {
+  switch (syncStatus) {
+    case 'disabled':
+      return <CircleInformationFilledIcon className=" text-gray-500" />
+    case "check":
+      return <CircleCheckFilledIcon className=" text-green-600" />
+    case "loading":
+      return <Spinner size="sm" />
+    case 'error':
+      return <CircleErrorFilledIcon className=" text-red-600" />
+    default:
+      return <></>
+  }
 }

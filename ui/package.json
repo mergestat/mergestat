@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mergestat/blocks": "^1.1.4",
+    "@mergestat/blocks": "^1.1.5",
     "@mergestat/icons": "^1.1.2",
     "@next/bundle-analyzer": "^12.1.4",
     "classnames": "^2.3.1",

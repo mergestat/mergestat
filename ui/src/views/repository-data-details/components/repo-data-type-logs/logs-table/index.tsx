@@ -12,7 +12,7 @@ export const LogsTable: React.FC = (props) => {
     // TODO: export this logic to a hook
     const processedData = sampleDatatypesettingsData.map((item, index) => ({
         collapse:<CollapseTrigger collapsed={item.collapsed}/>,
-        sync_type:<SyncType sync_type={item.sync_type} last_sync_time={item.sync_start} />,
+        sync_type:<SyncType  id={item.id} sync_type={item.sync_type} last_sync_time={item.sync_start} />,
         records: numberWithCommas(item.records),
         duration: item.duration,
         sync_start:item.sync_start,
