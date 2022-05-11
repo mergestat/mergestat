@@ -1,5 +1,4 @@
-import { Checkbox, Panel, Table, Typography } from '@mergestat/blocks'
-import { DotsHorizontalIcon } from '@mergestat/icons'
+import { Panel, Table, Typography } from '@mergestat/blocks'
 import React from 'react'
 import { numberWithCommas } from 'src/utils'
 import { columns } from './columns'
@@ -24,6 +23,7 @@ export const LogsTable: React.FC = (props) => {
     sync_start: item.sync_start,
     options: <LogsTableRowOptions />,
   }))
+
   return (
     <Panel>
       <Panel.Header>

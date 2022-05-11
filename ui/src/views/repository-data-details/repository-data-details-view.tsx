@@ -1,3 +1,4 @@
+import React from 'react'
 import { Spinner, Tabs } from '@mergestat/blocks'
 import {
   CaretUpIcon,
@@ -7,8 +8,7 @@ import {
   ExternalLinkIcon,
 } from '@mergestat/icons'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { repSyncState } from '../@types'
+import { repSyncState } from '../../@types'
 import {
   PageHeader,
   RepoDataLogs,
@@ -26,7 +26,7 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
 ) => {
   const { repoName, DataType, syncState } = props
   const router = useRouter()
-  router.back
+
   return (
     <main className="w-full bg-gray-100">
       <PageHeader
@@ -56,13 +56,8 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
               <SyncSettings />
             </Tabs.Panel>
           </Tabs.Panels>
-          {/*<RepositoryTable />
-                    <RepositorySettings />*/}
         </Tabs.Panels>
       </Tabs.Group>
-
-      {/*false && <EmptyRepositoryTable />*/}
-      {/*true && */}
     </main>
   )
 }

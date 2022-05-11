@@ -1,11 +1,9 @@
 import { Button, MultiSelect, Panel, Tabs } from '@mergestat/blocks'
 import { TrashIcon, XIcon } from '@mergestat/icons'
 import React, { useState } from 'react'
+import { tagType } from 'src/@types'
 
-const tags: {
-  title: string
-  checked: boolean
-}[] = [
+const tags: tagType[] = [
   { title: 'team-a', checked: true },
   { title: 'javascript', checked: true },
   { title: 'team-a', checked: true },

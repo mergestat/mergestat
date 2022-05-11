@@ -1,7 +1,3 @@
-import { Checkbox } from '@mergestat/blocks'
-import { CaretDownIcon, CaretUpIcon } from '@mergestat/icons'
-import React from 'react'
-
 export const columns: Array<Record<string, any>> = [
   {
     title: '',

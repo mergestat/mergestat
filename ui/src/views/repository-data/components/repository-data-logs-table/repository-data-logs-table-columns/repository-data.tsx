@@ -1,8 +1,8 @@
+import React from 'react'
 import { Typography } from '@mergestat/blocks'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { repSyncState } from 'src/views/@types'
+import { repSyncState } from 'src/@types'
 
 type RepositoryDataProps = {
   name: string

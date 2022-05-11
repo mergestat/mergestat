@@ -1,4 +1,4 @@
-import { repSyncState } from 'src/views/@types'
+import { repSyncState } from 'src/@types'
 
 export type SyncLogsType = {
   id: string

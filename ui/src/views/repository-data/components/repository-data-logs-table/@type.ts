@@ -1,4 +1,4 @@
-import { repSyncState } from 'src/views/@types'
+import { repSyncState } from 'src/@types'
 
 export type RepoSyncDataType = {
   syncStateIcon: JSX.Element

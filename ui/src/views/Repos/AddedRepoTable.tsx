@@ -21,6 +21,7 @@ import {
   SearchIcon,
   TrashIcon,
 } from '@mergestat/icons'
+import { tagType } from '../../@types'
 
 const AddedRepoTable: React.FC = () => {
   const [openMenuIndex, setOpenMenuIndex] = useState('')
@@ -80,7 +81,7 @@ const AddedRepoTable: React.FC = () => {
     repositoryName: string
     lastUpdate: string
     icons: ReactNode[]
-    tags: { title: string; checked: boolean }[]
+    tags: tagType[]
     status: { icon: string; count: number }[]
     lastSync: string
   }[] = [

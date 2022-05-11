@@ -1,7 +1,7 @@
 import { Button, Spinner } from '@mergestat/blocks'
 import { RefreshIcon } from '@mergestat/icons'
 import React from 'react'
-import { repSyncState } from 'src/views/@types'
+import { repSyncState } from 'src/@types'
 
 type RepositorySyncNowProps = {
   syncStatus: repSyncState
