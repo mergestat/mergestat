@@ -8,24 +8,15 @@ RUN PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/
 
 FROM debian:buster-slim
 RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    ca-certificates && \
+    ca-certificates curl postgresql-client && \
     rm -rf /var/lib/apt/lists/*
 
-# copy over Hasura config data
-COPY config.yaml config.yaml
-COPY metadata metadata
+# copy over migrations
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.1/migrate.linux-amd64.tar.gz | tar xvz
+RUN mv migrate /usr/local/bin
 COPY migrations migrations
-COPY seeds seeds
 
-COPY scripts/init.sh /init.sh
-
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive \
-        apt-get install -y curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# install Hasura CLI
-RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+COPY scripts/docker-init-entrypoint.sh docker-init-entrypoint.sh
 
 # for pprof and prom metrics over http
 EXPOSE 8080

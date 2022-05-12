@@ -1,4 +1,0 @@
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- alter table "mergestat"."repo_sync_queue" add column "last_keep_alive" timestamptz
---  null;

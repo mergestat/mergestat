@@ -20,7 +20,7 @@ Try Fuse out with `docker-compose` by running the following locally:
 docker-compose up init
 
 # Add a repo to be synced
-docker-compose run --rm init add-repo https://github.com/mergestat/mergestat
+docker-compose run --entrypoint ./docker-init-entrypoint.sh --rm init add-repo https://github.com/mergestat/mergestat
 
 # Start worker and grafana
 docker-compose up -d worker grafana
