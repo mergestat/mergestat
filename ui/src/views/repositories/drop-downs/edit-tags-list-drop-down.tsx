@@ -1,10 +1,5 @@
-import { Checkbox, Dropdown, Input, Menu, MultiSelect } from '@mergestat/blocks'
-import {
-  DotsHorizontalIcon,
-  PlusIcon,
-  SearchIcon,
-  XIcon,
-} from '@mergestat/icons'
+import { Dropdown, MultiSelect } from '@mergestat/blocks'
+import { DotsHorizontalIcon } from '@mergestat/icons'
 
 type RepositoryTagListProps = {
   tags: Array<{ title: string; checked: boolean }>

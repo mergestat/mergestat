@@ -1,25 +1,13 @@
 import {
-  Button,
-  Checkbox,
   Dropdown,
-  Filter,
-  Input,
   Menu,
   Spinner,
 } from '@mergestat/blocks'
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CheckIcon,
-  ChevronLeftIcon,
   ChevronRightIcon,
   CircleCheckFilledIcon,
   CircleErrorFilledIcon,
-  PlusIcon,
-  SearchIcon,
-  XIcon,
 } from '@mergestat/icons'
-import SvgArrowRight from '@mergestat/icons/dist/ArrowRight'
 import { repoDataStatus } from '../components/repositories-table/sample-data'
 
 type RepositoryDataProps = {
@@ -91,6 +79,7 @@ const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = (props) => {
     </div>
   )
 }
+
 const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
   const { count } = props
   return (

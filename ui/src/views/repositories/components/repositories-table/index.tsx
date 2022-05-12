@@ -1,13 +1,10 @@
-import { Button, Checkbox, EmptyState, Table } from '@mergestat/blocks'
-import { PlusIcon, RepositoryIcon } from '@mergestat/icons'
-import React, { useState } from 'react'
+import React from 'react'
+import { Checkbox, Table } from '@mergestat/blocks'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
-import { EmptyRepositoryTable } from '../empty-repository-table'
 import { columns } from './columns'
 import {
   RepositoryLastSync,
   RepositoryName,
-  RepositoryOptions,
   RepositoryStatus,
   RepositoryTagList,
 } from './repositories-table-columns'
@@ -37,7 +34,7 @@ export const RepositoriesTable: React.FC = (props) => {
         borderless
         noWrapHeaders
         tableWrapperClassName="overflow-visible"
-        className="overflow-visible relative z-0 over"
+        className="overflow-visible relative z-0"
         columns={columns}
         dataSource={processedData}
       />

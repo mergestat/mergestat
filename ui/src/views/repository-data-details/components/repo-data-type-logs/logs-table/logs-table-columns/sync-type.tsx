@@ -2,7 +2,7 @@ import { CircleCheckFilledIcon, CircleErrorFilledIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { repSyncState } from 'src/views/@types'
+import { repSyncState } from 'src/@types'
 
 type SyncTypeProps = {
   sync_type: repSyncState
@@ -35,5 +35,4 @@ export const SyncType: React.FC<SyncTypeProps> = (props) => {
     default:
       return <div>{sync_type}</div>
   }
-  return <div>SyncType</div>
 }

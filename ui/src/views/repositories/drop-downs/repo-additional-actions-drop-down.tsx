@@ -2,9 +2,7 @@ import { Dropdown, Menu } from '@mergestat/blocks'
 import { CaretRightIcon, CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
 import { TagsListDropDown } from './tags-list-drop-down'
 
-type RepositoryAdditionalActionsProps = {
-
-}
+type RepositoryAdditionalActionsProps = {}
 
 export const RepositoryAdditionalActionsDropDown: React.FC<RepositoryAdditionalActionsProps> =
   (props) => {

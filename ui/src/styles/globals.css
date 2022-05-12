@@ -11,6 +11,15 @@
 thead {
   z-index: 0;
 }
+/*===== this will temp override first col header padding in a table waiting for changing in Table component*/
+table tr td:first-child , table tr th:first-child {
+  padding-left: 12px;
+  padding-right: 0;
+}
+table th:first-child label{
+  gap: 0;
+}
+/*=======*/
 .Selectable {
   width: max-content;
 }

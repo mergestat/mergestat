@@ -6,11 +6,11 @@ import { BookIcon, CaretDownIcon } from '@mergestat/icons'
 
 const NavHeader: React.FC = () => {
   return (
-    <nav className="bg-gray-700 px-6 w-full">
+    <nav className="px-6 w-full bg-nav">
       <Toolbar className="h-14">
         <Toolbar.Left>
           <Toolbar.Item className="mr-3">
-            <Link href={`/repos`}>
+            <Link href="/repos">
               <a>
                 <Icon
                   as="/logo-inverse.svg"

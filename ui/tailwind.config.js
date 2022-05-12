@@ -49,6 +49,7 @@ module.exports = {
       blue: colors.sky,
       yellow: colors.amber,
       white: colors.white,
+      nav: '#374151',
     },
   },
   variants: {

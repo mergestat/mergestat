@@ -3,7 +3,6 @@ import {
   Checkbox,
   ColoredBox,
   HelpText,
-  InlineBanner,
   Input,
   Label,
   Panel,
@@ -87,8 +86,9 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
           </Button>
         </div>
       </div>
-      {repositories.length === 0 && <EmptyRepositories />}
-      {repositories.length > 0 && (
+      {repositories.length === 0 ? (
+        <EmptyRepositories />
+      ) : (
         <Panel className="h-80">
           <Panel.Header className="justify-between gap-x-6">
             <div className="flex">

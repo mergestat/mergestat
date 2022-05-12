@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button, SplitButton } from '@mergestat/blocks'
 import { AutoImportIcon, CogIcon, PlusIcon } from '@mergestat/icons'
-import { useRouter } from 'next/router'
 import { AutoManagedBreadCrumb } from 'src/components/bread-crumb'
 import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 
@@ -21,7 +20,7 @@ export const PageHeader: React.FC = (props) => {
         <div className="relative">
           <SplitButton
             text="Create Auto Import"
-            className="z-20 text-base font-medium"
+            className="z-20 text-base font-normal"
             startIcon={<AutoImportIcon className="t-icon" />}
             onButtonClick={() => setShowSyncRepoModal(true)}
             items={[
@@ -37,7 +36,7 @@ export const PageHeader: React.FC = (props) => {
         <Button
           startIcon={<PlusIcon className="t-icon" />}
           onClick={() => setShowAddRepositoryModal(true)}
-          className="font-medium"
+          className="font-normal"
         >
           Add Repository
         </Button>

@@ -67,16 +67,15 @@ const useURLRepositories = () => {
   const [repositories, setRepositories] = React.useState<Array<string>>([])
 
   const addURL = (url: string) => {
-    setRepositories((prev) => {
-      return [...new Set([...prev, url])]
-    })
+    if (!url) return
+    if (repositories.includes(url)) return
+    setRepositories(prev => [...prev, url])
   }
 
   const removeURL = (url: string) => {
-    setRepositories((prev) => {
-      return prev.filter((repo) => repo !== url)
-    })
+    setRepositories((prev) => prev.filter((repo) => repo !== url))
   }
+
   return {
     repositories,
     addURL,
