@@ -1,4 +1,5 @@
 SET check_function_bodies = false;
+CREATE EXTENSION pgcrypto;
 CREATE SCHEMA mergestat;
 CREATE FUNCTION mergestat.set_current_timestamp_updated_at() RETURNS trigger
     LANGUAGE plpgsql
@@ -348,3 +349,77 @@ ALTER TABLE ONLY public.github_stargazers
     ADD CONSTRAINT github_stargazers_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.repos
     ADD CONSTRAINT repos_repo_import_id_fkey FOREIGN KEY (repo_import_id) REFERENCES mergestat.repo_imports(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE "mergestat"."repo_sync_queue" ADD column "last_keep_alive" timestamptz NULL;
+CREATE TABLE public.github_pull_request_reviews (
+    repo_id uuid NOT NULL,
+    pr_number integer NOT NULL,
+    id text NOT NULL,
+    author_login text,
+    author_url text,
+    author_association text,
+    author_can_push_to_repository boolean,
+    body text,
+    comment_count integer,
+    created_at timestamp with time zone,
+    created_via_email boolean,
+    editor_login text,
+    last_edited_at timestamp with time zone,
+    published_at timestamp with time zone,
+    state text,
+    submitted_at timestamp with time zone,
+    updated_at timestamp with time zone
+);
+COMMENT ON TABLE public.github_pull_request_reviews IS 'GitHub pull request reviews';
+
+ALTER TABLE ONLY public.github_pull_request_reviews ADD CONSTRAINT github_pull_request_reviews_pkey PRIMARY KEY (id);
+
+CREATE TABLE public.github_pull_request_commits (
+    repo_id uuid NOT NULL,
+    pr_number integer NOT NULL,
+    hash text,	
+    message text,	
+    author_name text,	
+    author_email text,	
+    author_when timestamp with time zone,
+    committer_name text,	
+    committer_email text,	
+    committer_when timestamp with time zone,
+    additions integer,
+    deletions integer,
+    changed_files integer,
+    url	TEXT
+);
+COMMENT ON TABLE public.github_pull_request_commits IS 'GitHub pull request commits';
+
+ALTER TABLE ONLY public.github_pull_request_commits ADD CONSTRAINT github_pull_request_commits_pkey PRIMARY KEY (repo_id, pr_number, hash);
+
+CREATE TABLE public.git_files (
+    repo_id uuid NOT NULL,
+    path text NOT NULL,
+    executable boolean NOT NULL,
+    contents text
+);
+COMMENT ON TABLE public.git_files IS 'Git repository files';
+ALTER TABLE ONLY public.git_files
+    ADD CONSTRAINT files_pkey PRIMARY KEY (repo_id, path);
+ALTER TABLE ONLY public.git_files
+    ADD CONSTRAINT files_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+INSERT INTO mergestat.repo_import_types (type, description) VALUES ('GITHUB_ORG', 'Import all repos in a GitHub org') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_import_types (type, description) VALUES ('GITHUB_USER', 'Import all repos belonging to a GitHub user') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_log_types (type, description) VALUES ('INFO', 'Log line from a sync run') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_log_types (type, description) VALUES ('ERROR', 'Error from a sync run') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('QUEUED', 'Sync job is queued') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('RUNNING', 'Syng job is running') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('DONE', 'Sync job is done') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_REPO_METADATA', 'Get metadata from GitHub about a repo') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_COMMITS', 'Get commit history of a repo') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_FILES', 'Files for a git repo') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_COMMIT_STATS', 'Get commit stats for a repo') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_REPO_PRS', 'Get pull requests from a GitHub repo') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_REPO_ISSUES', 'Get issues from a GitHub repo') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_REPO_STARS', 'Get stargazers from a GitHub repo') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_REFS', 'Refs for a git repo') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_PR_REVIEWS', 'Pull request reviews') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GITHUB_PR_COMMITS', 'Pull request commits') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description) VALUES ('GIT_FILES', 'Get files of git repo') ON CONFLICT DO NOTHING;

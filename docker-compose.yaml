@@ -10,41 +10,22 @@ services:
     environment:
       POSTGRES_PASSWORD: password
 
-  graphql-engine:
-    image: hasura/graphql-engine:v2.5.0
-    ports:
-      - 8080:8080
-    depends_on:
-      - postgres
-    restart: always
-    environment:
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:password@postgres:5432/postgres
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:password@postgres:5432/postgres
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "false" # set to "false" to disable console
-      HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
-
   init:
     build:
       context: .
-      dockerfile: Dockerfile.init
+    image: fuse-worker:local
+    entrypoint: migrate
+    command: ["-database", "postgres://postgres:password@postgres:5432/postgres?sslmode=disable", "-path", "migrations/", "up"]
     environment:
-      HASURA_GRAPHQL_ENDPOINT: http://graphql-engine:8080
-      HASURA_DATABASE_NAME: default
       PGHOST: postgres
       PGUSER: postgres
       PGPASSWORD: password
       PGDATABASE: postgres
-    working_dir: /fuse
-    volumes:
-      - .:/fuse
     depends_on:
-      - graphql-engine
+      - postgres
 
   worker:
-    build:
-      context: .
+    image: fuse-worker:local
     stop_grace_period: 10m
     depends_on:
       - init
