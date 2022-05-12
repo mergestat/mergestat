@@ -39,8 +39,6 @@ type commitStat struct {
 	Deletions  sql.NullInt64  `db:"deletions"`
 }
 
-const selectCommitStats = `SELECT commits.hash AS commit_hash, stats.file_path, stats.additions, stats.deletions FROM commits(?), stats(?, commits.hash);`
-
 func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
@@ -145,7 +143,11 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		if err != nil {
 			return false
 		}
-		defer diff.Free()
+		defer func() {
+			if err := diff.Free(); err != nil {
+				w.logger.Err(err).Msgf("error freeing diff")
+			}
+		}()
 
 		diffFindOpts, err := libgit2.DefaultDiffFindOptions()
 		if err != nil {
