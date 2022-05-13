@@ -1,4 +1,0 @@
-table:
-  name: repo_sync_status_types
-  schema: mergestat
-is_enum: true
