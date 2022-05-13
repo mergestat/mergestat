@@ -1,3 +1,0 @@
-table:
-  schema: public
-  name: github_pull_request_reviews
