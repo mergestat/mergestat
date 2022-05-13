@@ -15,9 +15,9 @@ import (
 )
 
 const (
-	prCommitsFullSyncDays = 90 // 90 days
+	prCommitsFullSyncDays = 102 // 90 days
 
-	selectGitHubPRCommits = `SELECT github_prs.number AS pr_number, github_pr_commits.* FROM github_prs(?), github_pr_commits(?, github_prs.number) ORDER BY github_pr_commits.committer_when DESC`
+	selectGitHubPRCommits = `SELECT github_prs.number AS pr_number, github_prs.created_at AS pr_created_at, github_pr_commits.* FROM github_prs(?), github_pr_commits(?, github_prs.number) ORDER BY pr_created_at DESC, github_pr_commits.author_when DESC`
 )
 
 type githubPRCommit struct {
@@ -33,6 +33,7 @@ type githubPRCommit struct {
 	Additions      *int       `db:"additions"`
 	Deletions      *int       `db:"deletions"`
 	ChangedFiles   *int       `db:"changed_files"`
+	PRCreatedAt    *time.Time `db:"pr_created_at"`
 	URL            *string    `db:"url"`
 }
 
@@ -52,6 +53,7 @@ func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, repo u
 		"additions",
 		"deletions",
 		"changed_files",
+		"pr_created_at",
 		"url",
 	}
 
@@ -71,6 +73,7 @@ func (w *worker) sendBatchGitHubPRCommits(ctx context.Context, tx pgx.Tx, repo u
 			commit.Additions,
 			commit.Deletions,
 			commit.ChangedFiles,
+			commit.PRCreatedAt,
 			commit.URL,
 		}
 		inputs = append(inputs, input)
@@ -121,7 +124,7 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 	}()
 
 	// delete the recent rows within days for github_pull_request_commits in PG
-	sql := fmt.Sprintf("DELETE FROM github_pull_request_commits WHERE repo_id = $1 and committer_when > (now() - interval '%d day');", prCommitsFullSyncDays)
+	sql := fmt.Sprintf("DELETE FROM github_pull_request_commits WHERE repo_id = $1 and pr_created_at > (now() - interval '%d day');", prCommitsFullSyncDays)
 	if res, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
 	} else {
@@ -130,7 +133,7 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 
 	var prNumber int
 	var hash string
-	sql = "SELECT pr_number, hash FROM github_pull_request_commits WHERE repo_id = $1 ORDER BY committer_when DESC LIMIT 1"
+	sql = "SELECT pr_number, hash FROM github_pull_request_commits WHERE repo_id = $1 ORDER BY pr_created_at DESC, author_when DESC LIMIT 1"
 	if err := tx.QueryRow(ctx, sql, id.String()).Scan(&prNumber, &hash); err != nil {
 		if !errors.Is(err, pgx.ErrNoRows) {
 			return fmt.Errorf("query row: %w", err)

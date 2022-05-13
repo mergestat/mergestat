@@ -219,6 +219,7 @@ CREATE TABLE public.github_pull_request_commits (
     additions integer,
     deletions integer,
     changed_files integer,
+    pr_created_at timestamp with time zone,
     url	TEXT
 );
 COMMENT ON TABLE public.github_pull_request_commits IS 'GitHub pull request commits';
