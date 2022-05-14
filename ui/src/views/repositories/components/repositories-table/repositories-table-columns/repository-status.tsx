@@ -1,7 +1,8 @@
+import { repSyncState } from 'src/@types';
 import { RepoDataDropDown } from 'src/views/repositories/drop-downs'
 
-type RepositoryStatusProps = {
-  status: Array<{ count: number; icon: 'loading' | 'error' | 'check' }>
+export type RepositoryStatusProps = {
+  status: Array<{ count: number; icon: repSyncState }>
 }
 
 export const RepositoryStatus: React.FC<RepositoryStatusProps> = (props) => {

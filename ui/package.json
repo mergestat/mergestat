@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "fuse",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mergestat/blocks": "^1.1.6",
+    "@mergestat/blocks": "^1.1.8",
     "@mergestat/icons": "^1.1.2",
     "@next/bundle-analyzer": "^12.1.4",
     "classnames": "^2.3.1",

@@ -1,20 +1,20 @@
 import React from 'react'
 import { Button, Input, Modal, Toolbar, Checkbox } from '@mergestat/blocks'
 import { SearchIcon, XIcon } from '@mergestat/icons'
-import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import { ModalFooter } from './modal-footer'
 
 
 type TagListFilterModalType = {
   open: boolean
+  searchText?: string
   tags: { title: string, checked: boolean }[]
-  handleCheck: (checked: boolean, index: number) => void,
+  handleCheck: (checked: boolean, index: number) => void
   handleSearch: (text: string) => void
   onClose: () => void
 }
 
 export const TagListFilterModal: React.FC<TagListFilterModalType> = (props) => {
-  const { open, tags, handleCheck, handleSearch, onClose } = props
+  const { open, tags, handleCheck, handleSearch, onClose, searchText } = props
   return (
     <Modal open={open} onClose={onClose} size="lg" className="max-w-6xl">
       <Modal.Header>
@@ -25,10 +25,12 @@ export const TagListFilterModal: React.FC<TagListFilterModalType> = (props) => {
             </Toolbar.Item>
           </Toolbar.Left>
           <Toolbar.Right>
-            <label className="relative w-full max-w-xs">
-              <SearchIcon className="t-icon absolute left-2 text-gray-400" />
-              <Input onChange={(e: any) => handleSearch(e.target.value)} placeholder="Search..." className="pl-8 w-full" />
-            </label>
+            <Input
+              placeholder="Search..."
+              startIcon={<SearchIcon className="t-icon text-gray-400" />}
+              value={searchText}
+              onChange={(e: any) => handleSearch(e.target.value)}
+            />
             <Toolbar.Item>
               <Button
                 skin="borderless-muted"
@@ -41,6 +43,11 @@ export const TagListFilterModal: React.FC<TagListFilterModalType> = (props) => {
       </Modal.Header>
       <Modal.Body>
         <div className='px-6 py-8 h-96 flex flex-col flex-wrap overflow-x-auto gap-y-5 gap-x-16'>
+          {tags.length === 0 &&
+            <p className='m-auto'>
+              Empty!
+            </p>
+          }
           {tags.map((tag, index) => (
             <div key={index} className=" flex items-center gap-x-3 text-sm">
               <Checkbox
@@ -54,12 +61,6 @@ export const TagListFilterModal: React.FC<TagListFilterModalType> = (props) => {
             </div>
           ))}
         </div>
-        {!tags.length &&
-          <p>
-            No tags 
-          </p>
-        }
-
       </Modal.Body>
       <ModalFooter onClose={onClose} />
     </Modal >

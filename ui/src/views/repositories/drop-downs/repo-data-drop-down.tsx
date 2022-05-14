@@ -8,11 +8,12 @@ import {
   CircleCheckFilledIcon,
   CircleErrorFilledIcon,
 } from '@mergestat/icons'
-import { repoDataStatus } from '../components/repositories-table/sample-data'
+import { repSyncState } from 'src/@types';
+import { getRepositorySyncIcon } from 'src/views/repository-data-details';
 
 type RepositoryDataProps = {
   data: Array<{ title: string; lastSync: string }>
-  status: repoDataStatus
+  status: repSyncState
 }
 export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
   const { data, status } = props
@@ -20,26 +21,20 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
   return (
     <Dropdown
       overlay={() => (
-        <Menu className=" rounded w-100  p-4 flex flex-col gap-y-4 ">
+        <Menu className="rounded w-100 flex flex-col">
           {data.map((item, index) => (
             <div
               key={index}
-              className=" flex items-center justify-between gap-3 focus-within_ text-base"
+              className="hover_bg-gray-100 py-3 px-4 flex items-center justify-between gap-3 focus-within_ text-base"
             >
-              <div className=" flex items-center gap-2">
-                {status === 'check' && (
-                  <CircleCheckFilledIcon className="text-green-600 mt-1" />
-                )}
-                {status === 'error' && (
-                  <CircleErrorFilledIcon className="text-red-600 mt-1" />
-                )}
-                {status === 'loading' && <Spinner size="sm" className="mt-1" />}
-                <span>{item.title}</span>
+              <div className="flex items-center gap-2">
+                { getRepositorySyncIcon(status, "w-4.5 h-4.5") }
+                <span className='text-samantic-text leading-5'>{item.title}</span>
               </div>
 
-              <div className=" flex items-center gap-2">
-                <span>{item.lastSync}</span>
-                <ChevronRightIcon />
+              <div className="flex items-center gap-2">
+                <span className='text-samantic-mutedText'>{item.lastSync}</span>
+                <ChevronRightIcon className='text-samantic-icon' />
               </div>
             </div>
           ))}
@@ -50,7 +45,7 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
   )
 }
 function getRepoStatusComponent(
-  status: repoDataStatus,
+  status: repSyncState,
   count: number
 ): React.ReactNode {
   switch (status) {
@@ -73,8 +68,8 @@ const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = (props) => {
   const { count } = props
   if (!count) return <></>
   return (
-    <div className="flex items-center gap-2 border border-gray-300 rounded py-1 px-2 text-sm w-max bg-gray-100 cursor-pointer">
-      <CircleCheckFilledIcon className="text-green-600" />
+    <div className="flex items-center gap-2 border border-samantic-border rounded py-1 px-2 text-sm w-max bg-gray-50 text-samantic-mutedText cursor-pointer">
+      <CircleCheckFilledIcon className="text-samantic-success w-3.5 h-3.5" />
       {count}
     </div>
   )
@@ -83,7 +78,7 @@ const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = (props) => {
 const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
   const { count } = props
   return (
-    <div className="flex items-center gap-2 border border-gray-300 rounded py-1 px-2 text-sm w-max bg-gray-100 cursor-pointer">
+    <div className="flex items-center gap-2 border border-samantic-border rounded py-1 px-2 text-sm w-max bg-gray-50 text-samantic-mutedText cursor-pointer">
       <Spinner size="sm" />
       {count}
     </div>
@@ -93,8 +88,8 @@ const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
 const RepositoryErrorStatus: React.FC<RepositoryStatusProps> = (props) => {
   const { count } = props
   return (
-    <div className="flex items-center gap-2 border border-gray-300 rounded py-1 px-2 text-sm w-max bg-gray-100 cursor-pointer">
-      <CircleErrorFilledIcon className="text-red-600 " />
+    <div className="flex items-center gap-2 border border-samantic-border py-1 px-2 text-sm w-max bg-gray-50 text-samantic-mutedText cursor-pointer">
+      <CircleErrorFilledIcon className="text-samantic-danger w-3.5 h-3.5" />
       {count}
     </div>
   )

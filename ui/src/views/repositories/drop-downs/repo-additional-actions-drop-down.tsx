@@ -13,28 +13,29 @@ export const RepositoryAdditionalActionsDropDown: React.FC<RepositoryAdditionalA
         overlay={() => (
           <Menu className={`absolute z-10 whitespace-nowrap right-0`}>
             <Menu.Item
+              className='text-gray-700'
               text="Repo settings"
               withIcon
-              icon={<CogIcon className="mr-2" />}
+              icon={<CogIcon className="mr-2 text-samantic-icon" />}
             />
             <TagsListDropDown
               trigger={
-                <div className=' relative  text-gray-600'>
+                <div className='relative  text-gray-600'>
                   <Menu.Item
-                    className=' w-full'
+                    className='w-full text-gray-700'
                     text="Tags"
                     withIcon
                     icon={<CogIcon className="mr-2" />}
                   />
-                  <CaretRightIcon className=' absolute right-3 top-3' />
-                </div>
-	            }
+                  <CaretRightIcon className='absolute right-3 top-3 text-samantic-icon' />
+                </div>}
             />
             <Menu.Divider />
             <Menu.Item
+              className='text-gray-700'
               text="Remove Repo"
               withIcon
-              icon={<TrashIcon className="mr-2" />}
+              icon={<TrashIcon className="mr-2 text-samantic-icon" />}
             />
           </Menu>
         )}

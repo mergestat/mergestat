@@ -15,11 +15,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: 'rgb(55, 65, 81)',
-        gray: {
-          150: '#EBECEF',
-          text: '#727C8D',
+        samantic: {
+          header: '#111827',
+          text: '#374151',
+          mutedText: '#727C8D',
+          mutedIcon: '#9CA3AF',
+          border: '#E5E7EB',
+          icon: '#6B7280',
+          danger: '#DC2626',
+          success: '#10B981',
         },
+        gray: {
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          150: '#EBECEF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
+        },
+      },
+      fontFamily: {
+        'Inter': ['"Inter"', 'sans-serif']
       },
       gridTemplateRows: {
         'content-layout': 'auto 1fr',
@@ -28,11 +44,17 @@ module.exports = {
         40: '10rem',
       },
       width: {
-        1.5:'6px',
+        1.5: '6px',
+        3.5: '14px',
+        4.5: '18px',
         100: '25rem',
+        150:'37.5rem',
+        200:'50rem',
       },
       height: {
-        1.5:'6px',
+        1.5: '6px',
+        3.5: '14px',
+        4.5: '18px',
         84: '21rem',
       },
       margin: {
@@ -49,7 +71,6 @@ module.exports = {
       blue: colors.sky,
       yellow: colors.amber,
       white: colors.white,
-      nav: '#374151',
     },
   },
   variants: {

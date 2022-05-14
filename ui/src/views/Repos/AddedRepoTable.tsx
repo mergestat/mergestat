@@ -29,7 +29,7 @@ const AddedRepoTable: React.FC = () => {
   const reposColumns: Array<Record<string, any>> = [
     {
       title: <Checkbox />,
-      className: 'w-4',
+      className: 'table-checkbox-column',
       dataIndex: 'checkbox',
       key: 'checkbox',
     },
@@ -182,7 +182,7 @@ const AddedRepoTable: React.FC = () => {
       checkbox: <Checkbox />,
       repository: (
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 border border-gray-300 rounded"></div>
+          <div className="w-10 h-10 border border-samantic-border rounded"></div>
           <div>
             <p className="cursor-pointer hover_text-blue-600">
               {item.repositoryName}
@@ -192,7 +192,7 @@ const AddedRepoTable: React.FC = () => {
               {item.icons.map((icon: any, index: number) => {
                 return (
                   <p
-                    className="border-l border-gray-300 px-2"
+                    className="border-l border-samantic-border px-2"
                     key={`key1_${index}`}
                   >
                     {icon}
@@ -211,12 +211,12 @@ const AddedRepoTable: React.FC = () => {
               return (
                 <div key={`key8_${ind}`} className="">
                   {ind < 2 && (
-                    <div className="border border-gray-300 rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
+                    <div className="border border-samantic-border rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
                       {tag.title}
                     </div>
                   )}
                   {ind === 2 && (
-                    <div className="flex items-center gap-2 border border-gray-300 rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
+                    <div className="flex items-center gap-2 border border-samantic-border rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
                       +{' '}
                       {item.tags.filter(
                         (tag: { title: string; checked: boolean }) =>
@@ -255,9 +255,9 @@ const AddedRepoTable: React.FC = () => {
               return (
                 <div
                   key={`key2_${index}`}
-                  className="flex items-center gap-1 border border-gray-300 rounded px-1 text-sm w-max bg-gray-100 cursor-pointer"
+                  className="flex items-center gap-1 border border-samantic-border rounded px-1 text-sm w-max bg-gray-100 cursor-pointer"
                 >
-                  <CircleErrorFilledIcon className="text-red-600 " />
+                  <CircleErrorFilledIcon className="text-samantic-danger" />
                   {i.count}
                 </div>
               )
@@ -266,7 +266,7 @@ const AddedRepoTable: React.FC = () => {
               return (
                 <div
                   key={`key3_${index}`}
-                  className="flex items-center gap-1 border border-gray-300 rounded px-1 text-sm w-max bg-gray-100 cursor-pointer"
+                  className="flex items-center gap-1 border border-samantic-border rounded px-1 text-sm w-max bg-gray-100 cursor-pointer"
                 >
                   <Spinner size="sm" />
                   {i.count}
@@ -277,9 +277,9 @@ const AddedRepoTable: React.FC = () => {
               return (
                 <div
                   key={`key4_${index}`}
-                  className="flex items-center gap-1 border border-gray-300 rounded px-1 text-sm w-max bg-gray-100 cursor-pointer"
+                  className="flex items-center gap-1 border border-samantic-border rounded px-1 text-sm w-max bg-gray-100 cursor-pointer"
                 >
-                  <CircleCheckFilledIcon className="text-green-600" />
+                  <CircleCheckFilledIcon className="text-samantic-success" />
                   {i.count}
                 </div>
               )
@@ -325,10 +325,10 @@ const AddedRepoTable: React.FC = () => {
           <Filter>Filter label</Filter>
           <Filter>Filter label</Filter>
         </div>
-        <label className="">
-          <SearchIcon className="t-icon absolute left-2 text-gray-400" />
-          <Input placeholder="Search..." className="pl-8" />
-        </label>
+        <Input
+          placeholder="Search..."
+          startIcon={<SearchIcon className="t-icon text-gray-400" />}
+        />
       </div>
       <div className="m-8">
         <Table

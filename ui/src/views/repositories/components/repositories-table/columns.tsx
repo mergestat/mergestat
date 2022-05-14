@@ -1,17 +1,23 @@
 import { Checkbox } from '@mergestat/blocks'
 import { CaretDownIcon, CaretUpIcon } from '@mergestat/icons'
 import React from 'react'
+import { repSyncState, tagType } from 'src/@types'
+import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
+import { RepositoryName, RepositoryNameProps, RepositoryStatus, RepositoryTagList } from './repositories-table-columns'
 
 export const columns: Array<Record<string, any>> = [
   {
-    title: <Checkbox />,
+    title: "",
     className: 'pl-2 pr-0 gap-0 w-4',
     dataIndex: 'checkbox',
     key: 'checkbox',
+    render: (params: { selected: boolean, onChange: (name: string) => void }) => (
+      <Checkbox checked={params.selected} onChange={params.onChange as any} />
+    )
   },
   {
     title: (
-      <p className="whiteSpace-nowrap flex items-center gap-4">
+      <p className="whiteSpace-nowrap flex items-center gap-4 text-samantic-header">
         Repository{' '}
         <span>
           <CaretUpIcon />
@@ -22,33 +28,44 @@ export const columns: Array<Record<string, any>> = [
     className: '',
     dataIndex: 'repository',
     key: 'repository',
+    render: (repo: RepositoryNameProps) => (
+      <RepositoryName name={repo.name} icons={repo.icons} lastUpdate={repo.lastUpdate} />
+    )
   },
   {
-    title: 'Tags',
+    title: <h1 className='text-samantic-header'>Tags</h1>,
     className: 'text-gray-500',
     dataIndex: 'tags',
     key: 'tags',
+    render: (tags: tagType[]) => (
+      <RepositoryTagList tags={tags} />
+    )
   },
   {
     title: (
-      <p className="flex items-center gap-4">
+      <p className="flex items-center gap-4 text-samantic-header">
         Last sync <CaretDownIcon className=" text-blue-400" />
       </p>
     ),
     className: 'text-gray-500',
     dataIndex: 'last',
     key: 'last',
+    render: (lastsync: string) => <span className=' text-samantic-mutedText'>{lastsync}</span>
   },
   {
     title: '',
     className: '',
     dataIndex: 'status',
     key: 'status',
+    render: (RepoStatus: { count: number; icon: repSyncState }[]) => (
+      <RepositoryStatus status={RepoStatus} />
+    )
   },
   {
     title: '',
     className: 'w-4',
     dataIndex: 'option',
     key: 'option',
+    render: () => <RepositoryAdditionalActionsDropDown />
   },
 ]

@@ -1,5 +1,3 @@
 export * from './repository-name'
 export * from './repository-tag-list'
 export * from './repository-status'
-export * from './repository-last-sync'
-export * from './repository-options'

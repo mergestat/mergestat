@@ -8,9 +8,10 @@ import { RepositoryDataTypeView } from 'src/views/repository-data-details'
 
 const DataTypePage: NextPage = () => {
   const router = useRouter()
-  let { repoName, dataType, repSyncState } = router.query
-  if (typeof repoName != 'string') return <></>
-  if (typeof dataType != 'string') return <></>
+  const { repoName, dataType, repSyncState } = router.query
+
+  if (typeof repoName != 'string' || typeof dataType != 'string') return <></>
+
   return (
     <Fragment>
       <Head>

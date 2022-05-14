@@ -14,8 +14,8 @@ export const CollapseTrigger: React.FC<collapseTriggerProps> = (props) => {
   }
   return (
     <div onClick={handleClick}>
-      {open && <CaretDownIcon className=" text-gray-600" />}
-      {!open && <CaretRightIcon className=" text-gray-600" />}
+      {open && <CaretDownIcon className="text-samantic-mutedIcon" />}
+      {!open && <CaretRightIcon className="text-samantic-mutedIcon" />}
     </div>
   )
 }

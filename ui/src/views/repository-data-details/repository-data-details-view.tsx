@@ -61,16 +61,16 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
     </main>
   )
 }
-export const getRepositorySyncIcon = (syncStatus: repSyncState) => {
+export const getRepositorySyncIcon = (syncStatus: repSyncState, className?:string) => {
   switch (syncStatus) {
     case 'disabled':
-      return <CircleInformationFilledIcon className=" text-gray-500" />
+      return <CircleInformationFilledIcon className={`text-samantic-mutedIcon ${className}` }  />
     case 'check':
-      return <CircleCheckFilledIcon className=" text-green-600" />
+      return <CircleCheckFilledIcon className={`text-samantic-success ${className}`}  />
     case 'loading':
       return <Spinner size="sm" />
     case 'error':
-      return <CircleErrorFilledIcon className=" text-red-600" />
+      return <CircleErrorFilledIcon className={`text-samantic-danger ${className}`}  />
     default:
       return <></>
   }

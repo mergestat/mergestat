@@ -16,7 +16,7 @@ export const PageHeader: React.FC = (props) => {
       <div className="text-xl font-semibold">
         <AutoManagedBreadCrumb />
       </div>
-      <div className="flex items-center gap-3 ">
+      <div className="flex items-center gap-3">
         <div className="relative">
           <SplitButton
             text="Create Auto Import"

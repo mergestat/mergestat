@@ -9,7 +9,7 @@ export const PageHeader: React.FC = () => {
       <div className="text-xl font-semibold">
         <AutoManagedBreadCrumb />
       </div>
-      <div className=" flex gap-3">
+      <div className="flex gap-3">
         <Button skin="secondary">
           <DotsHorizontalIcon />
         </Button>

@@ -38,7 +38,7 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
   return (
     <Modal open onClose={onClose} modalWrapperClassName="z-50">
       <Modal.Header>
-        <Toolbar className="h-16 px-6 ">
+        <Toolbar className="h-16 px-6">
           <Toolbar.Left>
             <Toolbar.Item>
               <Modal.Title>Sync repos</Modal.Title>

@@ -16,7 +16,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
     options: <ThreeDots />,
   },
   {
-    syncStateIcon: <CircleCheckFilledIcon className=" text-green-600" />,
+    syncStateIcon: <CircleCheckFilledIcon className="text-samantic-success" />,
     Data: {
       title: 'Pull Requests',
       brief: 'Stores git commits for this repo in the "git_commits" table',

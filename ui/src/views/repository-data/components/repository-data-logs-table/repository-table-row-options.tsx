@@ -1,26 +1,30 @@
+import React from 'react'
 import { Dropdown, Menu } from '@mergestat/blocks'
-import { CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
+import { DotsHorizontalIcon } from '@mergestat/icons'
+import { repSyncState } from 'src/@types'
 
-type RepositoryTableRowOptionsProps = {
-  disabled: boolean
-  syncing: boolean
+export type RepositoryDetailsRowOptionsProps = {
+  state:repSyncState
 }
 
-export const RepositoryTableRowOptions: React.FC<RepositoryTableRowOptionsProps> =
+export const RepositoryTableRowOptions: React.FC<RepositoryDetailsRowOptionsProps> =
   (props) => {
-    const { disabled, syncing } = props
+    const { state } = props
     return (
       <Dropdown
         alignEnd
-        trigger={<DotsHorizontalIcon className="cursor-pointer" />}
+        trigger={<DotsHorizontalIcon className="cursor-pointer text-samantic-icon" />}
         overlay={() => (
           <Menu className={`absolute z-10 whitespace-nowrap right-0`}>
-            {!disabled && (
-              <Menu.Item text="Disable Data Sync" disabled={syncing} />
-            )}
-            {disabled && <Menu.Item text="Enable Data Sync" />}
-
-            {!disabled && <Menu.Item text="Cancel Sync" disabled={!syncing} />}
+            {(state === "disabled")
+              ? <Menu.Item text="Enable Data Sync" />
+              : (
+                <React.Fragment>
+                  <Menu.Item text="Disable Data Sync" disabled={state === "loading"} />
+                  <Menu.Item text="Cancel Sync" disabled={state !== "loading"} />
+                </React.Fragment>
+              )
+            }
           </Menu>
         )}
       />

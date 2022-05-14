@@ -10,10 +10,10 @@ export const ReposTableFilterHeader: React.FC = () => {
         <Filter>Filter label</Filter>
         <Filter>Filter label</Filter>
       </div>
-      <label className="">
-        <SearchIcon className="t-icon absolute left-2 text-gray-400" />
-        <Input placeholder="Search..." className="pl-8" />
-      </label>
+      <Input
+        placeholder="Search..."
+        startIcon={<SearchIcon className="t-icon text-gray-400" />}
+      />
     </div>
   )
 }

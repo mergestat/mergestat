@@ -93,7 +93,7 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
           <Panel.Header className="justify-between gap-x-6">
             <div className="flex">
               <Checkbox
-                value={0}
+                checked={selectedRepositoriesCount===repositories.length}
                 onClick={(e) => {
                   const checked = e.currentTarget.checked
                   selectAllRepositories(checked)
@@ -105,7 +105,7 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
               </HelpText>
             </div>
             <Input
-              className=" flex-grow max-w-sm"
+              className="flex-grow max-w-sm"
               placeholder="Search..."
               startIcon={
                 <SearchIcon className="t-icon t-icon-heroicons-search" />

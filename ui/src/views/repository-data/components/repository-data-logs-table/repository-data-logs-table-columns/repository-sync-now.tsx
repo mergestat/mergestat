@@ -3,7 +3,7 @@ import { RefreshIcon } from '@mergestat/icons'
 import React from 'react'
 import { repSyncState } from 'src/@types'
 
-type RepositorySyncNowProps = {
+export type RepositorySyncNowProps = {
   syncStatus: repSyncState
   doSync?: () => void
 }
@@ -16,14 +16,14 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = (props) => {
         <></>
       ) : (
         <Button
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 float-right"
           disabled={syncStatus === 'loading'}
           skin="secondary"
           startIcon={
             syncStatus === 'loading' ? (
-              <Spinner size='sm' className="mt-0.5" />
+              <Spinner size='sm' />
             ) : (
-              <RefreshIcon className="w-4 h-4 mt-1" />
+              <RefreshIcon className="w-4 h-4 text-samantic-icon" />
             )
           }
           size="small"

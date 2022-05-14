@@ -19,8 +19,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "src/views/repository-data-details/components/repo-data-type-sync-settings/settings-table"
+    "**/*.tsx"
   ],
   "exclude": ["node_modules"]
 }

@@ -10,13 +10,13 @@ export const RepoDataTypeDescription: React.FC<RepoDataDescriptionProps> = (
 ) => {
   return (
     <div className="p-6 bg-white rounded flex flex-col gap-3 border border-gray-200">
-      <Typography.Text size="lg" className=" font-semibold">
+      <h4 className="text-samantic-header font-medium">
         {props.title}
-      </Typography.Text>
-      <Typography.Text className=" text-gray-500 text-sm">
+      </h4>
+      <span className="text-samantic-mutedText">
         {props.description}
-      </Typography.Text>
-      <p className=" text-blue-500 cursor-pointer">Learn more</p>
+      </span>
+      <p className="text-blue-600 cursor-pointer">Learn more</p>
     </div>
   )
 }

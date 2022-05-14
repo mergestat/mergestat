@@ -65,7 +65,7 @@ export const ManageAutoImportReposModal = ({
     delIcon: React.ReactElement
   }[] = [
     {
-      successIcon: <CircleCheckFilledIcon className="text-green-600" />,
+      successIcon: <CircleCheckFilledIcon className="text-samantic-success" />,
       source: 'user-name',
       type: (
         <p className="flex items-center gap">
@@ -77,7 +77,7 @@ export const ManageAutoImportReposModal = ({
       delIcon: <TrashIcon />,
     },
     {
-      successIcon: <CircleCheckFilledIcon className="text-green-600" />,
+      successIcon: <CircleCheckFilledIcon className="text-samantic-success" />,
       source: 'organization-name',
       type: (
         <p className="flex items-center gap">
@@ -89,7 +89,7 @@ export const ManageAutoImportReposModal = ({
       delIcon: <TrashIcon />,
     },
     {
-      successIcon: <CircleCheckFilledIcon className="text-green-600" />,
+      successIcon: <CircleCheckFilledIcon className="text-samantic-success" />,
       source: 'organization-name',
       type: (
         <p className="flex items-center gap">
@@ -104,15 +104,15 @@ export const ManageAutoImportReposModal = ({
 
   return (
     <div className="absolute top-0 left-0 bg-gray-100 w-full h-full z-40">
-      <div className="h-16 border-b bg-white border-gray-300 flex justify-between items-center p-5">
+      <div className="h-16 border-b bg-white border-samantic-border flex justify-between items-center p-5">
         <div className="flex items-center">
           <Button
             skin="borderless-muted"
-            startIcon={<XIcon className=" mr-4" />}
+            startIcon={<XIcon className="mr-4" />}
             onClick={onClose}
           />
 
-          <p className="text-xl border-l border-gray-300 pl-4">
+          <p className="text-xl border-l border-samantic-border pl-4">
             Manage auto imports
           </p>
         </div>

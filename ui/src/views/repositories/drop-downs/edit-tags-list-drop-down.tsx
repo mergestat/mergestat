@@ -14,11 +14,11 @@ export const EditTagsListDropDown: React.FC<RepositoryTagListProps> = (
     <Dropdown
       alignEnd
       overlay={() => (
-        <div className=" relative z-50 bg-white w-80">
+        <div className="relative z-50 bg-white w-80">
           <MultiSelect setStateToProps={tags} />
         </div>
       )}
-      trigger={<DotsHorizontalIcon className=" w-4 h-4 mt-2" />}
+      trigger={<DotsHorizontalIcon className="w-4 h-4 mt-2 text-samantic-icon" />}
     />
   )
 }

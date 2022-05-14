@@ -4,10 +4,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { repSyncState } from 'src/@types'
 
-type RepositoryDataProps = {
-  name: string
+export type RepositoryDataProps = {
+  title: string
   brief?: string
-  syncStatus: repSyncState
 }
 export const RepositoryData: React.FC<RepositoryDataProps> = (props) => {
   const router = useRouter()
@@ -15,13 +14,13 @@ export const RepositoryData: React.FC<RepositoryDataProps> = (props) => {
 
   return (
     <div>
-      <Link href={`/repos/${repoName}/${props.name}?repSyncState=${props.syncStatus}`.replace(/\s/g, "")}>
-        <Typography.Title className=" cursor-pointer hover_text-blue-600">
-          {props.name}
+      <Link href={`/repos/${repoName}/${props.title}`}>
+        <Typography.Title className="text-samantic-text cursor-pointer hover_text-blue-600">
+          {props.title}
         </Typography.Title>
       </Link>
 
-      <Typography.Text size="sm" className=" text-gray-500">
+      <Typography.Text size="sm" className="text-samantic-mutedText">
         {props.brief}
       </Typography.Text>
     </div>

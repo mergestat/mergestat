@@ -3,7 +3,6 @@ import { SearchIcon } from '@mergestat/icons'
 import React from 'react'
 import { TagsListDropDown } from '../drop-downs'
 
-import { RepositoryTagListProps } from './repositories-table/repositories-table-columns'
 
 export const FilterHeader: React.FC = (props) => {
   return (
@@ -13,10 +12,11 @@ export const FilterHeader: React.FC = (props) => {
         <Filter>Filter label</Filter>
         <Filter>Filter label</Filter>
       </div>
-      <label className="relative">
-        <SearchIcon className="t-icon absolute left-2 text-gray-400" />
-        <Input placeholder="Search..." className="pl-8" />
-      </label>
+
+      <Input
+        placeholder="Search..."
+        startIcon={<SearchIcon className="t-icon text-gray-400" />}
+      />
     </div>
   )
 }

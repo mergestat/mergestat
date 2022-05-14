@@ -9,7 +9,7 @@ import {
   Panel,
 } from '@mergestat/blocks'
 import { RepositoryIcon, SearchIcon } from '@mergestat/icons'
-import React from 'react'
+import React, { useState } from 'react'
 
 const EmptyRepositories: React.FC = () => {
   return (
@@ -53,7 +53,7 @@ const RepositoryRow: React.FC<RepositoryRowProps> = (props) => {
 }
 
 export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
-  const [organization, setOrganization] = React.useState<string>('')
+  const [organization, setOrganization] = useState<string>('')
   const {
     repositories,
     selectedRepositoriesCount,
@@ -93,7 +93,7 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
           <Panel.Header className="justify-between gap-x-6">
             <div className="flex">
               <Checkbox
-                value={0}
+                checked={selectedRepositoriesCount===repositories.length}
                 onClick={(e) => {
                   const checked = e.currentTarget.checked
                   selectAllRepositories(checked)
@@ -110,7 +110,7 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
               startIcon={
                 <SearchIcon className="t-icon t-icon-heroicons-search" />
               }
-              // onChange={(e) => handleSearch(e.currentTarget.value)}
+            // onChange={(e) => handleSearch(e.currentTarget.value)}
             />
           </Panel.Header>
           <Panel.Body className="p-0 overflow-y-auto">
@@ -135,7 +135,7 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
 }
 
 const useGitOrganizations = () => {
-  const [repositories, setRepositories] = React.useState<
+  const [repositories, setRepositories] = useState<
     Array<{ name: string; selected: boolean }>
   >([])
 
@@ -149,10 +149,13 @@ const useGitOrganizations = () => {
 
   const onCheckBoxClicked = (repository: string) => {
     setRepositories((prev) =>
-      prev.map((item) => ({
-        ...item,
-        selected: item.name === repository ? !item.selected : item.selected,
-      }))
+      prev.map((item) => (
+        item.name !== repository ? item :
+          {
+            ...item,
+            selected: !item.selected,
+          }
+      ))
     )
   }
 

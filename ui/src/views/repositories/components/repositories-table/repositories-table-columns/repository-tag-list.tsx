@@ -7,8 +7,7 @@ type RepositoryTagItemProps = tagType
 
 export const RepositoryTagItem: React.FC<RepositoryTagItemProps> = (props) => {
   return (
-    <div className="flex gap-1.5 items-center border border-gray-300 rounded px-2 py-1 text-sm w-max bg-gray-100 cursor-pointer">
-      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: props.color }} />
+    <div className="border border-samantic-border rounded-md px-2 py-1 text-gray-500 text-sm w-max bg-gray-50 cursor-pointer">
       {props.title}
     </div>
   )
@@ -21,22 +20,22 @@ export type RepositoryTagListProps = {
 export const RepositoryTagList: React.FC<RepositoryTagListProps> = (props) => {
   const { tags } = props
   const TAGS_SHOWN = 2
+  const checkedTags = tags.filter((tag) => tag.checked)
 
   return (
     <React.Fragment>
-      <div className="flex gap-2 ">
-        {tags
-          .filter((tag) => tag.checked)
-          .slice(0, TAGS_SHOWN)
-          .map((tag, index) => (
+      <div className="flex gap-2">
+        {checkedTags.slice(0, TAGS_SHOWN).map(
+          (tag, index) => (
             <RepositoryTagItem key={index} {...tag} />
-          ))
+          )
+        )
         }
-        {tags.length > 2 && (
-          <div className="flex items-center gap-x-2 border border-gray-300 rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
-            <div className="flex items-center">
-              <PlusIcon className="w-3 h-3 text-gray-900 mt-1 " />
-              <span>{tags.length - TAGS_SHOWN}</span>
+        {checkedTags.length > TAGS_SHOWN && (
+          <div className="flex items-center gap-x-2 border border-samantic-border rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
+            <div className="flex items-center text-gray-500">
+              <PlusIcon className="w-3 h-3" />
+              <span>{checkedTags.length - TAGS_SHOWN}</span>
             </div>
             <EditTagsListDropDown tags={tags} />
           </div>

@@ -1,14 +1,20 @@
 import React from 'react'
 
-type RepositorySyncStatusProps = {
-  Graph: React.ReactNode
+export type RepositorySyncStatusProps = {
+  graphNode: React.ReactNode
   disabled?: boolean
 }
 
 export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   props
 ) => {
-  const { Graph, disabled = false } = props
-  if (disabled) return <p className="text-sm text-gray-500">Disabld</p>
-  return <>{Graph}</>
+  const { graphNode, disabled = false } = props
+
+  return disabled ? (
+      <p className="text-sm text-samantic-mutedText">Disabld</p>
+    ) : (
+    <div className='text-samantic-mutedText'>
+      {graphNode}
+    </div>
+  )
 }

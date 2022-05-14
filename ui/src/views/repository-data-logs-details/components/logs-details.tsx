@@ -19,7 +19,7 @@ export const LogsDetails: React.FC<LogsDetailsProps> = (props) => {
   }))
 
   return (
-    <div className=" relative">
+    <div className="relative">
       <LogBox data={data} onClick={() => {}} />
     </div>
   )

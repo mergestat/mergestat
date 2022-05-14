@@ -8,6 +8,7 @@ import { RepositoryDetailsView } from 'src/views'
 const RepoDetailsPage: NextPage = () => {
   const router = useRouter()
   const { repoName } = router.query
+
   if (typeof repoName != 'string') return <></>
 
   return (

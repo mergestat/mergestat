@@ -6,7 +6,7 @@ import { BookIcon, CaretDownIcon } from '@mergestat/icons'
 
 const NavHeader: React.FC = () => {
   return (
-    <nav className="px-6 w-full bg-nav">
+    <nav className="px-6 w-full bg-gray-700">
       <Toolbar className="h-14">
         <Toolbar.Left>
           <Toolbar.Item className="mr-3">
@@ -22,7 +22,7 @@ const NavHeader: React.FC = () => {
           </Toolbar.Item>
           <Toolbar.Item>
             <Navbar.Divider />
-            <HelpText className="ml-3 text-white ">v1.0.0</HelpText>
+            <HelpText className="ml-3 text-white">v1.0.0</HelpText>
           </Toolbar.Item>
         </Toolbar.Left>
         <Toolbar.Right className="space-x-6">

@@ -1,23 +1,24 @@
+import React, { ReactNode } from 'react'
 import { Tooltip } from '@mergestat/blocks'
 import { AutoImportIcon, GithubIcon } from '@mergestat/icons'
-import React, { ReactNode } from 'react'
+import { tagType } from 'src/@types'
 
 export type repoDataStatus = 'error' | 'loading' | 'check'
 export const sampleRepositoriesData: {
   repositoryName: string
   lastUpdate: string
   icons: ReactNode[]
-  tags: { title: string; checked: boolean,color?:string }[]
+  tags: tagType[]
   status: { icon: repoDataStatus; count: number }[]
   lastSync: string
 }[] = [
   {
-    repositoryName: 'marko-js/marko',
+    repositoryName: 'marko-js/repo1',
     lastUpdate: 'Last updated today',
-    icons: [<GithubIcon />],
+    icons: [<GithubIcon className=' w-4 h-4' />],
     tags: [
-      { title: 'javascript', checked: true,color: "#8652E0" },
-      { title: 'nodejs', checked: true,color:"#F59E0B" },
+      { title: 'javascript', checked: true },
+      { title: 'nodejs', checked: true },
       { title: 'virtual-dom', checked: true },
       { title: 'virtual-dom', checked: false },
       { title: 'nodejs', checked: false },
@@ -31,17 +32,17 @@ export const sampleRepositoriesData: {
     lastSync: '3 minutes ago',
   },
   {
-    repositoryName: 'marko-js/marko',
+    repositoryName: 'marko-js/repo2',
     lastUpdate: 'Last updated today',
     icons: [
-      <GithubIcon />,
+      <GithubIcon className='w-4 h-4' />,
       <Tooltip content="Auto imported from user-name" placement="bottom">
-        <AutoImportIcon />
+        <AutoImportIcon className='w-4 h-4' />
       </Tooltip>,
     ],
     tags: [
-      { title: 'javascript', checked: true,color: "#8652E0" },
-      { title: 'nodejs', checked: true,color:"#F59E0B" },
+      { title: 'javascript', checked: true },
+      { title: 'nodejs', checked: true },
       { title: 'virtual-dom', checked: false },
       { title: 'mongo-db', checked: true },
       { title: 'nodejs', checked: false },
@@ -55,17 +56,17 @@ export const sampleRepositoriesData: {
     lastSync: '3 minutes ago',
   },
   {
-    repositoryName: 'marko-js/marko',
+    repositoryName: 'marko-js/repo3',
     lastUpdate: 'Last updated today',
     icons: [
-      <GithubIcon />,
+      <GithubIcon className='w-4 h-4' />,
       <Tooltip content="Auto imported from user-name" placement="bottom">
-        <AutoImportIcon />
+        <AutoImportIcon className='w-4 h-4' />
       </Tooltip>,
     ],
     tags: [
-      { title: 'javascript', checked: true,color: "#8652E0" },
-      { title: 'nodejs', checked: true,color:"#F59E0B" },
+      { title: 'javascript', checked: true },
+      { title: 'nodejs', checked: true },
       { title: 'virtual-dom', checked: true },
       { title: 'virtual-dom', checked: false },
       { title: 'nodejs', checked: false },
@@ -78,17 +79,17 @@ export const sampleRepositoriesData: {
     lastSync: '3 minutes ago',
   },
   {
-    repositoryName: 'marko-js/marko',
+    repositoryName: 'marko-js/repo4',
     lastUpdate: 'Last updated today',
     icons: [
-      <GithubIcon />,
+      <GithubIcon className='w-4 h-4' />,
       <Tooltip content="Auto imported from user-name" placement="bottom">
-        <AutoImportIcon />
+        <AutoImportIcon className='w-4 h-4' />
       </Tooltip>,
     ],
     tags: [
-      { title: 'javascript', checked: true,color: "#8652E0" },
-      { title: 'nodejs', checked: true,color:"#F59E0B" },
+      { title: 'javascript', checked: true },
+      { title: 'nodejs', checked: true },
       { title: 'virtual-dom', checked: true },
       { title: 'virtual-dom', checked: false },
       { title: 'nodejs', checked: false },
