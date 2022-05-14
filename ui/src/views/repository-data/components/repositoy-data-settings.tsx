@@ -1,6 +1,6 @@
-import { Button, MultiSelect, Panel, Tabs } from '@mergestat/blocks'
-import { TrashIcon, XIcon } from '@mergestat/icons'
-import React, { useState } from 'react'
+import { Button, MultiSelect, Panel } from '@mergestat/blocks'
+import { TrashIcon } from '@mergestat/icons'
+import React from 'react'
 import { tagType } from 'src/@types'
 
 const tags: tagType[] = [

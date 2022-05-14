@@ -85,6 +85,7 @@ export const RepositoriesTable: React.FC = (props) => {
           className="overflow-visible relative z-0 border-b bg-gray-50"
           columns={columns}
           dataSource={processedData}
+          responsive
           borderless
         />
       </Panel.Body>

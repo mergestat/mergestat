@@ -44,6 +44,7 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
     />
   )
 }
+
 function getRepoStatusComponent(
   status: repSyncState,
   count: number
@@ -88,7 +89,7 @@ const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
 const RepositoryErrorStatus: React.FC<RepositoryStatusProps> = (props) => {
   const { count } = props
   return (
-    <div className="flex items-center gap-2 border border-samantic-border py-1 px-2 text-sm w-max bg-gray-50 text-samantic-mutedText cursor-pointer">
+    <div className="flex items-center gap-2 border border-samantic-border rounded py-1 px-2 text-sm w-max bg-gray-50 text-samantic-mutedText cursor-pointer">
       <CircleErrorFilledIcon className="text-samantic-danger w-3.5 h-3.5" />
       {count}
     </div>
