@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/jmoiron/sqlx"
 	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
@@ -39,8 +38,6 @@ type commitStat struct {
 	Additions  sql.NullInt64  `db:"additions"`
 	Deletions  sql.NullInt64  `db:"deletions"`
 }
-
-const selectCommitStats = `SELECT commits.hash AS commit_hash, stats.file_path, stats.additions, stats.deletions FROM commits(?), stats(?, commits.hash);`
 
 func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
@@ -85,16 +82,6 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		return err
 	}
 
-	var rows *sqlx.Rows
-	if rows, err = w.mergestat.QueryxContext(ctx, selectCommitStats, tmpPath, tmpPath); err != nil {
-		return err
-	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			w.logger.Err(err).Msgf("could not close rows: %v", err)
-		}
-	}()
-
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return err
@@ -115,22 +102,103 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 	batchSize := 500
 	batch := make([]*commitStat, 0, batchSize)
 	totalCount := 0
-	for rows.Next() {
+
+	walk, err := repo.Walk()
+	if err != nil {
+		return err
+	}
+	defer walk.Free()
+
+	if err := walk.PushHead(); err != nil {
+		return err
+	}
+
+	if err := walk.Iterate(func(c *libgit2.Commit) bool {
+		defer c.Free()
 		totalCount++
-		var r commitStat
-		if err := rows.StructScan(&r); err != nil {
-			return err
+
+		fromTree, err := c.Tree()
+		if err != nil {
+			return false
 		}
 
-		if len(batch) >= batchSize {
-			if err := w.sendBatchCommitStats(ctx, tx, j, batch); err != nil {
-				return err
+		toC := c.Parent(0)
+		var toTree *libgit2.Tree
+		if toC == nil {
+			toTree = &libgit2.Tree{}
+		} else {
+			defer toC.Free()
+			toTree, err = toC.Tree()
+			if err != nil {
+				return false
+			}
+		}
+
+		diffOpts, err := libgit2.DefaultDiffOptions()
+		if err != nil {
+			return false
+		}
+
+		diff, err := repo.DiffTreeToTree(fromTree, toTree, &diffOpts)
+		if err != nil {
+			return false
+		}
+		defer func() {
+			if err := diff.Free(); err != nil {
+				w.logger.Err(err).Msgf("error freeing diff")
+			}
+		}()
+
+		diffFindOpts, err := libgit2.DefaultDiffFindOptions()
+		if err != nil {
+			return false
+		}
+
+		if err = diff.FindSimilar(&diffFindOpts); err != nil {
+			return false
+		}
+
+		err = diff.ForEach(func(delta libgit2.DiffDelta, progress float64) (libgit2.DiffForEachHunkCallback, error) {
+			stat := &commitStat{
+				CommitHash: sql.NullString{String: c.Id().String(), Valid: true},
+				FilePath:   sql.NullString{String: delta.NewFile.Path, Valid: true},
+				Additions:  sql.NullInt64{Int64: 0, Valid: true},
+				Deletions:  sql.NullInt64{Int64: 0, Valid: true},
 			}
 
-			batch = make([]*commitStat, 0, batchSize)
-		} else {
-			batch = append(batch, &r)
+			if len(batch) >= batchSize {
+				if err := w.sendBatchCommitStats(ctx, tx, j, batch); err != nil {
+					return nil, err
+				}
+				batch = make([]*commitStat, 0, batchSize)
+			} else {
+				batch = append(batch, stat)
+			}
+
+			return func(hunk libgit2.DiffHunk) (libgit2.DiffForEachLineCallback, error) {
+				return func(line libgit2.DiffLine) error {
+					switch line.Origin {
+					case libgit2.DiffLineAddition:
+						stat.Additions.Int64++
+					case libgit2.DiffLineDeletion:
+						stat.Deletions.Int64++
+					}
+					return nil
+				}, nil
+			}, nil
+		}, libgit2.DiffDetailLines)
+		if err != nil {
+			w.logger.Err(err).Msgf("error iterating over diff")
+			return false
 		}
+
+		return true
+	}); err != nil {
+		return err
+	}
+
+	if err := w.sendBatchCommitStats(ctx, tx, j, batch); err != nil {
+		return nil
 	}
 
 	l.Info().Msgf("imported %d commit stats", totalCount)

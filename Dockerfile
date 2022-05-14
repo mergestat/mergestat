@@ -3,6 +3,8 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 COPY scripts/install_libgit2.sh install_libgit2.sh
 RUN ./install_libgit2.sh
 WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
 COPY . .
 RUN PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ make
 
