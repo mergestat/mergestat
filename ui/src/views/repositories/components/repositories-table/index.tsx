@@ -31,7 +31,7 @@ export const RepositoriesTable: React.FC = (props) => {
   return (
     <Panel className="mx-8 my-6 rounded-md flex-grow overflow-y-auto">
       <Panel.Header className='px-0'>
-        <Toolbar >
+        <Toolbar>
           <Toolbar.Left>
             <div className='flex items-center gap-6'>
               <Checkbox
@@ -82,10 +82,10 @@ export const RepositoriesTable: React.FC = (props) => {
       <Panel.Body className='p-0'>
         <Table
           noWrapHeaders
-          tableWrapperClassName="overflow-visible"
-          className="overflow-visible relative z-0"
+          className="overflow-visible relative z-0 border-b bg-gray-50"
           columns={columns}
           dataSource={processedData}
+          borderless
         />
       </Panel.Body>
 
