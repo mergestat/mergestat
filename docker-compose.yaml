@@ -10,25 +10,15 @@ services:
     environment:
       POSTGRES_PASSWORD: password
 
-  init:
+  worker:
     build:
       context: .
-    image: fuse-worker:local
-    entrypoint: migrate
-    command: ["-database", "postgres://postgres:password@postgres:5432/postgres?sslmode=disable", "-path", "migrations/", "up"]
-    restart: on-failure
-    depends_on:
-      - postgres
-
-  worker:
-    image: fuse-worker:local
     stop_grace_period: 10m
     restart: always
     depends_on:
-      - init
       - postgres
     environment:
-      POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres
+      POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
       GITHUB_RATE_LIMIT: 1/2
     env_file:
       - .env
