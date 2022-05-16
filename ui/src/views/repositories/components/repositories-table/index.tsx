@@ -29,7 +29,7 @@ export const RepositoriesTable: React.FC = (props) => {
   }))
 
   return (
-    <Panel className="mx-8 my-6 rounded-md flex-grow overflow-y-auto">
+    <Panel className="rounded-md h-full w-full">
       <Panel.Header className='px-0'>
         <Toolbar>
           <Toolbar.Left>
@@ -82,14 +82,15 @@ export const RepositoriesTable: React.FC = (props) => {
       <Panel.Body className='p-0'>
         <Table
           noWrapHeaders
-          className="overflow-visible relative z-0 border-b bg-gray-50"
+          className="relative z-0 border-b bg-gray-50"
+          tableWrapperClassName='h-full'
           columns={columns}
           dataSource={processedData}
           responsive
           borderless
+          scrollY="100%"
         />
       </Panel.Body>
-
     </Panel>
   )
 }

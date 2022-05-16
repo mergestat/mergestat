@@ -20,11 +20,15 @@ export const RepositoriesView: React.FC = () => {
   } = useRepositoriesContext()
 
   return (
-    <main className="w-full flex flex-col bg-gray-100">
-      <PageHeader />
-      <FilterHeader />
-      {false && <EmptyRepositoryTable />}
-      {true && <RepositoriesTable />}
+    <main className="w-full h-full grid grid-rows-content-layout bg-gray-100">
+      <div className="bg-white border-b border-gray-200">
+        <PageHeader />
+        <FilterHeader />
+      </div>
+      <div className="flex flex-col items-center justify-center p-6">
+        {false && <EmptyRepositoryTable />}
+        {true && <RepositoriesTable />}
+      </div>
       {showAddRepositoryModal && <AddRepositoryModal />}
       {showAutoImportModal && (
         <ManageAutoImportReposModal
