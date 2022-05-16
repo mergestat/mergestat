@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	_ "net/http/pprof"
@@ -13,6 +14,9 @@ import (
 	"time"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
@@ -74,6 +78,27 @@ func main() {
 		os.Exit(1)
 	}
 	defer pool.Close()
+
+	var m *migrate.Migrate
+	if m, err = migrate.New("file://migrations", postgresConnection); err != nil {
+		logger.Err(err).Msgf("could not initialize migrations")
+		os.Exit(1)
+	}
+
+	if err := m.Up(); err != nil {
+		if !errors.Is(err, migrate.ErrNoChange) {
+			logger.Err(err).Msgf("could not run migrations: %v", err)
+			os.Exit(1)
+		}
+	}
+
+	srcErr, dbErr := m.Close()
+	if srcErr != nil {
+		logger.Err(srcErr).Msgf("could not close migrations with source error: %v", srcErr)
+	}
+	if dbErr != nil {
+		logger.Err(dbErr).Msgf("could not close migrations with db error: %v", dbErr)
+	}
 
 	logger.Info().Msg("starting syncer")
 
