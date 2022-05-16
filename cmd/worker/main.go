@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	_ "net/http/pprof"
@@ -85,8 +86,10 @@ func main() {
 	}
 
 	if err := m.Up(); err != nil {
-		logger.Err(err).Msgf("could not run migrations")
-		os.Exit(1)
+		if !errors.Is(err, migrate.ErrNoChange) {
+			logger.Err(err).Msgf("could not run migrations: %v", err)
+			os.Exit(1)
+		}
 	}
 
 	srcErr, dbErr := m.Close()
