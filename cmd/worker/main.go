@@ -81,10 +81,12 @@ func main() {
 	var m *migrate.Migrate
 	if m, err = migrate.New("file://migrations", postgresConnection); err != nil {
 		logger.Err(err).Msgf("could not initialize migrations")
+		os.Exit(1)
 	}
 
 	if err := m.Up(); err != nil {
 		logger.Err(err).Msgf("could not run migrations")
+		os.Exit(1)
 	}
 
 	srcErr, dbErr := m.Close()
