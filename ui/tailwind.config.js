@@ -35,7 +35,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        'Inter': ['"Inter"', 'sans-serif']
+        'sans': ['Inter UI', 'ui-sans-serif', 'system-ui'],
+        'mono': ['ui-monospace', 'SFMono-Regular'],
+        'body': ['Inter UI', 'ui-sans-serif', 'system-ui'],
       },
       gridTemplateRows: {
         'content-layout': 'auto 1fr',

@@ -1,12 +1,13 @@
 @import '@mergestat/blocks/styles/main.css';
 @import '@mergestat/icons/styles/main.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
-@tailwind base;
+@import './fonts.css';
+
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 *{
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter UI', 'ui-sans-serif', 'system-ui';
 }
 .content-area {
   height: calc(100% - theme('height.14')); /* Nav height is h-14 */
