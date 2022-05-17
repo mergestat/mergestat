@@ -36,8 +36,8 @@ export const SyncDataTable: React.FC = (props) => {
   return (
     <Table
       noWrapHeaders
-      tableWrapperClassName="overflow-visible"
-      className="overflow-visible relative z-0  w-150 "
+      tableWrapperClassName="rounded shadow"
+      className="w-150"
       columns={columns}
       dataSource={processedData}
     />

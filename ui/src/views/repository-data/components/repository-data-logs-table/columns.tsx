@@ -8,20 +8,22 @@ import { RepositoryDetailsRowOptionsProps, RepositoryTableRowOptions } from './r
 
 export const columns: Array<Record<string, any>> = [
   {
-    title: '',
-    className: 'pl-5 pr-0 gap-0 w-4',
     dataIndex: 'syncStateIcon',
     key: 'syncStateIcon',
-    render: (syncStateIcon: repSyncState) => getRepositorySyncIcon(syncStateIcon)
+    className: "py-3 w-4",
+    render: (syncStateIcon: repSyncState) => getRepositorySyncIcon(syncStateIcon, "mx-6")
   },
   {
     title: 'Data',
     dataIndex: 'data',
+    headerClassName: "pl-0",
     key: 'data',
+    className: "py-3",
     render: (data: RepositoryDataProps) => <RepositoryData title={data.title} brief={data.brief} />
   },
   {
     title: 'Lastest Run',
+    headerClassName: "pl-0",
     className: 'text-gray-500 ',
     dataIndex: 'latest_run',
     key: 'latest_run',
@@ -33,6 +35,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: 'Status',
+    headerClassName: "pl-0",
     className: 'text-gray-500 ',
     dataIndex: 'status',
     key: 'status',
@@ -51,7 +54,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: '',
-    className: 'w-4',
+    className: 'w-4 px-6',
     dataIndex: 'options',
     key: 'options',
     render:(options:RepositoryDetailsRowOptionsProps )=>(

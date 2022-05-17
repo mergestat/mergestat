@@ -38,7 +38,7 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
   return (
     <Dropdown
       overlay={() => (
-        <Menu className="relative z-50 rounded w-80 p-4 flex flex-col gap-y-4">
+        <Menu className="relative z-50 rounded w-80 p-4 flex flex-col gap-y-4 shadow">
           <h4 className="font-semibold">Tags</h4>
           <Input
             placeholder="Search..."
@@ -77,6 +77,7 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
         </Menu>
       )}
       trigger={props.trigger}
+      zIndex={11}
     />
   )
 }

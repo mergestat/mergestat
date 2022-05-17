@@ -10,7 +10,7 @@ export type RepositoryNameProps = {
 
 export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 my-3">
       <div className="w-10 h-10 border flex border-samantic-border rounded flex-shrink-0">
         <RepositoryIcon className="text-samantic-icon w-4 h-4 m-auto"/>
       </div>

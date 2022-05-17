@@ -68,7 +68,7 @@ export const getRepositorySyncIcon = (syncStatus: repSyncState, className?:strin
     case 'check':
       return <CircleCheckFilledIcon className={`text-samantic-success ${className}`}  />
     case 'loading':
-      return <Spinner size="sm" />
+      return <Spinner size="sm" className={className} />
     case 'error':
       return <CircleErrorFilledIcon className={`text-samantic-danger ${className}`}  />
     default:

@@ -3,16 +3,23 @@ import { CaretDownIcon, CaretUpIcon } from '@mergestat/icons'
 import React from 'react'
 import { repSyncState, tagType } from 'src/@types'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
-import { RepositoryName, RepositoryNameProps, RepositoryStatus, RepositoryTagList } from './repositories-table-columns'
+import {
+  RepositoryName,
+  RepositoryNameProps,
+  RepositoryStatus,
+  RepositoryTagList
+} from './repositories-table-columns'
 
 export const columns: Array<Record<string, any>> = [
   {
-    title: "",
-    className: 'pl-2 pr-0 gap-0 w-4',
     dataIndex: 'checkbox',
     key: 'checkbox',
+    className: "px-6 w-4",
     render: (params: { selected: boolean, onChange: (name: string) => void }) => (
-      <Checkbox checked={params.selected} onChange={params.onChange as any} />
+      <Checkbox
+        checked={params.selected}
+        onChange={params.onChange as any}
+      />
     )
   },
   {
@@ -25,7 +32,6 @@ export const columns: Array<Record<string, any>> = [
         </span>
       </p>
     ),
-    className: '',
     dataIndex: 'repository',
     key: 'repository',
     render: (repo: RepositoryNameProps) => (
@@ -63,7 +69,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: '',
-    className: 'w-4',
+    className: 'px-6 w-4',
     dataIndex: 'option',
     key: 'option',
     render: () => <RepositoryAdditionalActionsDropDown />

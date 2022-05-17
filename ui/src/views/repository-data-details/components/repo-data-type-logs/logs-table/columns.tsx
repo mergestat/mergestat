@@ -7,14 +7,15 @@ import { CollapseTrigger, SyncType, SyncTypeProps } from './logs-table-columns'
 
 export const columns: Array<Record<string, any>> = [
   {
-    title: '',
-    className: 'pl-5 pr-0 gap-0 w-4',
     dataIndex: 'collapse',
     key: 'collapse',
+    className: 'px-3 w-4',
     render: (collabsed: boolean) => <CollapseTrigger collapsed={collabsed} />
   },
   {
     title: "Sync Type",
+    headerClassName: "pl-0",
+    className: 'py-3',
     dataIndex: 'sync_type',
     key: 'stync_type',
     render: (params: SyncTypeProps) => (
@@ -27,7 +28,8 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: 'Records',
-    className: 'text-gray-500 ',
+    className: 'text-gray-500',
+    headerClassName: "pl-0 w-40",
     dataIndex: 'records',
     key: 'records',
     render: (records: string) => (
@@ -36,7 +38,8 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: 'Duration',
-    className: 'text-gray-500 ',
+    className: 'text-gray-500',
+    headerClassName: "pl-0 w-40",
     dataIndex: 'duration',
     key: 'duration',
     render: (duration: string) => (
@@ -45,7 +48,8 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: 'Sync Start',
-    className: 'text-gray-500 ',
+    className: 'text-gray-500',
+    headerClassName: "pl-0 w-36",
     dataIndex: 'sync_start',
     key: 'sync_start',
     render: (sync_start: string) => (
@@ -53,8 +57,8 @@ export const columns: Array<Record<string, any>> = [
     )
   },
   {
-    title: '',
-    className: 'text-gray-500 ',
+    className: 'text-gray-500 mx-6',
+    headerClassName: "w-10",
     dataIndex: 'options',
     key: 'options',
     render: () => <LogsTableRowOptions />

@@ -1,8 +1,7 @@
-import { Dropdown, Filter, Input } from '@mergestat/blocks'
+import { Filter, Input } from '@mergestat/blocks'
 import { SearchIcon } from '@mergestat/icons'
 import React from 'react'
 import { TagsListDropDown } from '../drop-downs'
-
 
 export const FilterHeader: React.FC = (props) => {
   return (
@@ -16,6 +15,7 @@ export const FilterHeader: React.FC = (props) => {
       <Input
         placeholder="Search..."
         startIcon={<SearchIcon className="t-icon text-gray-400" />}
+        className="w-1/3"
       />
     </div>
   )

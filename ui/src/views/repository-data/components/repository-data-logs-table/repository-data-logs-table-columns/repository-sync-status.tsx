@@ -11,8 +11,8 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const { graphNode, disabled = false } = props
 
   return disabled ? (
-      <p className="text-sm text-samantic-mutedText">Disabld</p>
-    ) : (
+    <p className="text-sm text-samantic-mutedText">Disabld</p>
+  ) : (
     <div className='text-samantic-mutedText'>
       {graphNode}
     </div>

@@ -39,8 +39,6 @@ export const RepositoryTable: React.FC = (props) => {
       <Table
         scrollY={'100%'}
         noWrapHeaders
-        tableWrapperClassName="overflow-visible overflow-y-visible"
-        className="relative z-0"
         columns={columns}
         dataSource={processedData}
       />
