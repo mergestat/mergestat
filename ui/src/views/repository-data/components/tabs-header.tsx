@@ -1,6 +1,5 @@
-import { BreadcrumbNav, Button, SplitButton, Tabs } from '@mergestat/blocks'
-import { AutoImportIcon, CogIcon, PlusIcon } from '@mergestat/icons'
-import React, { useState } from 'react'
+import { Tabs } from '@mergestat/blocks'
+import React from 'react'
 
 export const TabsHeader: React.FC = (props) => {
   return (

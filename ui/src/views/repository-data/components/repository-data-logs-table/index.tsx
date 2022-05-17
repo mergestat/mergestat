@@ -1,13 +1,6 @@
 import { Table } from '@mergestat/blocks'
 import React from 'react'
-import { getRepositorySyncIcon } from 'src/views/repository-data-details'
 import { columns } from './columns'
-import {
-  RepositoryData,
-  RepositorySyncStatus,
-  RepositorySyncNow,
-} from './repository-data-logs-table-columns'
-import { RepositoryTableRowOptions } from './repository-table-row-options'
 import { sampleRepositoryData } from './sample-data'
 
 export const RepositoryTable: React.FC = (props) => {

@@ -28,7 +28,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
             return (
               <p
                 className="border-l border-samantic-border px-2"
-                key={`key1_${index}`}
+                key={index}
               >
                 <div className='text-samantic-mutedIcon'>
                   {icon}

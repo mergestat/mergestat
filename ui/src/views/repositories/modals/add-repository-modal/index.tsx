@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, Modal, RadioCard, Toolbar } from '@mergestat/blocks'
-import { GithubIcon, LinkIcon, TableIcon, XIcon } from '@mergestat/icons'
+import { Button, Modal, Toolbar } from '@mergestat/blocks'
+import { XIcon } from '@mergestat/icons'
 import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import { ModalSideBar } from './modal-sidebar'
 import { AddRepositoryFromCSVModal } from './add-repository-from-csv-modal'

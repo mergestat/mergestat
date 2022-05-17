@@ -1,5 +1,3 @@
-import { Checkbox, Typography } from '@mergestat/blocks'
-import { CaretDownIcon, CaretUpIcon } from '@mergestat/icons'
 import React from 'react'
 import { LogsTableRowOptions } from './log-table-row-options'
 import { CollapseTrigger, SyncType, SyncTypeProps } from './logs-table-columns'

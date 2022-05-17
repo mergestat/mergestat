@@ -1,5 +1,5 @@
 import { Dropdown, Menu } from '@mergestat/blocks'
-import { CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
+import { DotsHorizontalIcon } from '@mergestat/icons'
 
 export type RowOptionsProps = {
 
@@ -11,7 +11,7 @@ export const RowOptions: React.FC<RowOptionsProps> =
       <Dropdown
         alignEnd
         overlay={() => (
-          <Menu className={`absolute z-10 whitespace-nowrap right-0`}>
+          <Menu className="absolute z-10 whitespace-nowrap right-0">
             <Menu.Item text="Disable For All" />
             <Menu.Item text="Enable For All" />
           </Menu>

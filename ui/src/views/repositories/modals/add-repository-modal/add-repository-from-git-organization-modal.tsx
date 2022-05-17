@@ -167,8 +167,7 @@ const useGitOrganizations = () => {
 
   return {
     repositories,
-    selectedRepositoriesCount: repositories.filter((repo) => repo.selected)
-      .length,
+    selectedRepositoriesCount: repositories.filter((repo) => repo.selected).length,
     fetchRepositories,
     onCheckBoxClicked,
     selectAllRepositories,

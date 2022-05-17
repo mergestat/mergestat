@@ -1,5 +1,5 @@
 import { Dropdown, Menu } from '@mergestat/blocks'
-import { CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
+import { DotsHorizontalIcon } from '@mergestat/icons'
 
 type RepositoryAdditionalActionsProps = {
   disabled: boolean

@@ -61,7 +61,7 @@ export const RepositoriesTable: React.FC = (props) => {
               <HelpText>
                 <span className='text-samantic-header'>
                   {selectedRepositoriesCount} of {repositories.length}
-                </span>
+                </span>{' '}
                 repos selected
               </HelpText>
             </div>

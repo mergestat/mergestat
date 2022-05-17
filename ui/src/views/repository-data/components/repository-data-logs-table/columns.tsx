@@ -1,10 +1,18 @@
-import { Checkbox } from '@mergestat/blocks'
-import { CaretDownIcon, CaretUpIcon } from '@mergestat/icons'
 import React from 'react'
 import { repSyncState } from 'src/@types'
 import { getRepositorySyncIcon } from 'src/views/repository-data-details'
-import { RepositoryData, RepositoryDataProps, RepositorySyncNow, RepositorySyncNowProps, RepositorySyncStatus, RepositorySyncStatusProps } from './repository-data-logs-table-columns'
-import { RepositoryDetailsRowOptionsProps, RepositoryTableRowOptions } from './repository-table-row-options'
+import {
+  RepositoryData,
+  RepositoryDataProps,
+  RepositorySyncNow,
+  RepositorySyncNowProps,
+  RepositorySyncStatus,
+  RepositorySyncStatusProps
+} from './repository-data-logs-table-columns'
+import {
+  RepositoryDetailsRowOptionsProps,
+  RepositoryTableRowOptions
+} from './repository-table-row-options'
 
 export const columns: Array<Record<string, any>> = [
   {

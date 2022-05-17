@@ -1,7 +1,4 @@
-import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-import { BreadcrumbNav, Button, SplitButton } from '@mergestat/blocks'
-import { AutoImportIcon, CogIcon, PlusIcon } from '@mergestat/icons'
+import React from 'react'
 import { AutoManagedBreadCrumb } from 'src/components/bread-crumb'
 
 export type RepoDetailsHeaderProps = {
@@ -14,8 +11,6 @@ export type RepoDetailsHeaderProps = {
 }
 
 export const PageHeader: React.FC<RepoDetailsHeaderProps> = (props) => {
-  const { repo } = props
-  const router = useRouter()
   return (
     <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
       <div className="text-xl font-semibold">
