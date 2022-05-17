@@ -1,16 +1,16 @@
-import React from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { HelpText, Icon, Navbar, Toolbar } from "@mergestat/blocks"
-import { BookIcon, CaretDownIcon } from "@mergestat/icons"
+import React from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { HelpText, Icon, Navbar, Toolbar } from '@mergestat/blocks'
+import { BookIcon, CaretDownIcon } from '@mergestat/icons'
 
 const NavHeader: React.FC = () => {
   return (
-    <nav className="bg-gray-700 px-6 w-full">
+    <nav className="px-6 w-full bg-gray-700">
       <Toolbar className="h-14">
         <Toolbar.Left>
           <Toolbar.Item className="mr-3">
-            <Link href={`#`} passHref>
+            <Link href="/repos">
               <a>
                 <Icon
                   as="/logo-inverse.svg"
@@ -22,7 +22,7 @@ const NavHeader: React.FC = () => {
           </Toolbar.Item>
           <Toolbar.Item>
             <Navbar.Divider />
-            <HelpText className="ml-3 text-white ">v1.0.0</HelpText>
+            <HelpText className="ml-3 text-white">v1.0.0</HelpText>
           </Toolbar.Item>
         </Toolbar.Left>
         <Toolbar.Right className="space-x-6">

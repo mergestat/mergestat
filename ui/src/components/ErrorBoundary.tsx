@@ -14,7 +14,10 @@ export const ErrorFallback = ({
   </div>
 )
 
-export const MyErrorHandler = (error: Error, info: { componentStack: string }) => {
+export const MyErrorHandler = (
+  error: Error,
+  info: { componentStack: string }
+) => {
   console.error('error ==>', error)
   console.log('info ==>', info)
 }

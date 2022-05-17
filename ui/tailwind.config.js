@@ -1,38 +1,72 @@
-const colors = require("tailwindcss/colors");
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   purge: {
     content: [
-      "./pages/**/*.{js,ts,jsx,tsx}",
-      "./src/**/*.{js,ts,jsx,tsx}",
-      "./node_modules/@mergestat/blocks/**/*.{js,ts,jsx,tsx}",
+      './pages/**/*.{js,ts,jsx,tsx}',
+      './src/**/*.{js,ts,jsx,tsx}',
+      './node_modules/@mergestat/blocks/**/*.{js,ts,jsx,tsx}',
     ],
     options: {
-      safelist: [/w-\d\/\d/, "md_w-1/2", /^w-/, /^h-/],
+      safelist: [/w-\d\/\d/, 'md_w-1/2', /^w-/, /^h-/],
     },
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
+        samantic: {
+          header: '#111827',
+          text: '#374151',
+          mutedText: '#727C8D',
+          mutedIcon: '#9CA3AF',
+          border: '#E5E7EB',
+          icon: '#6B7280',
+          danger: '#DC2626',
+          success: '#10B981',
+        },
         gray: {
-          150: "#EBECEF",
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          150: '#EBECEF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
         },
       },
+      fontFamily: {
+        'sans': ['Inter UI', 'ui-sans-serif', 'system-ui'],
+        'mono': ['ui-monospace', 'SFMono-Regular'],
+        'body': ['Inter UI', 'ui-sans-serif', 'system-ui'],
+      },
       gridTemplateRows: {
-        "content-layout": "auto 1fr",
+        'content-layout': 'auto 1fr',
       },
       minHeight: {
-        40: "10rem",
+        40: '10rem',
+      },
+      width: {
+        1.5: '6px',
+        3.5: '14px',
+        4.5: '18px',
+        100: '25rem',
+        150:'37.5rem',
+        200:'50rem',
       },
       height: {
+        1.5: '6px',
+        3.5: '14px',
+        4.5: '18px',
         84: '21rem',
-      }
+      },
+      margin: {
+        0.5: '2px',
+      },
     },
     colors: {
-      transparent: "transparent",
-      current: "currentColor",
-      gray: colors.coolGray,
+      transparent: 'transparent',
+      current: 'currentColor',
+      gray: colors.gray,
       green: colors.emerald,
       lime: colors.lime,
       red: colors.red,
@@ -43,12 +77,12 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ["active"],
-      backgroundImage: ["active"],
-      boxShadow: ["active"],
-      gradientColorStops: ["active"],
+      backgroundColor: ['active'],
+      backgroundImage: ['active'],
+      boxShadow: ['active'],
+      gradientColorStops: ['active'],
     },
   },
   plugins: [],
-  separator: "_",
-};
+  separator: '_',
+}
