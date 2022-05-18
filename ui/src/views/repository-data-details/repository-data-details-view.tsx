@@ -65,7 +65,7 @@ export const getRepositorySyncIcon = (syncStatus: repSyncState, className?:strin
   switch (syncStatus) {
     case 'disabled':
       return <CircleInformationFilledIcon className={`text-samantic-mutedIcon ${className}` }  />
-    case 'check':
+    case 'done':
       return <CircleCheckFilledIcon className={`text-samantic-success ${className}`}  />
     case 'loading':
       return <Spinner size="sm" className={className} />

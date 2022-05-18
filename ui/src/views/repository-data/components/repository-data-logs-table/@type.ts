@@ -1,10 +1,18 @@
 import { repSyncState } from 'src/@types'
 
+export interface SyncStatusDataProps {
+  value: number;
+  status: string;
+}
+
 export type RepoSyncDataType = {
-  syncStateIcon: JSX.Element
-  Data: { title: string; brief: string }
-  latest_run: string
-  status: { disabled: boolean; graphNode: JSX.Element }
-  syncNow: { syncState: repSyncState; doSync?: () => void }
-  options: JSX.Element
+  data: {
+    title: string,
+    brief: string,
+  },
+  latest_run: string,
+  status: {
+    data?: SyncStatusDataProps[],
+    syncState: repSyncState
+  },
 }

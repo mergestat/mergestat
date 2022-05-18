@@ -50,7 +50,7 @@ function getRepoStatusComponent(
   count: number
 ): React.ReactNode {
   switch (status) {
-    case 'check':
+    case 'done':
       return <RepositoryCheckStatus count={count} />
     case 'error':
       return <RepositoryErrorStatus count={count} />

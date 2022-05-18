@@ -23,7 +23,7 @@ export const SyncType: React.FC<SyncTypeProps> = (props) => {
           </Link>
         </div>
       )
-    case 'check':
+    case 'done':
       return (
         <div className="flex gap-2 items-center">
           <CircleCheckFilledIcon className="w-5 h-5 text-samantic-success" />

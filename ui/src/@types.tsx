@@ -1,4 +1,4 @@
-export type repSyncState = 'disabled' | 'loading' | 'check' | 'error'
+export type repSyncState = 'disabled' | 'loading' | 'done' | 'error'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
