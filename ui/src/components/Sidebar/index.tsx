@@ -15,14 +15,14 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label="Repos"
           active={isSidebarActive('repos')}
-          icon={<RepositoryIcon />}
+          icon={<RepositoryIcon className='t-icon' />}
         />
       </Link>
       <Link href="/connect" passHref>
         <Sidebar.Item
           label="Connect"
           active={isSidebarActive('connect')}
-          icon={<DatabaseIcon />}
+          icon={<DatabaseIcon className='t-icon' />}
         />
       </Link>
       <Sidebar.Divider />
@@ -30,7 +30,7 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label="Settings"
           active={isSidebarActive('settings')}
-          icon={<CogIcon />}
+          icon={<CogIcon className='t-icon' />}
         />
       </Link>
     </Sidebar>
