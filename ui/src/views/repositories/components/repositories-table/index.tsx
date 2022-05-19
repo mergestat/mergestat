@@ -66,35 +66,35 @@ export const RepositoriesTable: React.FC = (props) => {
               </HelpText>
             </div>
           </Toolbar.Left>
-          { selectedRepositoriesCount !== 0 && (
-            <Toolbar.Right>
-              <div className='flex items-center gap-2'>
-                <SyncDataDropDown
-                  triger={
-                    <Button
-                      className='flex items-center gap-2'
-                      endIcon={<CaretDownIcon className='w-4.5 h-4.5 text-samantic-icon' />}
-                      startIcon={<RefreshIcon className='w-4.5 h-4.5 text-samantic-icon' />}
-                      skin='secondary'
-                      size="small"
-                    >
-                      Sync Data
-                    </Button>
-                  }
-                />
+          <Toolbar.Right>
+            <div className='flex items-center gap-2'>
+              <SyncDataDropDown
+                triger={
+                  <Button
+                    className='flex items-center gap-2'
+                    endIcon={<CaretDownIcon className='w-4.5 h-4.5 text-samantic-icon' />}
+                    startIcon={<RefreshIcon className='w-4.5 h-4.5 text-samantic-icon' />}
+                    skin='secondary'
+                    size="small"
+                    disabled={selectedRepositoriesCount === 0}
+                  >
+                    Sync Data
+                  </Button>
+                }
+              />
 
-                <Button
-                  className='flex items-center gap-2'
-                  endIcon={<CaretDownIcon className='w-4.5 h-4.5 text-samantic-icon' />}
-                  startIcon={<PencilIcon className='w-4.5 h-4.5 text-samantic-icon' />}
-                  skin='secondary'
-                  size="small"
-                >
-                  Edit Tags
-                </Button>
-              </div>
-            </Toolbar.Right>
-          )}
+              <Button
+                className='flex items-center gap-2'
+                endIcon={<CaretDownIcon className='w-4.5 h-4.5 text-samantic-icon' />}
+                startIcon={<PencilIcon className='w-4.5 h-4.5 text-samantic-icon' />}
+                skin='secondary'
+                size="small"
+                disabled={selectedRepositoriesCount === 0}
+              >
+                Edit Tags
+              </Button>
+            </div>
+          </Toolbar.Right>
         </Toolbar>
       </Panel.Header>
       <Panel.Body className='p-0'>

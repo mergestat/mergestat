@@ -6,7 +6,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
       title: 'Commit stats',
       brief: 'Stores git commits for this repo in the "git_commits" table',
     },
-    latest_run: 'Now',
+    latestRun: 'Now',
     status: {
       data: [
         {value: 6, status: 'success'},
@@ -34,7 +34,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
       title: 'Pull Requests',
       brief: 'Stores git commits for this repo in the "git_commits" table',
     },
-    latest_run: '20 minutes ago',
+    latestRun: '20 minutes ago',
     status: {
       data: [
         {value: 2, status: 'loading'},
@@ -58,7 +58,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
       title: 'Issues',
       brief: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     },
-    latest_run: '20 minutes ago',
+    latestRun: '20 minutes ago',
     status: {
       data: [
         {value: 3, status: 'error'},
@@ -79,7 +79,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
       title: 'Dependencies',
       brief: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     },
-    latest_run: '-',
+    latestRun: '-',
     status: {
       syncState: 'disabled'
     },
@@ -89,7 +89,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
       title: 'Stargazers',
       brief: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     },
-    latest_run: '20 minutes ago',
+    latestRun: '20 minutes ago',
     status: {
       data: [
         {value: 2, status: 'success'},
@@ -109,7 +109,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
       title: 'Blame',
       brief: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     },
-    latest_run: '20 minutes ago',
+    latestRun: '20 minutes ago',
     status: {
       data: [
         {value: 5, status: 'success'},

@@ -34,8 +34,7 @@ export const RepositoryTagList: React.FC<RepositoryTagListProps> = (props) => {
         {checkedTags.length > TAGS_SHOWN && (
           <div className="flex items-center gap-x-2 border border-samantic-border rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
             <div className="flex items-center text-gray-500">
-              <PlusIcon className="w-3 h-3" />
-              <span>{checkedTags.length - TAGS_SHOWN}</span>
+              <span>+{checkedTags.length - TAGS_SHOWN}</span>
             </div>
             <EditTagsListDropDown tags={tags} />
           </div>

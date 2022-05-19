@@ -1,5 +1,4 @@
 @import '@mergestat/blocks/styles/main.css';
-@import '@mergestat/icons/styles/main.css';
 @import './fonts.css';
 
 /* @tailwind base;
@@ -13,6 +12,7 @@
   height: calc(100% - theme('height.14')); /* Nav height is h-14 */
 }
 
+/*
 .Selectable {
   width: max-content;
 }
@@ -24,3 +24,4 @@
 .Selectable .DayPicker-Day {
   border-radius: 0 !important;
 }
+*/

@@ -32,11 +32,11 @@ export const columns: Array<Record<string, any>> = [
     title: 'Lastest Run',
     headerClassName: "pl-0",
     className: 'text-gray-500 ',
-    dataIndex: 'latest_run',
-    key: 'latest_run',
-    render: (latest_run: string) => (
+    dataIndex: 'latestRun',
+    key: 'latestRun',
+    render: (latestRun: string) => (
       <span className="text-sm  text-samantic-mutedText">
-        {latest_run}
+        {latestRun}
       </span>
     )
   },

@@ -10,7 +10,7 @@ export type RepoSyncDataType = {
     title: string,
     brief: string,
   },
-  latest_run: string,
+  latestRun: string,
   status: {
     data?: SyncStatusDataProps[],
     syncState: repSyncState
