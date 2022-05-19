@@ -34,7 +34,7 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
 
               <div className="flex items-center gap-2">
                 <span className='text-samantic-mutedText'>{item.lastSync}</span>
-                <ChevronRightIcon className='text-samantic-icon' />
+                <ChevronRightIcon className='t-icon text-samantic-icon' />
               </div>
             </div>
           ))}

@@ -32,7 +32,7 @@ export const columns: Array<Record<string, any>> = [
         className='flex gap-2 text-samantic-text whitespace-nowrap'
         skin='secondary'
         startIcon={
-          <RefreshIcon className={`w-4 h-4 ${params.disabled ? "text-samantic-mutedIcon":"text-samantic-icon"}`} />
+          <RefreshIcon className={`t-icon ${params.disabled ? "text-samantic-mutedIcon":"text-samantic-icon"}`} />
         }
         onClick={params.doSync}
         disabled={params.disabled}

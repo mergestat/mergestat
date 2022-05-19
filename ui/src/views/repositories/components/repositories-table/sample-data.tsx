@@ -35,9 +35,9 @@ export const sampleRepositoriesData: {
     repositoryName: 'marko-js/repo2',
     lastUpdate: 'Last updated today',
     icons: [
-      <GithubIcon className='w-4 h-4' />,
+      <GithubIcon className='t-icon' />,
       <Tooltip content="Auto imported from user-name" placement="bottom">
-        <AutoImportIcon className='w-4 h-4' />
+        <AutoImportIcon className='t-icon' />
       </Tooltip>,
     ],
     tags: [

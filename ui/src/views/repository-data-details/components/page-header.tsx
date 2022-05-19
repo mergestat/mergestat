@@ -1,18 +1,6 @@
-import {
-  BreadcrumbNav,
-  Button,
-  SplitButton,
-  ThreeDots,
-} from '@mergestat/blocks'
-import {
-  AutoImportIcon,
-  CogIcon,
-  DotsHorizontalIcon,
-  PlusIcon,
-  RefreshIcon,
-} from '@mergestat/icons'
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { Button } from '@mergestat/blocks'
+import { DotsHorizontalIcon, RefreshIcon } from '@mergestat/icons'
+import React from 'react'
 import { AutoManagedBreadCrumb } from 'src/components/bread-crumb'
 
 export type RepoDetailsHeaderProps = {
@@ -32,30 +20,19 @@ export type RepoDetailsHeaderProps = {
 
 export const PageHeader: React.FC<RepoDetailsHeaderProps> = (props) => {
   const { repo, datatype } = props
-  const router = useRouter()
+
   return (
     <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
       <div className="text-xl font-semibold">
-        {/* <BreadcrumbNav
-                    data={[
-                        {
-                            text: 'Repos',
-                            onClick: router.back,
-                        },
-                        {
-                            ...repo
-                        },
-                        { ...datatype }]}
-                /> */}
         <AutoManagedBreadCrumb />
       </div>
       <div className="flex gap-3">
         <Button skin="secondary">
-          <DotsHorizontalIcon />
+          <DotsHorizontalIcon className="t-icon" />
         </Button>
         <Button
           className="flex gap-2"
-          startIcon={<RefreshIcon className="w-5 h-5" />}
+          startIcon={<RefreshIcon className="t-icon" />}
         >
           Sync Now
         </Button>

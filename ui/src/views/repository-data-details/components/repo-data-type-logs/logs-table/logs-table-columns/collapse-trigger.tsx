@@ -1,4 +1,4 @@
-import { CaretDownIcon, CaretLeftIcon, CaretRightIcon } from '@mergestat/icons'
+import { CaretDownIcon, CaretRightIcon } from '@mergestat/icons'
 import React, { useState } from 'react'
 
 type collapseTriggerProps = {

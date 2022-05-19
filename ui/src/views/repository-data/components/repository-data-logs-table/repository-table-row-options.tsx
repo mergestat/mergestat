@@ -13,7 +13,7 @@ export const RepositoryTableRowOptions: React.FC<RepositoryDetailsRowOptionsProp
     return (
       <Dropdown
         alignEnd
-        trigger={<DotsHorizontalIcon className="cursor-pointer text-samantic-icon" />}
+        trigger={<DotsHorizontalIcon className="t-icon cursor-pointer text-samantic-icon" />}
         overlay={() => (
           <Menu className={`absolute z-10 whitespace-nowrap right-0`}>
             {(state === "disabled")

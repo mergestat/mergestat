@@ -27,8 +27,8 @@ export const columns: Array<Record<string, any>> = [
       <p className="whiteSpace-nowrap flex items-center gap-4 text-samantic-header">
         Repository{' '}
         <span>
-          <CaretUpIcon />
-          <CaretDownIcon className="-mt-3" />
+          <CaretUpIcon className='t-icon' />
+          <CaretDownIcon className="t-icons -mt-3" />
         </span>
       </p>
     ),
@@ -49,8 +49,8 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: (
-      <p className="flex items-center gap-4 text-samantic-header">
-        Last sync <CaretDownIcon className=" text-blue-400" />
+      <p className="flex items-center gap-2 text-samantic-header">
+        Last sync <CaretDownIcon className="t-icon text-blue-400" />
       </p>
     ),
     className: 'text-gray-500',

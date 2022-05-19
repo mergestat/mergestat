@@ -12,7 +12,7 @@ export const RepositorySyncAdditionalActionsDropDown: React.FC<RepositoryAdditio
     return (
       <Dropdown
         alignEnd
-        trigger={<DotsHorizontalIcon className="cursor-pointer" />}
+        trigger={<DotsHorizontalIcon className="t-icon cursor-pointer" />}
         overlay={() => (
           <Menu className={`absolute z-10 whitespace-nowrap right-0`}>
             {!disabled && (

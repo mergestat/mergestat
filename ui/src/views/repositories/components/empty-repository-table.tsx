@@ -20,7 +20,7 @@ export const EmptyRepositoryTable: React.FC = () => {
         }
         topIcon={
           <div className="t-circle-icon">
-            <RepositoryIcon />
+            <RepositoryIcon className='t-icon' />
           </div>
         }
       />

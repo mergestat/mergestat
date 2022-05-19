@@ -1,6 +1,3 @@
-import { Spinner, ThreeDots } from '@mergestat/blocks'
-import { CircleCheckFilledIcon } from '@mergestat/icons'
-import React from 'react'
 import { SettingsDataType } from './@type'
 
 export const sampleDatatypesettingsData: SettingsDataType[] = [

@@ -1,4 +1,3 @@
-import { PlusIcon } from '@mergestat/icons'
 import React from 'react'
 import { tagType } from 'src/@types'
 import { EditTagsListDropDown } from 'src/views/repositories/drop-downs'

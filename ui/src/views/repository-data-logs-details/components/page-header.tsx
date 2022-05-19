@@ -11,7 +11,7 @@ export const PageHeader: React.FC = () => {
       </div>
       <div className="flex gap-3">
         <Button skin="secondary">
-          <DotsHorizontalIcon />
+          <DotsHorizontalIcon className='t-icon' />
         </Button>
       </div>
     </div>

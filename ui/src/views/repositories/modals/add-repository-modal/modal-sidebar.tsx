@@ -42,22 +42,22 @@ type SideBarTab = {
 
 const sidebarTabs: SideBarTab[] = [
   {
-    startIcon: <LinkIcon />,
+    startIcon: <LinkIcon className='t-icon' />,
     label: 'Add from URL',
     type: 'url',
   },
   {
-    startIcon: <GithubIcon />,
+    startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub org',
     type: 'gh-org',
   },
   {
-    startIcon: <GithubIcon />,
+    startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub user',
     type: 'gh-user',
   },
   {
-    startIcon: <TableIcon />,
+    startIcon: <TableIcon className='t-icon' />,
     label: 'Add Add from CSV',
     type: 'csv',
   },
