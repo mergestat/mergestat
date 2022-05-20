@@ -23,7 +23,7 @@ export const ModalSideBar: React.FC<ModalSideBarProps> = (props) => {
       {sidebarTabs.map((item, index) => (
         <RadioCard
           key={index}
-          className="mb-2"
+          className="mb-2 whitespace-nowrap"
           isSelected={selectedTab === item.type}
           label={item.label}
           startIcon={item.startIcon}

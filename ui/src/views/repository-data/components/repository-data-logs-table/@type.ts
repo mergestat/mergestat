@@ -1,4 +1,4 @@
-import { repSyncState } from 'src/@types'
+import { RepSyncStateT } from 'src/@types'
 
 export interface SyncStatusDataProps {
   value: number;
@@ -13,6 +13,6 @@ export type RepoSyncDataType = {
   latestRun: string,
   status: {
     data?: SyncStatusDataProps[],
-    syncState: repSyncState
+    syncState: RepSyncStateT
   },
 }

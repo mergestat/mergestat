@@ -1,5 +1,8 @@
 import React from 'react'
-import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
+import {
+  useRepositoriesContext,
+  useRepositoriesSetState,
+} from 'src/state/contexts/repositories.context'
 import {
   EmptyRepositoryTable,
   FilterHeader,
@@ -11,13 +14,16 @@ import { ManageAutoImportReposModal } from './modals/auto-import-repository-moda
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
 
 export const RepositoriesView: React.FC = () => {
-  const {
+  const [{
     showAddRepositoryModal,
     showAutoImportModal,
-    setShowAutoImportModal,
     showSyncRepoModal,
-    setShowSyncRepoModal,
-  } = useRepositoriesContext()
+  }] = useRepositoriesContext()
+
+  const {
+    setShowAutoImportModal,
+    setShowSyncRepoModal
+  } = useRepositoriesSetState()
 
   return (
     <main className="w-full h-full grid grid-rows-content-layout bg-gray-100">

@@ -11,37 +11,22 @@ import {
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 import React from 'react'
 import { SyncDataDropDown } from '../../drop-downs/sync-repos-data-drop-down'
+import type { RepoDataProps } from './@types'
 import { columns } from './columns'
+
 import { sampleRepositoriesData } from './sample-data'
 
 export const RepositoriesTable: React.FC = (props) => {
-  const {
-    repositories,
-    selectedRepositoriesCount,
-    onCheckBoxClicked,
-    selectAllRepositories
-  } = useReposStateHandler()
-  const allSelected = selectedRepositoriesCount === repositories.length
-  // TODO: export this logic to a hook
-  const processedData = repositories.map((item, index) => ({
-    checkbox: {
-      selected: item.selected,
-      onChange: () => onCheckBoxClicked(item.repositoryName)
-    },
-    repository: {
-      name: item.repositoryName,
-      icons: item.icons,
-      lastUpdate: item.lastUpdate,
-    },
-    tags: item.tags,
-    last: item.lastSync,
-    status: item.status,
-    option: "",
-  }))
+
+  const selectAllRepositories = (checked: boolean) => {
+    sampleRepositoriesData.forEach((re: RepoDataProps & { isSelected?: boolean }) => re.isSelected = checked)
+  }
+
+  const selectedRepositoriesCount = sampleRepositoriesData.filter((repo: RepoDataProps & { isSelected?: boolean }) => repo.isSelected).length
 
   const checkedState = selectedRepositoriesCount === 0
     ? CHECKBOX_STATES.Unchecked
-    : selectedRepositoriesCount === repositories.length
+    : selectedRepositoriesCount === sampleRepositoriesData.length
       ? CHECKBOX_STATES.Checked
       : CHECKBOX_STATES.Indeterminate
 
@@ -60,7 +45,7 @@ export const RepositoriesTable: React.FC = (props) => {
               />
               <HelpText>
                 <span className='text-samantic-header'>
-                  {selectedRepositoriesCount} of {repositories.length}
+                  {selectedRepositoriesCount} of {sampleRepositoriesData.length}
                 </span>{' '}
                 repos selected
               </HelpText>
@@ -103,7 +88,7 @@ export const RepositoriesTable: React.FC = (props) => {
           className="relative border-b"
           tableWrapperClassName='h-full'
           columns={columns}
-          dataSource={processedData}
+          dataSource={sampleRepositoriesData}
           responsive
           borderless
           scrollY="100%"
@@ -112,32 +97,4 @@ export const RepositoriesTable: React.FC = (props) => {
       </Panel.Body>
     </Panel>
   )
-}
-
-const useReposStateHandler = () => {
-  const [repositories, setRepositories] = React.useState(
-    sampleRepositoriesData.map(repo => ({ ...repo, selected: false }))
-  )
-
-  const onCheckBoxClicked = (repository: string) => {
-    setRepositories((prev) =>
-      prev.map((item) => ({
-        ...item,
-        selected: item.repositoryName === repository ? !item.selected : item.selected,
-      }))
-    )
-  }
-
-  const selectAllRepositories = (checked: boolean) => {
-    setRepositories((prev) =>
-      prev.map((item) => ({ ...item, selected: checked }))
-    )
-  }
-
-  return {
-    repositories,
-    selectedRepositoriesCount: repositories.filter((repo) => repo.selected).length,
-    onCheckBoxClicked,
-    selectAllRepositories,
-  }
 }

@@ -8,7 +8,7 @@ import {
   ExternalLinkIcon,
 } from '@mergestat/icons'
 import { useRouter } from 'next/router'
-import { repSyncState } from '../../@types'
+import { RepSyncStateT } from '../../@types'
 import {
   PageHeader,
   RepoDataLogs,
@@ -19,7 +19,7 @@ import {
 type RepositoryDataTypeViewProps = {
   repoName: string
   DataType: string
-  syncState: repSyncState
+  syncState: RepSyncStateT
 }
 export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
   props
@@ -61,11 +61,11 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
     </main>
   )
 }
-export const getRepositorySyncIcon = (syncStatus: repSyncState, className?:string) => {
+export const getRepositorySyncIcon = (syncStatus: RepSyncStateT, className?:string) => {
   switch (syncStatus) {
     case 'disabled':
       return <CircleInformationFilledIcon className={`text-samantic-mutedIcon ${className}` }  />
-    case 'done':
+    case 'success':
       return <CircleCheckFilledIcon className={`text-samantic-success ${className}`}  />
     case 'loading':
       return <Spinner size="sm" className={className} />

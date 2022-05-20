@@ -71,7 +71,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
         {value: 7, status: 'success'},
         {value: 5, status: 'success'},
       ],
-      syncState: 'done'
+      syncState: 'success'
     },
   },
   {
@@ -101,7 +101,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
         {value: 5, status: 'success'},
         {value: 4, status: 'success'},
       ],
-      syncState: 'done'
+      syncState: 'success'
     },
   },
   {
@@ -125,7 +125,7 @@ export const sampleRepositoryData: RepoSyncDataType[] = [
         {value: 5, status: 'success'},
         {value: 2, status: 'loading'},
       ],
-      syncState: 'done'
+      syncState: 'success'
     },
   },
 ]

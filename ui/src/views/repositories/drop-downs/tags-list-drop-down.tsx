@@ -8,7 +8,7 @@ import {
 } from '@mergestat/blocks'
 import { SearchIcon } from '@mergestat/icons'
 import { TagListFilterModal } from '../modals'
-import { tagType } from 'src/@types'
+import { TagType } from 'src/@types'
 
 
 type TagsListDropDownProps = {
@@ -82,7 +82,7 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
   )
 }
 
-const allTags: tagType[] = [
+const allTags: TagType[] = [
   { title: 'javascript', checked: true },
   { title: 'node', checked: false },
   { title: 'dom', checked: true },

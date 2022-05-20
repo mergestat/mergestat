@@ -2,10 +2,10 @@ import { CircleCheckFilledIcon, CircleErrorFilledIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { repSyncState } from 'src/@types'
+import { RepSyncStateT } from 'src/@types'
 
 export type SyncTypeProps = {
-  sync_type: repSyncState
+  sync_type: RepSyncStateT
   sync_start: string
   id: string
 }
@@ -23,7 +23,7 @@ export const SyncType: React.FC<SyncTypeProps> = (props) => {
           </Link>
         </div>
       )
-    case 'done':
+    case 'success':
       return (
         <div className="flex gap-2 items-center">
           <CircleCheckFilledIcon className="w-5 h-5 text-samantic-success" />

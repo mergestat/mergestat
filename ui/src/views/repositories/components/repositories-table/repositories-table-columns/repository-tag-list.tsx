@@ -1,8 +1,8 @@
 import React from 'react'
-import { tagType } from 'src/@types'
+import { TagType } from 'src/@types'
 import { EditTagsListDropDown } from 'src/views/repositories/drop-downs'
 
-type RepositoryTagItemProps = tagType
+type RepositoryTagItemProps = TagType
 
 export const RepositoryTagItem: React.FC<RepositoryTagItemProps> = (props) => {
   return (
@@ -13,7 +13,7 @@ export const RepositoryTagItem: React.FC<RepositoryTagItemProps> = (props) => {
 }
 
 export type RepositoryTagListProps = {
-  tags: Array<tagType>
+  tags: Array<TagType>
 }
 
 export const RepositoryTagList: React.FC<RepositoryTagListProps> = (props) => {

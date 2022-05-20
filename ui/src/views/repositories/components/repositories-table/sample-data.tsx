@@ -1,104 +1,71 @@
-import React, { ReactNode } from 'react'
-import { Tooltip } from '@mergestat/blocks'
-import { AutoImportIcon, GithubIcon } from '@mergestat/icons'
-import { tagType } from 'src/@types'
+import type { RepoDataProps } from './@types'
 
-export type repoDataStatus = 'error' | 'loading' | 'check'
-export const sampleRepositoriesData: {
-  repositoryName: string
-  lastUpdate: string
-  icons: ReactNode[]
-  tags: tagType[]
-  status: { icon: repoDataStatus; count: number }[]
-  lastSync: string
-}[] = [
+export const sampleRepositoriesData: Array<RepoDataProps> = [
   {
-    repositoryName: 'marko-js/repo1',
+    name: 'marko-js/repo1',
     lastUpdate: 'Last updated today',
-    icons: [<GithubIcon className=' w-4 h-4' />],
+    type: 'github',
+    automaticImport: true,
     tags: [
       { title: 'javascript', checked: true },
       { title: 'nodejs', checked: true },
       { title: 'virtual-dom', checked: true },
-      { title: 'virtual-dom', checked: false },
-      { title: 'nodejs', checked: false },
-      { title: 'virtual-dom', checked: false },
-    ],
-    status: [
-      { icon: 'error', count: 2 },
-      { icon: 'loading', count: 1 },
-      { icon: 'check', count: 1 },
+      { title: 'reactjs', checked: false },
+      { title: 'angularjs', checked: false },
+      { title: 'typescript', checked: false },
     ],
     lastSync: '3 minutes ago',
-  },
-  {
-    repositoryName: 'marko-js/repo2',
-    lastUpdate: 'Last updated today',
-    icons: [
-      <GithubIcon className='t-icon' />,
-      <Tooltip content="Auto imported from user-name" placement="bottom">
-        <AutoImportIcon className='t-icon' />
-      </Tooltip>,
-    ],
-    tags: [
-      { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: true },
-      { title: 'virtual-dom', checked: false },
-      { title: 'mongo-db', checked: true },
-      { title: 'nodejs', checked: false },
-      { title: 'virtual-dom', checked: false },
-    ],
     status: [
-      { icon: 'error', count: 1 },
-      { icon: 'loading', count: 2 },
-      { icon: 'check', count: 1 },
+      { type: 'error', count: 1 },
+      { type: 'loading', count: 3 },
+      { type: 'success', count: 8 },
     ],
-    lastSync: '3 minutes ago',
   },
   {
-    repositoryName: 'marko-js/repo3',
-    lastUpdate: 'Last updated today',
-    icons: [
-      <GithubIcon className='w-4 h-4' />,
-      <Tooltip content="Auto imported from user-name" placement="bottom">
-        <AutoImportIcon className='w-4 h-4' />
-      </Tooltip>,
-    ],
+    name: 'MithrilJS/mithril.js',
+    lastUpdate: 'Last updated yesterday',
+    type: 'github',
+    automaticImport: false,
     tags: [
       { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: true },
+      { title: 'nodejs', checked: false },
       { title: 'virtual-dom', checked: true },
-      { title: 'virtual-dom', checked: false },
-      { title: 'nodejs', checked: false },
-      { title: 'virtual-dom', checked: false },
-    ],
-    status: [
-      { icon: 'error', count: 1 },
-      { icon: 'check', count: 5 },
     ],
     lastSync: '3 minutes ago',
+    status: [
+      { type: 'error', count: 1 },
+      { type: 'loading', count: 3 },
+      { type: 'success', count: 8 },
+    ],
   },
   {
-    repositoryName: 'marko-js/repo4',
-    lastUpdate: 'Last updated today',
-    icons: [
-      <GithubIcon className='w-4 h-4' />,
-      <Tooltip content="Auto imported from user-name" placement="bottom">
-        <AutoImportIcon className='w-4 h-4' />
-      </Tooltip>,
-    ],
+    name: 'angular/angular',
+    lastUpdate: 'Last updated yesterday',
+    type: 'github',
+    automaticImport: true,
     tags: [
       { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: true },
-      { title: 'virtual-dom', checked: true },
-      { title: 'virtual-dom', checked: false },
       { title: 'nodejs', checked: false },
-      { title: 'virtual-dom', checked: false },
-    ],
-    status: [
-      { icon: 'loading', count: 1 },
-      { icon: 'check', count: 3 },
+      { title: 'angular', checked: true },
     ],
     lastSync: '3 minutes ago',
+    status: [
+      { type: 'loading', count: 1 },
+      { type: 'success', count: 4 },
+    ],
+  },
+  {
+    name: 'emberjs/ember.js',
+    lastUpdate: 'Last updated 4 days ago',
+    type: 'github',
+    tags: [
+      { title: 'javascript', checked: true },
+      { title: 'nodejs', checked: false },
+      { title: 'ember', checked: true },
+    ],
+    lastSync: '1 hours ago',
+    status: [
+      { type: 'success', count: 2 },
+    ],
   },
 ]

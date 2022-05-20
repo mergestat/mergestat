@@ -1,10 +1,11 @@
 import { Button, EmptyState } from '@mergestat/blocks'
 import { PlusIcon, RepositoryIcon } from '@mergestat/icons'
 import React from 'react'
-import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
+import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 
 export const EmptyRepositoryTable: React.FC = () => {
-  const { setShowAddRepositoryModal } = useRepositoriesContext()
+  const { setShowAddRepositoryModal } = useRepositoriesSetState()
+
   return (
     <div className="h-4/5 p-8">
       <EmptyState

@@ -1,10 +1,10 @@
 import React from 'react'
 import { Dropdown, Menu } from '@mergestat/blocks'
 import { DotsHorizontalIcon } from '@mergestat/icons'
-import { repSyncState } from 'src/@types'
+import { RepSyncStateT } from 'src/@types'
 
 export type RepositoryDetailsRowOptionsProps = {
-  state:repSyncState
+  state:RepSyncStateT
 }
 
 export const RepositoryTableRowOptions: React.FC<RepositoryDetailsRowOptionsProps> =

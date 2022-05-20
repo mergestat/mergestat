@@ -1,5 +1,5 @@
 import React from 'react'
-import { repSyncState } from 'src/@types'
+import { RepSyncStateT } from 'src/@types'
 import { getRepositorySyncIcon } from 'src/views/repository-data-details'
 import {
   RepositoryData,
@@ -15,7 +15,7 @@ export const columns: Array<Record<string, any>> = [
     dataIndex: 'status',
     key: 'syncStateIcon',
     className: "py-3 w-4",
-    render: ({ syncState }: { syncState : repSyncState }) =>
+    render: ({ syncState }: { syncState : RepSyncStateT }) =>
       getRepositorySyncIcon(syncState, "mx-6")
   },
   {
@@ -46,7 +46,7 @@ export const columns: Array<Record<string, any>> = [
     className: 'text-gray-500 ',
     dataIndex: 'status',
     key: 'status',
-    render: (status: { data?: SyncStatusDataProps[], syncState: repSyncState }) =>
+    render: (status: { data?: SyncStatusDataProps[], syncState: RepSyncStateT }) =>
       <RepositorySyncStatus
         data={status.data}
         disabled={status.syncState === 'disabled'}
@@ -55,14 +55,14 @@ export const columns: Array<Record<string, any>> = [
   {
     dataIndex: 'status',
     key: 'syncNow',
-    render: ({ syncState }: { syncState : repSyncState }) =>
+    render: ({ syncState }: { syncState : RepSyncStateT }) =>
       <RepositorySyncNow syncStatus={syncState} />
   },
   {
     className: 'w-4 px-6',
     dataIndex: 'status',
     key: 'options',
-    render: ({ syncState }: { syncState : repSyncState }) => (
+    render: ({ syncState }: { syncState : RepSyncStateT }) => (
       <RepositoryTableRowOptions state={syncState} />
     ),
   },
