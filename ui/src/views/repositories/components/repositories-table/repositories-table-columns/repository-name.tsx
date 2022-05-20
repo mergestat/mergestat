@@ -4,6 +4,7 @@ import {
   GithubIcon,
   RepositoryIcon,
 } from '@mergestat/icons'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import type { RepoType } from '../@types'
@@ -14,8 +15,6 @@ export type RepositoryNameProps = {
   lastUpdate: string
   automaticImport?: boolean
 }
-
-
 
 export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
   const repoTypeIcon = () => {
@@ -32,7 +31,16 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
   return (
     <div className="flex items-center gap-4 my-3">
       <div className="w-10 h-10 border flex border-samantic-border rounded flex-shrink-0">
-        <RepositoryIcon className="t-icon text-samantic-icon m-auto"/>
+        {props.type === 'github' ? (
+          <Image
+            src={`https://github.com/${props.name.split('/')[0]}.png?size=40`}
+            width={40}
+            height={40}
+            loader={({ src }) => `${src}?w=1&q=50`}
+          />
+        ) : (
+          <RepositoryIcon className="t-icon text-samantic-icon m-auto"/>
+        )}
       </div>
       <div>
         <Link href={`/repos/${props.name.replace('/', '-')}`}>
@@ -45,8 +53,6 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
             {props.lastUpdate}
           </span>
           <div className="border-l border-samantic-border px-2">
-              {/* <div className='text-samantic-mutedIcon'> */}
-            {/* {icon} */}
             {repoTypeIcon()}
           </div>
           {props.automaticImport && (
