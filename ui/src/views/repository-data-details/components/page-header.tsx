@@ -27,13 +27,12 @@ export const PageHeader: React.FC<RepoDetailsHeaderProps> = (props) => {
         <AutoManagedBreadCrumb />
       </div>
       <div className="flex gap-3">
-        <Button skin="secondary">
-          <DotsHorizontalIcon className="t-icon" />
-        </Button>
         <Button
-          className="flex gap-2"
-          startIcon={<RefreshIcon className="t-icon" />}
-        >
+          skin="secondary"
+          isIconOnly
+          startIcon={<DotsHorizontalIcon className="t-icon" />}
+        />
+        <Button startIcon={<RefreshIcon className="t-icon" />}>
           Sync Now
         </Button>
       </div>
