@@ -58,12 +58,13 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
               <span>{tag.title}</span>
             </div>
           ))}
-          <span
-            className='text-blue-600 font-medium cursor-pointer'
+          <Button
+            className='text-blue-600 font-medium'
             onClick={() => setModalOpen(true)}
+            skin="borderless"
           >
             Show more
-          </span>
+          </Button>
           <TagListFilterModal
             searchText={searchText}
             tags={tags}
