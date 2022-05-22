@@ -26,18 +26,13 @@ module.exports = {
           success: '#10B981',
         },
         gray: {
-          50: '#F9FAFB',
-          100: '#F3F4F6',
-          150: '#EBECEF',
-          500: '#6B7280',
-          600: '#4B5563',
-          700: '#374151',
+          150: "#EBECEF",
         },
       },
       fontFamily: {
         'sans': ['Inter UI', 'ui-sans-serif', 'system-ui'],
+        'monaco': ['Monaco'],
         'mono': ['ui-monospace', 'SFMono-Regular'],
-        'body': ['Inter UI', 'ui-sans-serif', 'system-ui'],
       },
       gridTemplateRows: {
         'content-layout': 'auto 1fr',
@@ -66,7 +61,7 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      gray: colors.gray,
+      gray: colors.coolGray,
       green: colors.emerald,
       lime: colors.lime,
       red: colors.red,

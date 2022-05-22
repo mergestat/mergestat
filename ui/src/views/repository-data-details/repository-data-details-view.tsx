@@ -13,7 +13,6 @@ import {
   PageHeader,
   RepoDataLogs,
   SyncSettings,
-  TabsHeader,
 } from './components'
 
 type RepositoryDataTypeViewProps = {
@@ -46,16 +45,21 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
         }}
       />
       <Tabs.Group>
-        <TabsHeader />
-        <Tabs.Panels>
-          <Tabs.Panels className="py-4 px-6">
-            <Tabs.Panel>
-              <RepoDataLogs dataTypeName={DataType} />
-            </Tabs.Panel>
-            <Tabs.Panel>
-              <SyncSettings />
-            </Tabs.Panel>
-          </Tabs.Panels>
+        <Tabs.List className="bg-white w-full flex justify-between px-8 items-center border-b border-gray-200">
+          <Tabs.Item className="">
+            Logs
+          </Tabs.Item>
+          <Tabs.Item className="">
+            Sync Settings
+          </Tabs.Item>
+        </Tabs.List>
+        <Tabs.Panels className="py-4 px-6">
+          <Tabs.Panel>
+            <RepoDataLogs dataTypeName={DataType} />
+          </Tabs.Panel>
+          <Tabs.Panel>
+            <SyncSettings />
+          </Tabs.Panel>
         </Tabs.Panels>
       </Tabs.Group>
     </main>

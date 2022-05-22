@@ -1,13 +1,9 @@
 @import '@mergestat/blocks/styles/main.css';
-@import './fonts.css';
 
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
 
-*{
-  font-family: 'Inter UI', 'ui-sans-serif', 'system-ui';
-}
 .content-area {
   height: calc(100% - theme('height.14')); /* Nav height is h-14 */
 }

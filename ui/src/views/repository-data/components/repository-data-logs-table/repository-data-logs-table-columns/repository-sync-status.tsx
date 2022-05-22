@@ -120,7 +120,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
             displayTooltip ? 'visible' : 'invisible'
           } absolute z-50 bg-white rounded border-gray-300 shadow-lg p-3`}
           style={{
-            top: eventPosition?.y ? eventPosition?.y - 275 : 0,
+            top: eventPosition?.y ? eventPosition?.y - 285 : 0,
             left: eventPosition?.x
                   ? eventPosition?.x - 140
                     - ((tooltipRef?.current) ? tooltipRef?.current.clientWidth / 2 : 0)
