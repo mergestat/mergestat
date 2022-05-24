@@ -76,21 +76,6 @@ func (w *worker) sendBatchGitHubRepoStars(ctx context.Context, tx pgx.Tx, repo u
 	return nil
 }
 
-const selectLatestStarLogin = "SELECT login FROM github_stargazers WHERE repo_id = $1 ORDER BY starred_at DESC LIMIT 1"
-
-// queryLatestStarLogin retrieves the login of the latest stargazer for a repo
-func (w *worker) queryLatestStarLogin(ctx context.Context, repoID string) (string, error) {
-	var login sql.NullString
-	row := w.pool.QueryRow(ctx, selectLatestStarLogin, repoID)
-	if err := row.Scan(&login); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return "", nil
-		}
-		return "", err
-	}
-	return login.String, nil
-}
-
 func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
@@ -116,9 +101,15 @@ func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJob
 	repoOwner := components[1]
 	repoName := components[2]
 
-	latestStarLogin, err := w.queryLatestStarLogin(ctx, id.String())
-	if err != nil {
-		return fmt.Errorf("query latest star login: %w", err)
+	query := "SELECT starred_at FROM github_stargazers WHERE repo_id = $1 ORDER BY starred_at DESC LIMIT 1"
+	var starredAt sql.NullTime
+	if err := w.pool.QueryRow(ctx, query, id.String()).Scan(&starredAt); err != nil {
+		if !errors.Is(err, pgx.ErrNoRows) {
+			return fmt.Errorf("query row: %w", err)
+		}
+	}
+	if starredAt.Valid {
+		starredAt.Time = starredAt.Time.Add(-time.Minute)
 	}
 
 	var rows *sqlx.Rows
@@ -157,7 +148,7 @@ func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJob
 			}
 			batch = make([]*githubRepoStar, 0, batchSize)
 		} else {
-			if *r.Login == latestStarLogin {
+			if r.StarredAt.UnixMilli() < starredAt.Time.UnixMilli() {
 				break
 			}
 			batch = append(batch, &r)
