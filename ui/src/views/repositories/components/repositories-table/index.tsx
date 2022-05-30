@@ -46,7 +46,7 @@ export const RepositoriesTable: React.FC = (props) => {
       : CHECKBOX_STATES.Indeterminate
 
   return (
-    <Panel className="rounded-md h-full w-full shadow-sm">
+    <Panel className="rounded-md w-full shadow-sm">
       <Panel.Header className='px-0'>
         <Toolbar>
           <Toolbar.Left>
