@@ -112,9 +112,9 @@ export const ManageAutoImportReposModal = ({
             onClick={onClose}
           />
 
-          <p className="text-xl border-l border-samantic-border pl-4">
+          <h2 className="t-toolbar-title border-l border-samantic-border pl-4">
             Manage auto imports
-          </p>
+          </h2>
         </div>
         <Button
           skin="secondary"
