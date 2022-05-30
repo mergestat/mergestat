@@ -36,7 +36,6 @@ export const PageHeader: React.FC = (props) => {
         <Button
           startIcon={<PlusIcon className="t-icon" />}
           onClick={() => setShowAddRepositoryModal(true)}
-          className="font-normal"
         >
           Add Repository
         </Button>
