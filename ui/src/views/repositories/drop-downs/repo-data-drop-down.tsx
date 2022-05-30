@@ -25,7 +25,7 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
           {data.map((item, index) => (
             <div
               key={index}
-              className="hover_bg-gray-100 py-3 px-4 flex items-center justify-between gap-3 focus-within_ text-base"
+              className="hover_bg-gray-50 py-3 px-4 flex items-center justify-between gap-3 focus-within_ text-base"
             >
               <div className="flex items-center gap-2">
                 { getRepositorySyncIcon(status, "w-4.5 h-4.5") }

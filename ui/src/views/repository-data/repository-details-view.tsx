@@ -15,7 +15,7 @@ export const RepositoryDetailsView: React.FC<RepositoryDetailsViewProps> = (
   props
 ) => {
   return (
-    <main className="w-full bg-gray-100">
+    <main className="w-full bg-gray-50">
       <PageHeader
         repo={{
           startIcon: (

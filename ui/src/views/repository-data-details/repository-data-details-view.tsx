@@ -28,7 +28,7 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
   const router = useRouter()
 
   return (
-    <main className="w-full bg-gray-100">
+    <main className="w-full bg-gray-50">
       <PageHeader
         repo={{
           startIcon: (
