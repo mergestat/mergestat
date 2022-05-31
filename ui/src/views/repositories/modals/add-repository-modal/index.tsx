@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Modal, Toolbar } from '@mergestat/blocks'
 import { XIcon } from '@mergestat/icons'
-import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
+import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { ModalSideBar } from './modal-sidebar'
 import { AddRepositoryFromCSVModal } from './add-repository-from-csv-modal'
 import { AddRepositoryFromGitOrganizationModal } from './add-repository-from-git-organization-modal'
@@ -10,7 +10,8 @@ import { AddRepositoryFromURLModal } from './add-repository-from-url-modal'
 import { ModalFooter } from './modal-footer'
 
 export const AddRepositoryModal: React.FC = () => {
-  const { setShowAddRepositoryModal } = useRepositoriesContext()
+  const { setShowAddRepositoryModal } = useRepositoriesSetState()
+
   // TODO: make this type global once we have the graphql api
   const [selectedTab, setSelectedTab] = React.useState<
     'url' | 'gh-org' | 'gh-user' | 'csv'

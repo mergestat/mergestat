@@ -1,9 +1,8 @@
-import { PlusIcon } from '@mergestat/icons'
 import React from 'react'
-import { tagType } from 'src/@types'
+import { TagType } from 'src/@types'
 import { EditTagsListDropDown } from 'src/views/repositories/drop-downs'
 
-type RepositoryTagItemProps = tagType
+type RepositoryTagItemProps = TagType
 
 export const RepositoryTagItem: React.FC<RepositoryTagItemProps> = (props) => {
   return (
@@ -14,7 +13,7 @@ export const RepositoryTagItem: React.FC<RepositoryTagItemProps> = (props) => {
 }
 
 export type RepositoryTagListProps = {
-  tags: Array<tagType>
+  tags: Array<TagType>
 }
 
 export const RepositoryTagList: React.FC<RepositoryTagListProps> = (props) => {
@@ -29,17 +28,15 @@ export const RepositoryTagList: React.FC<RepositoryTagListProps> = (props) => {
           (tag, index) => (
             <RepositoryTagItem key={index} {...tag} />
           )
-        )
-        }
-        {checkedTags.length > TAGS_SHOWN && (
-          <div className="flex items-center gap-x-2 border border-samantic-border rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
-            <div className="flex items-center text-gray-500">
-              <PlusIcon className="w-3 h-3" />
-              <span>{checkedTags.length - TAGS_SHOWN}</span>
-            </div>
-            <EditTagsListDropDown tags={tags} />
-          </div>
         )}
+        <div className="flex items-center gap-x-2 border border-samantic-border rounded px-2 text-sm w-max bg-gray-100 cursor-pointer">
+          {checkedTags.length > TAGS_SHOWN && (
+            <div className="flex items-center text-gray-500">
+              <span>+{checkedTags.length - TAGS_SHOWN}</span>
+            </div>
+          )}
+          <EditTagsListDropDown tags={tags} />
+        </div>
       </div>
     </React.Fragment>
   )

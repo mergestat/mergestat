@@ -8,6 +8,7 @@ export const RepositoryDataLogsDetailsView: React.FC<RepositoryDataLogsDetailsVi
   (props) => {
     const { logID } = props
     const log = getLogDetailsByID(logID)
+
     return (
       <main className="w-full bg-gray-100">
         <PageHeader />
@@ -28,6 +29,7 @@ export type logType = {
     info: string
   }[]
 }
+
 function getLogDetailsByID(id: string): logType {
   return {
     id: 'd41ffc09-5254-4fa8-adcf-5aa0b0a00959',

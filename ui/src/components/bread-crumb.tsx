@@ -13,6 +13,7 @@ type CrumbNavItem = {
 export function AutoManagedBreadCrumb() {
   const router = useRouter()
   const [crumbs, setCrumbs] = useState([] as CrumbNavItem[])
+
   useEffect(() => {
     const pathWithoutQuery = router.asPath.split('?')[0]
     let pathArray = pathWithoutQuery.split('/')

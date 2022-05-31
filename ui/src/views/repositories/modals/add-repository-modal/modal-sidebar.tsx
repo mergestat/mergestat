@@ -23,7 +23,7 @@ export const ModalSideBar: React.FC<ModalSideBarProps> = (props) => {
       {sidebarTabs.map((item, index) => (
         <RadioCard
           key={index}
-          className="mb-2"
+          className="mb-2 whitespace-nowrap"
           isSelected={selectedTab === item.type}
           label={item.label}
           startIcon={item.startIcon}
@@ -42,22 +42,22 @@ type SideBarTab = {
 
 const sidebarTabs: SideBarTab[] = [
   {
-    startIcon: <LinkIcon />,
+    startIcon: <LinkIcon className='t-icon' />,
     label: 'Add from URL',
     type: 'url',
   },
   {
-    startIcon: <GithubIcon />,
+    startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub org',
     type: 'gh-org',
   },
   {
-    startIcon: <GithubIcon />,
+    startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub user',
     type: 'gh-user',
   },
   {
-    startIcon: <TableIcon />,
+    startIcon: <TableIcon className='t-icon' />,
     label: 'Add Add from CSV',
     type: 'csv',
   },

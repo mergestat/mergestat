@@ -8,18 +8,17 @@ import {
   ExternalLinkIcon,
 } from '@mergestat/icons'
 import { useRouter } from 'next/router'
-import { repSyncState } from '../../@types'
+import { RepSyncStateT } from '../../@types'
 import {
   PageHeader,
   RepoDataLogs,
   SyncSettings,
-  TabsHeader,
 } from './components'
 
 type RepositoryDataTypeViewProps = {
   repoName: string
   DataType: string
-  syncState: repSyncState
+  syncState: RepSyncStateT
 }
 export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
   props
@@ -46,26 +45,31 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
         }}
       />
       <Tabs.Group>
-        <TabsHeader />
-        <Tabs.Panels>
-          <Tabs.Panels className="py-4 px-6">
-            <Tabs.Panel>
-              <RepoDataLogs dataTypeName={DataType} />
-            </Tabs.Panel>
-            <Tabs.Panel>
-              <SyncSettings />
-            </Tabs.Panel>
-          </Tabs.Panels>
+        <Tabs.List className="bg-white w-full flex justify-between px-8 items-center border-b border-gray-200">
+          <Tabs.Item className="">
+            Logs
+          </Tabs.Item>
+          <Tabs.Item className="">
+            Sync Settings
+          </Tabs.Item>
+        </Tabs.List>
+        <Tabs.Panels className="py-4 px-6">
+          <Tabs.Panel>
+            <RepoDataLogs dataTypeName={DataType} />
+          </Tabs.Panel>
+          <Tabs.Panel>
+            <SyncSettings />
+          </Tabs.Panel>
         </Tabs.Panels>
       </Tabs.Group>
     </main>
   )
 }
-export const getRepositorySyncIcon = (syncStatus: repSyncState, className?:string) => {
+export const getRepositorySyncIcon = (syncStatus: RepSyncStateT, className?:string) => {
   switch (syncStatus) {
     case 'disabled':
       return <CircleInformationFilledIcon className={`text-samantic-mutedIcon ${className}` }  />
-    case 'check':
+    case 'success':
       return <CircleCheckFilledIcon className={`text-samantic-success ${className}`}  />
     case 'loading':
       return <Spinner size="sm" className={className} />

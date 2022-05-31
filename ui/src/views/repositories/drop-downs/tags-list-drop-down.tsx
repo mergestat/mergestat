@@ -8,7 +8,7 @@ import {
 } from '@mergestat/blocks'
 import { SearchIcon } from '@mergestat/icons'
 import { TagListFilterModal } from '../modals'
-import { tagType } from 'src/@types'
+import { TagType } from 'src/@types'
 
 
 type TagsListDropDownProps = {
@@ -58,12 +58,13 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
               <span>{tag.title}</span>
             </div>
           ))}
-          <span
-            className='text-blue-600 font-medium cursor-pointer'
+          <Button
+            className='text-blue-600 font-medium'
             onClick={() => setModalOpen(true)}
+            skin="borderless"
           >
             Show more
-          </span>
+          </Button>
           <TagListFilterModal
             searchText={searchText}
             tags={tags}
@@ -82,7 +83,7 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
   )
 }
 
-const allTags: tagType[] = [
+const allTags: TagType[] = [
   { title: 'javascript', checked: true },
   { title: 'node', checked: false },
   { title: 'dom', checked: true },

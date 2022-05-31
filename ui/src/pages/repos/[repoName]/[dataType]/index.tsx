@@ -8,7 +8,7 @@ import { RepositoryDataTypeView } from 'src/views/repository-data-details'
 
 const DataTypePage: NextPage = () => {
   const router = useRouter()
-  const { repoName, dataType, repSyncState } = router.query
+  const { repoName, dataType, RepSyncStateT } = router.query
 
   if (typeof repoName != 'string' || typeof dataType != 'string') return <></>
 
@@ -18,7 +18,7 @@ const DataTypePage: NextPage = () => {
         <title>MergeStat | {repoName}</title>
       </Head>
       <RepositoryDataTypeView
-        syncState={repSyncState as any}
+        syncState={RepSyncStateT as any}
         repoName={repoName}
         DataType={dataType}
       />

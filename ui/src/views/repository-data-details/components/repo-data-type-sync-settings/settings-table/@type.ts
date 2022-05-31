@@ -1,5 +1,5 @@
 export type SettingsDataType = {
-  checked: boolean
+  isSelected?: boolean
   column: string
   type: string
 }

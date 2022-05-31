@@ -1,24 +1,24 @@
 import { Checkbox } from '@mergestat/blocks'
 import { CaretDownIcon, CaretUpIcon } from '@mergestat/icons'
 import React from 'react'
-import { repSyncState, tagType } from 'src/@types'
+import { TagType } from 'src/@types'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
 import {
   RepositoryName,
-  RepositoryNameProps,
   RepositoryStatus,
   RepositoryTagList
 } from './repositories-table-columns'
+import type { RepoDataProps, RepoDataStatusT } from './@types'
 
 export const columns: Array<Record<string, any>> = [
   {
-    dataIndex: 'checkbox',
     key: 'checkbox',
+    dataIndex: 'isSelected',
     className: "px-6 w-4",
-    render: (params: { selected: boolean, onChange: (name: string) => void }) => (
+    render: (isSelected: boolean, data: RepoDataProps & { isSelected?: boolean }) => (
       <Checkbox
-        checked={params.selected}
-        onChange={params.onChange as any}
+        checked={isSelected}
+        onChange={(v) => data.isSelected = v.target.checked}
       />
     )
   },
@@ -27,15 +27,20 @@ export const columns: Array<Record<string, any>> = [
       <p className="whiteSpace-nowrap flex items-center gap-4 text-samantic-header">
         Repository{' '}
         <span>
-          <CaretUpIcon />
-          <CaretDownIcon className="-mt-3" />
+          <CaretUpIcon className='t-icon' />
+          <CaretDownIcon className="t-icons -mt-3" />
         </span>
       </p>
     ),
-    dataIndex: 'repository',
-    key: 'repository',
-    render: (repo: RepositoryNameProps) => (
-      <RepositoryName name={repo.name} icons={repo.icons} lastUpdate={repo.lastUpdate} />
+    dataIndex: 'name',
+    key: 'name',
+    render: (name: string, data: RepoDataProps) => (
+      <RepositoryName
+        name={name}
+        type={data.type}
+        lastUpdate={data.lastUpdate}
+        automaticImport={data.automaticImport}
+      />
     )
   },
   {
@@ -43,34 +48,31 @@ export const columns: Array<Record<string, any>> = [
     className: 'text-gray-500',
     dataIndex: 'tags',
     key: 'tags',
-    render: (tags: tagType[]) => (
+    render: (tags: TagType[]) => (
       <RepositoryTagList tags={tags} />
     )
   },
   {
     title: (
-      <p className="flex items-center gap-4 text-samantic-header">
-        Last sync <CaretDownIcon className=" text-blue-400" />
+      <p className="flex items-center gap-2 text-samantic-header">
+        Last sync <CaretDownIcon className="t-icon text-blue-400" />
       </p>
     ),
-    className: 'text-gray-500',
-    dataIndex: 'last',
+    dataIndex: 'lastSync',
     key: 'last',
-    render: (lastsync: string) => <span className=' text-samantic-mutedText'>{lastsync}</span>
-  },
-  {
-    title: '',
-    className: '',
-    dataIndex: 'status',
-    key: 'status',
-    render: (RepoStatus: { count: number; icon: repSyncState }[]) => (
-      <RepositoryStatus status={RepoStatus} />
+    render: (lastSync: string) => (
+      <span className='text-samantic-mutedText'>{lastSync}</span>
     )
   },
   {
-    title: '',
+    dataIndex: 'status',
+    key: 'status',
+    render: (status: Array<RepoDataStatusT>) => (
+      <RepositoryStatus status={status} />
+    )
+  },
+  {
     className: 'px-6 w-4',
-    dataIndex: 'option',
     key: 'option',
     render: () => <RepositoryAdditionalActionsDropDown />
   },

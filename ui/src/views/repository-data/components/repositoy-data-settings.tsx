@@ -1,9 +1,9 @@
 import { Button, MultiSelect, Panel } from '@mergestat/blocks'
 import { TrashIcon } from '@mergestat/icons'
 import React from 'react'
-import { tagType } from 'src/@types'
+import { TagType } from 'src/@types'
 
-const tags: tagType[] = [
+const tags: TagType[] = [
   { title: 'team-a', checked: true },
   { title: 'javascript', checked: true },
   { title: 'team-a', checked: true },
@@ -25,7 +25,7 @@ export const RepositorySettings: React.FC = (props) => {
       </Panel>
       <Button
         skin="secondary"
-        startIcon={<TrashIcon className="w-4 h-4" />}
+        startIcon={<TrashIcon className="t-icon" />}
         className="mt-6 text-samantic-danger flex gap-2"
       >
         Delete Repository

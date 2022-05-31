@@ -16,7 +16,7 @@ export const RowOptions: React.FC<RowOptionsProps> =
             <Menu.Item text="Enable For All" />
           </Menu>
         )}
-        trigger={<DotsHorizontalIcon className="cursor-pointer text-samantic-icon" />}
+        trigger={<DotsHorizontalIcon className="t-icon cursor-pointer text-samantic-icon" />}
       />
     )
   }

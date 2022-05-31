@@ -1,37 +1,34 @@
 import { Button, Spinner } from '@mergestat/blocks'
 import { RefreshIcon } from '@mergestat/icons'
 import React from 'react'
-import { repSyncState } from 'src/@types'
+import { RepSyncStateT } from 'src/@types'
 
 export type RepositorySyncNowProps = {
-  syncStatus: repSyncState
+  syncStatus: RepSyncStateT
   doSync?: () => void
 }
 
 export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = (props) => {
   const { syncStatus, doSync } = props
+
+  if (syncStatus === 'disabled') return null
+
   return (
-    <>
-      {syncStatus === 'disabled' ? (
-        <></>
-      ) : (
-        <Button
-          className="flex items-center gap-2 float-right"
-          disabled={syncStatus === 'loading'}
-          skin="secondary"
-          startIcon={
-            syncStatus === 'loading' ? (
-              <Spinner size='sm' />
-            ) : (
-              <RefreshIcon className="w-4 h-4 text-samantic-icon" />
-            )
-          }
-          size="small"
-          onClick={doSync}
-        >
-          {syncStatus === 'loading' ? 'Syncing...' : 'Sync Now'}
-        </Button>
-      )}
-    </>
+    <Button
+      className="flex items-center float-right"
+      disabled={syncStatus === 'loading'}
+      skin="secondary"
+      startIcon={
+        syncStatus === 'loading' ? (
+          <Spinner size='sm' className='mr-2' />
+        ) : (
+          <RefreshIcon className="t-icon text-samantic-icon" />
+        )
+      }
+      size="small"
+      onClick={doSync}
+    >
+      {syncStatus === 'loading' ? 'Syncing...' : 'Sync Now'}
+    </Button>
   )
 }

@@ -26,8 +26,7 @@ export const ManageAutoImportReposModal = ({
 }: AutoImportManagePropsT) => {
   const columns: ColumnsT[] = [
     {
-      title: '',
-      className: 'w-4',
+      className: 'w-4 pr-0',
       dataIndex: 'successIcon',
       key: 'successIcon',
     },
@@ -65,11 +64,11 @@ export const ManageAutoImportReposModal = ({
     delIcon: React.ReactElement
   }[] = [
     {
-      successIcon: <CircleCheckFilledIcon className="text-samantic-success" />,
+      successIcon: <CircleCheckFilledIcon className="t-icon text-samantic-success" />,
       source: 'user-name',
       type: (
         <p className="flex items-center gap">
-          <GithubIcon className="mr-2" />
+          <GithubIcon className="t-icon mr-2" />
           GitHub User
         </p>
       ),
@@ -77,11 +76,11 @@ export const ManageAutoImportReposModal = ({
       delIcon: <TrashIcon />,
     },
     {
-      successIcon: <CircleCheckFilledIcon className="text-samantic-success" />,
+      successIcon: <CircleCheckFilledIcon className="t-icon text-samantic-success" />,
       source: 'organization-name',
       type: (
         <p className="flex items-center gap">
-          <GithubIcon className="mr-2" />
+          <GithubIcon className="t-icon mr-2" />
           GitHub Organization
         </p>
       ),
@@ -89,16 +88,16 @@ export const ManageAutoImportReposModal = ({
       delIcon: <TrashIcon />,
     },
     {
-      successIcon: <CircleCheckFilledIcon className="text-samantic-success" />,
+      successIcon: <CircleCheckFilledIcon className="t-icon text-samantic-success" />,
       source: 'organization-name',
       type: (
         <p className="flex items-center gap">
-          <GithubIcon className="mr-2" />
+          <GithubIcon className="t-icon mr-2" />
           GitHub Organization
         </p>
       ),
       last: '2 hours ago',
-      delIcon: <TrashIcon />,
+      delIcon: <TrashIcon className='t-icon' />,
     },
   ]
 
@@ -108,7 +107,7 @@ export const ManageAutoImportReposModal = ({
         <div className="flex items-center">
           <Button
             skin="borderless-muted"
-            startIcon={<XIcon className="mr-4" />}
+            startIcon={<XIcon className="t-icon mr-4" />}
             onClick={onClose}
           />
 
@@ -118,7 +117,7 @@ export const ManageAutoImportReposModal = ({
         </div>
         <Button
           skin="secondary"
-          startIcon={<AutoImportIcon className="mr-2" />}
+          startIcon={<AutoImportIcon className="t-icon mr-2" />}
           onClick={onSyncModalOpen}
         >
           Create Auto import

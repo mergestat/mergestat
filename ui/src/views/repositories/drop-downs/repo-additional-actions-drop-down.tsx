@@ -8,14 +8,14 @@ export const RepositoryAdditionalActionsDropDown: React.FC<RepositoryAdditionalA
     return (
       <Dropdown
         alignEnd
-        trigger={<DotsHorizontalIcon className="cursor-pointer" />}
+        trigger={<DotsHorizontalIcon className="t-icon cursor-pointer" />}
         overlay={() => (
           <Menu className="absolute z-10 whitespace-nowrap right-0">
             <Menu.Item
               className='text-gray-700'
               text="Repo settings"
               withIcon
-              icon={<CogIcon className="mr-2 text-samantic-icon" />}
+              icon={<CogIcon className="t-icon mr-2 text-samantic-icon" />}
             />
             <Menu.Divider />
             <Menu.Item
