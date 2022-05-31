@@ -29,7 +29,7 @@ export const RepositoryDetailsView: React.FC<RepositoryDetailsViewProps> = (
       />
       <Tabs.Group>
         <TabsHeader />
-        <Tabs.Panels className="py-4 px-6">
+        <Tabs.Panels className="p-6">
           <Tabs.Panel>
             <RepositoryTable />
           </Tabs.Panel>
