@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Input, Modal, RadioCard, Toolbar } from '@mergestat/blocks'
+import { Button, Input, Modal, Label, RadioCard, Toolbar } from '@mergestat/blocks'
 import { GithubIcon, XIcon } from '@mergestat/icons'
 
 enum SYNC_REPO_METHOD {
@@ -56,16 +56,16 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
         </Toolbar>
       </Modal.Header>
       <Modal.Body>
-        <div className="w-full">
+        <div className="w-full p-6">
           <div>
-            <p className="p-8 text-gray-500">
+            <p className="text-gray-500 mb-6">
               This will automatically import all repos from your GitHub
               organization or GitHub User.
             </p>
           </div>
-          <div className="px-8">
-            <p className="text-lg font-semibold mb-2">Import type</p>
-            <div className="flex gap-8">
+          <div className="mb-6">
+            <Label className="mb-1">Import type</Label>
+            <div className="flex gap-4">
               {IMPORT_TYPE_RADIO_GROUP.map((radio, index) => {
                 return (
                   <RadioCard
@@ -74,17 +74,18 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
                     label={radio.label}
                     startIcon={radio.startIcon}
                     onChange={() => setImportType(radio.type)}
+                    className="w-full"
                   />
                 )
               })}
             </div>
           </div>
-          <div className="p-8 w-full">
-            <p className="text-lg font-semibold mb-2">
+          <div>
+            <Label>
               {importType === SYNC_REPO_METHOD.GH_ORG
                 ? 'Organization name'
                 : 'User name'}
-            </p>
+            </Label>
             <div className="flex w-full items-center gap-2">
               <Input
                 placeholder={
