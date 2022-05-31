@@ -11,17 +11,15 @@ export type RepositoryNameProps = {
 
 export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
   return (
-    <div className="flex items-center gap-4 my-3">
-      <ColoredBox
-        size="10"
-      >
-        <RepositoryIcon className="text-samantic-icon w-4 h-4 m-auto"/>
+    <div className="flex items-center gap-4 my-4">
+      <ColoredBox size="10" className="mr-2" skin="default">
+        <RepositoryIcon className="t-icon" />
       </ColoredBox>
       <div>
         <Link href={`/repos/${props.name.replace('/', '-')}`}>
-          <a className="cursor-pointer text-samantic-text hover_text-blue-600">
+          <h4 className="font-medium mb-0.5 text-samantic-text cursor-pointer hover_text-blue-600">
             {props.name}
-          </a>
+          </h4>
         </Link>
         <div className="flex items-center">
           <p className="pr-2 text-sm text-samantic-mutedText">
