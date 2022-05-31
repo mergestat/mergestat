@@ -60,7 +60,7 @@ export const columns: Array<Record<string, any>> = [
       <RepositorySyncNow syncStatus={syncState} />
   },
   {
-    className: 'w-4 px-6 h-20',
+    className: 'w-4 px-6',
     dataIndex: 'status',
     key: 'options',
     render: ({ syncState }: { syncState : RepSyncStateT }) => (
