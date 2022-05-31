@@ -53,7 +53,7 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
             Sync Settings
           </Tabs.Item>
         </Tabs.List>
-        <Tabs.Panels className="py-4 px-6">
+        <Tabs.Panels className="p-6">
           <Tabs.Panel>
             <RepoDataLogs dataTypeName={DataType} />
           </Tabs.Panel>
