@@ -14,7 +14,7 @@ export const columns: Array<Record<string, any>> = [
   {
     dataIndex: 'checkbox',
     key: 'checkbox',
-    className: "px-6 w-4",
+    className: 'px-6 w-4 h-20',
     render: (params: { selected: boolean, onChange: (name: string) => void }) => (
       <Checkbox
         checked={params.selected}
@@ -34,13 +34,14 @@ export const columns: Array<Record<string, any>> = [
     ),
     dataIndex: 'repository',
     key: 'repository',
+    className: 'h-20',
     render: (repo: RepositoryNameProps) => (
       <RepositoryName name={repo.name} icons={repo.icons} lastUpdate={repo.lastUpdate} />
     )
   },
   {
     title: <h1 className='text-samantic-header'>Tags</h1>,
-    className: 'text-gray-500',
+    className: 'text-gray-500 h-20',
     dataIndex: 'tags',
     key: 'tags',
     render: (tags: tagType[]) => (
@@ -53,14 +54,14 @@ export const columns: Array<Record<string, any>> = [
         Last sync <CaretDownIcon className=" text-blue-400" />
       </p>
     ),
-    className: 'text-gray-500',
+    className: 'text-gray-500 h-20',
     dataIndex: 'last',
     key: 'last',
     render: (lastsync: string) => <span className=' text-samantic-mutedText'>{lastsync}</span>
   },
   {
     title: '',
-    className: '',
+    className: 'h-20',
     dataIndex: 'status',
     key: 'status',
     render: (RepoStatus: { count: number; icon: repSyncState }[]) => (
@@ -69,7 +70,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: '',
-    className: 'px-6 w-4',
+    className: 'px-6 w-4 h-20',
     dataIndex: 'option',
     key: 'option',
     render: () => <RepositoryAdditionalActionsDropDown />
