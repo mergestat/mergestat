@@ -14,7 +14,7 @@ export const columns: Array<Record<string, any>> = [
   {
     dataIndex: 'status',
     key: 'syncStateIcon',
-    className: "py-3 w-4 h-20",
+    className: "py-3 w-12 h-20",
     render: ({ syncState }: { syncState : RepSyncStateT }) =>
       getRepositorySyncIcon(syncState, "mx-6")
   },
