@@ -29,10 +29,11 @@ export const columns: Array<Record<string, any>> = [
     key: 'syncNow',
     render:  (params:{disabled:boolean, doSync: () => void}) => (
       <Button
-        className='flex gap-2 text-samantic-text whitespace-nowrap'
+        className='whitespace-nowrap'
         skin='secondary'
+        size="small"
         startIcon={
-          <RefreshIcon className={`w-4 h-4 ${params.disabled ? "text-samantic-mutedIcon":"text-samantic-icon"}`} />
+          <RefreshIcon className="t-icon" />
         }
         onClick={params.doSync}
         disabled={params.disabled}
