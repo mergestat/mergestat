@@ -124,7 +124,7 @@ export const ManageAutoImportReposModal = ({
           Create Auto import
         </Button>
       </div>
-      <div className="m-8">
+      <div className="m-8 shadow-sm">
         <Table columns={columns} dataSource={dataSource} />
       </div>
     </div>

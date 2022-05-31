@@ -23,7 +23,7 @@ export const LogsTable: React.FC = (props) => {
   }))
 
   return (
-   <div className='border-md'>
+   <div className='border-md shadow-sm'>
      <Table
           scrollY={'100%'}
           responsive
