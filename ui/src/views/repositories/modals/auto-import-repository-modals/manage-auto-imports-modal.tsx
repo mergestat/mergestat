@@ -102,7 +102,7 @@ export const ManageAutoImportReposModal = ({
   ]
 
   return (
-    <div className="absolute top-0 left-0 bg-gray-100 w-full h-full z-40">
+    <div className="absolute top-0 left-0 bg-gray-50 w-full h-full z-40">
       <div className="h-16 border-b bg-white border-samantic-border flex justify-between items-center p-5">
         <div className="flex items-center">
           <Button
