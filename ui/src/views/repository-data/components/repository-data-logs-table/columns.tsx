@@ -35,7 +35,7 @@ export const columns: Array<Record<string, any>> = [
     dataIndex: 'latestRun',
     key: 'latestRun',
     render: (latestRun: string) => (
-      <span className="text-sm  text-samantic-mutedText">
+      <span className="text-samantic-mutedText">
         {latestRun}
       </span>
     )
