@@ -63,8 +63,8 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
 
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
-      <div className="mb-5">
-        <h3 className="t-h3 mb-5">Add from GitHub user</h3>
+      <div className="mb-6">
+        <h3 className="t-h3 mb-6">Add from GitHub user</h3>
         <div className="flex items-center gap-2">
           <Label htmlFor="username" className="whitespace-nowrap">
             Username

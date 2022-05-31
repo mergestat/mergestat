@@ -1,4 +1,4 @@
-import { HelpText, Textarea } from '@mergestat/blocks'
+import { Label, Textarea } from '@mergestat/blocks'
 import React from 'react'
 
 export const AddRepositoryFromCSVModal: React.FC = (props) => {
@@ -7,8 +7,8 @@ export const AddRepositoryFromCSVModal: React.FC = (props) => {
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
       <div className="mb-1">
-        <h3 className="t-h3 mb-5">Add from CSV</h3>
-        <HelpText>Paste CSV</HelpText>
+        <h3 className="t-h3 mb-6">Add from CSV</h3>
+        <Label>Paste CSV</Label>
       </div>
       <Textarea className="h-84" defaultValue={''} onChange={onChange} />
     </div>
