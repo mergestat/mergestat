@@ -1,8 +1,8 @@
-export type repSyncState = 'disabled' | 'loading' | 'check' | 'error'
+export type RepSyncStateT = 'disabled' | 'loading' | 'success' | 'error'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
-export type tagType = {
+export type TagType = {
   title: string;
   checked: boolean;
   color?: string;

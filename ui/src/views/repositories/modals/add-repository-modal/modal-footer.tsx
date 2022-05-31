@@ -1,13 +1,13 @@
 import { Button, Modal, Toolbar } from '@mergestat/blocks'
 import React from 'react'
-import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
+import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 
 type ModalFooterProps = {
   selectedTab: 'url' | 'gh-org' | 'gh-user' | 'csv'
 }
 
 export const ModalFooter: React.FC<ModalFooterProps> = (props) => {
-  const { setShowAddRepositoryModal } = useRepositoriesContext()
+  const { setShowAddRepositoryModal } = useRepositoriesSetState()
 
   const close = React.useCallback(() => {
     setShowAddRepositoryModal(false)

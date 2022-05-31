@@ -15,12 +15,12 @@ type ImportRadioType = {
 
 const IMPORT_TYPE_RADIO_GROUP: ImportRadioType[] = [
   {
-    startIcon: <GithubIcon />,
+    startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub Org',
     type: SYNC_REPO_METHOD.GH_ORG,
   },
   {
-    startIcon: <GithubIcon />,
+    startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub User',
     type: SYNC_REPO_METHOD.GH_USER,
   },

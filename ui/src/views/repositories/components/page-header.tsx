@@ -2,14 +2,14 @@ import React from 'react'
 import { Button, SplitButton } from '@mergestat/blocks'
 import { AutoImportIcon, CogIcon, PlusIcon } from '@mergestat/icons'
 import { AutoManagedBreadCrumb } from 'src/components/bread-crumb'
-import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
+import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 
 export const PageHeader: React.FC = (props) => {
   const {
     setShowAddRepositoryModal,
     setShowAutoImportModal,
-    setShowSyncRepoModal,
-  } = useRepositoriesContext()
+    setShowSyncRepoModal
+  } = useRepositoriesSetState()
 
   return (
     <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">

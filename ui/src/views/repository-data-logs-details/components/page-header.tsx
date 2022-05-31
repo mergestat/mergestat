@@ -10,9 +10,11 @@ export const PageHeader: React.FC = () => {
         <AutoManagedBreadCrumb />
       </div>
       <div className="flex gap-3">
-        <Button skin="secondary">
-          <DotsHorizontalIcon />
-        </Button>
+        <Button
+          skin="secondary"
+          isIconOnly
+          startIcon={<DotsHorizontalIcon className="t-icon" />}
+        />
       </div>
     </div>
   )

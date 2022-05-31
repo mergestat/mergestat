@@ -1,8 +1,8 @@
-import { repSyncState } from 'src/@types';
 import { RepoDataDropDown } from 'src/views/repositories/drop-downs'
+import type { RepoDataStatusT } from '../@types'
 
 export type RepositoryStatusProps = {
-  status: Array<{ count: number; icon: repSyncState }>
+  status: Array<RepoDataStatusT>
 }
 
 export const RepositoryStatus: React.FC<RepositoryStatusProps> = (props) => {
@@ -11,7 +11,7 @@ export const RepositoryStatus: React.FC<RepositoryStatusProps> = (props) => {
       {props.status.map((item, index) => (
         <RepoDataDropDown
           key={index}
-          status={item.icon}
+          status={item.type}
           data={Array(item.count)
             .fill(0)
             .map((a) => ({

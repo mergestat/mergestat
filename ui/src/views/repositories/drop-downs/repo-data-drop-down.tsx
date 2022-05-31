@@ -8,12 +8,12 @@ import {
   CircleCheckFilledIcon,
   CircleErrorFilledIcon,
 } from '@mergestat/icons'
-import { repSyncState } from 'src/@types';
+import { RepSyncStateT } from 'src/@types';
 import { getRepositorySyncIcon } from 'src/views/repository-data-details';
 
 type RepositoryDataProps = {
   data: Array<{ title: string; lastSync: string }>
-  status: repSyncState
+  status: RepSyncStateT
 }
 export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
   const { data, status } = props
@@ -34,7 +34,7 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
 
               <div className="flex items-center gap-2">
                 <span className='text-samantic-mutedText'>{item.lastSync}</span>
-                <ChevronRightIcon className='text-samantic-icon' />
+                <ChevronRightIcon className='t-icon text-samantic-icon' />
               </div>
             </div>
           ))}
@@ -46,11 +46,11 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
 }
 
 function getRepoStatusComponent(
-  status: repSyncState,
+  status: RepSyncStateT,
   count: number
 ): React.ReactNode {
   switch (status) {
-    case 'check':
+    case 'success':
       return <RepositoryCheckStatus count={count} />
     case 'error':
       return <RepositoryErrorStatus count={count} />

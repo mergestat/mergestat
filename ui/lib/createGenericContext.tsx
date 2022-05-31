@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from "react"
 
 export const createGenericContext = <T extends unknown>() => {
   // Create a context with a generic parameter or undefined

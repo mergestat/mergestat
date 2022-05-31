@@ -5,7 +5,7 @@ import { RowOptions } from './row-options'
 
 export const columns: Array<Record<string, any>> = [
   {
-    title: ( 
+    title: (
       <Typography.Title className='text-samantic-header font-semibold ml-6'>
         Sync Data
       </Typography.Title>
@@ -33,7 +33,7 @@ export const columns: Array<Record<string, any>> = [
         skin='secondary'
         size="small"
         startIcon={
-          <RefreshIcon className="t-icon" />
+          <RefreshIcon className={`t-icon ${params.disabled ? "text-samantic-mutedIcon":"text-samantic-icon"}`} />
         }
         onClick={params.doSync}
         disabled={params.disabled}

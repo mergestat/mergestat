@@ -1,57 +1,87 @@
-import React from 'react'
+import * as React from "react"
+import { createGenericContext } from "lib/createGenericContext"
 
-interface RepositoriesContext {
+type RepositoriesContextT = {
   showOpenRepositoryModal: boolean
-  setShowOpenRepositoryModal: (show: boolean) => void
-
   showAutoImportModal: boolean
-  setShowAutoImportModal: (show: boolean) => void
-
   showAddRepositoryModal: boolean
-  setShowAddRepositoryModal: (show: boolean) => void
   showSyncRepoModal: boolean
-  setShowSyncRepoModal: (show: boolean) => void
 }
 
-export const RepositoriesContext = React.createContext<RepositoriesContext>({
+type UseRepositoriesContextT = [
+  RepositoriesContextT,
+  React.Dispatch<React.SetStateAction<RepositoriesContextT>>
+]
+
+const initialState: RepositoriesContextT = {
   showOpenRepositoryModal: false,
-  setShowOpenRepositoryModal: (show: boolean) => {},
-
   showAutoImportModal: false,
-  setShowAutoImportModal: (show: boolean) => {},
-
   showAddRepositoryModal: false,
-  setShowAddRepositoryModal: (show: boolean) => {},
-
   showSyncRepoModal: false,
-  setShowSyncRepoModal: (show: boolean) => {},
-})
+}
 
-export const useRepositoriesContext = (): RepositoriesContext =>
-  React.useContext(RepositoriesContext)
+function useRepositories(): UseRepositoriesContextT {
+  const [state, setState] = React.useState<RepositoriesContextT>(initialState)
 
-export const RepositoriesProvider: React.FC = (props) => {
-  const [showOpenRepositoryModal, setShowOpenRepositoryModal] =
-    React.useState(false)
-  const [showAutoImportModal, setShowAutoImportModal] = React.useState(false)
-  const [showAddRepositoryModal, setShowAddRepositoryModal] =
-    React.useState(false)
-  const [showSyncRepoModal, setShowSyncRepoModal] = React.useState(false)
+  return [state, setState]
+}
+
+// Generate context
+const [useRepositoriesContext, RepositoriesContextProvider] = createGenericContext<UseRepositoriesContextT>()
+
+// Generate provider
+const RepositoriesProvider: React.FC = (props) => {
+  const [repositories, setRepositories] = useRepositories()
 
   return (
-    <RepositoriesContext.Provider
-      value={{
-        showOpenRepositoryModal,
-        setShowOpenRepositoryModal,
-        showAutoImportModal,
-        setShowAutoImportModal,
-        showAddRepositoryModal,
-        setShowAddRepositoryModal,
-        showSyncRepoModal,
-        setShowSyncRepoModal,
-      }}
-    >
+    <RepositoriesContextProvider value={[repositories, setRepositories]}>
       {props.children}
-    </RepositoriesContext.Provider>
+    </RepositoriesContextProvider>
   )
+}
+
+function useRepositoriesSetState () {
+  const [_, setState] = useRepositoriesContext()
+
+  const setShowOpenRepositoryModal = (show: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showOpenRepositoryModal: show
+    }))
+  }
+  
+  const setShowAutoImportModal = (show: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showAutoImportModal: show
+    }))
+  }
+  
+  const setShowAddRepositoryModal = (show: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showAddRepositoryModal: show
+    }))
+  }
+  
+  const setShowSyncRepoModal = (show: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showSyncRepoModal: show
+    }))
+  }
+
+  return {
+    setShowOpenRepositoryModal,
+    setShowAutoImportModal,
+    setShowAddRepositoryModal,
+    setShowSyncRepoModal,
+  }
+}
+
+export {
+  useRepositoriesContext,
+  RepositoriesProvider,
+
+  useRepositoriesSetState,
 }

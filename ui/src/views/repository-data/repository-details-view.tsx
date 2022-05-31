@@ -5,7 +5,6 @@ import {
   PageHeader,
   RepositorySettings,
   RepositoryTable,
-  TabsHeader,
 } from './components'
 
 type RepositoryDetailsViewProps = {
@@ -28,7 +27,12 @@ export const RepositoryDetailsView: React.FC<RepositoryDetailsViewProps> = (
         }}
       />
       <Tabs.Group>
-        <TabsHeader />
+        <Tabs.List className="bg-white w-full justify-between px-8 items-center border-b border-gray-200">
+          <Tabs.Item className="ring-transparent focus_ring-transparent">
+            Sync Types
+          </Tabs.Item>
+          <Tabs.Item>Repo Settings</Tabs.Item>
+        </Tabs.List>
         <Tabs.Panels className="p-6">
           <Tabs.Panel>
             <RepositoryTable />

@@ -1,25 +1,22 @@
 import React from 'react'
-import { repSyncState } from 'src/@types'
+import { RepSyncStateT } from 'src/@types'
 import { getRepositorySyncIcon } from 'src/views/repository-data-details'
 import {
   RepositoryData,
   RepositoryDataProps,
   RepositorySyncNow,
-  RepositorySyncNowProps,
   RepositorySyncStatus,
-  RepositorySyncStatusProps
 } from './repository-data-logs-table-columns'
-import {
-  RepositoryDetailsRowOptionsProps,
-  RepositoryTableRowOptions
-} from './repository-table-row-options'
+import { RepositoryTableRowOptions } from './repository-table-row-options'
+import { SyncStatusDataProps } from './@type'
 
 export const columns: Array<Record<string, any>> = [
   {
-    dataIndex: 'syncStateIcon',
+    dataIndex: 'status',
     key: 'syncStateIcon',
     className: "py-3 w-4 h-20",
-    render: (syncStateIcon: repSyncState) => getRepositorySyncIcon(syncStateIcon, "mx-6")
+    render: ({ syncState }: { syncState : RepSyncStateT }) =>
+      getRepositorySyncIcon(syncState, "mx-6")
   },
   {
     title: 'Data',
@@ -27,17 +24,19 @@ export const columns: Array<Record<string, any>> = [
     headerClassName: "pl-0",
     key: 'data',
     className: "py-3 h-20",
-    render: (data: RepositoryDataProps) => <RepositoryData title={data.title} brief={data.brief} />
+    render: (data: RepositoryDataProps) => (
+      <RepositoryData title={data.title} brief={data.brief} />
+    )
   },
   {
     title: 'Lastest Run',
     headerClassName: "pl-0",
     className: 'text-gray-500 h-20',
-    dataIndex: 'latest_run',
-    key: 'latest_run',
-    render: (params: { time_ago: string, disabled: boolean }) => (
+    dataIndex: 'latestRun',
+    key: 'latestRun',
+    render: (latestRun: string) => (
       <span className="text-sm  text-samantic-mutedText">
-        {params.disabled ? '-' : params.time_ago}
+        {latestRun}
       </span>
     )
   },
@@ -47,29 +46,25 @@ export const columns: Array<Record<string, any>> = [
     className: 'text-gray-500 h-20',
     dataIndex: 'status',
     key: 'status',
-    render: (status: RepositorySyncStatusProps) => <RepositorySyncStatus
-      graphNode={status.graphNode}
-      disabled={status.disabled}
-    />
-  },
-  {
-    title: '',
-    dataIndex: 'syncNow',
-    key: 'syncNow',
-    className: 'w-4 px-6 h-20',
-    render:(syncNow:RepositorySyncNowProps)=>(
-    <RepositorySyncNow syncStatus={syncNow.syncStatus} doSync={syncNow.doSync} />
-    )
-  },
-  {
-    title: '',
-    className: 'w-4 px-6',
-    dataIndex: 'options',
-    key: 'options',
-    render:(options:RepositoryDetailsRowOptionsProps )=>(
-      <RepositoryTableRowOptions
-        state={options.state}
+    render: (status: { data?: SyncStatusDataProps[], syncState: RepSyncStateT }) =>
+      <RepositorySyncStatus
+        data={status.data}
+        disabled={status.syncState === 'disabled'}
       />
+  },
+  {
+    dataIndex: 'status',
+    className: 'h-20',
+    key: 'syncNow',
+    render: ({ syncState }: { syncState : RepSyncStateT }) =>
+      <RepositorySyncNow syncStatus={syncState} />
+  },
+  {
+    className: 'w-4 px-6 h-20',
+    dataIndex: 'status',
+    key: 'options',
+    render: ({ syncState }: { syncState : RepSyncStateT }) => (
+      <RepositoryTableRowOptions state={syncState} />
     ),
   },
 ]
