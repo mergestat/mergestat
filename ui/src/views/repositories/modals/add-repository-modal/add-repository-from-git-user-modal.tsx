@@ -13,7 +13,7 @@ import React from 'react'
 const EmptyRepositories: React.FC = () => {
   return (
     <div className="h-80">
-      <div className="flex items-center h-20 border border-gray-100 rounded">
+      <div className="flex items-center h-20 border border-gray-200 rounded">
         <HelpText className="mx-auto">
           Enter GitHub username to select repositories
         </HelpText>
@@ -64,7 +64,7 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
       <div className="mb-5">
-        <h3 className="t-h3 mb-3">Add from GitHub user</h3>
+        <h3 className="t-h3 mb-5">Add from GitHub user</h3>
         <div className="flex items-center gap-2">
           <Label htmlFor="username" className="whitespace-nowrap">
             Username

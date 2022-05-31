@@ -7,7 +7,7 @@ export const AddRepositoryFromCSVModal: React.FC = (props) => {
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
       <div className="mb-1">
-        <h3 className="t-h3 mb-3">Add from CSV</h3>
+        <h3 className="t-h3 mb-5">Add from CSV</h3>
         <HelpText>Paste CSV</HelpText>
       </div>
       <Textarea className="h-84" defaultValue={''} onChange={onChange} />
