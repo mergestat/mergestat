@@ -27,7 +27,7 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
   const router = useRouter()
 
   return (
-    <main className="w-full bg-gray-100">
+    <main className="w-full bg-gray-50">
       <PageHeader
         repo={{
           startIcon: (
@@ -53,7 +53,7 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
             Sync Settings
           </Tabs.Item>
         </Tabs.List>
-        <Tabs.Panels className="py-4 px-6">
+        <Tabs.Panels className="p-6">
           <Tabs.Panel>
             <RepoDataLogs dataTypeName={DataType} />
           </Tabs.Panel>
@@ -68,13 +68,13 @@ export const RepositoryDataTypeView: React.FC<RepositoryDataTypeViewProps> = (
 export const getRepositorySyncIcon = (syncStatus: RepSyncStateT, className?:string) => {
   switch (syncStatus) {
     case 'disabled':
-      return <CircleInformationFilledIcon className={`text-samantic-mutedIcon ${className}` }  />
+      return <CircleInformationFilledIcon className={`t-icon text-samantic-mutedIcon ${className}` }  />
     case 'success':
-      return <CircleCheckFilledIcon className={`text-samantic-success ${className}`}  />
+      return <CircleCheckFilledIcon className={`t-icon text-samantic-success ${className}`}  />
     case 'loading':
       return <Spinner size="sm" className={className} />
     case 'error':
-      return <CircleErrorFilledIcon className={`text-samantic-danger ${className}`}  />
+      return <CircleErrorFilledIcon className={`t-icon text-samantic-danger ${className}`}  />
     default:
       return <></>
   }

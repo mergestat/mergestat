@@ -8,7 +8,7 @@ type RepoDataLogsProps = {
 
 export const RepoDataLogs: React.FC<RepoDataLogsProps> = (props) => {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <RepoDataTypeDescription
         title={props.dataTypeName}
         description={`

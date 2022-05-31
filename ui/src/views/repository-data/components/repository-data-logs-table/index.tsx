@@ -5,7 +5,7 @@ import { sampleRepositoryData } from './sample-data'
 
 export const RepositoryTable: React.FC = (props) => {
   return (
-    <div className="rounded-md">
+    <div className="rounded-md shadow-sm">
       <Table
         scrollY={'100%'}
         noWrapHeaders

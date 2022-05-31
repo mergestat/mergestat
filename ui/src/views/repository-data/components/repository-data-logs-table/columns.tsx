@@ -14,7 +14,7 @@ export const columns: Array<Record<string, any>> = [
   {
     dataIndex: 'status',
     key: 'syncStateIcon',
-    className: "py-3 w-4",
+    className: "py-3 w-12 h-20",
     render: ({ syncState }: { syncState : RepSyncStateT }) =>
       getRepositorySyncIcon(syncState, "mx-6")
   },
@@ -23,7 +23,7 @@ export const columns: Array<Record<string, any>> = [
     dataIndex: 'data',
     headerClassName: "pl-0",
     key: 'data',
-    className: "py-3",
+    className: "py-3 h-20",
     render: (data: RepositoryDataProps) => (
       <RepositoryData title={data.title} brief={data.brief} />
     )
@@ -31,11 +31,11 @@ export const columns: Array<Record<string, any>> = [
   {
     title: 'Lastest Run',
     headerClassName: "pl-0",
-    className: 'text-gray-500 ',
+    className: 'text-gray-500 h-20',
     dataIndex: 'latestRun',
     key: 'latestRun',
     render: (latestRun: string) => (
-      <span className="text-sm  text-samantic-mutedText">
+      <span className="text-samantic-mutedText">
         {latestRun}
       </span>
     )
@@ -43,7 +43,7 @@ export const columns: Array<Record<string, any>> = [
   {
     title: 'Status',
     headerClassName: "pl-0",
-    className: 'text-gray-500 ',
+    className: 'text-gray-500 h-20',
     dataIndex: 'status',
     key: 'status',
     render: (status: { data?: SyncStatusDataProps[], syncState: RepSyncStateT }) =>
@@ -54,6 +54,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     dataIndex: 'status',
+    className: 'h-20',
     key: 'syncNow',
     render: ({ syncState }: { syncState : RepSyncStateT }) =>
       <RepositorySyncNow syncStatus={syncState} />

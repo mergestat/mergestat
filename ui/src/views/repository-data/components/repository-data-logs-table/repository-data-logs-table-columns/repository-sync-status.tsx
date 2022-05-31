@@ -67,7 +67,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     || (points && points.length >= 2
       ? Math.max(0, points[1].x - points[0].x - strokeWidth - marginWidth)
       : 0)
-  
+
   const statusColor = (status: string) => {
     switch (status) {
       case 'success':

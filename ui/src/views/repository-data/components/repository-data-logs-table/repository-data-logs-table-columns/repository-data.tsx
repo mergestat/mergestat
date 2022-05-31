@@ -14,14 +14,14 @@ export const RepositoryData: React.FC<RepositoryDataProps> = (props) => {
   return (
     <div>
       <Link href={`/repos/${repoName}/${props.title}`}>
-        <Typography.Title className="text-samantic-text cursor-pointer hover_text-blue-600">
+        <h4 className="font-medium mb-0.5 text-samantic-text cursor-pointer hover_text-blue-600">
           {props.title}
-        </Typography.Title>
+        </h4>
       </Link>
 
-      <Typography.Text size="sm" className="text-samantic-mutedText">
+      <p className="text-sm text-samantic-mutedText">
         {props.brief}
-      </Typography.Text>
+      </p>
     </div>
   )
 }

@@ -5,7 +5,7 @@ import React from 'react'
 const EmptyRepositories: React.FC = () => {
   return (
     <div className="h-80">
-      <div className="flex items-center h-20 border border-gray-100 rounded">
+      <div className="flex items-center h-20 border border-gray-200 rounded">
         <HelpText className="mx-auto">No repository added yet</HelpText>
       </div>
     </div>
@@ -20,8 +20,8 @@ export const AddRepositoryFromURLModal: React.FC = (props) => {
 
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
-      <div className="mb-5">
-        <h3 className="t-h3 mb-3">Add from URL</h3>
+      <div className="mb-6">
+        <h3 className="t-h3 mb-6">Add from URL</h3>
         <div className="flex w-full items-center gap-2">
           <Label htmlFor="repoUrl">URL</Label>
           <Input
@@ -45,7 +45,7 @@ export const AddRepositoryFromURLModal: React.FC = (props) => {
       <div className="overflow-y-auto h-80">
         {repositories.length === 0 && <EmptyRepositories />}
         {repositories.length > 0 && (
-          <div className="border border-gray-100 rounded">
+          <div className="border border-gray-200 rounded">
             {repositories.map((repository, index) => (
               <ListItem
                 key={index}

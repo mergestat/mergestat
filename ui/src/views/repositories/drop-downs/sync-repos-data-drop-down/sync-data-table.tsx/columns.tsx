@@ -5,7 +5,7 @@ import { RowOptions } from './row-options'
 
 export const columns: Array<Record<string, any>> = [
   {
-    title: ( 
+    title: (
       <Typography.Title className='text-samantic-header font-semibold ml-6'>
         Sync Data
       </Typography.Title>
@@ -15,12 +15,12 @@ export const columns: Array<Record<string, any>> = [
     key: 'dataType',
     render: (params: { title: string, brief?: string }) => (
       <div className='ml-6 my-3'>
-        <Typography.Title className="text-samantic-text cursor-pointer hover_text-blue-600">
+        <h4 className="font-medium mb-0.5 text-samantic-text cursor-pointer hover_text-blue-600">
           {params.title}
-        </Typography.Title>
-        <Typography.Text size="sm" className="text-samantic-mutedText whitespace-nowrap">
+        </h4>
+        <p className="text-sm text-samantic-mutedText whitespace-nowrap">
           {params.brief}
-        </Typography.Text>
+        </p>
       </div>
     )
   },
@@ -29,8 +29,9 @@ export const columns: Array<Record<string, any>> = [
     key: 'syncNow',
     render:  (params:{disabled:boolean, doSync: () => void}) => (
       <Button
-        className='flex gap-2 text-samantic-text whitespace-nowrap'
+        className='whitespace-nowrap'
         skin='secondary'
+        size="small"
         startIcon={
           <RefreshIcon className={`t-icon ${params.disabled ? "text-samantic-mutedIcon":"text-samantic-icon"}`} />
         }

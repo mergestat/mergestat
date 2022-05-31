@@ -26,12 +26,12 @@ export const RepositoriesView: React.FC = () => {
   } = useRepositoriesSetState()
 
   return (
-    <main className="w-full h-full grid grid-rows-content-layout bg-gray-100">
+    <main className="w-full h-full grid grid-rows-content-layout bg-gray-50">
       <div className="bg-white border-b border-gray-200">
         <PageHeader />
         <FilterHeader />
       </div>
-      <div className="flex flex-col items-center justify-center p-6">
+      <div className="flex flex-col items-center p-6">
         {false && <EmptyRepositoryTable />}
         {true && <RepositoriesTable />}
       </div>

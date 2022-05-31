@@ -102,7 +102,7 @@ export const ManageAutoImportReposModal = ({
   ]
 
   return (
-    <div className="absolute top-0 left-0 bg-gray-100 w-full h-full z-40">
+    <div className="absolute top-0 left-0 bg-gray-50 w-full h-full z-40">
       <div className="h-16 border-b bg-white border-samantic-border flex justify-between items-center p-5">
         <div className="flex items-center">
           <Button
@@ -111,9 +111,9 @@ export const ManageAutoImportReposModal = ({
             onClick={onClose}
           />
 
-          <p className="text-xl border-l border-samantic-border pl-4">
+          <h2 className="t-toolbar-title border-l border-samantic-border pl-4">
             Manage auto imports
-          </p>
+          </h2>
         </div>
         <Button
           skin="secondary"
@@ -123,7 +123,7 @@ export const ManageAutoImportReposModal = ({
           Create Auto import
         </Button>
       </div>
-      <div className="m-8">
+      <div className="m-8 shadow-sm">
         <Table columns={columns} dataSource={dataSource} />
       </div>
     </div>

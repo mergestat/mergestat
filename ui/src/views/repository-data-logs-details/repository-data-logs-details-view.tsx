@@ -10,7 +10,7 @@ export const RepositoryDataLogsDetailsView: React.FC<RepositoryDataLogsDetailsVi
     const log = getLogDetailsByID(logID)
 
     return (
-      <main className="w-full bg-gray-100">
+      <main className="w-full bg-gray-50">
         <PageHeader />
         <div className="p-8 space-y-8">
           <LogsInfo log={log} />

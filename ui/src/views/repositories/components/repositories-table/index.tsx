@@ -31,7 +31,7 @@ export const RepositoriesTable: React.FC = (props) => {
       : CHECKBOX_STATES.Indeterminate
 
   return (
-    <Panel className="rounded-md h-full w-full shadow-sm">
+    <Panel className="rounded-md w-full shadow-sm">
       <Panel.Header className='px-0'>
         <Toolbar>
           <Toolbar.Left>
@@ -43,7 +43,7 @@ export const RepositoriesTable: React.FC = (props) => {
                   selectAllRepositories(checked)
                 }}
               />
-              <HelpText>
+              <HelpText className='font-medium'>
                 <span className='text-samantic-header'>
                   {selectedRepositoriesCount} of {sampleRepositoriesData.length}
                 </span>{' '}
@@ -56,9 +56,8 @@ export const RepositoriesTable: React.FC = (props) => {
               <SyncDataDropDown
                 triger={
                   <Button
-                    className='flex items-center gap-2'
-                    endIcon={<CaretDownIcon className='w-4.5 h-4.5 text-samantic-icon' />}
-                    startIcon={<RefreshIcon className='w-4.5 h-4.5 text-samantic-icon' />}
+                    endIcon={<CaretDownIcon className='t-icon' />}
+                    startIcon={<RefreshIcon className='t-icon' />}
                     skin='secondary'
                     size="small"
                     disabled={selectedRepositoriesCount === 0}
@@ -69,9 +68,8 @@ export const RepositoriesTable: React.FC = (props) => {
               />
 
               <Button
-                className='flex items-center gap-2'
-                endIcon={<CaretDownIcon className='w-4.5 h-4.5 text-samantic-icon' />}
-                startIcon={<PencilIcon className='w-4.5 h-4.5 text-samantic-icon' />}
+                endIcon={<CaretDownIcon className='t-icon' />}
+                startIcon={<PencilIcon className='t-icon' />}
                 skin='secondary'
                 size="small"
                 disabled={selectedRepositoriesCount === 0}

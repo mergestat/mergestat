@@ -14,7 +14,7 @@ export const columns: Array<Record<string, any>> = [
   {
     key: 'checkbox',
     dataIndex: 'isSelected',
-    className: "px-6 w-4",
+    className: "px-6 w-4 h-20",
     render: (isSelected: boolean, data: RepoDataProps & { isSelected?: boolean }) => (
       <Checkbox
         checked={isSelected}
@@ -34,6 +34,7 @@ export const columns: Array<Record<string, any>> = [
     ),
     dataIndex: 'name',
     key: 'name',
+    className: 'h-20',
     render: (name: string, data: RepoDataProps) => (
       <RepositoryName
         name={name}
@@ -45,7 +46,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: <h1 className='text-samantic-header'>Tags</h1>,
-    className: 'text-gray-500',
+    className: 'text-gray-500 h-20',
     dataIndex: 'tags',
     key: 'tags',
     render: (tags: TagType[]) => (
@@ -59,6 +60,7 @@ export const columns: Array<Record<string, any>> = [
       </p>
     ),
     dataIndex: 'lastSync',
+    className: 'h-20',
     key: 'last',
     render: (lastSync: string) => (
       <span className='text-samantic-mutedText'>{lastSync}</span>
@@ -67,6 +69,7 @@ export const columns: Array<Record<string, any>> = [
   {
     dataIndex: 'status',
     key: 'status',
+    className: 'h-20',
     render: (status: Array<RepoDataStatusT>) => (
       <RepositoryStatus status={status} />
     )

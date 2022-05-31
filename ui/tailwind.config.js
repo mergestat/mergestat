@@ -30,7 +30,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        'sans': ['Inter UI', 'ui-sans-serif', 'system-ui'],
+        'sans': ['"Inter UI"', 'ui-sans-serif', 'system-ui'],
         'monaco': ['Monaco'],
         'mono': ['ui-monospace', 'SFMono-Regular'],
       },
