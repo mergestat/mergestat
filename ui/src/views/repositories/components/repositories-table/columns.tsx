@@ -70,7 +70,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: '',
-    className: 'px-6 w-4 h-20',
+    className: 'px-6 w-4',
     dataIndex: 'option',
     key: 'option',
     render: () => <RepositoryAdditionalActionsDropDown />
