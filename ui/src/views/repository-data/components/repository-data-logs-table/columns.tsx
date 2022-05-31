@@ -18,7 +18,7 @@ export const columns: Array<Record<string, any>> = [
   {
     dataIndex: 'syncStateIcon',
     key: 'syncStateIcon',
-    className: "py-3 w-4",
+    className: "py-3 w-4 h-20",
     render: (syncStateIcon: repSyncState) => getRepositorySyncIcon(syncStateIcon, "mx-6")
   },
   {
@@ -26,13 +26,13 @@ export const columns: Array<Record<string, any>> = [
     dataIndex: 'data',
     headerClassName: "pl-0",
     key: 'data',
-    className: "py-3",
+    className: "py-3 h-20",
     render: (data: RepositoryDataProps) => <RepositoryData title={data.title} brief={data.brief} />
   },
   {
     title: 'Lastest Run',
     headerClassName: "pl-0",
-    className: 'text-gray-500 ',
+    className: 'text-gray-500 h-20',
     dataIndex: 'latest_run',
     key: 'latest_run',
     render: (params: { time_ago: string, disabled: boolean }) => (
@@ -44,7 +44,7 @@ export const columns: Array<Record<string, any>> = [
   {
     title: 'Status',
     headerClassName: "pl-0",
-    className: 'text-gray-500 ',
+    className: 'text-gray-500 h-20',
     dataIndex: 'status',
     key: 'status',
     render: (status: RepositorySyncStatusProps) => <RepositorySyncStatus
@@ -56,6 +56,7 @@ export const columns: Array<Record<string, any>> = [
     title: '',
     dataIndex: 'syncNow',
     key: 'syncNow',
+    className: 'w-4 px-6 h-20',
     render:(syncNow:RepositorySyncNowProps)=>(
     <RepositorySyncNow syncStatus={syncNow.syncStatus} doSync={syncNow.doSync} />
     )
