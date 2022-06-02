@@ -10,7 +10,7 @@ export const RepositoryAdditionalActionsDropDown: React.FC<RepositoryAdditionalA
         alignEnd
         trigger={<DotsHorizontalIcon className="t-icon cursor-pointer" />}
         overlay={() => (
-          <Menu className="absolute z-10 whitespace-nowrap right-0">
+          <Menu className="whitespace-nowrap">
             <Menu.Item
               className='text-gray-700'
               text="Repo settings"

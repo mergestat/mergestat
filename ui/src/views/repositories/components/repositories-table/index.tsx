@@ -9,7 +9,7 @@ import {
   Toolbar
 } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
-import React from 'react'
+import React, { useState } from 'react'
 import { SyncDataDropDown } from '../../drop-downs/sync-repos-data-drop-down'
 import type { RepoDataProps } from './@types'
 import { columns } from './columns'
@@ -17,13 +17,10 @@ import { columns } from './columns'
 import { sampleRepositoriesData } from './sample-data'
 
 export const RepositoriesTable: React.FC = (props) => {
+  const [selectedRepos, setSelectedRepos] = useState<RepoDataProps[]>([])
+  const [selectAllRepos, setSelectAll] = useState<boolean>(false)
 
-  const selectAllRepositories = (checked: boolean) => {
-    sampleRepositoriesData.forEach((re: RepoDataProps & { isSelected?: boolean }) => re.isSelected = checked)
-  }
-
-  const selectedRepositoriesCount = sampleRepositoriesData.filter((repo: RepoDataProps & { isSelected?: boolean }) => repo.isSelected).length
-
+  const selectedRepositoriesCount = selectedRepos.length
   const checkedState = selectedRepositoriesCount === 0
     ? CHECKBOX_STATES.Unchecked
     : selectedRepositoriesCount === sampleRepositoriesData.length
@@ -39,8 +36,7 @@ export const RepositoriesTable: React.FC = (props) => {
               <Checkbox
                 value={checkedState}
                 onChange={(e) => {
-                  const checked = e.currentTarget.checked
-                  selectAllRepositories(checked)
+                  setSelectAll(e.currentTarget.checked)
                 }}
               />
               <HelpText className='font-medium'>
@@ -91,6 +87,10 @@ export const RepositoriesTable: React.FC = (props) => {
           borderless
           scrollY="100%"
           tableHeaderBackground="gray-50"
+          checkable
+          hasSelectAll={false}
+          onSelectedChange={setSelectedRepos}
+          selectAll={selectAllRepos}
         />
       </Panel.Body>
     </Panel>

@@ -1,4 +1,4 @@
-import { RepoSyncDataType } from './@type'
+import type { RepoSyncDataType } from './@type'
 
 export const sampleRepositoryData: RepoSyncDataType[] = [
   {

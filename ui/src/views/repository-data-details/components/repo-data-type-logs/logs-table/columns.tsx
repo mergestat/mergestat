@@ -1,27 +1,17 @@
 import React from 'react'
+import type { RepSyncStateT } from 'src/@types'
 import { LogsTableRowOptions } from './log-table-row-options'
-import { CollapseTrigger, SyncType, SyncTypeProps } from './logs-table-columns'
-
+import { SyncType } from './logs-table-columns'
+import type { SyncLogsType } from './@type'
 
 export const columns: Array<Record<string, any>> = [
   {
-    dataIndex: 'collapse',
-    key: 'collapse',
-    className: 'px-3 w-4',
-    render: (collabsed: boolean) => <CollapseTrigger collapsed={collabsed} />
-  },
-  {
     title: "Sync Type",
-    headerClassName: "pl-0",
     className: 'py-3',
     dataIndex: 'sync_type',
     key: 'stync_type',
-    render: (params: SyncTypeProps) => (
-      <SyncType
-        id={params.id}
-        sync_type={params.sync_type}
-        sync_start={params.sync_start}
-      />
+    render: (syncType: RepSyncStateT, data: SyncLogsType) => (
+      <SyncType id={data.id} syncType={syncType} />
     )
   },
   {
@@ -30,8 +20,8 @@ export const columns: Array<Record<string, any>> = [
     headerClassName: "pl-0 w-40",
     dataIndex: 'records',
     key: 'records',
-    render: (records: string) => (
-      <span className='text-samantic-mutedText'>{records}</span>
+    render: (records?: string) => (
+      records ? <span className='text-samantic-mutedText'>{records}</span> : '-'
     )
   },
   {

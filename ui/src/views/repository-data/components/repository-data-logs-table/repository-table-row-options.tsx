@@ -15,7 +15,7 @@ export const RepositoryTableRowOptions: React.FC<RepositoryDetailsRowOptionsProp
         alignEnd
         trigger={<DotsHorizontalIcon className="t-icon cursor-pointer text-samantic-icon" />}
         overlay={() => (
-          <Menu className={`absolute z-10 whitespace-nowrap right-0`}>
+          <Menu className='whitespace-nowrap'>
             {(state === "disabled")
               ? <Menu.Item text="Enable Data Sync" />
               : (

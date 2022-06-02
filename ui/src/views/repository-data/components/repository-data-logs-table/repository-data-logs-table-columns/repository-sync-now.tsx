@@ -11,7 +11,7 @@ export type RepositorySyncNowProps = {
 export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = (props) => {
   const { syncStatus, doSync } = props
 
-  if (syncStatus === 'disabled') return null
+  if (syncStatus === 'disabled') return <div className='h-full bg-gray-50' />
 
   return (
     <Button

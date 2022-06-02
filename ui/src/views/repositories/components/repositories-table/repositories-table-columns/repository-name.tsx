@@ -29,7 +29,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
   }
 
   return (
-    <div className="flex items-center gap-4 my-3">
+    <div className="flex items-center gap-4 my-3 ml-6">
       <div className="w-10 h-10 border flex border-samantic-border rounded flex-shrink-0">
         {props.type === 'github' ? (
           <Image

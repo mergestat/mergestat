@@ -57,6 +57,9 @@ module.exports = {
       margin: {
         0.5: '2px',
       },
+      lineHeight: {
+        '20': '5rem',
+      }
     },
     colors: {
       transparent: 'transparent',
