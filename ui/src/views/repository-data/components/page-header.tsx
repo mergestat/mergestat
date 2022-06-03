@@ -2,7 +2,7 @@ import React from 'react'
 import { AutoManagedBreadCrumb } from 'src/components/bread-crumb'
 
 export type RepoDetailsHeaderProps = {
-  repo: {
+  repo?: {
     text: string
     startIcon?: React.ReactNode
     endIcon?: React.ReactNode

@@ -1,4 +1,4 @@
-import type { RepoDataProps } from './@types'
+import type { RepoDataProps } from '../views/repositories/components/repositories-table/@types'
 
 export const sampleRepositoriesData: Array<RepoDataProps> = [
   {

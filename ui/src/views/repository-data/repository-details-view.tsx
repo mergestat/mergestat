@@ -1,5 +1,4 @@
 import { Tabs } from '@mergestat/blocks'
-import { CaretUpIcon, ExternalLinkIcon } from '@mergestat/icons'
 import React from 'react'
 import {
   PageHeader,
@@ -7,25 +6,10 @@ import {
   RepositoryTable,
 } from './components'
 
-type RepositoryDetailsViewProps = {
-  repoName: string
-}
-export const RepositoryDetailsView: React.FC<RepositoryDetailsViewProps> = (
-  props
-) => {
+export const RepositoryDetailsView: React.FC = () => {
   return (
     <main className="w-full bg-gray-50">
-      <PageHeader
-        repo={{
-          startIcon: (
-            <div className="t-black-white">
-              <CaretUpIcon className="t-icon" />
-            </div>
-          ),
-          text: props.repoName,
-          endIcon: <ExternalLinkIcon className="t-icon t-gray" />,
-        }}
-      />
+      <PageHeader />
       <Tabs.Group>
         <Tabs.List className="bg-white w-full justify-between px-8 items-center border-b border-gray-200">
           <Tabs.Item className="ring-transparent focus_ring-transparent">
