@@ -18,7 +18,7 @@ const RepoDataView = ({ data }: { data: RepoDataPropsT }) => {
           </Tabs.Item>
           <Tabs.Item>Repo Settings</Tabs.Item>
         </Tabs.List>
-        <Tabs.Panels className="p-6">
+        <Tabs.Panels className="p-8">
           <Tabs.Panel>
             <SycnTypesTable />
           </Tabs.Panel>

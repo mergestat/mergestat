@@ -76,7 +76,7 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
             Sync Settings
           </Tabs.Item>
         </Tabs.List>
-        <Tabs.Panels className="p-6">
+        <Tabs.Panels className="p-8">
           <Tabs.Panel>
             <RepoDataLogs data={data.data} />
           </Tabs.Panel>
