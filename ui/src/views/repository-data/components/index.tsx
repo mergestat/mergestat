@@ -1,3 +1,3 @@
 export * from './page-header'
-export * from './repository-data-logs-table'
-export * from './repositoy-data-settings'
+export * from './sync-types-table'
+export * from './repo-settings'

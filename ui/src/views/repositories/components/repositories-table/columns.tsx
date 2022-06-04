@@ -1,12 +1,15 @@
 import React from 'react'
-import { TagType } from 'src/@types'
+import type {
+  RepoDataPropsT,
+  RepoDataStatusT,
+  TagType,
+} from 'src/@types'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
 import {
   RepositoryName,
   RepositoryStatus,
   RepositoryTagList
 } from './repositories-table-columns'
-import type { RepoDataProps, RepoDataStatusT } from './@types'
 
 export const columns: Array<Record<string, any>> = [
   {
@@ -14,7 +17,7 @@ export const columns: Array<Record<string, any>> = [
     dataIndex: 'name',
     key: 'name',
     onSortChange: (e: 'asc' | 'desc' | undefined) => {console.log(e)},
-    render: (name: string, data: RepoDataProps) => (
+    render: (name: string, data: RepoDataPropsT) => (
       <RepositoryName
         name={name}
         type={data.type}

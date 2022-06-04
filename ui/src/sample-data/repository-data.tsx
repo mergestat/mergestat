@@ -1,71 +1,131 @@
-import type { RepoDataProps } from '../views/repositories/components/repositories-table/@types'
+import type { RepoSyncDataType } from 'src/@types'
 
-export const sampleRepositoriesData: Array<RepoDataProps> = [
+export const sampleRepositoryData: RepoSyncDataType[] = [
   {
-    name: 'marko-js/repo1',
-    lastUpdate: 'Last updated today',
-    type: 'github',
-    automaticImport: true,
-    tags: [
-      { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: true },
-      { title: 'virtual-dom', checked: true },
-      { title: 'reactjs', checked: false },
-      { title: 'angularjs', checked: false },
-      { title: 'typescript', checked: false },
-    ],
-    lastSync: '3 minutes ago',
-    status: [
-      { type: 'error', count: 1 },
-      { type: 'loading', count: 3 },
-      { type: 'success', count: 8 },
-    ],
+    data: {
+      title: 'Commit Stats',
+      brief: 'Stores git commits for this repo in the "git_commits" table',
+    },
+    latestRun: 'Now',
+    status: {
+      data: [
+        {value: 6, status: 'success'},
+        {value: 10, status: 'error'},
+        {value: 5.5, status: 'success'},
+        {value: 6, status: 'success'},
+        {value: 5, status: 'success'},
+        {value: 1, status: 'success'},
+        {value: 2, status: 'success'},
+        {value: 6, status: 'success'},
+        {value: 5, status: 'error'},
+        {value: 5.5, status: 'success'},
+        {value: 6, status: 'success'},
+        {value: 7, status: 'success'},
+        {value: 5, status: 'success'},
+        {value: 4, status: 'success'},
+        {value: 10, status: 'success'},
+        {value: 2, status: 'loading'},
+      ],
+      syncState: 'loading'
+    },
   },
   {
-    name: 'MithrilJS/mithril.js',
-    lastUpdate: 'Last updated yesterday',
-    type: 'github',
-    automaticImport: false,
-    tags: [
-      { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: false },
-      { title: 'virtual-dom', checked: true },
-    ],
-    lastSync: '3 minutes ago',
-    status: [
-      { type: 'error', count: 1 },
-      { type: 'loading', count: 3 },
-      { type: 'success', count: 8 },
-    ],
+    data: {
+      title: 'Pull Requests',
+      brief: 'Stores git commits for this repo in the "git_commits" table',
+    },
+    latestRun: '20 minutes ago',
+    status: {
+      data: [
+        {value: 2, status: 'loading'},
+        {value: 5, status: 'success'},
+        {value: 4, status: 'success'},
+        {value: 5, status: 'success'},
+        {value: 7, status: 'success'},
+        {value: 6, status: 'success'},
+        {value: 5.5, status: 'success'},
+        {value: 5, status: 'error'},
+        {value: 6, status: 'success'},
+        {value: 2, status: 'success'},
+        {value: 5, status: 'success'},
+        {value: 1, status: 'success'},
+      ],
+      syncState: 'error'
+    },
   },
   {
-    name: 'angular/angular',
-    lastUpdate: 'Last updated yesterday',
-    type: 'github',
-    automaticImport: true,
-    tags: [
-      { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: false },
-      { title: 'angular', checked: true },
-    ],
-    lastSync: '3 minutes ago',
-    status: [
-      { type: 'loading', count: 1 },
-      { type: 'success', count: 4 },
-    ],
+    data: {
+      title: 'Issues',
+      brief: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    },
+    latestRun: '20 minutes ago',
+    status: {
+      data: [
+        {value: 3, status: 'error'},
+        {value: 3.5, status: 'error'},
+        {value: 2, status: 'success'},
+        {value: 3, status: 'success'},
+        {value: 10, status: 'error'},
+        {value: 5.5, status: 'success'},
+        {value: 6, status: 'success'},
+        {value: 7, status: 'success'},
+        {value: 5, status: 'success'},
+      ],
+      syncState: 'success'
+    },
   },
   {
-    name: 'emberjs/ember.js',
-    lastUpdate: 'Last updated 4 days ago',
-    type: 'github',
-    tags: [
-      { title: 'javascript', checked: true },
-      { title: 'nodejs', checked: false },
-      { title: 'ember', checked: true },
-    ],
-    lastSync: '1 hours ago',
-    status: [
-      { type: 'success', count: 2 },
-    ],
+    data: {
+      title: 'Dependencies',
+      brief: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    },
+    latestRun: '-',
+    status: {
+      syncState: 'disabled'
+    },
+  },
+  {
+    data: {
+      title: 'Stargazers',
+      brief: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    },
+    latestRun: '20 minutes ago',
+    status: {
+      data: [
+        {value: 2, status: 'success'},
+        {value: 6, status: 'success'},
+        {value: 5, status: 'error'},
+        {value: 5.5, status: 'success'},
+        {value: 6, status: 'success'},
+        {value: 7, status: 'success'},
+        {value: 5, status: 'success'},
+        {value: 4, status: 'success'},
+      ],
+      syncState: 'success'
+    },
+  },
+  {
+    data: {
+      title: 'Blame',
+      brief: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    },
+    latestRun: '20 minutes ago',
+    status: {
+      data: [
+        {value: 5, status: 'success'},
+        {value: 1, status: 'success'},
+        {value: 2, status: 'success'},
+        {value: 6, status: 'success'},
+        {value: 5, status: 'error'},
+        {value: 5.5, status: 'success'},
+        {value: 6, status: 'success'},
+        {value: 7, status: 'success'},
+        {value: 5, status: 'success'},
+        {value: 4, status: 'success'},
+        {value: 5, status: 'success'},
+        {value: 2, status: 'loading'},
+      ],
+      syncState: 'success'
+    },
   },
 ]

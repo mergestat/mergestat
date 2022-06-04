@@ -1,29 +1,58 @@
 import { Fragment } from 'react'
-import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
+import type { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
-
-import {  RepositoryDetailsView } from 'src/views'
 import { RepositoryDataTypeView } from 'src/views/repository-data-details'
 
-const DataTypePage: NextPage = () => {
-  const router = useRouter()
-  const { repoName, dataType, RepSyncStateT } = router.query
+import type { RepoDetailsPropsT } from 'src/views/repository-data'
 
-  if (typeof repoName != 'string' || typeof dataType != 'string') return <></>
+import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
+import { sampleRepositoryData } from 'src/sample-data/repository-data'
 
+const DataTypePage = (props: RepoDetailsPropsT) => {
   return (
     <Fragment>
       <Head>
-        <title>MergeStat | {repoName}</title>
+        <title>MergeStat | {props.repoData.name}</title>
       </Head>
-      <RepositoryDataTypeView
-        syncState={RepSyncStateT as any}
-        repoName={repoName}
-        DataType={dataType}
-      />
+      <RepositoryDataTypeView {...props} />
     </Fragment>
   )
+}
+
+export async function getServerSideProps({ params }: GetServerSidePropsContext) {
+  const repoData = sampleRepositoriesData.find(data =>
+    data.name.replace(/\//g, '-') === params?.repository)
+
+  if (!repoData) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    }
+  }
+
+  const data = sampleRepositoryData.find(d =>
+    d.data.title.replace(/ /g, '-') === params?.dataType)
+
+  if (!data) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {
+      repoData: {
+        name: repoData.name,
+        type: repoData.type
+      },
+      data: data,
+    },
+  }
 }
 
 export default DataTypePage

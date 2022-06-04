@@ -12,7 +12,7 @@ const tags: TagType[] = [
   { title: 'team-a', checked: false },
 ]
 
-export const RepositorySettings: React.FC = (props) => {
+export const RepoSettings: React.FC = (props) => {
   return (
     <>
       <Panel>

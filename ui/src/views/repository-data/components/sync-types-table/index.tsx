@@ -1,9 +1,9 @@
 import { Table } from '@mergestat/blocks'
 import React from 'react'
 import { columns } from './columns'
-import { sampleRepositoryData } from './sample-data'
+import { sampleRepositoryData } from 'src/sample-data/repository-data'
 
-export const RepositoryTable: React.FC = (props) => {
+export const SycnTypesTable: React.FC = () => {
   return (
     <div className="rounded-md shadow-sm">
       <Table

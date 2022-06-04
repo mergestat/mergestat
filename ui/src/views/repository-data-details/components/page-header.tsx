@@ -1,7 +1,7 @@
 import { Button } from '@mergestat/blocks'
 import { DotsHorizontalIcon, RefreshIcon } from '@mergestat/icons'
 import React from 'react'
-import { AutoManagedBreadCrumb } from 'src/components/bread-crumb'
+import { BreadcrumbNav } from '@mergestat/blocks'
 
 export type RepoDetailsHeaderProps = {
   repo: {

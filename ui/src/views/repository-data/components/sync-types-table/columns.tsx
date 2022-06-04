@@ -2,14 +2,14 @@ import React from 'react'
 import cx from 'classnames'
 import { RepSyncStateT } from 'src/@types'
 import { getRepositorySyncIcon } from 'src/views/repository-data-details'
+import type { RepoSyncDataType, SyncStatusDataT } from 'src/@types'
 import {
   RepositoryData,
   RepositoryDataProps,
   RepositorySyncNow,
   RepositorySyncStatus,
-} from './repository-data-logs-table-columns'
-import { RepositoryTableRowOptions } from './repository-table-row-options'
-import type { RepoSyncDataType, SyncStatusDataProps } from './@type'
+  RepositoryTableRowOptions,
+} from './components'
 
 export const columns: Array<Record<string, any>> = [
   {
@@ -58,7 +58,7 @@ export const columns: Array<Record<string, any>> = [
     className: 'text-gray-500 h-20 p-0',
     dataIndex: 'status',
     key: 'status',
-    render: (status: { data?: SyncStatusDataProps[], syncState: RepSyncStateT }) =>
+    render: (status: { data?: SyncStatusDataT[], syncState: RepSyncStateT }) =>
       <RepositorySyncStatus
         data={status.data}
         disabled={status.syncState === 'disabled'}

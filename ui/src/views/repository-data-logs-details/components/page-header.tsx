@@ -1,7 +1,7 @@
 import { Button } from '@mergestat/blocks'
 import { DotsHorizontalIcon } from '@mergestat/icons'
 import React from 'react'
-import { AutoManagedBreadCrumb } from 'src/components/bread-crumb'
+import { BreadcrumbNav } from '@mergestat/blocks'
 
 export const PageHeader: React.FC = () => {
   return (

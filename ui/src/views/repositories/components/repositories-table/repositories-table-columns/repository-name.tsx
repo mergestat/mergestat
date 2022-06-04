@@ -4,10 +4,10 @@ import {
   GithubIcon,
   RepositoryIcon,
 } from '@mergestat/icons'
-import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import type { RepoType } from '../@types'
+import type { RepoType } from 'src/@types'
+import RepoImage from 'src/components/RepoImage'
 
 export type RepositoryNameProps = {
   name: string
@@ -30,18 +30,11 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
 
   return (
     <div className="flex items-center gap-4 my-3 ml-6">
-      <div className="w-10 h-10 border flex border-samantic-border rounded flex-shrink-0">
-        {props.type === 'github' ? (
-          <Image
-            src={`https://github.com/${props.name.split('/')[0]}.png?size=40`}
-            width={40}
-            height={40}
-            loader={({ src }) => `${src}?w=1&q=50`}
-          />
-        ) : (
-          <RepositoryIcon className="t-icon text-samantic-icon m-auto"/>
-        )}
-      </div>
+      <RepoImage
+        repoType={props.type}
+        orgName={props.name.split('/')[0]}
+        size="10"
+      />
       <div>
         <Link href={`/repos/${props.name.replace('/', '-')}`}>
           <h4 className="font-medium mb-0.5 text-samantic-text cursor-pointer hover_text-blue-600">

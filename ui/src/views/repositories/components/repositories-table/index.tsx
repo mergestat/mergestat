@@ -10,14 +10,14 @@ import {
 } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 import React, { useMemo, useState } from 'react'
+import type { RepoDataPropsT } from 'src/@types'
 import { SyncDataDropDown } from '../../drop-downs/sync-repos-data-drop-down'
-import type { RepoDataProps } from './@types'
 import { columns } from './columns'
 
-import { sampleRepositoriesData } from 'src/sample-data/repository-data'
+import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
 
 export const RepositoriesTable: React.FC = (props) => {
-  const [selectedRepos, setSelectedRepos] = useState<RepoDataProps[]>([])
+  const [selectedRepos, setSelectedRepos] = useState<RepoDataPropsT[]>([])
   const [isSelectAllRepos, setIsSelectAll] = useState<boolean>(false)
 
   const selectedRepositoriesCount: number = 

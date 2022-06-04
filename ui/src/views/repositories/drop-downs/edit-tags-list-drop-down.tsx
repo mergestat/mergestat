@@ -14,7 +14,7 @@ export const EditTagsListDropDown: React.FC<RepositoryTagListProps> = (
     <Dropdown
       alignEnd
       overlay={() => (
-        <div className="relative bg-white w-80 shadow py-2 rounded">
+        <div className="relative bg-white w-80 shadow p-3 rounded">
           <MultiSelect setStateToProps={tags} />
         </div>
       )}

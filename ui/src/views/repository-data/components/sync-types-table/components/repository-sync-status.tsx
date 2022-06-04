@@ -1,13 +1,12 @@
 import React, {
   CSSProperties,
-  useCallback,
-  useState,
   useRef,
+  useState,
 } from 'react'
-import { SyncStatusDataProps } from '../@type'
+import type { SyncStatusDataT } from 'src/@types'
 
 type RepositorySyncStatusProps = {
-  data?: SyncStatusDataProps[],
+  data?: SyncStatusDataT[],
   disabled?: boolean,
   width?: number,
   height?: number,
@@ -42,7 +41,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 ) => {
   const tooltipRef = useRef<HTMLDivElement>(null)
   const [displayTooltip, setDisplayTooltip] = useState(false)
-  const [tooltipData, setTooltipData] = useState<SyncStatusDataProps | null>(null)
+  const [tooltipData, setTooltipData] = useState<SyncStatusDataT | null>(null)
   const [eventPosition, setEventPosition] = useState<PositionType | null>(null)
   const [hoverPosition, setHoverPosition] = useState<PositionType | null>(null)
   const [activeBar, setActiveBar] = useState<number | null>(null)
@@ -57,7 +56,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     data = data.slice(len - limit)
   }
 
-  const valueArray = data.map((d: SyncStatusDataProps) => d.value)
+  const valueArray = data.map((d: SyncStatusDataT) => d.value)
   const points = dataToPoints({ data: valueArray, limit, width, height, margin, max, min })
 
   const strokeWidth: number = 1 * ((style && style.strokeWidth ? +style.strokeWidth : 0) || 0)
@@ -86,7 +85,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     setActiveBar(index);
   }
 
-  const onBarClick = (p: SyncStatusDataProps) => {
+  const onBarClick = (p: SyncStatusDataT) => {
     alert(p.status)
   }
 
@@ -120,9 +119,9 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
             displayTooltip ? 'visible' : 'invisible'
           } absolute z-50 bg-white rounded border-gray-300 shadow-lg p-3`}
           style={{
-            top: eventPosition?.y ? eventPosition?.y - 285 : 0,
+            top: eventPosition?.y ? eventPosition?.y - 90 : 0,
             left: eventPosition?.x
-                  ? eventPosition?.x - 140
+                  ? eventPosition?.x
                     - ((tooltipRef?.current) ? tooltipRef?.current.clientWidth / 2 : 0)
                   : 0,
           }}
