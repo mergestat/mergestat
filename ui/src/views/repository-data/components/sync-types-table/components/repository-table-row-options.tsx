@@ -20,8 +20,8 @@ export const RepositoryTableRowOptions: React.FC<RepositoryDetailsRowOptionsProp
               ? <Menu.Item text="Enable Data Sync" />
               : (
                 <React.Fragment>
-                  <Menu.Item text="Disable Data Sync" disabled={state === "loading"} />
-                  <Menu.Item text="Cancel Sync" disabled={state !== "loading"} />
+                  <Menu.Item text="Disable Data Sync" disabled={state === "running"} />
+                  <Menu.Item text="Cancel Sync" disabled={state !== "running"} />
                 </React.Fragment>
               )
             }

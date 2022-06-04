@@ -16,9 +16,9 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
     ],
     lastSync: '3 minutes ago',
     status: [
-      { type: 'error', count: 1 },
-      { type: 'loading', count: 3 },
-      { type: 'success', count: 8 },
+      { type: 'failed', count: 1 },
+      { type: 'running', count: 3 },
+      { type: 'succeeded', count: 8 },
     ],
   },
   {
@@ -33,9 +33,9 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
     ],
     lastSync: '3 minutes ago',
     status: [
-      { type: 'error', count: 1 },
-      { type: 'loading', count: 3 },
-      { type: 'success', count: 8 },
+      { type: 'failed', count: 1 },
+      { type: 'running', count: 3 },
+      { type: 'succeeded', count: 8 },
     ],
   },
   {
@@ -50,8 +50,8 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
     ],
     lastSync: '3 minutes ago',
     status: [
-      { type: 'loading', count: 1 },
-      { type: 'success', count: 4 },
+      { type: 'running', count: 1 },
+      { type: 'succeeded', count: 4 },
     ],
   },
   {
@@ -65,7 +65,7 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
     ],
     lastSync: '1 hours ago',
     status: [
-      { type: 'success', count: 2 },
+      { type: 'succeeded', count: 2 },
     ],
   },
 ]

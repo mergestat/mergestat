@@ -1,4 +1,4 @@
-export type RepSyncStateT = 'disabled' | 'loading' | 'success' | 'error'
+export type RepSyncStateT = 'disabled' | 'running' | 'succeeded' | 'failed'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
@@ -42,4 +42,14 @@ export type RepoSyncDataType = {
     data?: SyncStatusDataT[],
     syncState: RepSyncStateT
   },
+}
+
+/** Repository Data Logs Type */
+export type SyncLogsType = {
+  id: string
+  syncType: RepSyncStateT
+  records?: number
+  duration?: string
+  syncStart: string
+  logs?: string[]
 }

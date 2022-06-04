@@ -2,7 +2,7 @@ import { LogBox, Table } from '@mergestat/blocks'
 import React from 'react'
 import { columns } from './columns'
 
-import { sampleDatatypesettingsData } from './sample-data'
+import { sampleDatatypesettingsData } from 'src/sample-data/repo-data-logs'
 
 export const LogsTable: React.FC = (props) => {
   return (

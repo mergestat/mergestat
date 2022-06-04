@@ -1,20 +1,19 @@
 import { Fragment } from 'react'
 import type { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
-import { RepositoryDataTypeView } from 'src/views/repository-data-details'
-
-import type { RepoDetailsPropsT } from 'src/views/repository-data'
+import RepoDataTypeView from 'src/views/repository-data-details'
+import type { RepoDataTypeViewPropsT } from 'src/views/repository-data-details'
 
 import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
 import { sampleRepositoryData } from 'src/sample-data/repository-data'
 
-const DataTypePage = (props: RepoDetailsPropsT) => {
+const DataTypePage = (props: RepoDataTypeViewPropsT) => {
   return (
     <Fragment>
       <Head>
         <title>MergeStat | {props.repoData.name}</title>
       </Head>
-      <RepositoryDataTypeView {...props} />
+      <RepoDataTypeView {...props} />
     </Fragment>
   )
 }

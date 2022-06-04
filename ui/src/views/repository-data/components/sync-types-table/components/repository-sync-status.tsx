@@ -69,9 +69,9 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 
   const statusColor = (status: string) => {
     switch (status) {
-      case 'success':
+      case 'succeeded':
         return '#78DDB5'
-      case 'error':
+      case 'failed':
         return '#EC9393'
       default:
         return '#7DD3FC'

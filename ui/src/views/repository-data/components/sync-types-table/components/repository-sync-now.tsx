@@ -16,10 +16,10 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = (props) => {
   return (
     <Button
       className="flex items-center float-right"
-      disabled={syncStatus === 'loading'}
+      disabled={syncStatus === 'running'}
       skin="secondary"
       startIcon={
-        syncStatus === 'loading' ? (
+        syncStatus === 'running' ? (
           <Spinner size='sm' className='mr-2' />
         ) : (
           <RefreshIcon className="t-icon text-samantic-icon" />
@@ -28,7 +28,7 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = (props) => {
       size="small"
       onClick={doSync}
     >
-      {syncStatus === 'loading' ? 'Syncing...' : 'Sync Now'}
+      {syncStatus === 'running' ? 'Syncing...' : 'Sync Now'}
     </Button>
   )
 }
