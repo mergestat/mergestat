@@ -44,7 +44,7 @@ export const ManageAutoImportReposModal = ({
     },
     {
       title: 'Last sync',
-      className: 'text-gray-300 ',
+      className: 'text-samantic-mutedText ',
       dataIndex: 'last',
       key: 'last',
     },
@@ -68,50 +68,66 @@ export const ManageAutoImportReposModal = ({
       source: 'user-name',
       type: (
         <p className="flex items-center gap">
-          <GithubIcon className="t-icon mr-2" />
+          <GithubIcon className="t-icon t-icon-small t-icon-muted  mr-2" />
           GitHub User
         </p>
       ),
       last: '2 hours ago',
-      delIcon: <TrashIcon />,
+      delIcon: <Button
+      isIconOnly
+      size="small"
+      skin="borderless-muted"
+      startIcon={<TrashIcon />}
+      />
+
     },
     {
       successIcon: <CircleCheckFilledIcon className="t-icon text-samantic-success" />,
       source: 'organization-name',
       type: (
         <p className="flex items-center gap">
-          <GithubIcon className="t-icon mr-2" />
+          <GithubIcon className="t-icon t-icon-small t-icon-muted mr-2" />
           GitHub Organization
         </p>
       ),
       last: '2 hours ago',
-      delIcon: <TrashIcon />,
+      delIcon: <Button
+      isIconOnly
+      size="small"
+      skin="borderless-muted"
+      startIcon={<TrashIcon />}
+      />
     },
     {
       successIcon: <CircleCheckFilledIcon className="t-icon text-samantic-success" />,
       source: 'organization-name',
       type: (
         <p className="flex items-center gap">
-          <GithubIcon className="t-icon mr-2" />
+          <GithubIcon className="t-icon t-icon-small t-icon-muted mr-2" />
           GitHub Organization
         </p>
       ),
       last: '2 hours ago',
-      delIcon: <TrashIcon className='t-icon' />,
+      delIcon: <Button
+      isIconOnly
+      size="small"
+      skin="borderless-muted"
+      startIcon={<TrashIcon />}
+      />
     },
   ]
 
   return (
     <div className="absolute top-0 left-0 bg-gray-50 w-full h-full z-40">
-      <div className="h-16 border-b bg-white border-samantic-border flex justify-between items-center p-5">
+      <div className="h-16 border-b bg-white border-samantic-border flex justify-between items-center px-8 py-4">
         <div className="flex items-center">
           <Button
             skin="borderless-muted"
-            startIcon={<XIcon className="t-icon mr-4" />}
+            startIcon={<XIcon className="t-icon" />}
             onClick={onClose}
           />
 
-          <h2 className="t-toolbar-title border-l border-samantic-border pl-4">
+          <h2 className="t-toolbar-title border-l border-samantic-border ml-2 pl-5">
             Manage auto imports
           </h2>
         </div>
