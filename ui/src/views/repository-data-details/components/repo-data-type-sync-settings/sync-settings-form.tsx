@@ -3,7 +3,7 @@ import React from 'react'
 
 export const SyncSettingsForm = () => {
   return (
-    <Panel className="bg-white rounded">
+    <Panel className="shadow-sm">
       <Panel.Header>
         <Typography.Title className='text-samantic-header font-semibold'>Sync settings</Typography.Title>
       </Panel.Header>
