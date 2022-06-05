@@ -1,6 +1,6 @@
 import { SyncLogsType } from 'src/@types'
 
-export const sampleDatatypesettingsData: SyncLogsType[] = [
+export const sampleData: SyncLogsType[] = [
   {
     id: 'd41ffc09-5254-4fa8-adcf-5aa0b0a00955',
     duration: '-',

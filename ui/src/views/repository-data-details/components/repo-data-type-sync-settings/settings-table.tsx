@@ -1,7 +1,7 @@
 import { Panel, Table, Typography } from '@mergestat/blocks'
 import React from 'react'
 
-import { sampleDatatypesettingsData } from './sample-data'
+import { sampleData } from 'src/sample-data/repo-data-sync-settings'
 
 export const SettingsTable: React.FC = (props) => {
   const columns: Array<Record<string, any>> = [
@@ -33,7 +33,7 @@ export const SettingsTable: React.FC = (props) => {
           borderless
           checkable
           columns={columns}
-          dataSource={sampleDatatypesettingsData}
+          dataSource={sampleData}
         />
       </Panel.Body>
     </Panel>

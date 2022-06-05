@@ -53,3 +53,9 @@ export type SyncLogsType = {
   syncStart: string
   logs?: string[]
 }
+
+export type SettingsDataType = {
+  isSelected?: boolean
+  column: string
+  type: string
+}

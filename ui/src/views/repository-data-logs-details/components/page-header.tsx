@@ -7,7 +7,7 @@ export const PageHeader: React.FC = () => {
   return (
     <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
       <div className="text-xl font-semibold">
-        <AutoManagedBreadCrumb />
+        {/* <BreadcrumbNav /> */}
       </div>
       <div className="flex gap-3">
         <Button

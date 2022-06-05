@@ -1,6 +1,6 @@
-import { SettingsDataType } from './@type'
+import { SettingsDataType } from 'src/@types'
 
-export const sampleDatatypesettingsData: SettingsDataType[] = [
+export const sampleData: SettingsDataType[] = [
   {
     column: 'Column 1',
     type: 'Type 1',
