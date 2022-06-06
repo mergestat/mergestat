@@ -6,19 +6,16 @@ import { sampleData } from 'src/sample-data/repo-data-logs'
 
 export const LogsTable: React.FC = (props) => {
   return (
-   <div className='border-md shadow-sm'>
-     <Table
-        scrollY='100%'
-        responsive
-        noWrapHeaders
-        // className="overflow-visible relative z-0"
-        columns={columns}
-        dataSource={sampleData}
-        collapsible
-        renderCollapse={(d: any) => (
-          <LogBox logs={d.logs} onCopy={() => {}} />
-        )}
-      />
-   </div>
+    <Table
+      scrollY='100%'
+      responsive
+      noWrapHeaders
+      columns={columns}
+      dataSource={sampleData}
+      collapsible
+      renderCollapse={(d: any) => (
+        <LogBox logs={d.logs} onCopy={() => {}} />
+      )}
+    />
   )
 }

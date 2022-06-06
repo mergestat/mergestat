@@ -4,7 +4,7 @@ import { LogsTable } from './logs-table'
 
 export const RepoDataLogs = ({ data }: { data: any}) => {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="grid gap-6 grid-rows-content-layout h-full">
       <Panel className="shadow-sm">
         <Panel.Body>
           <h4 className="t-h4 mb-2">
@@ -18,7 +18,9 @@ export const RepoDataLogs = ({ data }: { data: any}) => {
         </Panel.Body>
       </Panel>
 
-      <LogsTable />
+      <div className='border-md shadow-sm overflow-auto'>
+        <LogsTable />
+      </div>
     </div>
   )
 }

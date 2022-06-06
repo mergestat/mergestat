@@ -26,7 +26,7 @@ export const SettingsTable: React.FC = (props) => {
           Table with data
         </Typography.Title>
       </Panel.Header>
-      <Panel.Body className="p-0">
+      <Panel.Body className="p-0 overflow-auto">
         <Table
           responsive
           noWrapHeaders

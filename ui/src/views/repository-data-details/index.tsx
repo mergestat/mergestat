@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { BreadcrumbNav, Button, Tabs } from '@mergestat/blocks'
+import { BreadcrumbNav, Button, Tabs, Toolbar } from '@mergestat/blocks'
 import {
   DotsHorizontalIcon,
   ExternalLinkIcon,
@@ -48,41 +48,52 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
   ]
 
   return (
-    <main className="w-full bg-gray-50">
-      <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
-        <div className="text-xl font-semibold">
-          <BreadcrumbNav data={crumbs} />
-        </div>
-        <div className="flex gap-3">
-          <Button
-            skin="secondary"
-            isIconOnly
-            startIcon={<DotsHorizontalIcon className="t-icon" />}
-          />
-          <Button startIcon={<RefreshIcon className="t-icon" />}>
-            Sync Now
-          </Button>
-        </div>
-      </div>
+    <main className="w-full h-full bg-gray-50 grid grid-rows-content-layout">
+      <Tabs>
+        <div className="bg-white">
+          <Toolbar className="px-6 py-4 border-b">
+            <Toolbar.Left>
+              <Toolbar.Item>
+                <div className="text-xl font-semibold">
+                  <BreadcrumbNav data={crumbs} />
+                </div>
+              </Toolbar.Item>
+            </Toolbar.Left>
+            <Toolbar.Right>
+              <Toolbar.Item>
+                <Button
+                  skin="secondary"
+                  isIconOnly
+                  startIcon={<DotsHorizontalIcon className="t-icon" />}
+                />
+                <Button
+                  startIcon={<RefreshIcon className="t-icon" />}
+                  className="ml-3"
+                >
+                  Sync Now
+                </Button>
+              </Toolbar.Item>
+            </Toolbar.Right>
+          </Toolbar>
 
-      <Tabs.Group>
-        <Tabs.List className="bg-white w-full flex justify-between px-8 items-center border-b border-gray-200">
-          <Tabs.Item className="">
-            Logs
-          </Tabs.Item>
-          <Tabs.Item className="">
-            Sync Settings
-          </Tabs.Item>
-        </Tabs.List>
-        <Tabs.Panels className="p-6">
-          <Tabs.Panel>
+          <Tabs.List className="bg-white w-full px-6">
+            <Tabs.Item className="">
+              Logs
+            </Tabs.Item>
+            <Tabs.Item className="">
+              Sync Settings
+            </Tabs.Item>
+          </Tabs.List>
+        </div>
+        <Tabs.Panels className="p-6 overflow-hidden">
+          <Tabs.Panel className='h-full'>
             <RepoDataLogs data={data.data} />
           </Tabs.Panel>
           <Tabs.Panel>
             <SyncSettings />
           </Tabs.Panel>
         </Tabs.Panels>
-      </Tabs.Group>
+      </Tabs>
     </main>
   )
 }

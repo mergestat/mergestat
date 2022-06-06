@@ -46,7 +46,8 @@ export type RepoSyncDataType = {
 
 /** Repository Data Logs Type */
 export type SyncLogsType = {
-  id: string
+  id: string,
+  title: string,
   syncType: RepSyncStateT
   records?: number
   duration?: string
