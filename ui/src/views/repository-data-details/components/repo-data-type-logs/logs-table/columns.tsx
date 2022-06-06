@@ -1,7 +1,6 @@
 import React from 'react'
 import type { RepSyncStateT, SyncLogsType } from 'src/@types'
-import { LogsTableRowOptions } from './log-table-row-options'
-import { SyncType } from './logs-table-columns'
+import { LogsTableRowOptions, SyncType } from './components'
 
 export const columns: Array<Record<string, any>> = [
   {

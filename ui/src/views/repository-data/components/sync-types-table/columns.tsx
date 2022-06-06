@@ -1,8 +1,8 @@
 import React from 'react'
 import cx from 'classnames'
 import { RepSyncStateT } from 'src/@types'
-import { getRepositorySyncIcon } from 'src/views/repository-data-details'
 import type { RepoSyncDataType, SyncStatusDataT } from 'src/@types'
+import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import {
   RepositoryData,
   RepositoryDataProps,
@@ -18,7 +18,7 @@ export const columns: Array<Record<string, any>> = [
     className: "w-12 h-20 p-0",
     render: ({ syncState }: { syncState : RepSyncStateT }) => (
       <div className={cx('h-full px-6 flex', { 'bg-gray-50': syncState === 'disabled' })}>
-        {getRepositorySyncIcon(syncState, 'my-auto')}
+        <RepoSyncIcon type={syncState} className="my-auto" />
       </div>
     )
   },

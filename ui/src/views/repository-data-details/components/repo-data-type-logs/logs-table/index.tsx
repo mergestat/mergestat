@@ -2,7 +2,7 @@ import { LogBox, Table } from '@mergestat/blocks'
 import React from 'react'
 import { columns } from './columns'
 
-import { sampleDatatypesettingsData } from 'src/sample-data/repo-data-logs'
+import { sampleData } from 'src/sample-data/repo-data-logs'
 
 export const LogsTable: React.FC = (props) => {
   return (
@@ -11,9 +11,9 @@ export const LogsTable: React.FC = (props) => {
         scrollY='100%'
         responsive
         noWrapHeaders
-        className="overflow-visible relative z-0"
+        // className="overflow-visible relative z-0"
         columns={columns}
-        dataSource={sampleDatatypesettingsData}
+        dataSource={sampleData}
         collapsible
         renderCollapse={(d: any) => (
           <LogBox logs={d.logs} onCopy={() => {}} />

@@ -10,7 +10,7 @@ import {
   CircleErrorFilledIcon,
 } from '@mergestat/icons'
 import { RepSyncStateT } from 'src/@types';
-import { getRepositorySyncIcon } from 'src/views/repository-data-details';
+import { RepoSyncIcon } from 'src/components/RepoSyncIcon';
 
 type RepositoryDataProps = {
   data: Array<{ title: string; lastSync: string }>
@@ -29,7 +29,7 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
               className="hover_bg-gray-50 py-3 px-4 flex items-center justify-between gap-3 focus-within_ text-base"
             >
               <div className="flex items-center gap-2">
-                { getRepositorySyncIcon(status, "t-icon") }
+                <RepoSyncIcon type={status} className="t-icon" />
                 <span className='text-samantic-text leading-5'>{item.title}</span>
               </div>
 

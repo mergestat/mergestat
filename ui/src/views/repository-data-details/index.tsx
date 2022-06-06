@@ -1,17 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { BreadcrumbNav, Button, Spinner, Tabs } from '@mergestat/blocks'
+import { BreadcrumbNav, Button, Tabs } from '@mergestat/blocks'
 import {
-  CircleCheckFilledIcon,
-  CircleErrorFilledIcon,
-  CircleInformationFilledIcon,
   DotsHorizontalIcon,
   ExternalLinkIcon,
   RefreshIcon,
 } from '@mergestat/icons'
-import type { RepoType, RepSyncStateT, RepoSyncDataType } from 'src/@types'
+import type { RepoType, RepoSyncDataType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
+import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { RepoDataLogs, SyncSettings } from './components'
 
 export type RepoDataTypeViewPropsT = {
@@ -45,7 +43,7 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
     },
     {
       text: data.data.title,
-      startIcon: getRepositorySyncIcon(data.status.syncState),
+      startIcon: <RepoSyncIcon type={data.status.syncState} />
     }
   ]
 
@@ -87,20 +85,6 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
       </Tabs.Group>
     </main>
   )
-}
-
-export const getRepositorySyncIcon = (syncStatus: RepSyncStateT, className?:string) => {
-  switch (syncStatus) {
-    case 'disabled':
-      return <CircleInformationFilledIcon className={`t-icon text-samantic-mutedIcon ${className}`} />
-    case 'succeeded':
-      return <CircleCheckFilledIcon className={`t-icon text-samantic-success ${className}`} />
-    case 'running':
-      return <Spinner size="sm" className={className} />
-    case 'failed':
-    default:
-      return <CircleErrorFilledIcon className={`t-icon text-samantic-danger ${className}`} />
-  }
 }
 
 export default RepoDataTypeView
