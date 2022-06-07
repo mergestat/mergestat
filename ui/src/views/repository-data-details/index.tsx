@@ -51,7 +51,7 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
     <main className="w-full h-full bg-gray-50 grid grid-rows-content-layout">
       <Tabs>
         <div className="bg-white">
-          <Toolbar className="px-6 py-4 border-b">
+          <Toolbar className="px-8 py-4 border-b">
             <Toolbar.Left>
               <Toolbar.Item>
                 <div className="text-xl font-semibold">
@@ -76,7 +76,7 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
             </Toolbar.Right>
           </Toolbar>
 
-          <Tabs.List className="bg-white w-full px-6">
+          <Tabs.List className="bg-white w-full px-8">
             <Tabs.Item className="">
               Logs
             </Tabs.Item>
@@ -85,7 +85,7 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
             </Tabs.Item>
           </Tabs.List>
         </div>
-        <Tabs.Panels className="p-6 overflow-hidden">
+        <Tabs.Panels className="p-8 overflow-hidden">
           <Tabs.Panel className='h-full'>
             <RepoDataLogs data={data.data} />
           </Tabs.Panel>

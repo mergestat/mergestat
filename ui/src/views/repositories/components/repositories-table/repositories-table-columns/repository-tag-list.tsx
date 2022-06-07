@@ -1,14 +1,15 @@
 import React from 'react'
 import { TagType } from 'src/@types'
 import { EditTagsListDropDown } from 'src/views/repositories/drop-downs'
+import { Badge } from '@mergestat/blocks'
 
 type RepositoryTagItemProps = TagType
 
 export const RepositoryTagItem: React.FC<RepositoryTagItemProps> = (props) => {
   return (
-    <div className="border border-samantic-border rounded-md px-2 py-1 text-gray-500 text-sm w-max bg-gray-50 cursor-pointer">
-      {props.title}
-    </div>
+    <Badge
+      label={props.title}
+      />
   )
 }
 

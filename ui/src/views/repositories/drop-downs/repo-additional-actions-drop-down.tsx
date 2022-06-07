@@ -15,14 +15,14 @@ export const RepositoryAdditionalActionsDropDown: React.FC<RepositoryAdditionalA
               className='text-gray-700'
               text="Repo settings"
               withIcon
-              icon={<CogIcon className="t-icon mr-2 text-samantic-icon" />}
+              icon={<CogIcon className="t-icon mr-2" />}
             />
             <Menu.Divider />
             <Menu.Item
               className='text-gray-700'
               text="Remove Repo"
               withIcon
-              icon={<TrashIcon className="mr-2 text-samantic-icon" />}
+              icon={<TrashIcon className="t-icon mr-2" />}
             />
           </Menu>
         )}
