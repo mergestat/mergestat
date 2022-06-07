@@ -12,6 +12,15 @@ import {
 import { AddRepositoryModal } from './modals/add-repository-modal'
 import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
+import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
+import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
+
+import {
+  Button,
+  HelpText,
+  Toolbar
+} from '@mergestat/blocks'
+import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 
 export const RepositoriesView: React.FC = () => {
   const [{
@@ -25,6 +34,8 @@ export const RepositoriesView: React.FC = () => {
     setShowSyncRepoModal
   } = useRepositoriesSetState()
 
+  {//- Todo: connect selectedRepositoriesCount from RepositoriesTable}
+  const selectedRepositoriesCount: number = 0;
   return (
     <main className="w-full h-full grid grid-rows-content-layout bg-gray-50">
       <div className="bg-white border-b border-gray-200">
@@ -34,6 +45,51 @@ export const RepositoriesView: React.FC = () => {
       <div className="flex flex-col items-center p-6">
         {false && <EmptyRepositoryTable />}
         {true && <RepositoriesTable />}
+      </div>
+      <div className="bg-white h-14  border-t flex items-center px-8">
+        <Toolbar>
+          <Toolbar.Left>
+            <Toolbar.Item className="mr-2">
+              <div className="flex items-center gap-6">
+                <p className="font-medium text-sm text-samantic-mutedText">
+                    {selectedRepositoriesCount} of {sampleRepositoriesData.length} {' '} repos selected
+                </p>
+
+              </div>
+            </Toolbar.Item>
+
+          </Toolbar.Left>
+          <Toolbar.Right>
+            <Toolbar.Item>
+              <div className="flex items-center gap-2">
+                <SyncDataDropDown
+                  triger={
+                    <Button
+                      endIcon={<CaretDownIcon className="t-icon" />}
+                      startIcon={<RefreshIcon className="t-icon" />}
+                      skin="secondary"
+                      size="small"
+                      //disabled={selectedRepositoriesCount === 0}
+                    >
+                      Sync Data
+                    </Button>
+                  }
+                />
+
+                <Button
+                  endIcon={<CaretDownIcon className="t-icon" />}
+                  startIcon={<PencilIcon className="t-icon" />}
+                  skin="secondary"
+                  size="small"
+                  //disabled={selectedRepositoriesCount === 0}
+                >
+                  Edit Tags
+                </Button>
+              </div>
+
+            </Toolbar.Item>
+          </Toolbar.Right>
+        </Toolbar>
       </div>
       {showAddRepositoryModal && <AddRepositoryModal />}
       {showAutoImportModal && (
@@ -53,4 +109,4 @@ export const RepositoriesView: React.FC = () => {
       )}
     </main>
   )
-}
+}}
