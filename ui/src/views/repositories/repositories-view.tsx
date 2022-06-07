@@ -42,7 +42,7 @@ export const RepositoriesView: React.FC = () => {
         <PageHeader />
         <FilterHeader />
       </div>
-      <div className="flex flex-col items-center p-6">
+      <div className="flex flex-col items-center p-8">
         {false && <EmptyRepositoryTable />}
         {true && <RepositoriesTable />}
       </div>

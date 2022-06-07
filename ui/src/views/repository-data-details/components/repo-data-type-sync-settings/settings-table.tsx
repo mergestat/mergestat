@@ -20,7 +20,7 @@ export const SettingsTable: React.FC = (props) => {
   ]
 
   return (
-    <Panel>
+    <Panel className="shadow-sm">
       <Panel.Header>
         <Typography.Title className='text-lg text-samantic-header font-semibold'>
           Table with data

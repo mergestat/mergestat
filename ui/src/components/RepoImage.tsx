@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import cx from 'classnames'
 import { ColoredBox } from '@mergestat/blocks'
 import { RepositoryIcon } from '@mergestat/icons'
 import type { RepoType } from 'src/@types'
@@ -16,14 +17,17 @@ const RepoImage: React.FC<RepoImagePropsT> = ({
   size='8'
 }) => {
   return (
-    <ColoredBox size={size} skin="default">
+    <ColoredBox size={size} skin="default" className={cx({ 'border border-gray-200': repoType === 'github' })}>
       {repoType === 'github' ? (
         <Image
           src={`https://github.com/${orgName}.png?size=40`}
           width={40}
           height={40}
           loader={({ src }) => `${src}?w=1&q=50`}
+          className="rounded"
         />
+
+
       ) : (
         <RepositoryIcon className="t-icon text-samantic-icon"/>
       )}

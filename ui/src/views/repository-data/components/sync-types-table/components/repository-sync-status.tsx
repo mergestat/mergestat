@@ -117,7 +117,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
           ref = {tooltipRef}
           className={`${
             displayTooltip ? 'visible' : 'invisible'
-          } absolute z-50 bg-white rounded border-gray-300 shadow-lg p-3`}
+          } absolute z-50 bg-white rounded border border-gray-200 shadow-lg px-3 py-1.5`}
           style={{
             top: eventPosition?.y ? eventPosition?.y - 90 : 0,
             left: eventPosition?.x
@@ -126,8 +126,8 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                   : 0,
           }}
         >
-          <div>value: {tooltipData?.value}</div>
-          <div>status: {tooltipData?.status}</div>
+          <div className="flex items-center my-1.5 text-sm"><span className="font-medium mr-2 w-12">Value:</span> {tooltipData?.value}</div>
+          <div className="flex items-center my-1.5 text-sm"><span className="font-medium mr-2 w-12">Status:</span> {tooltipData?.status}</div>
         </div>
       )}
 

@@ -24,9 +24,9 @@ export const RepoSettings: React.FC = (props) => {
         </Panel.Body>
       </Panel>
       <Button
-        skin="secondary"
+        skin="danger"
         startIcon={<TrashIcon className="t-icon" />}
-        className="mt-6 text-samantic-danger flex gap-2"
+        className="mt-6"
       >
         Delete Repository
       </Button>

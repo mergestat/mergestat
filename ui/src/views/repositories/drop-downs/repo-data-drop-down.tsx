@@ -1,6 +1,7 @@
 import {
   Dropdown,
   Menu,
+  Badge,
   Spinner,
 } from '@mergestat/blocks'
 import {
@@ -28,12 +29,12 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
               className="hover_bg-gray-50 py-3 px-4 flex items-center justify-between gap-3 focus-within_ text-base"
             >
               <div className="flex items-center gap-2">
-                <RepoSyncIcon type={status} className="w-4.5 h-4.5" />
+                <RepoSyncIcon type={status} className="t-icon" />
                 <span className='text-samantic-text leading-5'>{item.title}</span>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className='text-samantic-mutedText'>{item.lastSync}</span>
+                <span className='text-sm text-samantic-mutedText'>{item.lastSync}</span>
                 <ChevronRightIcon className='t-icon text-samantic-icon' />
               </div>
             </div>
@@ -69,29 +70,32 @@ const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = (props) => {
   const { count } = props
   if (!count) return <></>
   return (
-    <div className="flex items-center gap-2 border border-samantic-border rounded py-1 px-2 text-sm w-max bg-gray-50 text-samantic-mutedText cursor-pointer">
-      <CircleCheckFilledIcon className="text-samantic-success w-3.5 h-3.5" />
-      {count}
-    </div>
-  )
-}
+    <Badge
+      label={''+ count}
+      startIcon={<CircleCheckFilledIcon className="t-icon text-samantic-success" />}
+      action={true}
+    />
+    )
+  }
 
-const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
-  const { count } = props
-  return (
-    <div className="flex items-center gap-2 border border-samantic-border rounded py-1 px-2 text-sm w-max bg-gray-50 text-samantic-mutedText cursor-pointer">
-      <Spinner size="sm" />
-      {count}
-    </div>
+  const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
+    const { count } = props
+    return (
+      <Badge
+        label={''+ count}
+        startIcon={<Spinner size="sm" className="mr-2" />}
+        action={true}
+      />
   )
 }
 
 const RepositoryErrorStatus: React.FC<RepositoryStatusProps> = (props) => {
   const { count } = props
   return (
-    <div className="flex items-center gap-2 border border-samantic-border rounded py-1 px-2 text-sm w-max bg-gray-50 text-samantic-mutedText cursor-pointer">
-      <CircleErrorFilledIcon className="text-samantic-danger w-3.5 h-3.5" />
-      {count}
-    </div>
+    <Badge
+      label={''+ count}
+      startIcon={<CircleErrorFilledIcon className="t-icon text-samantic-danger" />}
+      action={true}
+    />
   )
 }

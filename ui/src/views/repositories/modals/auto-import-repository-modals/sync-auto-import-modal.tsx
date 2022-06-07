@@ -38,7 +38,7 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
   return (
     <Modal open onClose={onClose} modalWrapperClassName="z-50">
       <Modal.Header>
-        <Toolbar className="h-16 px-6">
+        <Toolbar className="h-16 px-8">
           <Toolbar.Left>
             <Toolbar.Item>
               <Modal.Title>Sync repos</Modal.Title>
@@ -56,7 +56,7 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
         </Toolbar>
       </Modal.Header>
       <Modal.Body>
-        <div className="w-full p-6">
+        <div className="w-full p-8">
           <div>
             <p className="text-gray-500 mb-6">
               This will automatically import all repos from your GitHub
