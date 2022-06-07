@@ -9,20 +9,19 @@ import {
   Toolbar
 } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
-import React from 'react'
+import React, { useMemo, useState } from 'react'
+import type { RepoDataPropsT } from 'src/@types'
 import { SyncDataDropDown } from '../../drop-downs/sync-repos-data-drop-down'
-import type { RepoDataProps } from './@types'
 import { columns } from './columns'
 
-import { sampleRepositoriesData } from './sample-data'
+import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
 
 export const RepositoriesTable: React.FC = (props) => {
+  const [selectedRepos, setSelectedRepos] = useState<RepoDataPropsT[]>([])
+  const [isSelectAllRepos, setIsSelectAll] = useState<boolean>(false)
 
-  const selectAllRepositories = (checked: boolean) => {
-    sampleRepositoriesData.forEach((re: RepoDataProps & { isSelected?: boolean }) => re.isSelected = checked)
-  }
-
-  const selectedRepositoriesCount = sampleRepositoriesData.filter((repo: RepoDataProps & { isSelected?: boolean }) => repo.isSelected).length
+  const selectedRepositoriesCount: number = 
+    useMemo(() => selectedRepos.length, [selectedRepos])
 
   const checkedState = selectedRepositoriesCount === 0
     ? CHECKBOX_STATES.Unchecked
@@ -38,9 +37,8 @@ export const RepositoriesTable: React.FC = (props) => {
             <div className='flex items-center gap-6'>
               <Checkbox
                 value={checkedState}
-                onChange={(e) => {
-                  const checked = e.currentTarget.checked
-                  selectAllRepositories(checked)
+                onChange={() => {
+                  setIsSelectAll(!isSelectAllRepos)
                 }}
               />
               <HelpText className='font-medium'>
@@ -83,7 +81,7 @@ export const RepositoriesTable: React.FC = (props) => {
       <Panel.Body className='p-0'>
         <Table
           noWrapHeaders
-          className="relative border-b"
+          className="border-b"
           tableWrapperClassName='h-full'
           columns={columns}
           dataSource={sampleRepositoriesData}
@@ -91,6 +89,10 @@ export const RepositoriesTable: React.FC = (props) => {
           borderless
           scrollY="100%"
           tableHeaderBackground="gray-50"
+          checkable
+          hasSelectAll={false}
+          onSelectedChange={setSelectedRepos}
+          selectAll={isSelectAllRepos}
         />
       </Panel.Body>
     </Panel>

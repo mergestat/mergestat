@@ -9,7 +9,7 @@ import {
   CircleErrorFilledIcon,
 } from '@mergestat/icons'
 import { RepSyncStateT } from 'src/@types';
-import { getRepositorySyncIcon } from 'src/views/repository-data-details';
+import { RepoSyncIcon } from 'src/components/RepoSyncIcon';
 
 type RepositoryDataProps = {
   data: Array<{ title: string; lastSync: string }>
@@ -28,7 +28,7 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
               className="hover_bg-gray-50 py-3 px-4 flex items-center justify-between gap-3 focus-within_ text-base"
             >
               <div className="flex items-center gap-2">
-                { getRepositorySyncIcon(status, "w-4.5 h-4.5") }
+                <RepoSyncIcon type={status} className="w-4.5 h-4.5" />
                 <span className='text-samantic-text leading-5'>{item.title}</span>
               </div>
 
@@ -50,11 +50,11 @@ function getRepoStatusComponent(
   count: number
 ): React.ReactNode {
   switch (status) {
-    case 'success':
+    case 'succeeded':
       return <RepositoryCheckStatus count={count} />
-    case 'error':
+    case 'failed':
       return <RepositoryErrorStatus count={count} />
-    case 'loading':
+    case 'running':
       return <RepositoryLoadingStatus count={count} />
     default:
       return <></>

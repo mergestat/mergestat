@@ -1,41 +1,23 @@
-import { Checkbox } from '@mergestat/blocks'
-import { CaretDownIcon, CaretUpIcon } from '@mergestat/icons'
 import React from 'react'
-import { TagType } from 'src/@types'
+import type {
+  RepoDataPropsT,
+  RepoDataStatusT,
+  TagType,
+} from 'src/@types'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
 import {
   RepositoryName,
   RepositoryStatus,
   RepositoryTagList
 } from './repositories-table-columns'
-import type { RepoDataProps, RepoDataStatusT } from './@types'
 
 export const columns: Array<Record<string, any>> = [
   {
-    key: 'checkbox',
-    dataIndex: 'isSelected',
-    className: "px-6 w-4 h-20",
-    render: (isSelected: boolean, data: RepoDataProps & { isSelected?: boolean }) => (
-      <Checkbox
-        checked={isSelected}
-        onChange={(v) => data.isSelected = v.target.checked}
-      />
-    )
-  },
-  {
-    title: (
-      <p className="whiteSpace-nowrap flex items-center gap-4 text-samantic-header">
-        Repository{' '}
-        <span>
-          <CaretUpIcon className='t-icon' />
-          <CaretDownIcon className="t-icons -mt-3" />
-        </span>
-      </p>
-    ),
+    title: "Repository",
     dataIndex: 'name',
     key: 'name',
-    className: 'h-20',
-    render: (name: string, data: RepoDataProps) => (
+    onSortChange: (e: 'asc' | 'desc' | undefined) => {console.log(e)},
+    render: (name: string, data: RepoDataPropsT) => (
       <RepositoryName
         name={name}
         type={data.type}
@@ -45,8 +27,8 @@ export const columns: Array<Record<string, any>> = [
     )
   },
   {
-    title: <h1 className='text-samantic-header'>Tags</h1>,
-    className: 'text-gray-500 h-20',
+    title: "Tags",
+    className: 'text-gray-500',
     dataIndex: 'tags',
     key: 'tags',
     render: (tags: TagType[]) => (
@@ -54,16 +36,13 @@ export const columns: Array<Record<string, any>> = [
     )
   },
   {
-    title: (
-      <p className="flex items-center gap-2 text-samantic-header">
-        Last sync <CaretDownIcon className="t-icon text-blue-400" />
-      </p>
-    ),
+    title: "Last sync",
     dataIndex: 'lastSync',
     className: 'h-20',
     key: 'last',
+    onSortChange: (e: 'asc' | 'desc' | undefined) => {console.log(e)},
     render: (lastSync: string) => (
-      <span className='text-samantic-mutedText'>{lastSync}</span>
+      <span className='text-samantic-mutedText px-6'>{lastSync}</span>
     )
   },
   {
