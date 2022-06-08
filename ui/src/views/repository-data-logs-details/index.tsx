@@ -55,7 +55,7 @@ const RepoDataLogsDetailsView: React.FC<RepoDataLogsDetailsProps> =
     ]
 
     return (
-      <main className="w-full bg-gray-50">
+      <main className="w-full bg-gray-50 h-full flex flex-col overflow-hidden">
         <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
           <div className="text-xl font-semibold">
             <BreadcrumbNav data={crumbs} />
@@ -69,7 +69,7 @@ const RepoDataLogsDetailsView: React.FC<RepoDataLogsDetailsProps> =
           </div>
         </div>
 
-        <div className="p-8 space-y-8">
+        <div className="flex-1 overflow-auto p-8 space-y-8">
           <LogsInfo id={data.id} syncStart={data.syncStart} duration={data.syncStart} />
           <LogBox logs={data.logs || []} onCopy={() => {}} />
         </div>

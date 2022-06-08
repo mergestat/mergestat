@@ -7,8 +7,8 @@ export const SycnTypesTable: React.FC = () => {
   return (
     <div className="rounded-md shadow-sm">
       <Table
-        scrollY='100%'
         noWrapHeaders
+        responsive={true}
         columns={columns}
         dataSource={sampleRepositoryData}
       />

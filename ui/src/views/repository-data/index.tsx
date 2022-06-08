@@ -9,7 +9,7 @@ import {
 
 const RepoDataView = ({ data }: { data: RepoDataPropsT }) => {
   return (
-    <main className="w-full bg-gray-50">
+    <main className="w-full flex flex-col h-full overflow-hidden bg-gray-50">
       <PageHeader data={data} />
       <Tabs.Group>
         <Tabs.List className="bg-white w-full justify-between px-8 items-center border-b border-gray-200">
@@ -18,7 +18,7 @@ const RepoDataView = ({ data }: { data: RepoDataPropsT }) => {
           </Tabs.Item>
           <Tabs.Item>Repo Settings</Tabs.Item>
         </Tabs.List>
-        <Tabs.Panels className="p-8">
+        <Tabs.Panels className="p-8 flex-1 overflow-auto">
           <Tabs.Panel>
             <SycnTypesTable />
           </Tabs.Panel>

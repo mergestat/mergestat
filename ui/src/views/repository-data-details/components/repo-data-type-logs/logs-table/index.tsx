@@ -7,7 +7,6 @@ import { sampleData } from 'src/sample-data/repo-data-logs'
 export const LogsTable: React.FC = (props) => {
   return (
     <Table
-      scrollY='100%'
       responsive
       noWrapHeaders
       columns={columns}
