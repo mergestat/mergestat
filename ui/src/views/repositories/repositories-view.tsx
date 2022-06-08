@@ -37,12 +37,12 @@ export const RepositoriesView: React.FC = () => {
   {//- Todo: connect selectedRepositoriesCount from RepositoriesTable}
   const selectedRepositoriesCount: number = 0;
   return (
-    <main className="w-full h-full grid grid-rows-content-layout bg-gray-50">
+    <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">
       <div className="bg-white border-b border-gray-200">
         <PageHeader />
         <FilterHeader />
       </div>
-      <div className="flex flex-col items-center p-8">
+      <div className="flex-1 items-center p-8 overflow-auto">
         {false && <EmptyRepositoryTable />}
         {true && <RepositoriesTable />}
       </div>

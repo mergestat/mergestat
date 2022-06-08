@@ -48,7 +48,7 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
   ]
 
   return (
-    <main className="w-full h-full bg-gray-50 grid grid-rows-content-layout">
+    <main className="w-full h-full bg-gray-50 flex flex-col overflow-hidden">
       <Tabs>
         <div className="bg-white">
           <Toolbar className="px-8 py-4 border-b">
@@ -85,8 +85,8 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
             </Tabs.Item>
           </Tabs.List>
         </div>
-        <Tabs.Panels className="p-8 overflow-hidden">
-          <Tabs.Panel className='h-full'>
+        <Tabs.Panels className="p-8 overflow-auto flex-1">
+          <Tabs.Panel>
             <RepoDataLogs data={data.data} />
           </Tabs.Panel>
           <Tabs.Panel>
