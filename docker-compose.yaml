@@ -21,9 +21,19 @@ services:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
       GITHUB_RATE_LIMIT: 1/2
     env_file:
-      - .env
+      - .env-worker
     ports:
       - 3301:8080
+  
+  graphql:
+    restart: always
+    build:
+      context: ./graphql
+    depends_on:
+      - postgres
+    ports:
+      - 5433:5433
+    command: ["--connection", "postgres://postgres:password@postgres:5432/postgres?sslmode=disable", "--port", "5433", "--schema", "mergestat,public", "--enhance-graphiql", "--allow-explain", "--append-plugins", "@graphile-contrib/pg-simplify-inflector", "--no-ignore-rbac"]
 
   grafana:
     image: grafana/grafana-oss:latest
