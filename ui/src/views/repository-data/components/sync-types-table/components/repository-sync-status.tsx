@@ -48,7 +48,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const [activeBar, setActiveBar] = useState<number | null>(null)
 
   if (disabled)
-    return <p className="h-full text-sm text-samantic-mutedText leading-20 bg-gray-50">Disabled</p>
+    return <div className="flex flex-col justify-center h-full text-sm text-samantic-mutedText bg-gray-50">Disabled</div>
 
     const len = data.length
     if (len === 0) return null
