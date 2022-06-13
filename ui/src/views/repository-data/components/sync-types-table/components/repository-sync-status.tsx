@@ -4,6 +4,7 @@ import React, {
   useState,
 } from 'react'
 import type { SyncStatusDataT } from 'src/@types'
+import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
 type RepositorySyncStatusProps = {
   data?: SyncStatusDataT[],
@@ -116,12 +117,12 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
       }}
       className='my-2 w-32'
     >
-      {displayTooltip && (
+      {(displayTooltip && tooltipData?.status !== 'empty') && (
         <div
           ref = {tooltipRef}
           className={`${
             displayTooltip ? 'visible' : 'invisible'
-          } absolute z-50 bg-gray-900 rounded text-gray-200 text-sm opacity-80 px-3 py-1 whitespace-nowrap`}
+          } absolute z-50 bg-gray-900 rounded text-gray-300 text-sm opacity-80 p-3 whitespace-nowrap`}
           style={{
             top: eventPosition?.y ? eventPosition?.y - 80 : 0,
             left: eventPosition?.x
@@ -130,8 +131,20 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                   : 0,
           }}
         >
-          <div className="flex items-center my-1"><span className="font-medium text-white mr-2 w-12">Value:</span> {(tooltipData?.status == 'empty')? '-' : tooltipData?.value}</div>
-          <div className="flex items-center my-1"><span className="font-medium text-white mr-2 w-12">Status:</span> {(tooltipData?.status == 'empty')? '-' : tooltipData?.status}</div>
+          <div className="flex items-center">
+            {(tooltipData?.status) && (
+              <div className="mr-2">
+                <RepoSyncIcon type={tooltipData?.status} />
+              </div>
+            )}
+            <div>
+              <span className="font-medium text-white mb-0.5">{tooltipData?.status.charAt(0).toUpperCase() + tooltipData?.status.slice(1)}</span>
+              <div className="flex items-center">
+                <span className="text-sm border-r border-gray-600 mr-1.5 pr-1.5 leading-4">3 days ago</span>
+                <span className="text-sm">{tooltipData?.value} min</span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -175,6 +188,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                   onMouseMove={onMouseMove.bind({}, i)}
                   onClick={onBarClick.bind({}, data[i])}
                   onMouseLeave={()=>setActiveBar(null)}
+                  className={tooltipData?.status !== "empty"? "cursor-pointer" : ''}
                 />
               </>
             )
