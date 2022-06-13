@@ -37,7 +37,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
       />
       <div>
         <Link href={`/repos/${props.name.replace('/', '-')}`}>
-          <h4 className="font-medium mb-0.5 text-samantic-text cursor-pointer hover_text-blue-600">
+          <h4 className="font-medium mb-1 text-samantic-text cursor-pointer hover_text-blue-600">
             {props.name}
           </h4>
         </Link>

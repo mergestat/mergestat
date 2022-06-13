@@ -56,8 +56,10 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     data = data.slice(len - limit)
   }
 
-  const valueArray = data.map((d: SyncStatusDataT) => d.value)
+  const chartArray = Array.from({length:15}, (x, i) => (i in data) ?  data[i] : {value: 3, status: 'empty'}).reverse()
+  const valueArray = chartArray.map((d: SyncStatusDataT) => d.value)
   const points = dataToPoints({ data: valueArray, limit, width, height, margin, max, min })
+
 
   const strokeWidth: number = 1 * ((style && style.strokeWidth ? +style.strokeWidth : 0) || 0)
   const marginWidth = margin ? 2 * margin : 0
@@ -69,10 +71,12 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 
   const statusColor = (status: string) => {
     switch (status) {
+      case 'empty':
+        return '#E5E7EB'
       case 'succeeded':
-        return '#78DDB5'
+        return '#6EE7B7'
       case 'failed':
-        return '#EC9393'
+        return '#FB7185'
       default:
         return '#7DD3FC'
     }
@@ -81,7 +85,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const onMouseMove = (index: number) => {
     setDisplayTooltip(true)
     setHoverPosition(eventPosition)
-    setTooltipData(data[index])
+    setTooltipData(chartArray[index])
     setActiveBar(index);
   }
 
@@ -110,24 +114,24 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
         setDisplayTooltip(false);
         setHoverPosition(null);
       }}
-      className='my-3'
+      className='my-2 w-32'
     >
       {displayTooltip && (
         <div
           ref = {tooltipRef}
           className={`${
             displayTooltip ? 'visible' : 'invisible'
-          } absolute z-50 bg-white rounded border border-gray-200 shadow-lg px-3 py-1.5`}
+          } absolute z-50 bg-gray-900 rounded text-gray-200 text-sm opacity-80 px-3 py-1 whitespace-nowrap`}
           style={{
-            top: eventPosition?.y ? eventPosition?.y - 90 : 0,
+            top: eventPosition?.y ? eventPosition?.y - 80 : 0,
             left: eventPosition?.x
                   ? eventPosition?.x
                     - ((tooltipRef?.current) ? tooltipRef?.current.clientWidth / 2 : 0)
                   : 0,
           }}
         >
-          <div className="flex items-center my-1.5 text-sm"><span className="font-medium mr-2 w-12">Value:</span> {tooltipData?.value}</div>
-          <div className="flex items-center my-1.5 text-sm"><span className="font-medium mr-2 w-12">Status:</span> {tooltipData?.status}</div>
+          <div className="flex items-center my-1"><span className="font-medium text-white mr-2 w-12">Value:</span> {(tooltipData?.status == 'empty')? '-' : tooltipData?.value}</div>
+          <div className="flex items-center my-1"><span className="font-medium text-white mr-2 w-12">Status:</span> {(tooltipData?.status == 'empty')? '-' : tooltipData?.status}</div>
         </div>
       )}
 
@@ -136,13 +140,13 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
         preserveAspectRatio={preserveAspectRatio}
       >
         <g transform="scale(1,-1)">
-          {points.map((p, i) => {
+          {[...points].map((p, i) => {
             const id = randomKey + '_round-corner_' + i,
                   x = p.x - (bar_width + strokeWidth) / 2,
                   y = -height,
                   varHeight = Math.max(0, height - p.y),
                   r = 1.5,
-                  color = statusColor(data[i].status);
+                  color = statusColor(chartArray[i].status);
 
             return (
               <>
