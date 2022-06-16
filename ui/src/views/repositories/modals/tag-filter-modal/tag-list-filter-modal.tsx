@@ -34,6 +34,7 @@ export const TagListFilterModal: React.FC<TagListFilterModalType> = (props) => {
               startIcon={<SearchIcon className="t-icon text-gray-400" />}
               value={searchText}
               onChange={(e: any) => handleSearch(e.target.value)}
+              className="md_w-96"
             />
             <Toolbar.Item>
               <Button
@@ -46,14 +47,14 @@ export const TagListFilterModal: React.FC<TagListFilterModalType> = (props) => {
         </Toolbar>
       </Modal.Header>
       <Modal.Body>
-        <div className='px-6 py-8 h-96 flex flex-col flex-wrap overflow-x-auto gap-y-5 gap-x-16'>
+        <div className='px-6 py-8 h-96 flex flex-col flex-wrap overflow-x-auto gap-y-4 gap-x-16'>
           {tags.length === 0 &&
             <p className='m-auto'>
               Empty!
             </p>
           }
           {tags.map((tag, index) => (
-            <div key={index} className=" flex items-center gap-x-3 text-sm">
+            <div key={index} className=" flex items-center gap-x-3">
               <Checkbox
                 checked={tag.checked}
                 onClick={() => handleCheck(tag.checked, index)}
