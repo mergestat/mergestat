@@ -19,7 +19,7 @@ export const PageHeader = ({ data }: { data: RepoDataPropsT }) => {
       endIcon: (
         <Link href={data.type === 'github' ? 'https://github.com/' + data.name : data.name}>
           <a target='_blank'>
-            <ExternalLinkIcon className='t-icon' />
+            <ExternalLinkIcon className='t-icon t-icon-small' />
           </a>
         </Link>
       ),
