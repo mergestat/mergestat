@@ -4,6 +4,7 @@ import React, {
   useState,
 } from 'react'
 import type { SyncStatusDataT } from 'src/@types'
+import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
 type RepositorySyncStatusProps = {
   data?: SyncStatusDataT[],
@@ -47,7 +48,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const [activeBar, setActiveBar] = useState<number | null>(null)
 
   if (disabled)
-    return <p className="h-full text-sm text-samantic-mutedText leading-20 bg-gray-50">Disabled</p>
+    return <div className="flex flex-col justify-center h-full text-sm text-samantic-mutedText bg-gray-50">Disabled</div>
 
     const len = data.length
     if (len === 0) return null
@@ -56,8 +57,10 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     data = data.slice(len - limit)
   }
 
-  const valueArray = data.map((d: SyncStatusDataT) => d.value)
+  const chartArray = Array.from({length:15}, (x, i) => (i in data) ?  data[i] : {value: 3, status: 'empty'}).reverse()
+  const valueArray = chartArray.map((d: SyncStatusDataT) => d.value)
   const points = dataToPoints({ data: valueArray, limit, width, height, margin, max, min })
+
 
   const strokeWidth: number = 1 * ((style && style.strokeWidth ? +style.strokeWidth : 0) || 0)
   const marginWidth = margin ? 2 * margin : 0
@@ -69,10 +72,12 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 
   const statusColor = (status: string) => {
     switch (status) {
+      case 'empty':
+        return '#E5E7EB'
       case 'succeeded':
-        return '#78DDB5'
+        return '#6EE7B7'
       case 'failed':
-        return '#EC9393'
+        return '#FB7185'
       default:
         return '#7DD3FC'
     }
@@ -81,7 +86,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const onMouseMove = (index: number) => {
     setDisplayTooltip(true)
     setHoverPosition(eventPosition)
-    setTooltipData(data[index])
+    setTooltipData(chartArray[index])
     setActiveBar(index);
   }
 
@@ -110,24 +115,36 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
         setDisplayTooltip(false);
         setHoverPosition(null);
       }}
-      className='my-3'
+      className='my-2 w-32'
     >
-      {displayTooltip && (
+      {(displayTooltip && tooltipData?.status !== 'empty') && (
         <div
           ref = {tooltipRef}
           className={`${
             displayTooltip ? 'visible' : 'invisible'
-          } absolute z-50 bg-white rounded border border-gray-200 shadow-lg px-3 py-1.5`}
+          } absolute z-50 bg-gray-900 rounded text-gray-300 text-sm opacity-80 p-3 whitespace-nowrap`}
           style={{
-            top: eventPosition?.y ? eventPosition?.y - 90 : 0,
+            top: eventPosition?.y ? eventPosition?.y - 80 : 0,
             left: eventPosition?.x
                   ? eventPosition?.x
                     - ((tooltipRef?.current) ? tooltipRef?.current.clientWidth / 2 : 0)
                   : 0,
           }}
         >
-          <div className="flex items-center my-1.5 text-sm"><span className="font-medium mr-2 w-12">Value:</span> {tooltipData?.value}</div>
-          <div className="flex items-center my-1.5 text-sm"><span className="font-medium mr-2 w-12">Status:</span> {tooltipData?.status}</div>
+          <div className="flex items-center">
+            {(tooltipData?.status) && (
+              <div className="mr-2">
+                <RepoSyncIcon type={tooltipData?.status} />
+              </div>
+            )}
+            <div>
+              <span className="font-medium text-white mb-0.5">{tooltipData?.status.charAt(0).toUpperCase() + tooltipData?.status.slice(1)}</span>
+              <div className="flex items-center">
+                <span className="text-sm border-r border-gray-600 mr-1.5 pr-1.5 leading-4">3 days ago</span>
+                <span className="text-sm">{tooltipData?.value} min</span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -136,13 +153,13 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
         preserveAspectRatio={preserveAspectRatio}
       >
         <g transform="scale(1,-1)">
-          {points.map((p, i) => {
+          {[...points].map((p, i) => {
             const id = randomKey + '_round-corner_' + i,
                   x = p.x - (bar_width + strokeWidth) / 2,
                   y = -height,
                   varHeight = Math.max(0, height - p.y),
                   r = 1.5,
-                  color = statusColor(data[i].status);
+                  color = statusColor(chartArray[i].status);
 
             return (
               <>
@@ -171,6 +188,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                   onMouseMove={onMouseMove.bind({}, i)}
                   onClick={onBarClick.bind({}, data[i])}
                   onMouseLeave={()=>setActiveBar(null)}
+                  className={tooltipData?.status !== "empty"? "cursor-pointer" : ''}
                 />
               </>
             )
