@@ -15,7 +15,7 @@ const tags: TagType[] = [
 export const RepoSettings: React.FC = (props) => {
   return (
     <>
-      <Panel>
+      <Panel className="overflow-visible">
         <Panel.Header>
           <h3 className="t-panel-title">Tags</h3>
         </Panel.Header>
