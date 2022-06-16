@@ -57,9 +57,6 @@ export const RepositoriesView: React.FC = () => {
 
               </div>
             </Toolbar.Item>
-
-          </Toolbar.Left>
-          <Toolbar.Right>
             <Toolbar.Item>
               <div className="flex items-center gap-2">
                 <SyncDataDropDown
@@ -86,9 +83,10 @@ export const RepositoriesView: React.FC = () => {
                   Edit Tags
                 </Button>
               </div>
-
             </Toolbar.Item>
-          </Toolbar.Right>
+          </Toolbar.Left>
+
+
         </Toolbar>
       </div>
       {showAddRepositoryModal && <AddRepositoryModal />}
