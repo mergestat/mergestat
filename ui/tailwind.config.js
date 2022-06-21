@@ -32,8 +32,7 @@ module.exports = {
       },
       fontFamily: {
         'sans': ['"Inter UI"', 'ui-sans-serif', 'system-ui'],
-        'monaco': ['Monaco'],
-        'mono': ['ui-monospace', 'SFMono-Regular'],
+        'mono': ['Monaco', 'ui-monospace', 'SFMono-Regular'],
       },
       gridTemplateRows: {
         'content-layout': 'auto 1fr',
