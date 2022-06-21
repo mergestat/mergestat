@@ -15,7 +15,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        samantic: {
+        semantic: {
           header: '#111827',
           text: '#374151',
           mutedText: '#727C8D',

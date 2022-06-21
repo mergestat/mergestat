@@ -30,12 +30,12 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
             >
               <div className="flex items-center gap-2">
                 <RepoSyncIcon type={status} className="t-icon" />
-                <span className='text-samantic-text leading-5'>{item.title}</span>
+                <span className='text-semantic-text leading-5'>{item.title}</span>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className='text-sm text-samantic-mutedText'>{item.lastSync}</span>
-                <ChevronRightIcon className='t-icon text-samantic-icon' />
+                <span className='text-sm text-semantic-mutedText'>{item.lastSync}</span>
+                <ChevronRightIcon className='t-icon text-semantic-icon' />
               </div>
             </div>
           ))}
@@ -72,7 +72,7 @@ const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = (props) => {
   return (
     <Badge
       label={''+ count}
-      startIcon={<CircleCheckFilledIcon className="t-icon text-samantic-success" />}
+      startIcon={<CircleCheckFilledIcon className="t-icon text-semantic-success" />}
       action={true}
     />
     )
@@ -94,7 +94,7 @@ const RepositoryErrorStatus: React.FC<RepositoryStatusProps> = (props) => {
   return (
     <Badge
       label={''+ count}
-      startIcon={<CircleErrorFilledIcon className="t-icon text-samantic-danger" />}
+      startIcon={<CircleErrorFilledIcon className="t-icon text-semantic-danger" />}
       action={true}
     />
   )

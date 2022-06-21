@@ -18,7 +18,7 @@ export const EditTagsListDropDown: React.FC<RepositoryTagListProps> = (
           <MultiSelect setStateToProps={tags} />
         </div>
       )}
-      trigger={<DotsHorizontalIcon className="t-icon t-icon-small h-full text-samantic-icon" />}
+      trigger={<DotsHorizontalIcon className="t-icon t-icon-small h-full text-semantic-icon" />}
       zIndex={11}
     />
   )
