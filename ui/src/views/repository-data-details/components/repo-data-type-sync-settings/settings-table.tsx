@@ -7,13 +7,13 @@ export const SettingsTable: React.FC = (props) => {
   const columns: Array<Record<string, any>> = [
     {
       title: "Column",
-      className: 'text-samantic-text',
+      className: 'text-semantic-text',
       dataIndex: 'column',
       key: 'column',
     },
     {
       title: "Type" ,
-      className: 'text-gray-500 text-samantic-text',
+      className: 'text-gray-500 text-semantic-text',
       dataIndex: 'type',
       key: 'type',
     },
@@ -22,7 +22,7 @@ export const SettingsTable: React.FC = (props) => {
   return (
     <Panel className="shadow-sm">
       <Panel.Header>
-        <Typography.Title className='text-lg text-samantic-header font-semibold'>
+        <Typography.Title className='text-lg text-semantic-header font-semibold'>
           Table with data
         </Typography.Title>
       </Panel.Header>

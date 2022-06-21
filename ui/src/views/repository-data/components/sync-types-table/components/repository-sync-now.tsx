@@ -22,7 +22,7 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = (props) => {
         syncStatus === 'running' ? (
           <Spinner size='sm' className='mr-2' />
         ) : (
-          <RefreshIcon className="t-icon text-samantic-icon" />
+          <RefreshIcon className="t-icon text-semantic-icon" />
         )
       }
       size="small"

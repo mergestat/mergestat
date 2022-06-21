@@ -29,8 +29,8 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   {
     disabled,
     data=[],
-    width = 100,
-    height = 20,
+    width = 112,
+    height = 24,
     preserveAspectRatio = "none",
     style = { },
     barWidth = 4,
@@ -48,7 +48,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const [activeBar, setActiveBar] = useState<number | null>(null)
 
   if (disabled)
-    return <div className="flex flex-col justify-center h-full text-sm text-samantic-mutedText bg-gray-50">Disabled</div>
+    return <div className="flex flex-col justify-center h-full text-sm text-semantic-mutedText bg-gray-50">Disabled</div>
 
     const len = data.length
     if (len === 0) return null
@@ -158,7 +158,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                   x = p.x - (bar_width + strokeWidth) / 2,
                   y = -height,
                   varHeight = Math.max(0, height - p.y),
-                  r = 1.5,
+                  r = 1,
                   color = statusColor(chartArray[i].status);
 
             return (

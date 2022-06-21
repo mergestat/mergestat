@@ -9,7 +9,7 @@ type LogsInfoProps = {
 
 export const LogsInfo: React.FC<LogsInfoProps> = (props) => {
   return (
-    <div className="bg-white rounded px-6 py-7 text-gray-600 font-medium border shadow-sm">
+    <div className="bg-white rounded-md px-6 py-7 text-gray-600 font-medium border shadow-sm">
       <div className="flex justify-between items-center max-w-4xl space-x-8">
         <KeyValue
           title="Sync start"

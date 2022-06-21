@@ -38,33 +38,40 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
   return (
     <Dropdown
       overlay={() => (
-        <Menu className="relative z-50 rounded w-80 p-4 flex flex-col gap-y-4 shadow">
-          <h4 className="font-semibold">Tags</h4>
-          <Input
-            placeholder="Search..."
-            startIcon={<SearchIcon className="t-icon text-gray-400" />}
-            value={searchText}
-            onChange={(e: any) => handleSearch(e.target.value)}
-          />
+        <Menu className="relative z-50 rounded w-80 flex flex-col shadow">
+          <div className="p-4">
+            <h4 className="font-semibold mb-3">Tags</h4>
+            <Input
+              placeholder="Search..."
+              startIcon={<SearchIcon className="t-icon text-gray-400" />}
+              value={searchText}
+              onChange={(e: any) => handleSearch(e.target.value)}
+            />
+          </div>
           {tags.slice(0, 7).map((tag, index) => (
-            <div key={index} className="flex items-center gap-x-3 text-sm">
-              <Checkbox
-                checked={tag.checked}
-                onClick={() => handleCheck(tag.checked, index)}
-                onChange={(e) => {
-                  const checked = e.currentTarget.checked
-                }}
-              />
-              <span>{tag.title}</span>
+
+             <div className="t-menu-item my-0">
+             <Checkbox
+               className="cursor-pointer py-1.5"
+               label={tag.title}
+               checked={tag.checked}
+               onClick={() => handleCheck(tag.checked, index)}
+               onChange={(e) => {
+                 const checked = e.currentTarget.checked
+               }}
+
+             />
             </div>
           ))}
-          <Button
-            className='text-blue-600 font-medium'
-            onClick={() => setModalOpen(true)}
-            skin="borderless"
-          >
-            Show more
-          </Button>
+          <div className="px-4 py-2">
+            <Button
+              onClick={() => setModalOpen(true)}
+              skin="borderless"
+              size="small"
+            >
+              Show more
+            </Button>
+          </div>
           <TagListFilterModal
             searchText={searchText}
             tags={tags}
@@ -74,7 +81,10 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
             handleSearch={handleSearch}
           />
           <Menu.Divider />
-          <Button className="w-full flex justify-center">Filter</Button>
+          <div className="t-button-toolbar px-4 py-2">
+            <Button skin="secondary" className="flex-1 justify-center">Reset</Button>
+            <Button className="flex-1 justify-center">Apply Filter</Button>
+          </div>
         </Menu>
       )}
       trigger={props.trigger}

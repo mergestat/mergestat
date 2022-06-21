@@ -37,7 +37,7 @@ const RepoDataLogsDetailsView: React.FC<RepoDataLogsDetailsProps> =
         endIcon: (
           <Link href={repoData.type === 'github' ? 'https://github.com/' + repoData.name : repoData.name}>
             <a target='_blank'>
-              <ExternalLinkIcon className='t-icon' />
+              <ExternalLinkIcon className='t-icon t-icon-small' />
             </a>
           </Link>
         ),

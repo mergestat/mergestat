@@ -44,7 +44,7 @@ export const ManageAutoImportReposModal = ({
     },
     {
       title: 'Last sync',
-      className: 'text-samantic-mutedText ',
+      className: 'text-semantic-mutedText ',
       dataIndex: 'last',
       key: 'last',
     },
@@ -64,7 +64,7 @@ export const ManageAutoImportReposModal = ({
     delIcon: React.ReactElement
   }[] = [
     {
-      successIcon: <CircleCheckFilledIcon className="t-icon text-samantic-success" />,
+      successIcon: <CircleCheckFilledIcon className="t-icon text-semantic-success" />,
       source: 'user-name',
       type: (
         <p className="flex items-center gap">
@@ -82,7 +82,7 @@ export const ManageAutoImportReposModal = ({
 
     },
     {
-      successIcon: <CircleCheckFilledIcon className="t-icon text-samantic-success" />,
+      successIcon: <CircleCheckFilledIcon className="t-icon text-semantic-success" />,
       source: 'organization-name',
       type: (
         <p className="flex items-center gap">
@@ -99,7 +99,7 @@ export const ManageAutoImportReposModal = ({
       />
     },
     {
-      successIcon: <CircleCheckFilledIcon className="t-icon text-samantic-success" />,
+      successIcon: <CircleCheckFilledIcon className="t-icon text-semantic-success" />,
       source: 'organization-name',
       type: (
         <p className="flex items-center gap">
@@ -119,7 +119,7 @@ export const ManageAutoImportReposModal = ({
 
   return (
     <div className="absolute top-0 left-0 bg-gray-50 w-full h-full z-40">
-      <div className="h-16 border-b bg-white border-samantic-border flex justify-between items-center px-8 py-4">
+      <div className="h-16 border-b bg-white border-semantic-border flex justify-between items-center px-8 py-4">
         <div className="flex items-center">
           <Button
             skin="borderless-muted"
@@ -127,7 +127,7 @@ export const ManageAutoImportReposModal = ({
             onClick={onClose}
           />
 
-          <h2 className="t-toolbar-title border-l border-samantic-border ml-2 pl-5">
+          <h2 className="t-toolbar-title border-l border-semantic-border ml-2 pl-5">
             Manage auto imports
           </h2>
         </div>

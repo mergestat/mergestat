@@ -44,7 +44,7 @@ export const columns: Array<Record<string, any>> = [
     key: 'latestRun',
     render: (latestRun: string, d: RepoSyncDataType) => (
       <div
-        className={cx("text-samantic-mutedText h-full leading-20", {
+        className={cx("text-semantic-mutedText h-full leading-20", {
           'bg-gray-50': d.status.syncState === 'disabled'
         })}
       >

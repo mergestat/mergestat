@@ -6,7 +6,7 @@ import { RowOptions } from './row-options'
 export const columns: Array<Record<string, any>> = [
   {
     title: (
-      <Typography.Title className='text-samantic-header font-semibold ml-6'>
+      <Typography.Title className='text-semantic-header font-semibold ml-6'>
         Sync Data
       </Typography.Title>
     ),
@@ -15,10 +15,10 @@ export const columns: Array<Record<string, any>> = [
     key: 'dataType',
     render: (params: { title: string, brief?: string }) => (
       <div className='ml-6 my-3'>
-        <h4 className="font-medium mb-0.5 text-samantic-text cursor-pointer hover_text-blue-600">
+        <h4 className="font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600">
           {params.title}
         </h4>
-        <p className="text-sm text-samantic-mutedText whitespace-nowrap">
+        <p className="text-sm text-semantic-mutedText whitespace-nowrap">
           {params.brief}
         </p>
       </div>
@@ -33,7 +33,7 @@ export const columns: Array<Record<string, any>> = [
         skin='secondary'
         size="small"
         startIcon={
-          <RefreshIcon className={`t-icon ${params.disabled ? "text-samantic-mutedIcon":"text-samantic-icon"}`} />
+          <RefreshIcon className={`t-icon ${params.disabled ? "text-semantic-mutedIcon":"text-semantic-icon"}`} />
         }
         onClick={params.doSync}
         disabled={params.disabled}
