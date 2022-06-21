@@ -29,7 +29,7 @@ export const RepositoryTagList: React.FC<RepositoryTagListProps> = (props) => {
           <RepositoryTagItem key={index} {...tag} />
         )
       )}
-      <div className="flex items-center gap-x-2 border border-samantic-border rounded px-2 w-max bg-gray-100 cursor-pointer">
+      <div className="flex items-center gap-x-2 border border-semantic-border rounded px-2 w-max bg-gray-100 cursor-pointer">
         {checkedTags.length > TAGS_SHOWN && (
           <div className="text-sm font-medium text-gray-500">
             <span>+{checkedTags.length - TAGS_SHOWN}</span>

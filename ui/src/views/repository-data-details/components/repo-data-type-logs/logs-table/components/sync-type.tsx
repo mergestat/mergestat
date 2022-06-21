@@ -18,7 +18,7 @@ export const SyncType: React.FC<SyncTypeProps> = (props) => {
     <div className="flex gap-2 items-center pl-6">
       <RepoSyncIcon type={syncType} />
       <Link href={`/repos/${repository}/${dataType}/${id}`}>
-        <a className="font-medium hover_text-blue-600 text-samantic-text capitalize">
+        <a className="font-medium hover_text-blue-600 text-semantic-text capitalize">
           {syncType}
         </a>
       </Link>

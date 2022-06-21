@@ -51,7 +51,7 @@ export const RepositoriesView: React.FC = () => {
           <Toolbar.Left>
             <Toolbar.Item className="mr-2">
               <div className="flex items-center gap-6">
-                <p className="font-medium text-sm text-samantic-mutedText">
+                <p className="font-medium text-sm text-semantic-mutedText">
                     {selectedRepositoriesCount} of {sampleRepositoriesData.length} {' '} repos selected
                 </p>
 

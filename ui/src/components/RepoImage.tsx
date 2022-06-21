@@ -29,7 +29,7 @@ const RepoImage: React.FC<RepoImagePropsT> = ({
 
 
       ) : (
-        <RepositoryIcon className="t-icon text-samantic-icon"/>
+        <RepositoryIcon className="t-icon text-semantic-icon"/>
       )}
     </ColoredBox>
   )

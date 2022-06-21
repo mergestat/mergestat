@@ -42,7 +42,7 @@ export const columns: Array<Record<string, any>> = [
     key: 'last',
     onSortChange: (e: 'asc' | 'desc' | undefined) => {console.log(e)},
     render: (lastSync: string) => (
-      <span className='text-samantic-mutedText px-6'>{lastSync}</span>
+      <span className='text-semantic-mutedText px-6'>{lastSync}</span>
     )
   },
   {

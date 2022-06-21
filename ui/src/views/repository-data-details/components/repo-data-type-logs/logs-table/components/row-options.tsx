@@ -5,7 +5,7 @@ export const LogsTableRowOptions: React.FC = (props) => {
   return (
     <Dropdown
       alignEnd
-      trigger={<DotsHorizontalIcon className="t-icon cursor-pointer text-samantic-icon" />}
+      trigger={<DotsHorizontalIcon className="t-icon cursor-pointer text-semantic-icon" />}
       overlay={() => (
         <Menu className='whitespace-nowrap'>
           <Menu.Item text="Cancel Sync" disabled  />

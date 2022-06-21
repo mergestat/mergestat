@@ -5,7 +5,7 @@ export const SyncSettingsForm = () => {
   return (
     <Panel className="shadow-sm">
       <Panel.Header>
-        <Typography.Title className='text-samantic-header font-semibold'>Sync settings</Typography.Title>
+        <Typography.Title className='text-semantic-header font-semibold'>Sync settings</Typography.Title>
       </Panel.Header>
       <Panel.Body>
         <form className="flex flex-col gap-2">
@@ -13,7 +13,7 @@ export const SyncSettingsForm = () => {
             <Label className='text-gray-600 font-medium'>Sync data</Label>
             <div className="w-64 flex gap-2 items-center">
               <Toggle isChecked onChange={() => { }} />
-              <span className="text-samantic-text">Enable</span>
+              <span className="text-semantic-text">Enable</span>
             </div>
           </Formrow>
           <Formrow>
@@ -22,7 +22,7 @@ export const SyncSettingsForm = () => {
               {Array(4).fill(0).map((_, i) => (
                 <Select.Option
                   key={i}
-                  className='text-samantic-text'
+                  className='text-semantic-text'
                   value="option1"
                 >
                   Option {i+1}
@@ -36,7 +36,7 @@ export const SyncSettingsForm = () => {
               {Array(5).fill(0).map((_, i) => (
                 <Select.Option
                   key={i}
-                  className='text-samantic-text'
+                  className='text-semantic-text'
                   value="option1"
                 >
                   Option {i+1}

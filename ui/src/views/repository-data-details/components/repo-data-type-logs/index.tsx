@@ -10,7 +10,7 @@ export const RepoDataLogs = ({ data }: { data: any}) => {
           <h4 className="t-h4 mb-2">
             {data.title}
           </h4>
-          <p className="text-samantic-mutedText">
+          <p className="text-semantic-mutedText">
             {data.brief}
           </p>
 
