@@ -22,7 +22,7 @@ const Home: NextPage = () => {
         <div className="flex-1 items-center p-8 overflow-auto">
           <div className="sm_mx-auto sm_max-w-5xl">
             <Panel className="shadow-sm rounded-md">
-              <Panel.Body className="p-8">
+              <Panel.Body className="p-8 overflow-hidden">
                 <div className="mb-6">
                   <h3 className="t-h3">Connection details</h3>
                   <p className="text-gray-500">This is some helptext with a short description to explain how to use this connect page.</p>
@@ -36,10 +36,10 @@ const Home: NextPage = () => {
                   <Tabs.Panels>
                     <Tabs.Panel className="pt-6">
                       <div className="flex flex-col divide-y">
-                        <div className="flex items-center w-full py-3">
-                          <Label className="text-gray-500 w-56">Username</Label>
-                          <div className="flex items-center w-full">
-                            <p className="flex-1">admin</p>
+                        <div className="md_flex items-center w-full py-3">
+                          <Label className="text-gray-500 w-40 md_w-56">Host</Label>
+                          <div className="flex items-center flex-1 space-x-4">
+                            <p className="flex-1 break-all">db-postgresql-mergestat.ondigitalocean.com</p>
                             <Button
                               isIconOnly
                               skin="borderless"
@@ -47,10 +47,11 @@ const Home: NextPage = () => {
                             />
                           </div>
                         </div>
-                        <div className="flex items-center w-full py-3">
-                          <Label className="text-gray-500 w-56">Token</Label>
-                          <div className="flex items-center w-full">
-                            <pre className="flex-1"><code className="bg-gray-100 text-gray-500 px-1.5 py-0.5 font-mono text-sm rounded">0CSooWZ87tmqWT9BmS5nmXAZuuRQj8RC</code></pre>
+
+                        <div className="md_flex items-center w-full py-3">
+                          <Label className="text-gray-500 w-40 md_w-56">Username</Label>
+                          <div className="flex items-center flex-1 space-x-4">
+                            <p className="flex-1 break-all">admin</p>
                             <Button
                               isIconOnly
                               skin="borderless"
@@ -58,38 +59,29 @@ const Home: NextPage = () => {
                             />
                           </div>
                         </div>
-                        <div className="flex items-center w-full py-3">
-                          <Label className="text-gray-500 w-56">Password</Label>
-                          <div className="flex items-center w-full">
-                            <p className="flex-1">••••••••••••</p>
-                            <div className="t-button-toolbar">
-                            <Button
+
+                        <div className="md_flex items-center w-full py-3">
+                          <Label className="text-gray-500 w-40 md_w-56">Password</Label>
+                          <div className="flex items-center flex-1 space-x-4">
+                            <div className="flex items-center space-x-2 flex-1">
+                              <p className="break-all">•••••••••••••••••••</p>
+                              <Button
                               label="Show"
+                              size="small"
                               skin="borderless"
                             />
+                            </div>
                             <Button
                               isIconOnly
                               skin="borderless"
                               startIcon={<DuplicateIcon className="t-icon" />}
                             />
                             </div>
-                          </div>
                         </div>
-                        <div className="flex items-center w-full py-3">
-                          <Label className="text-gray-500 w-56">Connection limit</Label>
-                          <div className="flex items-center w-full">
-                            <p className="flex-1">200</p>
-                            <Button
-                              isIconOnly
-                              skin="borderless"
-                              startIcon={<DuplicateIcon className="t-icon" />}
-                            />
-                          </div>
-                        </div>
-                        <div className="flex items-center w-full py-3">
-                          <Label className="text-gray-500 w-56">SSL mode</Label>
-                          <div className="flex items-center w-full">
-                            <p className="flex-1">Require</p>
+                        <div className="md_flex items-center w-full py-3">
+                          <Label className="text-gray-500 w-40 md_w-56">Database</Label>
+                          <div className="flex items-center flex-1 space-x-4">
+                            <p className="flex-1 break-all">defaultdb</p>
                             <Button
                               isIconOnly
                               skin="borderless"
@@ -102,7 +94,7 @@ const Home: NextPage = () => {
                     <Tabs.Panel className="pt-6">
                       <div className="bg-gray-50 border rounded-md p-5 font-mono text-sm text-gray-500 mb-4">
                           <pre>
-                            <code className="whitespace-normal">postgresql://doadmin:show-password@focus-flow-dev-to-user-181985-9.b-db.ondigitalocean.com:25060/defaultdb?sslmode=require</code>
+                            <code className="whitespace-normal break-all">postgresql://admin:<a className="text-blue-600" href="#">show-password</a>@db-postgresql-mergestat.ondigitalocean.com/defaultdb</code>
                           </pre>
                       </div>
                       <Button
