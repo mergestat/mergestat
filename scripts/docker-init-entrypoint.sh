@@ -30,6 +30,8 @@ db_add_repo(){
     for sync_type in $sync_types; do
         echo "Adding repo sync for $sync_type"
         psql -c "INSERT INTO mergestat.repo_syncs (repo_id, sync_type) VALUES ('$repo_id', '$sync_type')" $POSTGRES_CONNECTION
+        echo "Enqueuing repo sync for $sync_type"
+        psql -c "INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status) SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE sync_type = '$sync_type'" $POSTGRES_CONNECTION
     done
 }
 
