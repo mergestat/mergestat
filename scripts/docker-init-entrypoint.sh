@@ -13,13 +13,13 @@ db_add_repo(){
 
     echo "Creating repo: $repo" >&2
 
-    psql -c "INSERT INTO repos (repo, is_github) VALUES ('$repo', $is_github)"
+    psql -c "INSERT INTO repos (repo, is_github) VALUES ('$repo', $is_github)" $POSTGRES_CONNECTION
 
     local from_repo="FROM repos WHERE repo='$repo' AND is_github=$is_github"
-    local repo_id="$(psql -Atqc "SELECT id $from_repo LIMIT 1")"
+    local repo_id="$(psql -Atqc "SELECT id $from_repo LIMIT 1" $POSTGRES_CONNECTION)"
 
     echo "Created Repo ($repo_id)" >&2
-    psql -xc "SELECT * $from_repo"
+    psql -xc "SELECT * $from_repo" $POSTGRES_CONNECTION
 
     local sync_types="GIT_COMMITS GIT_COMMIT_STATS GIT_REFS"
 
@@ -29,7 +29,7 @@ db_add_repo(){
 
     for sync_type in $sync_types; do
         echo "Adding repo sync for $sync_type"
-        psql -c "INSERT INTO mergestat.repo_syncs (repo_id, sync_type) VALUES ('$repo_id', '$sync_type')"
+        psql -c "INSERT INTO mergestat.repo_syncs (repo_id, sync_type) VALUES ('$repo_id', '$sync_type')" $POSTGRES_CONNECTION
     done
 }
 
