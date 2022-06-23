@@ -16,20 +16,12 @@ It's intended purpose is to enable "operational analytics for engineering teams,
 Try Fuse out with `docker-compose` by running the following locally:
 
 ```sh
-# Initialize postgres and hasura
-docker-compose up init
+# add an initial repo and some data to sync
+docker-compose run --entrypoint ./docker-init-entrypoint.sh --rm worker add-repo https://github.com/mergestat/mergestat
 
-# Add a repo to be synced
-docker-compose run --entrypoint ./docker-init-entrypoint.sh --rm init add-repo https://github.com/mergestat/mergestat
-
-# Start worker and grafana
-docker-compose up -d worker grafana
+# start the fuse stack
+docker-compose up
 ```
-
-Depending on the size of the repo, it should only take short period of time to sync.
-Afterwards you should be able to pull up grafana and see some some graphs.
-
-Access grafana with http://localhost:3000
 
 ## Roadmap
 
