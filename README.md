@@ -15,13 +15,26 @@ It's intended purpose is to enable "operational analytics for engineering teams,
 
 Try Fuse out with `docker-compose` by running the following locally:
 
+First, clone this repository to a local directory.
+Create a file called `.env-worker` in the root and add the following:
+
+```
+GITHUB_TOKEN=ghp_XXXXX
+```
+
+Where `ghp_XXXXX` is replaced with a GitHub [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+
+Then:
+
 ```sh
+# start the fuse stack in the background
+docker-compose up -d
+
 # add an initial repo and some data to sync
 docker-compose run --entrypoint ./docker-init-entrypoint.sh --rm worker add-repo https://github.com/mergestat/mergestat
-
-# start the fuse stack
-docker-compose up
 ```
+
+Now if you visit `http://localhost:3000/` you should be able to access a Grafana instance with a default chart.
 
 ## Roadmap
 
