@@ -64,7 +64,7 @@ const Settings: NextPage = () => {
                         </Toolbar>
                     </div>
                     <div className="flex-1 p-8 overflow-auto">
-                        <Panel>
+                        <Panel className="shadow-sm">
                             <Panel.Body className="py-8">
                                 <h3 className="t-h3">GitHub Personal Access Token</h3>
                                 <p className="mb-6 text-gray-500">Learn more about <Link href="/"><a className="t-link">how to generate a personal access token</a></Link>.</p>
