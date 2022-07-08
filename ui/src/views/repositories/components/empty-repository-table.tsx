@@ -3,6 +3,7 @@ import { PlusIcon, WarningFilledIcon } from '@mergestat/icons'
 import React from 'react'
 import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import Image from 'next/image';
+import Link from 'next/link'
 
 export const EmptyRepositoryTable: React.FC = () => {
   const { setShowAddRepositoryModal } = useRepositoriesSetState()
@@ -29,7 +30,9 @@ export const EmptyRepositoryTable: React.FC = () => {
                   <h3 className="t-h3 mb-2">Start by adding a GitHub authentication token</h3>
                   <p className="text-semantic-mutedText">Add a personal access token to import repos from GitHub.</p>
                   <div className="t-button-toolbar mt-8">
-                      <Button label="Authenticate GitHub" />
+                      <Link href="/settings">
+                        <Button label="Authenticate GitHub" />
+                      </Link>
                       <Button
                         startIcon={<PlusIcon className="t-icon" />}
                         onClick={() => setShowAddRepositoryModal(true)}
