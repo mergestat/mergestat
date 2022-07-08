@@ -65,11 +65,11 @@ const Settings: NextPage = () => {
                     </div>
                     <div className="flex-1 p-8 overflow-auto">
                         <Panel>
-                            <Panel.Body>
+                            <Panel.Body className="py-8">
+                                <h3 className="t-h3">GitHub Personal Access Token</h3>
                                 <p className="mb-6 text-gray-500">Learn more about <Link href="/"><a className="t-link">how to generate a personal access token</a></Link>.</p>
-                                <Label>GitHub Personal Access Token</Label>
-                                <div className="flex align-center space-x-3">
-                                    <Input className="max-w-xl" type="password" />
+                                <Input className="max-w-xl mb-3" type="password" />
+                                <div className="flex items-center space-x-3">
                                     <Button
                                         label="Validate"
                                         skin="secondary"
@@ -88,7 +88,6 @@ const Settings: NextPage = () => {
                                         </div>
                                     )}
                                 </div>
-
                             </Panel.Body>
                         </Panel>
                     </div>
