@@ -32,6 +32,7 @@ export const PageHeader: React.FC = (props) => {
             className="z-20 text-base font-normal"
             startIcon={<AutoImportIcon className="t-icon" />}
             onButtonClick={() => setShowSyncRepoModal(true)}
+            disabled={true}
             items={[
               {
                 text: 'Manage auto imports',
@@ -45,6 +46,7 @@ export const PageHeader: React.FC = (props) => {
         <Button
           startIcon={<PlusIcon className="t-icon" />}
           onClick={() => setShowAddRepositoryModal(true)}
+          skin="secondary"
         >
           Add Repository
         </Button>
