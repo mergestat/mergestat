@@ -5,7 +5,7 @@ import Head from 'next/head'
 import { Toolbar, Panel, Tabs, Button, Label } from '@mergestat/blocks'
 import { DuplicateIcon } from '@mergestat/icons'
 
-const Home: NextPage = () => {
+const Connect: NextPage = () => {
   return (
     <Fragment>
       <Head>
@@ -116,4 +116,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default Connect
