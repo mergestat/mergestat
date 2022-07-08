@@ -10,7 +10,7 @@ export const EmptyRepositoryTable: React.FC = () => {
   return (
     <div className="flex items-center justify-center h-full w-full">
       <div className="w-full max-w-5xl">
-        <Panel className="shadow-sm">
+        <Panel className="shadow-sm rounded-md">
           <Panel.Body>
               <div className="flex flex-row-reverse flex-wrap items-center">
                 <div className="w-full md_w-8/12 lg_w-6/12 p-8 lg_p-10 mx-auto">
