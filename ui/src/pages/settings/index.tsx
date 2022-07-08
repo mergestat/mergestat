@@ -58,9 +58,6 @@ const Settings: NextPage = () => {
                             <Toolbar.Left>
                                 <h2 className="t-h2 mb-0">GitHub authentication</h2>
                             </Toolbar.Left>
-                            <Toolbar.Right>
-                                <Button label="Save" />
-                            </Toolbar.Right>
                         </Toolbar>
                     </div>
                     <div className="flex-1 p-8 overflow-auto">
@@ -68,26 +65,31 @@ const Settings: NextPage = () => {
                             <Panel.Body className="py-8">
                                 <h3 className="t-h3">GitHub Personal Access Token</h3>
                                 <p className="mb-6 text-gray-500">Learn more about <Link href="/"><a className="t-link">how to generate a personal access token</a></Link>.</p>
-                                <Input className="max-w-xl mb-3" type="password" />
-                                <div className="flex items-center space-x-3">
-                                    <Button
-                                        label="Validate"
-                                        skin="secondary"
-                                        onClick={changeValidation}
-                                    />
-                                    {(showValidation && isTokenValid) && (
-                                        <div className="flex items-center">
-                                            <CircleCheckFilledIcon className="t-icon t-icon-success" />
-                                            <p className="text-green-700 ml-1.5">Token valid</p>
-                                        </div>
-                                    )}
-                                    {(showValidation && !isTokenValid) && (
-                                        <div className="flex items-center">
-                                            <CircleWarningFilledIcon className="t-icon t-icon-danger" />
-                                            <p className="text-red-700 ml-1.5">Token invalid</p>
-                                        </div>
-                                    )}
-                                </div>
+                                <form className="mb-6">
+                                    <div className="flex items-center space-x-3">
+                                        <Input className="max-w-lg" type="password" />
+                                        <Button
+                                            label="Validate"
+                                            skin="secondary"
+                                            onClick={changeValidation}
+                                        />
+
+                                        {(showValidation && isTokenValid) && (
+                                            <div className="flex items-center">
+                                                <CircleCheckFilledIcon className="t-icon t-icon-success flex-shrink-0" />
+                                                <p className="text-green-700 ml-1.5">Token valid</p>
+                                            </div>
+                                        )}
+                                        {(showValidation && !isTokenValid) && (
+                                            <div className="flex items-center">
+                                                <CircleWarningFilledIcon className="t-icon t-icon-danger flex-shrink-0" />
+                                                <p className="text-red-700 ml-1.5">Token invalid</p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                </form>
+                                <Button label="Save" />
                             </Panel.Body>
                         </Panel>
                     </div>
