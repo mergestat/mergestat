@@ -67,10 +67,14 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 		}
 	}()
 
-	// TODO(alonlong) figure out this token thing
+	var ghToken string
+	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
+		return err
+	}
+
 	var creds *libgit2.Credential
-	if creds, err = libgit2.NewCredentialUserpassPlaintext(os.Getenv("GITHUB_TOKEN"), ""); err != nil {
-		return fmt.Errorf("new credentail: %w", err)
+	if creds, err = libgit2.NewCredentialUserpassPlaintext(ghToken, ""); err != nil {
+		return err
 	}
 	defer creds.Free()
 

@@ -31,7 +31,9 @@ import (
 	_ "github.com/mergestat/mergestat/pkg/sqlite"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
+	"github.com/shurcooL/githubv4"
 	"go.riyazali.net/sqlite"
+	"golang.org/x/oauth2"
 )
 
 var (
@@ -40,7 +42,7 @@ var (
 	concurrencyEnv = os.Getenv("CONCURRENCY")
 )
 
-func repoLocator(cloneToken string) services.RepoLocator {
+func repoLocator() services.RepoLocator {
 	return options.RepoLocatorFn(func(ctx context.Context, path string) (*git.Repository, error) {
 		if path == "" {
 			return nil, fmt.Errorf("no repo supplied")
@@ -138,26 +140,34 @@ func main() {
 		githubRequestMutex.Unlock()
 	}
 
-	// githubClientGetter := func() *githubv4.Client {
-	// 	httpClient := oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(
-	// 		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
-	// 	))
-	// 	httpClient.Transport = &mutexRoundTripper{}
-	// 	return githubv4.NewClient(httpClient)
-	// }
+	githubClientGetter := func() *githubv4.Client {
+		row := pool.QueryRow(context.TODO(), "SELECT credentials FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1")
+		var credentials []byte
+		if err := row.Scan(&credentials); err != nil {
+			// TODO(patrickdevivo) we need better error handling here
+			logger.Err(err).Msgf("error retrieving GitHub PAT from database")
+		}
+
+		httpClient := oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: string(credentials)},
+		))
+		// httpClient.Transport = &mutexRoundTripper{}
+
+		return githubv4.NewClient(httpClient)
+	}
 
 	sqlite.Register(
 		extensions.RegisterFn(
 			options.WithExtraFunctions(),
-			options.WithRepoLocator(locator.CachedLocator(repoLocator(os.Getenv("GITHUB_TOKEN")))), // TODO figure out token situation
+			options.WithRepoLocator(locator.CachedLocator(repoLocator())),
 			options.WithGitHub(),
-			options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
+			// options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
 			options.WithContextValue("githubPerPage", os.Getenv("GITHUB_PER_PAGE")),
 			options.WithContextValue("githubRateLimit", os.Getenv("GITHUB_RATE_LIMIT")),
 			options.WithGitHubRateLimitHandler(ratelimitHandler),
 			options.WithGitHubPreRequestHook(githubPreRequestHook),
 			options.WithGitHubPostRequestHook(githubPostRequestHook),
-			// options.WithGitHubClientGetter(githubClientGetter),
+			options.WithGitHubClientGetter(githubClientGetter),
 			options.WithNPM(),
 			options.WithLogger(&l),
 		),

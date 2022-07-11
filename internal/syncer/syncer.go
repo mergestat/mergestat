@@ -176,3 +176,15 @@ func (w *worker) Start(ctx context.Context) {
 	}
 	g.Wait()
 }
+
+// fetchGitHubTokenFromDB is a temporary helper function for retrieving the most recently added GITHUB_PAT service credential from the DB.
+// It's "temporary" because the way credentials are managed and retrieved will likely need to be much more robust in the future.
+func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
+	row := w.pool.QueryRow(context.TODO(), "SELECT credentials FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1")
+	var credentials []byte
+	if err := row.Scan(&credentials); err != nil {
+		return "", fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
+	}
+
+	return string(credentials), nil
+}
