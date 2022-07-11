@@ -4,6 +4,8 @@ import React, {
   useState,
 } from 'react'
 import type { SyncStatusDataT } from 'src/@types'
+import type { RepSyncStateT } from 'src/@types'
+
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
 type RepositorySyncStatusProps = {
@@ -134,11 +136,12 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
           <div className="flex items-center">
             {(tooltipData?.status) && (
               <div className="mr-2">
-                <RepoSyncIcon type={tooltipData?.status} />
+                <RepoSyncIcon type={tooltipData?.status as RepSyncStateT}
+                  />
               </div>
             )}
             <div>
-              <span className="font-medium text-white mb-0.5">{tooltipData?.status.charAt(0).toUpperCase() + tooltipData?.status.slice(1)}</span>
+              <span className="font-medium text-white mb-0.5">{tooltipData?.status? tooltipData?.status.charAt(0).toUpperCase() + tooltipData?.status.slice(1) : ''}</span>
               <div className="flex items-center">
                 <span className="text-sm border-r border-gray-600 mr-1.5 pr-1.5 leading-4">3 days ago</span>
                 <span className="text-sm">{tooltipData?.value} min</span>

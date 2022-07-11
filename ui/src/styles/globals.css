@@ -21,3 +21,13 @@
   border-radius: 0 !important;
 }
 */
+
+
+
+/* TODO: Move to blocks */
+.t-link {
+  @apply underline
+         text-blue-600
+         hover_text-blue-700;
+
+}

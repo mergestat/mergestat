@@ -1,5 +1,5 @@
 import { RepoDataDropDown } from 'src/views/repositories/drop-downs'
-import type { RepoDataStatusT } from '../@types'
+import type { RepoDataStatusT } from 'src/@types'
 
 export type RepositoryStatusProps = {
   status: Array<RepoDataStatusT>
