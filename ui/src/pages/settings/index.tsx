@@ -5,7 +5,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { Toolbar, Panel, Input, Button, Label } from '@mergestat/blocks'
+import { Toolbar, Panel, Input, Button, VerticalNav } from '@mergestat/blocks'
 import { CircleCheckFilledIcon, CircleWarningFilledIcon } from '@mergestat/icons'
 
 const Settings: NextPage = () => {
@@ -35,19 +35,10 @@ const Settings: NextPage = () => {
                         </Toolbar>
                     </div>
                     <div className="flex-1 overflow-auto p-8">
-                        <ul className="t-vertical-nav">
-                            <li className="t-vertical-nav-item active">
-                                <Link href="#">
-                                    <a href='#'>Github authentication</a>
-                                </Link>
-                            </li>
-                            <li className="t-vertical-nav-item">
-                                <a href='#'>Preferences</a>
-                            </li>
-                            <li className="t-vertical-nav-item">
-                                <a href='#'>Settings category</a>
-                            </li>
-                        </ul>
+                        <VerticalNav>
+                            <VerticalNav.Item text="Github Authentication" active={true} />
+                            <VerticalNav.Item text="General" disabled={true} />
+                        </VerticalNav>
                     </div>
                 </div>
 
@@ -56,7 +47,7 @@ const Settings: NextPage = () => {
                     <div className="bg-white h-16 w-full border-b px-8">
                         <Toolbar className="h-full">
                             <Toolbar.Left>
-                                <h2 className="t-h2 mb-0">GitHub authentication</h2>
+                                <h2 className="t-h2 mb-0">GitHub Authentication</h2>
                             </Toolbar.Left>
                         </Toolbar>
                     </div>
