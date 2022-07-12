@@ -141,7 +141,8 @@ func main() {
 	}
 
 	githubClientGetter := func() *githubv4.Client {
-		row := pool.QueryRow(context.TODO(), "SELECT credentials FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1")
+		fuseSecret := os.Getenv("FUSE_SECRET")
+		row := pool.QueryRow(context.TODO(), "SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1", fuseSecret)
 		var credentials []byte
 		if err := row.Scan(&credentials); err != nil {
 			// TODO(patrickdevivo) we need better error handling here
