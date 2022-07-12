@@ -15,4 +15,8 @@ CREATE TABLE IF NOT EXISTS mergestat.service_auth_credentials (
 
 INSERT INTO mergestat.service_auth_credential_types (type, description) VALUES ('GITHUB_PAT', 'Authentication using a GitHub personal acces token') ON CONFLICT DO NOTHING;
 
+CREATE OR REPLACE FUNCTION mergestat.add_service_auth_credential(credential_type text, credentials text, secret text) RETURNS mergestat.service_auth_credentials AS $$
+  INSERT INTO mergestat.service_auth_credentials (type, credentials) VALUES (credential_type, pgp_sym_encrypt(credentials, secret)) RETURNING *;
+$$ LANGUAGE sql;
+
 COMMIT;
