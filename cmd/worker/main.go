@@ -148,6 +148,11 @@ func main() {
 			logger.Err(err).Msgf("error retrieving GitHub PAT from database")
 		}
 
+		// default to GITHUB_TOKEN env var if nothing is in db
+		if credentials == nil {
+			credentials = []byte(os.Getenv("GITHUB_TOKEN"))
+		}
+
 		httpClient := oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: string(credentials)},
 		))

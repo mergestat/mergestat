@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"sync"
 	"time"
 
@@ -182,8 +183,11 @@ func (w *worker) Start(ctx context.Context) {
 func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
 	row := w.pool.QueryRow(context.TODO(), "SELECT credentials FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1")
 	var credentials []byte
-	if err := row.Scan(&credentials); err != nil {
+	if err := row.Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return "", fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
+	} else {
+		// default to the `GITHUB_TOKEN` env var if nothing in the DB
+		credentials = []byte(os.Getenv("GITHUB_TOKEN"))
 	}
 
 	return string(credentials), nil
