@@ -53,9 +53,13 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		}
 	}()
 
-	// TODO figure out this token thing
+	var ghToken string
+	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
+		return err
+	}
+
 	var creds *libgit2.Credential
-	if creds, err = libgit2.NewCredentialUserpassPlaintext(os.Getenv("GITHUB_TOKEN"), ""); err != nil {
+	if creds, err = libgit2.NewCredentialUserpassPlaintext(ghToken, ""); err != nil {
 		return err
 	}
 	defer creds.Free()
