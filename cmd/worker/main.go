@@ -17,6 +17,7 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
@@ -144,13 +145,13 @@ func main() {
 		fuseSecret := os.Getenv("FUSE_SECRET")
 		row := pool.QueryRow(context.TODO(), "SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1", fuseSecret)
 		var credentials []byte
-		if err := row.Scan(&credentials); err != nil {
-			// TODO(patrickdevivo) we need better error handling here
+		if err := row.Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			logger.Err(err).Msgf("error retrieving GitHub PAT from database")
 		}
 
 		// default to GITHUB_TOKEN env var if nothing is in db
 		if credentials == nil {
+			logger.Info().Msg("no GitHub PAT found in DB, using GITHUB_TOKEN env")
 			credentials = []byte(os.Getenv("GITHUB_TOKEN"))
 		}
 
