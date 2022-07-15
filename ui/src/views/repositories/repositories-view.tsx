@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   useRepositoriesContext,
   useRepositoriesSetState,
@@ -15,30 +15,38 @@ import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals
 import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
 import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
 
-import {
-  Button,
-  Toolbar
-} from '@mergestat/blocks'
+import { Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
+import { useGetReposQuery } from 'src/graphql/generated/hooks'
 
 export const RepositoriesView: React.FC = () => {
+  //- Todo replace with empty state logic //}
+  const [isEmpty, setIsEmpty] = useState(true)
 
-  {//- Todo replace with empty state logic //}
-  const isEmpty = true;
+  const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal }] =
+    useRepositoriesContext()
 
-  const [{
-    showAddRepositoryModal,
-    showAutoImportModal,
-    showSyncRepoModal,
-  }] = useRepositoriesContext()
+  const { setShowAutoImportModal, setShowSyncRepoModal } =
+    useRepositoriesSetState()
 
-  const {
-    setShowAutoImportModal,
-    setShowSyncRepoModal
-  } = useRepositoriesSetState()
+  const { data, error, loading } = useGetReposQuery()
+
+  useEffect(() => {
+    if (data) {
+      if (data && data.allRepos && data.allRepos.nodes) {
+        setIsEmpty(false)
+      }
+    }
+    if (error) {
+      console.log(error)
+    }
+    if (loading) {
+      console.log(loading)
+    }
+  }, [data, error, loading])
 
   //- Todo: connect selectedRepositoriesCount from RepositoriesTable
-  const selectedRepositoriesCount: number = 0;
+  const selectedRepositoriesCount: number = 0
   return (
     <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">
       <div className="bg-white border-b border-gray-200">
@@ -57,9 +65,9 @@ export const RepositoriesView: React.FC = () => {
               <Toolbar.Item className="mr-2">
                 <div className="flex items-center gap-6">
                   <p className="font-medium text-sm text-semantic-mutedText">
-                      {selectedRepositoriesCount} of {sampleRepositoriesData.length} {' '} repos selected
+                    {selectedRepositoriesCount} of{' '}
+                    {sampleRepositoriesData.length} repos selected
                   </p>
-
                 </div>
               </Toolbar.Item>
               <Toolbar.Item>
@@ -111,4 +119,4 @@ export const RepositoriesView: React.FC = () => {
       )}
     </main>
   )
-}}
+}

@@ -49,5 +49,8 @@ module.exports = withBundleAnalyzer(
       ]
     },
     swcMinify: true,
+    env: {
+      POSTGRAPHILE_API: process.env.POSTGRAPHILE_API,
+    },
   })
 )
