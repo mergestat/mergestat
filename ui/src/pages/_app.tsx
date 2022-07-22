@@ -1,18 +1,17 @@
-import { ApolloProvider } from '@apollo/client'
 import type { AppProps } from 'next/app'
-import { getApolloClient } from 'src/graphql/apolloClient/client'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import LayoutWrapper from 'src/layouts/LayoutWrapper'
 import '../styles/globals.css'
 
-const client = getApolloClient()
+const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={client}>
+    <QueryClientProvider client={queryClient}>
       <LayoutWrapper {...pageProps}>
         <Component {...pageProps} />
       </LayoutWrapper>
-    </ApolloProvider>
+    </QueryClientProvider>
   )
 }
 

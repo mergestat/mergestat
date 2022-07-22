@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
   useRepositoriesContext,
   useRepositoriesSetState,
@@ -17,48 +17,34 @@ import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
 
 import { Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
-import { useGetReposQuery } from 'src/graphql/generated/hooks'
+import { getRepos } from 'src/api-client/repos'
+import { useQuery } from 'react-query'
+import { REPOS } from 'src/constants/react-query'
 
 export const RepositoriesView: React.FC = () => {
-  //- Todo replace with empty state logic //}
-  const [isEmpty, setIsEmpty] = useState(true)
-
   const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal }] =
     useRepositoriesContext()
 
   const { setShowAutoImportModal, setShowSyncRepoModal } =
     useRepositoriesSetState()
 
-  const { data, error, loading } = useGetReposQuery()
-
-  useEffect(() => {
-    if (data) {
-      if (data && data.allRepos && data.allRepos.nodes) {
-        setIsEmpty(false)
-      }
-    }
-    if (error) {
-      console.log(error)
-    }
-    if (loading) {
-      console.log(loading)
-    }
-  }, [data, error, loading])
+  const { isLoading, error, data } = useQuery(REPOS, getRepos)
 
   //- Todo: connect selectedRepositoriesCount from RepositoriesTable
   const selectedRepositoriesCount: number = 0
+
   return (
     <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">
       <div className="bg-white border-b border-gray-200">
         <PageHeader />
-        {!isEmpty && <FilterHeader />}
+        {data && <FilterHeader />}
       </div>
       <div className="flex-1 items-center p-8 overflow-auto">
-        {isEmpty && <EmptyRepositoryTable />}
-        {!isEmpty && <RepositoriesTable />}
+        {!data && <EmptyRepositoryTable />}
+        {data && <RepositoriesTable data={data} />}
       </div>
 
-      {!isEmpty && (
+      {data && (
         <div className="bg-white h-14  border-t flex items-center px-8">
           <Toolbar>
             <Toolbar.Left>

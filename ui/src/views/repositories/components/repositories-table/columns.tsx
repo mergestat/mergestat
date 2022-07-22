@@ -1,49 +1,48 @@
 import React from 'react'
-import type {
-  RepoDataPropsT,
-  RepoDataStatusT,
-  TagType,
-} from 'src/@types'
+import type { RepoDataPropsT, RepoDataStatusT, TagType } from 'src/@types'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
 import {
   RepositoryName,
   RepositoryStatus,
-  RepositoryTagList
+  RepositoryTagList,
 } from './repositories-table-columns'
 
 export const columns: Array<Record<string, any>> = [
   {
-    title: "Repository",
+    title: 'Repository',
     dataIndex: 'name',
     key: 'name',
-    onSortChange: (e: 'asc' | 'desc' | undefined) => {console.log(e)},
+    onSortChange: (e: 'asc' | 'desc' | undefined) => {
+      console.log(e)
+    },
     render: (name: string, data: RepoDataPropsT) => (
       <RepositoryName
         name={name}
         type={data.type}
         lastUpdate={data.lastUpdate}
         automaticImport={data.automaticImport}
+        urlIcon={data.urlIcon}
       />
-    )
+    ),
   },
   {
-    title: "Tags",
+    title: 'Tags',
     className: 'text-gray-500',
     dataIndex: 'tags',
     key: 'tags',
-    render: (tags: TagType[]) => (
-      <RepositoryTagList tags={tags} />
-    )
+    render: (tags: TagType[]) => <RepositoryTagList tags={tags} />,
   },
   {
-    title: "Last sync",
+    title: 'Last sync',
     dataIndex: 'lastSync',
     className: 'h-20',
     key: 'last',
-    onSortChange: (e: 'asc' | 'desc' | undefined) => {console.log(e)},
+    onSortChange: (e: 'asc' | 'desc' | undefined) => {
+      console.log(e)
+    },
     render: (lastSync: string) => (
-      <span className='text-semantic-mutedText px-6'>{lastSync}</span>
-    )
+      <span className="text-semantic-mutedText px-6">{lastSync}</span>
+    ),
   },
   {
     dataIndex: 'status',
@@ -51,11 +50,11 @@ export const columns: Array<Record<string, any>> = [
     className: 'h-20',
     render: (status: Array<RepoDataStatusT>) => (
       <RepositoryStatus status={status} />
-    )
+    ),
   },
   {
     className: 'px-6 w-4',
     key: 'option',
-    render: () => <RepositoryAdditionalActionsDropDown />
+    render: () => <RepositoryAdditionalActionsDropDown />,
   },
 ]

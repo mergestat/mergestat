@@ -2,10 +2,9 @@ overwrite: true
 schema: 'http://localhost:5001/graphql'
 documents: 'src/**/*.{ts,tsx}'
 generates:
-  src/graphql/generated/hooks.tsx:
+  src/api-logic/graphql/generated/schema.ts:
     plugins:
       - 'typescript'
       - 'typescript-operations'
-      - 'typescript-react-apollo'
     config:
-      withHooks: true
+      withHooks: false
