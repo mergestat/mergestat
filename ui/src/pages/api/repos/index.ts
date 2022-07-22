@@ -9,6 +9,7 @@ export default async function handler(
   res: NextApiResponse<RepoDataPropsT[] | undefined>
 ) {
   const { data } = await query(GET_REPOS)
+  const mappedData = mapToRepoData(data)
 
-  res.status(200).json(mapToRepoData(data))
+  res.status(200).json(mappedData.length === 0 ? undefined : mappedData)
 }

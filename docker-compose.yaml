@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 services:
   postgres:
     image: postgres:12
@@ -24,7 +24,7 @@ services:
       - .env-worker
     ports:
       - 3301:8080
-  
+
   graphql:
     restart: always
     build:
@@ -33,7 +33,19 @@ services:
       - postgres
     ports:
       - 5433:5433
-    command: ["--connection", "postgres://postgres:password@postgres:5432/postgres?sslmode=disable", "--port", "5433", "--schema", "mergestat,public", "--enhance-graphiql", "--allow-explain", "--append-plugins", "@graphile-contrib/pg-simplify-inflector", "--no-ignore-rbac"]
+    command:
+      [
+        "--connection",
+        "postgres://postgres:password@postgres:5432/postgres?sslmode=disable",
+        "--port",
+        "5433",
+        "--schema",
+        "mergestat,public",
+        "--enhance-graphiql",
+        "--allow-explain",
+        "--append-plugins",
+        "--no-ignore-rbac",
+      ]
 
   grafana:
     image: grafana/grafana-oss:latest
