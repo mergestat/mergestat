@@ -10,6 +10,12 @@ npm run dev
 yarn dev
 ```
 
+Then, add .env file with next config:
+
+```bash
+POSTGRAPHILE_API='http://localhost:5433/graphql'
+```
+
 ## Postgraphile GUI:
 
 Open [http://localhost:5433](http://localhost:5433/graphiql) with your browser.
