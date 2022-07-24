@@ -21,10 +21,10 @@ db_add_repo(){
     echo "Created Repo ($repo_id)" >&2
     psql -xc "SELECT * $from_repo" $POSTGRES_CONNECTION
 
-    local sync_types="GIT_COMMITS GIT_COMMIT_STATS GIT_REFS"
+    local sync_types="GIT_COMMITS GIT_COMMIT_STATS GIT_REFS GIT_FILES"
 
     if [ "$is_github" == "true" ]; then
-        sync_types+=" GITHUB_REPO_METADATA"
+        sync_types+=" GITHUB_REPO_METADATA GITHUB_REPO_ISSUES GITHUB_REPO_STARS GITHUB_REPO_PRS GITHUB_PR_COMMITS GITHUB_PR_REVIEWS"
     fi
 
     for sync_type in $sync_types; do
