@@ -1,4 +1,5 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
+import { formatDistance } from 'date-fns'
 
 export function checkRepoValidate(repo: string, checkDomain: boolean = true) {
   return checkDomain
@@ -33,32 +34,10 @@ export function selectAllState(data: Array<any>) {
     : CHECKBOX_STATES.Indeterminate
 }
 
-export function dateToTimeAgo(date: Date): string {
-  const now = new Date(Date.now())
-  const difftime = now.getTime() - date.getTime()
-  const diffDate = new Date(difftime - 5.5 * 60 * 60 * 1000)
+export function getTimeAgoFromNow(baseDate: Date): string {
+  const distance = formatDistance(new Date(), baseDate, {
+    includeSeconds: true,
+  })
 
-  const [sec, min, hr, day, month] = [
-    diffDate.getSeconds(),
-    diffDate.getMinutes(),
-    diffDate.getHours(),
-    diffDate.getDate() - 1,
-    diffDate.getMonth(),
-  ]
-
-  const f = (property: any, end: any) => {
-    return `${property} ${end}${property > 1 ? 's' : ''} ago`
-  }
-
-  return month >= 1
-    ? f(month, 'month')
-    : day >= 1
-    ? f(day, 'day')
-    : hr >= 1
-    ? f(hr, 'hr')
-    : min >= 1
-    ? f(min, 'min')
-    : day >= 1
-    ? f(sec, 'sec')
-    : ''
+  return `${distance} ago`
 }

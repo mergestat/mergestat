@@ -10,7 +10,7 @@ npm run dev
 yarn dev
 ```
 
-Then, add .env file with next config:
+Then, add `.env` file with next config:
 
 ```bash
 POSTGRAPHILE_API='http://localhost:5433/graphql'
@@ -18,15 +18,15 @@ POSTGRAPHILE_API='http://localhost:5433/graphql'
 
 ## Postgraphile GUI:
 
-Open [http://localhost:5433](http://localhost:5433/graphiql) with your browser.
+> Open [http://localhost:5433](http://localhost:5433/graphiql) with your browser.
 
 ## Grafana:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser.
+> Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 ## Fuse UI:
 
-Open [http://localhost:3001](http://localhost:3001) with your browser.
+> Open [http://localhost:3001](http://localhost:3001) with your browser.
 
 ## Learn More
 

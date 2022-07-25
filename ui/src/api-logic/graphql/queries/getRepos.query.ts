@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 const GET_REPOS = gql`
   query getRepos {
-    allRepos(orderBy: CREATED_AT_DESC) {
+    repos(orderBy: CREATED_AT_DESC) {
       totalCount
       nodes {
         id
@@ -10,18 +10,18 @@ const GET_REPOS = gql`
         createdAt
         isGithub
         tags
-        githubRepoInfoByRepoId {
+        githubRepoInfo {
           owner
           name
           openGraphImageUrl
           updatedAt
           homepageUrl
         }
-        repoSyncsByRepoId {
+        repoSyncs {
           totalCount
           nodes {
             syncType
-            repoSyncQueuesByRepoSyncId(first: 1, orderBy: CREATED_AT_DESC) {
+            repoSyncQueues(first: 1, orderBy: CREATED_AT_DESC) {
               nodes {
                 id
                 status

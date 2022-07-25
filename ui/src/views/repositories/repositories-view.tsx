@@ -20,6 +20,7 @@ import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 import { getRepos } from 'src/api-client/repos'
 import { useQuery } from 'react-query'
 import { REPOS } from 'src/constants/react-query'
+import Loading from 'src/components/Loading'
 
 export const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal }] =
@@ -40,8 +41,13 @@ export const RepositoriesView: React.FC = () => {
         {data && <FilterHeader />}
       </div>
       <div className="flex-1 items-center p-8 overflow-auto">
-        {!data && <EmptyRepositoryTable />}
-        {data && <RepositoriesTable data={data} />}
+        {isLoading ? (
+          <Loading />
+        ) : data ? (
+          <RepositoriesTable data={data} />
+        ) : (
+          <EmptyRepositoryTable />
+        )}
       </div>
 
       {data && (

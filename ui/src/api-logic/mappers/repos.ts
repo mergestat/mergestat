@@ -1,18 +1,16 @@
 import { RepoDataPropsT, RepoDataStatusT } from 'src/@types'
-import { dateToTimeAgo } from 'src/utils'
+import { getTimeAgoFromNow } from 'src/utils'
 import { GetReposQuery } from '../graphql/generated/schema'
 
 const mapToRepoData = (data: GetReposQuery): Array<RepoDataPropsT> => {
   const mappedData: Array<RepoDataPropsT> = []
 
-  data.allRepos?.nodes.forEach((r) => {
+  data.repos?.nodes.forEach((r) => {
     let repoInfo: RepoDataPropsT = {
-      name:
-        `${r?.githubRepoInfoByRepoId?.owner}/${r?.githubRepoInfoByRepoId?.name}` ||
-        '',
-      urlIcon: r?.githubRepoInfoByRepoId?.openGraphImageUrl || '',
+      name: `${r?.githubRepoInfo?.owner}/${r?.githubRepoInfo?.name}` || '',
+      urlIcon: r?.githubRepoInfo?.openGraphImageUrl || '',
       lastUpdate:
-        dateToTimeAgo(new Date(r?.githubRepoInfoByRepoId?.updatedAt)) || '',
+        getTimeAgoFromNow(new Date(r?.githubRepoInfo?.updatedAt)) || '',
       lastSync: '',
       type: r?.isGithub ? 'github' : 'other',
       tags: [],
@@ -30,12 +28,12 @@ const getStatusFromRepo = (
   r: any,
   repoInfo: RepoDataPropsT
 ): Array<RepoDataStatusT> => {
-  const syncTypes = r?.repoSyncsByRepoId.nodes.map((st: any) => {
+  const syncTypes = r?.repoSyncs.nodes.map((st: any) => {
     const syncObj: Record<string, any> = {
       type: st?.syncType,
     }
 
-    st?.repoSyncQueuesByRepoSyncId.nodes.forEach((ls: any) => {
+    st?.repoSyncQueues.nodes.forEach((ls: any) => {
       syncObj.status = ls?.status || ''
       syncObj.lastSync = ls?.createdAt || ''
     })
@@ -54,7 +52,7 @@ const getStatusFromRepo = (
   mapSyncs?.forEach((value, key) => {
     mappedSyncs.push({ type: key, count: value })
   })
-  repoInfo.lastSync = dateToTimeAgo(new Date(syncTypes[0].lastSync))
+  repoInfo.lastSync = getTimeAgoFromNow(new Date(syncTypes[0].lastSync))
 
   return mappedSyncs
 }
