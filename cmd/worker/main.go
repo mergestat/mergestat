@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	_ "net/http/pprof"
+	"net/url"
 	"os"
 	"os/signal"
 	"strconv"
@@ -74,9 +75,26 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	var pool *pgxpool.Pool
 	var err error
-	if pool, err = pgxpool.Connect(ctx, postgresConnection); err != nil {
+	concurrency := 2
+	if concurrencyEnv != "" {
+		if concurrency, err = strconv.Atoi(concurrencyEnv); err != nil {
+			logger.Err(err).Msgf("could not parse CONCURRENCY env into an int: %s", concurrencyEnv)
+		}
+	}
+
+	// https://www.alexedwards.net/blog/change-url-query-params-in-go
+	var u *url.URL
+	if u, err = url.Parse(postgresConnection); err != nil {
+		logger.Err(err).Msgf("could not parse database connection string: %v", err)
+		os.Exit(1)
+	}
+	v := u.Query()
+	v.Add("pool_max_conns", strconv.Itoa(concurrency))
+	u.RawQuery = v.Encode()
+
+	var pool *pgxpool.Pool
+	if pool, err = pgxpool.Connect(ctx, u.String()); err != nil {
 		logger.Err(err).Msgf("could not connect to database: %v", err)
 		os.Exit(1)
 	}
@@ -211,13 +229,6 @@ func main() {
 		defer wg.Done()
 		timeout.New(&logger, pool).Start(ctx, time.Minute)
 	}()
-
-	concurrency := 2
-	if concurrencyEnv != "" {
-		if concurrency, err = strconv.Atoi(concurrencyEnv); err != nil {
-			logger.Err(err).Msgf("could not parse CONCURRENCY env into an int: %s", concurrencyEnv)
-		}
-	}
 
 	go func() {
 		defer wg.Done()
