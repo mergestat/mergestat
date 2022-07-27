@@ -1,12 +1,11 @@
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
-import fetch from 'cross-fetch'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 let instance: any = null
 
 const getApolloClient = () => {
   if (!instance) {
     instance = new ApolloClient({
-      link: new HttpLink({ uri: process.env.POSTGRAPHILE_API, fetch }),
+      uri: process.env.POSTGRAPHILE_API,
       cache: new InMemoryCache(),
     })
   }

@@ -23,7 +23,6 @@ export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
 export type RepoDataPropsT = {
   name: string
-  urlIcon: string
   lastUpdate: string
   type: RepoType
   automaticImport?: boolean

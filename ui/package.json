@@ -29,7 +29,6 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-error-boundary": "^3.1.4",
-    "react-query": "^3.39.2",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {

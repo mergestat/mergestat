@@ -1,14 +1,6 @@
 import React from 'react'
-import {
-  useRepositoriesContext,
-  useRepositoriesSetState,
-} from 'src/state/contexts/repositories.context'
-import {
-  EmptyRepositoryTable,
-  FilterHeader,
-  PageHeader,
-  RepositoriesTable,
-} from './components'
+import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
+import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { AddRepositoryModal } from './modals/add-repository-modal'
 import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
@@ -17,19 +9,16 @@ import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
 
 import { Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
-import { getRepos } from 'src/api-client/repos'
-import { useQuery } from 'react-query'
-import { REPOS } from 'src/constants/react-query'
 import Loading from 'src/components/Loading'
+import { useQuery } from '@apollo/client'
+import GET_REPOS from 'src/api-logic/graphql/queries/getRepos.query'
 
 export const RepositoriesView: React.FC = () => {
-  const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal }] =
-    useRepositoriesContext()
+  const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal }] = useRepositoriesContext()
 
-  const { setShowAutoImportModal, setShowSyncRepoModal } =
-    useRepositoriesSetState()
+  const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
 
-  const { isLoading, error, data } = useQuery(REPOS, getRepos)
+  const { loading, error, data } = useQuery(GET_REPOS)
 
   //- Todo: connect selectedRepositoriesCount from RepositoriesTable
   const selectedRepositoriesCount: number = 0
@@ -41,13 +30,9 @@ export const RepositoriesView: React.FC = () => {
         {data && <FilterHeader />}
       </div>
       <div className="flex-1 items-center p-8 overflow-auto">
-        {isLoading ? (
-          <Loading />
-        ) : data ? (
-          <RepositoriesTable data={data} />
-        ) : (
-          <EmptyRepositoryTable />
-        )}
+        {loading ? <Loading />
+          : (data ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
+        }
       </div>
 
       {data && (
@@ -71,7 +56,7 @@ export const RepositoriesView: React.FC = () => {
                         startIcon={<RefreshIcon className="t-icon" />}
                         skin="secondary"
                         size="small"
-                        //disabled={selectedRepositoriesCount === 0}
+                      //disabled={selectedRepositoriesCount === 0}
                       >
                         Sync Data
                       </Button>
@@ -83,7 +68,7 @@ export const RepositoriesView: React.FC = () => {
                     startIcon={<PencilIcon className="t-icon" />}
                     skin="secondary"
                     size="small"
-                    //disabled={selectedRepositoriesCount === 0}
+                  //disabled={selectedRepositoriesCount === 0}
                   >
                     Edit Tags
                   </Button>

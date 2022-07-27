@@ -21,7 +21,6 @@ export const columns: Array<Record<string, any>> = [
         type={data.type}
         lastUpdate={data.lastUpdate}
         automaticImport={data.automaticImport}
-        urlIcon={data.urlIcon}
       />
     ),
   },

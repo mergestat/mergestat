@@ -3,15 +3,15 @@ import React, { useMemo, useState } from 'react'
 import type { RepoDataPropsT } from 'src/@types'
 import { columns } from './columns'
 import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
+import { mapToRepoData } from 'src/api-logic/mappers/repos'
+import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 
 type RepositoriesTableProps = {
-  data?: RepoDataPropsT[]
+  data?: GetReposQuery
   children?: React.ReactNode
 }
 
-export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({
-  data,
-}: RepositoriesTableProps) => {
+export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: RepositoriesTableProps) => {
   const [selectedRepos, setSelectedRepos] = useState<RepoDataPropsT[]>([])
   const [isSelectAllRepos, setIsSelectAll] = useState<boolean>(false)
 
@@ -20,12 +20,14 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({
     [selectedRepos]
   )
 
+  const repos = mapToRepoData(data)
+
   const checkedState =
     selectedRepositoriesCount === 0
       ? CHECKBOX_STATES.Unchecked
       : selectedRepositoriesCount === sampleRepositoriesData.length
-      ? CHECKBOX_STATES.Checked
-      : CHECKBOX_STATES.Indeterminate
+        ? CHECKBOX_STATES.Checked
+        : CHECKBOX_STATES.Indeterminate
 
   return (
     <Panel className="rounded-md w-full shadow-sm">
@@ -35,7 +37,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({
           className="border-b"
           tableWrapperClassName="h-full"
           columns={columns}
-          dataSource={data || []}
+          dataSource={repos || []}
           responsive
           borderless
           checkable

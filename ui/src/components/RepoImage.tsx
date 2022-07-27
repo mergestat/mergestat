@@ -7,13 +7,13 @@ import type { RepoType } from 'src/@types'
 
 type RepoImagePropsT = {
   repoType?: RepoType
-  urlIcon?: string
+  orgName?: string
   size?: '10' | '8'
 }
 
 const RepoImage: React.FC<RepoImagePropsT> = ({
   repoType,
-  urlIcon,
+  orgName,
   size = '8',
 }) => {
   return (
@@ -24,7 +24,7 @@ const RepoImage: React.FC<RepoImagePropsT> = ({
     >
       {repoType === 'github' ? (
         <Image
-          src={`${urlIcon}`}
+          src={`https://github.com/${orgName}.png?size=40`}
           width={40}
           height={40}
           loader={({ src }) => `${src}?w=1&q=50`}

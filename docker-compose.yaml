@@ -46,6 +46,7 @@ services:
         "--append-plugins",
         "@graphile-contrib/pg-simplify-inflector",
         "--no-ignore-rbac",
+        "-o",
       ]
 
   grafana:

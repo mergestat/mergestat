@@ -10,13 +10,6 @@ const GET_REPOS = gql`
         createdAt
         isGithub
         tags
-        githubRepoInfo {
-          owner
-          name
-          openGraphImageUrl
-          updatedAt
-          homepageUrl
-        }
         repoSyncs {
           totalCount
           nodes {

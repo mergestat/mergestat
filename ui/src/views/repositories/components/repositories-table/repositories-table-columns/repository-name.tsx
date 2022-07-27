@@ -10,7 +10,6 @@ export type RepositoryNameProps = {
   type: RepoType
   lastUpdate: string
   automaticImport?: boolean
-  urlIcon: string
 }
 
 export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
@@ -25,9 +24,16 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
     }
   }
 
+  console.log("Name:")
+  console.table(props.name.split('/'))
+
   return (
     <div className="flex items-center gap-4 my-3 ml-6">
-      <RepoImage repoType={props.type} urlIcon={props.urlIcon} size="10" />
+      <RepoImage
+        repoType={props.type}
+        orgName={props.name.split('/')[0]}
+        size="10"
+      />
       <div>
         <Link href={`/repos/${props.name.replace('/', '-')}`}>
           <h4 className="font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600">
