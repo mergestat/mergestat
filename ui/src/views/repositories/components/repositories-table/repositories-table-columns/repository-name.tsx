@@ -24,9 +24,6 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
     }
   }
 
-  console.log("Name:")
-  console.table(props.name.split('/'))
-
   return (
     <div className="flex items-center gap-4 my-3 ml-6">
       <RepoImage
