@@ -1,65 +1,50 @@
 import React from 'react'
-import {
-  useRepositoriesContext,
-  useRepositoriesSetState,
-} from 'src/state/contexts/repositories.context'
-import {
-  EmptyRepositoryTable,
-  FilterHeader,
-  PageHeader,
-  RepositoriesTable,
-} from './components'
+import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
+import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { AddRepositoryModal } from './modals/add-repository-modal'
 import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
 import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
 import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
 
-import {
-  Button,
-  Toolbar
-} from '@mergestat/blocks'
+import { Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
+import Loading from 'src/components/Loading'
+import { useQuery } from '@apollo/client'
+import GET_REPOS from 'src/api-logic/graphql/queries/getRepos.query'
 
 export const RepositoriesView: React.FC = () => {
+  const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal }] = useRepositoriesContext()
 
-  {//- Todo replace with empty state logic //}
-  const isEmpty = true;
+  const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
 
-  const [{
-    showAddRepositoryModal,
-    showAutoImportModal,
-    showSyncRepoModal,
-  }] = useRepositoriesContext()
-
-  const {
-    setShowAutoImportModal,
-    setShowSyncRepoModal
-  } = useRepositoriesSetState()
+  const { loading, error, data } = useQuery(GET_REPOS)
 
   //- Todo: connect selectedRepositoriesCount from RepositoriesTable
-  const selectedRepositoriesCount: number = 0;
+  const selectedRepositoriesCount: number = 0
+
   return (
     <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">
       <div className="bg-white border-b border-gray-200">
         <PageHeader />
-        {!isEmpty && <FilterHeader />}
+        {data && <FilterHeader />}
       </div>
       <div className="flex-1 items-center p-8 overflow-auto">
-        {isEmpty && <EmptyRepositoryTable />}
-        {!isEmpty && <RepositoriesTable />}
+        {loading ? <Loading />
+          : (data ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
+        }
       </div>
 
-      {!isEmpty && (
+      {data && (
         <div className="bg-white h-14  border-t flex items-center px-8">
           <Toolbar>
             <Toolbar.Left>
               <Toolbar.Item className="mr-2">
                 <div className="flex items-center gap-6">
                   <p className="font-medium text-sm text-semantic-mutedText">
-                      {selectedRepositoriesCount} of {sampleRepositoriesData.length} {' '} repos selected
+                    {selectedRepositoriesCount} of{' '}
+                    {sampleRepositoriesData.length} repos selected
                   </p>
-
                 </div>
               </Toolbar.Item>
               <Toolbar.Item>
@@ -71,7 +56,7 @@ export const RepositoriesView: React.FC = () => {
                         startIcon={<RefreshIcon className="t-icon" />}
                         skin="secondary"
                         size="small"
-                        //disabled={selectedRepositoriesCount === 0}
+                      //disabled={selectedRepositoriesCount === 0}
                       >
                         Sync Data
                       </Button>
@@ -83,7 +68,7 @@ export const RepositoriesView: React.FC = () => {
                     startIcon={<PencilIcon className="t-icon" />}
                     skin="secondary"
                     size="small"
-                    //disabled={selectedRepositoriesCount === 0}
+                  //disabled={selectedRepositoriesCount === 0}
                   >
                     Edit Tags
                   </Button>
@@ -111,4 +96,4 @@ export const RepositoriesView: React.FC = () => {
       )}
     </main>
   )
-}}
+}

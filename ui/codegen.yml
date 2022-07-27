@@ -1,0 +1,10 @@
+overwrite: true
+schema: 'http://localhost:5433/graphql'
+documents: 'src/**/*.{ts,tsx}'
+generates:
+  src/api-logic/graphql/generated/schema.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+    config:
+      withHooks: false

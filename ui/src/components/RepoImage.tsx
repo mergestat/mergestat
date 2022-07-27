@@ -6,30 +6,33 @@ import { RepositoryIcon } from '@mergestat/icons'
 import type { RepoType } from 'src/@types'
 
 type RepoImagePropsT = {
-  repoType?: RepoType,
-  orgName?: string,
-  size?: '10' | '8',
+  repoType?: RepoType
+  orgName?: string
+  size?: '10' | '8'
 }
 
 const RepoImage: React.FC<RepoImagePropsT> = ({
   repoType,
   orgName,
-  size='8'
+  size = '8',
 }) => {
   return (
-    <ColoredBox size={size} skin="default" className={cx({ 'border border-gray-200': repoType === 'github' })}>
+    <ColoredBox
+      size={size}
+      skin="default"
+      className={cx({ 'border border-gray-200': repoType === 'github' })}
+    >
       {repoType === 'github' ? (
         <Image
           src={`https://github.com/${orgName}.png?size=40`}
           width={40}
           height={40}
           loader={({ src }) => `${src}?w=1&q=50`}
+          objectFit="contain"
           className="rounded"
         />
-
-
       ) : (
-        <RepositoryIcon className="t-icon text-semantic-icon"/>
+        <RepositoryIcon className="t-icon text-semantic-icon" />
       )}
     </ColoredBox>
   )

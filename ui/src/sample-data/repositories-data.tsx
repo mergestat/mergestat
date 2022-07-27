@@ -64,8 +64,6 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
       { title: 'ember', checked: true },
     ],
     lastSync: '1 hours ago',
-    status: [
-      { type: 'succeeded', count: 2 },
-    ],
+    status: [{ type: 'succeeded', count: 2 }],
   },
 ]

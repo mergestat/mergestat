@@ -1,9 +1,5 @@
 import { Tooltip } from '@mergestat/blocks'
-import {
-  AutoImportIcon,
-  GithubIcon,
-  RepositoryIcon,
-} from '@mergestat/icons'
+import { AutoImportIcon, GithubIcon, RepositoryIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import React from 'react'
 import type { RepoType } from 'src/@types'
@@ -22,9 +18,9 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
       case 'gitlab':
       case 'bitbucket':
       case 'other':
-        return <RepositoryIcon className='t-icon text-semantic-mutedIcon w-4' />
+        return <RepositoryIcon className="t-icon text-semantic-mutedIcon w-4" />
       default:
-        return <GithubIcon className='t-icon text-semantic-mutedIcon w-4' />
+        return <GithubIcon className="t-icon text-semantic-mutedIcon w-4" />
     }
   }
 
@@ -50,8 +46,11 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
           </div>
           {props.automaticImport && (
             <div className="border-l border-semantic-border px-2">
-              <Tooltip content="Auto imported from user-name" placement="bottom">
-                <AutoImportIcon className='t-icon text-semantic-mutedIcon w-4' />
+              <Tooltip
+                content="Auto imported from user-name"
+                placement="bottom"
+              >
+                <AutoImportIcon className="t-icon text-semantic-mutedIcon w-4" />
               </Tooltip>
             </div>
           )}
