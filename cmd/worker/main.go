@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	_ "net/http/pprof"
+	"net/url"
 	"os"
 	"os/signal"
 	"strconv"
@@ -17,6 +18,7 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
@@ -31,7 +33,9 @@ import (
 	_ "github.com/mergestat/mergestat/pkg/sqlite"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
+	"github.com/shurcooL/githubv4"
 	"go.riyazali.net/sqlite"
+	"golang.org/x/oauth2"
 )
 
 var (
@@ -40,7 +44,7 @@ var (
 	concurrencyEnv = os.Getenv("CONCURRENCY")
 )
 
-func repoLocator(cloneToken string) services.RepoLocator {
+func repoLocator() services.RepoLocator {
 	return options.RepoLocatorFn(func(ctx context.Context, path string) (*git.Repository, error) {
 		if path == "" {
 			return nil, fmt.Errorf("no repo supplied")
@@ -71,9 +75,26 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	var pool *pgxpool.Pool
 	var err error
-	if pool, err = pgxpool.Connect(ctx, postgresConnection); err != nil {
+	concurrency := 2
+	if concurrencyEnv != "" {
+		if concurrency, err = strconv.Atoi(concurrencyEnv); err != nil {
+			logger.Err(err).Msgf("could not parse CONCURRENCY env into an int: %s", concurrencyEnv)
+		}
+	}
+
+	// https://www.alexedwards.net/blog/change-url-query-params-in-go
+	var u *url.URL
+	if u, err = url.Parse(postgresConnection); err != nil {
+		logger.Err(err).Msgf("could not parse database connection string: %v", err)
+		os.Exit(1)
+	}
+	v := u.Query()
+	v.Add("pool_max_conns", strconv.Itoa(concurrency))
+	u.RawQuery = v.Encode()
+
+	var pool *pgxpool.Pool
+	if pool, err = pgxpool.Connect(ctx, u.String()); err != nil {
 		logger.Err(err).Msgf("could not connect to database: %v", err)
 		os.Exit(1)
 	}
@@ -138,26 +159,40 @@ func main() {
 		githubRequestMutex.Unlock()
 	}
 
-	// githubClientGetter := func() *githubv4.Client {
-	// 	httpClient := oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(
-	// 		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
-	// 	))
-	// 	httpClient.Transport = &mutexRoundTripper{}
-	// 	return githubv4.NewClient(httpClient)
-	// }
+	githubClientGetter := func() *githubv4.Client {
+		fuseSecret := os.Getenv("FUSE_SECRET")
+		row := pool.QueryRow(context.TODO(), "SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1", fuseSecret)
+		var credentials []byte
+		if err := row.Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+			logger.Err(err).Msgf("error retrieving GitHub PAT from database")
+		}
+
+		// default to GITHUB_TOKEN env var if nothing is in db
+		if credentials == nil {
+			logger.Info().Msg("no GitHub PAT found in DB, using GITHUB_TOKEN env")
+			credentials = []byte(os.Getenv("GITHUB_TOKEN"))
+		}
+
+		httpClient := oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: string(credentials)},
+		))
+		// httpClient.Transport = &mutexRoundTripper{}
+
+		return githubv4.NewClient(httpClient)
+	}
 
 	sqlite.Register(
 		extensions.RegisterFn(
 			options.WithExtraFunctions(),
-			options.WithRepoLocator(locator.CachedLocator(repoLocator(os.Getenv("GITHUB_TOKEN")))), // TODO figure out token situation
+			options.WithRepoLocator(locator.CachedLocator(repoLocator())),
 			options.WithGitHub(),
-			options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
+			// options.WithContextValue("githubToken", os.Getenv("GITHUB_TOKEN")),
 			options.WithContextValue("githubPerPage", os.Getenv("GITHUB_PER_PAGE")),
 			options.WithContextValue("githubRateLimit", os.Getenv("GITHUB_RATE_LIMIT")),
 			options.WithGitHubRateLimitHandler(ratelimitHandler),
 			options.WithGitHubPreRequestHook(githubPreRequestHook),
 			options.WithGitHubPostRequestHook(githubPostRequestHook),
-			// options.WithGitHubClientGetter(githubClientGetter),
+			options.WithGitHubClientGetter(githubClientGetter),
 			options.WithNPM(),
 			options.WithLogger(&l),
 		),
@@ -194,13 +229,6 @@ func main() {
 		defer wg.Done()
 		timeout.New(&logger, pool).Start(ctx, time.Minute)
 	}()
-
-	concurrency := 2
-	if concurrencyEnv != "" {
-		if concurrency, err = strconv.Atoi(concurrencyEnv); err != nil {
-			logger.Err(err).Msgf("could not parse CONCURRENCY env into an int: %s", concurrencyEnv)
-		}
-	}
 
 	go func() {
 		defer wg.Done()

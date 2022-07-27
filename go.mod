@@ -1,6 +1,6 @@
 module github.com/mergestat/fuse
 
-go 1.17
+go 1.18
 
 require (
 	github.com/jackc/pgtype v1.10.0
@@ -22,7 +22,9 @@ require (
 	github.com/libgit2/git2go/v33 v33.0.9
 	github.com/prometheus/client_golang v1.12.1
 	github.com/satori/go.uuid v1.2.0
+	github.com/shurcooL/githubv4 v0.0.0-20220115235240-a14260e6f8a2
 	go.riyazali.net/sqlite v0.0.0-20220326124836-471d5aaa9b7b
+	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5
 )
 
 require (
@@ -62,14 +64,12 @@ require (
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
-	github.com/shurcooL/githubv4 v0.0.0-20220115235240-a14260e6f8a2 // indirect
 	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect
 	github.com/xanzy/ssh-agent v0.3.1 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4 // indirect
 	golang.org/x/mod v0.5.1 // indirect
 	golang.org/x/net v0.0.0-20220412020605-290c469a71a5 // indirect
-	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5 // indirect
 	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
 	golang.org/x/term v0.0.0-20220411215600-e5f449aeb171 // indirect
 	golang.org/x/text v0.3.7 // indirect
