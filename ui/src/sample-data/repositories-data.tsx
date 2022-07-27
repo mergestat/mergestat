@@ -3,7 +3,6 @@ import type { RepoDataPropsT } from 'src/@types'
 export const sampleRepositoriesData: Array<RepoDataPropsT> = [
   {
     name: 'marko-js/repo1',
-    urlIcon: '',
     lastUpdate: 'Last updated today',
     type: 'github',
     automaticImport: true,
@@ -24,7 +23,6 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
   },
   {
     name: 'MithrilJS/mithril.js',
-    urlIcon: '',
     lastUpdate: 'Last updated yesterday',
     type: 'github',
     automaticImport: false,
@@ -42,7 +40,6 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
   },
   {
     name: 'angular/angular',
-    urlIcon: '',
     lastUpdate: 'Last updated yesterday',
     type: 'github',
     automaticImport: true,
@@ -59,7 +56,6 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
   },
   {
     name: 'emberjs/ember.js',
-    urlIcon: '',
     lastUpdate: 'Last updated 4 days ago',
     type: 'github',
     tags: [
