@@ -47,7 +47,7 @@ const getStatusFromRepo = (r: any, repoInfo: RepoDataPropsT): Array<RepoDataStat
   mapSyncs?.forEach((value, key) => {
     mappedSyncs.push({ type: key, count: value })
   })
-  repoInfo.lastSync = getTimeAgoFromNow(new Date(syncTypes[0].lastSync))
+  repoInfo.lastSync = syncTypes.length !== 0 ? getTimeAgoFromNow(new Date(syncTypes[0].lastSync)) : ''
 
   return mappedSyncs
 }
