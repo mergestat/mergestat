@@ -1,0 +1,30 @@
+services:
+  graphql:
+    restart: always
+    build:
+      context: ./graphql
+    depends_on:
+      - postgres
+    ports:
+      - 5433:5433
+    command:
+      - "--connection"
+      - "postgres://postgres:password@postgres:5432/postgres?sslmode=disable"
+      - "--port"
+      - "5433"
+      - "--schema"
+      - "mergestat,public"
+      - "--append-plugins"
+      - "@graphile-contrib/pg-simplify-inflector"
+      - "-o"
+      - "--subscriptions"
+      - "--watch"
+      - "--dynamic-json"
+      - "--no-setof-functions-contain-nulls"
+      - "--no-ignore-rbac"
+      - "--show-error-stack=json"
+      - "--extended-errors=hint,detail,errcode"
+      - "--enhance-graphiql"
+      - "--allow-explain"
+      - "--enable-query-batching"
+      - "--legacy-relations=omit"

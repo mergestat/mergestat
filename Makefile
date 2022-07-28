@@ -1,6 +1,6 @@
 TAGS = "static,system_libgit2"
 
-.PHONY: all vendor test vet lint lint-ci update
+.PHONY: all vendor test vet lint lint-ci update ui-dev
 
 all: clean worker
 
@@ -44,3 +44,6 @@ pkg/sqlite/sqlite3.c:
 	@-rm $(SQLITE_DOWNLOAD_DIR)/sqlite-amalgamation-3370000/shell.c
 	$(call log, $(CYAN), "moving to pkg/sqlite")
 	@mv $(SQLITE_DOWNLOAD_DIR)/sqlite-amalgamation-3370000/* pkg/sqlite
+
+ui-dev:
+	docker compose -f docker-compose.yaml -f docker-compose.ui-dev.yaml up
