@@ -44,7 +44,7 @@ module.exports = withBundleAnalyzer(
         {
           source: '/',
           destination: '/repos',
-          permanent: true,
+          permanent: false,
         },
       ]
     },
@@ -52,5 +52,6 @@ module.exports = withBundleAnalyzer(
     env: {
       POSTGRAPHILE_API: process.env.POSTGRAPHILE_API,
     },
+    output: 'standalone'
   })
 )

@@ -33,7 +33,35 @@ services:
       - postgres
     ports:
       - 5433:5433
-    command: ["--connection", "postgres://postgres:password@postgres:5432/postgres?sslmode=disable", "--port", "5433", "--schema", "mergestat,public", "--enhance-graphiql", "--allow-explain", "--append-plugins", "@graphile-contrib/pg-simplify-inflector", "--no-ignore-rbac", "-o"]
+    command:
+      - "--connection"
+      - "postgres://postgres:password@postgres:5432/postgres?sslmode=disable"
+      - "--port"
+      - "5433"
+      - "--schema"
+      - "mergestat,public"
+      - "--append-plugins"
+      - "@graphile-contrib/pg-simplify-inflector"
+      - "-o"
+      - "--subscriptions"
+      - "--retry-on-init-fail"
+      - "--dynamic-json"
+      - "--no-setof-functions-contain-nulls"
+      - "--no-ignore-rbac"
+      - "--extended-errors=errcode"
+      - "--disable-graphiql"
+      - "--enable-query-batching"
+      - "--disable-query-log"
+      - "--legacy-relations=omit"
+
+  ui:
+    restart: always
+    build:
+      context: ./ui
+    depends_on:
+      - graphql
+    ports:
+      - 3300:3000    
 
   grafana:
     image: grafana/grafana-oss:latest
