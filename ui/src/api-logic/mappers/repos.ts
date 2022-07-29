@@ -1,5 +1,5 @@
 import { RepoDataPropsT, RepoDataStatusT } from 'src/@types'
-import { getTimeAgoFromNow } from 'src/utils'
+import { getTimeAgoFromNow, mapToRepoSyncStateT } from 'src/utils'
 import { GetReposQuery } from '../graphql/generated/schema'
 
 /**
@@ -13,6 +13,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
   data?.repos?.nodes.forEach((r) => {
     // Consolidated Repo info
     let repoInfo: RepoDataPropsT = {
+      id: r?.id,
       name: r?.repo.replace('https://github.com/', '') || '',
       lastUpdate: getTimeAgoFromNow(new Date(r?.createdAt)) || '',
       lastSync: '',
@@ -64,25 +65,9 @@ const getSyncStatuses = (r: any, repoInfo: RepoDataPropsT): Array<RepoDataStatus
   })
 
   // 4. Is setted up last sync regarding sync status
-  repoInfo.lastSync = syncTypes.length !== 0 ? getTimeAgoFromNow(new Date(syncTypes[0].lastSync)) : ''
+  repoInfo.lastSync = syncTypes.length !== 0 ? syncTypes[0].lastSync : ''
 
   return mappedSyncs
-}
-
-/**
- * Method to map data base status to table status
- * @param status Data base status
- * @returns Table status (RepSyncStateT)
- */
-const mapToRepoSyncStateT = (status: string) => {
-  switch (status) {
-    case 'DONE':
-      return 'succeeded'
-    case 'RUNNING':
-      return 'running'
-    default:
-      return 'failed'
-  }
 }
 
 export { mapToRepoData }

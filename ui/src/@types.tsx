@@ -22,6 +22,7 @@ export type RepoDataStatusT = {
 export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
 export type RepoDataPropsT = {
+  id: string
   name: string
   lastUpdate: string
   type: RepoType
@@ -32,9 +33,16 @@ export type RepoDataPropsT = {
 }
 
 /** Repository Data Props Type */
+export type RepoSyncData = {
+  name: string
+  type: RepoType
+  syncs?: Array<RepoSyncDataType>
+}
+
 export type SyncStatusDataT = {
   value: number
   status: string
+  doneAt: string
 }
 
 export type RepoSyncDataType = {

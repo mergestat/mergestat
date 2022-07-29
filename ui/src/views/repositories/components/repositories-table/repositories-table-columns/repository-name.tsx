@@ -6,6 +6,7 @@ import type { RepoType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 
 export type RepositoryNameProps = {
+  id: string
   name: string
   type: RepoType
   lastUpdate: string
@@ -32,7 +33,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
         size="10"
       />
       <div>
-        <Link href={`/repos/${props.name.replace('/', '-')}`}>
+        <Link href={`/repos/${props.id}`}>
           <h4 className="font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600">
             {props.name}
           </h4>

@@ -7065,6 +7065,13 @@ export type UpdateSchemaMigrationPayloadSchemaMigrationEdgeArgs = {
   orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
 };
 
+export type GetRepoSyncsQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetRepoSyncsQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, isGithub?: boolean | null, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any, doneAt?: any | null } | null> } } | null> } } | null };
+
 export type GetReposQueryVariables = Exact<{ [key: string]: never; }>;
 
 
