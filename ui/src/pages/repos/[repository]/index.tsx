@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import Head from 'next/head'
 import RepoDataView from 'src/views/repository-data'
 import { useRouter } from 'next/router'
@@ -14,6 +14,7 @@ const RepoDetailsPage = () => {
 
   const { loading, error, data } = useQuery(GET_REPO_SYNCS, {
     variables: { id: repository },
+    pollInterval: 5000,
   })
 
   const repo = mapToSyncsData(data)
