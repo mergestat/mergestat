@@ -10,7 +10,7 @@ export type TimeAgoFieldProps = {
 }
 
 export const TimeAgoField: React.FC<TimeAgoFieldProps> = ({ date, syncData, extraStyles }) => {
-  const [dateRun, setDateRun] = useState<string>('')
+  const [dateRun, setDateRun] = useState<string>('N/A')
 
   const recalculateTimeAgo = () => {
     const timeAgo = getTimeAgoFromNow(new Date(date))
