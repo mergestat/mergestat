@@ -40,7 +40,7 @@ export const columns: Array<Record<string, any>> = [
       console.log(e)
     },
     render: (lastSync: string) => (
-      <span className="text-semantic-mutedText px-6">{lastSync}</span>
+      <span className="text-semantic-mutedText px-6">{lastSync || 'N/A'}</span>
     ),
   },
   {

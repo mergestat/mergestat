@@ -8,6 +8,7 @@ export type RepositoryStatusProps = {
 export const RepositoryStatus: React.FC<RepositoryStatusProps> = (props) => {
   return (
     <div className="flex items-center justify-end gap-2">
+      {props.status.length ? null : <span className="text-semantic-mutedText">No syncs</span>}
       {props.status.map((item, index) => (
         <RepoDataDropDown
           key={index}
