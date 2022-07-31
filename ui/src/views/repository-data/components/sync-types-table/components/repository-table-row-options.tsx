@@ -1,10 +1,10 @@
 import React from 'react'
 import { Button, Dropdown, Menu } from '@mergestat/blocks'
 import { DotsHorizontalIcon } from '@mergestat/icons'
-import { RepSyncStateT } from 'src/@types'
+import { RepoSyncStateT } from 'src/@types'
 
 export type RepositoryDetailsRowOptionsProps = {
-  state:RepSyncStateT
+  state: RepoSyncStateT
 }
 
 export const RepositoryTableRowOptions: React.FC<RepositoryDetailsRowOptionsProps> =
@@ -13,7 +13,7 @@ export const RepositoryTableRowOptions: React.FC<RepositoryDetailsRowOptionsProp
     return (
       <Dropdown
         alignEnd
-        trigger={<Button skin="borderless-muted" startIcon={<DotsHorizontalIcon className="t-icon" />}  isIconOnly/>}
+        trigger={<Button skin="borderless-muted" startIcon={<DotsHorizontalIcon className="t-icon" />} isIconOnly />}
         overlay={() => (
           <Menu className='whitespace-nowrap'>
             {(state === "disabled")

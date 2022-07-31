@@ -45,7 +45,7 @@ export function getTimeAgoFromNow(baseDate: Date): string {
 /**
  * Method to map data base status to table status
  * @param status Data base status
- * @returns Table status (RepSyncStateT)
+ * @returns Table status (RepoSyncStateT)
  */
 export function mapToRepoSyncStateT(status: string) {
   switch (status) {

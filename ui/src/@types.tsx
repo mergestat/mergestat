@@ -1,4 +1,4 @@
-export type RepSyncStateT =
+export type RepoSyncStateT =
   | 'disabled'
   | 'running'
   | 'succeeded'
@@ -15,7 +15,7 @@ export type TagType = {
 
 /** Repositories Data Props Type */
 export type RepoDataStatusT = {
-  type: RepSyncStateT
+  type: RepoSyncStateT
   count: number
 }
 
@@ -42,7 +42,7 @@ export type RepoSyncData = {
 export type SyncStatusDataT = {
   value: number
   status: string
-  doneAt: string
+  doneAt?: Date
 }
 
 export type RepoSyncDataType = {
@@ -53,7 +53,7 @@ export type RepoSyncDataType = {
   latestRun: string
   status: {
     data?: SyncStatusDataT[]
-    syncState: RepSyncStateT
+    syncState: RepoSyncStateT
   }
 }
 
@@ -61,7 +61,7 @@ export type RepoSyncDataType = {
 export type SyncLogsType = {
   id: string
   title: string
-  syncType: RepSyncStateT
+  syncType: RepoSyncStateT
   records?: number
   duration?: string
   syncStart: string

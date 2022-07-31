@@ -1,6 +1,6 @@
 import { differenceInSeconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, SyncStatusDataT } from 'src/@types'
-import { getTimeAgoFromNow, mapToRepoSyncStateT } from 'src/utils'
+import { mapToRepoSyncStateT } from 'src/utils'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
 /**
@@ -36,7 +36,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
       const queueData: SyncStatusDataT = {
         status: mapToRepoSyncStateT(q?.status || ''),
         value: differenceInSeconds(new Date(q?.doneAt), new Date(q?.createdAt)),
-        doneAt: q?.doneAt
+        doneAt: q?.doneAt ?? new Date(q?.doneAt)
       }
       syncData.status.data?.push(queueData)
     })

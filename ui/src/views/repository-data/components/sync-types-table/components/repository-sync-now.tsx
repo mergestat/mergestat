@@ -1,10 +1,10 @@
 import { Button, Spinner } from '@mergestat/blocks'
 import { RefreshIcon } from '@mergestat/icons'
 import React from 'react'
-import { RepSyncStateT } from 'src/@types'
+import { RepoSyncStateT } from 'src/@types'
 
 export type RepositorySyncNowProps = {
-  syncStatus: RepSyncStateT
+  syncStatus: RepoSyncStateT
   doSync?: () => void
 }
 

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BreadcrumbNav, Button, LogBox } from '@mergestat/blocks'
 import { DotsHorizontalIcon, ExternalLinkIcon } from '@mergestat/icons'
-import type { RepoType, RepSyncStateT, SyncLogsType } from 'src/@types'
+import type { RepoType, RepoSyncStateT, SyncLogsType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
@@ -16,7 +16,7 @@ export type RepoDataLogsDetailsProps = {
   },
   syncData: {
     title: string
-    syncState: RepSyncStateT,
+    syncState: RepoSyncStateT,
   },
   data: SyncLogsType,
 }
@@ -71,7 +71,7 @@ const RepoDataLogsDetailsView: React.FC<RepoDataLogsDetailsProps> =
 
         <div className="flex-1 overflow-auto p-8 space-y-8">
           <LogsInfo id={data.id} syncStart={data.syncStart} duration={data.syncStart} />
-          <LogBox logs={data.logs || []} onCopy={() => {}} />
+          <LogBox logs={data.logs || []} onCopy={() => { }} />
         </div>
       </main>
     )

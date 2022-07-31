@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import type { RepSyncStateT } from 'src/@types'
+import type { RepoSyncStateT } from 'src/@types'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
 export type SyncTypeProps = {
-  syncType: RepSyncStateT
+  syncType: RepoSyncStateT
   id: string
 }
 

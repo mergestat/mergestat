@@ -9,12 +9,12 @@ import {
   CircleCheckFilledIcon,
   CircleErrorFilledIcon,
 } from '@mergestat/icons'
-import { RepSyncStateT } from 'src/@types';
+import { RepoSyncStateT } from 'src/@types';
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon';
 
 type RepositoryDataProps = {
   data: Array<{ title: string; lastSync: string }>
-  status: RepSyncStateT
+  status: RepoSyncStateT
 }
 export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
   const { data, status } = props
@@ -47,7 +47,7 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
 }
 
 function getRepoStatusComponent(
-  status: RepSyncStateT,
+  status: RepoSyncStateT,
   count: number
 ): React.ReactNode {
   switch (status) {
@@ -71,21 +71,21 @@ const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = (props) => {
   if (!count) return <></>
   return (
     <Badge
-      label={''+ count}
+      label={'' + count}
       startIcon={<CircleCheckFilledIcon className="t-icon text-semantic-success" />}
       action={true}
     />
-    )
-  }
+  )
+}
 
-  const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
-    const { count } = props
-    return (
-      <Badge
-        label={''+ count}
-        startIcon={<Spinner size="sm" className="mr-2" />}
-        action={true}
-      />
+const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
+  const { count } = props
+  return (
+    <Badge
+      label={'' + count}
+      startIcon={<Spinner size="sm" className="mr-2" />}
+      action={true}
+    />
   )
 }
 
@@ -93,7 +93,7 @@ const RepositoryErrorStatus: React.FC<RepositoryStatusProps> = (props) => {
   const { count } = props
   return (
     <Badge
-      label={''+ count}
+      label={'' + count}
       startIcon={<CircleErrorFilledIcon className="t-icon text-semantic-danger" />}
       action={true}
     />

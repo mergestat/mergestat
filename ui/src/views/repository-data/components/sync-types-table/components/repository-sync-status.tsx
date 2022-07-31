@@ -4,7 +4,7 @@ import React, {
   useState,
 } from 'react'
 import type { SyncStatusDataT } from 'src/@types'
-import type { RepSyncStateT } from 'src/@types'
+import type { RepoSyncStateT } from 'src/@types'
 
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { getTimeAgoFromNow } from 'src/utils'
@@ -60,7 +60,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     data = data.slice(len - limit)
   }
 
-  const chartArray = Array.from({ length: 15 }, (x, i) => (i in data) ? data[i] : { value: 3, status: 'empty', doneAt: '' }).reverse()
+  const chartArray = Array.from({ length: 15 }, (x, i) => (i in data) ? data[i] : { value: 3, status: 'empty', doneAt: undefined }).reverse()
   const valueArray = chartArray.map((d: SyncStatusDataT) => d.value)
   const points = dataToPoints({ data: valueArray, limit, width, height, margin, max, min })
 
@@ -136,7 +136,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
           <div className="flex items-center">
             {(tooltipData?.status) && (
               <div className="mr-2">
-                <RepoSyncIcon type={tooltipData?.status as RepSyncStateT}
+                <RepoSyncIcon type={tooltipData?.status as RepoSyncStateT}
                 />
               </div>
             )}
@@ -144,7 +144,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
               <span className="font-medium text-white mb-0.5">{tooltipData?.status ? tooltipData?.status.charAt(0).toUpperCase() + tooltipData?.status.slice(1) : ''}</span>
               <div className="flex items-center">
                 <span className="text-sm border-r border-gray-600 mr-1.5 pr-1.5 leading-4">
-                  {tooltipData?.doneAt && tooltipData?.doneAt !== '' ? getTimeAgoFromNow(new Date(tooltipData?.doneAt)) : ''}
+                  {tooltipData?.doneAt ? getTimeAgoFromNow(new Date(tooltipData?.doneAt)) : ''}
                 </span>
                 <span className="text-sm">{tooltipData?.value} seg</span>
               </div>
