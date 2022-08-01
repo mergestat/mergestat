@@ -1,6 +1,7 @@
-export type RepSyncStateT =
+export type RepoSyncStateT =
   | 'disabled'
   | 'running'
+  | 'queued'
   | 'succeeded'
   | 'failed'
   | 'empty'
@@ -15,13 +16,14 @@ export type TagType = {
 
 /** Repositories Data Props Type */
 export type RepoDataStatusT = {
-  type: RepSyncStateT
+  type: RepoSyncStateT
   count: number
 }
 
 export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
 export type RepoDataPropsT = {
+  id: string
   name: string
   createdAt: Date
   type: RepoType
@@ -32,9 +34,17 @@ export type RepoDataPropsT = {
 }
 
 /** Repository Data Props Type */
+export type RepoSyncData = {
+  name: string
+  type: RepoType
+  syncs?: Array<RepoSyncDataType>
+}
+
 export type SyncStatusDataT = {
-  value: number
+  runningTime: number
+  runningTimeReadable: string
   status: string
+  doneAt?: Date
 }
 
 export type RepoSyncDataType = {
@@ -45,7 +55,7 @@ export type RepoSyncDataType = {
   latestRun: string
   status: {
     data?: SyncStatusDataT[]
-    syncState: RepSyncStateT
+    syncState: RepoSyncStateT
   }
 }
 
@@ -53,7 +63,7 @@ export type RepoSyncDataType = {
 export type SyncLogsType = {
   id: string
   title: string
-  syncType: RepSyncStateT
+  syncType: RepoSyncStateT
   records?: number
   duration?: string
   syncStart: string

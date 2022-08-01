@@ -1,5 +1,5 @@
 import React from 'react'
-import type { RepSyncStateT, SyncLogsType } from 'src/@types'
+import type { RepoSyncStateT, SyncLogsType } from 'src/@types'
 import { LogsTableRowOptions, SyncType } from './components'
 
 export const columns: Array<Record<string, any>> = [
@@ -8,7 +8,7 @@ export const columns: Array<Record<string, any>> = [
     className: 'py-3',
     dataIndex: 'syncType',
     key: 'syncType',
-    render: (syncType: RepSyncStateT, data: SyncLogsType) => (
+    render: (syncType: RepoSyncStateT, data: SyncLogsType) => (
       <SyncType id={data.id} syncType={syncType} />
     )
   },

@@ -1,14 +1,14 @@
 import { ApolloProvider } from '@apollo/client'
+import { useApollo } from 'lib/apollo'
 import type { AppProps } from 'next/app'
-import { getApolloClient } from 'src/api-logic/apollo/client'
 import LayoutWrapper from 'src/layouts/LayoutWrapper'
 import '../styles/globals.css'
 
-const client = getApolloClient()
-
 function MyApp({ Component, pageProps }: AppProps) {
+  const apolloClient = useApollo(pageProps.initialApolloState)
+
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       <LayoutWrapper {...pageProps}>
         <Component {...pageProps} />
       </LayoutWrapper>

@@ -4,11 +4,11 @@ import { formatDistance } from 'date-fns'
 export function checkRepoValidate(repo: string, checkDomain: boolean = true) {
   return checkDomain
     ? /((http|https):\/\/)?(www\.)?[a-z0-9\-\.]{3,}\.[a-zA-Z0-9]+[\/]{1,}.[^\/.*]/.test(
-        repo
-      )
+      repo
+    )
     : /(((http|https):\/\/)?(www\.)?[a-z0-9\-\.]{3,}\.)?[a-zA-Z0-9]+[\/]{1,}.[^\/.*]/.test(
-        repo
-      )
+      repo
+    )
 }
 
 export function getRepoFromUrl(url: string) {
@@ -30,8 +30,8 @@ export function selectAllState(data: Array<any>) {
   return selectedDataLen === 0
     ? CHECKBOX_STATES.Unchecked
     : selectedDataLen === data.length
-    ? CHECKBOX_STATES.Checked
-    : CHECKBOX_STATES.Indeterminate
+      ? CHECKBOX_STATES.Checked
+      : CHECKBOX_STATES.Indeterminate
 }
 
 export function getTimeAgoFromNow(baseDate: Date): string {
@@ -40,4 +40,26 @@ export function getTimeAgoFromNow(baseDate: Date): string {
   })
 
   return `${distance} ago`
+}
+
+/**
+ * Method to map data base status to table status
+ * @param status Data base status
+ * @returns Table status (RepoSyncStateT)
+ */
+export function mapToRepoSyncStateT(status: string) {
+  switch (status) {
+    case 'DONE':
+      return 'succeeded'
+    case 'RUNNING':
+      return 'running'
+    case 'QUEUED':
+      return 'queued'
+    case 'FAILED':
+      return 'failed'
+    case 'DISABLED':
+      return 'disabled'
+    default:
+      return 'empty'
+  }
 }

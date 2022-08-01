@@ -8,6 +8,7 @@ import { getTimeAgoFromNow } from 'src/utils'
 import { format } from 'date-fns'
 
 export type RepositoryNameProps = {
+  id: string
   name: string
   type: RepoType
   createdAt: Date
@@ -34,7 +35,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
         size="10"
       />
       <div>
-        <Link href={`/repos/${props.name.replace('/', '-')}`}>
+        <Link href={`/repos/${props.id}`}>
           <h4 className="font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600">
             {props.name}
           </h4>

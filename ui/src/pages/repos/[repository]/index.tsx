@@ -1,38 +1,31 @@
-import { Fragment } from 'react'
-import type { GetServerSidePropsContext } from 'next'
+import { Fragment, useState } from 'react'
 import Head from 'next/head'
-import type { RepoDataPropsT } from 'src/@types'
 import RepoDataView from 'src/views/repository-data'
+import { useRouter } from 'next/router'
+import { useQuery } from '@apollo/client'
+import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/getRepoSyncs.query'
+import { mapToSyncsData } from 'src/api-logic/mappers/repo-syncs'
+import Loading from 'src/components/Loading'
 
-import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
 
-const RepoDetailsPage = ({ repoData }: { repoData: RepoDataPropsT }) => {
+const RepoDetailsPage = () => {
+  const router = useRouter()
+  const { repository } = router.query
+
+  const { loading, error, data } = useQuery(GET_REPO_SYNCS, {
+    variables: { id: repository },
+  })
+
+  const repo = mapToSyncsData(data)
+
   return (
     <Fragment>
       <Head>
-        <title>MergeStat | {repoData.name}</title>
+        <title>MergeStat | {repo?.name}</title>
       </Head>
-      <RepoDataView data={repoData} />
+      {loading ? <Loading /> : <RepoDataView data={repo} />}
     </Fragment>
   )
-}
-
-export async function getServerSideProps({ params }: GetServerSidePropsContext) {
-  const repoData = sampleRepositoriesData.find(data =>
-    data.name.replace(/\//g, '-') === params?.repository)
-
-  if (!repoData) {
-    return {
-      redirect: {
-        destination: '/404',
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: { repoData },
-  }
 }
 
 export default RepoDetailsPage
