@@ -19,7 +19,7 @@ export const columns: Array<Record<string, any>> = [
       <RepositoryName
         name={name}
         type={data.type}
-        lastUpdate={data.lastUpdate}
+        createdAt={data.createdAt}
         automaticImport={data.automaticImport}
       />
     ),

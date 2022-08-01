@@ -14,7 +14,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
     // Consolidated Repo info
     let repoInfo: RepoDataPropsT = {
       name: r?.repo.replace('https://github.com/', '') || '',
-      lastUpdate: getTimeAgoFromNow(new Date(r?.createdAt)) || '',
+      createdAt: new Date(r?.createdAt),
       lastSync: '',
       type: r?.isGithub ? 'github' : 'other',
       tags: [],
