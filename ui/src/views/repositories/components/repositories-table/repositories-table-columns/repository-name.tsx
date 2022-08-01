@@ -4,11 +4,13 @@ import Link from 'next/link'
 import React from 'react'
 import type { RepoType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
+import { getTimeAgoFromNow } from 'src/utils'
+import { format } from 'date-fns'
 
 export type RepositoryNameProps = {
   name: string
   type: RepoType
-  lastUpdate: string
+  createdAt: Date
   automaticImport?: boolean
 }
 
@@ -39,7 +41,12 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
         </Link>
         <div className="flex items-center">
           <span className="pr-2 text-sm text-semantic-mutedText">
-            {props.lastUpdate}
+            <Tooltip
+              content={`Added ${format(props.createdAt, 'PPp')}`}
+              placement='bottom'
+            >
+              {getTimeAgoFromNow(props.createdAt)}
+            </Tooltip>
           </span>
           <div className="border-l border-semantic-border px-2">
             {repoTypeIcon()}

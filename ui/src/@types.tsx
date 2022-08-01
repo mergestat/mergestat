@@ -23,7 +23,7 @@ export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
 export type RepoDataPropsT = {
   name: string
-  lastUpdate: string
+  createdAt: Date
   type: RepoType
   automaticImport?: boolean
   tags: Array<{ title: string; checked: boolean }>
