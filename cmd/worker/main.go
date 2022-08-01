@@ -76,7 +76,7 @@ func main() {
 	defer stop()
 
 	var err error
-	concurrency := 2
+	concurrency := 1
 	if concurrencyEnv != "" {
 		if concurrency, err = strconv.Atoi(concurrencyEnv); err != nil {
 			logger.Err(err).Msgf("could not parse CONCURRENCY env into an int: %s", concurrencyEnv)
