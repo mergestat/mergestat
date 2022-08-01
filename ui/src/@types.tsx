@@ -40,7 +40,7 @@ export type RepoSyncData = {
 }
 
 export type SyncStatusDataT = {
-  value: number
+  runningTime: number
   status: string
   doneAt?: Date
 }

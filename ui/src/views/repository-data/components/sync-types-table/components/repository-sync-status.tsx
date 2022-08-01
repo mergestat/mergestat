@@ -60,8 +60,8 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     data = data.slice(len - limit)
   }
 
-  const chartArray = Array.from({ length: 15 }, (x, i) => (i in data) ? data[i] : { value: 3, status: 'empty', doneAt: undefined }).reverse()
-  const valueArray = chartArray.map((d: SyncStatusDataT) => d.value)
+  const chartArray = Array.from({ length: 15 }, (x, i) => (i in data) ? data[i] : { runningTime: 3, status: 'empty', doneAt: undefined }).reverse()
+  const valueArray = chartArray.map((d: SyncStatusDataT) => d.runningTime)
   const points = dataToPoints({ data: valueArray, limit, width, height, margin, max, min })
 
 
@@ -146,7 +146,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                 <span className="text-sm border-r border-gray-600 mr-1.5 pr-1.5 leading-4">
                   {tooltipData?.doneAt ? getTimeAgoFromNow(new Date(tooltipData?.doneAt)) : ''}
                 </span>
-                <span className="text-sm">{tooltipData?.value} seg</span>
+                <span className="text-sm">{tooltipData?.runningTime} seg</span>
               </div>
             </div>
           </div>

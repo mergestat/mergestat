@@ -35,7 +35,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     s?.repoSyncQueues.nodes.forEach((q) => {
       const queueData: SyncStatusDataT = {
         status: mapToRepoSyncStateT(q?.status || ''),
-        value: differenceInSeconds(new Date(q?.doneAt), new Date(q?.createdAt)),
+        runningTime: differenceInSeconds(new Date(q?.doneAt), new Date(q?.createdAt)),
         doneAt: q?.doneAt ?? new Date(q?.doneAt)
       }
       syncData.status.data?.push(queueData)
