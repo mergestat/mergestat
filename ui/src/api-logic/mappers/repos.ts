@@ -1,5 +1,6 @@
 import { RepoDataPropsT, RepoDataStatusT } from 'src/@types'
 import { getTimeAgoFromNow, mapToRepoSyncStateT } from 'src/utils'
+import { GITHUB_URL } from 'src/utils/constants'
 import { GetReposQuery } from '../graphql/generated/schema'
 
 /**
@@ -14,7 +15,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
     // Consolidated Repo info
     let repoInfo: RepoDataPropsT = {
       id: r?.id,
-      name: r?.repo.replace('https://github.com/', '') || '',
+      name: r?.repo.replace(GITHUB_URL, '') || '',
       createdAt: new Date(r?.createdAt),
       lastSync: '',
       type: r?.isGithub ? 'github' : 'other',

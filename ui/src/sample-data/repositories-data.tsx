@@ -2,6 +2,7 @@ import type { RepoDataPropsT } from 'src/@types'
 
 export const sampleRepositoriesData: Array<RepoDataPropsT> = [
   {
+    id: '1',
     name: 'marko-js/repo1',
     lastUpdate: 'Last updated today',
     type: 'github',
@@ -22,6 +23,7 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
     ],
   },
   {
+    id: '2',
     name: 'MithrilJS/mithril.js',
     lastUpdate: 'Last updated yesterday',
     type: 'github',
@@ -39,6 +41,7 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
     ],
   },
   {
+    id: '3',
     name: 'angular/angular',
     lastUpdate: 'Last updated yesterday',
     type: 'github',
@@ -55,6 +58,7 @@ export const sampleRepositoriesData: Array<RepoDataPropsT> = [
     ],
   },
   {
+    id: '4',
     name: 'emberjs/ember.js',
     lastUpdate: 'Last updated 4 days ago',
     type: 'github',

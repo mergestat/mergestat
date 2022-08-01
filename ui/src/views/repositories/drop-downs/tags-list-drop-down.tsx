@@ -49,18 +49,16 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
             />
           </div>
           {tags.slice(0, 7).map((tag, index) => (
-
-             <div className="t-menu-item my-0">
-             <Checkbox
-               className="cursor-pointer py-1.5"
-               label={tag.title}
-               checked={tag.checked}
-               onClick={() => handleCheck(tag.checked, index)}
-               onChange={(e) => {
-                 const checked = e.currentTarget.checked
-               }}
-
-             />
+            <div key={Math.random()} className="t-menu-item my-0">
+              <Checkbox
+                className="cursor-pointer py-1.5"
+                label={tag.title}
+                checked={tag.checked}
+                onClick={() => handleCheck(tag.checked, index)}
+                onChange={(e) => {
+                  const checked = e.currentTarget.checked
+                }}
+              />
             </div>
           ))}
           <div className="px-4 py-2">

@@ -20,8 +20,7 @@ const LogsDetailsPage = (props: RepoDataLogsDetailsProps) => {
 }
 
 export async function getServerSideProps({ params }: GetServerSidePropsContext) {
-  const repoData = sampleRepositoriesData.find(data =>
-    data.name.replace(/\//g, '-') === params?.repository)
+  const repoData = sampleRepositoriesData.find(data => data.id === '1')
 
   if (!repoData) {
     return {
@@ -32,8 +31,7 @@ export async function getServerSideProps({ params }: GetServerSidePropsContext) 
     }
   }
 
-  const dataType = sampleRepositoryData.find(d =>
-    d.data.title.replace(/ /g, '-') === params?.dataType)
+  const dataType = sampleRepositoryData.find(d => d.data.id === '1')
 
   if (!dataType) {
     return {
@@ -44,7 +42,7 @@ export async function getServerSideProps({ params }: GetServerSidePropsContext) 
     }
   }
 
-  const data = sampleData.find(d => d.id.replace(/ /g, '-') === params?.logID)
+  const data = sampleData.find(d => d.id === 'd41ffc09-5254-4fa8-adcf-5aa0b0a00955')
 
   if (!data) {
     return {

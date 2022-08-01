@@ -1,5 +1,6 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { formatDistance } from 'date-fns'
+import { RepoSyncStateT } from 'src/@types'
 
 export function checkRepoValidate(repo: string, checkDomain: boolean = true) {
   return checkDomain
@@ -47,7 +48,7 @@ export function getTimeAgoFromNow(baseDate: Date): string {
  * @param status Data base status
  * @returns Table status (RepoSyncStateT)
  */
-export function mapToRepoSyncStateT(status: string) {
+export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
   switch (status) {
     case 'DONE':
       return 'succeeded'

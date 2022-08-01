@@ -5,6 +5,7 @@ import { BreadcrumbNav } from '@mergestat/blocks'
 import { ExternalLinkIcon } from '@mergestat/icons'
 import type { RepoType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
+import { GITHUB_URL } from 'src/utils/constants'
 
 interface PageHeaderProps {
   name: string
@@ -22,7 +23,7 @@ export const PageHeader = ({ name, type }: PageHeaderProps) => {
       text: name,
       startIcon: <RepoImage repoType={type} orgName={name.split('/')[0]} />,
       endIcon: (
-        <Link href={type === 'github' ? 'https://github.com/' + name : name}>
+        <Link href={type === 'github' ? GITHUB_URL + name : name}>
           <a target='_blank'>
             <ExternalLinkIcon className='t-icon t-icon-small' />
           </a>

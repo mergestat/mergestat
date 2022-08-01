@@ -8,6 +8,7 @@ const GET_REPO_SYNCS = gql`
       isGithub
       repoSyncs {
         nodes {
+          id
           syncType
           repoSyncTypeBySyncType {
             description
@@ -16,7 +17,7 @@ const GET_REPO_SYNCS = gql`
             nodes {
               id
               status
-              createdAt
+              startedAt
               doneAt
             }
           }

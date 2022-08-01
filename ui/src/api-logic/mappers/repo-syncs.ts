@@ -1,6 +1,7 @@
 import { differenceInSeconds, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, SyncStatusDataT } from 'src/@types'
 import { mapToRepoSyncStateT } from 'src/utils'
+import { GITHUB_URL } from 'src/utils/constants'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
 /**
@@ -11,7 +12,7 @@ import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
   // General repo info 
   const repoData: RepoSyncData = {
-    name: data?.repo?.repo.replace('https://github.com/', '') || '',
+    name: data?.repo?.repo.replace(GITHUB_URL, '') || '',
     type: data?.repo?.isGithub ? 'github' : 'other',
   }
 
@@ -21,10 +22,11 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     // 1. Get sync info
     const syncData: RepoSyncDataType = {
       data: {
+        id: s.id,
         title: s?.syncType || '',
         brief: s?.repoSyncTypeBySyncType?.description || '',
       },
-      latestRun: s?.repoSyncQueues.nodes[0]?.createdAt,
+      latestRun: s?.repoSyncQueues.nodes[0]?.startedAt,
       status: {
         data: [],
         syncState: s?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(s?.repoSyncQueues.nodes[0]?.status || '') : 'empty',
@@ -35,9 +37,9 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     s?.repoSyncQueues.nodes.forEach((q) => {
       const queueData: SyncStatusDataT = {
         status: mapToRepoSyncStateT(q?.status || ''),
-        runningTime: differenceInSeconds(new Date(q?.doneAt), new Date(q?.createdAt)), // Determine chart height
+        runningTime: differenceInSeconds(new Date(q?.doneAt), new Date(q?.startedAt)), // Determine chart height
         runningTimeReadable: q?.doneAt ? formatDuration(intervalToDuration({
-          start: new Date(q?.createdAt),
+          start: new Date(q?.startedAt),
           end: new Date(q?.doneAt)
         })) : 'running',
         doneAt: q?.doneAt ?? new Date(q?.doneAt)

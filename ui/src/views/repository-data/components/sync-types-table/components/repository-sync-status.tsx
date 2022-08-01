@@ -1,5 +1,6 @@
 import React, {
   CSSProperties,
+  Fragment,
   useRef,
   useState,
 } from 'react'
@@ -167,7 +168,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
               color = statusColor(chartArray[i].status);
 
             return (
-              <>
+              <Fragment key={Math.random()}>
                 <defs>
                   <clipPath id={id}>
                     <rect
@@ -182,7 +183,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                 </defs>
                 <rect
                   key={i}
-                  clip-path={`url(#${id})`}
+                  clipPath={`url(#${id})`}
                   x={x}
                   y={y}
                   width={bar_width}
@@ -195,7 +196,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                   onMouseLeave={() => setActiveBar(null)}
                   className={tooltipData?.status !== "empty" ? "cursor-pointer" : ''}
                 />
-              </>
+              </Fragment>
             )
           })}
         </g>
