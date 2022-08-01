@@ -82,7 +82,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                           id={repo.id}
                           name={repo.name}
                           type={repo.type}
-                          lastUpdate={repo.lastUpdate}
+                          createdAt={repo.createdAt}
                           automaticImport={repo.automaticImport}
                         />
                       </td>
