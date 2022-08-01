@@ -1,4 +1,4 @@
-import { differenceInSeconds } from 'date-fns'
+import { differenceInSeconds, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, SyncStatusDataT } from 'src/@types'
 import { mapToRepoSyncStateT } from 'src/utils'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
@@ -35,7 +35,11 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     s?.repoSyncQueues.nodes.forEach((q) => {
       const queueData: SyncStatusDataT = {
         status: mapToRepoSyncStateT(q?.status || ''),
-        runningTime: differenceInSeconds(new Date(q?.doneAt), new Date(q?.createdAt)),
+        runningTime: differenceInSeconds(new Date(q?.doneAt), new Date(q?.createdAt)), // Determine chart height
+        runningTimeReadable: formatDuration(intervalToDuration({
+          start: new Date(q?.createdAt),
+          end: new Date(q?.doneAt)
+        })),
         doneAt: q?.doneAt ?? new Date(q?.doneAt)
       }
       syncData.status.data?.push(queueData)

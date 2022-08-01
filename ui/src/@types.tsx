@@ -41,6 +41,7 @@ export type RepoSyncData = {
 
 export type SyncStatusDataT = {
   runningTime: number
+  runningTimeReadable: string
   status: string
   doneAt?: Date
 }
