@@ -5,6 +5,7 @@ import {
   CircleCheckFilledIcon,
   CircleErrorFilledIcon,
   CircleInformationFilledIcon,
+  ClockIcon,
 } from '@mergestat/icons'
 import type { RepoSyncStateT } from 'src/@types'
 
@@ -21,8 +22,11 @@ export const RepoSyncIcon = ({ type, className = "" }: RepoSyncIconPropsT) => {
       return <CircleCheckFilledIcon className={cx('t-icon text-semantic-success', { [className]: className !== "" })} />
     case 'failed':
       return <CircleErrorFilledIcon className={cx('t-icon text-semantic-danger', { [className]: className !== "" })} />
+    case 'queued':
+      return <ClockIcon className={cx('t-icon text-semantic-mutedIcon', { [className]: className !== "" })} />
     case 'running':
-    default:
       return <Spinner size="sm" className={className} />
+    default:
+      return <></>
   }
 }

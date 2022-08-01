@@ -53,7 +53,13 @@ export function mapToRepoSyncStateT(status: string) {
       return 'succeeded'
     case 'RUNNING':
       return 'running'
-    default:
+    case 'QUEUED':
+      return 'queued'
+    case 'FAILED':
       return 'failed'
+    case 'DISABLED':
+      return 'disabled'
+    default:
+      return 'empty'
   }
 }

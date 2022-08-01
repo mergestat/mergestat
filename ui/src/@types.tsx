@@ -1,6 +1,7 @@
 export type RepoSyncStateT =
   | 'disabled'
   | 'running'
+  | 'queued'
   | 'succeeded'
   | 'failed'
   | 'empty'
