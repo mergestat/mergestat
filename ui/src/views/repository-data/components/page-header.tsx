@@ -15,7 +15,7 @@ export const PageHeader = ({ name, type }: PageHeaderProps) => {
   const router = useRouter()
   const crumbs = [
     {
-      text: "Repo",
+      text: "Repositories",
       onClick: () => router.push('/repos'),
     },
     {
