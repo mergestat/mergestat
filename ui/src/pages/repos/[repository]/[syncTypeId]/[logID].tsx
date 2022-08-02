@@ -11,10 +11,10 @@ import { showErrorAlert } from 'src/utils/alerts'
 
 const LogsDetailsPage = () => {
   const router = useRouter()
-  const { repository, syncTypeID, logID } = router.query
+  const { repository, syncTypeId, logID } = router.query
 
   const { loading, error, data } = useQuery(GET_LOGS_OF_A_SYNC, {
-    variables: { repoId: repository, syncId: syncTypeID, logId: logID },
+    variables: { repoId: repository, syncId: syncTypeId, logId: logID },
     pollInterval: 5000,
   })
 

@@ -11,10 +11,10 @@ import { showErrorAlert } from 'src/utils/alerts'
 
 const DataTypePage = () => {
   const router = useRouter()
-  const { repository, syncTypeID } = router.query
+  const { repository, syncTypeId } = router.query
 
   const { loading, error, data } = useQuery(GET_SYNC_HISTORY_LOGS, {
-    variables: { repoId: repository, syncId: syncTypeID },
+    variables: { repoId: repository, syncId: syncTypeId },
     pollInterval: 5000,
   })
 
