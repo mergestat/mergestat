@@ -18,7 +18,9 @@ export const RepositoriesView: React.FC = () => {
 
   const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
 
-  const { loading, error, data } = useQuery(GET_REPOS)
+  const { loading, error, data } = useQuery(GET_REPOS, {
+    pollInterval: 5000,
+  })
 
   //- Todo: connect selectedRepositoriesCount from RepositoriesTable
   const selectedRepositoriesCount: number = 0
