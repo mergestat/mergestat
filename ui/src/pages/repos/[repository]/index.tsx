@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client'
 import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/get-repo-syncs.query'
 import { mapToSyncsData } from 'src/api-logic/mappers/repo-syncs'
 import Loading from 'src/components/Loading'
+import { showErrorAlert } from 'src/utils/alerts'
 
 
 const RepoDetailsPage = () => {
@@ -18,6 +19,10 @@ const RepoDetailsPage = () => {
   })
 
   const repo = mapToSyncsData(data)
+
+  if (error) {
+    showErrorAlert(error.message)
+  }
 
   return (
     <Fragment>
