@@ -1,5 +1,5 @@
 import { RepoDataPropsT, RepoDataStatusT } from 'src/@types'
-import { getTimeAgoFromNow, mapToRepoSyncStateT } from 'src/utils'
+import { mapToRepoSyncStateT } from 'src/utils'
 import { GITHUB_URL } from 'src/utils/constants'
 import { GetReposQuery } from '../graphql/generated/schema'
 

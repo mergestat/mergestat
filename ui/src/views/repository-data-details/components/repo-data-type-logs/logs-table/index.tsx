@@ -88,7 +88,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                         </td>
 
                         <td className='text-gray-500'>
-                          <TimeAgoField date={log.syncStart} extraStyles={'text-semantic-mutedText'} />
+                          <TimeAgoField date={log.syncStart} styles={'text-semantic-mutedText'} />
                         </td>
 
                         <td className='text-gray-500 mx-6'>

@@ -1,6 +1,6 @@
-import { differenceInSeconds, lightFormat } from 'date-fns'
+import { lightFormat } from 'date-fns'
 import { SyncLogsType, SyncTypeData } from 'src/@types'
-import { getTimeAgoFromNow, mapToRepoSyncStateT } from 'src/utils'
+import { getSimpleDurationTime, mapToRepoSyncStateT } from 'src/utils'
 import { DATE_FORMAT, GITHUB_URL } from 'src/utils/constants'
 import { GetSyncHistoryLogsQuery } from '../graphql/generated/schema'
 
@@ -23,7 +23,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
   data?.repo?.repoSyncs.nodes.forEach((s) => {
     const syncInfo = {
       id: s.id,
-      title: s?.syncType || '',
+      title: s?.syncType.replaceAll('_', ' ') || '',
       brief: s?.repoSyncTypeBySyncType?.description || '',
       syncState: s?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(s?.repoSyncQueues.nodes[0]?.status || '') : 'empty',
     }
@@ -38,7 +38,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
         title: s?.syncType || '',
         syncType: q.status ? mapToRepoSyncStateT(q.status) : 'empty',
         records: q.repoSyncLogs.totalCount,
-        duration: `${differenceInSeconds(new Date(q?.doneAt), new Date(q?.startedAt))}s`,
+        duration: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : 'running',
         syncStart: q?.startedAt,
       }
 

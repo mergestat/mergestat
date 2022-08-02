@@ -3,10 +3,11 @@ import Head from 'next/head'
 import RepoDataTypeView from 'src/views/repository-data-details'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
-import GET_SYNC_HISTORY_LOGS from 'src/api-logic/graphql/queries/getSyncHistoryLogs.query'
+import { GET_SYNC_HISTORY_LOGS } from 'src/api-logic/graphql/queries/get-sync-history-logs.query'
 import { mapToSyncLogsData } from 'src/api-logic/mappers/syncs-logs'
 import Loading from 'src/components/Loading'
 import { SyncTypeData } from 'src/@types'
+import { showErrorAlert } from 'src/utils/alerts'
 
 const DataTypePage = () => {
   const router = useRouter()
@@ -18,6 +19,10 @@ const DataTypePage = () => {
   })
 
   const repoData: SyncTypeData = mapToSyncLogsData(data)
+
+  if (error) {
+    showErrorAlert(error.message)
+  }
 
   return (
     <Fragment>

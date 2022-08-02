@@ -6,10 +6,10 @@ import { getTimeAgoFromNow } from 'src/utils'
 export type TimeAgoFieldProps = {
   date: string,
   syncData?: RepoSyncDataType,
-  extraStyles?: string
+  styles?: string
 }
 
-export const TimeAgoField: React.FC<TimeAgoFieldProps> = ({ date, syncData, extraStyles }) => {
+export const TimeAgoField: React.FC<TimeAgoFieldProps> = ({ date, syncData, styles }) => {
   const [dateRun, setDateRun] = useState<string>('N/A')
 
   const recalculateTimeAgo = () => {
@@ -27,11 +27,7 @@ export const TimeAgoField: React.FC<TimeAgoFieldProps> = ({ date, syncData, extr
   }, [])
 
   return (
-    <div
-      className={cx("text-semantic-mutedText", extraStyles, {
-        'bg-gray-50': syncData?.status.syncState === 'disabled'
-      })}
-    >
+    <div className={cx(styles, { 'bg-gray-50': syncData?.status.syncState === 'disabled' })}>
       {dateRun}
     </div>
   )

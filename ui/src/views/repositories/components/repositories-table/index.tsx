@@ -92,7 +92,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                       </td>
 
                       <td className='h-20'>
-                        <TimeAgoField date={repo.lastSync} extraStyles={'px-6'} />
+                        <TimeAgoField date={repo.lastSync} styles={'text-semantic-mutedText px-6'} />
                       </td>
 
                       <td className='h-20'>

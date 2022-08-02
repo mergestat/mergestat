@@ -11,13 +11,14 @@ export type SyncTypeProps = {
 
 export const SyncType: React.FC<SyncTypeProps> = (props) => {
   const { syncType, id } = props
+
   const router = useRouter()
-  const { repository, dataType } = router.query
+  const { repository, syncTypeId } = router.query
 
   return (
     <div className="flex gap-2 items-center pl-6">
       <RepoSyncIcon type={syncType} />
-      <Link href={`/repos/${repository}/${dataType}/${id}`}>
+      <Link href={`/repos/${repository}/${syncTypeId}/${id}`}>
         <a className="font-medium hover_text-blue-600 text-semantic-text capitalize">
           {syncType}
         </a>

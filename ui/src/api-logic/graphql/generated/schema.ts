@@ -9104,3 +9104,12 @@ export type GetSyncHistoryLogsQueryVariables = Exact<{
 
 
 export type GetSyncHistoryLogsQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, isGithub?: boolean | null, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', id: any, syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, repoSyncLogs: { __typename?: 'RepoSyncLogsConnection', totalCount: number, nodes: Array<{ __typename?: 'RepoSyncLog', logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+
+export type GetLogsOfSyncQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+  logId: Scalars['BigInt'];
+}>;
+
+
+export type GetLogsOfSyncQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', id: any, syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, repoSyncLogs: { __typename?: 'RepoSyncLogsConnection', totalCount: number, nodes: Array<{ __typename?: 'RepoSyncLog', logType: string, message: string, createdAt: any }> } }> } }> } } | null };

@@ -70,7 +70,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnType
                       </td>
 
                       <td className='text-gray-500 h-20 p-0'>
-                        <TimeAgoField date={sync.latestRun} syncData={sync} extraStyles={'h-full leading-20'} />
+                        <TimeAgoField date={sync.latestRun} syncData={sync} styles={'text-semantic-mutedText h-full leading-20'} />
                       </td>
 
                       <td className='text-gray-500 h-20 p-0'>

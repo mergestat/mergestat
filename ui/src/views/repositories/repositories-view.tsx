@@ -11,7 +11,8 @@ import { Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 import Loading from 'src/components/Loading'
 import { useQuery } from '@apollo/client'
-import GET_REPOS from 'src/api-logic/graphql/queries/getRepos.query'
+import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
+import { showErrorAlert } from 'src/utils/alerts'
 
 export const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal }] = useRepositoriesContext()
@@ -24,6 +25,10 @@ export const RepositoriesView: React.FC = () => {
 
   //- Todo: connect selectedRepositoriesCount from RepositoriesTable
   const selectedRepositoriesCount: number = 0
+
+  if (error) {
+    showErrorAlert(error.message)
+  }
 
   return (
     <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">

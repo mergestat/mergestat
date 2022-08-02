@@ -3,7 +3,7 @@ import Head from 'next/head'
 import RepoDataView from 'src/views/repository-data'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
-import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/getRepoSyncs.query'
+import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/get-repo-syncs.query'
 import { mapToSyncsData } from 'src/api-logic/mappers/repo-syncs'
 import Loading from 'src/components/Loading'
 
