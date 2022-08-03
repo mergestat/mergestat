@@ -1,5 +1,5 @@
 import { LogBox, Panel } from '@mergestat/blocks'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { SyncLogsType } from 'src/@types'
 import { LogsTableRowOptions, SyncType } from './components'
 import { CaretDownIcon, CaretRightIcon } from '@mergestat/icons'
@@ -10,13 +10,19 @@ interface LogsTableProps {
   children?: React.ReactNode
 }
 
+const remap = (logs: Array<SyncLogsType>, previousData?: Array<SyncLogsType>): Array<SyncLogsType> => {
+  return logs.map((log) => ({
+    ...log,
+    ...{ collapsed: previousData ? previousData.find(d => d.id === log.id)?.collapsed : false },
+  }))
+}
+
 export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) => {
-  const [data, setData] = useState(
-    logs.map((data) => ({
-      ...data,
-      ...{ collapsed: false },
-    }))
-  );
+  const [data, setData] = useState(remap(logs));
+
+  useEffect(() => {
+    setData(remap(logs, data))
+  }, [logs])
 
   const onRowClick = (index: number) => {
     data[index].collapsed = !data[index].collapsed;
