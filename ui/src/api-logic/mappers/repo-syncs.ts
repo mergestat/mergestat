@@ -37,7 +37,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     s?.repoSyncQueues.nodes.forEach((q) => {
       const queueData: SyncStatusDataT = {
         status: mapToRepoSyncStateT(q?.status || ''),
-        runningTime: differenceInSeconds(new Date(q?.doneAt), new Date(q?.startedAt)), // Determine chart height
+        runningTime: q?.doneAt ? differenceInSeconds(new Date(q?.doneAt), new Date(q?.startedAt)) : 0, // Determine chart height
         runningTimeReadable: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : 'running',
         doneAt: q?.doneAt ?? new Date(q?.doneAt)
       }
