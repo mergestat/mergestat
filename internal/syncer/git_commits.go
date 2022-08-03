@@ -96,6 +96,39 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return err
 	}
 
+	commits := make([]*commit, 0)
+
+	walk, err := repo.Walk()
+	if err != nil {
+		return err
+	}
+	defer walk.Free()
+
+	if err := walk.PushHead(); err != nil {
+		return err
+	}
+
+	if err := walk.Iterate(func(c *libgit2.Commit) bool {
+		defer c.Free()
+
+		var r *commit
+		r.Hash = sql.NullString{String: c.Id().String(), Valid: true}
+		r.Message = sql.NullString{String: c.Message(), Valid: true}
+		r.AuthorName = sql.NullString{String: c.Author().Name, Valid: true}
+		r.AuthorEmail = sql.NullString{String: c.Author().Email, Valid: true}
+		r.AuthorWhen = sql.NullTime{Time: c.Author().When, Valid: true}
+		r.CommitterName = sql.NullString{String: c.Committer().Name, Valid: true}
+		r.CommitterEmail = sql.NullString{String: c.Committer().Email, Valid: true}
+		r.CommitterWhen = sql.NullTime{Time: c.Committer().When, Valid: true}
+		r.Parents = sql.NullInt32{Int32: int32(c.ParentCount()), Valid: true}
+
+		commits = append(commits, r)
+
+		return true
+	}); err != nil {
+		return err
+	}
+
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return err
@@ -112,57 +145,11 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return err
 	}
 
-	// TODO(patrickdevivo) make batch size configurable?
-	batchSize := 500
-	batch := make([]*commit, 0, batchSize)
-	totalCount := 0
-
-	walk, err := repo.Walk()
-	if err != nil {
-		return err
-	}
-	defer walk.Free()
-
-	if err := walk.PushHead(); err != nil {
-		return err
+	if err := w.sendBatchCommits(ctx, tx, j, commits); err != nil {
+		return fmt.Errorf("send batch commits: %w", err)
 	}
 
-	if err := walk.Iterate(func(c *libgit2.Commit) bool {
-		defer c.Free()
-		totalCount++
-
-		var r commit
-		r.Hash = sql.NullString{String: c.Id().String(), Valid: true}
-		r.Message = sql.NullString{String: c.Message(), Valid: true}
-		r.AuthorName = sql.NullString{String: c.Author().Name, Valid: true}
-		r.AuthorEmail = sql.NullString{String: c.Author().Email, Valid: true}
-		r.AuthorWhen = sql.NullTime{Time: c.Author().When, Valid: true}
-		r.CommitterName = sql.NullString{String: c.Committer().Name, Valid: true}
-		r.CommitterEmail = sql.NullString{String: c.Committer().Email, Valid: true}
-		r.CommitterWhen = sql.NullTime{Time: c.Committer().When, Valid: true}
-		r.Parents = sql.NullInt32{Int32: int32(c.ParentCount()), Valid: true}
-
-		if len(batch) >= batchSize {
-			if err := w.sendBatchCommits(ctx, tx, j, batch); err != nil {
-				return false
-			}
-			batch = make([]*commit, 0, batchSize)
-		} else {
-			batch = append(batch, &r)
-		}
-
-		return true
-	}); err != nil {
-		return err
-	}
-
-	if len(batch) > 0 {
-		if err := w.sendBatchCommits(ctx, tx, j, batch); err != nil {
-			return fmt.Errorf("send batch commits: %w", err)
-		}
-	}
-
-	l.Info().Msgf("sent batch of %d commits", totalCount)
+	l.Info().Msgf("sent batch of %d commits", len(commits))
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err
