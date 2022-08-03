@@ -9,14 +9,11 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/jmoiron/sqlx"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
 
 const (
-	issuesFullSyncDays = 90 // 90 days
-
 	selectGitHubRepoIssues = `SELECT * FROM github_repo_issues(?) ORDER BY created_at DESC`
 )
 
@@ -146,60 +143,22 @@ func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJo
 		}
 	}()
 
-	// delete the recent rows within days for github_issues in PG
-	sql := fmt.Sprintf("DELETE FROM github_issues WHERE repo_id = $1 and created_at > (now() - interval '%d day');", issuesFullSyncDays)
-	if res, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
+	if res, err := tx.Exec(ctx, "DELETE FROM github_issues WHERE repo_id = $1;", j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
 	} else {
 		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
 	}
 
-	sql = "SELECT database_id FROM github_issues WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
-	var databaseId int
-	if err := tx.QueryRow(ctx, sql, id.String()).Scan(&databaseId); err != nil {
-		if !errors.Is(err, pgx.ErrNoRows) {
-			return fmt.Errorf("query row: %w", err)
-		}
-	}
-
-	var rows *sqlx.Rows
-	if rows, err = w.mergestat.QueryxContext(ctx, selectGitHubRepoIssues, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
+	issues := make([]*githubRepoIssue, 0)
+	if err = w.mergestat.SelectContext(ctx, &issues, selectGitHubRepoIssues, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
 		return fmt.Errorf("mergestat query: %w", err)
 	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			w.logger.Err(err).Msgf("close rows: %v", err)
-		}
-	}()
 
-	batchSize := 500
-	batch := make([]*githubRepoIssue, 0, batchSize)
-	totalCount := 0
-	for rows.Next() {
-		var r githubRepoIssue
-		if err := rows.StructScan(&r); err != nil {
-			return fmt.Errorf("row scan: %w", err)
-		}
-		if len(batch) >= batchSize {
-			if err := w.sendBatchGitHubRepoIssues(ctx, tx, id, batch); err != nil {
-				return fmt.Errorf("batch insert issues: %w", err)
-			}
-			batch = make([]*githubRepoIssue, 0, batchSize)
-		} else {
-			if *r.DatabaseID == databaseId {
-				break
-			}
-			batch = append(batch, &r)
-		}
-		totalCount++
-	}
-	if len(batch) > 0 {
-		if err := w.sendBatchGitHubRepoIssues(ctx, tx, id, batch); err != nil {
-			return fmt.Errorf("batch insert issues: %w", err)
-		}
+	if err := w.sendBatchGitHubRepoIssues(ctx, tx, id, issues); err != nil {
+		return fmt.Errorf("insert issues: %w", err)
 	}
 
-	l.Info().Msgf("retrieved repo issues: %d", totalCount)
+	l.Info().Msgf("retrieved repo issues: %d", len(issues))
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)

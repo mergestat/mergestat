@@ -9,14 +9,11 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/jmoiron/sqlx"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
 
 const (
-	reviewsFullSyncDays = 90 // 90 days
-
 	selectGitHubPRReviews = `SELECT github_prs.number AS pr_number, github_pr_reviews.* FROM github_prs(?), github_pr_reviews(?, github_prs.number) ORDER BY github_pr_reviews.created_at DESC`
 )
 
@@ -131,59 +128,22 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 	}()
 
 	// delete the recent rows within days for github_pull_request_reviews in PG
-	sql := fmt.Sprintf("DELETE FROM github_pull_request_reviews WHERE repo_id = $1 and created_at > (now() - interval '%d day');", reviewsFullSyncDays)
-	if res, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
+	if res, err := tx.Exec(ctx, "DELETE FROM github_pull_request_reviews WHERE repo_id = $1);", j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
 	} else {
 		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
 	}
 
-	sql = "SELECT id FROM github_pull_request_reviews WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
-	var reviewId string
-	if err := tx.QueryRow(ctx, sql, id.String()).Scan(&reviewId); err != nil {
-		if !errors.Is(err, pgx.ErrNoRows) {
-			return fmt.Errorf("query row: %w", err)
-		}
-	}
-
-	var rows *sqlx.Rows
-	if rows, err = w.mergestat.QueryxContext(ctx, selectGitHubPRReviews, repoFullName, repoFullName); err != nil {
+	reviews := make([]*githubPRReview, 0)
+	if err = w.mergestat.SelectContext(ctx, &reviews, selectGitHubPRReviews, repoFullName, repoFullName); err != nil {
 		return fmt.Errorf("mergestat query: %w", err)
 	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			w.logger.Err(err).Msgf("close rows: %v", err)
-		}
-	}()
 
-	batchSize := 500
-	batch := make([]*githubPRReview, 0, batchSize)
-	totalCount := 0
-	for rows.Next() {
-		var r githubPRReview
-		if err := rows.StructScan(&r); err != nil {
-			return fmt.Errorf("row scan: %w", err)
-		}
-		if len(batch) >= batchSize {
-			if err := w.sendBatchGitHubPRReviews(ctx, tx, id, batch); err != nil {
-				return fmt.Errorf("batch insert pr reviews: %w", err)
-			}
-			batch = make([]*githubPRReview, 0, batchSize)
-		} else {
-			if *r.ID == reviewId {
-				break
-			}
-			batch = append(batch, &r)
-		}
-		totalCount++
-	}
-	if len(batch) > 0 {
-		if err := w.sendBatchGitHubPRReviews(ctx, tx, id, batch); err != nil {
-			return fmt.Errorf("batch insert pr reviews: %w", err)
-		}
+	if err := w.sendBatchGitHubPRReviews(ctx, tx, id, reviews); err != nil {
+		return fmt.Errorf("insert pr reviews: %w", err)
 	}
 
-	l.Info().Msgf("retrieved PR review: %d", totalCount)
+	l.Info().Msgf("retrieved PR reviews: %d", len(reviews))
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)
