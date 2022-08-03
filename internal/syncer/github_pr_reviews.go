@@ -115,6 +115,11 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 	repoName := components[2]
 	repoFullName := fmt.Sprintf("%s/%s", repoOwner, repoName)
 
+	reviews := make([]*githubPRReview, 0)
+	if err = w.mergestat.SelectContext(ctx, &reviews, selectGitHubPRReviews, repoFullName, repoFullName); err != nil {
+		return fmt.Errorf("mergestat query: %w", err)
+	}
+
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -127,16 +132,10 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 		}
 	}()
 
-	// delete the recent rows within days for github_pull_request_reviews in PG
-	if res, err := tx.Exec(ctx, "DELETE FROM github_pull_request_reviews WHERE repo_id = $1);", j.RepoID.String()); err != nil {
+	if res, err := tx.Exec(ctx, "DELETE FROM github_pull_request_reviews WHERE repo_id = $1;", j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
 	} else {
 		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
-	}
-
-	reviews := make([]*githubPRReview, 0)
-	if err = w.mergestat.SelectContext(ctx, &reviews, selectGitHubPRReviews, repoFullName, repoFullName); err != nil {
-		return fmt.Errorf("mergestat query: %w", err)
 	}
 
 	if err := w.sendBatchGitHubPRReviews(ctx, tx, id, reviews); err != nil {

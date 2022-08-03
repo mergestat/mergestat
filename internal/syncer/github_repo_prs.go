@@ -182,6 +182,11 @@ func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRo
 	repoOwner := components[1]
 	repoName := components[2]
 
+	prs := make([]*githubRepoPR, 0)
+	if err = w.mergestat.SelectContext(ctx, &prs, selectGitHubRepoPRs, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
+		return fmt.Errorf("mergestat query: %w", err)
+	}
+
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -198,11 +203,6 @@ func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRo
 		return fmt.Errorf("delete rows: %w", err)
 	} else {
 		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
-	}
-
-	prs := make([]*githubRepoPR, 0)
-	if err = w.mergestat.SelectContext(ctx, &prs, selectGitHubRepoPRs, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
-		return fmt.Errorf("mergestat query: %w", err)
 	}
 
 	if err := w.sendBatchGitHubRepoPRs(ctx, tx, id, prs); err != nil {
