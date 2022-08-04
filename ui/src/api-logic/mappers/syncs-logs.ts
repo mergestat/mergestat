@@ -1,4 +1,4 @@
-import { lightFormat } from 'date-fns'
+import { format, lightFormat } from 'date-fns'
 import { SyncLogsType, SyncTypeData } from 'src/@types'
 import { getSimpleDurationTime, mapToRepoSyncStateT } from 'src/utils'
 import { DATE_FORMAT, GITHUB_URL } from 'src/utils/constants'
@@ -38,17 +38,13 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
         title: s?.syncType || '',
         syncType: q.status ? mapToRepoSyncStateT(q.status) : 'empty',
         records: q.repoSyncLogs.totalCount,
-        duration: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : 'running',
+        duration: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : q?.startedAt ? 'running' : 'queued',
         syncStart: q?.startedAt,
+        syncStartText: `Sync ${format(new Date(q?.startedAt), DATE_FORMAT.B)}`
       }
 
-      // 3. Get list logs info 2021/06/09 02:21 This is a log line ...
-      const logs: Array<string> = []
-      q.repoSyncLogs.nodes.forEach((log) => {
-        logs.push(`${lightFormat(new Date(log.createdAt), DATE_FORMAT)} ${log.logType}: ${log.message} ...`)
-      })
-
-      logData.logs = logs
+      // 3. Get list logs info. (e.g.: '2021/06/09 02:21 INFO: This is a log line ...')
+      logData.logs = q.repoSyncLogs.nodes.map((log) => `${lightFormat(new Date(log.createdAt), DATE_FORMAT.A)} ${log.logType}: ${log.message} ...`)
       logsData.push(logData)
     })
 

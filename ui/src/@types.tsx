@@ -85,6 +85,7 @@ export type SyncLogsType = {
   records?: number
   duration?: string
   syncStart: string
+  syncStartText: string,
   collapsed?: boolean
   logs?: string[]
 }

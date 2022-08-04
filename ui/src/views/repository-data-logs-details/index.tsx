@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BreadcrumbNav, Button, LogBox } from '@mergestat/blocks'
 import { DotsHorizontalIcon, ExternalLinkIcon } from '@mergestat/icons'
-import { SyncTypeData } from 'src/@types'
+import { SyncLogsType, SyncTypeData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
@@ -12,7 +12,7 @@ import { GITHUB_URL } from 'src/utils/constants'
 
 const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
   const router = useRouter()
-  const logInfo = logs && logs.length > 0 ? logs[0] : undefined
+  const logInfo: SyncLogsType | undefined = logs && logs.length > 0 ? logs[0] : undefined
 
   const crumbs = [
     {
@@ -37,7 +37,7 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
       onClick: () => router.push(`/repos/${repo.id}/${sync?.id}`),
     },
     {
-      text: logInfo?.syncType || '',
+      text: logInfo?.syncStartText || '',
       startIcon: <RepoSyncIcon type={logInfo?.syncType || 'empty'} />,
     }
   ]

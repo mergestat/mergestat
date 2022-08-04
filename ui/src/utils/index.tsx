@@ -36,9 +36,9 @@ export function selectAllState(data: Array<any>) {
 }
 
 /**
- * Method to get time ago respect current date
+ * Method to get time ago relative to current date
  * @param baseDate Date to evaluete
- * @returns Date time ago respect current date (e.g.: 'less than 20 seconds ago', '1 minute ago')
+ * @returns Date time ago relative to current date (e.g.: 'less than 20 seconds ago', '1 minute ago')
  */
 export function getTimeAgoFromNow(baseDate: Date): string {
   const distance = formatDistance(new Date(), baseDate, {

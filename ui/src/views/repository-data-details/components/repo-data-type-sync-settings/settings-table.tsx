@@ -12,7 +12,7 @@ export const SettingsTable: React.FC = (props) => {
       key: 'column',
     },
     {
-      title: "Type" ,
+      title: "Type",
       className: 'text-gray-500 text-semantic-text',
       dataIndex: 'type',
       key: 'type',

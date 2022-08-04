@@ -19,7 +19,7 @@ export const TimeAgoField: React.FC<TimeAgoFieldProps> = ({ date, syncData, styl
 
   useEffect(() => {
     let intervalId: NodeJS.Timer
-    if (date !== '') {
+    if (date && date !== '') {
       recalculateTimeAgo()
       intervalId = setInterval(recalculateTimeAgo, 30000)
     }

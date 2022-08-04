@@ -5,7 +5,6 @@ import { AddRepositoryModal } from './modals/add-repository-modal'
 import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
 import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
-import { sampleRepositoriesData } from 'src/sample-data/repositories-data'
 
 import { Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
@@ -50,7 +49,7 @@ export const RepositoriesView: React.FC = () => {
                 <div className="flex items-center gap-6">
                   <p className="font-medium text-sm text-semantic-mutedText">
                     {selectedRepositoriesCount} of{' '}
-                    {sampleRepositoriesData.length} repos selected
+                    { } repos selected
                   </p>
                 </div>
               </Toolbar.Item>
