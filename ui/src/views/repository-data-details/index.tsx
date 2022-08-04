@@ -2,27 +2,14 @@ import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BreadcrumbNav, Button, Tabs, Toolbar } from '@mergestat/blocks'
-import {
-  DotsHorizontalIcon,
-  ExternalLinkIcon,
-  RefreshIcon,
-} from '@mergestat/icons'
-import type { RepoType, RepoSyncDataType } from 'src/@types'
+import { DotsHorizontalIcon, ExternalLinkIcon, RefreshIcon } from '@mergestat/icons'
+import { SyncTypeData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { RepoDataLogs, SyncSettings } from './components'
+import { GITHUB_URL } from 'src/utils/constants'
 
-export type RepoDataTypeViewPropsT = {
-  repoData: {
-    name: string,
-    type: RepoType
-  },
-  data: RepoSyncDataType,
-}
-
-const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
-  { repoData, data }
-) => {
+const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
   const router = useRouter()
   const crumbs = [
     {
@@ -30,20 +17,20 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
       onClick: () => router.push('/repos'),
     },
     {
-      text: repoData.name,
-      startIcon: <RepoImage repoType={repoData.type} orgName={repoData.name.split('/')[0]} />,
+      text: repo.name,
+      startIcon: <RepoImage repoType={repo.type} orgName={repo.name.split('/')[0]} />,
       endIcon: (
-        <Link href={repoData.type === 'github' ? 'https://github.com/' + repoData.name : repoData.name}>
+        <Link href={repo.type === 'github' ? GITHUB_URL + repo.name : repo.name}>
           <a target='_blank'>
             <ExternalLinkIcon className='t-icon t-icon-small' />
           </a>
         </Link>
       ),
-      onClick: () => router.push('/repos/' + repoData.name.replace(/\//g, '-')),
+      onClick: () => router.push(`/repos/${repo.id}`),
     },
     {
-      text: data.data.title,
-      startIcon: <RepoSyncIcon type={data.status.syncState} />
+      text: sync?.title || '',
+      startIcon: <RepoSyncIcon type={sync?.syncState || 'empty'} />
     }
   ]
 
@@ -87,7 +74,7 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
         </div>
         <Tabs.Panels className="p-8 overflow-auto flex-1">
           <Tabs.Panel>
-            <RepoDataLogs data={data.data} />
+            <RepoDataLogs syncData={sync} logs={logs} />
           </Tabs.Panel>
           <Tabs.Panel>
             <SyncSettings />

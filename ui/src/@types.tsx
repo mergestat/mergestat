@@ -49,6 +49,7 @@ export type SyncStatusDataT = {
 
 export type RepoSyncDataType = {
   data: {
+    id: string
     title: string
     brief: string
   }
@@ -60,6 +61,23 @@ export type RepoSyncDataType = {
 }
 
 /** Repository Data Logs Type */
+export type SyncTypeData = {
+  repo: {
+    id: string
+    name: string
+    type: RepoType
+  },
+  sync?: SyncTypeInfo
+  logs?: Array<SyncLogsType>
+}
+
+export type SyncTypeInfo = {
+  id: string
+  title: string
+  brief: string
+  syncState: RepoSyncStateT
+}
+
 export type SyncLogsType = {
   id: string
   title: string
@@ -67,6 +85,8 @@ export type SyncLogsType = {
   records?: number
   duration?: string
   syncStart: string
+  syncStartText: string,
+  collapsed?: boolean
   logs?: string[]
 }
 

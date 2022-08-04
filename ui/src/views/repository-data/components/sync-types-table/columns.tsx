@@ -31,6 +31,7 @@ export const columns: Array<Record<string, any>> = [
     className: "h-20 p-0",
     render: (data: RepositoryDataProps, d: RepoSyncDataType) => (
       <RepositoryData
+        id={''}
         title={data.title}
         brief={data.brief}
         disabled={d.status.syncState === 'disabled'}
@@ -44,7 +45,7 @@ export const columns: Array<Record<string, any>> = [
     dataIndex: 'latestRun',
     key: 'latestRun',
     render: (latestRun: string, d: RepoSyncDataType) =>
-      <TimeAgoField date={latestRun} syncData={d} extraStyles={'h-full leading-20'} />
+      <TimeAgoField date={latestRun} syncData={d} styles={'text-semantic-mutedText h-full leading-20'} />
   },
   {
     title: 'Status',

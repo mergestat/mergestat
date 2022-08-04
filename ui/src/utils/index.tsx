@@ -1,5 +1,6 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
-import { formatDistance } from 'date-fns'
+import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
+import { RepoSyncStateT } from 'src/@types'
 
 export function checkRepoValidate(repo: string, checkDomain: boolean = true) {
   return checkDomain
@@ -34,6 +35,11 @@ export function selectAllState(data: Array<any>) {
       : CHECKBOX_STATES.Indeterminate
 }
 
+/**
+ * Method to get time ago relative to current date
+ * @param baseDate Date to evaluete
+ * @returns Date time ago relative to current date (e.g.: 'less than 20 seconds ago', '1 minute ago')
+ */
 export function getTimeAgoFromNow(baseDate: Date): string {
   const distance = formatDistance(new Date(), baseDate, {
     includeSeconds: true,
@@ -43,11 +49,22 @@ export function getTimeAgoFromNow(baseDate: Date): string {
 }
 
 /**
+ * Method to get duration time abbreviated
+ * @param start Date from
+ * @param end  Date to
+ * @returns  Abbreviated duration time (e.g.: '1h 2m 3s', '2m 3s')
+ */
+export function getSimpleDurationTime(start: Date, end: Date): string {
+  const duration = formatDuration(intervalToDuration({ start, end }))
+  return duration.replaceAll(/ hours*/ig, 'h').replaceAll(/ minutes*/ig, 'm').replaceAll(/ seconds*/ig, 's')
+}
+
+/**
  * Method to map data base status to table status
  * @param status Data base status
  * @returns Table status (RepoSyncStateT)
  */
-export function mapToRepoSyncStateT(status: string) {
+export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
   switch (status) {
     case 'DONE':
       return 'succeeded'

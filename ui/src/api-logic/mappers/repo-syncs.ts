@@ -1,6 +1,7 @@
-import { differenceInSeconds, formatDuration, intervalToDuration } from 'date-fns'
+import { differenceInSeconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, SyncStatusDataT } from 'src/@types'
-import { mapToRepoSyncStateT } from 'src/utils'
+import { getSimpleDurationTime, mapToRepoSyncStateT } from 'src/utils'
+import { GITHUB_URL } from 'src/utils/constants'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
 /**
@@ -11,7 +12,7 @@ import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
   // General repo info 
   const repoData: RepoSyncData = {
-    name: data?.repo?.repo.replace('https://github.com/', '') || '',
+    name: data?.repo?.repo.replace(GITHUB_URL, '') || '',
     type: data?.repo?.isGithub ? 'github' : 'other',
   }
 
@@ -21,10 +22,11 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     // 1. Get sync info
     const syncData: RepoSyncDataType = {
       data: {
-        title: s?.syncType || '',
+        id: s.id,
+        title: s?.syncType.replaceAll('_', ' ') || '',
         brief: s?.repoSyncTypeBySyncType?.description || '',
       },
-      latestRun: s?.repoSyncQueues.nodes[0]?.createdAt,
+      latestRun: s?.repoSyncQueues.nodes[0]?.startedAt ?? s?.repoSyncQueues.nodes[1]?.startedAt,
       status: {
         data: [],
         syncState: s?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(s?.repoSyncQueues.nodes[0]?.status || '') : 'empty',
@@ -35,11 +37,8 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     s?.repoSyncQueues.nodes.forEach((q) => {
       const queueData: SyncStatusDataT = {
         status: mapToRepoSyncStateT(q?.status || ''),
-        runningTime: differenceInSeconds(new Date(q?.doneAt), new Date(q?.createdAt)), // Determine chart height
-        runningTimeReadable: q?.doneAt ? formatDuration(intervalToDuration({
-          start: new Date(q?.createdAt),
-          end: new Date(q?.doneAt)
-        })) : 'running',
+        runningTime: q?.doneAt ? differenceInSeconds(new Date(q?.doneAt), new Date(q?.startedAt)) : 0, // Determine chart height
+        runningTimeReadable: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : q?.startedAt ? 'running' : 'queued',
         doneAt: q?.doneAt ?? new Date(q?.doneAt)
       }
       syncData.status.data?.push(queueData)

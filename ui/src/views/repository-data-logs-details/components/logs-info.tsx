@@ -1,5 +1,6 @@
-import { Navbar, KeyValue } from '@mergestat/blocks'
+import { KeyValue } from '@mergestat/blocks'
 import React from 'react'
+import { TimeAgoField } from 'src/components/Fields/time-ago-field'
 
 type LogsInfoProps = {
   id: string
@@ -10,17 +11,19 @@ type LogsInfoProps = {
 export const LogsInfo: React.FC<LogsInfoProps> = (props) => {
   return (
     <div className="bg-white rounded-md px-6 py-7 text-gray-600 font-medium border shadow-sm">
-      <div className="flex justify-between items-center max-w-4xl space-x-8">
-        <KeyValue
-          title="Sync start"
-          value={props.syncStart}
-        />
+      <div className="flex justify-between items-center max-w-3xl space-x-8">
+        <div className="flex flex-col">
+          <KeyValue title="Sync start" />
+          <TimeAgoField date={props.syncStart} />
+        </div>
+
         <div className="border-l pl-8">
           <KeyValue
             title="Duration"
             value={props.duration}
           />
         </div>
+
         <div className="border-l pl-8">
           <KeyValue
             title="ID"

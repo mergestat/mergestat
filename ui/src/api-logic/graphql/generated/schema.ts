@@ -1720,7 +1720,7 @@ export type GitBranchesConnection = {
   /** A list of edges which contains the `GitBranch` and cursor to aid in pagination. */
   edges: Array<GitBranchesEdge>;
   /** A list of `GitBranch` objects. */
-  nodes: Array<Maybe<GitBranch>>;
+  nodes: Array<GitBranch>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GitBranch` you could get from the connection. */
@@ -1733,7 +1733,7 @@ export type GitBranchesEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitBranch` at the end of the edge. */
-  node?: Maybe<GitBranch>;
+  node: GitBranch;
 };
 
 /** Methods to use when ordering `GitBranch`. */
@@ -1875,7 +1875,7 @@ export type GitCommitStatsConnection = {
   /** A list of edges which contains the `GitCommitStat` and cursor to aid in pagination. */
   edges: Array<GitCommitStatsEdge>;
   /** A list of `GitCommitStat` objects. */
-  nodes: Array<Maybe<GitCommitStat>>;
+  nodes: Array<GitCommitStat>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GitCommitStat` you could get from the connection. */
@@ -1888,7 +1888,7 @@ export type GitCommitStatsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitCommitStat` at the end of the edge. */
-  node?: Maybe<GitCommitStat>;
+  node: GitCommitStat;
 };
 
 /** Methods to use when ordering `GitCommitStat`. */
@@ -1912,7 +1912,7 @@ export type GitCommitsConnection = {
   /** A list of edges which contains the `GitCommit` and cursor to aid in pagination. */
   edges: Array<GitCommitsEdge>;
   /** A list of `GitCommit` objects. */
-  nodes: Array<Maybe<GitCommit>>;
+  nodes: Array<GitCommit>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GitCommit` you could get from the connection. */
@@ -1925,7 +1925,7 @@ export type GitCommitsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitCommit` at the end of the edge. */
-  node?: Maybe<GitCommit>;
+  node: GitCommit;
 };
 
 /** Methods to use when ordering `GitCommit`. */
@@ -2002,7 +2002,7 @@ export type GitFilesConnection = {
   /** A list of edges which contains the `GitFile` and cursor to aid in pagination. */
   edges: Array<GitFilesEdge>;
   /** A list of `GitFile` objects. */
-  nodes: Array<Maybe<GitFile>>;
+  nodes: Array<GitFile>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GitFile` you could get from the connection. */
@@ -2015,7 +2015,7 @@ export type GitFilesEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitFile` at the end of the edge. */
-  node?: Maybe<GitFile>;
+  node: GitFile;
 };
 
 /** Methods to use when ordering `GitFile`. */
@@ -2098,7 +2098,7 @@ export type GitRefsConnection = {
   /** A list of edges which contains the `GitRef` and cursor to aid in pagination. */
   edges: Array<GitRefsEdge>;
   /** A list of `GitRef` objects. */
-  nodes: Array<Maybe<GitRef>>;
+  nodes: Array<GitRef>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GitRef` you could get from the connection. */
@@ -2111,7 +2111,7 @@ export type GitRefsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitRef` at the end of the edge. */
-  node?: Maybe<GitRef>;
+  node: GitRef;
 };
 
 /** Methods to use when ordering `GitRef`. */
@@ -2187,7 +2187,7 @@ export type GitTagsConnection = {
   /** A list of edges which contains the `GitTag` and cursor to aid in pagination. */
   edges: Array<GitTagsEdge>;
   /** A list of `GitTag` objects. */
-  nodes: Array<Maybe<GitTag>>;
+  nodes: Array<GitTag>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GitTag` you could get from the connection. */
@@ -2200,7 +2200,7 @@ export type GitTagsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitTag` at the end of the edge. */
-  node?: Maybe<GitTag>;
+  node: GitTag;
 };
 
 /** Methods to use when ordering `GitTag`. */
@@ -2369,7 +2369,7 @@ export type GithubIssuesConnection = {
   /** A list of edges which contains the `GithubIssue` and cursor to aid in pagination. */
   edges: Array<GithubIssuesEdge>;
   /** A list of `GithubIssue` objects. */
-  nodes: Array<Maybe<GithubIssue>>;
+  nodes: Array<GithubIssue>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GithubIssue` you could get from the connection. */
@@ -2382,7 +2382,7 @@ export type GithubIssuesEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubIssue` at the end of the edge. */
-  node?: Maybe<GithubIssue>;
+  node: GithubIssue;
 };
 
 /** Methods to use when ordering `GithubIssue`. */
@@ -2586,7 +2586,7 @@ export type GithubPullRequestCommitsConnection = {
   /** A list of edges which contains the `GithubPullRequestCommit` and cursor to aid in pagination. */
   edges: Array<GithubPullRequestCommitsEdge>;
   /** A list of `GithubPullRequestCommit` objects. */
-  nodes: Array<Maybe<GithubPullRequestCommit>>;
+  nodes: Array<GithubPullRequestCommit>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GithubPullRequestCommit` you could get from the connection. */
@@ -2599,7 +2599,7 @@ export type GithubPullRequestCommitsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubPullRequestCommit` at the end of the edge. */
-  node?: Maybe<GithubPullRequestCommit>;
+  node: GithubPullRequestCommit;
 };
 
 /** Methods to use when ordering `GithubPullRequestCommit`. */
@@ -2929,7 +2929,7 @@ export type GithubPullRequestReviewsConnection = {
   /** A list of edges which contains the `GithubPullRequestReview` and cursor to aid in pagination. */
   edges: Array<GithubPullRequestReviewsEdge>;
   /** A list of `GithubPullRequestReview` objects. */
-  nodes: Array<Maybe<GithubPullRequestReview>>;
+  nodes: Array<GithubPullRequestReview>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GithubPullRequestReview` you could get from the connection. */
@@ -2942,7 +2942,7 @@ export type GithubPullRequestReviewsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubPullRequestReview` at the end of the edge. */
-  node?: Maybe<GithubPullRequestReview>;
+  node: GithubPullRequestReview;
 };
 
 /** Methods to use when ordering `GithubPullRequestReview`. */
@@ -2992,7 +2992,7 @@ export type GithubPullRequestsConnection = {
   /** A list of edges which contains the `GithubPullRequest` and cursor to aid in pagination. */
   edges: Array<GithubPullRequestsEdge>;
   /** A list of `GithubPullRequest` objects. */
-  nodes: Array<Maybe<GithubPullRequest>>;
+  nodes: Array<GithubPullRequest>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GithubPullRequest` you could get from the connection. */
@@ -3005,7 +3005,7 @@ export type GithubPullRequestsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubPullRequest` at the end of the edge. */
-  node?: Maybe<GithubPullRequest>;
+  node: GithubPullRequest;
 };
 
 /** Methods to use when ordering `GithubPullRequest`. */
@@ -3267,7 +3267,7 @@ export type GithubRepoInfosConnection = {
   /** A list of edges which contains the `GithubRepoInfo` and cursor to aid in pagination. */
   edges: Array<GithubRepoInfosEdge>;
   /** A list of `GithubRepoInfo` objects. */
-  nodes: Array<Maybe<GithubRepoInfo>>;
+  nodes: Array<GithubRepoInfo>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GithubRepoInfo` you could get from the connection. */
@@ -3280,7 +3280,7 @@ export type GithubRepoInfosEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubRepoInfo` at the end of the edge. */
-  node?: Maybe<GithubRepoInfo>;
+  node: GithubRepoInfo;
 };
 
 /** Methods to use when ordering `GithubRepoInfo`. */
@@ -3441,7 +3441,7 @@ export type GithubStargazersConnection = {
   /** A list of edges which contains the `GithubStargazer` and cursor to aid in pagination. */
   edges: Array<GithubStargazersEdge>;
   /** A list of `GithubStargazer` objects. */
-  nodes: Array<Maybe<GithubStargazer>>;
+  nodes: Array<GithubStargazer>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `GithubStargazer` you could get from the connection. */
@@ -3454,7 +3454,7 @@ export type GithubStargazersEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubStargazer` at the end of the edge. */
-  node?: Maybe<GithubStargazer>;
+  node: GithubStargazer;
 };
 
 /** Methods to use when ordering `GithubStargazer`. */
@@ -3566,7 +3566,7 @@ export type LatestRepoSyncsConnection = {
   /** A list of edges which contains the `LatestRepoSync` and cursor to aid in pagination. */
   edges: Array<LatestRepoSyncsEdge>;
   /** A list of `LatestRepoSync` objects. */
-  nodes: Array<Maybe<LatestRepoSync>>;
+  nodes: Array<LatestRepoSync>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `LatestRepoSync` you could get from the connection. */
@@ -3579,7 +3579,7 @@ export type LatestRepoSyncsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `LatestRepoSync` at the end of the edge. */
-  node?: Maybe<LatestRepoSync>;
+  node: LatestRepoSync;
 };
 
 /** Methods to use when ordering `LatestRepoSync`. */
@@ -5106,11 +5106,6 @@ export type Repo = Node & {
   githubPullRequests: GithubPullRequestsConnection;
   /** Reads a single `GithubRepoInfo` that is related to this `Repo`. */
   githubRepoInfo?: Maybe<GithubRepoInfo>;
-  /**
-   * Reads and enables pagination through a set of `GithubRepoInfo`.
-   * @deprecated Please use githubRepoInfo instead
-   */
-  githubRepoInfos: GithubRepoInfosConnection;
   /** Reads and enables pagination through a set of `GithubStargazer`. */
   githubStargazers: GithubStargazersConnection;
   id: Scalars['UUID'];
@@ -5186,18 +5181,6 @@ export type RepoGithubPullRequestsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<GithubPullRequestsOrderBy>>;
-};
-
-
-/** Git repositories to track */
-export type RepoGithubRepoInfosArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GithubRepoInfoCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GithubRepoInfosOrderBy>>;
 };
 
 
@@ -5374,7 +5357,7 @@ export type RepoImportTypesConnection = {
   /** A list of edges which contains the `RepoImportType` and cursor to aid in pagination. */
   edges: Array<RepoImportTypesEdge>;
   /** A list of `RepoImportType` objects. */
-  nodes: Array<Maybe<RepoImportType>>;
+  nodes: Array<RepoImportType>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `RepoImportType` you could get from the connection. */
@@ -5387,7 +5370,7 @@ export type RepoImportTypesEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoImportType` at the end of the edge. */
-  node?: Maybe<RepoImportType>;
+  node: RepoImportType;
 };
 
 /** Methods to use when ordering `RepoImportType`. */
@@ -5407,7 +5390,7 @@ export type RepoImportsConnection = {
   /** A list of edges which contains the `RepoImport` and cursor to aid in pagination. */
   edges: Array<RepoImportsEdge>;
   /** A list of `RepoImport` objects. */
-  nodes: Array<Maybe<RepoImport>>;
+  nodes: Array<RepoImport>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `RepoImport` you could get from the connection. */
@@ -5420,7 +5403,7 @@ export type RepoImportsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoImport` at the end of the edge. */
-  node?: Maybe<RepoImport>;
+  node: RepoImport;
 };
 
 /** Methods to use when ordering `RepoImport`. */
@@ -5620,7 +5603,7 @@ export type RepoSyncLogTypesConnection = {
   /** A list of edges which contains the `RepoSyncLogType` and cursor to aid in pagination. */
   edges: Array<RepoSyncLogTypesEdge>;
   /** A list of `RepoSyncLogType` objects. */
-  nodes: Array<Maybe<RepoSyncLogType>>;
+  nodes: Array<RepoSyncLogType>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `RepoSyncLogType` you could get from the connection. */
@@ -5633,7 +5616,7 @@ export type RepoSyncLogTypesEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncLogType` at the end of the edge. */
-  node?: Maybe<RepoSyncLogType>;
+  node: RepoSyncLogType;
 };
 
 /** Methods to use when ordering `RepoSyncLogType`. */
@@ -5653,7 +5636,7 @@ export type RepoSyncLogsConnection = {
   /** A list of edges which contains the `RepoSyncLog` and cursor to aid in pagination. */
   edges: Array<RepoSyncLogsEdge>;
   /** A list of `RepoSyncLog` objects. */
-  nodes: Array<Maybe<RepoSyncLog>>;
+  nodes: Array<RepoSyncLog>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `RepoSyncLog` you could get from the connection. */
@@ -5666,7 +5649,7 @@ export type RepoSyncLogsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncLog` at the end of the edge. */
-  node?: Maybe<RepoSyncLog>;
+  node: RepoSyncLog;
 };
 
 /** Methods to use when ordering `RepoSyncLog`. */
@@ -5817,7 +5800,7 @@ export type RepoSyncQueueStatusTypesConnection = {
   /** A list of edges which contains the `RepoSyncQueueStatusType` and cursor to aid in pagination. */
   edges: Array<RepoSyncQueueStatusTypesEdge>;
   /** A list of `RepoSyncQueueStatusType` objects. */
-  nodes: Array<Maybe<RepoSyncQueueStatusType>>;
+  nodes: Array<RepoSyncQueueStatusType>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `RepoSyncQueueStatusType` you could get from the connection. */
@@ -5830,7 +5813,7 @@ export type RepoSyncQueueStatusTypesEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncQueueStatusType` at the end of the edge. */
-  node?: Maybe<RepoSyncQueueStatusType>;
+  node: RepoSyncQueueStatusType;
 };
 
 /** Methods to use when ordering `RepoSyncQueueStatusType`. */
@@ -5850,7 +5833,7 @@ export type RepoSyncQueuesConnection = {
   /** A list of edges which contains the `RepoSyncQueue` and cursor to aid in pagination. */
   edges: Array<RepoSyncQueuesEdge>;
   /** A list of `RepoSyncQueue` objects. */
-  nodes: Array<Maybe<RepoSyncQueue>>;
+  nodes: Array<RepoSyncQueue>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `RepoSyncQueue` you could get from the connection. */
@@ -5863,7 +5846,7 @@ export type RepoSyncQueuesEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncQueue` at the end of the edge. */
-  node?: Maybe<RepoSyncQueue>;
+  node: RepoSyncQueue;
 };
 
 /** Methods to use when ordering `RepoSyncQueue`. */
@@ -5937,7 +5920,7 @@ export type RepoSyncTypesConnection = {
   /** A list of edges which contains the `RepoSyncType` and cursor to aid in pagination. */
   edges: Array<RepoSyncTypesEdge>;
   /** A list of `RepoSyncType` objects. */
-  nodes: Array<Maybe<RepoSyncType>>;
+  nodes: Array<RepoSyncType>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `RepoSyncType` you could get from the connection. */
@@ -5950,7 +5933,7 @@ export type RepoSyncTypesEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncType` at the end of the edge. */
-  node?: Maybe<RepoSyncType>;
+  node: RepoSyncType;
 };
 
 /** Methods to use when ordering `RepoSyncType`. */
@@ -5970,7 +5953,7 @@ export type RepoSyncsConnection = {
   /** A list of edges which contains the `RepoSync` and cursor to aid in pagination. */
   edges: Array<RepoSyncsEdge>;
   /** A list of `RepoSync` objects. */
-  nodes: Array<Maybe<RepoSync>>;
+  nodes: Array<RepoSync>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `RepoSync` you could get from the connection. */
@@ -5983,7 +5966,7 @@ export type RepoSyncsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSync` at the end of the edge. */
-  node?: Maybe<RepoSync>;
+  node: RepoSync;
 };
 
 /** Methods to use when ordering `RepoSync`. */
@@ -6007,7 +5990,7 @@ export type ReposConnection = {
   /** A list of edges which contains the `Repo` and cursor to aid in pagination. */
   edges: Array<ReposEdge>;
   /** A list of `Repo` objects. */
-  nodes: Array<Maybe<Repo>>;
+  nodes: Array<Repo>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `Repo` you could get from the connection. */
@@ -6020,7 +6003,7 @@ export type ReposEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `Repo` at the end of the edge. */
-  node?: Maybe<Repo>;
+  node: Repo;
 };
 
 /** Methods to use when ordering `Repo`. */
@@ -6083,7 +6066,7 @@ export type SchemaMigrationsConnection = {
   /** A list of edges which contains the `SchemaMigration` and cursor to aid in pagination. */
   edges: Array<SchemaMigrationsEdge>;
   /** A list of `SchemaMigration` objects. */
-  nodes: Array<Maybe<SchemaMigration>>;
+  nodes: Array<SchemaMigration>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** The count of *all* `SchemaMigration` you could get from the connection. */
@@ -6096,7 +6079,7 @@ export type SchemaMigrationsEdge = {
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `SchemaMigration` at the end of the edge. */
-  node?: Maybe<SchemaMigration>;
+  node: SchemaMigration;
 };
 
 /** Methods to use when ordering `SchemaMigration`. */
@@ -6109,6 +6092,2043 @@ export enum SchemaMigrationsOrderBy {
   VersionAsc = 'VERSION_ASC',
   VersionDesc = 'VERSION_DESC'
 }
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type Subscription = {
+  __typename?: 'Subscription';
+  /** Reads and enables pagination through a set of `GitBranch`. (live) */
+  gitBranches?: Maybe<GitBranchesConnection>;
+  /**  (live) */
+  gitCommit?: Maybe<GitCommit>;
+  /** Reads a single `GitCommit` using its globally unique `ID`. (live) */
+  gitCommitByNodeId?: Maybe<GitCommit>;
+  /** Reads and enables pagination through a set of `GitCommitStat`. (live) */
+  gitCommitStats?: Maybe<GitCommitStatsConnection>;
+  /** Reads and enables pagination through a set of `GitCommit`. (live) */
+  gitCommits?: Maybe<GitCommitsConnection>;
+  /**  (live) */
+  gitFile?: Maybe<GitFile>;
+  /** Reads a single `GitFile` using its globally unique `ID`. (live) */
+  gitFileByNodeId?: Maybe<GitFile>;
+  /** Reads and enables pagination through a set of `GitFile`. (live) */
+  gitFiles?: Maybe<GitFilesConnection>;
+  /**  (live) */
+  gitRef?: Maybe<GitRef>;
+  /** Reads a single `GitRef` using its globally unique `ID`. (live) */
+  gitRefByNodeId?: Maybe<GitRef>;
+  /** Reads and enables pagination through a set of `GitRef`. (live) */
+  gitRefs?: Maybe<GitRefsConnection>;
+  /** Reads and enables pagination through a set of `GitTag`. (live) */
+  gitTags?: Maybe<GitTagsConnection>;
+  /**  (live) */
+  githubIssue?: Maybe<GithubIssue>;
+  /** Reads a single `GithubIssue` using its globally unique `ID`. (live) */
+  githubIssueByNodeId?: Maybe<GithubIssue>;
+  /** Reads and enables pagination through a set of `GithubIssue`. (live) */
+  githubIssues?: Maybe<GithubIssuesConnection>;
+  /**  (live) */
+  githubPullRequest?: Maybe<GithubPullRequest>;
+  /** Reads a single `GithubPullRequest` using its globally unique `ID`. (live) */
+  githubPullRequestByNodeId?: Maybe<GithubPullRequest>;
+  /**  (live) */
+  githubPullRequestCommit?: Maybe<GithubPullRequestCommit>;
+  /** Reads a single `GithubPullRequestCommit` using its globally unique `ID`. (live) */
+  githubPullRequestCommitByNodeId?: Maybe<GithubPullRequestCommit>;
+  /** Reads and enables pagination through a set of `GithubPullRequestCommit`. (live) */
+  githubPullRequestCommits?: Maybe<GithubPullRequestCommitsConnection>;
+  /**  (live) */
+  githubPullRequestReview?: Maybe<GithubPullRequestReview>;
+  /** Reads a single `GithubPullRequestReview` using its globally unique `ID`. (live) */
+  githubPullRequestReviewByNodeId?: Maybe<GithubPullRequestReview>;
+  /** Reads and enables pagination through a set of `GithubPullRequestReview`. (live) */
+  githubPullRequestReviews?: Maybe<GithubPullRequestReviewsConnection>;
+  /** Reads and enables pagination through a set of `GithubPullRequest`. (live) */
+  githubPullRequests?: Maybe<GithubPullRequestsConnection>;
+  /**  (live) */
+  githubRepoInfo?: Maybe<GithubRepoInfo>;
+  /** Reads a single `GithubRepoInfo` using its globally unique `ID`. (live) */
+  githubRepoInfoByNodeId?: Maybe<GithubRepoInfo>;
+  /**  (live) */
+  githubRepoInfoByOwnerAndName?: Maybe<GithubRepoInfo>;
+  /** Reads and enables pagination through a set of `GithubRepoInfo`. (live) */
+  githubRepoInfos?: Maybe<GithubRepoInfosConnection>;
+  /**  (live) */
+  githubStargazer?: Maybe<GithubStargazer>;
+  /** Reads a single `GithubStargazer` using its globally unique `ID`. (live) */
+  githubStargazerByNodeId?: Maybe<GithubStargazer>;
+  /** Reads and enables pagination through a set of `GithubStargazer`. (live) */
+  githubStargazers?: Maybe<GithubStargazersConnection>;
+  /** Reads and enables pagination through a set of `LatestRepoSync`. (live) */
+  latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
+  /** Fetches an object given its globally unique `ID`. (live) */
+  node?: Maybe<Node>;
+  /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. (live) */
+  nodeId: Scalars['ID'];
+  /**
+   * Exposes the root query type nested one level down. This is helpful for Relay 1
+   * which can only query top level fields if they are in a particular form. (live)
+   */
+  query: Query;
+  /**  (live) */
+  repo?: Maybe<Repo>;
+  /** Reads a single `Repo` using its globally unique `ID`. (live) */
+  repoByNodeId?: Maybe<Repo>;
+  /**  (live) */
+  repoImport?: Maybe<RepoImport>;
+  /** Reads a single `RepoImport` using its globally unique `ID`. (live) */
+  repoImportByNodeId?: Maybe<RepoImport>;
+  /**  (live) */
+  repoImportType?: Maybe<RepoImportType>;
+  /** Reads a single `RepoImportType` using its globally unique `ID`. (live) */
+  repoImportTypeByNodeId?: Maybe<RepoImportType>;
+  /** Reads and enables pagination through a set of `RepoImportType`. (live) */
+  repoImportTypes?: Maybe<RepoImportTypesConnection>;
+  /** Reads and enables pagination through a set of `RepoImport`. (live) */
+  repoImports?: Maybe<RepoImportsConnection>;
+  /**  (live) */
+  repoSync?: Maybe<RepoSync>;
+  /** Reads a single `RepoSync` using its globally unique `ID`. (live) */
+  repoSyncByNodeId?: Maybe<RepoSync>;
+  /**  (live) */
+  repoSyncByRepoIdAndSyncType?: Maybe<RepoSync>;
+  /**  (live) */
+  repoSyncLog?: Maybe<RepoSyncLog>;
+  /** Reads a single `RepoSyncLog` using its globally unique `ID`. (live) */
+  repoSyncLogByNodeId?: Maybe<RepoSyncLog>;
+  /**  (live) */
+  repoSyncLogType?: Maybe<RepoSyncLogType>;
+  /** Reads a single `RepoSyncLogType` using its globally unique `ID`. (live) */
+  repoSyncLogTypeByNodeId?: Maybe<RepoSyncLogType>;
+  /** Reads and enables pagination through a set of `RepoSyncLogType`. (live) */
+  repoSyncLogTypes?: Maybe<RepoSyncLogTypesConnection>;
+  /** Reads and enables pagination through a set of `RepoSyncLog`. (live) */
+  repoSyncLogs?: Maybe<RepoSyncLogsConnection>;
+  /**  (live) */
+  repoSyncQueue?: Maybe<RepoSyncQueue>;
+  /** Reads a single `RepoSyncQueue` using its globally unique `ID`. (live) */
+  repoSyncQueueByNodeId?: Maybe<RepoSyncQueue>;
+  /**  (live) */
+  repoSyncQueueStatusType?: Maybe<RepoSyncQueueStatusType>;
+  /** Reads a single `RepoSyncQueueStatusType` using its globally unique `ID`. (live) */
+  repoSyncQueueStatusTypeByNodeId?: Maybe<RepoSyncQueueStatusType>;
+  /** Reads and enables pagination through a set of `RepoSyncQueueStatusType`. (live) */
+  repoSyncQueueStatusTypes?: Maybe<RepoSyncQueueStatusTypesConnection>;
+  /** Reads and enables pagination through a set of `RepoSyncQueue`. (live) */
+  repoSyncQueues?: Maybe<RepoSyncQueuesConnection>;
+  /**  (live) */
+  repoSyncType?: Maybe<RepoSyncType>;
+  /** Reads a single `RepoSyncType` using its globally unique `ID`. (live) */
+  repoSyncTypeByNodeId?: Maybe<RepoSyncType>;
+  /** Reads and enables pagination through a set of `RepoSyncType`. (live) */
+  repoSyncTypes?: Maybe<RepoSyncTypesConnection>;
+  /** Reads and enables pagination through a set of `RepoSync`. (live) */
+  repoSyncs?: Maybe<RepoSyncsConnection>;
+  /** Reads and enables pagination through a set of `Repo`. (live) */
+  repos?: Maybe<ReposConnection>;
+  /**  (live) */
+  schemaMigration?: Maybe<SchemaMigration>;
+  /** Reads a single `SchemaMigration` using its globally unique `ID`. (live) */
+  schemaMigrationByNodeId?: Maybe<SchemaMigration>;
+  /** Reads and enables pagination through a set of `SchemaMigration`. (live) */
+  schemaMigrations?: Maybe<SchemaMigrationsConnection>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitBranchesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitBranchCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitBranchesOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitCommitArgs = {
+  hash: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitCommitByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitCommitStatsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitCommitStatCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitCommitStatsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitCommitsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitCommitCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitCommitsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitFileArgs = {
+  path: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitFileByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitFilesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitFileCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitFilesOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitRefArgs = {
+  fullName: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitRefByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitRefsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitRefCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGitTagsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitTagCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitTagsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubIssueArgs = {
+  databaseId: Scalars['Int'];
+  repoId: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubIssueByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubIssuesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubIssueCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubIssuesOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubPullRequestArgs = {
+  databaseId: Scalars['Int'];
+  repoId: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubPullRequestByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubPullRequestCommitArgs = {
+  hash: Scalars['String'];
+  prNumber: Scalars['Int'];
+  repoId: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubPullRequestCommitByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubPullRequestCommitsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubPullRequestCommitCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubPullRequestCommitsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubPullRequestReviewArgs = {
+  id: Scalars['String'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubPullRequestReviewByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubPullRequestReviewsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubPullRequestReviewCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubPullRequestsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubPullRequestCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubPullRequestsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubRepoInfoArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubRepoInfoByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubRepoInfoByOwnerAndNameArgs = {
+  name: Scalars['String'];
+  owner: Scalars['String'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubRepoInfosArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubRepoInfoCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubRepoInfosOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubStargazerArgs = {
+  login: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubStargazerByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionGithubStargazersArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubStargazerCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubStargazersOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionLatestRepoSyncsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<LatestRepoSyncCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LatestRepoSyncsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionNodeArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoImportArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoImportByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoImportTypeArgs = {
+  type: Scalars['String'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoImportTypeByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoImportTypesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoImportTypeCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoImportTypesOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoImportsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoImportCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoImportsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncByRepoIdAndSyncTypeArgs = {
+  repoId: Scalars['UUID'];
+  syncType: Scalars['String'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncLogArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncLogByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncLogTypeArgs = {
+  type: Scalars['String'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncLogTypeByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncLogTypesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncLogTypeCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncLogTypesOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncLogsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncLogCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncLogsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncQueueArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncQueueByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncQueueStatusTypeArgs = {
+  type: Scalars['String'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncQueueStatusTypeByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncQueueStatusTypesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncQueueStatusTypeCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncQueueStatusTypesOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncQueuesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncQueueCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncQueuesOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncTypeArgs = {
+  type: Scalars['String'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncTypeByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncTypesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncTypeCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncTypesOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionRepoSyncsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionReposArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ReposOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionSchemaMigrationArgs = {
+  version: Scalars['BigInt'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionSchemaMigrationByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionSchemaMigrationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SchemaMigrationCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
+};
 
 /** All input for the `updateGitCommitByNodeId` mutation. */
 export type UpdateGitCommitByNodeIdInput = {
@@ -7070,9 +9090,26 @@ export type GetRepoSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetRepoSyncsQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, isGithub?: boolean | null, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any, doneAt?: any | null } | null> } } | null> } } | null };
+export type GetRepoSyncsQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, isGithub?: boolean | null, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', id: any, syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, startedAt?: any | null, doneAt?: any | null }> } }> } } | null };
 
 export type GetReposQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetReposQuery = { __typename?: 'Query', repos?: { __typename?: 'ReposConnection', totalCount: number, nodes: Array<{ __typename?: 'Repo', id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoSyncs: { __typename?: 'RepoSyncsConnection', totalCount: number, nodes: Array<{ __typename?: 'RepoSync', syncType: string, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any } | null> } } | null> } } | null> } | null };
+export type GetReposQuery = { __typename?: 'Query', repos?: { __typename?: 'ReposConnection', totalCount: number, nodes: Array<{ __typename?: 'Repo', id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoSyncs: { __typename?: 'RepoSyncsConnection', totalCount: number, nodes: Array<{ __typename?: 'RepoSync', syncType: string, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any }> } }> } }> } | null };
+
+export type GetSyncHistoryLogsQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type GetSyncHistoryLogsQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, isGithub?: boolean | null, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', id: any, syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, repoSyncLogs: { __typename?: 'RepoSyncLogsConnection', totalCount: number, nodes: Array<{ __typename?: 'RepoSyncLog', logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+
+export type GetLogsOfSyncQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+  logId: Scalars['BigInt'];
+}>;
+
+
+export type GetLogsOfSyncQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', id: any, syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, repoSyncLogs: { __typename?: 'RepoSyncLogsConnection', totalCount: number, nodes: Array<{ __typename?: 'RepoSyncLog', logType: string, message: string, createdAt: any }> } }> } }> } } | null };
