@@ -28,7 +28,7 @@ const RepoDataLogsDetailsView: React.FC<RepoDataLogsDetailsProps> =
 
     const crumbs = [
       {
-        text: "Repositories",
+        text: "Repos",
         onClick: () => router.push('/repos'),
       },
       {
