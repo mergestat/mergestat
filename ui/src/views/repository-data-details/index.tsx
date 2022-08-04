@@ -26,7 +26,7 @@ const RepoDataTypeView: React.FC<RepoDataTypeViewPropsT> = (
   const router = useRouter()
   const crumbs = [
     {
-      text: "Repositories",
+      text: "Repos",
       onClick: () => router.push('/repos'),
     },
     {

@@ -15,7 +15,7 @@ export const PageHeader: React.FC = (props) => {
   const router = useRouter()
   const crumbs = [
     {
-      text: "Repositories",
+      text: "Repos",
       onClick: () => router.push('/repos'),
     }
   ]
