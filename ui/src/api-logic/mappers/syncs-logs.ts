@@ -21,13 +21,12 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
 
   // 1. Get Sync general info
   data?.repo?.repoSyncs.nodes.forEach((s) => {
-    const syncInfo = {
+    repoData.sync = {
       id: s.id,
       title: s?.syncType.replaceAll('_', ' ') || '',
       brief: s?.repoSyncTypeBySyncType?.description || '',
       syncState: s?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(s?.repoSyncQueues.nodes[0]?.status || '') : 'empty',
     }
-    repoData.sync = syncInfo
 
     // 2. Get logs data of the sync
     const logsData: Array<SyncLogsType> = []
