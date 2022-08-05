@@ -86,26 +86,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		return err
 	}
 
-	var tx pgx.Tx
-	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
-		return err
-	}
-	defer func() {
-		if err := tx.Rollback(ctx); err != nil {
-			if !errors.Is(err, pgx.ErrTxClosed) {
-				w.logger.Err(err).Msgf("could not rollback transaction")
-			}
-		}
-	}()
-
-	if _, err := tx.Exec(ctx, "DELETE FROM git_commit_stats WHERE repo_id = $1;", j.RepoID.String()); err != nil {
-		return err
-	}
-
-	// TODO(patrickdevivo) make batch size configurable?
-	batchSize := 500
-	batch := make([]*commitStat, 0, batchSize)
-	totalCount := 0
+	stats := make([]*commitStat, 0)
 
 	walk, err := repo.Walk()
 	if err != nil {
@@ -119,7 +100,6 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 
 	if err := walk.Iterate(func(c *libgit2.Commit) bool {
 		defer c.Free()
-		totalCount++
 
 		fromTree, err := c.Tree()
 		if err != nil {
@@ -170,14 +150,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 				Deletions:  sql.NullInt64{Int64: 0, Valid: true},
 			}
 
-			if len(batch) >= batchSize {
-				if err := w.sendBatchCommitStats(ctx, tx, j, batch); err != nil {
-					return nil, err
-				}
-				batch = make([]*commitStat, 0, batchSize)
-			} else {
-				batch = append(batch, stat)
-			}
+			stats = append(stats, stat)
 
 			return func(hunk libgit2.DiffHunk) (libgit2.DiffForEachLineCallback, error) {
 				return func(line libgit2.DiffLine) error {
@@ -201,11 +174,27 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		return err
 	}
 
-	if err := w.sendBatchCommitStats(ctx, tx, j, batch); err != nil {
+	var tx pgx.Tx
+	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
+		return err
+	}
+	defer func() {
+		if err := tx.Rollback(ctx); err != nil {
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				w.logger.Err(err).Msgf("could not rollback transaction")
+			}
+		}
+	}()
+
+	if _, err := tx.Exec(ctx, "DELETE FROM git_commit_stats WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+		return err
+	}
+
+	if err := w.sendBatchCommitStats(ctx, tx, j, stats); err != nil {
 		return nil
 	}
 
-	l.Info().Msgf("imported %d commit stats", totalCount)
+	l.Info().Msgf("imported %d commit stats", len(stats))
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err

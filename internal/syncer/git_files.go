@@ -11,7 +11,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/jmoiron/sqlx"
 	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
@@ -103,15 +102,10 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	var rows *sqlx.Rows
-	if rows, err = w.mergestat.QueryxContext(ctx, selectFiles, tmpPath, tmpPath); err != nil {
+	files := make([]*file, 0)
+	if err = w.mergestat.SelectContext(ctx, &files, selectFiles, tmpPath, tmpPath); err != nil {
 		return fmt.Errorf("mergestat query files: %w", err)
 	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			w.logger.Err(err).Msgf("could not close rows: %v", err)
-		}
-	}()
 
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
@@ -129,34 +123,11 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return fmt.Errorf("exec delete: %w", err)
 	}
 
-	// TODO(alonlong) make batch size configurable?
-	batchSize := 500
-	batch := make([]*file, 0, batchSize)
-	totalCount := 0
-	for rows.Next() {
-		totalCount++
-		var r file
-		if err := rows.StructScan(&r); err != nil {
-			return fmt.Errorf("scan row: %w", err)
-		}
-
-		if len(batch) >= batchSize {
-			if err := w.sendBatchFiles(ctx, tx, j, batch); err != nil {
-				return fmt.Errorf("send batch files: %w", err)
-			}
-			batch = make([]*file, 0, batchSize)
-		} else {
-			batch = append(batch, &r)
-		}
+	if err := w.sendBatchFiles(ctx, tx, j, files); err != nil {
+		return fmt.Errorf("send batch files: %w", err)
 	}
 
-	if len(batch) > 0 {
-		if err := w.sendBatchFiles(ctx, tx, j, batch); err != nil {
-			return fmt.Errorf("send batch files: %w", err)
-		}
-	}
-
-	l.Info().Msgf("sent batch of %d files", totalCount)
+	l.Info().Msgf("sent batch of %d files", len(files))
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("update status done: %w", err)

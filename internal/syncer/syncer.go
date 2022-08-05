@@ -95,6 +95,7 @@ func (w *worker) exec(ctx context.Context, id string) {
 				}
 
 				w.logger.Err(err).Msgf("error dequeuing job: %v", err)
+				continue
 			}
 
 			w.loggerForJob(j).Info().Msg("dequeued job")

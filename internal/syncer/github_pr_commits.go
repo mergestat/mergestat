@@ -123,14 +123,12 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 		}
 	}()
 
-	if len(commits) > 0 {
-		if _, err := tx.Exec(ctx, "DELETE FROM github_pull_request_commits WHERE repo_id = $1;", j.RepoID.String()); err != nil {
-			return fmt.Errorf("exec delete: %w", err)
-		}
+	if _, err := tx.Exec(ctx, "DELETE FROM github_pull_request_commits WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+		return fmt.Errorf("exec delete: %w", err)
+	}
 
-		if err := w.sendBatchGitHubPRCommits(ctx, tx, id, commits); err != nil {
-			return fmt.Errorf("batch insert pr commits: %w", err)
-		}
+	if err := w.sendBatchGitHubPRCommits(ctx, tx, id, commits); err != nil {
+		return fmt.Errorf("insert pr commits: %w", err)
 	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {

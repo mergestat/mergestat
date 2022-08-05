@@ -9,14 +9,11 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/jmoiron/sqlx"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
 
 const (
-	pullRequestsFullSyncDays = 90 // 90 days
-
 	selectGitHubRepoPRs = `SELECT * FROM github_repo_prs(?) ORDER BY created_at DESC`
 )
 
@@ -185,6 +182,11 @@ func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRo
 	repoOwner := components[1]
 	repoName := components[2]
 
+	prs := make([]*githubRepoPR, 0)
+	if err = w.mergestat.SelectContext(ctx, &prs, selectGitHubRepoPRs, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
+		return fmt.Errorf("mergestat query: %w", err)
+	}
+
 	var tx pgx.Tx
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -197,60 +199,17 @@ func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRo
 		}
 	}()
 
-	// delete the recent rows within days for github_pull_requests in PG
-	sql := fmt.Sprintf("DELETE FROM github_pull_requests WHERE repo_id = $1 and created_at > (now() - interval '%d day');", pullRequestsFullSyncDays)
-	if res, err := tx.Exec(ctx, sql, j.RepoID.String()); err != nil {
+	if res, err := tx.Exec(ctx, "DELETE FROM github_pull_requests WHERE repo_id = $1;", j.RepoID.String()); err != nil {
 		return fmt.Errorf("delete rows: %w", err)
 	} else {
 		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
 	}
 
-	var databaseId int
-	sql = "SELECT database_id FROM github_pull_requests WHERE repo_id = $1 ORDER BY created_at DESC LIMIT 1"
-	if err := tx.QueryRow(ctx, sql, id.String()).Scan(&databaseId); err != nil {
-		if !errors.Is(err, pgx.ErrNoRows) {
-			return fmt.Errorf("query row: %w", err)
-		}
+	if err := w.sendBatchGitHubRepoPRs(ctx, tx, id, prs); err != nil {
+		return fmt.Errorf("insert PRs: %w", err)
 	}
 
-	var rows *sqlx.Rows
-	if rows, err = w.mergestat.QueryxContext(ctx, selectGitHubRepoPRs, fmt.Sprintf("%s/%s", repoOwner, repoName)); err != nil {
-		return fmt.Errorf("mergestat query: %w", err)
-	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			w.logger.Err(err).Msgf("close rows: %v", err)
-		}
-	}()
-
-	batchSize := 500
-	batch := make([]*githubRepoPR, 0, batchSize)
-	totalCount := 0
-	for rows.Next() {
-		var r githubRepoPR
-		if err := rows.StructScan(&r); err != nil {
-			return fmt.Errorf("row scan: %w", err)
-		}
-		if len(batch) >= batchSize {
-			if err := w.sendBatchGitHubRepoPRs(ctx, tx, id, batch); err != nil {
-				return fmt.Errorf("batch insert prs: %w", err)
-			}
-			batch = make([]*githubRepoPR, 0, batchSize)
-		} else {
-			if *r.DatabaseID == databaseId {
-				break
-			}
-			batch = append(batch, &r)
-		}
-		totalCount++
-	}
-	if len(batch) > 0 {
-		if err := w.sendBatchGitHubRepoPRs(ctx, tx, id, batch); err != nil {
-			return fmt.Errorf("batch insert prs: %w", err)
-		}
-	}
-
-	l.Info().Msgf("retrieved repo prs: %d", totalCount)
+	l.Info().Msgf("retrieved repo PRs: %d", len(prs))
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)
