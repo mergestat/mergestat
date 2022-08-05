@@ -72,7 +72,7 @@ func collectCommits(ctx context.Context, repo *libgit2.Repository) ([]*commit, e
 		default:
 		}
 
-		var r *commit
+		var r commit
 		r.Hash = sql.NullString{String: c.Id().String(), Valid: true}
 		r.Message = sql.NullString{String: c.Message(), Valid: true}
 		r.AuthorName = sql.NullString{String: c.Author().Name, Valid: true}
@@ -83,7 +83,7 @@ func collectCommits(ctx context.Context, repo *libgit2.Repository) ([]*commit, e
 		r.CommitterWhen = sql.NullTime{Time: c.Committer().When, Valid: true}
 		r.Parents = sql.NullInt32{Int32: int32(c.ParentCount()), Valid: true}
 
-		commits = append(commits, r)
+		commits = append(commits, &r)
 
 		return true
 	}); err != nil {
