@@ -90,7 +90,7 @@ func main() {
 		os.Exit(1)
 	}
 	v := u.Query()
-	v.Add("pool_max_conns", strconv.Itoa(concurrency))
+	v.Add("pool_max_conns", strconv.Itoa(concurrency+5))
 	u.RawQuery = v.Encode()
 
 	var pool *pgxpool.Pool
