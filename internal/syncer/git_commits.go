@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -47,6 +46,51 @@ type commit struct {
 	CommitterEmail sql.NullString `db:"committer_email"`
 	CommitterWhen  sql.NullTime   `db:"committer_when"`
 	Parents        sql.NullInt32  `db:"parents"`
+}
+
+// collectCommits retrieves all the commits for a given repository and returns them as a slice
+func collectCommits(ctx context.Context, repo *libgit2.Repository) ([]*commit, error) {
+	commits := make([]*commit, 0)
+
+	walk, err := repo.Walk()
+	if err != nil {
+		return nil, err
+	}
+	defer walk.Free()
+
+	if err := walk.PushHead(); err != nil {
+		return nil, err
+	}
+
+	if err := walk.Iterate(func(c *libgit2.Commit) bool {
+		defer c.Free()
+
+		// TODO(patrickdevivo) inspect this behavior
+		select {
+		case <-ctx.Done():
+			return false
+		default:
+		}
+
+		var r *commit
+		r.Hash = sql.NullString{String: c.Id().String(), Valid: true}
+		r.Message = sql.NullString{String: c.Message(), Valid: true}
+		r.AuthorName = sql.NullString{String: c.Author().Name, Valid: true}
+		r.AuthorEmail = sql.NullString{String: c.Author().Email, Valid: true}
+		r.AuthorWhen = sql.NullTime{Time: c.Author().When, Valid: true}
+		r.CommitterName = sql.NullString{String: c.Committer().Name, Valid: true}
+		r.CommitterEmail = sql.NullString{String: c.Committer().Email, Valid: true}
+		r.CommitterWhen = sql.NullTime{Time: c.Committer().When, Valid: true}
+		r.Parents = sql.NullInt32{Int32: int32(c.ParentCount()), Valid: true}
+
+		commits = append(commits, r)
+
+		return true
+	}); err != nil {
+		return nil, err
+	}
+
+	return commits, nil
 }
 
 func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
@@ -96,36 +140,8 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return err
 	}
 
-	commits := make([]*commit, 0)
-
-	walk, err := repo.Walk()
+	commits, err := collectCommits(ctx, repo)
 	if err != nil {
-		return err
-	}
-	defer walk.Free()
-
-	if err := walk.PushHead(); err != nil {
-		return err
-	}
-
-	if err := walk.Iterate(func(c *libgit2.Commit) bool {
-		defer c.Free()
-
-		var r *commit
-		r.Hash = sql.NullString{String: c.Id().String(), Valid: true}
-		r.Message = sql.NullString{String: c.Message(), Valid: true}
-		r.AuthorName = sql.NullString{String: c.Author().Name, Valid: true}
-		r.AuthorEmail = sql.NullString{String: c.Author().Email, Valid: true}
-		r.AuthorWhen = sql.NullTime{Time: c.Author().When, Valid: true}
-		r.CommitterName = sql.NullString{String: c.Committer().Name, Valid: true}
-		r.CommitterEmail = sql.NullString{String: c.Committer().Email, Valid: true}
-		r.CommitterWhen = sql.NullTime{Time: c.Committer().When, Valid: true}
-		r.Parents = sql.NullInt32{Int32: int32(c.ParentCount()), Valid: true}
-
-		commits = append(commits, r)
-
-		return true
-	}); err != nil {
 		return err
 	}
 
@@ -146,7 +162,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 	}
 
 	if err := w.sendBatchCommits(ctx, tx, j, commits); err != nil {
-		return fmt.Errorf("send batch commits: %w", err)
+		return err
 	}
 
 	l.Info().Msgf("sent batch of %d commits", len(commits))
