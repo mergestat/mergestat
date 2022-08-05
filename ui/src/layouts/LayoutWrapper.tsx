@@ -7,12 +7,16 @@ import SidebarLayout from './SidebarLayout'
 
 import { ErrorFallback, MyErrorHandler } from '../components/ErrorBoundary'
 
-type LayoutWrapperPropsT = {
+type LayoutProps = {
   children?: {
     type: {
       layout: string | undefined
     }
   }
+}
+
+type LayoutWrapperPropsT = {
+  children?: React.ReactNode
 }
 
 const layouts = {
@@ -23,7 +27,7 @@ const layouts = {
 const LayoutWrapper = (props: LayoutWrapperPropsT): JSX.Element => {
   const type = pathOr('default', ['children', 'type', 'layout'], props)
 
-  const Layout = layouts[type]
+  const Layout: React.FC<LayoutProps> = layouts[type]
 
   return (
     <Layout {...props}>

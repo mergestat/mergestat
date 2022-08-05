@@ -10,6 +10,7 @@ import {
 } from '@mergestat/blocks'
 import { RepositoryIcon, SearchIcon } from '@mergestat/icons'
 import React, { useState } from 'react'
+import { useId } from 'react'
 
 const EmptyRepositories: React.FC = () => {
   return (
@@ -62,6 +63,8 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
     onCheckBoxClicked,
   } = useGitOrganizations()
 
+  const id = useId();
+
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
       <div className="mb-6">
@@ -93,7 +96,7 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
           <Panel.Header className="justify-between gap-x-6">
             <div className="flex">
               <Checkbox
-                checked={selectedRepositoriesCount===repositories.length}
+                checked={selectedRepositoriesCount === repositories.length}
                 onClick={(e) => {
                   const checked = e.currentTarget.checked
                   selectAllRepositories(checked)
@@ -121,6 +124,7 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
 
             {repositories.map((repo, index) => (
               <RepositoryRow
+                key={`${id}-${index}`}
                 organization={organization}
                 name={repo.name}
                 selected={repo.selected}

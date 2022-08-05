@@ -13,7 +13,7 @@ import { useQuery } from '@apollo/client'
 import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
 import { showErrorAlert } from 'src/utils/alerts'
 
-export const RepositoriesView: React.FC = () => {
+const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal }] = useRepositoriesContext()
 
   const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
@@ -103,3 +103,5 @@ export const RepositoriesView: React.FC = () => {
     </main>
   )
 }
+
+export default RepositoriesView

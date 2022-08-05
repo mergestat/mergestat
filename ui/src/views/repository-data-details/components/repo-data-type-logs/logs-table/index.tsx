@@ -68,7 +68,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
 
                 <tbody className='bg-white'>
                   {data.map((log, index) => (
-                    <Fragment key={Math.random()}>
+                    <Fragment key={log.id}>
                       <tr>
                         <td className="w-0 pl-6">
                           <button className="t-button-icon focus:!outline-none"

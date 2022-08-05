@@ -4,3 +4,5 @@ export const DATE_FORMAT = {
 }
 
 export const GITHUB_URL = 'https://github.com/'
+
+export const MERGESTAT_TITLE = 'MergeStat |'

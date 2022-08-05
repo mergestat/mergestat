@@ -7,6 +7,7 @@ import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/get-repo-syncs.query'
 import { mapToSyncsData } from 'src/api-logic/mappers/repo-syncs'
 import Loading from 'src/components/Loading'
 import { showErrorAlert } from 'src/utils/alerts'
+import { MERGESTAT_TITLE } from 'src/utils/constants'
 
 
 const RepoDetailsPage = () => {
@@ -19,6 +20,7 @@ const RepoDetailsPage = () => {
   })
 
   const repo = mapToSyncsData(data)
+  const title = `${MERGESTAT_TITLE} ${repo?.name}`
 
   if (error) {
     showErrorAlert(error.message)
@@ -27,7 +29,7 @@ const RepoDetailsPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>MergeStat | {repo?.name}</title>
+        <title>{title}</title>
       </Head>
       {loading ? <Loading /> : <RepoDataView data={repo} />}
     </Fragment>
