@@ -1,9 +1,4 @@
-import React, {
-  CSSProperties,
-  Fragment,
-  useRef,
-  useState,
-} from 'react'
+import React, { CSSProperties, Fragment, useRef, useState } from 'react'
 import type { SyncStatusDataT } from 'src/@types'
 import type { RepoSyncStateT } from 'src/@types'
 
@@ -98,8 +93,6 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     alert(p.status)
   }
 
-  const randomKey = Math.random();
-
   return (
     <div
       onMouseMove={(event) => {
@@ -160,7 +153,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
       >
         <g transform="scale(1,-1)">
           {[...points].map((p, i) => {
-            const id = randomKey + '_round-corner_' + i,
+            const id = 'round-corner_' + i,
               x = p.x - (bar_width + strokeWidth) / 2,
               y = -height,
               varHeight = Math.max(0, height - p.y),

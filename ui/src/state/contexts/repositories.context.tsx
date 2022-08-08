@@ -26,11 +26,15 @@ function useRepositories(): UseRepositoriesContextT {
   return [state, setState]
 }
 
+type RepositoriesContextProps = {
+  children?: React.ReactNode
+}
+
 // Generate context
 const [useRepositoriesContext, RepositoriesContextProvider] = createGenericContext<UseRepositoriesContextT>()
 
 // Generate provider
-const RepositoriesProvider: React.FC = (props) => {
+const RepositoriesProvider: React.FC<RepositoriesContextProps> = (props: RepositoriesContextProps) => {
   const [repositories, setRepositories] = useRepositories()
 
   return (
@@ -40,7 +44,7 @@ const RepositoriesProvider: React.FC = (props) => {
   )
 }
 
-function useRepositoriesSetState () {
+function useRepositoriesSetState() {
   const [_, setState] = useRepositoriesContext()
 
   const setShowOpenRepositoryModal = (show: boolean) => {
@@ -49,21 +53,21 @@ function useRepositoriesSetState () {
       showOpenRepositoryModal: show
     }))
   }
-  
+
   const setShowAutoImportModal = (show: boolean) => {
     setState(prev => ({
       ...prev,
       showAutoImportModal: show
     }))
   }
-  
+
   const setShowAddRepositoryModal = (show: boolean) => {
     setState(prev => ({
       ...prev,
       showAddRepositoryModal: show
     }))
   }
-  
+
   const setShowSyncRepoModal = (show: boolean) => {
     setState(prev => ({
       ...prev,

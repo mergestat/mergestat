@@ -53,7 +53,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnType
 
                 <tbody className='bg-white'>
                   {data.map((sync) => (
-                    <tr key={Math.random()}>
+                    <tr key={sync.data.id}>
                       <td className="w-12 h-20 p-0">
                         <div className={cx('h-full px-6 flex', { 'bg-gray-50': sync.status.syncState === 'disabled' })}>
                           <RepoSyncIcon type={sync.status.syncState} className="my-auto" />

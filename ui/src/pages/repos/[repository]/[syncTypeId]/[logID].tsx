@@ -8,6 +8,7 @@ import { mapToSyncLogsData } from 'src/api-logic/mappers/syncs-logs'
 import { SyncTypeData } from 'src/@types'
 import Loading from 'src/components/Loading'
 import { showErrorAlert } from 'src/utils/alerts'
+import { MERGESTAT_TITLE } from 'src/utils/constants'
 
 const LogsDetailsPage = () => {
   const router = useRouter()
@@ -19,6 +20,7 @@ const LogsDetailsPage = () => {
   })
 
   const repoData: SyncTypeData = mapToSyncLogsData(data)
+  const title = `${MERGESTAT_TITLE} ${repoData.repo.name}`
 
   if (error) {
     showErrorAlert(error.message)
@@ -27,7 +29,7 @@ const LogsDetailsPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>MergeStat | {repoData.repo.name}</title>
+        <title>{title}</title>
       </Head>
       {loading ? <Loading /> : <RepoDataLogsDetailsView {...repoData} />}
     </Fragment>

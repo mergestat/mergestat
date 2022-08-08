@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import {
   Button,
   Checkbox,
@@ -18,6 +18,7 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
   const [tags, setTags] = useState(allTags)
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [searchText, setSearchText] = useState<string>("")
+  const id = useId()
 
   const handleCheck = (checked: boolean, index: number) => {
     setTags(prev => prev.map((tag, i) => {
@@ -49,7 +50,7 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
             />
           </div>
           {tags.slice(0, 7).map((tag, index) => (
-            <div key={Math.random()} className="t-menu-item my-0">
+            <div key={`${id}-${index}`} className="t-menu-item my-0">
               <Checkbox
                 className="cursor-pointer py-1.5"
                 label={tag.title}

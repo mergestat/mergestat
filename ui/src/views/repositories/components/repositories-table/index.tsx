@@ -56,7 +56,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
 
                 <tbody className='bg-white'>
                   {repos.map((repo) => (
-                    <tr key={Math.random()}>
+                    <tr key={repo.id}>
                       <td className="w-0 pl-6">
                         <Checkbox />
                       </td>
