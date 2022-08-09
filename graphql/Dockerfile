@@ -4,7 +4,7 @@ LABEL description="Instant high-performance GraphQL API for your PostgreSQL data
 WORKDIR /graphql
 COPY . /graphql
 
-RUN cd exec-sql && npm i
+RUN cd exec-sql && npm i && npm run build
 
 # Install PostGraphile and PostGraphile connection filter plugin
 RUN npm install -g postgraphile
