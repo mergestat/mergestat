@@ -1,5 +1,10 @@
 name: CI Frontend (UI)
+
 on: [push, pull_request]
+
+env: # environment variables (available in any part of the action)
+  NODE_VERSION: 16
+
 jobs:
   ui-frontend:
     name: Build UI for ${{ matrix.os }}
@@ -16,12 +21,16 @@ jobs:
             asset_name: mergestat-macos-amd64
 
     steps:
-    - name: Lint
-      with:
-        node-version: [16.x]
-      run: npm run lint
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-    - name: Build
-      with:
-        node-version: [16.x]
-      run: npm run build
+      - name: Check out source
+        uses: actions/checkout@v2
+
+      - name: Code Linting
+        run: npm run lint
+
+      - name: Code Building
+        run: npm run build
