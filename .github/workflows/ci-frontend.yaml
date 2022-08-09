@@ -29,6 +29,9 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: npm install --force
+
       - name: Code Linting
         run: npm run lint
 
