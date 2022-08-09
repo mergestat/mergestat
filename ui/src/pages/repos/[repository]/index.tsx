@@ -9,7 +9,6 @@ import Loading from 'src/components/Loading'
 import { showErrorAlert } from 'src/utils/alerts'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
 
-
 const RepoDetailsPage = () => {
   const router = useRouter()
   const { repository } = router.query

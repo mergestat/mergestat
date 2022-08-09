@@ -22,10 +22,10 @@ export const sampleSyncData: {
     dataType: 'Issues',
     reposCount: 112,
     disablefor: 112
-  }, 
+  },
   {
     dataType: 'Blames',
     reposCount: 112,
     disablefor: 112
-  },      
+  },
 ]

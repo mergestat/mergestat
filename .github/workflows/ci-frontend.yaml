@@ -1,0 +1,27 @@
+name: CI Frontend (UI)
+on: [push, pull_request]
+jobs:
+  ui-frontend:
+    name: Build UI for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ./ui
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset_name: mergestat-linux-amd64
+          - os: macos-latest
+            asset_name: mergestat-macos-amd64
+
+    steps:
+    - name: Lint
+      with:
+        node-version: [16.x]
+      run: npm run lint
+
+    - name: Build
+      with:
+        node-version: [16.x]
+      run: npm run build

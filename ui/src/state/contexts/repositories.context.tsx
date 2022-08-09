@@ -1,5 +1,5 @@
-import * as React from "react"
-import { createGenericContext } from "lib/createGenericContext"
+import { createGenericContext } from 'lib/createGenericContext'
+import React, { PropsWithChildren } from 'react'
 
 type RepositoriesContextT = {
   showOpenRepositoryModal: boolean
@@ -26,15 +26,11 @@ function useRepositories(): UseRepositoriesContextT {
   return [state, setState]
 }
 
-type RepositoriesContextProps = {
-  children?: React.ReactNode
-}
-
 // Generate context
 const [useRepositoriesContext, RepositoriesContextProvider] = createGenericContext<UseRepositoriesContextT>()
 
 // Generate provider
-const RepositoriesProvider: React.FC<RepositoriesContextProps> = (props: RepositoriesContextProps) => {
+const RepositoriesProvider: React.FC<PropsWithChildren> = (props: PropsWithChildren) => {
   const [repositories, setRepositories] = useRepositories()
 
   return (
@@ -76,6 +72,7 @@ function useRepositoriesSetState() {
   }
 
   return {
+    _,
     setShowOpenRepositoryModal,
     setShowAutoImportModal,
     setShowAddRepositoryModal,

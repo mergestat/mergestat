@@ -1,19 +1,19 @@
-import React from 'react'
 import { Button, Table } from '@mergestat/blocks'
 import {
   AutoImportIcon,
   CircleCheckFilledIcon,
   GithubIcon,
   TrashIcon,
-  XIcon,
+  XIcon
 } from '@mergestat/icons'
+import React from 'react'
 
 type ColumnsT = {
   title?: string | undefined
-  dataIndex?: any
+  dataIndex?: unknown
   className?: string | undefined
-  key?: any
-  render?: any
+  key?: unknown
+  render?: unknown
 }
 
 type AutoImportManagePropsT = {
@@ -67,53 +67,53 @@ export const ManageAutoImportReposModal = ({
       successIcon: <CircleCheckFilledIcon className="t-icon text-semantic-success" />,
       source: 'user-name',
       type: (
-        <p className="flex items-center gap">
-          <GithubIcon className="t-icon t-icon-small t-icon-muted  mr-2" />
-          GitHub User
-        </p>
+          <p className="flex items-center gap">
+            <GithubIcon className="t-icon t-icon-small t-icon-muted  mr-2" />
+            GitHub User
+          </p>
       ),
       last: '2 hours ago',
       delIcon: <Button
-      isIconOnly
-      size="small"
-      skin="borderless-muted"
-      startIcon={<TrashIcon />}
-      />
+          isIconOnly
+          size="small"
+          skin="borderless-muted"
+          startIcon={<TrashIcon />}
+        />
 
     },
     {
       successIcon: <CircleCheckFilledIcon className="t-icon text-semantic-success" />,
       source: 'organization-name',
       type: (
-        <p className="flex items-center gap">
-          <GithubIcon className="t-icon t-icon-small t-icon-muted mr-2" />
-          GitHub Organization
-        </p>
+          <p className="flex items-center gap">
+            <GithubIcon className="t-icon t-icon-small t-icon-muted mr-2" />
+            GitHub Organization
+          </p>
       ),
       last: '2 hours ago',
       delIcon: <Button
-      isIconOnly
-      size="small"
-      skin="borderless-muted"
-      startIcon={<TrashIcon />}
-      />
+          isIconOnly
+          size="small"
+          skin="borderless-muted"
+          startIcon={<TrashIcon />}
+        />
     },
     {
       successIcon: <CircleCheckFilledIcon className="t-icon text-semantic-success" />,
       source: 'organization-name',
       type: (
-        <p className="flex items-center gap">
-          <GithubIcon className="t-icon t-icon-small t-icon-muted mr-2" />
-          GitHub Organization
-        </p>
+          <p className="flex items-center gap">
+            <GithubIcon className="t-icon t-icon-small t-icon-muted mr-2" />
+            GitHub Organization
+          </p>
       ),
       last: '2 hours ago',
       delIcon: <Button
-      isIconOnly
-      size="small"
-      skin="borderless-muted"
-      startIcon={<TrashIcon />}
-      />
+          isIconOnly
+          size="small"
+          skin="borderless-muted"
+          startIcon={<TrashIcon />}
+        />
     },
   ]
 

@@ -1,28 +1,21 @@
-import React, { useId, useState } from 'react'
-import {
-  Button,
-  Checkbox,
-  Dropdown,
-  Input,
-  Menu,
-} from '@mergestat/blocks'
+import { Button, Checkbox, Dropdown, Input, Menu } from '@mergestat/blocks'
 import { SearchIcon } from '@mergestat/icons'
-import { TagListFilterModal } from '../modals'
+import React, { ChangeEvent, useId, useState } from 'react'
 import { TagType } from 'src/@types'
-
+import { TagListFilterModal } from '../modals'
 
 type TagsListDropDownProps = {
-  trigger?: JSX.Element,
+  trigger?: JSX.Element
 }
 export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
   const [tags, setTags] = useState(allTags)
   const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const [searchText, setSearchText] = useState<string>("")
+  const [searchText, setSearchText] = useState<string>('')
   const id = useId()
 
   const handleCheck = (checked: boolean, index: number) => {
     setTags(prev => prev.map((tag, i) => {
-      return i != index ? tag : { ...tag, checked: !checked }
+      return i !== index ? tag : { ...tag, checked: !checked }
     }))
   }
   const handleSearch = (text: string) => {
@@ -46,7 +39,7 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
               placeholder="Search..."
               startIcon={<SearchIcon className="t-icon text-gray-400" />}
               value={searchText}
-              onChange={(e: any) => handleSearch(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch(e.target.value)}
             />
           </div>
           {tags.slice(0, 7).map((tag, index) => (
@@ -57,7 +50,7 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
                 checked={tag.checked}
                 onClick={() => handleCheck(tag.checked, index)}
                 onChange={(e) => {
-                  const checked = e.currentTarget.checked
+                  return e.currentTarget.checked
                 }}
               />
             </div>

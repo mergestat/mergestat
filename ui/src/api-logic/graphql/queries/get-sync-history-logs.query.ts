@@ -41,6 +41,7 @@ const GET_LOGS_OF_A_SYNC = gql`
     repo(id: $repoId) {
       id
       repo
+      isGithub
       repoSyncs(condition: {id: $syncId}) {
         nodes {
           id

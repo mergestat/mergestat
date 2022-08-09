@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { Button, Input, Modal, Label, RadioCard, Toolbar } from '@mergestat/blocks'
+import { Button, Input, Label, Modal, RadioCard, Toolbar } from '@mergestat/blocks'
 import { GithubIcon, XIcon } from '@mergestat/icons'
+import React, { useState } from 'react'
 
 enum SYNC_REPO_METHOD {
   GH_ORG,

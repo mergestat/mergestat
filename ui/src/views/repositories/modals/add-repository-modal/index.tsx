@@ -1,13 +1,13 @@
-import React from 'react'
 import { Button, Modal, Toolbar } from '@mergestat/blocks'
 import { XIcon } from '@mergestat/icons'
+import React from 'react'
 import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
-import { ModalSideBar } from './modal-sidebar'
 import { AddRepositoryFromCSVModal } from './add-repository-from-csv-modal'
 import { AddRepositoryFromGitOrganizationModal } from './add-repository-from-git-organization-modal'
 import { AddRepositoryFromGitUserModal } from './add-repository-from-git-user-modal'
 import { AddRepositoryFromURLModal } from './add-repository-from-url-modal'
 import { ModalFooter } from './modal-footer'
+import { ModalSideBar } from './modal-sidebar'
 
 export const AddRepositoryModal: React.FC = () => {
   const { setShowAddRepositoryModal } = useRepositoriesSetState()
@@ -19,6 +19,7 @@ export const AddRepositoryModal: React.FC = () => {
 
   const close = React.useCallback(() => {
     setShowAddRepositoryModal(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

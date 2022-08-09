@@ -1,6 +1,6 @@
-import * as React from "react"
+import * as React from 'react'
 
-export const createGenericContext = <T extends unknown>() => {
+export const createGenericContext = <T>() => {
   // Create a context with a generic parameter or undefined
   const genericContext = React.createContext<T | undefined>(undefined)
 

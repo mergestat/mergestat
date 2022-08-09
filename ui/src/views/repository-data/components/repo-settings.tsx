@@ -12,7 +12,7 @@ const tags: TagType[] = [
   { title: 'team-a', checked: false },
 ]
 
-export const RepoSettings: React.FC = (props) => {
+export const RepoSettings: React.FC = () => {
   return (
     <>
       <Panel className="overflow-visible">

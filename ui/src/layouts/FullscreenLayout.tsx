@@ -1,10 +1,6 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, PropsWithChildren } from 'react'
 
-type FullscreenLayoutProps = {
-  children?: React.ReactNode
-}
-
-const FullscreenLayout: React.FC<FullscreenLayoutProps> = (props: FullscreenLayoutProps) => {
+const FullscreenLayout: React.FC<PropsWithChildren> = (props: PropsWithChildren) => {
   return <Fragment>{props?.children}</Fragment>
 }
 

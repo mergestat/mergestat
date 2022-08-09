@@ -30,7 +30,6 @@ export type CreateGitBranchInput = {
 
 /** The output of our create `GitBranch` mutation. */
 export type CreateGitBranchPayload = {
-  __typename?: 'CreateGitBranchPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -63,7 +62,6 @@ export type CreateGitCommitInput = {
 
 /** The output of our create `GitCommit` mutation. */
 export type CreateGitCommitPayload = {
-  __typename?: 'CreateGitCommitPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -98,7 +96,6 @@ export type CreateGitCommitStatInput = {
 
 /** The output of our create `GitCommitStat` mutation. */
 export type CreateGitCommitStatPayload = {
-  __typename?: 'CreateGitCommitStatPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -133,7 +130,6 @@ export type CreateGitFileInput = {
 
 /** The output of our create `GitFile` mutation. */
 export type CreateGitFilePayload = {
-  __typename?: 'CreateGitFilePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -168,7 +164,6 @@ export type CreateGitRefInput = {
 
 /** The output of our create `GitRef` mutation. */
 export type CreateGitRefPayload = {
-  __typename?: 'CreateGitRefPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -201,7 +196,6 @@ export type CreateGitTagInput = {
 
 /** The output of our create `GitTag` mutation. */
 export type CreateGitTagPayload = {
-  __typename?: 'CreateGitTagPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -234,7 +228,6 @@ export type CreateGithubIssueInput = {
 
 /** The output of our create `GithubIssue` mutation. */
 export type CreateGithubIssuePayload = {
-  __typename?: 'CreateGithubIssuePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -269,7 +262,6 @@ export type CreateGithubPullRequestCommitInput = {
 
 /** The output of our create `GithubPullRequestCommit` mutation. */
 export type CreateGithubPullRequestCommitPayload = {
-  __typename?: 'CreateGithubPullRequestCommitPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -302,7 +294,6 @@ export type CreateGithubPullRequestInput = {
 
 /** The output of our create `GithubPullRequest` mutation. */
 export type CreateGithubPullRequestPayload = {
-  __typename?: 'CreateGithubPullRequestPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -337,7 +328,6 @@ export type CreateGithubPullRequestReviewInput = {
 
 /** The output of our create `GithubPullRequestReview` mutation. */
 export type CreateGithubPullRequestReviewPayload = {
-  __typename?: 'CreateGithubPullRequestReviewPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -370,7 +360,6 @@ export type CreateGithubRepoInfoInput = {
 
 /** The output of our create `GithubRepoInfo` mutation. */
 export type CreateGithubRepoInfoPayload = {
-  __typename?: 'CreateGithubRepoInfoPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -405,7 +394,6 @@ export type CreateGithubStargazerInput = {
 
 /** The output of our create `GithubStargazer` mutation. */
 export type CreateGithubStargazerPayload = {
-  __typename?: 'CreateGithubStargazerPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -440,7 +428,6 @@ export type CreateRepoImportInput = {
 
 /** The output of our create `RepoImport` mutation. */
 export type CreateRepoImportPayload = {
-  __typename?: 'CreateRepoImportPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -475,7 +462,6 @@ export type CreateRepoImportTypeInput = {
 
 /** The output of our create `RepoImportType` mutation. */
 export type CreateRepoImportTypePayload = {
-  __typename?: 'CreateRepoImportTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -508,7 +494,6 @@ export type CreateRepoInput = {
 
 /** The output of our create `Repo` mutation. */
 export type CreateRepoPayload = {
-  __typename?: 'CreateRepoPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -554,7 +539,6 @@ export type CreateRepoSyncLogInput = {
 
 /** The output of our create `RepoSyncLog` mutation. */
 export type CreateRepoSyncLogPayload = {
-  __typename?: 'CreateRepoSyncLogPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -591,7 +575,6 @@ export type CreateRepoSyncLogTypeInput = {
 
 /** The output of our create `RepoSyncLogType` mutation. */
 export type CreateRepoSyncLogTypePayload = {
-  __typename?: 'CreateRepoSyncLogTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -613,7 +596,6 @@ export type CreateRepoSyncLogTypePayloadRepoSyncLogTypeEdgeArgs = {
 
 /** The output of our create `RepoSync` mutation. */
 export type CreateRepoSyncPayload = {
-  __typename?: 'CreateRepoSyncPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -650,7 +632,6 @@ export type CreateRepoSyncQueueInput = {
 
 /** The output of our create `RepoSyncQueue` mutation. */
 export type CreateRepoSyncQueuePayload = {
-  __typename?: 'CreateRepoSyncQueuePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -687,7 +668,6 @@ export type CreateRepoSyncQueueStatusTypeInput = {
 
 /** The output of our create `RepoSyncQueueStatusType` mutation. */
 export type CreateRepoSyncQueueStatusTypePayload = {
-  __typename?: 'CreateRepoSyncQueueStatusTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -720,7 +700,6 @@ export type CreateRepoSyncTypeInput = {
 
 /** The output of our create `RepoSyncType` mutation. */
 export type CreateRepoSyncTypePayload = {
-  __typename?: 'CreateRepoSyncTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -753,7 +732,6 @@ export type CreateSchemaMigrationInput = {
 
 /** The output of our create `SchemaMigration` mutation. */
 export type CreateSchemaMigrationPayload = {
-  __typename?: 'CreateSchemaMigrationPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -797,7 +775,6 @@ export type DeleteGitCommitInput = {
 
 /** The output of our delete `GitCommit` mutation. */
 export type DeleteGitCommitPayload = {
-  __typename?: 'DeleteGitCommitPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -844,7 +821,6 @@ export type DeleteGitFileInput = {
 
 /** The output of our delete `GitFile` mutation. */
 export type DeleteGitFilePayload = {
-  __typename?: 'DeleteGitFilePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -891,7 +867,6 @@ export type DeleteGitRefInput = {
 
 /** The output of our delete `GitRef` mutation. */
 export type DeleteGitRefPayload = {
-  __typename?: 'DeleteGitRefPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -936,7 +911,6 @@ export type DeleteGithubIssueInput = {
 
 /** The output of our delete `GithubIssue` mutation. */
 export type DeleteGithubIssuePayload = {
-  __typename?: 'DeleteGithubIssuePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -995,7 +969,6 @@ export type DeleteGithubPullRequestCommitInput = {
 
 /** The output of our delete `GithubPullRequestCommit` mutation. */
 export type DeleteGithubPullRequestCommitPayload = {
-  __typename?: 'DeleteGithubPullRequestCommitPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1029,7 +1002,6 @@ export type DeleteGithubPullRequestInput = {
 
 /** The output of our delete `GithubPullRequest` mutation. */
 export type DeleteGithubPullRequestPayload = {
-  __typename?: 'DeleteGithubPullRequestPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1075,7 +1047,6 @@ export type DeleteGithubPullRequestReviewInput = {
 
 /** The output of our delete `GithubPullRequestReview` mutation. */
 export type DeleteGithubPullRequestReviewPayload = {
-  __typename?: 'DeleteGithubPullRequestReviewPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1130,7 +1101,6 @@ export type DeleteGithubRepoInfoInput = {
 
 /** The output of our delete `GithubRepoInfo` mutation. */
 export type DeleteGithubRepoInfoPayload = {
-  __typename?: 'DeleteGithubRepoInfoPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1177,7 +1147,6 @@ export type DeleteGithubStargazerInput = {
 
 /** The output of our delete `GithubStargazer` mutation. */
 export type DeleteGithubStargazerPayload = {
-  __typename?: 'DeleteGithubStargazerPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1234,7 +1203,6 @@ export type DeleteRepoImportInput = {
 
 /** The output of our delete `RepoImport` mutation. */
 export type DeleteRepoImportPayload = {
-  __typename?: 'DeleteRepoImportPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1280,7 +1248,6 @@ export type DeleteRepoImportTypeInput = {
 
 /** The output of our delete `RepoImportType` mutation. */
 export type DeleteRepoImportTypePayload = {
-  __typename?: 'DeleteRepoImportTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1313,7 +1280,6 @@ export type DeleteRepoInput = {
 
 /** The output of our delete `Repo` mutation. */
 export type DeleteRepoPayload = {
-  __typename?: 'DeleteRepoPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1391,7 +1357,6 @@ export type DeleteRepoSyncLogInput = {
 
 /** The output of our delete `RepoSyncLog` mutation. */
 export type DeleteRepoSyncLogPayload = {
-  __typename?: 'DeleteRepoSyncLogPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1439,7 +1404,6 @@ export type DeleteRepoSyncLogTypeInput = {
 
 /** The output of our delete `RepoSyncLogType` mutation. */
 export type DeleteRepoSyncLogTypePayload = {
-  __typename?: 'DeleteRepoSyncLogTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1462,7 +1426,6 @@ export type DeleteRepoSyncLogTypePayloadRepoSyncLogTypeEdgeArgs = {
 
 /** The output of our delete `RepoSync` mutation. */
 export type DeleteRepoSyncPayload = {
-  __typename?: 'DeleteRepoSyncPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1510,7 +1473,6 @@ export type DeleteRepoSyncQueueInput = {
 
 /** The output of our delete `RepoSyncQueue` mutation. */
 export type DeleteRepoSyncQueuePayload = {
-  __typename?: 'DeleteRepoSyncQueuePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1558,7 +1520,6 @@ export type DeleteRepoSyncQueueStatusTypeInput = {
 
 /** The output of our delete `RepoSyncQueueStatusType` mutation. */
 export type DeleteRepoSyncQueueStatusTypePayload = {
-  __typename?: 'DeleteRepoSyncQueueStatusTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1602,7 +1563,6 @@ export type DeleteRepoSyncTypeInput = {
 
 /** The output of our delete `RepoSyncType` mutation. */
 export type DeleteRepoSyncTypePayload = {
-  __typename?: 'DeleteRepoSyncTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1646,7 +1606,6 @@ export type DeleteSchemaMigrationInput = {
 
 /** The output of our delete `SchemaMigration` mutation. */
 export type DeleteSchemaMigrationPayload = {
-  __typename?: 'DeleteSchemaMigrationPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -1668,7 +1627,6 @@ export type DeleteSchemaMigrationPayloadSchemaMigrationEdgeArgs = {
 };
 
 export type GitBranch = {
-  __typename?: 'GitBranch';
   fullName?: Maybe<Scalars['String']>;
   hash?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -1716,7 +1674,6 @@ export type GitBranchInput = {
 
 /** A connection to a list of `GitBranch` values. */
 export type GitBranchesConnection = {
-  __typename?: 'GitBranchesConnection';
   /** A list of edges which contains the `GitBranch` and cursor to aid in pagination. */
   edges: Array<GitBranchesEdge>;
   /** A list of `GitBranch` objects. */
@@ -1729,7 +1686,6 @@ export type GitBranchesConnection = {
 
 /** A `GitBranch` edge in the connection. */
 export type GitBranchesEdge = {
-  __typename?: 'GitBranchesEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitBranch` at the end of the edge. */
@@ -1759,7 +1715,6 @@ export enum GitBranchesOrderBy {
 
 /** Git repository commits */
 export type GitCommit = Node & {
-  __typename?: 'GitCommit';
   authorEmail: Scalars['String'];
   authorName: Scalars['String'];
   authorWhen: Scalars['Datetime'];
@@ -1833,7 +1788,6 @@ export type GitCommitPatch = {
 
 /** Commit stats */
 export type GitCommitStat = {
-  __typename?: 'GitCommitStat';
   additions: Scalars['Int'];
   commitHash: Scalars['String'];
   deletions: Scalars['Int'];
@@ -1871,7 +1825,6 @@ export type GitCommitStatInput = {
 
 /** A connection to a list of `GitCommitStat` values. */
 export type GitCommitStatsConnection = {
-  __typename?: 'GitCommitStatsConnection';
   /** A list of edges which contains the `GitCommitStat` and cursor to aid in pagination. */
   edges: Array<GitCommitStatsEdge>;
   /** A list of `GitCommitStat` objects. */
@@ -1884,7 +1837,6 @@ export type GitCommitStatsConnection = {
 
 /** A `GitCommitStat` edge in the connection. */
 export type GitCommitStatsEdge = {
-  __typename?: 'GitCommitStatsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitCommitStat` at the end of the edge. */
@@ -1908,7 +1860,6 @@ export enum GitCommitStatsOrderBy {
 
 /** A connection to a list of `GitCommit` values. */
 export type GitCommitsConnection = {
-  __typename?: 'GitCommitsConnection';
   /** A list of edges which contains the `GitCommit` and cursor to aid in pagination. */
   edges: Array<GitCommitsEdge>;
   /** A list of `GitCommit` objects. */
@@ -1921,7 +1872,6 @@ export type GitCommitsConnection = {
 
 /** A `GitCommit` edge in the connection. */
 export type GitCommitsEdge = {
-  __typename?: 'GitCommitsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitCommit` at the end of the edge. */
@@ -1957,7 +1907,6 @@ export enum GitCommitsOrderBy {
 
 /** Git repository files */
 export type GitFile = Node & {
-  __typename?: 'GitFile';
   contents?: Maybe<Scalars['String']>;
   executable: Scalars['Boolean'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -1998,7 +1947,6 @@ export type GitFilePatch = {
 
 /** A connection to a list of `GitFile` values. */
 export type GitFilesConnection = {
-  __typename?: 'GitFilesConnection';
   /** A list of edges which contains the `GitFile` and cursor to aid in pagination. */
   edges: Array<GitFilesEdge>;
   /** A list of `GitFile` objects. */
@@ -2011,7 +1959,6 @@ export type GitFilesConnection = {
 
 /** A `GitFile` edge in the connection. */
 export type GitFilesEdge = {
-  __typename?: 'GitFilesEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitFile` at the end of the edge. */
@@ -2035,7 +1982,6 @@ export enum GitFilesOrderBy {
 
 /** Refs for a Git repo */
 export type GitRef = Node & {
-  __typename?: 'GitRef';
   fullName: Scalars['String'];
   hash?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -2094,7 +2040,6 @@ export type GitRefPatch = {
 
 /** A connection to a list of `GitRef` values. */
 export type GitRefsConnection = {
-  __typename?: 'GitRefsConnection';
   /** A list of edges which contains the `GitRef` and cursor to aid in pagination. */
   edges: Array<GitRefsEdge>;
   /** A list of `GitRef` objects. */
@@ -2107,7 +2052,6 @@ export type GitRefsConnection = {
 
 /** A `GitRef` edge in the connection. */
 export type GitRefsEdge = {
-  __typename?: 'GitRefsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitRef` at the end of the edge. */
@@ -2138,7 +2082,6 @@ export enum GitRefsOrderBy {
 }
 
 export type GitTag = {
-  __typename?: 'GitTag';
   fullName?: Maybe<Scalars['String']>;
   hash?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -2183,7 +2126,6 @@ export type GitTagInput = {
 
 /** A connection to a list of `GitTag` values. */
 export type GitTagsConnection = {
-  __typename?: 'GitTagsConnection';
   /** A list of edges which contains the `GitTag` and cursor to aid in pagination. */
   edges: Array<GitTagsEdge>;
   /** A list of `GitTag` objects. */
@@ -2196,7 +2138,6 @@ export type GitTagsConnection = {
 
 /** A `GitTag` edge in the connection. */
 export type GitTagsEdge = {
-  __typename?: 'GitTagsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GitTag` at the end of the edge. */
@@ -2226,7 +2167,6 @@ export enum GitTagsOrderBy {
 
 /** GitHub issues */
 export type GithubIssue = Node & {
-  __typename?: 'GithubIssue';
   authorLogin?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['String']>;
   closed?: Maybe<Scalars['Boolean']>;
@@ -2365,7 +2305,6 @@ export type GithubIssuePatch = {
 
 /** A connection to a list of `GithubIssue` values. */
 export type GithubIssuesConnection = {
-  __typename?: 'GithubIssuesConnection';
   /** A list of edges which contains the `GithubIssue` and cursor to aid in pagination. */
   edges: Array<GithubIssuesEdge>;
   /** A list of `GithubIssue` objects. */
@@ -2378,7 +2317,6 @@ export type GithubIssuesConnection = {
 
 /** A `GithubIssue` edge in the connection. */
 export type GithubIssuesEdge = {
-  __typename?: 'GithubIssuesEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubIssue` at the end of the edge. */
@@ -2440,7 +2378,6 @@ export enum GithubIssuesOrderBy {
 
 /** GitHub pull requests */
 export type GithubPullRequest = Node & {
-  __typename?: 'GithubPullRequest';
   additions?: Maybe<Scalars['Int']>;
   authorAssociation?: Maybe<Scalars['String']>;
   authorAvatarUrl?: Maybe<Scalars['String']>;
@@ -2490,7 +2427,6 @@ export type GithubPullRequest = Node & {
 
 /** GitHub pull request commits */
 export type GithubPullRequestCommit = Node & {
-  __typename?: 'GithubPullRequestCommit';
   additions?: Maybe<Scalars['Int']>;
   authorEmail?: Maybe<Scalars['String']>;
   authorName?: Maybe<Scalars['String']>;
@@ -2582,7 +2518,6 @@ export type GithubPullRequestCommitPatch = {
 
 /** A connection to a list of `GithubPullRequestCommit` values. */
 export type GithubPullRequestCommitsConnection = {
-  __typename?: 'GithubPullRequestCommitsConnection';
   /** A list of edges which contains the `GithubPullRequestCommit` and cursor to aid in pagination. */
   edges: Array<GithubPullRequestCommitsEdge>;
   /** A list of `GithubPullRequestCommit` objects. */
@@ -2595,7 +2530,6 @@ export type GithubPullRequestCommitsConnection = {
 
 /** A `GithubPullRequestCommit` edge in the connection. */
 export type GithubPullRequestCommitsEdge = {
-  __typename?: 'GithubPullRequestCommitsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubPullRequestCommit` at the end of the edge. */
@@ -2818,7 +2752,6 @@ export type GithubPullRequestPatch = {
 
 /** GitHub pull request reviews */
 export type GithubPullRequestReview = Node & {
-  __typename?: 'GithubPullRequestReview';
   authorAssociation?: Maybe<Scalars['String']>;
   authorCanPushToRepository?: Maybe<Scalars['Boolean']>;
   authorLogin?: Maybe<Scalars['String']>;
@@ -2925,7 +2858,6 @@ export type GithubPullRequestReviewPatch = {
 
 /** A connection to a list of `GithubPullRequestReview` values. */
 export type GithubPullRequestReviewsConnection = {
-  __typename?: 'GithubPullRequestReviewsConnection';
   /** A list of edges which contains the `GithubPullRequestReview` and cursor to aid in pagination. */
   edges: Array<GithubPullRequestReviewsEdge>;
   /** A list of `GithubPullRequestReview` objects. */
@@ -2938,7 +2870,6 @@ export type GithubPullRequestReviewsConnection = {
 
 /** A `GithubPullRequestReview` edge in the connection. */
 export type GithubPullRequestReviewsEdge = {
-  __typename?: 'GithubPullRequestReviewsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubPullRequestReview` at the end of the edge. */
@@ -2988,7 +2919,6 @@ export enum GithubPullRequestReviewsOrderBy {
 
 /** A connection to a list of `GithubPullRequest` values. */
 export type GithubPullRequestsConnection = {
-  __typename?: 'GithubPullRequestsConnection';
   /** A list of edges which contains the `GithubPullRequest` and cursor to aid in pagination. */
   edges: Array<GithubPullRequestsEdge>;
   /** A list of `GithubPullRequest` objects. */
@@ -3001,7 +2931,6 @@ export type GithubPullRequestsConnection = {
 
 /** A `GithubPullRequest` edge in the connection. */
 export type GithubPullRequestsEdge = {
-  __typename?: 'GithubPullRequestsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubPullRequest` at the end of the edge. */
@@ -3099,7 +3028,6 @@ export enum GithubPullRequestsOrderBy {
 
 /** GitHub metadata about a repo */
 export type GithubRepoInfo = Node & {
-  __typename?: 'GithubRepoInfo';
   createdAt?: Maybe<Scalars['Datetime']>;
   defaultBranchName?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -3263,7 +3191,6 @@ export type GithubRepoInfoPatch = {
 
 /** A connection to a list of `GithubRepoInfo` values. */
 export type GithubRepoInfosConnection = {
-  __typename?: 'GithubRepoInfosConnection';
   /** A list of edges which contains the `GithubRepoInfo` and cursor to aid in pagination. */
   edges: Array<GithubRepoInfosEdge>;
   /** A list of `GithubRepoInfo` objects. */
@@ -3276,7 +3203,6 @@ export type GithubRepoInfosConnection = {
 
 /** A `GithubRepoInfo` edge in the connection. */
 export type GithubRepoInfosEdge = {
-  __typename?: 'GithubRepoInfosEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubRepoInfo` at the end of the edge. */
@@ -3348,7 +3274,6 @@ export enum GithubRepoInfosOrderBy {
 
 /** GitHub stargazers for a repo */
 export type GithubStargazer = Node & {
-  __typename?: 'GithubStargazer';
   avatarUrl?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   company?: Maybe<Scalars['String']>;
@@ -3437,7 +3362,6 @@ export type GithubStargazerPatch = {
 
 /** A connection to a list of `GithubStargazer` values. */
 export type GithubStargazersConnection = {
-  __typename?: 'GithubStargazersConnection';
   /** A list of edges which contains the `GithubStargazer` and cursor to aid in pagination. */
   edges: Array<GithubStargazersEdge>;
   /** A list of `GithubStargazer` objects. */
@@ -3450,7 +3374,6 @@ export type GithubStargazersConnection = {
 
 /** A `GithubStargazer` edge in the connection. */
 export type GithubStargazersEdge = {
-  __typename?: 'GithubStargazersEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `GithubStargazer` at the end of the edge. */
@@ -3492,7 +3415,6 @@ export enum GithubStargazersOrderBy {
 
 /** An interval of time that has passed where the smallest distinct unit is a second. */
 export type Interval = {
-  __typename?: 'Interval';
   /** A quantity of days. */
   days?: Maybe<Scalars['Int']>;
   /** A quantity of hours. */
@@ -3532,7 +3454,6 @@ export type IntervalInput = {
 };
 
 export type LatestRepoSync = {
-  __typename?: 'LatestRepoSync';
   createdAt?: Maybe<Scalars['Datetime']>;
   doneAt?: Maybe<Scalars['Datetime']>;
   id?: Maybe<Scalars['BigInt']>;
@@ -3562,7 +3483,6 @@ export type LatestRepoSyncCondition = {
 
 /** A connection to a list of `LatestRepoSync` values. */
 export type LatestRepoSyncsConnection = {
-  __typename?: 'LatestRepoSyncsConnection';
   /** A list of edges which contains the `LatestRepoSync` and cursor to aid in pagination. */
   edges: Array<LatestRepoSyncsEdge>;
   /** A list of `LatestRepoSync` objects. */
@@ -3575,7 +3495,6 @@ export type LatestRepoSyncsConnection = {
 
 /** A `LatestRepoSync` edge in the connection. */
 export type LatestRepoSyncsEdge = {
-  __typename?: 'LatestRepoSyncsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `LatestRepoSync` at the end of the edge. */
@@ -3601,7 +3520,6 @@ export enum LatestRepoSyncsOrderBy {
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
-  __typename?: 'Mutation';
   /** Creates a single `GitBranch`. */
   createGitBranch?: Maybe<CreateGitBranchPayload>;
   /** Creates a single `GitCommit`. */
@@ -4428,7 +4346,6 @@ export type Node = {
 
 /** Information about pagination in a connection. */
 export type PageInfo = {
-  __typename?: 'PageInfo';
   /** When paginating forwards, the cursor to continue. */
   endCursor?: Maybe<Scalars['Cursor']>;
   /** When paginating forwards, are there more items? */
@@ -4441,7 +4358,6 @@ export type PageInfo = {
 
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
-  __typename?: 'Query';
   /** Reads and enables pagination through a set of `GitBranch`. */
   gitBranches?: Maybe<GitBranchesConnection>;
   gitCommit?: Maybe<GitCommit>;
@@ -4497,7 +4413,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<Node>;
+  node?: Maybe<GitCommit | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /**
@@ -5092,7 +5008,6 @@ export type QuerySchemaMigrationsArgs = {
 
 /** Git repositories to track */
 export type Repo = Node & {
-  __typename?: 'Repo';
   createdAt: Scalars['Datetime'];
   /** Reads and enables pagination through a set of `GitCommitStat`. */
   gitCommitStats: GitCommitStatsConnection;
@@ -5229,7 +5144,6 @@ export type RepoCondition = {
 
 /** Table for "dynamic" repo imports - regularly loading from a GitHub org for example */
 export type RepoImport = Node & {
-  __typename?: 'RepoImport';
   createdAt: Scalars['Datetime'];
   id: Scalars['UUID'];
   importInterval?: Maybe<Interval>;
@@ -5307,7 +5221,6 @@ export type RepoImportPatch = {
 
 /** Types of repo imports */
 export type RepoImportType = Node & {
-  __typename?: 'RepoImportType';
   description: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -5353,7 +5266,6 @@ export type RepoImportTypePatch = {
 
 /** A connection to a list of `RepoImportType` values. */
 export type RepoImportTypesConnection = {
-  __typename?: 'RepoImportTypesConnection';
   /** A list of edges which contains the `RepoImportType` and cursor to aid in pagination. */
   edges: Array<RepoImportTypesEdge>;
   /** A list of `RepoImportType` objects. */
@@ -5366,7 +5278,6 @@ export type RepoImportTypesConnection = {
 
 /** A `RepoImportType` edge in the connection. */
 export type RepoImportTypesEdge = {
-  __typename?: 'RepoImportTypesEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoImportType` at the end of the edge. */
@@ -5386,7 +5297,6 @@ export enum RepoImportTypesOrderBy {
 
 /** A connection to a list of `RepoImport` values. */
 export type RepoImportsConnection = {
-  __typename?: 'RepoImportsConnection';
   /** A list of edges which contains the `RepoImport` and cursor to aid in pagination. */
   edges: Array<RepoImportsEdge>;
   /** A list of `RepoImport` objects. */
@@ -5399,7 +5309,6 @@ export type RepoImportsConnection = {
 
 /** A `RepoImport` edge in the connection. */
 export type RepoImportsEdge = {
-  __typename?: 'RepoImportsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoImport` at the end of the edge. */
@@ -5454,7 +5363,6 @@ export type RepoPatch = {
 };
 
 export type RepoSync = Node & {
-  __typename?: 'RepoSync';
   id: Scalars['UUID'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -5504,7 +5412,6 @@ export type RepoSyncInput = {
 };
 
 export type RepoSyncLog = Node & {
-  __typename?: 'RepoSyncLog';
   createdAt: Scalars['Datetime'];
   id: Scalars['BigInt'];
   logType: Scalars['String'];
@@ -5554,7 +5461,6 @@ export type RepoSyncLogPatch = {
 };
 
 export type RepoSyncLogType = Node & {
-  __typename?: 'RepoSyncLogType';
   description?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -5599,7 +5505,6 @@ export type RepoSyncLogTypePatch = {
 
 /** A connection to a list of `RepoSyncLogType` values. */
 export type RepoSyncLogTypesConnection = {
-  __typename?: 'RepoSyncLogTypesConnection';
   /** A list of edges which contains the `RepoSyncLogType` and cursor to aid in pagination. */
   edges: Array<RepoSyncLogTypesEdge>;
   /** A list of `RepoSyncLogType` objects. */
@@ -5612,7 +5517,6 @@ export type RepoSyncLogTypesConnection = {
 
 /** A `RepoSyncLogType` edge in the connection. */
 export type RepoSyncLogTypesEdge = {
-  __typename?: 'RepoSyncLogTypesEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncLogType` at the end of the edge. */
@@ -5632,7 +5536,6 @@ export enum RepoSyncLogTypesOrderBy {
 
 /** A connection to a list of `RepoSyncLog` values. */
 export type RepoSyncLogsConnection = {
-  __typename?: 'RepoSyncLogsConnection';
   /** A list of edges which contains the `RepoSyncLog` and cursor to aid in pagination. */
   edges: Array<RepoSyncLogsEdge>;
   /** A list of `RepoSyncLog` objects. */
@@ -5645,7 +5548,6 @@ export type RepoSyncLogsConnection = {
 
 /** A `RepoSyncLog` edge in the connection. */
 export type RepoSyncLogsEdge = {
-  __typename?: 'RepoSyncLogsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncLog` at the end of the edge. */
@@ -5678,7 +5580,6 @@ export type RepoSyncPatch = {
 };
 
 export type RepoSyncQueue = Node & {
-  __typename?: 'RepoSyncQueue';
   createdAt: Scalars['Datetime'];
   doneAt?: Maybe<Scalars['Datetime']>;
   id: Scalars['BigInt'];
@@ -5751,7 +5652,6 @@ export type RepoSyncQueuePatch = {
 };
 
 export type RepoSyncQueueStatusType = Node & {
-  __typename?: 'RepoSyncQueueStatusType';
   description?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -5796,7 +5696,6 @@ export type RepoSyncQueueStatusTypePatch = {
 
 /** A connection to a list of `RepoSyncQueueStatusType` values. */
 export type RepoSyncQueueStatusTypesConnection = {
-  __typename?: 'RepoSyncQueueStatusTypesConnection';
   /** A list of edges which contains the `RepoSyncQueueStatusType` and cursor to aid in pagination. */
   edges: Array<RepoSyncQueueStatusTypesEdge>;
   /** A list of `RepoSyncQueueStatusType` objects. */
@@ -5809,7 +5708,6 @@ export type RepoSyncQueueStatusTypesConnection = {
 
 /** A `RepoSyncQueueStatusType` edge in the connection. */
 export type RepoSyncQueueStatusTypesEdge = {
-  __typename?: 'RepoSyncQueueStatusTypesEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncQueueStatusType` at the end of the edge. */
@@ -5829,7 +5727,6 @@ export enum RepoSyncQueueStatusTypesOrderBy {
 
 /** A connection to a list of `RepoSyncQueue` values. */
 export type RepoSyncQueuesConnection = {
-  __typename?: 'RepoSyncQueuesConnection';
   /** A list of edges which contains the `RepoSyncQueue` and cursor to aid in pagination. */
   edges: Array<RepoSyncQueuesEdge>;
   /** A list of `RepoSyncQueue` objects. */
@@ -5842,7 +5739,6 @@ export type RepoSyncQueuesConnection = {
 
 /** A `RepoSyncQueue` edge in the connection. */
 export type RepoSyncQueuesEdge = {
-  __typename?: 'RepoSyncQueuesEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncQueue` at the end of the edge. */
@@ -5871,7 +5767,6 @@ export enum RepoSyncQueuesOrderBy {
 }
 
 export type RepoSyncType = Node & {
-  __typename?: 'RepoSyncType';
   description?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -5916,7 +5811,6 @@ export type RepoSyncTypePatch = {
 
 /** A connection to a list of `RepoSyncType` values. */
 export type RepoSyncTypesConnection = {
-  __typename?: 'RepoSyncTypesConnection';
   /** A list of edges which contains the `RepoSyncType` and cursor to aid in pagination. */
   edges: Array<RepoSyncTypesEdge>;
   /** A list of `RepoSyncType` objects. */
@@ -5929,7 +5823,6 @@ export type RepoSyncTypesConnection = {
 
 /** A `RepoSyncType` edge in the connection. */
 export type RepoSyncTypesEdge = {
-  __typename?: 'RepoSyncTypesEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSyncType` at the end of the edge. */
@@ -5949,7 +5842,6 @@ export enum RepoSyncTypesOrderBy {
 
 /** A connection to a list of `RepoSync` values. */
 export type RepoSyncsConnection = {
-  __typename?: 'RepoSyncsConnection';
   /** A list of edges which contains the `RepoSync` and cursor to aid in pagination. */
   edges: Array<RepoSyncsEdge>;
   /** A list of `RepoSync` objects. */
@@ -5962,7 +5854,6 @@ export type RepoSyncsConnection = {
 
 /** A `RepoSync` edge in the connection. */
 export type RepoSyncsEdge = {
-  __typename?: 'RepoSyncsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `RepoSync` at the end of the edge. */
@@ -5986,7 +5877,6 @@ export enum RepoSyncsOrderBy {
 
 /** A connection to a list of `Repo` values. */
 export type ReposConnection = {
-  __typename?: 'ReposConnection';
   /** A list of edges which contains the `Repo` and cursor to aid in pagination. */
   edges: Array<ReposEdge>;
   /** A list of `Repo` objects. */
@@ -5999,7 +5889,6 @@ export type ReposConnection = {
 
 /** A `Repo` edge in the connection. */
 export type ReposEdge = {
-  __typename?: 'ReposEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `Repo` at the end of the edge. */
@@ -6030,7 +5919,6 @@ export enum ReposOrderBy {
 }
 
 export type SchemaMigration = Node & {
-  __typename?: 'SchemaMigration';
   dirty: Scalars['Boolean'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -6062,7 +5950,6 @@ export type SchemaMigrationPatch = {
 
 /** A connection to a list of `SchemaMigration` values. */
 export type SchemaMigrationsConnection = {
-  __typename?: 'SchemaMigrationsConnection';
   /** A list of edges which contains the `SchemaMigration` and cursor to aid in pagination. */
   edges: Array<SchemaMigrationsEdge>;
   /** A list of `SchemaMigration` objects. */
@@ -6075,7 +5962,6 @@ export type SchemaMigrationsConnection = {
 
 /** A `SchemaMigration` edge in the connection. */
 export type SchemaMigrationsEdge = {
-  __typename?: 'SchemaMigrationsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>;
   /** The `SchemaMigration` at the end of the edge. */
@@ -6116,7 +6002,6 @@ export enum SchemaMigrationsOrderBy {
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
 export type Subscription = {
-  __typename?: 'Subscription';
   /** Reads and enables pagination through a set of `GitBranch`. (live) */
   gitBranches?: Maybe<GitBranchesConnection>;
   /**  (live) */
@@ -6182,7 +6067,7 @@ export type Subscription = {
   /** Reads and enables pagination through a set of `LatestRepoSync`. (live) */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. (live) */
-  node?: Maybe<Node>;
+  node?: Maybe<GitCommit | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. (live) */
   nodeId: Scalars['ID'];
   /**
@@ -8158,7 +8043,6 @@ export type UpdateGitCommitInput = {
 
 /** The output of our update `GitCommit` mutation. */
 export type UpdateGitCommitPayload = {
-  __typename?: 'UpdateGitCommitPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8208,7 +8092,6 @@ export type UpdateGitFileInput = {
 
 /** The output of our update `GitFile` mutation. */
 export type UpdateGitFilePayload = {
-  __typename?: 'UpdateGitFilePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8258,7 +8141,6 @@ export type UpdateGitRefInput = {
 
 /** The output of our update `GitRef` mutation. */
 export type UpdateGitRefPayload = {
-  __typename?: 'UpdateGitRefPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8306,7 +8188,6 @@ export type UpdateGithubIssueInput = {
 
 /** The output of our update `GithubIssue` mutation. */
 export type UpdateGithubIssuePayload = {
-  __typename?: 'UpdateGithubIssuePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8370,7 +8251,6 @@ export type UpdateGithubPullRequestCommitInput = {
 
 /** The output of our update `GithubPullRequestCommit` mutation. */
 export type UpdateGithubPullRequestCommitPayload = {
-  __typename?: 'UpdateGithubPullRequestCommitPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8405,7 +8285,6 @@ export type UpdateGithubPullRequestInput = {
 
 /** The output of our update `GithubPullRequest` mutation. */
 export type UpdateGithubPullRequestPayload = {
-  __typename?: 'UpdateGithubPullRequestPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8454,7 +8333,6 @@ export type UpdateGithubPullRequestReviewInput = {
 
 /** The output of our update `GithubPullRequestReview` mutation. */
 export type UpdateGithubPullRequestReviewPayload = {
-  __typename?: 'UpdateGithubPullRequestReviewPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8514,7 +8392,6 @@ export type UpdateGithubRepoInfoInput = {
 
 /** The output of our update `GithubRepoInfo` mutation. */
 export type UpdateGithubRepoInfoPayload = {
-  __typename?: 'UpdateGithubRepoInfoPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8564,7 +8441,6 @@ export type UpdateGithubStargazerInput = {
 
 /** The output of our update `GithubStargazer` mutation. */
 export type UpdateGithubStargazerPayload = {
-  __typename?: 'UpdateGithubStargazerPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8626,7 +8502,6 @@ export type UpdateRepoImportInput = {
 
 /** The output of our update `RepoImport` mutation. */
 export type UpdateRepoImportPayload = {
-  __typename?: 'UpdateRepoImportPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8675,7 +8550,6 @@ export type UpdateRepoImportTypeInput = {
 
 /** The output of our update `RepoImportType` mutation. */
 export type UpdateRepoImportTypePayload = {
-  __typename?: 'UpdateRepoImportTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8709,7 +8583,6 @@ export type UpdateRepoInput = {
 
 /** The output of our update `Repo` mutation. */
 export type UpdateRepoPayload = {
-  __typename?: 'UpdateRepoPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8796,7 +8669,6 @@ export type UpdateRepoSyncLogInput = {
 
 /** The output of our update `RepoSyncLog` mutation. */
 export type UpdateRepoSyncLogPayload = {
-  __typename?: 'UpdateRepoSyncLogPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8847,7 +8719,6 @@ export type UpdateRepoSyncLogTypeInput = {
 
 /** The output of our update `RepoSyncLogType` mutation. */
 export type UpdateRepoSyncLogTypePayload = {
-  __typename?: 'UpdateRepoSyncLogTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8869,7 +8740,6 @@ export type UpdateRepoSyncLogTypePayloadRepoSyncLogTypeEdgeArgs = {
 
 /** The output of our update `RepoSync` mutation. */
 export type UpdateRepoSyncPayload = {
-  __typename?: 'UpdateRepoSyncPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8920,7 +8790,6 @@ export type UpdateRepoSyncQueueInput = {
 
 /** The output of our update `RepoSyncQueue` mutation. */
 export type UpdateRepoSyncQueuePayload = {
-  __typename?: 'UpdateRepoSyncQueuePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -8971,7 +8840,6 @@ export type UpdateRepoSyncQueueStatusTypeInput = {
 
 /** The output of our update `RepoSyncQueueStatusType` mutation. */
 export type UpdateRepoSyncQueueStatusTypePayload = {
-  __typename?: 'UpdateRepoSyncQueueStatusTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -9018,7 +8886,6 @@ export type UpdateRepoSyncTypeInput = {
 
 /** The output of our update `RepoSyncType` mutation. */
 export type UpdateRepoSyncTypePayload = {
-  __typename?: 'UpdateRepoSyncTypePayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -9065,7 +8932,6 @@ export type UpdateSchemaMigrationInput = {
 
 /** The output of our update `SchemaMigration` mutation. */
 export type UpdateSchemaMigrationPayload = {
-  __typename?: 'UpdateSchemaMigrationPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -9090,12 +8956,12 @@ export type GetRepoSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetRepoSyncsQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, isGithub?: boolean | null, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', id: any, syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, startedAt?: any | null, doneAt?: any | null }> } }> } } | null };
+export type GetRepoSyncsQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null }> } }> } } | null };
 
 export type GetReposQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetReposQuery = { __typename?: 'Query', repos?: { __typename?: 'ReposConnection', totalCount: number, nodes: Array<{ __typename?: 'Repo', id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoSyncs: { __typename?: 'RepoSyncsConnection', totalCount: number, nodes: Array<{ __typename?: 'RepoSync', syncType: string, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any }> } }> } }> } | null };
+export type GetReposQuery = { repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoSyncs: { totalCount: number, nodes: Array<{ syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];
@@ -9103,7 +8969,7 @@ export type GetSyncHistoryLogsQueryVariables = Exact<{
 }>;
 
 
-export type GetSyncHistoryLogsQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, isGithub?: boolean | null, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', id: any, syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, repoSyncLogs: { __typename?: 'RepoSyncLogsConnection', totalCount: number, nodes: Array<{ __typename?: 'RepoSyncLog', logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+export type GetSyncHistoryLogsQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
 
 export type GetLogsOfSyncQueryVariables = Exact<{
   repoId: Scalars['UUID'];
@@ -9112,4 +8978,4 @@ export type GetLogsOfSyncQueryVariables = Exact<{
 }>;
 
 
-export type GetLogsOfSyncQuery = { __typename?: 'Query', repo?: { __typename?: 'Repo', id: any, repo: string, repoSyncs: { __typename?: 'RepoSyncsConnection', nodes: Array<{ __typename?: 'RepoSync', id: any, syncType: string, repoSyncTypeBySyncType?: { __typename?: 'RepoSyncType', description?: string | null } | null, repoSyncQueues: { __typename?: 'RepoSyncQueuesConnection', nodes: Array<{ __typename?: 'RepoSyncQueue', id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, repoSyncLogs: { __typename?: 'RepoSyncLogsConnection', totalCount: number, nodes: Array<{ __typename?: 'RepoSyncLog', logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+export type GetLogsOfSyncQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };

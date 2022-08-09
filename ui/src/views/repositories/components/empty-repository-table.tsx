@@ -2,7 +2,7 @@ import { Avatar, Button, Panel } from '@mergestat/blocks'
 import { PlusIcon, WarningFilledIcon } from '@mergestat/icons'
 import React from 'react'
 import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
-import Image from 'next/image';
+import Image from 'next/image'
 import Link from 'next/link'
 
 export const EmptyRepositoryTable: React.FC = () => {
@@ -43,9 +43,7 @@ export const EmptyRepositoryTable: React.FC = () => {
                   </div>
                 </div>
 
-
               </div>
-
 
           </Panel.Body>
         </Panel>

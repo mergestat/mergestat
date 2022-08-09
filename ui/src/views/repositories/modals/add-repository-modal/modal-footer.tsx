@@ -6,14 +6,15 @@ type ModalFooterProps = {
   selectedTab: 'url' | 'gh-org' | 'gh-user' | 'csv'
 }
 
-export const ModalFooter: React.FC<ModalFooterProps> = (props) => {
+export const ModalFooter: React.FC<ModalFooterProps> = () => {
   const { setShowAddRepositoryModal } = useRepositoriesSetState()
 
   const close = React.useCallback(() => {
     setShowAddRepositoryModal(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const isActionDisabled = React.useMemo(() => true, [props.selectedTab])
+  const isActionDisabled = React.useMemo(() => true, [])
 
   return (
     <Modal.Footer>

@@ -19,11 +19,13 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = (props) => {
       disabled={syncStatus === 'running'}
       skin="secondary"
       startIcon={
-        syncStatus === 'running' ? (
+        syncStatus === 'running'
+          ? (
           <Spinner size='sm' className='mr-2' />
-        ) : (
+            )
+          : (
           <RefreshIcon className="t-icon text-semantic-icon" />
-        )
+            )
       }
       size="small"
       onClick={doSync}

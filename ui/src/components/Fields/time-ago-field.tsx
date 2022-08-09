@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
+import React, { useEffect, useState } from 'react'
 import { RepoSyncDataType } from 'src/@types'
 import { getTimeAgoFromNow } from 'src/utils'
 
 export type TimeAgoFieldProps = {
-  date: string,
-  syncData?: RepoSyncDataType,
+  date: string
+  syncData?: RepoSyncDataType
   styles?: string
 }
 
@@ -23,7 +23,8 @@ export const TimeAgoField: React.FC<TimeAgoFieldProps> = ({ date, syncData, styl
       recalculateTimeAgo()
       intervalId = setInterval(recalculateTimeAgo, 30000)
     }
-    return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

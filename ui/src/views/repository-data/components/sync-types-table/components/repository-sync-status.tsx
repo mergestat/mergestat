@@ -1,22 +1,21 @@
 import React, { CSSProperties, Fragment, useRef, useState } from 'react'
-import type { SyncStatusDataT } from 'src/@types'
-import type { RepoSyncStateT } from 'src/@types'
+import type { RepoSyncStateT, SyncStatusDataT } from 'src/@types'
 
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { getTimeAgoFromNow } from 'src/utils'
 
 type RepositorySyncStatusProps = {
-  data?: SyncStatusDataT[],
-  disabled?: boolean,
-  width?: number,
-  height?: number,
-  barWidth?: number,
-  preserveAspectRatio?: string,
-  style?: CSSProperties,
-  limit?: number,
-  margin?: number,
-  max?: number,
-  min?: number,
+  data?: SyncStatusDataT[]
+  disabled?: boolean
+  width?: number
+  height?: number
+  barWidth?: number
+  preserveAspectRatio?: string
+  style?: CSSProperties
+  limit?: number
+  margin?: number
+  max?: number
+  min?: number
 }
 
 type PositionType = {
@@ -30,7 +29,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     data = [],
     width = 112,
     height = 24,
-    preserveAspectRatio = "none",
+    preserveAspectRatio = 'none',
     style = {},
     barWidth = 4,
     margin = 2,
@@ -46,8 +45,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const [hoverPosition, setHoverPosition] = useState<PositionType | null>(null)
   const [activeBar, setActiveBar] = useState<number | null>(null)
 
-  if (disabled)
-    return <div className="flex flex-col justify-center h-full text-sm text-semantic-mutedText bg-gray-50">Disabled</div>
+  if (disabled) { return <div className="flex flex-col justify-center h-full text-sm text-semantic-mutedText bg-gray-50">Disabled</div> }
 
   const len = data.length
   if (len === 0) return null
@@ -60,12 +58,11 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const valueArray = chartArray.map((d: SyncStatusDataT) => d.runningTime)
   const points = dataToPoints({ data: valueArray, limit, width, height, margin, max, min })
 
-
   const strokeWidth: number = 1 * ((style && style.strokeWidth ? +style.strokeWidth : 0) || 0)
   const marginWidth = margin ? 2 * margin : 0
 
-  const bar_width = barWidth
-    || (points && points.length >= 2
+  const barLineWidth = barWidth ||
+    (points && points.length >= 2
       ? Math.max(0, points[1].x - points[0].x - strokeWidth - marginWidth)
       : 0)
 
@@ -86,7 +83,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     setDisplayTooltip(true)
     setHoverPosition(eventPosition)
     setTooltipData(chartArray[index])
-    setActiveBar(index);
+    setActiveBar(index)
   }
 
   const onBarClick = (p: SyncStatusDataT) => {
@@ -97,20 +94,20 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     <div
       onMouseMove={(event) => {
         if (displayTooltip && hoverPosition) {
-          const horizontalDisplacement = Math.abs(event.pageY - hoverPosition.y);
-          const verticalDisplacement = Math.abs(event.pageX - hoverPosition.x);
+          const horizontalDisplacement = Math.abs(event.pageY - hoverPosition.y)
+          const verticalDisplacement = Math.abs(event.pageX - hoverPosition.x)
           // hide the tooltip if the cursor moved more than 10 px in any direction
           if (horizontalDisplacement > 10 || verticalDisplacement > 10) {
-            setDisplayTooltip(false);
-            setHoverPosition(null);
+            setDisplayTooltip(false)
+            setHoverPosition(null)
           }
         }
 
-        setEventPosition({ x: event.pageX, y: event.pageY });
+        setEventPosition({ x: event.pageX, y: event.pageY })
       }}
       onMouseLeave={() => {
-        setDisplayTooltip(false);
-        setHoverPosition(null);
+        setDisplayTooltip(false)
+        setHoverPosition(null)
       }}
       className='my-2 w-32'
     >
@@ -122,8 +119,8 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
           style={{
             top: eventPosition?.y ? eventPosition?.y - 80 : 0,
             left: eventPosition?.x
-              ? eventPosition?.x
-              - ((tooltipRef?.current) ? tooltipRef?.current.clientWidth / 2 : 0)
+              ? eventPosition?.x -
+              ((tooltipRef?.current) ? tooltipRef?.current.clientWidth / 2 : 0)
               : 0,
           }}
         >
@@ -153,12 +150,12 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
       >
         <g transform="scale(1,-1)">
           {[...points].map((p, i) => {
-            const id = 'round-corner_' + i,
-              x = p.x - (bar_width + strokeWidth) / 2,
-              y = -height,
-              varHeight = Math.max(0, height - p.y),
-              r = 1,
-              color = statusColor(chartArray[i].status);
+            const id = 'round-corner_' + i
+            const x = p.x - (barLineWidth + strokeWidth) / 2
+            const y = -height
+            const varHeight = Math.max(0, height - p.y)
+            const r = 1
+            const color = statusColor(chartArray[i].status)
 
             return (
               <Fragment key={Math.random()}>
@@ -167,7 +164,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                     <rect
                       x={x}
                       y={y - 2 * r}
-                      width={bar_width}
+                      width={barLineWidth}
                       height={varHeight}
                       rx={r}
                       strokeWidth={activeBar === i ? 2 : 0}
@@ -179,7 +176,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                   clipPath={`url(#${id})`}
                   x={x}
                   y={y}
-                  width={bar_width}
+                  width={barLineWidth}
                   height={varHeight}
                   strokeWidth={activeBar === i ? 2 : 0}
                   fill={color}
@@ -187,7 +184,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                   onMouseMove={onMouseMove.bind({}, i)}
                   onClick={onBarClick.bind({}, data[i])}
                   onMouseLeave={() => setActiveBar(null)}
-                  className={tooltipData?.status !== "empty" ? "cursor-pointer" : ''}
+                  className={tooltipData?.status !== 'empty' ? 'cursor-pointer' : ''}
                 />
               </Fragment>
             )
@@ -214,8 +211,8 @@ const dataToPoints = ({
   width = 1,
   height = 1,
   margin = 0,
-  max = Math.max.apply(Math, data),
-  min = Math.min.apply(Math, data),
+  max = Math.max(...data),
+  min = Math.min(...data),
 }: DataToPointsArgs) => {
   const len = data.length
 

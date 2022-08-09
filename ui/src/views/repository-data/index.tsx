@@ -1,11 +1,7 @@
 import { Tabs } from '@mergestat/blocks'
 import React from 'react'
 import { RepoSyncData } from 'src/@types'
-import {
-  PageHeader,
-  RepoSettings,
-  SycnTypesTable,
-} from './components'
+import { PageHeader, RepoSettings, SycnTypesTable } from './components'
 
 type RepoDataViewProps = {
   data?: RepoSyncData
@@ -33,8 +29,8 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
         </Tabs.Panels>
       </Tabs.Group>
 
-      {/*false && <EmptyRepositoryTable />*/}
-      {/*true && */}
+      {/* false && <EmptyRepositoryTable /> */}
+      {/* true && */}
     </main>
   )
 }

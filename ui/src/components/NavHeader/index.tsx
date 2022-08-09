@@ -1,8 +1,8 @@
-import React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { HelpText, Icon, Navbar, Toolbar } from '@mergestat/blocks'
 import { BookIcon, CaretDownIcon } from '@mergestat/icons'
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 
 const NavHeader: React.FC = () => {
   return (
@@ -11,13 +11,13 @@ const NavHeader: React.FC = () => {
         <Toolbar.Left>
           <Toolbar.Item className="mr-3">
             <Link href="/repos">
-              <a>
+              <span className='cursor-pointer'>
                 <Icon
                   as="/logo-inverse.svg"
                   width={132}
                   className="flex w-auto items-center"
                 />
-              </a>
+              </span>
             </Link>
           </Toolbar.Item>
           <Toolbar.Item>

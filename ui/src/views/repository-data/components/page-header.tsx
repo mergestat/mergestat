@@ -1,8 +1,6 @@
-import React from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { BreadcrumbNav } from '@mergestat/blocks'
 import { ExternalLinkIcon } from '@mergestat/icons'
+import { useRouter } from 'next/router'
 import type { RepoType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { GITHUB_URL } from 'src/utils/constants'
@@ -14,20 +12,19 @@ interface PageHeaderProps {
 
 export const PageHeader = ({ name, type }: PageHeaderProps) => {
   const router = useRouter()
+  const repoName = name.split('/')[0]
   const crumbs = [
     {
-      text: "Repos",
+      text: 'Repos',
       onClick: () => router.push('/repos'),
     },
     {
       text: name,
-      startIcon: <RepoImage repoType={type} orgName={name.split('/')[0]} />,
+      startIcon: <RepoImage repoType={type} orgName={repoName} />,
       endIcon: (
-        <Link href={type === 'github' ? GITHUB_URL + name : name}>
-          <a target='_blank'>
-            <ExternalLinkIcon className='t-icon t-icon-small' />
-          </a>
-        </Link>
+        <a target='_blank' href={type === 'github' ? GITHUB_URL + repoName : repoName} rel='noopener noreferrer'>
+          <ExternalLinkIcon className='t-icon t-icon-small' />
+        </a>
       ),
     }
   ]
@@ -40,4 +37,3 @@ export const PageHeader = ({ name, type }: PageHeaderProps) => {
     </div>
   )
 }
-

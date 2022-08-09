@@ -53,6 +53,10 @@ module.exports = withBundleAnalyzer(
     env: {
       POSTGRAPHILE_API: process.env.POSTGRAPHILE_API,
     },
+    eslint: {
+      // Warning: If it is 'true' This allows production builds to successfully complete even if your project has ESLint errors.
+      ignoreDuringBuilds: false,
+    },
     output: 'standalone'
   })
 )

@@ -3,16 +3,16 @@ import React from 'react'
 
 import { sampleData } from 'src/sample-data/repo-data-sync-settings'
 
-export const SettingsTable: React.FC = (props) => {
-  const columns: Array<Record<string, any>> = [
+export const SettingsTable: React.FC = () => {
+  const columns: Array<Record<string, string>> = [
     {
-      title: "Column",
+      title: 'Column',
       className: 'text-semantic-text',
       dataIndex: 'column',
       key: 'column',
     },
     {
-      title: "Type",
+      title: 'Type',
       className: 'text-gray-500 text-semantic-text',
       dataIndex: 'type',
       key: 'type',

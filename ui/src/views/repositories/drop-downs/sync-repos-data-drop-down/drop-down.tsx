@@ -4,16 +4,15 @@ import { SyncDataTable } from './sync-data-table.tsx'
 type SyncDataDropDownProps = {
   triger: React.ReactNode
 }
-export const SyncDataDropDown: React.FC<SyncDataDropDownProps> = (
-  props
-) => {
+
+export const SyncDataDropDown: React.FC<SyncDataDropDownProps> = ({ triger }: SyncDataDropDownProps) => {
   return (
-    <Dropdown 
+    <Dropdown
       alignEnd
       overlay={() => (
         <SyncDataTable />
       )}
-      trigger={props.triger}
+      trigger={triger}
       zIndex={11}
     />
   )
