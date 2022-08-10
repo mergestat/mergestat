@@ -1,9 +1,10 @@
 import { Button, Modal, Toolbar } from '@mergestat/blocks'
 import React from 'react'
+import { RepoExportT } from 'src/@types'
 import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 
 type ModalFooterProps = {
-  selectedTab: 'url' | 'gh-org' | 'gh-user' | 'csv'
+  selectedTab: RepoExportT
 }
 
 export const ModalFooter: React.FC<ModalFooterProps> = () => {

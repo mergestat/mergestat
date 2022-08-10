@@ -1,5 +1,6 @@
 import { RadioCard } from '@mergestat/blocks'
 import { GithubIcon, LinkIcon, TableIcon } from '@mergestat/icons'
+import cx from 'classnames'
 import React from 'react'
 import { RepoExportT } from 'src/@types'
 
@@ -23,11 +24,13 @@ export const ModalSideBar: React.FC<ModalSideBarProps> = ({ onTabSelected }: Mod
       {sidebarTabs.map((item, index) => (
         <RadioCard
           key={index}
-          className="mb-3 whitespace-nowrap w-full"
+          className={cx('mb-3 whitespace-nowrap w-full', {
+            'text-gray-400 pointer-events-none': item.disabled
+          })}
           isSelected={selectedTab === item.type}
           label={item.label}
           startIcon={item.startIcon}
-          onChange={() => setSelectedTab(item.type)}
+          onChange={() => !item.disabled ? setSelectedTab(item.type) : null}
         />
       ))}
     </div>
@@ -38,6 +41,7 @@ type SideBarTab = {
   startIcon: JSX.Element
   label: string
   type: RepoExportT
+  disabled?: boolean
 }
 
 const sidebarTabs: SideBarTab[] = [
@@ -50,11 +54,13 @@ const sidebarTabs: SideBarTab[] = [
     startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub org',
     type: 'gh-org',
+    disabled: true
   },
   {
     startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub user',
     type: 'gh-user',
+    disabled: true
   },
   {
     startIcon: <TableIcon className='t-icon' />,
