@@ -32,7 +32,7 @@ export const ModalSideBar: React.FC<ModalSideBarProps> = ({ onTabSelected }: Mod
           onChange: () => !item.disabled ? setSelectedTab(item.type) : null
         }
 
-        return item.commingSoon
+        return item.comingSoon
           ? <Tooltip key={index} content='Coming soon!' placement='right' offset={[0, 10]}>
             <RadioCard {...radioProps} />
           </Tooltip>
@@ -48,7 +48,7 @@ type SideBarTab = {
   label: string
   type: RepoExportT
   disabled?: boolean
-  commingSoon?: boolean
+  comingSoon?: boolean
 }
 
 const sidebarTabs: SideBarTab[] = [
@@ -67,13 +67,13 @@ const sidebarTabs: SideBarTab[] = [
     label: 'Add from GitHub org',
     type: 'gh-org',
     disabled: true,
-    commingSoon: true
+    comingSoon: true
   },
   {
     startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub user',
     type: 'gh-user',
     disabled: true,
-    commingSoon: true
+    comingSoon: true
   },
 ]
