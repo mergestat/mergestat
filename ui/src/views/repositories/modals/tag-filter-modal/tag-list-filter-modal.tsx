@@ -1,6 +1,6 @@
-import React from 'react'
-import { Button, Input, Modal, Toolbar, Checkbox } from '@mergestat/blocks'
+import { Button, Checkbox, Input, Modal, Toolbar } from '@mergestat/blocks'
 import { SearchIcon, XIcon } from '@mergestat/icons'
+import React, { ChangeEvent } from 'react'
 
 type TagListFilterModalType = {
   open: boolean
@@ -33,7 +33,7 @@ export const TagListFilterModal: React.FC<TagListFilterModalType> = (props) => {
               placeholder="Search..."
               startIcon={<SearchIcon className="t-icon text-gray-400" />}
               value={searchText}
-              onChange={(e: any) => handleSearch(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch(e.target.value)}
               className="md_w-96"
             />
             <Toolbar.Item>
@@ -59,7 +59,7 @@ export const TagListFilterModal: React.FC<TagListFilterModalType> = (props) => {
                 checked={tag.checked}
                 onClick={() => handleCheck(tag.checked, index)}
                 onChange={(e) => {
-                  const checked = e.currentTarget.checked
+                  return e.currentTarget.checked
                 }}
               />
               <span>{tag.title}</span>

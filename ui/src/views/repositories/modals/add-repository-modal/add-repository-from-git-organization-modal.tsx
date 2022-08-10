@@ -1,16 +1,6 @@
-import {
-  Button,
-  Checkbox,
-  ColoredBox,
-  HelpText,
-  InlineBanner,
-  Input,
-  Label,
-  Panel,
-} from '@mergestat/blocks'
+import { Button, Checkbox, ColoredBox, HelpText, Input, Label, Panel } from '@mergestat/blocks'
 import { RepositoryIcon, SearchIcon } from '@mergestat/icons'
-import React, { useState } from 'react'
-import { useId } from 'react'
+import React, { useId, useState } from 'react'
 
 const EmptyRepositories: React.FC = () => {
   return (
@@ -53,7 +43,7 @@ const RepositoryRow: React.FC<RepositoryRowProps> = (props) => {
   )
 }
 
-export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
+export const AddRepositoryFromGitOrganizationModal: React.FC = () => {
   const [organization, setOrganization] = useState<string>('')
   const {
     repositories,
@@ -63,7 +53,7 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
     onCheckBoxClicked,
   } = useGitOrganizations()
 
-  const id = useId();
+  const id = useId()
 
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
@@ -84,7 +74,7 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
             skin="secondary"
             className="whitespace-nowrap"
             disabled={organization === ''}
-            onClick={() => fetchRepositories(organization)}
+            onClick={() => fetchRepositories()}
           >
             Find Repos
           </Button>
@@ -117,10 +107,12 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
             />
           </Panel.Header>
           <Panel.Body className="p-0 overflow-y-auto">
-            <InlineBanner>
-              Want to automatically add repos from this organization?{' '}
-              <a>Auto import</a> repos from organization instead
-            </InlineBanner>
+            <div className='p-3 bg-gray-100 text-center'>
+              <p className="t-inline-banner">
+                Want to automatically add repos from this organization?{' '}
+                <a className="text-blue-600" href="#blank">Auto import</a> repos from organization instead
+              </p>
+            </div>
 
             {repositories.map((repo, index) => (
               <RepositoryRow
@@ -128,7 +120,7 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
                 organization={organization}
                 name={repo.name}
                 selected={repo.selected}
-                onChecked={(checked?: boolean) => onCheckBoxClicked(repo.name)}
+                onChecked={() => onCheckBoxClicked(repo.name)}
               />
             ))}
           </Panel.Body>
@@ -140,10 +132,10 @@ export const AddRepositoryFromGitOrganizationModal: React.FC = (props) => {
 
 const useGitOrganizations = () => {
   const [repositories, setRepositories] = useState<
-    Array<{ name: string; selected: boolean }>
+    Array<{ name: string, selected: boolean }>
   >([])
 
-  const fetchRepositories = (organisation: string) => {
+  const fetchRepositories = () => {
     setRepositories(
       Array(294)
         .fill(null)
@@ -154,11 +146,12 @@ const useGitOrganizations = () => {
   const onCheckBoxClicked = (repository: string) => {
     setRepositories((prev) =>
       prev.map((item) => (
-        item.name !== repository ? item :
-          {
-            ...item,
-            selected: !item.selected,
-          }
+        item.name !== repository
+          ? item
+          : {
+              ...item,
+              selected: !item.selected,
+            }
       ))
     )
   }

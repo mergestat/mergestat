@@ -16,14 +16,14 @@ export const RepositoryTableRowOptions: React.FC<RepositoryDetailsRowOptionsProp
         trigger={<Button skin="borderless-muted" startIcon={<DotsHorizontalIcon className="t-icon" />} isIconOnly />}
         overlay={() => (
           <Menu className='whitespace-nowrap'>
-            {(state === "disabled")
+            {(state === 'disabled')
               ? <Menu.Item text="Enable Data Sync" />
               : (
                 <React.Fragment>
-                  <Menu.Item text="Disable Data Sync" disabled={state === "running"} />
-                  <Menu.Item text="Cancel Sync" disabled={state !== "running"} />
+                  <Menu.Item text="Disable Data Sync" disabled={state === 'running'} />
+                  <Menu.Item text="Cancel Sync" disabled={state !== 'running'} />
                 </React.Fragment>
-              )
+                )
             }
           </Menu>
         )}

@@ -1,9 +1,5 @@
 import { Label, Panel, Select, Toggle, Typography } from '@mergestat/blocks'
-import React from 'react'
-
-type FormrowProps = {
-  children?: React.ReactNode
-}
+import React, { PropsWithChildren } from 'react'
 
 export const SyncSettingsForm = () => {
   return (
@@ -16,7 +12,7 @@ export const SyncSettingsForm = () => {
           <Formrow>
             <Label className='text-gray-600 font-medium'>Sync data</Label>
             <div className="w-64 flex gap-2 items-center">
-              <Toggle isChecked onChange={() => { }} />
+              <Toggle isChecked onChange={() => null} />
               <span className="text-semantic-text">Enable</span>
             </div>
           </Formrow>
@@ -54,7 +50,7 @@ export const SyncSettingsForm = () => {
   )
 }
 
-const Formrow: React.FC<FormrowProps> = (props: FormrowProps) => {
+const Formrow: React.FC<PropsWithChildren> = (props: PropsWithChildren) => {
   return (
     <div className="flex items-center justify-between w-full max-w-md">
       {props.children}

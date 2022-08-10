@@ -2,19 +2,19 @@ import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncStateT } from 'src/@types'
 
-export function checkRepoValidate(repo: string, checkDomain: boolean = true) {
+export function checkRepoValidate(repo: string, checkDomain = true) {
   return checkDomain
-    ? /((http|https):\/\/)?(www\.)?[a-z0-9\-\.]{3,}\.[a-zA-Z0-9]+[\/]{1,}.[^\/.*]/.test(
+    ? /((http|https):\/\/)?(www\.)?[a-z0-9\-.]{3,}\.[a-zA-Z0-9]+[/]{1,}.[^/.*]/.test(
       repo
     )
-    : /(((http|https):\/\/)?(www\.)?[a-z0-9\-\.]{3,}\.)?[a-zA-Z0-9]+[\/]{1,}.[^\/.*]/.test(
+    : /(((http|https):\/\/)?(www\.)?[a-z0-9\-.]{3,}\.)?[a-zA-Z0-9]+[/]{1,}.[^/.*]/.test(
       repo
     )
 }
 
 export function getRepoFromUrl(url: string) {
   return url.replace(
-    /((http|https):\/\/)?(www\.)?[a-z0-9\-\.]{3,}\.[a-zA-Z0-9]+[\/]{1,}/,
+    /((http|https):\/\/)?(www\.)?[a-z0-9\-.]{3,}\.[a-zA-Z0-9]+[/]{1,}/,
     ''
   )
 }
@@ -23,7 +23,7 @@ export function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
-export function selectAllState(data: Array<any>) {
+export function selectAllState(data: Array<{ isSelected: boolean, [key: string]: unknown }>) {
   const selectedDataLen: number = data.filter(
     (d) => d.isSelected === true
   ).length

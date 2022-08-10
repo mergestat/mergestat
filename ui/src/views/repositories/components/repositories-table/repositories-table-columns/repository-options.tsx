@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 
-export const RepositoryOptions: React.FC = (props) => {
+export const RepositoryOptions: React.FC = () => {
   return (
     <Fragment>
 

@@ -1,10 +1,6 @@
-export type RepoSyncStateT =
-  | 'disabled'
-  | 'running'
-  | 'queued'
-  | 'succeeded'
-  | 'failed'
-  | 'empty'
+export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'failed' | 'empty'
+
+export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'csv'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
@@ -28,17 +24,12 @@ export type RepoDataPropsT = {
   createdAt: Date
   type: RepoType
   automaticImport?: boolean
-  tags: Array<{ title: string; checked: boolean }>
+  tags: Array<{ title: string, checked: boolean }>
   lastSync: string
   status: Array<RepoDataStatusT>
 }
 
 /** Repository Data Props Type */
-export type RepoSyncData = {
-  name: string
-  type: RepoType
-  syncs?: Array<RepoSyncDataType>
-}
 
 export type SyncStatusDataT = {
   runningTime: number
@@ -60,17 +51,13 @@ export type RepoSyncDataType = {
   }
 }
 
-/** Repository Data Logs Type */
-export type SyncTypeData = {
-  repo: {
-    id: string
-    name: string
-    type: RepoType
-  },
-  sync?: SyncTypeInfo
-  logs?: Array<SyncLogsType>
+export type RepoSyncData = {
+  name: string
+  type: RepoType
+  syncs?: Array<RepoSyncDataType>
 }
 
+/** Repository Data Logs Type */
 export type SyncTypeInfo = {
   id: string
   title: string
@@ -85,9 +72,19 @@ export type SyncLogsType = {
   records?: number
   duration?: string
   syncStart: string
-  syncStartText: string,
+  syncStartText: string
   collapsed?: boolean
   logs?: string[]
+}
+
+export type SyncTypeData = {
+  repo: {
+    id: string
+    name: string
+    type: RepoType
+  }
+  sync?: SyncTypeInfo
+  logs?: Array<SyncLogsType>
 }
 
 export type SettingsDataType = {

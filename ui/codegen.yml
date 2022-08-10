@@ -4,7 +4,9 @@ documents: 'src/**/*.{ts,tsx}'
 generates:
   src/api-logic/graphql/generated/schema.ts:
     plugins:
-      - 'typescript'
-      - 'typescript-operations'
+      - typescript
+      - typescript-operations
     config:
       withHooks: false
+      skipTypename: true
+      useImplementingTypes: true

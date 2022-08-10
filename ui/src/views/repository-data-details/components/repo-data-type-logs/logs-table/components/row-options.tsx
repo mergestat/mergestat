@@ -1,7 +1,8 @@
 import { Dropdown, Menu } from '@mergestat/blocks'
 import { DotsHorizontalIcon } from '@mergestat/icons'
+import React from 'react'
 
-export const LogsTableRowOptions: React.FC = (props) => {
+export const LogsTableRowOptions: React.FC = () => {
   return (
     <Dropdown
       alignEnd

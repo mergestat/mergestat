@@ -1,10 +1,16 @@
 import { RepoDataPropsT, RepoDataStatusT } from 'src/@types'
 import { mapToRepoSyncStateT } from 'src/utils'
 import { GITHUB_URL } from 'src/utils/constants'
-import { GetReposQuery } from '../graphql/generated/schema'
+import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
+
+interface SyncTypeFlatten {
+  type: string
+  status: string
+  lastSync: string
+}
 
 /**
- * Method which iterate each repo and map it to RepoDataPropsT to be shown in table 
+ * Method which iterate each repo and map it to RepoDataPropsT to be shown in table
  * @param data Repo list that comes from data base in GetReposQuery format
  * @returns Repo list from data base mapped to RepoDataPropsT list
  */
@@ -13,7 +19,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
 
   data?.repos?.nodes.forEach((r) => {
     // Consolidated Repo info
-    let repoInfo: RepoDataPropsT = {
+    const repoInfo: RepoDataPropsT = {
       id: r?.id,
       name: r?.repo.replace(GITHUB_URL, '') || '',
       createdAt: new Date(r?.createdAt),
@@ -23,7 +29,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
       status: [],
     }
 
-    repoInfo.status = getSyncStatuses(r, repoInfo)
+    repoInfo.status = getSyncStatuses(r as Repo, repoInfo)
     mappedData.push(repoInfo)
   })
 
@@ -33,17 +39,19 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
 /**
  * Method to group sync statuses with its quantity
  * @param r Specific repo to iterate its syncs
- * @param repoInfo Repo main info where info is being consolidated 
+ * @param repoInfo Repo main info where info is being consolidated
  * @returns List of sync statuses with its corresponding quantity
  */
-const getSyncStatuses = (r: any, repoInfo: RepoDataPropsT): Array<RepoDataStatusT> => {
+const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatusT> => {
   // 1. Syncs info is flatten in a simple object
-  const syncTypes = r?.repoSyncs.nodes.map((st: any) => {
-    const syncObj: Record<string, any> = {
+  const syncTypes = r?.repoSyncs.nodes.map((st: RepoSync) => {
+    const syncObj: SyncTypeFlatten = {
       type: st?.syncType,
+      status: '',
+      lastSync: ''
     }
 
-    st?.repoSyncQueues.nodes.forEach((ls: any) => {
+    st?.repoSyncQueues.nodes.forEach((ls: RepoSyncQueue) => {
       syncObj.status = ls?.status || ''
       syncObj.lastSync = ls?.createdAt || ''
     })
@@ -53,7 +61,7 @@ const getSyncStatuses = (r: any, repoInfo: RepoDataPropsT): Array<RepoDataStatus
 
   // 2. Syncs are grouped by status with its corresponding quantity
   const mapSyncs = new Map()
-  syncTypes?.forEach((st: any) => {
+  syncTypes?.forEach((st: SyncTypeFlatten) => {
     const status = mapToRepoSyncStateT(st.status)
     let statusCount = mapSyncs.get(status)
     mapSyncs.set(status, statusCount ? ++statusCount : 1)

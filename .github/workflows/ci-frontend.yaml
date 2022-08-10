@@ -1,0 +1,39 @@
+name: CI Frontend (UI)
+
+on: [push, pull_request]
+
+env: # environment variables (available in any part of the action)
+  NODE_VERSION: 16
+
+jobs:
+  ui-frontend:
+    name: Build UI for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ./ui
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset_name: mergestat-linux-amd64
+          - os: macos-latest
+            asset_name: mergestat-macos-amd64
+
+    steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check out source
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install --force
+
+      - name: Code Linting
+        run: npm run lint
+
+      - name: Code Building
+        run: npm run build

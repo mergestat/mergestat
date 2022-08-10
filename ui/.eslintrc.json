@@ -1,3 +1,44 @@
 {
-  "extends": ["next/core-web-vitals"]
+  "env": {
+      "browser": true,
+      "es2021": true
+  },
+  "extends": [
+      "next/core-web-vitals",
+      "standard",
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react/jsx-runtime",
+      "plugin:jsx-a11y/recommended",
+      "plugin:standard-typescript/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+      "ecmaFeatures": {
+          "jsx": true
+      },
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+  },
+  "plugins": [
+      "react",
+      "jsx-a11y",
+      "@typescript-eslint"
+  ],
+  "settings": {
+      "react": {
+        "version": "detect"
+      }
+  },
+  "ignorePatterns": ["schema.ts"],
+  "rules": {
+      "comma-dangle": "off",
+      "@typescript-eslint/comma-dangle": ["error", "only-multiline"],
+      "no-tabs": ["error", { "allowIndentationTabs": true }],
+      "space-before-function-paren": ["error", {
+          "anonymous": "always",
+          "named": "never",
+          "asyncArrow": "never"
+      }]
+  }
 }

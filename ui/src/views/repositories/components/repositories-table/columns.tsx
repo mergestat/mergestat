@@ -1,14 +1,9 @@
-import React from 'react'
 import type { RepoDataPropsT, RepoDataStatusT, TagType } from 'src/@types'
 import { TimeAgoField } from 'src/components/Fields/time-ago-field'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
-import {
-  RepositoryName,
-  RepositoryStatus,
-  RepositoryTagList,
-} from './repositories-table-columns'
+import { RepositoryName, RepositoryStatus, RepositoryTagList } from './repositories-table-columns'
 
-export const columns: Array<Record<string, any>> = [
+export const columns: Array<Record<string, unknown>> = [
   {
     title: 'Repository',
     dataIndex: 'name',
@@ -41,7 +36,7 @@ export const columns: Array<Record<string, any>> = [
     onSortChange: (e: 'asc' | 'desc' | undefined) => {
       console.log(e)
     },
-    render: (lastSync: string) => <TimeAgoField date={lastSync} extraStyles={'px-6'} />
+    render: (lastSync: string) => <TimeAgoField date={lastSync} styles={'px-6'} />
   },
   {
     dataIndex: 'status',

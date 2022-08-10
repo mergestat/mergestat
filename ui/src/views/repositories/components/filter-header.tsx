@@ -1,10 +1,9 @@
-import { useLazyQuery, useQuery } from '@apollo/client'
 import { Filter, Input } from '@mergestat/blocks'
 import { SearchIcon } from '@mergestat/icons'
 import React from 'react'
 import { TagsListDropDown } from '../drop-downs'
 
-export const FilterHeader: React.FC = (props) => {
+export const FilterHeader: React.FC = () => {
   return (
     <div className="flex h-14 bg-white items-center justify-between px-8">
       <div className="flex gap-2">
@@ -20,4 +19,3 @@ export const FilterHeader: React.FC = (props) => {
     </div>
   )
 }
-

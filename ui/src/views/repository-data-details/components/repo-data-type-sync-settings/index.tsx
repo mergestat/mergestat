@@ -1,4 +1,3 @@
-import React from 'react'
 import { SettingsTable } from './settings-table'
 import { SyncSettingsForm } from './sync-settings-form'
 

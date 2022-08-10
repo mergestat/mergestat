@@ -1,22 +1,21 @@
-import React from 'react'
 import cx from 'classnames'
-import { RepoSyncStateT } from 'src/@types'
 import type { RepoSyncDataType, SyncStatusDataT } from 'src/@types'
+import { RepoSyncStateT } from 'src/@types'
+import { TimeAgoField } from 'src/components/Fields/time-ago-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import {
   RepositoryData,
   RepositoryDataProps,
   RepositorySyncNow,
   RepositorySyncStatus,
-  RepositoryTableRowOptions,
+  RepositoryTableRowOptions
 } from './components'
-import { TimeAgoField } from 'src/components/Fields/time-ago-field'
 
-export const columns: Array<Record<string, any>> = [
+export const columns: Array<Record<string, unknown>> = [
   {
     dataIndex: 'status',
     key: 'syncStateIcon',
-    className: "w-12 h-20 p-0",
+    className: 'w-12 h-20 p-0',
     render: ({ syncState }: { syncState: RepoSyncStateT }) => (
       <div className={cx('h-full px-6 flex', { 'bg-gray-50': syncState === 'disabled' })}>
         <RepoSyncIcon type={syncState} className="my-auto" />
@@ -26,9 +25,9 @@ export const columns: Array<Record<string, any>> = [
   {
     title: 'Data',
     dataIndex: 'data',
-    headerClassName: "pl-0",
+    headerClassName: 'pl-0',
     key: 'data',
-    className: "h-20 p-0",
+    className: 'h-20 p-0',
     render: (data: RepositoryDataProps, d: RepoSyncDataType) => (
       <RepositoryData
         id={''}
@@ -40,7 +39,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: 'Lastest Run',
-    headerClassName: "pl-0",
+    headerClassName: 'pl-0',
     className: 'text-gray-500 h-20 p-0',
     dataIndex: 'latestRun',
     key: 'latestRun',
@@ -49,7 +48,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     title: 'Status',
-    headerClassName: "pl-0",
+    headerClassName: 'pl-0',
     className: 'text-gray-500 h-20 p-0',
     dataIndex: 'status',
     key: 'status',

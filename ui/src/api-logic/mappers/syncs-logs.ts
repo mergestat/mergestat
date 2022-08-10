@@ -5,12 +5,12 @@ import { DATE_FORMAT, GITHUB_URL } from 'src/utils/constants'
 import { GetSyncHistoryLogsQuery } from '../graphql/generated/schema'
 
 /**
- * Method which iterate each sync and map it to SyncTypeData to be shown in table 
+ * Method which iterate each sync and map it to SyncTypeData to be shown in table
  * @param data Sync list that comes from data base in GetSyncHistoryLogsQuery format
  * @returns SyncTypeData with syncs info and its SyncLogsType info by each sync
  */
 const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeData => {
-  // General repo info 
+  // General repo info
   const repoData: SyncTypeData = {
     repo: {
       id: data?.repo?.id,
@@ -52,6 +52,5 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
 
   return repoData
 }
-
 
 export { mapToSyncLogsData }

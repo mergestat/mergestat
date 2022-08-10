@@ -1,33 +1,30 @@
-import React from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { BreadcrumbNav, Button, LogBox } from '@mergestat/blocks'
 import { DotsHorizontalIcon, ExternalLinkIcon } from '@mergestat/icons'
+import { useRouter } from 'next/router'
+import React from 'react'
 import { SyncLogsType, SyncTypeData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-
-import { LogsInfo } from './components'
 import { GITHUB_URL } from 'src/utils/constants'
+import { LogsInfo } from './components'
 
 const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
   const router = useRouter()
   const logInfo: SyncLogsType | undefined = logs && logs.length > 0 ? logs[0] : undefined
+  const repoName = repo.name.split('/')[0]
 
   const crumbs = [
     {
-      text: "Repos",
+      text: 'Repos',
       onClick: () => router.push('/repos'),
     },
     {
       text: repo.name,
-      startIcon: <RepoImage repoType={repo.type} orgName={repo.name.split('/')[0]} />,
+      startIcon: <RepoImage repoType={repo.type} orgName={repoName} />,
       endIcon: (
-        <Link href={repo.type === 'github' ? GITHUB_URL + repo.name : repo.name}>
-          <a target='_blank'>
-            <ExternalLinkIcon className='t-icon t-icon-small' />
-          </a>
-        </Link>
+        <a target='_blank' href={repo.type === 'github' ? GITHUB_URL + repoName : repoName} rel="noopener noreferrer">
+          <ExternalLinkIcon className='t-icon t-icon-small' />
+        </a>
       ),
       onClick: () => router.push(`/repos/${repo.id}`),
     },
@@ -59,7 +56,7 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
 
       <div className="flex-1 overflow-auto p-8 space-y-8">
         <LogsInfo id={logInfo?.id || ''} syncStart={logInfo?.syncStart || ''} duration={logInfo?.duration || ''} />
-        <LogBox logs={logInfo?.logs || []} onCopy={() => { }} />
+        <LogBox logs={logInfo?.logs || []} onCopy={() => null} />
       </div>
     </main>
   )

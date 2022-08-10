@@ -1,10 +1,9 @@
-import React from 'react'
 import { Button, Panel } from '@mergestat/blocks'
-import { LogsTable } from './logs-table'
 import { SyncLogsType, SyncTypeInfo } from 'src/@types'
+import { LogsTable } from './logs-table'
 
 interface RepoDataLogsProps {
-  syncData?: SyncTypeInfo,
+  syncData?: SyncTypeInfo
   logs?: Array<SyncLogsType>
 }
 

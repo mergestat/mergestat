@@ -1,24 +1,14 @@
-import {
-  Dropdown,
-  Menu,
-  Badge,
-  Spinner,
-} from '@mergestat/blocks'
-import {
-  ChevronRightIcon,
-  CircleCheckFilledIcon,
-  CircleErrorFilledIcon,
-} from '@mergestat/icons'
-import { RepoSyncStateT } from 'src/@types';
-import { RepoSyncIcon } from 'src/components/RepoSyncIcon';
+import { Badge, Dropdown, Menu, Spinner } from '@mergestat/blocks'
+import { ChevronRightIcon, CircleCheckFilledIcon, CircleErrorFilledIcon } from '@mergestat/icons'
+import { RepoSyncStateT } from 'src/@types'
+import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
 type RepositoryDataProps = {
-  data: Array<{ title: string; lastSync: string }>
+  data: Array<{ title: string, lastSync: string }>
   status: RepoSyncStateT
 }
-export const RepoDataDropDown: React.FC<RepositoryDataProps> = (props) => {
-  const { data, status } = props
 
+export const RepoDataDropDown: React.FC<RepositoryDataProps> = ({ data, status }: RepositoryDataProps) => {
   return (
     <Dropdown
       overlay={() => (
@@ -66,8 +56,7 @@ type RepositoryStatusProps = {
   count: number
 }
 
-const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = (props) => {
-  const { count } = props
+const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = ({ count }: RepositoryStatusProps) => {
   if (!count) return <></>
   return (
     <Badge
@@ -78,8 +67,7 @@ const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = (props) => {
   )
 }
 
-const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
-  const { count } = props
+const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = ({ count }: RepositoryStatusProps) => {
   return (
     <Badge
       label={'' + count}
@@ -89,8 +77,7 @@ const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = (props) => {
   )
 }
 
-const RepositoryErrorStatus: React.FC<RepositoryStatusProps> = (props) => {
-  const { count } = props
+const RepositoryErrorStatus: React.FC<RepositoryStatusProps> = ({ count }: RepositoryStatusProps) => {
   return (
     <Badge
       label={'' + count}

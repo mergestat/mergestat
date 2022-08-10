@@ -1,20 +1,20 @@
 import { RadioCard } from '@mergestat/blocks'
 import { GithubIcon, LinkIcon, TableIcon } from '@mergestat/icons'
 import React from 'react'
+import { RepoExportT } from 'src/@types'
 
 type ModalSideBarProps = {
-  onTabSelected: (tab: 'url' | 'gh-org' | 'gh-user' | 'csv') => void
+  onTabSelected: (tab: RepoExportT) => void
 }
 
-export const ModalSideBar: React.FC<ModalSideBarProps> = (props) => {
-  const [selectedTab, setSelectedTab] = React.useState<
-    'url' | 'gh-org' | 'gh-user' | 'csv'
-  >('url')
+export const ModalSideBar: React.FC<ModalSideBarProps> = ({ onTabSelected }: ModalSideBarProps) => {
+  const [selectedTab, setSelectedTab] = React.useState<RepoExportT>('url')
 
   React.useEffect(() => {
-    if (props.onTabSelected) {
-      props.onTabSelected(selectedTab)
+    if (onTabSelected) {
+      onTabSelected(selectedTab)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab])
 
   return (
@@ -37,7 +37,7 @@ export const ModalSideBar: React.FC<ModalSideBarProps> = (props) => {
 type SideBarTab = {
   startIcon: JSX.Element
   label: string
-  type: 'url' | 'gh-org' | 'gh-user' | 'csv'
+  type: RepoExportT
 }
 
 const sidebarTabs: SideBarTab[] = [

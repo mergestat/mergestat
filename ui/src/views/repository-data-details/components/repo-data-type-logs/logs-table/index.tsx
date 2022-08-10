@@ -1,9 +1,9 @@
 import { LogBox, Panel } from '@mergestat/blocks'
+import { CaretDownIcon, CaretRightIcon } from '@mergestat/icons'
 import React, { Fragment, useEffect, useState } from 'react'
 import { SyncLogsType } from 'src/@types'
-import { LogsTableRowOptions, SyncType } from './components'
-import { CaretDownIcon, CaretRightIcon } from '@mergestat/icons'
 import { TimeAgoField } from 'src/components/Fields/time-ago-field'
+import { LogsTableRowOptions, SyncType } from './components'
 
 interface LogsTableProps {
   logs: Array<SyncLogsType>
@@ -18,27 +18,27 @@ const remap = (logs: Array<SyncLogsType>, previousData?: Array<SyncLogsType>): A
 }
 
 export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) => {
-  const [data, setData] = useState(remap(logs));
+  const [data, setData] = useState(remap(logs))
 
   useEffect(() => {
     setData(remap(logs, data))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [logs])
 
   const onRowClick = (index: number) => {
-    data[index].collapsed = !data[index].collapsed;
-    setData([...data]);
-  };
+    data[index].collapsed = !data[index].collapsed
+    setData([...data])
+  }
 
   return (<>
     <div className="rounded-md shadow-sm">
       <Panel className="rounded-md w-full shadow-sm">
         <Panel.Body className="p-0">
-          {data.length < 1 ? (
-            <div className='flex justify-center items-center bg-white py-5'>
+          {data.length < 1
+            ? <div className='flex justify-center items-center bg-white py-5'>
               No data available!
             </div>
-          ) : (
-            <div className='overflow-hidden bg-white h-full'>
+            : <div className='overflow-hidden bg-white h-full'>
               <table className='t-table-default'>
                 <thead>
                   <tr className='bg-white'>
@@ -73,11 +73,9 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                         <td className="w-0 pl-6">
                           <button className="t-button-icon focus:!outline-none"
                             onClick={() => onRowClick(index)}>
-                            {log.collapsed ? (
-                              <CaretDownIcon className="text-gray-500 t-icon" />
-                            ) : (
-                              <CaretRightIcon className="text-gray-500 t-icon" />
-                            )}
+                            {log.collapsed
+                              ? <CaretDownIcon className="text-gray-500 t-icon" />
+                              : <CaretRightIcon className="text-gray-500 t-icon" />}
                           </button>
                         </td>
 
@@ -104,7 +102,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                       {log.collapsed && (
                         <tr>
                           <td colSpan={6} className="p-6 bg-gray-50">
-                            <LogBox logs={log.logs || []} onCopy={() => { }} />
+                            <LogBox logs={log.logs || []} onCopy={() => null} />
                           </td>
                         </tr>
                       )}
@@ -112,8 +110,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                   ))}
                 </tbody>
               </table>
-            </div>
-          )}
+            </div>}
         </Panel.Body>
       </Panel>
     </div>

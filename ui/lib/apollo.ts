@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client'
 import { concatPagination } from '@apollo/client/utilities'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
+import { useMemo } from 'react'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
@@ -25,7 +25,7 @@ function createApolloClient() {
   })
 }
 
-export function initializeApollo(initialState = null) {
+export function initializeApollo(initialState: NormalizedCacheObject | null = null) {
   const _apolloClient = apolloClient ?? createApolloClient()
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
@@ -56,7 +56,7 @@ export function initializeApollo(initialState = null) {
   return _apolloClient
 }
 
-export function useApollo(initialState: any) {
+export function useApollo(initialState: NormalizedCacheObject) {
   const store = useMemo(() => initializeApollo(initialState), [initialState])
   return store
 }

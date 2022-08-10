@@ -1,9 +1,8 @@
 import { Button, Typography } from '@mergestat/blocks'
 import { RefreshIcon } from '@mergestat/icons'
-import React from 'react'
 import { RowOptions } from './row-options'
 
-export const columns: Array<Record<string, any>> = [
+export const columns: Array<Record<string, unknown>> = [
   {
     title: (
       <Typography.Title className='text-semantic-header font-semibold ml-6'>
@@ -27,13 +26,13 @@ export const columns: Array<Record<string, any>> = [
   {
     dataIndex: 'syncNow',
     key: 'syncNow',
-    render:  (params:{disabled:boolean, doSync: () => void}) => (
+    render: (params: { disabled: boolean, doSync: () => void }) => (
       <Button
         className='whitespace-nowrap'
         skin='secondary'
         size="small"
         startIcon={
-          <RefreshIcon className={`t-icon ${params.disabled ? "text-semantic-mutedIcon":"text-semantic-icon"}`} />
+          <RefreshIcon className={`t-icon ${params.disabled ? 'text-semantic-mutedIcon' : 'text-semantic-icon'}`} />
         }
         onClick={params.doSync}
         disabled={params.disabled}

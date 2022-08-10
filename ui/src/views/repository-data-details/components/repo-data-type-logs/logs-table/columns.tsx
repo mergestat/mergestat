@@ -1,10 +1,9 @@
-import React from 'react'
 import type { RepoSyncStateT, SyncLogsType } from 'src/@types'
 import { LogsTableRowOptions, SyncType } from './components'
 
-export const columns: Array<Record<string, any>> = [
+export const columns: Array<Record<string, unknown>> = [
   {
-    title: "Sync Type",
+    title: 'Sync Type',
     className: 'py-3',
     dataIndex: 'syncType',
     key: 'syncType',
@@ -15,7 +14,7 @@ export const columns: Array<Record<string, any>> = [
   {
     title: 'Records',
     className: 'text-gray-500',
-    headerClassName: "pl-0 w-40",
+    headerClassName: 'pl-0 w-40',
     dataIndex: 'records',
     key: 'records',
     render: (records?: string) => (
@@ -25,7 +24,7 @@ export const columns: Array<Record<string, any>> = [
   {
     title: 'Duration',
     className: 'text-gray-500',
-    headerClassName: "pl-0 w-40",
+    headerClassName: 'pl-0 w-40',
     dataIndex: 'duration',
     key: 'duration',
     render: (duration: string) => (
@@ -35,7 +34,7 @@ export const columns: Array<Record<string, any>> = [
   {
     title: 'Sync Start',
     className: 'text-gray-500',
-    headerClassName: "pl-0 w-36",
+    headerClassName: 'pl-0 w-36',
     dataIndex: 'syncStart',
     key: 'syncStart',
     render: (syncStart: string) => (
@@ -44,7 +43,7 @@ export const columns: Array<Record<string, any>> = [
   },
   {
     className: 'text-gray-500 mx-6',
-    headerClassName: "w-10",
+    headerClassName: 'w-10',
     dataIndex: 'options',
     key: 'options',
     render: () => <LogsTableRowOptions />

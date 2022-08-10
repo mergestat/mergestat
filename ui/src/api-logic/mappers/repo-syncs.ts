@@ -5,12 +5,12 @@ import { GITHUB_URL } from 'src/utils/constants'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
 /**
- * Method which iterate each sync and map it to RepoSyncDataType to be shown in table 
+ * Method which iterate each sync and map it to RepoSyncDataType to be shown in table
  * @param data Sync list that comes from data base in GetRepoSyncsQuery format
  * @returns RepoSyncData with syncs info and its RepoSyncDataType info by each sync
  */
 const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
-  // General repo info 
+  // General repo info
   const repoData: RepoSyncData = {
     name: data?.repo?.repo.replace(GITHUB_URL, '') || '',
     type: data?.repo?.isGithub ? 'github' : 'other',
@@ -50,6 +50,5 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
   repoData.syncs = mappedData
   return repoData
 }
-
 
 export { mapToSyncsData }

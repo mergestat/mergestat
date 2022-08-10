@@ -1,11 +1,11 @@
-import React from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { Sidebar } from '@mergestat/blocks'
 import { CogIcon, DatabaseIcon, RepositoryIcon } from '@mergestat/icons'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React from 'react'
 
 const SidebarView: React.FC = () => {
-  const { pathname, push } = useRouter()
+  const { pathname } = useRouter()
 
   const isSidebarActive = (path: string) => !!pathname.match(path)?.length
 

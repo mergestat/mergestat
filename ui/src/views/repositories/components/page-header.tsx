@@ -1,11 +1,10 @@
-import React from 'react'
-import { useRouter } from 'next/router'
-import { Button, SplitButton } from '@mergestat/blocks'
+import { BreadcrumbNav, Button, SplitButton } from '@mergestat/blocks'
 import { AutoImportIcon, CogIcon, PlusIcon } from '@mergestat/icons'
-import { BreadcrumbNav } from '@mergestat/blocks'
+import { useRouter } from 'next/router'
+import React from 'react'
 import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 
-export const PageHeader: React.FC = (props) => {
+export const PageHeader: React.FC = () => {
   const {
     setShowAddRepositoryModal,
     setShowAutoImportModal,
@@ -15,7 +14,7 @@ export const PageHeader: React.FC = (props) => {
   const router = useRouter()
   const crumbs = [
     {
-      text: "Repos",
+      text: 'Repos',
       onClick: () => router.push('/repos'),
     }
   ]

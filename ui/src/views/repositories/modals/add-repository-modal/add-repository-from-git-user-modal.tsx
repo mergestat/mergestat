@@ -1,12 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  ColoredBox,
-  HelpText,
-  Input,
-  Label,
-  Panel,
-} from '@mergestat/blocks'
+import { Button, Checkbox, ColoredBox, HelpText, Input, Label, Panel } from '@mergestat/blocks'
 import { RepositoryIcon, SearchIcon } from '@mergestat/icons'
 import React from 'react'
 
@@ -51,7 +43,7 @@ const RepositoryRow: React.FC<RepositoryRowProps> = (props) => {
   )
 }
 
-export const AddRepositoryFromGitUserModal: React.FC = (props) => {
+export const AddRepositoryFromGitUserModal: React.FC = () => {
   const [username, setUserName] = React.useState<string>('')
   const {
     repositories,
@@ -80,20 +72,19 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
             skin="secondary"
             className="whitespace-nowrap"
             disabled={username === ''}
-            onClick={() => fetchRepositories(username)}
+            onClick={() => fetchRepositories()}
           >
             Find Repos
           </Button>
         </div>
       </div>
-      {repositories.length === 0 ? (
-        <EmptyRepositories />
-      ) : (
-        <Panel className="h-80">
+      {repositories.length === 0
+        ? <EmptyRepositories />
+        : <Panel className="h-80">
           <Panel.Header className="justify-between gap-x-6">
             <div className="flex">
               <Checkbox
-                checked={selectedRepositoriesCount===repositories.length}
+                checked={selectedRepositoriesCount === repositories.length}
                 onClick={(e) => {
                   const checked = e.currentTarget.checked
                   selectAllRepositories(checked)
@@ -110,7 +101,7 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
               startIcon={
                 <SearchIcon className="t-icon t-icon-heroicons-search" />
               }
-              // onChange={(e) => handleSearch(e.currentTarget.value)}
+            // onChange={(e) => handleSearch(e.currentTarget.value)}
             />
           </Panel.Header>
           <Panel.Body className="p-0 overflow-y-auto">
@@ -120,22 +111,21 @@ export const AddRepositoryFromGitUserModal: React.FC = (props) => {
                 username={username}
                 name={repo.name}
                 selected={repo.selected}
-                onChecked={(checked?: boolean) => onCheckBoxClicked(repo.name)}
+                onChecked={() => onCheckBoxClicked(repo.name)}
               />
             ))}
           </Panel.Body>
-        </Panel>
-      )}
+        </Panel>}
     </div>
   )
 }
 
 const useGitUser = () => {
   const [repositories, setRepositories] = React.useState<
-    Array<{ name: string; selected: boolean }>
+    Array<{ name: string, selected: boolean }>
   >([])
 
-  const fetchRepositories = (username: string) => {
+  const fetchRepositories = () => {
     setRepositories(
       Array(294)
         .fill(null)

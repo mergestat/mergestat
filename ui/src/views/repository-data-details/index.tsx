@@ -1,30 +1,29 @@
-import React from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { BreadcrumbNav, Button, Tabs, Toolbar } from '@mergestat/blocks'
 import { DotsHorizontalIcon, ExternalLinkIcon, RefreshIcon } from '@mergestat/icons'
+import { useRouter } from 'next/router'
+import React from 'react'
 import { SyncTypeData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { RepoDataLogs, SyncSettings } from './components'
 import { GITHUB_URL } from 'src/utils/constants'
+import { RepoDataLogs, SyncSettings } from './components'
 
 const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
   const router = useRouter()
+  const repoName = repo.name.split('/')[0]
+
   const crumbs = [
     {
-      text: "Repos",
+      text: 'Repos',
       onClick: () => router.push('/repos'),
     },
     {
       text: repo.name,
-      startIcon: <RepoImage repoType={repo.type} orgName={repo.name.split('/')[0]} />,
+      startIcon: <RepoImage repoType={repo.type} orgName={repoName} />,
       endIcon: (
-        <Link href={repo.type === 'github' ? GITHUB_URL + repo.name : repo.name}>
-          <a target='_blank'>
-            <ExternalLinkIcon className='t-icon t-icon-small' />
-          </a>
-        </Link>
+        <a target="_blank" href={repo.type === 'github' ? GITHUB_URL + repoName : repoName} rel="noopener noreferrer">
+          <ExternalLinkIcon className='t-icon t-icon-small' />
+        </a>
       ),
       onClick: () => router.push(`/repos/${repo.id}`),
     },

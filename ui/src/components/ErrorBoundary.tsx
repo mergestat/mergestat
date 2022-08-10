@@ -1,10 +1,9 @@
-export const ErrorFallback = ({
-  error,
-  resetErrorBoundary,
-}: {
-  error: any
-  resetErrorBoundary: any
-}) => (
+interface ErrorFallbackType {
+  error: { message: string }
+  resetErrorBoundary: () => void
+}
+
+export const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackType) => (
   <div className="w-full h-full flex items-center">
     <div role="alert" className="mx-auto text-center">
       <p>Something went wrong:</p>
@@ -14,10 +13,7 @@ export const ErrorFallback = ({
   </div>
 )
 
-export const MyErrorHandler = (
-  error: Error,
-  info: { componentStack: string }
-) => {
+export const MyErrorHandler = (error: Error, info: { componentStack: string }) => {
   console.error('error ==>', error)
   console.log('info ==>', info)
 }

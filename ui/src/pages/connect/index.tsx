@@ -1,8 +1,8 @@
-import { Fragment } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { Fragment } from 'react'
 
-import { Toolbar, Panel, Tabs, Button, Label } from '@mergestat/blocks'
+import { Button, Label, Panel, Tabs, Toolbar } from '@mergestat/blocks'
 import { DuplicateIcon } from '@mergestat/icons'
 
 const Connect: NextPage = () => {
@@ -66,17 +66,17 @@ const Connect: NextPage = () => {
                             <div className="flex items-center space-x-2 flex-1">
                               <p className="break-all">•••••••••••••••••••</p>
                               <Button
-                              label="Show"
-                              size="small"
-                              skin="borderless"
-                            />
+                                label="Show"
+                                size="small"
+                                skin="borderless"
+                              />
                             </div>
                             <Button
                               isIconOnly
                               skin="borderless"
                               startIcon={<DuplicateIcon className="t-icon" />}
                             />
-                            </div>
+                          </div>
                         </div>
                         <div className="md_flex items-center w-full py-3">
                           <Label className="text-gray-500 w-40 md_w-56">Database</Label>
@@ -93,9 +93,9 @@ const Connect: NextPage = () => {
                     </Tabs.Panel>
                     <Tabs.Panel className="pt-6">
                       <div className="bg-gray-50 border rounded-md p-5 font-mono text-sm text-gray-500 mb-4">
-                          <pre>
-                            <code className="whitespace-normal break-all">postgresql://admin:<a className="text-blue-600" href="#">show-password</a>@db-postgresql-mergestat.ondigitalocean.com/defaultdb</code>
-                          </pre>
+                        <pre>
+                          <code className="whitespace-normal break-all">postgresql://admin:<a className="text-blue-600" href="#blank">show-password</a>@db-postgresql-mergestat.ondigitalocean.com/defaultdb</code>
+                        </pre>
                       </div>
                       <Button
                         label="Copy"

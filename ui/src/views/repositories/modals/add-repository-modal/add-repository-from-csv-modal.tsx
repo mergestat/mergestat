@@ -1,8 +1,8 @@
 import { Label, Textarea } from '@mergestat/blocks'
 import React from 'react'
 
-export const AddRepositoryFromCSVModal: React.FC = (props) => {
-  const onChange = React.useCallback(() => {}, [])
+export const AddRepositoryFromCSVModal: React.FC = () => {
+  const onChange = React.useCallback(() => null, [])
 
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">

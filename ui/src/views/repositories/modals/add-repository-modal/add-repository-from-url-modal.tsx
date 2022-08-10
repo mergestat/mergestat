@@ -12,11 +12,11 @@ const EmptyRepositories: React.FC = () => {
   )
 }
 
-export const AddRepositoryFromURLModal: React.FC = (props) => {
+export const AddRepositoryFromURLModal: React.FC = () => {
   const { addURL, removeURL, repositories } = useURLRepositories()
   const [url, setURL] = React.useState('')
 
-  const isURLValid = React.useMemo(() => false, [url])
+  const isURLValid = React.useMemo(() => false, [])
 
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
@@ -50,7 +50,7 @@ export const AddRepositoryFromURLModal: React.FC = (props) => {
               <ListItem
                 key={index}
                 title={repository}
-                className={`p-2 border-b`}
+                className={'p-2 border-b'}
                 subline={repository + '/example-repo-name'}
                 startIcon={<RepositoryIcon className="t-icon" />}
                 onCloseClick={() => removeURL(repository)}

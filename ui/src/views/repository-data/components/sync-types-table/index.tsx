@@ -1,27 +1,25 @@
 import { Panel } from '@mergestat/blocks'
-import React from 'react'
 import cx from 'classnames'
+import React, { PropsWithChildren } from 'react'
 import { RepoSyncDataType } from 'src/@types'
+import { TimeAgoField } from 'src/components/Fields/time-ago-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
-import { TimeAgoField } from 'src/components/Fields/time-ago-field'
 
-type SycnTypesTableProps = {
+type SycnTypesTableProps = PropsWithChildren<{
   data: Array<RepoSyncDataType>
-  children?: React.ReactNode
-}
+}>
 
 export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnTypesTableProps) => {
   return (
     <div className="rounded-md shadow-sm">
       <Panel className="rounded-md w-full shadow-sm">
         <Panel.Body className="p-0">
-          {data.length < 1 ? (
-            <div className='flex justify-center items-center bg-white py-5'>
+          {data.length < 1
+            ? <div className='flex justify-center items-center bg-white py-5'>
               No data available!
             </div>
-          ) : (
-            <div className='overflow-hidden bg-white h-full'>
+            : <div className='overflow-hidden bg-white h-full'>
               <table className='t-table-default'>
                 <thead>
                   <tr className='bg-white'>
@@ -95,11 +93,9 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnType
                   ))}
                 </tbody>
               </table>
-            </div>
-          )}
+            </div>}
         </Panel.Body>
       </Panel>
     </div>
   )
 }
-
