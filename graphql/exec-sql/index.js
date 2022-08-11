@@ -26,7 +26,9 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
         Query: {
             execSQL(_parent, args, context, _info) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    // first create a cursor https://node-postgres.com/api/cursor
+                    // first set the pg session to use a read-only role
+                    yield context.pgClient.query("SET ROLE readaccess;");
+                    // then create a cursor https://node-postgres.com/api/cursor for the user supplied query
                     const cursor = context.pgClient.query(new pg_cursor_1.default(args.query, args.variables));
                     // use the default row limit if none is provided
                     // cap the number of rows at MAX_ROWS
@@ -34,9 +36,12 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                     if (rowLimit > MAX_ROWS) {
                         rowLimit = MAX_ROWS;
                     }
-                    // execute query, close cursor, and return results
+                    // execute query, close cursor, and store results
                     const results = yield cursor.read(rowLimit);
                     cursor.close();
+                    // reset the role to the one established in the initial connection
+                    // https://www.postgresql.org/docs/current/sql-set-role.html
+                    yield context.pgClient.query("RESET ROLE;");
                     return results;
                 });
             },
