@@ -1,5 +1,6 @@
-import { RadioCard } from '@mergestat/blocks'
+import { RadioCard, Tooltip } from '@mergestat/blocks'
 import { GithubIcon, LinkIcon, TableIcon } from '@mergestat/icons'
+import cx from 'classnames'
 import React from 'react'
 import { RepoExportT } from 'src/@types'
 
@@ -20,16 +21,24 @@ export const ModalSideBar: React.FC<ModalSideBarProps> = ({ onTabSelected }: Mod
   return (
     <div className="border-r-gray-400 border-r p-6">
       <h3 className="t-h3 mb-6">Choose method</h3>
-      {sidebarTabs.map((item, index) => (
-        <RadioCard
-          key={index}
-          className="mb-3 whitespace-nowrap w-full"
-          isSelected={selectedTab === item.type}
-          label={item.label}
-          startIcon={item.startIcon}
-          onChange={() => setSelectedTab(item.type)}
-        />
-      ))}
+      {sidebarTabs.map((item, index) => {
+        const radioProps = {
+          className: cx('mb-3 whitespace-nowrap w-full', {
+            'text-gray-400 pointer-events-none': item.disabled
+          }),
+          isSelected: selectedTab === item.type,
+          label: item.label,
+          startIcon: item.startIcon,
+          onChange: () => !item.disabled ? setSelectedTab(item.type) : null
+        }
+
+        return item.comingSoon
+          ? <Tooltip key={index} content='Coming soon!' placement='right' offset={[0, 10]}>
+            <RadioCard {...radioProps} />
+          </Tooltip>
+          : <RadioCard {...radioProps} />
+      }
+      )}
     </div>
   )
 }
@@ -38,6 +47,8 @@ type SideBarTab = {
   startIcon: JSX.Element
   label: string
   type: RepoExportT
+  disabled?: boolean
+  comingSoon?: boolean
 }
 
 const sidebarTabs: SideBarTab[] = [
@@ -47,18 +58,22 @@ const sidebarTabs: SideBarTab[] = [
     type: 'url',
   },
   {
+    startIcon: <TableIcon className='t-icon' />,
+    label: 'Add from CSV',
+    type: 'csv',
+  },
+  {
     startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub org',
     type: 'gh-org',
+    disabled: true,
+    comingSoon: true
   },
   {
     startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub user',
     type: 'gh-user',
-  },
-  {
-    startIcon: <TableIcon className='t-icon' />,
-    label: 'Add Add from CSV',
-    type: 'csv',
+    disabled: true,
+    comingSoon: true
   },
 ]
