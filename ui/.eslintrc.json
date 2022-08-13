@@ -1,16 +1,20 @@
 {
   "env": {
       "browser": true,
-      "es2021": true
+      "es2021": true,
+      "jest": true
   },
   "extends": [
+      "next",
       "next/core-web-vitals",
       "standard",
       "eslint:recommended",
       "plugin:react/recommended",
       "plugin:react/jsx-runtime",
       "plugin:jsx-a11y/recommended",
-      "plugin:standard-typescript/recommended"
+      "plugin:@typescript-eslint/recommended",
+      "plugin:standard-typescript/recommended",
+      "plugin:testing-library/react"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -18,7 +22,8 @@
           "jsx": true
       },
       "ecmaVersion": "latest",
-      "sourceType": "module"
+      "sourceType": "module",
+      "project": "ui/tsconfig.json"
   },
   "plugins": [
       "react",
@@ -30,7 +35,7 @@
         "version": "detect"
       }
   },
-  "ignorePatterns": ["schema.ts"],
+  "ignorePatterns": ["schema.ts", "**/*.js", "**/*.d.ts"],
   "rules": {
       "comma-dangle": "off",
       "@typescript-eslint/comma-dangle": ["error", "only-multiline"],
@@ -38,7 +43,7 @@
       "space-before-function-paren": ["error", {
           "anonymous": "always",
           "named": "never",
-          "asyncArrow": "never"
+          "asyncArrow": "always"
       }]
   }
 }
