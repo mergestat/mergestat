@@ -27,6 +27,7 @@
     "graphql": "^16.5.0",
     "lodash": "^4.17.21",
     "next": "12.2.4",
+    "next-http-proxy-middleware": "^1.2.4",
     "next-transpile-modules": "^9.0.0",
     "ramda": "^0.28.0",
     "react": "18.2.0",
