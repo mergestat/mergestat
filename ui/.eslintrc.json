@@ -1,44 +1,73 @@
 {
   "env": {
-      "browser": true,
-      "es2021": true
+    "browser": true,
+    "es2021": true,
+    "jest": true
   },
   "extends": [
-      "next/core-web-vitals",
-      "standard",
-      "eslint:recommended",
-      "plugin:react/recommended",
-      "plugin:react/jsx-runtime",
-      "plugin:jsx-a11y/recommended",
-      "plugin:standard-typescript/recommended"
+    "next",
+    "next/core-web-vitals",
+    "standard",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:jsx-a11y/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:standard-typescript/recommended",
+    "plugin:testing-library/react"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-      "ecmaFeatures": {
-          "jsx": true
-      },
-      "ecmaVersion": "latest",
-      "sourceType": "module"
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./packages/**/tsconfig.json"
   },
   "plugins": [
-      "react",
-      "jsx-a11y",
-      "@typescript-eslint"
+    "react",
+    "jsx-a11y",
+    "@typescript-eslint"
   ],
   "settings": {
-      "react": {
-        "version": "detect"
-      }
+    "react": {
+      "version": "detect"
+    }
   },
-  "ignorePatterns": ["schema.ts"],
+  "ignorePatterns": [
+    "schema.ts",
+    "**/*.d.ts"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.js"
+      ],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ],
   "rules": {
-      "comma-dangle": "off",
-      "@typescript-eslint/comma-dangle": ["error", "only-multiline"],
-      "no-tabs": ["error", { "allowIndentationTabs": true }],
-      "space-before-function-paren": ["error", {
-          "anonymous": "always",
-          "named": "never",
-          "asyncArrow": "never"
-      }]
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": [
+      "error",
+      "only-multiline"
+    ],
+    "no-tabs": [
+      "error",
+      {
+        "allowIndentationTabs": true
+      }
+    ],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ]
   }
 }

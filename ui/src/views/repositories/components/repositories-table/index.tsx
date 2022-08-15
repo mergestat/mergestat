@@ -4,6 +4,7 @@ import type { RepoDataPropsT } from 'src/@types'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import { mapToRepoData } from 'src/api-logic/mappers/repos'
 import { TimeAgoField } from 'src/components/Fields/time-ago-field'
+import { TEST_IDS } from 'src/utils/constants'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
 import { RepositoryName, RepositoryStatus, RepositoryTagList } from './repositories-table-columns'
 
@@ -19,11 +20,11 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
       <Panel className="rounded-md w-full shadow-sm">
         <Panel.Body className="p-0">
           {repos.length < 1
-            ? <div className='flex justify-center items-center bg-white py-5'>
+            ? <div data-testid={TEST_IDS.repoListEmpty} className='flex justify-center items-center bg-white py-5'>
               No data available!
             </div>
             : <div className='overflow-hidden bg-white h-full'>
-              <table className='t-table-default'>
+              <table data-testid={TEST_IDS.repoTableList} className='t-table-default'>
                 <thead>
                   <tr className='bg-white'>
                     <th className="w-0 pl-6">

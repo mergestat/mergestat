@@ -1,16 +1,16 @@
 import React from 'react'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
+import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
 import { AddRepositoryModal } from './modals/add-repository-modal'
 import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
-import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
 
+import { useQuery } from '@apollo/client'
 import { Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
-import Loading from 'src/components/Loading'
-import { useQuery } from '@apollo/client'
 import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
+import Loading from 'src/components/Loading'
 import { showErrorAlert } from 'src/utils/alerts'
 
 const RepositoriesView: React.FC = () => {
