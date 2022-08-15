@@ -26,13 +26,13 @@ module.exports = {
           success: '#10B981',
         },
         gray: {
-          150: "#EBECEF",
-          450: "#727C8D"
+          150: '#EBECEF',
+          450: '#727C8D'
         },
       },
       fontFamily: {
-        'sans': ['"Inter UI"', 'ui-sans-serif', 'system-ui'],
-        'mono': ['Monaco', 'ui-monospace', 'SFMono-Regular'],
+        sans: ['"Inter UI"', 'ui-sans-serif', 'system-ui'],
+        mono: ['Monaco', 'ui-monospace', 'SFMono-Regular'],
       },
       gridTemplateRows: {
         'content-layout': 'auto 1fr',
@@ -45,8 +45,8 @@ module.exports = {
         3.5: '14px',
         4.5: '18px',
         100: '25rem',
-        150:'37.5rem',
-        200:'50rem',
+        150: '37.5rem',
+        200: '50rem',
       },
       height: {
         1.5: '6px',
@@ -58,7 +58,7 @@ module.exports = {
         0.5: '2px',
       },
       lineHeight: {
-        '20': '5rem',
+        20: '5rem',
       }
     },
     colors: {
