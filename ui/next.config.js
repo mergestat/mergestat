@@ -50,9 +50,6 @@ module.exports = withBundleAnalyzer(
     },
     swcMinify: true,
     reactStrictMode: false,
-    env: {
-      POSTGRAPHILE_API: process.env.POSTGRAPHILE_API,
-    },
     eslint: {
       ignoreDuringBuilds: false, // Warning: If it is 'true' This allows production builds to successfully complete even if your project has ESLint errors.
       dirs: ['lib', 'src'], // Only run ESLint on these directories during production builds (next build)
