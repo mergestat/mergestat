@@ -1,5 +1,6 @@
 import { Badge, Dropdown, Menu, Spinner } from '@mergestat/blocks'
-import { ChevronRightIcon, CircleCheckFilledIcon, CircleErrorFilledIcon } from '@mergestat/icons'
+import { ChevronRightIcon, CircleCheckFilledIcon, CircleErrorFilledIcon, ClockIcon } from '@mergestat/icons'
+import { PropsWithChildren } from 'react'
 import { RepoSyncStateT } from 'src/@types'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
@@ -36,52 +37,38 @@ export const RepoDataDropDown: React.FC<RepositoryDataProps> = ({ data, status }
   )
 }
 
-function getRepoStatusComponent(
-  status: RepoSyncStateT,
-  count: number
-): React.ReactNode {
+function getRepoStatusComponent(status: RepoSyncStateT, count: number): React.ReactNode {
   switch (status) {
     case 'succeeded':
-      return <RepositoryCheckStatus count={count} />
+      return <IconAndQuantity count={count}>
+        <CircleCheckFilledIcon className="t-icon text-semantic-success" />
+      </IconAndQuantity>
     case 'failed':
-      return <RepositoryErrorStatus count={count} />
+      return <IconAndQuantity count={count}>
+        <CircleErrorFilledIcon className="t-icon text-semantic-danger" />
+      </IconAndQuantity>
+    case 'queued':
+      return <IconAndQuantity count={count}>
+        <ClockIcon className='t-icon text-semantic-mutedIcon' />
+      </IconAndQuantity>
     case 'running':
-      return <RepositoryLoadingStatus count={count} />
+      return <IconAndQuantity count={count}>
+        <Spinner size="sm" className="mr-2" />
+      </IconAndQuantity>
     default:
       return <></>
   }
 }
 
-type RepositoryStatusProps = {
+type RepositoryStatusProps = PropsWithChildren<{
   count: number
-}
+}>
 
-const RepositoryCheckStatus: React.FC<RepositoryStatusProps> = ({ count }: RepositoryStatusProps) => {
-  if (!count) return <></>
+const IconAndQuantity: React.FC<RepositoryStatusProps> = ({ count, children }: RepositoryStatusProps) => {
   return (
     <Badge
       label={'' + count}
-      startIcon={<CircleCheckFilledIcon className="t-icon text-semantic-success" />}
-      action={true}
-    />
-  )
-}
-
-const RepositoryLoadingStatus: React.FC<RepositoryStatusProps> = ({ count }: RepositoryStatusProps) => {
-  return (
-    <Badge
-      label={'' + count}
-      startIcon={<Spinner size="sm" className="mr-2" />}
-      action={true}
-    />
-  )
-}
-
-const RepositoryErrorStatus: React.FC<RepositoryStatusProps> = ({ count }: RepositoryStatusProps) => {
-  return (
-    <Badge
-      label={'' + count}
-      startIcon={<CircleErrorFilledIcon className="t-icon text-semantic-danger" />}
+      startIcon={children}
       action={true}
     />
   )
