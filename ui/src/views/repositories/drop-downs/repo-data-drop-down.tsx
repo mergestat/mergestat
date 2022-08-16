@@ -1,11 +1,11 @@
 import { Badge, Dropdown, Menu, Spinner } from '@mergestat/blocks'
 import { ChevronRightIcon, CircleCheckFilledIcon, CircleErrorFilledIcon, ClockIcon } from '@mergestat/icons'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, ReactNode } from 'react'
 import { RepoSyncStateT } from 'src/@types'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
 type RepositoryDataProps = {
-  data: Array<{ title: string, lastSync: string }>
+  data: Array<{ title: string, lastSync: string | ReactNode }>
   status: RepoSyncStateT
 }
 

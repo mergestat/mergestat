@@ -17,6 +17,40 @@ export type Scalars = {
   UUID: any;
 };
 
+/** All input for the `addServiceAuthCredential` mutation. */
+export type AddServiceAuthCredentialInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  credentialType?: InputMaybe<Scalars['String']>;
+  credentials?: InputMaybe<Scalars['String']>;
+  secret?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our `addServiceAuthCredential` mutation. */
+export type AddServiceAuthCredentialPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  serviceAuthCredential?: Maybe<ServiceAuthCredential>;
+  /** An edge for our `ServiceAuthCredential`. May be used by Relay 1. */
+  serviceAuthCredentialEdge?: Maybe<ServiceAuthCredentialsEdge>;
+  /** Reads a single `ServiceAuthCredentialType` that is related to this `ServiceAuthCredential`. */
+  serviceAuthCredentialTypeByType?: Maybe<ServiceAuthCredentialType>;
+};
+
+
+/** The output of our `addServiceAuthCredential` mutation. */
+export type AddServiceAuthCredentialPayloadServiceAuthCredentialEdgeArgs = {
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialsOrderBy>>;
+};
+
 /** All input for the create `GitBranch` mutation. */
 export type CreateGitBranchInput = {
   /**
@@ -749,6 +783,72 @@ export type CreateSchemaMigrationPayload = {
 /** The output of our create `SchemaMigration` mutation. */
 export type CreateSchemaMigrationPayloadSchemaMigrationEdgeArgs = {
   orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
+};
+
+/** All input for the create `ServiceAuthCredential` mutation. */
+export type CreateServiceAuthCredentialInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `ServiceAuthCredential` to be created by this mutation. */
+  serviceAuthCredential: ServiceAuthCredentialInput;
+};
+
+/** The output of our create `ServiceAuthCredential` mutation. */
+export type CreateServiceAuthCredentialPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `ServiceAuthCredential` that was created by this mutation. */
+  serviceAuthCredential?: Maybe<ServiceAuthCredential>;
+  /** An edge for our `ServiceAuthCredential`. May be used by Relay 1. */
+  serviceAuthCredentialEdge?: Maybe<ServiceAuthCredentialsEdge>;
+  /** Reads a single `ServiceAuthCredentialType` that is related to this `ServiceAuthCredential`. */
+  serviceAuthCredentialTypeByType?: Maybe<ServiceAuthCredentialType>;
+};
+
+
+/** The output of our create `ServiceAuthCredential` mutation. */
+export type CreateServiceAuthCredentialPayloadServiceAuthCredentialEdgeArgs = {
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialsOrderBy>>;
+};
+
+/** All input for the create `ServiceAuthCredentialType` mutation. */
+export type CreateServiceAuthCredentialTypeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `ServiceAuthCredentialType` to be created by this mutation. */
+  serviceAuthCredentialType: ServiceAuthCredentialTypeInput;
+};
+
+/** The output of our create `ServiceAuthCredentialType` mutation. */
+export type CreateServiceAuthCredentialTypePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `ServiceAuthCredentialType` that was created by this mutation. */
+  serviceAuthCredentialType?: Maybe<ServiceAuthCredentialType>;
+  /** An edge for our `ServiceAuthCredentialType`. May be used by Relay 1. */
+  serviceAuthCredentialTypeEdge?: Maybe<ServiceAuthCredentialTypesEdge>;
+};
+
+
+/** The output of our create `ServiceAuthCredentialType` mutation. */
+export type CreateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeArgs = {
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
 };
 
 /** All input for the `deleteGitCommitByNodeId` mutation. */
@@ -1624,6 +1724,94 @@ export type DeleteSchemaMigrationPayload = {
 /** The output of our delete `SchemaMigration` mutation. */
 export type DeleteSchemaMigrationPayloadSchemaMigrationEdgeArgs = {
   orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
+};
+
+/** All input for the `deleteServiceAuthCredentialByNodeId` mutation. */
+export type DeleteServiceAuthCredentialByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `ServiceAuthCredential` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteServiceAuthCredential` mutation. */
+export type DeleteServiceAuthCredentialInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `ServiceAuthCredential` mutation. */
+export type DeleteServiceAuthCredentialPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedServiceAuthCredentialNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `ServiceAuthCredential` that was deleted by this mutation. */
+  serviceAuthCredential?: Maybe<ServiceAuthCredential>;
+  /** An edge for our `ServiceAuthCredential`. May be used by Relay 1. */
+  serviceAuthCredentialEdge?: Maybe<ServiceAuthCredentialsEdge>;
+  /** Reads a single `ServiceAuthCredentialType` that is related to this `ServiceAuthCredential`. */
+  serviceAuthCredentialTypeByType?: Maybe<ServiceAuthCredentialType>;
+};
+
+
+/** The output of our delete `ServiceAuthCredential` mutation. */
+export type DeleteServiceAuthCredentialPayloadServiceAuthCredentialEdgeArgs = {
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialsOrderBy>>;
+};
+
+/** All input for the `deleteServiceAuthCredentialTypeByNodeId` mutation. */
+export type DeleteServiceAuthCredentialTypeByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `ServiceAuthCredentialType` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteServiceAuthCredentialType` mutation. */
+export type DeleteServiceAuthCredentialTypeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  type: Scalars['String'];
+};
+
+/** The output of our delete `ServiceAuthCredentialType` mutation. */
+export type DeleteServiceAuthCredentialTypePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedServiceAuthCredentialTypeNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `ServiceAuthCredentialType` that was deleted by this mutation. */
+  serviceAuthCredentialType?: Maybe<ServiceAuthCredentialType>;
+  /** An edge for our `ServiceAuthCredentialType`. May be used by Relay 1. */
+  serviceAuthCredentialTypeEdge?: Maybe<ServiceAuthCredentialTypesEdge>;
+};
+
+
+/** The output of our delete `ServiceAuthCredentialType` mutation. */
+export type DeleteServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeArgs = {
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
 };
 
 export type GitBranch = {
@@ -3520,6 +3708,7 @@ export enum LatestRepoSyncsOrderBy {
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
+  addServiceAuthCredential?: Maybe<AddServiceAuthCredentialPayload>;
   /** Creates a single `GitBranch`. */
   createGitBranch?: Maybe<CreateGitBranchPayload>;
   /** Creates a single `GitCommit`. */
@@ -3564,6 +3753,10 @@ export type Mutation = {
   createRepoSyncType?: Maybe<CreateRepoSyncTypePayload>;
   /** Creates a single `SchemaMigration`. */
   createSchemaMigration?: Maybe<CreateSchemaMigrationPayload>;
+  /** Creates a single `ServiceAuthCredential`. */
+  createServiceAuthCredential?: Maybe<CreateServiceAuthCredentialPayload>;
+  /** Creates a single `ServiceAuthCredentialType`. */
+  createServiceAuthCredentialType?: Maybe<CreateServiceAuthCredentialTypePayload>;
   /** Deletes a single `GitCommit` using a unique key. */
   deleteGitCommit?: Maybe<DeleteGitCommitPayload>;
   /** Deletes a single `GitCommit` using its globally unique id. */
@@ -3644,6 +3837,14 @@ export type Mutation = {
   deleteSchemaMigration?: Maybe<DeleteSchemaMigrationPayload>;
   /** Deletes a single `SchemaMigration` using its globally unique id. */
   deleteSchemaMigrationByNodeId?: Maybe<DeleteSchemaMigrationPayload>;
+  /** Deletes a single `ServiceAuthCredential` using a unique key. */
+  deleteServiceAuthCredential?: Maybe<DeleteServiceAuthCredentialPayload>;
+  /** Deletes a single `ServiceAuthCredential` using its globally unique id. */
+  deleteServiceAuthCredentialByNodeId?: Maybe<DeleteServiceAuthCredentialPayload>;
+  /** Deletes a single `ServiceAuthCredentialType` using a unique key. */
+  deleteServiceAuthCredentialType?: Maybe<DeleteServiceAuthCredentialTypePayload>;
+  /** Deletes a single `ServiceAuthCredentialType` using its globally unique id. */
+  deleteServiceAuthCredentialTypeByNodeId?: Maybe<DeleteServiceAuthCredentialTypePayload>;
   /** Updates a single `GitCommit` using a unique key and a patch. */
   updateGitCommit?: Maybe<UpdateGitCommitPayload>;
   /** Updates a single `GitCommit` using its globally unique id and a patch. */
@@ -3724,6 +3925,20 @@ export type Mutation = {
   updateSchemaMigration?: Maybe<UpdateSchemaMigrationPayload>;
   /** Updates a single `SchemaMigration` using its globally unique id and a patch. */
   updateSchemaMigrationByNodeId?: Maybe<UpdateSchemaMigrationPayload>;
+  /** Updates a single `ServiceAuthCredential` using a unique key and a patch. */
+  updateServiceAuthCredential?: Maybe<UpdateServiceAuthCredentialPayload>;
+  /** Updates a single `ServiceAuthCredential` using its globally unique id and a patch. */
+  updateServiceAuthCredentialByNodeId?: Maybe<UpdateServiceAuthCredentialPayload>;
+  /** Updates a single `ServiceAuthCredentialType` using a unique key and a patch. */
+  updateServiceAuthCredentialType?: Maybe<UpdateServiceAuthCredentialTypePayload>;
+  /** Updates a single `ServiceAuthCredentialType` using its globally unique id and a patch. */
+  updateServiceAuthCredentialTypeByNodeId?: Maybe<UpdateServiceAuthCredentialTypePayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationAddServiceAuthCredentialArgs = {
+  input: AddServiceAuthCredentialInput;
 };
 
 
@@ -3856,6 +4071,18 @@ export type MutationCreateRepoSyncTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateSchemaMigrationArgs = {
   input: CreateSchemaMigrationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateServiceAuthCredentialArgs = {
+  input: CreateServiceAuthCredentialInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateServiceAuthCredentialTypeArgs = {
+  input: CreateServiceAuthCredentialTypeInput;
 };
 
 
@@ -4100,6 +4327,30 @@ export type MutationDeleteSchemaMigrationByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteServiceAuthCredentialArgs = {
+  input: DeleteServiceAuthCredentialInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteServiceAuthCredentialByNodeIdArgs = {
+  input: DeleteServiceAuthCredentialByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteServiceAuthCredentialTypeArgs = {
+  input: DeleteServiceAuthCredentialTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteServiceAuthCredentialTypeByNodeIdArgs = {
+  input: DeleteServiceAuthCredentialTypeByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateGitCommitArgs = {
   input: UpdateGitCommitInput;
 };
@@ -4338,6 +4589,30 @@ export type MutationUpdateSchemaMigrationByNodeIdArgs = {
   input: UpdateSchemaMigrationByNodeIdInput;
 };
 
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateServiceAuthCredentialArgs = {
+  input: UpdateServiceAuthCredentialInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateServiceAuthCredentialByNodeIdArgs = {
+  input: UpdateServiceAuthCredentialByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateServiceAuthCredentialTypeArgs = {
+  input: UpdateServiceAuthCredentialTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateServiceAuthCredentialTypeByNodeIdArgs = {
+  input: UpdateServiceAuthCredentialTypeByNodeIdInput;
+};
+
 /** An object with a globally unique `ID`. */
 export type Node = {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -4358,6 +4633,7 @@ export type PageInfo = {
 
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
+  execSQL?: Maybe<Scalars['JSON']>;
   /** Reads and enables pagination through a set of `GitBranch`. */
   gitBranches?: Maybe<GitBranchesConnection>;
   gitCommit?: Maybe<GitCommit>;
@@ -4413,7 +4689,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitCommit | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration>;
+  node?: Maybe<GitCommit | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration | ServiceAuthCredential | ServiceAuthCredentialType>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /**
@@ -4472,6 +4748,24 @@ export type Query = Node & {
   schemaMigrationByNodeId?: Maybe<SchemaMigration>;
   /** Reads and enables pagination through a set of `SchemaMigration`. */
   schemaMigrations?: Maybe<SchemaMigrationsConnection>;
+  serviceAuthCredential?: Maybe<ServiceAuthCredential>;
+  /** Reads a single `ServiceAuthCredential` using its globally unique `ID`. */
+  serviceAuthCredentialByNodeId?: Maybe<ServiceAuthCredential>;
+  serviceAuthCredentialType?: Maybe<ServiceAuthCredentialType>;
+  /** Reads a single `ServiceAuthCredentialType` using its globally unique `ID`. */
+  serviceAuthCredentialTypeByNodeId?: Maybe<ServiceAuthCredentialType>;
+  /** Reads and enables pagination through a set of `ServiceAuthCredentialType`. */
+  serviceAuthCredentialTypes?: Maybe<ServiceAuthCredentialTypesConnection>;
+  /** Reads and enables pagination through a set of `ServiceAuthCredential`. */
+  serviceAuthCredentials?: Maybe<ServiceAuthCredentialsConnection>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryExecSqlArgs = {
+  query: Scalars['String'];
+  rowLimit?: InputMaybe<Scalars['Int']>;
+  variables?: InputMaybe<Array<Scalars['String']>>;
 };
 
 
@@ -5004,6 +5298,54 @@ export type QuerySchemaMigrationsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryServiceAuthCredentialArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryServiceAuthCredentialByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryServiceAuthCredentialTypeArgs = {
+  type: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryServiceAuthCredentialTypeByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryServiceAuthCredentialTypesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<ServiceAuthCredentialTypeCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryServiceAuthCredentialsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<ServiceAuthCredentialCondition>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialsOrderBy>>;
 };
 
 /** Git repositories to track */
@@ -5582,6 +5924,7 @@ export type RepoSyncPatch = {
 export type RepoSyncQueue = Node & {
   createdAt: Scalars['Datetime'];
   doneAt?: Maybe<Scalars['Datetime']>;
+  hasError?: Maybe<Scalars['Boolean']>;
   id: Scalars['BigInt'];
   lastKeepAlive?: Maybe<Scalars['Datetime']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -5979,2041 +6322,163 @@ export enum SchemaMigrationsOrderBy {
   VersionDesc = 'VERSION_DESC'
 }
 
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type Subscription = {
-  /** Reads and enables pagination through a set of `GitBranch`. (live) */
-  gitBranches?: Maybe<GitBranchesConnection>;
-  /**  (live) */
-  gitCommit?: Maybe<GitCommit>;
-  /** Reads a single `GitCommit` using its globally unique `ID`. (live) */
-  gitCommitByNodeId?: Maybe<GitCommit>;
-  /** Reads and enables pagination through a set of `GitCommitStat`. (live) */
-  gitCommitStats?: Maybe<GitCommitStatsConnection>;
-  /** Reads and enables pagination through a set of `GitCommit`. (live) */
-  gitCommits?: Maybe<GitCommitsConnection>;
-  /**  (live) */
-  gitFile?: Maybe<GitFile>;
-  /** Reads a single `GitFile` using its globally unique `ID`. (live) */
-  gitFileByNodeId?: Maybe<GitFile>;
-  /** Reads and enables pagination through a set of `GitFile`. (live) */
-  gitFiles?: Maybe<GitFilesConnection>;
-  /**  (live) */
-  gitRef?: Maybe<GitRef>;
-  /** Reads a single `GitRef` using its globally unique `ID`. (live) */
-  gitRefByNodeId?: Maybe<GitRef>;
-  /** Reads and enables pagination through a set of `GitRef`. (live) */
-  gitRefs?: Maybe<GitRefsConnection>;
-  /** Reads and enables pagination through a set of `GitTag`. (live) */
-  gitTags?: Maybe<GitTagsConnection>;
-  /**  (live) */
-  githubIssue?: Maybe<GithubIssue>;
-  /** Reads a single `GithubIssue` using its globally unique `ID`. (live) */
-  githubIssueByNodeId?: Maybe<GithubIssue>;
-  /** Reads and enables pagination through a set of `GithubIssue`. (live) */
-  githubIssues?: Maybe<GithubIssuesConnection>;
-  /**  (live) */
-  githubPullRequest?: Maybe<GithubPullRequest>;
-  /** Reads a single `GithubPullRequest` using its globally unique `ID`. (live) */
-  githubPullRequestByNodeId?: Maybe<GithubPullRequest>;
-  /**  (live) */
-  githubPullRequestCommit?: Maybe<GithubPullRequestCommit>;
-  /** Reads a single `GithubPullRequestCommit` using its globally unique `ID`. (live) */
-  githubPullRequestCommitByNodeId?: Maybe<GithubPullRequestCommit>;
-  /** Reads and enables pagination through a set of `GithubPullRequestCommit`. (live) */
-  githubPullRequestCommits?: Maybe<GithubPullRequestCommitsConnection>;
-  /**  (live) */
-  githubPullRequestReview?: Maybe<GithubPullRequestReview>;
-  /** Reads a single `GithubPullRequestReview` using its globally unique `ID`. (live) */
-  githubPullRequestReviewByNodeId?: Maybe<GithubPullRequestReview>;
-  /** Reads and enables pagination through a set of `GithubPullRequestReview`. (live) */
-  githubPullRequestReviews?: Maybe<GithubPullRequestReviewsConnection>;
-  /** Reads and enables pagination through a set of `GithubPullRequest`. (live) */
-  githubPullRequests?: Maybe<GithubPullRequestsConnection>;
-  /**  (live) */
-  githubRepoInfo?: Maybe<GithubRepoInfo>;
-  /** Reads a single `GithubRepoInfo` using its globally unique `ID`. (live) */
-  githubRepoInfoByNodeId?: Maybe<GithubRepoInfo>;
-  /**  (live) */
-  githubRepoInfoByOwnerAndName?: Maybe<GithubRepoInfo>;
-  /** Reads and enables pagination through a set of `GithubRepoInfo`. (live) */
-  githubRepoInfos?: Maybe<GithubRepoInfosConnection>;
-  /**  (live) */
-  githubStargazer?: Maybe<GithubStargazer>;
-  /** Reads a single `GithubStargazer` using its globally unique `ID`. (live) */
-  githubStargazerByNodeId?: Maybe<GithubStargazer>;
-  /** Reads and enables pagination through a set of `GithubStargazer`. (live) */
-  githubStargazers?: Maybe<GithubStargazersConnection>;
-  /** Reads and enables pagination through a set of `LatestRepoSync`. (live) */
-  latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
-  /** Fetches an object given its globally unique `ID`. (live) */
-  node?: Maybe<GitCommit | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration>;
-  /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. (live) */
-  nodeId: Scalars['ID'];
-  /**
-   * Exposes the root query type nested one level down. This is helpful for Relay 1
-   * which can only query top level fields if they are in a particular form. (live)
-   */
-  query: Query;
-  /**  (live) */
-  repo?: Maybe<Repo>;
-  /** Reads a single `Repo` using its globally unique `ID`. (live) */
-  repoByNodeId?: Maybe<Repo>;
-  /**  (live) */
-  repoImport?: Maybe<RepoImport>;
-  /** Reads a single `RepoImport` using its globally unique `ID`. (live) */
-  repoImportByNodeId?: Maybe<RepoImport>;
-  /**  (live) */
-  repoImportType?: Maybe<RepoImportType>;
-  /** Reads a single `RepoImportType` using its globally unique `ID`. (live) */
-  repoImportTypeByNodeId?: Maybe<RepoImportType>;
-  /** Reads and enables pagination through a set of `RepoImportType`. (live) */
-  repoImportTypes?: Maybe<RepoImportTypesConnection>;
-  /** Reads and enables pagination through a set of `RepoImport`. (live) */
-  repoImports?: Maybe<RepoImportsConnection>;
-  /**  (live) */
-  repoSync?: Maybe<RepoSync>;
-  /** Reads a single `RepoSync` using its globally unique `ID`. (live) */
-  repoSyncByNodeId?: Maybe<RepoSync>;
-  /**  (live) */
-  repoSyncByRepoIdAndSyncType?: Maybe<RepoSync>;
-  /**  (live) */
-  repoSyncLog?: Maybe<RepoSyncLog>;
-  /** Reads a single `RepoSyncLog` using its globally unique `ID`. (live) */
-  repoSyncLogByNodeId?: Maybe<RepoSyncLog>;
-  /**  (live) */
-  repoSyncLogType?: Maybe<RepoSyncLogType>;
-  /** Reads a single `RepoSyncLogType` using its globally unique `ID`. (live) */
-  repoSyncLogTypeByNodeId?: Maybe<RepoSyncLogType>;
-  /** Reads and enables pagination through a set of `RepoSyncLogType`. (live) */
-  repoSyncLogTypes?: Maybe<RepoSyncLogTypesConnection>;
-  /** Reads and enables pagination through a set of `RepoSyncLog`. (live) */
-  repoSyncLogs?: Maybe<RepoSyncLogsConnection>;
-  /**  (live) */
-  repoSyncQueue?: Maybe<RepoSyncQueue>;
-  /** Reads a single `RepoSyncQueue` using its globally unique `ID`. (live) */
-  repoSyncQueueByNodeId?: Maybe<RepoSyncQueue>;
-  /**  (live) */
-  repoSyncQueueStatusType?: Maybe<RepoSyncQueueStatusType>;
-  /** Reads a single `RepoSyncQueueStatusType` using its globally unique `ID`. (live) */
-  repoSyncQueueStatusTypeByNodeId?: Maybe<RepoSyncQueueStatusType>;
-  /** Reads and enables pagination through a set of `RepoSyncQueueStatusType`. (live) */
-  repoSyncQueueStatusTypes?: Maybe<RepoSyncQueueStatusTypesConnection>;
-  /** Reads and enables pagination through a set of `RepoSyncQueue`. (live) */
-  repoSyncQueues?: Maybe<RepoSyncQueuesConnection>;
-  /**  (live) */
-  repoSyncType?: Maybe<RepoSyncType>;
-  /** Reads a single `RepoSyncType` using its globally unique `ID`. (live) */
-  repoSyncTypeByNodeId?: Maybe<RepoSyncType>;
-  /** Reads and enables pagination through a set of `RepoSyncType`. (live) */
-  repoSyncTypes?: Maybe<RepoSyncTypesConnection>;
-  /** Reads and enables pagination through a set of `RepoSync`. (live) */
-  repoSyncs?: Maybe<RepoSyncsConnection>;
-  /** Reads and enables pagination through a set of `Repo`. (live) */
-  repos?: Maybe<ReposConnection>;
-  /**  (live) */
-  schemaMigration?: Maybe<SchemaMigration>;
-  /** Reads a single `SchemaMigration` using its globally unique `ID`. (live) */
-  schemaMigrationByNodeId?: Maybe<SchemaMigration>;
-  /** Reads and enables pagination through a set of `SchemaMigration`. (live) */
-  schemaMigrations?: Maybe<SchemaMigrationsConnection>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitBranchesArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GitBranchCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GitBranchesOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitCommitArgs = {
-  hash: Scalars['String'];
-  repoId: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitCommitByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitCommitStatsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GitCommitStatCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GitCommitStatsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitCommitsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GitCommitCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GitCommitsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitFileArgs = {
-  path: Scalars['String'];
-  repoId: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitFileByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitFilesArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GitFileCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GitFilesOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitRefArgs = {
-  fullName: Scalars['String'];
-  repoId: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitRefByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitRefsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GitRefCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGitTagsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GitTagCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GitTagsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubIssueArgs = {
-  databaseId: Scalars['Int'];
-  repoId: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubIssueByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubIssuesArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GithubIssueCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GithubIssuesOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubPullRequestArgs = {
-  databaseId: Scalars['Int'];
-  repoId: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubPullRequestByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubPullRequestCommitArgs = {
-  hash: Scalars['String'];
-  prNumber: Scalars['Int'];
-  repoId: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubPullRequestCommitByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubPullRequestCommitsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GithubPullRequestCommitCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GithubPullRequestCommitsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubPullRequestReviewArgs = {
-  id: Scalars['String'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubPullRequestReviewByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubPullRequestReviewsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GithubPullRequestReviewCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubPullRequestsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GithubPullRequestCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GithubPullRequestsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubRepoInfoArgs = {
-  repoId: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubRepoInfoByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubRepoInfoByOwnerAndNameArgs = {
-  name: Scalars['String'];
-  owner: Scalars['String'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubRepoInfosArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GithubRepoInfoCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GithubRepoInfosOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubStargazerArgs = {
-  login: Scalars['String'];
-  repoId: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubStargazerByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionGithubStargazersArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<GithubStargazerCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<GithubStargazersOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionLatestRepoSyncsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<LatestRepoSyncCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<LatestRepoSyncsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionNodeArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoArgs = {
+export type ServiceAuthCredential = Node & {
+  createdAt: Scalars['Datetime'];
+  credentials?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoByNodeIdArgs = {
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** Reads a single `ServiceAuthCredentialType` that is related to this `ServiceAuthCredential`. */
+  serviceAuthCredentialTypeByType?: Maybe<ServiceAuthCredentialType>;
+  type: Scalars['String'];
+  updatedAt: Scalars['Datetime'];
 };
 
-
 /**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
+ * A condition to be used against `ServiceAuthCredential` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
  */
-export type SubscriptionRepoImportArgs = {
-  id: Scalars['UUID'];
+export type ServiceAuthCredentialCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `credentials` field. */
+  credentials?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
+/** An input for mutations affecting `ServiceAuthCredential` */
+export type ServiceAuthCredentialInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  credentials?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  type: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
 
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoImportByNodeIdArgs = {
+/** Represents an update to a `ServiceAuthCredential`. Fields that are set will be updated. */
+export type ServiceAuthCredentialPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  credentials?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  type?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+export type ServiceAuthCredentialType = Node & {
+  description: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoImportTypeArgs = {
+  /** Reads and enables pagination through a set of `ServiceAuthCredential`. */
+  serviceAuthCredentialsByType: ServiceAuthCredentialsConnection;
   type: Scalars['String'];
 };
 
 
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoImportTypeByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoImportTypesArgs = {
+export type ServiceAuthCredentialTypeServiceAuthCredentialsByTypeArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<RepoImportTypeCondition>;
+  condition?: InputMaybe<ServiceAuthCredentialCondition>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<RepoImportTypesOrderBy>>;
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialsOrderBy>>;
 };
 
-
 /**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
+ * A condition to be used against `ServiceAuthCredentialType` object types. All
+ * fields are tested for equality and combined with a logical ‘and.’
  */
-export type SubscriptionRepoImportsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<RepoImportCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<RepoImportsOrderBy>>;
+export type ServiceAuthCredentialTypeCondition = {
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Scalars['String']>;
 };
 
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncArgs = {
-  id: Scalars['UUID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncByRepoIdAndSyncTypeArgs = {
-  repoId: Scalars['UUID'];
-  syncType: Scalars['String'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncLogArgs = {
-  id: Scalars['BigInt'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncLogByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncLogTypeArgs = {
+/** An input for mutations affecting `ServiceAuthCredentialType` */
+export type ServiceAuthCredentialTypeInput = {
+  description: Scalars['String'];
   type: Scalars['String'];
 };
 
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncLogTypeByNodeIdArgs = {
-  nodeId: Scalars['ID'];
+/** Represents an update to a `ServiceAuthCredentialType`. Fields that are set will be updated. */
+export type ServiceAuthCredentialTypePatch = {
+  description?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
 };
 
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncLogTypesArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<RepoSyncLogTypeCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<RepoSyncLogTypesOrderBy>>;
+/** A connection to a list of `ServiceAuthCredentialType` values. */
+export type ServiceAuthCredentialTypesConnection = {
+  /** A list of edges which contains the `ServiceAuthCredentialType` and cursor to aid in pagination. */
+  edges: Array<ServiceAuthCredentialTypesEdge>;
+  /** A list of `ServiceAuthCredentialType` objects. */
+  nodes: Array<ServiceAuthCredentialType>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `ServiceAuthCredentialType` you could get from the connection. */
+  totalCount: Scalars['Int'];
 };
 
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncLogsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<RepoSyncLogCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<RepoSyncLogsOrderBy>>;
+/** A `ServiceAuthCredentialType` edge in the connection. */
+export type ServiceAuthCredentialTypesEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `ServiceAuthCredentialType` at the end of the edge. */
+  node: ServiceAuthCredentialType;
 };
 
+/** Methods to use when ordering `ServiceAuthCredentialType`. */
+export enum ServiceAuthCredentialTypesOrderBy {
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC'
+}
 
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncQueueArgs = {
-  id: Scalars['BigInt'];
+/** A connection to a list of `ServiceAuthCredential` values. */
+export type ServiceAuthCredentialsConnection = {
+  /** A list of edges which contains the `ServiceAuthCredential` and cursor to aid in pagination. */
+  edges: Array<ServiceAuthCredentialsEdge>;
+  /** A list of `ServiceAuthCredential` objects. */
+  nodes: Array<ServiceAuthCredential>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `ServiceAuthCredential` you could get from the connection. */
+  totalCount: Scalars['Int'];
 };
 
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncQueueByNodeIdArgs = {
-  nodeId: Scalars['ID'];
+/** A `ServiceAuthCredential` edge in the connection. */
+export type ServiceAuthCredentialsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `ServiceAuthCredential` at the end of the edge. */
+  node: ServiceAuthCredential;
 };
 
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncQueueStatusTypeArgs = {
-  type: Scalars['String'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncQueueStatusTypeByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncQueueStatusTypesArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<RepoSyncQueueStatusTypeCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<RepoSyncQueueStatusTypesOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncQueuesArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<RepoSyncQueueCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<RepoSyncQueuesOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncTypeArgs = {
-  type: Scalars['String'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncTypeByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncTypesArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<RepoSyncTypeCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<RepoSyncTypesOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionRepoSyncsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<RepoSyncCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<RepoSyncsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionReposArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<RepoCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<ReposOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionSchemaMigrationArgs = {
-  version: Scalars['BigInt'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionSchemaMigrationByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionSchemaMigrationsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<SchemaMigrationCondition>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
-};
+/** Methods to use when ordering `ServiceAuthCredential`. */
+export enum ServiceAuthCredentialsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  CredentialsAsc = 'CREDENTIALS_ASC',
+  CredentialsDesc = 'CREDENTIALS_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
 
 /** All input for the `updateGitCommitByNodeId` mutation. */
 export type UpdateGitCommitByNodeIdInput = {
@@ -8951,6 +7416,100 @@ export type UpdateSchemaMigrationPayloadSchemaMigrationEdgeArgs = {
   orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
 };
 
+/** All input for the `updateServiceAuthCredentialByNodeId` mutation. */
+export type UpdateServiceAuthCredentialByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `ServiceAuthCredential` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `ServiceAuthCredential` being updated. */
+  patch: ServiceAuthCredentialPatch;
+};
+
+/** All input for the `updateServiceAuthCredential` mutation. */
+export type UpdateServiceAuthCredentialInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `ServiceAuthCredential` being updated. */
+  patch: ServiceAuthCredentialPatch;
+};
+
+/** The output of our update `ServiceAuthCredential` mutation. */
+export type UpdateServiceAuthCredentialPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `ServiceAuthCredential` that was updated by this mutation. */
+  serviceAuthCredential?: Maybe<ServiceAuthCredential>;
+  /** An edge for our `ServiceAuthCredential`. May be used by Relay 1. */
+  serviceAuthCredentialEdge?: Maybe<ServiceAuthCredentialsEdge>;
+  /** Reads a single `ServiceAuthCredentialType` that is related to this `ServiceAuthCredential`. */
+  serviceAuthCredentialTypeByType?: Maybe<ServiceAuthCredentialType>;
+};
+
+
+/** The output of our update `ServiceAuthCredential` mutation. */
+export type UpdateServiceAuthCredentialPayloadServiceAuthCredentialEdgeArgs = {
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialsOrderBy>>;
+};
+
+/** All input for the `updateServiceAuthCredentialTypeByNodeId` mutation. */
+export type UpdateServiceAuthCredentialTypeByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `ServiceAuthCredentialType` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `ServiceAuthCredentialType` being updated. */
+  patch: ServiceAuthCredentialTypePatch;
+};
+
+/** All input for the `updateServiceAuthCredentialType` mutation. */
+export type UpdateServiceAuthCredentialTypeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `ServiceAuthCredentialType` being updated. */
+  patch: ServiceAuthCredentialTypePatch;
+  type: Scalars['String'];
+};
+
+/** The output of our update `ServiceAuthCredentialType` mutation. */
+export type UpdateServiceAuthCredentialTypePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `ServiceAuthCredentialType` that was updated by this mutation. */
+  serviceAuthCredentialType?: Maybe<ServiceAuthCredentialType>;
+  /** An edge for our `ServiceAuthCredentialType`. May be used by Relay 1. */
+  serviceAuthCredentialTypeEdge?: Maybe<ServiceAuthCredentialTypesEdge>;
+};
+
+
+/** The output of our update `ServiceAuthCredentialType` mutation. */
+export type UpdateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeArgs = {
+  orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
+};
+
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -8961,7 +7520,7 @@ export type GetRepoSyncsQuery = { repo?: { id: any, repo: string, isGithub?: boo
 export type GetReposQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetReposQuery = { repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoSyncs: { totalCount: number, nodes: Array<{ syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };
+export type GetReposQuery = { repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];

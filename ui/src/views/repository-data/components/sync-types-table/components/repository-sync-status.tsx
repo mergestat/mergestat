@@ -2,7 +2,7 @@ import React, { CSSProperties, Fragment, useRef, useState } from 'react'
 import type { RepoSyncStateT, SyncStatusDataT } from 'src/@types'
 
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { getTimeAgoFromNow } from 'src/utils'
+import { getRelativeTime } from 'src/utils'
 
 type RepositorySyncStatusProps = {
   data?: SyncStatusDataT[]
@@ -135,7 +135,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
               <span className="font-medium text-white mb-0.5">{tooltipData?.status ? tooltipData?.status.charAt(0).toUpperCase() + tooltipData?.status.slice(1) : ''}</span>
               <div className="flex items-center">
                 <span className="text-sm border-r border-gray-600 mr-1.5 pr-1.5 leading-4">
-                  {tooltipData?.doneAt ? getTimeAgoFromNow(new Date(tooltipData?.doneAt)) : ''}
+                  {tooltipData?.doneAt ? getRelativeTime(new Date(tooltipData?.doneAt)) : ''}
                 </span>
                 <span className="text-sm">{tooltipData?.runningTimeReadable}</span>
               </div>

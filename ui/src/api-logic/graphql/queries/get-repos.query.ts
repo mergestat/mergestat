@@ -13,6 +13,7 @@ const GET_REPOS = gql`
         repoSyncs {
           totalCount
           nodes {
+            id
             syncType
             repoSyncQueues(first: 1, orderBy: CREATED_AT_DESC) {
               nodes {

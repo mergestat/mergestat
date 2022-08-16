@@ -4,6 +4,8 @@ export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'csv'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
+export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
+
 export type TagType = {
   title: string
   checked: boolean
@@ -11,12 +13,19 @@ export type TagType = {
 }
 
 /** Repositories Data Props Type */
+
+export type RepoSyncDataT = {
+  idType: string
+  type: string
+  idLastSync: string
+  lastSync: string
+}
+
 export type RepoDataStatusT = {
   type: RepoSyncStateT
   count: number
+  syncs?: Array<RepoSyncDataT>
 }
-
-export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
 export type RepoDataPropsT = {
   id: string

@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { RepoSyncDataType } from 'src/@types'
-import { getTimeAgoFromNow } from 'src/utils'
+import { getRelativeTime } from 'src/utils'
 
 export type TimeAgoFieldProps = {
   date: string
@@ -13,7 +13,7 @@ export const TimeAgoField: React.FC<TimeAgoFieldProps> = ({ date, syncData, styl
   const [dateRun, setDateRun] = useState<string>('N/A')
 
   const recalculateTimeAgo = () => {
-    const timeAgo = getTimeAgoFromNow(new Date(date))
+    const timeAgo = getRelativeTime(new Date(date))
     setDateRun(timeAgo)
   }
 

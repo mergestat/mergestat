@@ -1,12 +1,19 @@
-import { RepoDataPropsT, RepoDataStatusT } from 'src/@types'
-import { mapToRepoSyncStateT } from 'src/utils'
+import { RepoDataPropsT, RepoDataStatusT, RepoSyncStateT } from 'src/@types'
+import { capitalize, mapToRepoSyncStateT } from 'src/utils'
 import { GITHUB_URL } from 'src/utils/constants'
 import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
 
 interface SyncTypeFlatten {
+  idType: string
   type: string
-  status: string
+  idLastSync: string
   lastSync: string
+  status: string
+}
+
+interface SyncCounter {
+  count: number
+  syncs: Array<SyncTypeFlatten>
 }
 
 /**
@@ -46,31 +53,47 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
   // 1. Syncs info is flatten in a simple object
   const syncTypes = r?.repoSyncs.nodes.map((st: RepoSync) => {
     const syncObj: SyncTypeFlatten = {
-      type: st?.syncType,
+      idType: st?.id,
+      type: capitalize(st?.syncType.replaceAll('_', ' ')),
+      idLastSync: '',
       status: '',
       lastSync: ''
     }
 
     st?.repoSyncQueues.nodes.forEach((ls: RepoSyncQueue) => {
-      syncObj.status = ls?.status || ''
+      syncObj.idLastSync = ls?.id || ''
       syncObj.lastSync = ls?.createdAt || ''
+      syncObj.status = ls?.status || ''
     })
 
     return syncObj
   })
 
   // 2. Syncs are grouped by status with its corresponding quantity
-  const mapSyncs = new Map()
+  const mapSyncs = new Map<RepoSyncStateT, SyncCounter>()
   syncTypes?.forEach((st: SyncTypeFlatten) => {
     const status = mapToRepoSyncStateT(st.status)
-    let statusCount = mapSyncs.get(status)
-    mapSyncs.set(status, statusCount ? ++statusCount : 1)
+    let syncCounter = mapSyncs.get(status)
+
+    // 2.1. Grouping syncs to show in 'pop up'
+    if (syncCounter) {
+      syncCounter = {
+        count: ++syncCounter.count,
+        syncs: [...syncCounter.syncs, st]
+      }
+    } else {
+      syncCounter = {
+        count: 1,
+        syncs: [st]
+      }
+    }
+    mapSyncs.set(status, syncCounter)
   })
 
   // 3. Previous info is transform to necesary RepoDataStatusT object
   const mappedSyncs: Array<RepoDataStatusT> = []
   mapSyncs?.forEach((value, key) => {
-    mappedSyncs.push({ type: key, count: value })
+    mappedSyncs.push({ type: key, count: value.count, syncs: value.syncs })
   })
 
   // 4. Is setted up last sync regarding sync status

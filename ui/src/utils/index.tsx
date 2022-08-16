@@ -36,11 +36,20 @@ export function selectAllState(data: Array<{ isSelected: boolean, [key: string]:
 }
 
 /**
+ * Method to capitalize first letter of each word of given phrase
+ * @param phrase Phrase to capitalize
+ * @returns Given phrase capitalized
+ */
+export function capitalize(phrase: string) {
+  return phrase.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ')
+}
+
+/**
  * Method to get time ago relative to current date
  * @param baseDate Date to evaluete
  * @returns Date time ago relative to current date (e.g.: 'less than 20 seconds ago', '1 minute ago')
  */
-export function getTimeAgoFromNow(baseDate: Date): string {
+export function getRelativeTime(baseDate: Date): string {
   const distance = formatDistance(new Date(), baseDate, {
     includeSeconds: true,
   })
@@ -49,14 +58,22 @@ export function getTimeAgoFromNow(baseDate: Date): string {
 }
 
 /**
+ * Method to get time in shorter words
+ * @param time Time to abbreviated
+ * @returns Abbreviated time (e.g.: '1h 2m 3s', '2m 3s')
+ */
+export function simplifyTime(time: string) {
+  return time.replaceAll(/ days*/ig, 'd').replaceAll(/ hours*/ig, 'h').replaceAll(/ minutes*/ig, 'm').replaceAll(/ seconds*/ig, 's')
+}
+
+/**
  * Method to get duration time abbreviated
  * @param start Date from
  * @param end  Date to
- * @returns  Abbreviated duration time (e.g.: '1h 2m 3s', '2m 3s')
+ * @returns Abbreviated duration time (e.g.: '1h 2m 3s', '2m 3s')
  */
 export function getSimpleDurationTime(start: Date, end: Date): string {
-  const duration = formatDuration(intervalToDuration({ start, end }))
-  return duration.replaceAll(/ hours*/ig, 'h').replaceAll(/ minutes*/ig, 'm').replaceAll(/ seconds*/ig, 's')
+  return simplifyTime(formatDuration(intervalToDuration({ start, end })))
 }
 
 /**

@@ -1,8 +1,13 @@
-import type { RepoDataStatusT } from 'src/@types'
+import type { RepoDataStatusT, RepoSyncStateT } from 'src/@types'
+import { TimeAgoText } from 'src/components/Fields/time-ago-text'
 import { RepoDataDropDown } from 'src/views/repositories/drop-downs'
 
 export type RepositoryStatusProps = {
   status: Array<RepoDataStatusT>
+}
+
+const getLastSync = (type: RepoSyncStateT, lastSync: string) => {
+  return type === 'running' ? 'running' : type === 'queued' ? 'queued' : lastSync ? <TimeAgoText date={lastSync} prefix='Last sync' /> : ''
 }
 
 export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ status }: RepositoryStatusProps) => {
@@ -13,12 +18,10 @@ export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ status }: Re
         <RepoDataDropDown
           key={index}
           status={item.type}
-          data={Array(item.count)
-            .fill(0)
-            .map(() => ({
-              title: 'Commit Status',
-              lastSync: 'Last sync 2d ago',
-            }))}
+          data={item.syncs?.map((sync) => ({
+            title: sync.type,
+            lastSync: getLastSync(item.type, sync.lastSync),
+          })) || []}
         />
       ))}
     </div>
