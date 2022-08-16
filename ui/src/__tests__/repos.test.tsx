@@ -28,7 +28,7 @@ describe('Components: (Repos)', () => {
     expect(element).toBeInTheDocument()
   })
 
-  it('rendering component <RepositoryStatus /> and clicking an option', async () => {
+  it('rendering component <RepositoryStatus />', async () => {
     render(<RepositoryStatus {...mockRepoSatus} />)
     const element = screen.getAllByTestId(TEST_IDS.repoDataDropdown)
     expect(element.length).toBe(5)
