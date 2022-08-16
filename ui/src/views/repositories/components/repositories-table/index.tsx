@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from 'react'
 import type { RepoDataPropsT } from 'src/@types'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import { mapToRepoData } from 'src/api-logic/mappers/repos'
-import { TimeAgoField } from 'src/components/Fields/time-ago-field'
+import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { TEST_IDS } from 'src/utils/constants'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
 import { RepositoryName, RepositoryStatus, RepositoryTagList } from './repositories-table-columns'
@@ -75,11 +75,11 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                       </td>
 
                       <td className='h-20'>
-                        <TimeAgoField date={repo.lastSync} styles={'text-semantic-mutedText px-6'} />
+                        <RelativeTimeField date={repo.lastSync} styles={'text-semantic-mutedText px-6'} />
                       </td>
 
                       <td className='h-20'>
-                        <RepositoryStatus status={repo.status} />
+                        <RepositoryStatus idRepo={repo.id} status={repo.status} />
                       </td>
 
                       <td className='px-6 w-4'>

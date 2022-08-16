@@ -1,6 +1,6 @@
 import { KeyValue } from '@mergestat/blocks'
 import React from 'react'
-import { TimeAgoField } from 'src/components/Fields/time-ago-field'
+import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 
 type LogsInfoProps = {
   id: string
@@ -14,7 +14,7 @@ export const LogsInfo: React.FC<LogsInfoProps> = (props) => {
       <div className="flex justify-between items-center max-w-3xl space-x-8">
         <div className="flex flex-col">
           <KeyValue title="Sync start" />
-          <TimeAgoField date={props.syncStart} />
+          <RelativeTimeField date={props.syncStart} />
         </div>
 
         <div className="border-l pl-8">

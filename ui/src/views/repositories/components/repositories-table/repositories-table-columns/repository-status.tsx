@@ -1,11 +1,17 @@
-import type { RepoDataStatusT } from 'src/@types'
+import type { RepoDataStatusT, RepoSyncStateT } from 'src/@types'
+import { RelativeTimeText } from 'src/components/Fields/relative-time-text'
 import { RepoDataDropDown } from 'src/views/repositories/drop-downs'
 
 export type RepositoryStatusProps = {
+  idRepo: string
   status: Array<RepoDataStatusT>
 }
 
-export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ status }: RepositoryStatusProps) => {
+const getLastSync = (type: RepoSyncStateT, lastSync: string) => {
+  return type === 'running' ? 'running' : type === 'queued' ? 'queued' : lastSync ? <RelativeTimeText date={lastSync} prefix='Last sync' /> : ''
+}
+
+export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ idRepo, status }: RepositoryStatusProps) => {
   return (
     <div className="flex items-center justify-end gap-2">
       {status.length ? null : <span className="text-semantic-mutedText">No syncs</span>}
@@ -13,12 +19,11 @@ export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ status }: Re
         <RepoDataDropDown
           key={index}
           status={item.type}
-          data={Array(item.count)
-            .fill(0)
-            .map(() => ({
-              title: 'Commit Status',
-              lastSync: 'Last sync 2d ago',
-            }))}
+          data={item.syncs?.map((sync) => ({
+            url: `/repos/${idRepo}/${sync.idType}/${sync.idLastSync}`,
+            title: sync.type,
+            lastSync: getLastSync(item.type, sync.lastSync),
+          })) || []}
         />
       ))}
     </div>

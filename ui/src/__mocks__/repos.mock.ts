@@ -33,6 +33,7 @@ export const mockRepoData: GetReposQuery = {
           totalCount: 5,
           nodes: [
             {
+              id: faker.datatype.uuid(),
               syncType: 'GIT_COMMIT_STATS',
               repoSyncQueues: {
                 nodes: [
@@ -45,6 +46,7 @@ export const mockRepoData: GetReposQuery = {
               },
             },
             {
+              id: faker.datatype.uuid(),
               syncType: 'GIT_FILES',
               repoSyncQueues: {
                 nodes: [
@@ -57,6 +59,7 @@ export const mockRepoData: GetReposQuery = {
               },
             },
             {
+              id: faker.datatype.uuid(),
               syncType: 'GITHUB_REPO_METADATA',
               repoSyncQueues: {
                 nodes: [
@@ -69,6 +72,7 @@ export const mockRepoData: GetReposQuery = {
               },
             },
             {
+              id: faker.datatype.uuid(),
               syncType: 'GIT_REFS',
               repoSyncQueues: {
                 nodes: [
@@ -81,6 +85,7 @@ export const mockRepoData: GetReposQuery = {
               },
             },
             {
+              id: faker.datatype.uuid(),
               syncType: 'GIT_COMMITS',
               repoSyncQueues: {
                 nodes: [

@@ -2,7 +2,7 @@ import { Panel } from '@mergestat/blocks'
 import cx from 'classnames'
 import React, { PropsWithChildren } from 'react'
 import { RepoSyncDataType } from 'src/@types'
-import { TimeAgoField } from 'src/components/Fields/time-ago-field'
+import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
 
@@ -68,7 +68,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnType
                       </td>
 
                       <td className='text-gray-500 h-20 p-0'>
-                        <TimeAgoField date={sync.latestRun} syncData={sync} styles={'text-semantic-mutedText h-full leading-20'} />
+                        <RelativeTimeField date={sync.latestRun} syncData={sync} styles={'text-semantic-mutedText h-full leading-20'} />
                       </td>
 
                       <td className='text-gray-500 h-20 p-0'>

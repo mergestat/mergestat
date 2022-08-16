@@ -1,11 +1,11 @@
 import { Tooltip } from '@mergestat/blocks'
 import { AutoImportIcon, GithubIcon, RepositoryIcon } from '@mergestat/icons'
+import { format } from 'date-fns'
 import Link from 'next/link'
 import React from 'react'
 import type { RepoType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
-import { getTimeAgoFromNow } from 'src/utils'
-import { format } from 'date-fns'
+import { getRelativeTime } from 'src/utils'
 
 export type RepositoryNameProps = {
   id: string
@@ -46,7 +46,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
               content={`Added ${format(props.createdAt, 'PPp')}`}
               placement='bottom'
             >
-              {getTimeAgoFromNow(props.createdAt)}
+              {getRelativeTime(props.createdAt)}
             </Tooltip>
           </span>
           <div className="border-l border-semantic-border px-2">

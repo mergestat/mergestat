@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import type { RepoSyncDataType, SyncStatusDataT } from 'src/@types'
 import { RepoSyncStateT } from 'src/@types'
-import { TimeAgoField } from 'src/components/Fields/time-ago-field'
+import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import {
   RepositoryData,
@@ -44,7 +44,7 @@ export const columns: Array<Record<string, unknown>> = [
     dataIndex: 'latestRun',
     key: 'latestRun',
     render: (latestRun: string, d: RepoSyncDataType) =>
-      <TimeAgoField date={latestRun} syncData={d} styles={'text-semantic-mutedText h-full leading-20'} />
+      <RelativeTimeField date={latestRun} syncData={d} styles={'text-semantic-mutedText h-full leading-20'} />
   },
   {
     title: 'Status',
