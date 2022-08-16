@@ -5,6 +5,8 @@ import { RepositoriesProvider } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import RepositoriesView from 'src/views/repositories'
 import { RepositoriesTable } from 'src/views/repositories/components'
+import { RepositoryStatus } from 'src/views/repositories/components/repositories-table/repositories-table-columns'
+import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
 import { apolloMockReposEmpty, apolloMockReposWithData, mockRepoData } from 'src/__mocks__/repos.mock'
 
 afterEach(() => {
@@ -24,6 +26,12 @@ describe('Components: (Repos)', () => {
     render(<RepositoriesTable data={mockRepoData} />)
     const element = screen.getByTestId(TEST_IDS.repoTableList)
     expect(element).toBeInTheDocument()
+  })
+
+  it('rendering component <RepositoryStatus /> and clicking an option', async () => {
+    render(<RepositoryStatus {...mockRepoSatus} />)
+    const element = screen.getAllByTestId(TEST_IDS.repoDataDropdown)
+    expect(element.length).toBe(5)
   })
 })
 

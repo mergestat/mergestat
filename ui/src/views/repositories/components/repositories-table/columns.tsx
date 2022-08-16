@@ -1,5 +1,5 @@
 import type { RepoDataPropsT, RepoDataStatusT, TagType } from 'src/@types'
-import { TimeAgoField } from 'src/components/Fields/time-ago-field'
+import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepositoryAdditionalActionsDropDown } from '../../drop-downs'
 import { RepositoryName, RepositoryStatus, RepositoryTagList } from './repositories-table-columns'
 
@@ -36,7 +36,7 @@ export const columns: Array<Record<string, unknown>> = [
     onSortChange: (e: 'asc' | 'desc' | undefined) => {
       console.log(e)
     },
-    render: (lastSync: string) => <TimeAgoField date={lastSync} styles={'px-6'} />
+    render: (lastSync: string) => <RelativeTimeField date={lastSync} styles={'px-6'} />
   },
   {
     dataIndex: 'status',

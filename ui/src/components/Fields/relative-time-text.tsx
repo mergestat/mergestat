@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { getRelativeTime, simplifyTime } from 'src/utils'
 
-export type TimeAgoTextProps = {
+export type RelativeTimeTextProps = {
   date: string
   prefix?: string
   suffix?: string
 }
 
-export const TimeAgoText: React.FC<TimeAgoTextProps> = ({ date, prefix = '', suffix = '' }) => {
+export const RelativeTimeText: React.FC<RelativeTimeTextProps> = ({ date, prefix = '', suffix = '' }) => {
   const [dateRun, setDateRun] = useState<string>('')
 
   const recalculateTimeAgo = () => {

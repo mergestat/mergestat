@@ -54,7 +54,7 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
   const syncTypes = r?.repoSyncs.nodes.map((st: RepoSync) => {
     const syncObj: SyncTypeFlatten = {
       idType: st?.id,
-      type: capitalize(st?.syncType.replaceAll('_', ' ')),
+      type: capitalize(st?.syncType.replace(/_/ig, ' ')),
       idLastSync: '',
       status: '',
       lastSync: ''

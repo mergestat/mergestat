@@ -63,7 +63,7 @@ export function getRelativeTime(baseDate: Date): string {
  * @returns Abbreviated time (e.g.: '1h 2m 3s', '2m 3s')
  */
 export function simplifyTime(time: string) {
-  return time.replaceAll(/ days*/ig, 'd').replaceAll(/ hours*/ig, 'h').replaceAll(/ minutes*/ig, 'm').replaceAll(/ seconds*/ig, 's')
+  return time.replace(/ days*/ig, 'd').replace(/ hours*/ig, 'h').replace(/ minutes*/ig, 'm').replace(/ seconds*/ig, 's')
 }
 
 /**

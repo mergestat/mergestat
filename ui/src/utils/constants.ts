@@ -10,5 +10,6 @@ export const MERGESTAT_TITLE = 'MergeStat |'
 export enum TEST_IDS {
   emptyRepositoryTable = 'empty-repository-table',
   repoListEmpty = 'repo-list-empty',
-  repoTableList = 'repo-table-list'
+  repoTableList = 'repo-table-list',
+  repoDataDropdown = 'repo-data-dropdown'
 }

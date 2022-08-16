@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { RepoSyncDataType } from 'src/@types'
 import { getRelativeTime } from 'src/utils'
 
-export type TimeAgoFieldProps = {
+export type RelativeTimeFieldProps = {
   date: string
   syncData?: RepoSyncDataType
   styles?: string
 }
 
-export const TimeAgoField: React.FC<TimeAgoFieldProps> = ({ date, syncData, styles }) => {
+export const RelativeTimeField: React.FC<RelativeTimeFieldProps> = ({ date, syncData, styles }) => {
   const [dateRun, setDateRun] = useState<string>('N/A')
 
   const recalculateTimeAgo = () => {

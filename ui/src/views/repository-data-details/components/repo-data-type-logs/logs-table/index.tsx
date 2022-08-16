@@ -2,7 +2,7 @@ import { LogBox, Panel } from '@mergestat/blocks'
 import { CaretDownIcon, CaretRightIcon } from '@mergestat/icons'
 import React, { Fragment, useEffect, useState } from 'react'
 import { SyncLogsType } from 'src/@types'
-import { TimeAgoField } from 'src/components/Fields/time-ago-field'
+import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { LogsTableRowOptions, SyncType } from './components'
 
 interface LogsTableProps {
@@ -92,7 +92,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                         </td>
 
                         <td className='text-gray-500'>
-                          <TimeAgoField date={log.syncStart} styles={'text-semantic-mutedText'} />
+                          <RelativeTimeField date={log.syncStart} styles={'text-semantic-mutedText'} />
                         </td>
 
                         <td className='text-gray-500 mx-6'>

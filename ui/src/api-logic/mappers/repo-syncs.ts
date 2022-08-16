@@ -23,7 +23,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     const syncData: RepoSyncDataType = {
       data: {
         id: s.id,
-        title: s?.syncType.replaceAll('_', ' ') || '',
+        title: s?.syncType.replace(/_/ig, ' ') || '',
         brief: s?.repoSyncTypeBySyncType?.description || '',
       },
       latestRun: s?.repoSyncQueues.nodes[0]?.startedAt ?? s?.repoSyncQueues.nodes[1]?.startedAt,
