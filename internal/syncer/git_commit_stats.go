@@ -101,18 +101,18 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 	if err := walk.Iterate(func(c *libgit2.Commit) bool {
 		defer c.Free()
 
-		fromTree, err := c.Tree()
+		toTree, err := c.Tree()
 		if err != nil {
 			return false
 		}
 
-		toC := c.Parent(0)
-		var toTree *libgit2.Tree
-		if toC == nil {
-			toTree = &libgit2.Tree{}
+		fromC := c.Parent(0)
+		var fromTree *libgit2.Tree
+		if fromC == nil {
+			fromTree = &libgit2.Tree{}
 		} else {
-			defer toC.Free()
-			toTree, err = toC.Tree()
+			defer fromC.Free()
+			fromTree, err = fromC.Tree()
 			if err != nil {
 				return false
 			}
