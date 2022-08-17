@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
@@ -14,16 +14,27 @@ import Loading from 'src/components/Loading'
 import { showErrorAlert } from 'src/utils/alerts'
 
 const RepositoriesView: React.FC = () => {
-  const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal }] = useRepositoriesContext()
+  const [showTable, setShowTable] = useState(false)
+
+  const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
 
   const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
 
-  const { loading, error, data } = useQuery(GET_REPOS, {
+  // - Todo: connect selectedRepositoriesCount from RepositoriesTable
+  const selectedRepositoriesCount = 0
+
+  const { loading, error, data, refetch } = useQuery(GET_REPOS, {
+    variables: { search },
     pollInterval: 5000,
   })
 
-  // - Todo: connect selectedRepositoriesCount from RepositoriesTable
-  const selectedRepositoriesCount = 0
+  useEffect(() => {
+    refetch({ search })
+  }, [refetch, search])
+
+  if (data && !showTable) {
+    setShowTable(true)
+  }
 
   if (error) {
     showErrorAlert(error.message)
@@ -33,16 +44,16 @@ const RepositoriesView: React.FC = () => {
     <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">
       <div className="bg-white border-b border-gray-200">
         <PageHeader />
-        {data && <FilterHeader />}
+        {showTable && <FilterHeader />}
       </div>
       <div className="flex-1 items-center p-8 overflow-auto">
         {loading
           ? <Loading />
-          : (data ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
+          : (showTable ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
         }
       </div>
 
-      {data && (
+      {showTable && (
         <div className="bg-white h-14  border-t flex items-center px-8">
           <Toolbar>
             <Toolbar.Left>

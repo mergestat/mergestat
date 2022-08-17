@@ -2,6 +2,10 @@ import { faker } from '@faker-js/faker'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
 
+export enum DynamicValues {
+  angular = 'angular'
+}
+
 export const mockRepoData: GetReposQuery = {
   repos: {
     totalCount: 2,
@@ -104,18 +108,53 @@ export const mockRepoData: GetReposQuery = {
   }
 }
 
+export const mockJustAngularRepo: GetReposQuery = {
+  repos: {
+    totalCount: 2,
+    nodes: [
+      {
+        id: faker.datatype.uuid(),
+        repo: 'https://github.com/angular/angular',
+        createdAt: faker.date.recent(2),
+        isGithub: true,
+        tags: [
+
+        ],
+        repoSyncs: {
+          totalCount: 0,
+          nodes: [
+
+          ],
+        },
+      },
+    ]
+  }
+}
+
 export const apolloMockReposWithData = {
   request: {
-    query: GET_REPOS
+    query: GET_REPOS,
+    variables: { search: '' }
   },
   result: {
     data: mockRepoData
   }
 }
 
+export const apolloMockJustAngularRepo = {
+  request: {
+    query: GET_REPOS,
+    variables: { search: DynamicValues.angular }
+  },
+  result: {
+    data: mockJustAngularRepo
+  }
+}
+
 export const apolloMockReposEmpty = {
   request: {
-    query: GET_REPOS
+    query: GET_REPOS,
+    variables: { search: '' }
   },
   result: {
     data: undefined
