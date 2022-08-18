@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
@@ -6,39 +6,20 @@ import { AddRepositoryModal } from './modals/add-repository-modal'
 import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
 
-import { useQuery } from '@apollo/client'
 import { Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
-import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
 import Loading from 'src/components/Loading'
-import { showErrorAlert } from 'src/utils/alerts'
+import useRepos from './hooks/useRepos'
 
 const RepositoriesView: React.FC = () => {
-  const [showTable, setShowTable] = useState(false)
-
   const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
 
   const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
 
+  const { showTable, loading, data } = useRepos(search)
+
   // - Todo: connect selectedRepositoriesCount from RepositoriesTable
   const selectedRepositoriesCount = 0
-
-  const { loading, error, data, refetch } = useQuery(GET_REPOS, {
-    variables: { search },
-    pollInterval: 5000,
-  })
-
-  useEffect(() => {
-    refetch({ search })
-  }, [refetch, search])
-
-  if (data && !showTable) {
-    setShowTable(true)
-  }
-
-  if (error) {
-    showErrorAlert(error.message)
-  }
 
   return (
     <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">
@@ -49,7 +30,7 @@ const RepositoriesView: React.FC = () => {
       <div className="flex-1 items-center p-8 overflow-auto">
         {loading
           ? <Loading />
-          : (showTable ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
+          : (data ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
         }
       </div>
 
