@@ -23,9 +23,7 @@ const NavHeader: React.FC = () => {
           <Navbar.Divider />
           <Toolbar.Item>
             <HelpText className="text-white ml-3">
-              <a target='_blank' href='https://github.com/mergestat/fuse' rel='noopener noreferrer'>
-                <span className='cursor-pointer hover_text-blue-600'>beta</span>
-              </a>
+              <a target='_blank' href='https://github.com/mergestat/fuse' rel='noopener noreferrer'>beta</a>
             </HelpText>
           </Toolbar.Item>
         </Toolbar.Left>
