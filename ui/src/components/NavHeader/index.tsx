@@ -22,7 +22,11 @@ const NavHeader: React.FC = () => {
           </Toolbar.Item>
           <Toolbar.Item>
             <Navbar.Divider />
-            <HelpText className="ml-3 text-white">v1.0.0</HelpText>
+            <HelpText className="ml-3 text-white">
+              <a target='_blank' href='https://github.com/mergestat/fuse' rel='noopener noreferrer'>
+                <span className='cursor-pointer hover_text-blue-600'>beta</span>
+              </a>
+            </HelpText>
           </Toolbar.Item>
         </Toolbar.Left>
         <Toolbar.Right className="space-x-6">
