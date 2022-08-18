@@ -126,26 +126,27 @@ func main() {
 	l := logger.Level(zerolog.InfoLevel).With().Bool("mergestat-query-exec", true).Logger()
 
 	ratelimitHandler := func(rlr *options.GitHubRateLimitResponse) {
-		cost := float64(rlr.Cost)
-		remaining := rlr.Remaining - 400 // include a 400 pt buffer
 		untilResetDur := time.Until(rlr.ResetAt.Time)
 		secondsRemaining := untilResetDur.Seconds()
-		maxCallsPerSecond := (float64(remaining) / cost) / float64(secondsRemaining)
-		delayDur := time.Duration(int(cost/maxCallsPerSecond)) * time.Second
+		delayDur := 800 * time.Millisecond // Default delay is 800ms to prevent hitting the secondary rate limit
 
-		if delayDur < 800*time.Millisecond {
-			delayDur = 800 * time.Millisecond
+		// if remaining points are 400 or less then we will delay until the quota is reset
+		if rlr.Remaining <= 400 {
+			delayDur = untilResetDur
 		}
 
 		logger.Info().
-			Int("cost", rlr.Cost).
 			Int("remaining", rlr.Remaining).
 			Time("resets", rlr.ResetAt.Time).
 			Str("until-reset", untilResetDur.String()).
 			Float64("delay-seconds", delayDur.Seconds()).
-			Msgf("received rate limit info from GitHub API: %d remaining in next %ds", rlr.Remaining, int(secondsRemaining))
+			Msgf("received rate limit info from GitHub API: %d remaining in next %ds. Delaying %ss", rlr.Remaining, int(secondsRemaining), strconv.FormatFloat(delayDur.Seconds(), 'f', 2, 64))
 
-		time.Sleep(delayDur)
+		// Allow for shutdown during the delay
+		select {
+		case <-ctx.Done():
+		case <-time.After(delayDur):
+		}
 	}
 
 	// See here: https://docs.github.com/en/rest/guides/best-practices-for-integrators#dealing-with-secondary-rate-limits
