@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 const GET_REPOS = gql`
-  query getRepos {
-    repos(orderBy: CREATED_AT_DESC) {
+  query getRepos($search: String!) {
+    repos(orderBy: CREATED_AT_DESC, filter: {repo: {includes: $search}}) {
       totalCount
       nodes {
         id

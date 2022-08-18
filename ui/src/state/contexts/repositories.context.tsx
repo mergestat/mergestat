@@ -6,6 +6,7 @@ type RepositoriesContextT = {
   showAutoImportModal: boolean
   showAddRepositoryModal: boolean
   showSyncRepoModal: boolean
+  search: string
 }
 
 type UseRepositoriesContextT = [
@@ -18,11 +19,11 @@ const initialState: RepositoriesContextT = {
   showAutoImportModal: false,
   showAddRepositoryModal: false,
   showSyncRepoModal: false,
+  search: ''
 }
 
 function useRepositories(): UseRepositoriesContextT {
   const [state, setState] = React.useState<RepositoriesContextT>(initialState)
-
   return [state, setState]
 }
 
@@ -71,18 +72,25 @@ function useRepositoriesSetState() {
     }))
   }
 
+  const setSearch = (search: string) => {
+    setState(prev => ({
+      ...prev,
+      search
+    }))
+  }
+
   return {
     _,
     setShowOpenRepositoryModal,
     setShowAutoImportModal,
     setShowAddRepositoryModal,
     setShowSyncRepoModal,
+    setSearch
   }
 }
 
 export {
   useRepositoriesContext,
   RepositoriesProvider,
-
   useRepositoriesSetState,
 }
