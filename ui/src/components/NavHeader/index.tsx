@@ -9,7 +9,7 @@ const NavHeader: React.FC = () => {
     <nav className="px-6 w-full bg-gray-700">
       <Toolbar className="h-14">
         <Toolbar.Left>
-          <Toolbar.Item className="mr-3">
+          <Toolbar.Item className='mr-3'>
             <Link href="/repos">
               <span className='cursor-pointer'>
                 <Icon
@@ -20,9 +20,9 @@ const NavHeader: React.FC = () => {
               </span>
             </Link>
           </Toolbar.Item>
+          <Navbar.Divider />
           <Toolbar.Item>
-            <Navbar.Divider />
-            <HelpText className="ml-3 text-white">
+            <HelpText className="text-white ml-3">
               <a target='_blank' href='https://github.com/mergestat/fuse' rel='noopener noreferrer'>
                 <span className='cursor-pointer hover_text-blue-600'>beta</span>
               </a>
