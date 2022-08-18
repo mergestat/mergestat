@@ -61,7 +61,9 @@ services:
     depends_on:
       - graphql
     ports:
-      - 3300:3000    
+      - 3300:3000
+    environment:
+      POSTGRAPHILE_API: http://graphql:5433/graphql    
 
   grafana:
     image: grafana/grafana-oss:latest
