@@ -51,6 +51,58 @@ export type AddServiceAuthCredentialPayloadServiceAuthCredentialEdgeArgs = {
   orderBy?: InputMaybe<Array<ServiceAuthCredentialsOrderBy>>;
 };
 
+/** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
+export type BigIntFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['BigInt']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['BigInt']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['BigInt']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['BigInt']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['BigInt']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['BigInt']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['BigInt']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['BigInt']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['BigInt']>>;
+};
+
+/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
+export type BooleanFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Boolean']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Boolean']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Boolean']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Boolean']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Boolean']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Boolean']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Boolean']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Boolean']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Boolean']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Boolean']>>;
+};
+
 /** All input for the create `GitBranch` mutation. */
 export type CreateGitBranchInput = {
   /**
@@ -849,6 +901,32 @@ export type CreateServiceAuthCredentialTypePayload = {
 /** The output of our create `ServiceAuthCredentialType` mutation. */
 export type CreateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
+};
+
+/** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
+export type DatetimeFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Datetime']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Datetime']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Datetime']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Datetime']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Datetime']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Datetime']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Datetime']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Datetime']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Datetime']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Datetime']>>;
 };
 
 /** All input for the `deleteGitCommitByNodeId` mutation. */
@@ -1848,6 +1926,32 @@ export type GitBranchCondition = {
   type?: InputMaybe<Scalars['String']>;
 };
 
+/** A filter to be used against `GitBranch` object types. All fields are combined with a logical ‘and.’ */
+export type GitBranchFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitBranchFilter>>;
+  /** Filter by the object’s `fullName` field. */
+  fullName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `hash` field. */
+  hash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitBranchFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitBranchFilter>>;
+  /** Filter by the object’s `remote` field. */
+  remote?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `tagCommitHash` field. */
+  tagCommitHash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `target` field. */
+  target?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
+};
+
 /** An input for mutations affecting `GitBranch` */
 export type GitBranchInput = {
   fullName?: InputMaybe<Scalars['String']>;
@@ -1946,6 +2050,36 @@ export type GitCommitCondition = {
   repoId?: InputMaybe<Scalars['UUID']>;
 };
 
+/** A filter to be used against `GitCommit` object types. All fields are combined with a logical ‘and.’ */
+export type GitCommitFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitCommitFilter>>;
+  /** Filter by the object’s `authorEmail` field. */
+  authorEmail?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorName` field. */
+  authorName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorWhen` field. */
+  authorWhen?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `committerEmail` field. */
+  committerEmail?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `committerName` field. */
+  committerName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `committerWhen` field. */
+  committerWhen?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `hash` field. */
+  hash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `message` field. */
+  message?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitCommitFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitCommitFilter>>;
+  /** Filter by the object’s `parents` field. */
+  parents?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+};
+
 /** An input for mutations affecting `GitCommit` */
 export type GitCommitInput = {
   authorEmail: Scalars['String'];
@@ -2000,6 +2134,26 @@ export type GitCommitStatCondition = {
   filePath?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `repoId` field. */
   repoId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `GitCommitStat` object types. All fields are combined with a logical ‘and.’ */
+export type GitCommitStatFilter = {
+  /** Filter by the object’s `additions` field. */
+  additions?: InputMaybe<IntFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitCommitStatFilter>>;
+  /** Filter by the object’s `commitHash` field. */
+  commitHash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `deletions` field. */
+  deletions?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `filePath` field. */
+  filePath?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitCommitStatFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitCommitStatFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
 };
 
 /** An input for mutations affecting `GitCommitStat` */
@@ -2117,6 +2271,24 @@ export type GitFileCondition = {
   repoId?: InputMaybe<Scalars['UUID']>;
 };
 
+/** A filter to be used against `GitFile` object types. All fields are combined with a logical ‘and.’ */
+export type GitFileFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitFileFilter>>;
+  /** Filter by the object’s `contents` field. */
+  contents?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `executable` field. */
+  executable?: InputMaybe<BooleanFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitFileFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitFileFilter>>;
+  /** Filter by the object’s `path` field. */
+  path?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+};
+
 /** An input for mutations affecting `GitFile` */
 export type GitFileInput = {
   contents?: InputMaybe<Scalars['String']>;
@@ -2200,6 +2372,32 @@ export type GitRefCondition = {
   target?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `GitRef` object types. All fields are combined with a logical ‘and.’ */
+export type GitRefFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitRefFilter>>;
+  /** Filter by the object’s `fullName` field. */
+  fullName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `hash` field. */
+  hash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitRefFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitRefFilter>>;
+  /** Filter by the object’s `remote` field. */
+  remote?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `tagCommitHash` field. */
+  tagCommitHash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `target` field. */
+  target?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `GitRef` */
@@ -2298,6 +2496,32 @@ export type GitTagCondition = {
   target?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `GitTag` object types. All fields are combined with a logical ‘and.’ */
+export type GitTagFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitTagFilter>>;
+  /** Filter by the object’s `fullName` field. */
+  fullName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `hash` field. */
+  hash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitTagFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitTagFilter>>;
+  /** Filter by the object’s `remote` field. */
+  remote?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `tagCommitHash` field. */
+  tagCommitHash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `target` field. */
+  target?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `GitTag` */
@@ -2435,6 +2659,62 @@ export type GithubIssueCondition = {
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `url` field. */
   url?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `GithubIssue` object types. All fields are combined with a logical ‘and.’ */
+export type GithubIssueFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GithubIssueFilter>>;
+  /** Filter by the object’s `authorLogin` field. */
+  authorLogin?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `body` field. */
+  body?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `closed` field. */
+  closed?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `closedAt` field. */
+  closedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `commentCount` field. */
+  commentCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdViaEmail` field. */
+  createdViaEmail?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `databaseId` field. */
+  databaseId?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `editorLogin` field. */
+  editorLogin?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `includesCreatedEdit` field. */
+  includesCreatedEdit?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `labelCount` field. */
+  labelCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `lastEditedAt` field. */
+  lastEditedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `locked` field. */
+  locked?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `milestoneCount` field. */
+  milestoneCount?: InputMaybe<IntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GithubIssueFilter>;
+  /** Filter by the object’s `number` field. */
+  number?: InputMaybe<IntFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GithubIssueFilter>>;
+  /** Filter by the object’s `participantCount` field. */
+  participantCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `publishedAt` field. */
+  publishedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `reactionCount` field. */
+  reactionCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `state` field. */
+  state?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `title` field. */
+  title?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `url` field. */
+  url?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `GithubIssue` */
@@ -2668,6 +2948,44 @@ export type GithubPullRequestCommitCondition = {
   url?: InputMaybe<Scalars['String']>;
 };
 
+/** A filter to be used against `GithubPullRequestCommit` object types. All fields are combined with a logical ‘and.’ */
+export type GithubPullRequestCommitFilter = {
+  /** Filter by the object’s `additions` field. */
+  additions?: InputMaybe<IntFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GithubPullRequestCommitFilter>>;
+  /** Filter by the object’s `authorEmail` field. */
+  authorEmail?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorName` field. */
+  authorName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorWhen` field. */
+  authorWhen?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `changedFiles` field. */
+  changedFiles?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `committerEmail` field. */
+  committerEmail?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `committerName` field. */
+  committerName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `committerWhen` field. */
+  committerWhen?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `deletions` field. */
+  deletions?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `hash` field. */
+  hash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `message` field. */
+  message?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GithubPullRequestCommitFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GithubPullRequestCommitFilter>>;
+  /** Filter by the object’s `prNumber` field. */
+  prNumber?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `url` field. */
+  url?: InputMaybe<StringFilter>;
+};
+
 /** An input for mutations affecting `GithubPullRequestCommit` */
 export type GithubPullRequestCommitInput = {
   additions?: InputMaybe<Scalars['Int']>;
@@ -2848,6 +3166,98 @@ export type GithubPullRequestCondition = {
   url?: InputMaybe<Scalars['String']>;
 };
 
+/** A filter to be used against `GithubPullRequest` object types. All fields are combined with a logical ‘and.’ */
+export type GithubPullRequestFilter = {
+  /** Filter by the object’s `additions` field. */
+  additions?: InputMaybe<IntFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GithubPullRequestFilter>>;
+  /** Filter by the object’s `authorAssociation` field. */
+  authorAssociation?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorAvatarUrl` field. */
+  authorAvatarUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorLogin` field. */
+  authorLogin?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorName` field. */
+  authorName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `baseRefName` field. */
+  baseRefName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `baseRefOid` field. */
+  baseRefOid?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `baseRepositoryName` field. */
+  baseRepositoryName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `body` field. */
+  body?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `changedFiles` field. */
+  changedFiles?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `closed` field. */
+  closed?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `closedAt` field. */
+  closedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `commentCount` field. */
+  commentCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `commitCount` field. */
+  commitCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdViaEmail` field. */
+  createdViaEmail?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `databaseId` field. */
+  databaseId?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `deletions` field. */
+  deletions?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `editorLogin` field. */
+  editorLogin?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `headRefName` field. */
+  headRefName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `headRefOid` field. */
+  headRefOid?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `headRepositoryName` field. */
+  headRepositoryName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `isDraft` field. */
+  isDraft?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `labelCount` field. */
+  labelCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `lastEditedAt` field. */
+  lastEditedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `locked` field. */
+  locked?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `maintainerCanModify` field. */
+  maintainerCanModify?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `mantainerCanModify` field. */
+  mantainerCanModify?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `mergeable` field. */
+  mergeable?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `merged` field. */
+  merged?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `mergedAt` field. */
+  mergedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `mergedBy` field. */
+  mergedBy?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GithubPullRequestFilter>;
+  /** Filter by the object’s `number` field. */
+  number?: InputMaybe<IntFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GithubPullRequestFilter>>;
+  /** Filter by the object’s `participantCount` field. */
+  participantCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `publishedAt` field. */
+  publishedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `reviewDecision` field. */
+  reviewDecision?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `state` field. */
+  state?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `title` field. */
+  title?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `url` field. */
+  url?: InputMaybe<StringFilter>;
+};
+
 /** An input for mutations affecting `GithubPullRequest` */
 export type GithubPullRequestInput = {
   additions?: InputMaybe<Scalars['Int']>;
@@ -3000,6 +3410,50 @@ export type GithubPullRequestReviewCondition = {
   submittedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `GithubPullRequestReview` object types. All fields are combined with a logical ‘and.’ */
+export type GithubPullRequestReviewFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GithubPullRequestReviewFilter>>;
+  /** Filter by the object’s `authorAssociation` field. */
+  authorAssociation?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorCanPushToRepository` field. */
+  authorCanPushToRepository?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `authorLogin` field. */
+  authorLogin?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorUrl` field. */
+  authorUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `body` field. */
+  body?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `commentCount` field. */
+  commentCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdViaEmail` field. */
+  createdViaEmail?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `editorLogin` field. */
+  editorLogin?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastEditedAt` field. */
+  lastEditedAt?: InputMaybe<DatetimeFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GithubPullRequestReviewFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GithubPullRequestReviewFilter>>;
+  /** Filter by the object’s `prNumber` field. */
+  prNumber?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `publishedAt` field. */
+  publishedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `state` field. */
+  state?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `submittedAt` field. */
+  submittedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
 };
 
 /** An input for mutations affecting `GithubPullRequestReview` */
@@ -3313,6 +3767,72 @@ export type GithubRepoInfoCondition = {
   watchersCount?: InputMaybe<Scalars['Int']>;
 };
 
+/** A filter to be used against `GithubRepoInfo` object types. All fields are combined with a logical ‘and.’ */
+export type GithubRepoInfoFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GithubRepoInfoFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `defaultBranchName` field. */
+  defaultBranchName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `diskUsage` field. */
+  diskUsage?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `forkCount` field. */
+  forkCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `homepageUrl` field. */
+  homepageUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `isArchived` field. */
+  isArchived?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `isDisabled` field. */
+  isDisabled?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `isMirror` field. */
+  isMirror?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `isPrivate` field. */
+  isPrivate?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `latestReleaseAuthor` field. */
+  latestReleaseAuthor?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `latestReleaseCreatedAt` field. */
+  latestReleaseCreatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `latestReleaseName` field. */
+  latestReleaseName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `latestReleasePublishedAt` field. */
+  latestReleasePublishedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `licenseKey` field. */
+  licenseKey?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `licenseName` field. */
+  licenseName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `licenseNickname` field. */
+  licenseNickname?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GithubRepoInfoFilter>;
+  /** Filter by the object’s `openGraphImageUrl` field. */
+  openGraphImageUrl?: InputMaybe<StringFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GithubRepoInfoFilter>>;
+  /** Filter by the object’s `owner` field. */
+  owner?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `primaryLanguage` field. */
+  primaryLanguage?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `pushedAt` field. */
+  pushedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `releasesCount` field. */
+  releasesCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `stargazersCount` field. */
+  stargazersCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `totalIssuesCount` field. */
+  totalIssuesCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `watchersCount` field. */
+  watchersCount?: InputMaybe<IntFilter>;
+};
+
 /** An input for mutations affecting `GithubRepoInfo` */
 export type GithubRepoInfoInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
@@ -3514,6 +4034,42 @@ export type GithubStargazerCondition = {
   website?: InputMaybe<Scalars['String']>;
 };
 
+/** A filter to be used against `GithubStargazer` object types. All fields are combined with a logical ‘and.’ */
+export type GithubStargazerFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GithubStargazerFilter>>;
+  /** Filter by the object’s `avatarUrl` field. */
+  avatarUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `bio` field. */
+  bio?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `company` field. */
+  company?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `email` field. */
+  email?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `location` field. */
+  location?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `login` field. */
+  login?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GithubStargazerFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GithubStargazerFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `starredAt` field. */
+  starredAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `twitter` field. */
+  twitter?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `website` field. */
+  website?: InputMaybe<StringFilter>;
+};
+
 /** An input for mutations affecting `GithubStargazer` */
 export type GithubStargazerInput = {
   avatarUrl?: InputMaybe<Scalars['String']>;
@@ -3601,6 +4157,32 @@ export enum GithubStargazersOrderBy {
   WebsiteDesc = 'WEBSITE_DESC'
 }
 
+/** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
+export type IntFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Int']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Int']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Int']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Int']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Int']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Int']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Int']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Int']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Int']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Int']>>;
+};
+
 /** An interval of time that has passed where the smallest distinct unit is a second. */
 export type Interval = {
   /** A quantity of days. */
@@ -3621,6 +4203,32 @@ export type Interval = {
   years?: Maybe<Scalars['Int']>;
 };
 
+/** A filter to be used against Interval fields. All fields are combined with a logical ‘and.’ */
+export type IntervalFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<IntervalInput>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<IntervalInput>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<IntervalInput>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<IntervalInput>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<IntervalInput>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<IntervalInput>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<IntervalInput>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<IntervalInput>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<IntervalInput>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<IntervalInput>>;
+};
+
 /** An interval of time that has passed where the smallest distinct unit is a second. */
 export type IntervalInput = {
   /** A quantity of days. */
@@ -3639,6 +4247,42 @@ export type IntervalInput = {
   seconds?: InputMaybe<Scalars['Float']>;
   /** A quantity of years. */
   years?: InputMaybe<Scalars['Int']>;
+};
+
+/** A filter to be used against JSON fields. All fields are combined with a logical ‘and.’ */
+export type JsonFilter = {
+  /** Contained by the specified JSON. */
+  containedBy?: InputMaybe<Scalars['JSON']>;
+  /** Contains the specified JSON. */
+  contains?: InputMaybe<Scalars['JSON']>;
+  /** Contains all of the specified keys. */
+  containsAllKeys?: InputMaybe<Array<Scalars['String']>>;
+  /** Contains any of the specified keys. */
+  containsAnyKeys?: InputMaybe<Array<Scalars['String']>>;
+  /** Contains the specified key. */
+  containsKey?: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['JSON']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['JSON']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['JSON']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['JSON']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['JSON']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['JSON']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['JSON']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['JSON']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['JSON']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['JSON']>>;
 };
 
 export type LatestRepoSync = {
@@ -3667,6 +4311,28 @@ export type LatestRepoSyncCondition = {
   startedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `LatestRepoSync` object types. All fields are combined with a logical ‘and.’ */
+export type LatestRepoSyncFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<LatestRepoSyncFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `doneAt` field. */
+  doneAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<LatestRepoSyncFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<LatestRepoSyncFilter>>;
+  /** Filter by the object’s `repoSyncId` field. */
+  repoSyncId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `startedAt` field. */
+  startedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<StringFilter>;
 };
 
 /** A connection to a list of `LatestRepoSync` values. */
@@ -4774,6 +5440,7 @@ export type QueryGitBranchesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GitBranchCondition>;
+  filter?: InputMaybe<GitBranchFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4799,6 +5466,7 @@ export type QueryGitCommitStatsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GitCommitStatCondition>;
+  filter?: InputMaybe<GitCommitStatFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4811,6 +5479,7 @@ export type QueryGitCommitsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GitCommitCondition>;
+  filter?: InputMaybe<GitCommitFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4836,6 +5505,7 @@ export type QueryGitFilesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GitFileCondition>;
+  filter?: InputMaybe<GitFileFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4861,6 +5531,7 @@ export type QueryGitRefsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GitRefCondition>;
+  filter?: InputMaybe<GitRefFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4873,6 +5544,7 @@ export type QueryGitTagsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GitTagCondition>;
+  filter?: InputMaybe<GitTagFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4898,6 +5570,7 @@ export type QueryGithubIssuesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GithubIssueCondition>;
+  filter?: InputMaybe<GithubIssueFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4937,6 +5610,7 @@ export type QueryGithubPullRequestCommitsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GithubPullRequestCommitCondition>;
+  filter?: InputMaybe<GithubPullRequestCommitFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4961,6 +5635,7 @@ export type QueryGithubPullRequestReviewsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GithubPullRequestReviewCondition>;
+  filter?: InputMaybe<GithubPullRequestReviewFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4973,6 +5648,7 @@ export type QueryGithubPullRequestsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GithubPullRequestCondition>;
+  filter?: InputMaybe<GithubPullRequestFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5004,6 +5680,7 @@ export type QueryGithubRepoInfosArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GithubRepoInfoCondition>;
+  filter?: InputMaybe<GithubRepoInfoFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5029,6 +5706,7 @@ export type QueryGithubStargazersArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GithubStargazerCondition>;
+  filter?: InputMaybe<GithubStargazerFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5041,6 +5719,7 @@ export type QueryLatestRepoSyncsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<LatestRepoSyncCondition>;
+  filter?: InputMaybe<LatestRepoSyncFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5095,6 +5774,7 @@ export type QueryRepoImportTypesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoImportTypeCondition>;
+  filter?: InputMaybe<RepoImportTypeFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5107,6 +5787,7 @@ export type QueryRepoImportsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoImportCondition>;
+  filter?: InputMaybe<RepoImportFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5162,6 +5843,7 @@ export type QueryRepoSyncLogTypesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncLogTypeCondition>;
+  filter?: InputMaybe<RepoSyncLogTypeFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5174,6 +5856,7 @@ export type QueryRepoSyncLogsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncLogCondition>;
+  filter?: InputMaybe<RepoSyncLogFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5210,6 +5893,7 @@ export type QueryRepoSyncQueueStatusTypesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncQueueStatusTypeCondition>;
+  filter?: InputMaybe<RepoSyncQueueStatusTypeFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5222,6 +5906,7 @@ export type QueryRepoSyncQueuesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncQueueCondition>;
+  filter?: InputMaybe<RepoSyncQueueFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5246,6 +5931,7 @@ export type QueryRepoSyncTypesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncTypeCondition>;
+  filter?: InputMaybe<RepoSyncTypeFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5258,6 +5944,7 @@ export type QueryRepoSyncsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncCondition>;
+  filter?: InputMaybe<RepoSyncFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5270,6 +5957,7 @@ export type QueryReposArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoCondition>;
+  filter?: InputMaybe<RepoFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5294,6 +5982,7 @@ export type QuerySchemaMigrationsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<SchemaMigrationCondition>;
+  filter?: InputMaybe<SchemaMigrationFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5330,6 +6019,7 @@ export type QueryServiceAuthCredentialTypesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<ServiceAuthCredentialTypeCondition>;
+  filter?: InputMaybe<ServiceAuthCredentialTypeFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5342,6 +6032,7 @@ export type QueryServiceAuthCredentialsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<ServiceAuthCredentialCondition>;
+  filter?: InputMaybe<ServiceAuthCredentialFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5386,6 +6077,7 @@ export type RepoGitCommitStatsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GitCommitStatCondition>;
+  filter?: InputMaybe<GitCommitStatFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5398,6 +6090,7 @@ export type RepoGitCommitsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GitCommitCondition>;
+  filter?: InputMaybe<GitCommitFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5410,6 +6103,7 @@ export type RepoGitFilesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GitFileCondition>;
+  filter?: InputMaybe<GitFileFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5422,6 +6116,7 @@ export type RepoGithubIssuesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GithubIssueCondition>;
+  filter?: InputMaybe<GithubIssueFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5434,6 +6129,7 @@ export type RepoGithubPullRequestsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GithubPullRequestCondition>;
+  filter?: InputMaybe<GithubPullRequestFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5446,6 +6142,7 @@ export type RepoGithubStargazersArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<GithubStargazerCondition>;
+  filter?: InputMaybe<GithubStargazerFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5458,6 +6155,7 @@ export type RepoRepoSyncsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncCondition>;
+  filter?: InputMaybe<RepoSyncFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5484,6 +6182,32 @@ export type RepoCondition = {
   tags?: InputMaybe<Scalars['JSON']>;
 };
 
+/** A filter to be used against `Repo` object types. All fields are combined with a logical ‘and.’ */
+export type RepoFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `isGithub` field. */
+  isGithub?: InputMaybe<BooleanFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoFilter>>;
+  /** Filter by the object’s `ref` field. */
+  ref?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repo` field. */
+  repo?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoImportId` field. */
+  repoImportId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `settings` field. */
+  settings?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `tags` field. */
+  tags?: InputMaybe<JsonFilter>;
+};
+
 /** Table for "dynamic" repo imports - regularly loading from a GitHub org for example */
 export type RepoImport = Node & {
   createdAt: Scalars['Datetime'];
@@ -5508,6 +6232,7 @@ export type RepoImportReposArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoCondition>;
+  filter?: InputMaybe<RepoFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5535,6 +6260,32 @@ export type RepoImportCondition = {
   type?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `RepoImport` object types. All fields are combined with a logical ‘and.’ */
+export type RepoImportFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoImportFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `importInterval` field. */
+  importInterval?: InputMaybe<IntervalFilter>;
+  /** Filter by the object’s `lastImport` field. */
+  lastImport?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `lastImportStartedAt` field. */
+  lastImportStartedAt?: InputMaybe<DatetimeFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoImportFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoImportFilter>>;
+  /** Filter by the object’s `settings` field. */
+  settings?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
 };
 
 /** An input for mutations affecting `RepoImport` */
@@ -5577,6 +6328,7 @@ export type RepoImportTypeRepoImportsByTypeArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoImportCondition>;
+  filter?: InputMaybe<RepoImportFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5592,6 +6344,20 @@ export type RepoImportTypeCondition = {
   description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `RepoImportType` object types. All fields are combined with a logical ‘and.’ */
+export type RepoImportTypeFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoImportTypeFilter>>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoImportTypeFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoImportTypeFilter>>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `RepoImportType` */
@@ -5724,6 +6490,7 @@ export type RepoSyncRepoSyncQueuesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncQueueCondition>;
+  filter?: InputMaybe<RepoSyncQueueFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5743,6 +6510,24 @@ export type RepoSyncCondition = {
   settings?: InputMaybe<Scalars['JSON']>;
   /** Checks for equality with the object’s `syncType` field. */
   syncType?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `RepoSync` object types. All fields are combined with a logical ‘and.’ */
+export type RepoSyncFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoSyncFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoSyncFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoSyncFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `settings` field. */
+  settings?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `syncType` field. */
+  syncType?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `RepoSync` */
@@ -5784,6 +6569,26 @@ export type RepoSyncLogCondition = {
   repoSyncQueueId?: InputMaybe<Scalars['BigInt']>;
 };
 
+/** A filter to be used against `RepoSyncLog` object types. All fields are combined with a logical ‘and.’ */
+export type RepoSyncLogFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoSyncLogFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `logType` field. */
+  logType?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `message` field. */
+  message?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoSyncLogFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoSyncLogFilter>>;
+  /** Filter by the object’s `repoSyncQueueId` field. */
+  repoSyncQueueId?: InputMaybe<BigIntFilter>;
+};
+
 /** An input for mutations affecting `RepoSyncLog` */
 export type RepoSyncLogInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
@@ -5816,6 +6621,7 @@ export type RepoSyncLogTypeRepoSyncLogsByLogTypeArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncLogCondition>;
+  filter?: InputMaybe<RepoSyncLogFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5831,6 +6637,20 @@ export type RepoSyncLogTypeCondition = {
   description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `RepoSyncLogType` object types. All fields are combined with a logical ‘and.’ */
+export type RepoSyncLogTypeFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoSyncLogTypeFilter>>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoSyncLogTypeFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoSyncLogTypeFilter>>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `RepoSyncLogType` */
@@ -5945,6 +6765,7 @@ export type RepoSyncQueueRepoSyncLogsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncLogCondition>;
+  filter?: InputMaybe<RepoSyncLogFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -5970,6 +6791,32 @@ export type RepoSyncQueueCondition = {
   startedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `RepoSyncQueue` object types. All fields are combined with a logical ‘and.’ */
+export type RepoSyncQueueFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoSyncQueueFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `doneAt` field. */
+  doneAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `hasError` field. */
+  hasError?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `lastKeepAlive` field. */
+  lastKeepAlive?: InputMaybe<DatetimeFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoSyncQueueFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoSyncQueueFilter>>;
+  /** Filter by the object’s `repoSyncId` field. */
+  repoSyncId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `startedAt` field. */
+  startedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `RepoSyncQueue` */
@@ -6008,6 +6855,7 @@ export type RepoSyncQueueStatusTypeRepoSyncQueuesByStatusArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncQueueCondition>;
+  filter?: InputMaybe<RepoSyncQueueFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -6023,6 +6871,20 @@ export type RepoSyncQueueStatusTypeCondition = {
   description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `RepoSyncQueueStatusType` object types. All fields are combined with a logical ‘and.’ */
+export type RepoSyncQueueStatusTypeFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoSyncQueueStatusTypeFilter>>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoSyncQueueStatusTypeFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoSyncQueueStatusTypeFilter>>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `RepoSyncQueueStatusType` */
@@ -6123,6 +6985,7 @@ export type RepoSyncTypeRepoSyncsBySyncTypeArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<RepoSyncCondition>;
+  filter?: InputMaybe<RepoSyncFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -6138,6 +7001,20 @@ export type RepoSyncTypeCondition = {
   description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `RepoSyncType` object types. All fields are combined with a logical ‘and.’ */
+export type RepoSyncTypeFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoSyncTypeFilter>>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoSyncTypeFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoSyncTypeFilter>>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `RepoSyncType` */
@@ -6279,6 +7156,20 @@ export type SchemaMigrationCondition = {
   version?: InputMaybe<Scalars['BigInt']>;
 };
 
+/** A filter to be used against `SchemaMigration` object types. All fields are combined with a logical ‘and.’ */
+export type SchemaMigrationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SchemaMigrationFilter>>;
+  /** Filter by the object’s `dirty` field. */
+  dirty?: InputMaybe<BooleanFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SchemaMigrationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SchemaMigrationFilter>>;
+  /** Filter by the object’s `version` field. */
+  version?: InputMaybe<BigIntFilter>;
+};
+
 /** An input for mutations affecting `SchemaMigration` */
 export type SchemaMigrationInput = {
   dirty: Scalars['Boolean'];
@@ -6351,6 +7242,24 @@ export type ServiceAuthCredentialCondition = {
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
+/** A filter to be used against `ServiceAuthCredential` object types. All fields are combined with a logical ‘and.’ */
+export type ServiceAuthCredentialFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<ServiceAuthCredentialFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<ServiceAuthCredentialFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<ServiceAuthCredentialFilter>>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
 /** An input for mutations affecting `ServiceAuthCredential` */
 export type ServiceAuthCredentialInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
@@ -6383,6 +7292,7 @@ export type ServiceAuthCredentialTypeServiceAuthCredentialsByTypeArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
   condition?: InputMaybe<ServiceAuthCredentialCondition>;
+  filter?: InputMaybe<ServiceAuthCredentialFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -6398,6 +7308,20 @@ export type ServiceAuthCredentialTypeCondition = {
   description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `ServiceAuthCredentialType` object types. All fields are combined with a logical ‘and.’ */
+export type ServiceAuthCredentialTypeFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<ServiceAuthCredentialTypeFilter>>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<ServiceAuthCredentialTypeFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<ServiceAuthCredentialTypeFilter>>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `ServiceAuthCredentialType` */
@@ -6479,6 +7403,110 @@ export enum ServiceAuthCredentialsOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
+
+/** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
+export type StringFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive?: InputMaybe<Scalars['String']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith?: InputMaybe<Scalars['String']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive?: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive?: InputMaybe<Scalars['String']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['String']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive?: InputMaybe<Scalars['String']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['String']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes?: InputMaybe<Scalars['String']>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive?: InputMaybe<Scalars['String']>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['String']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive?: InputMaybe<Scalars['String']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like?: InputMaybe<Scalars['String']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive?: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive?: InputMaybe<Scalars['String']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith?: InputMaybe<Scalars['String']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive?: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive?: InputMaybe<Scalars['String']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['String']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes?: InputMaybe<Scalars['String']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive?: InputMaybe<Scalars['String']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike?: InputMaybe<Scalars['String']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive?: InputMaybe<Scalars['String']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith?: InputMaybe<Scalars['String']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive?: InputMaybe<Scalars['String']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith?: InputMaybe<Scalars['String']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
+export type UuidFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['UUID']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['UUID']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['UUID']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['UUID']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['UUID']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['UUID']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['UUID']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['UUID']>>;
+};
 
 /** All input for the `updateGitCommitByNodeId` mutation. */
 export type UpdateGitCommitByNodeIdInput = {
@@ -7517,7 +8545,9 @@ export type GetRepoSyncsQueryVariables = Exact<{
 
 export type GetRepoSyncsQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null }> } }> } } | null };
 
-export type GetReposQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetReposQueryVariables = Exact<{
+  search: Scalars['String'];
+}>;
 
 
 export type GetReposQuery = { repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };

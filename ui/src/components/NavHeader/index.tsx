@@ -1,6 +1,5 @@
 import { HelpText, Icon, Navbar, Toolbar } from '@mergestat/blocks'
-import { BookIcon, CaretDownIcon } from '@mergestat/icons'
-import Image from 'next/image'
+import { BookIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import React from 'react'
 
@@ -34,20 +33,6 @@ const NavHeader: React.FC = () => {
                 href="https://docs.mergestat.com/"
                 target="_blank"
                 icon={<BookIcon className="t-icon" />}
-              />
-              <Navbar.Divider />
-
-              <Navbar.Item
-                image={
-                  <Image
-                    className="inline-block h-8 w-8 rounded-full"
-                    src="https://www.w3schools.com/w3images/avatar2.png"
-                    width={30}
-                    height={30}
-                    alt="User Avatar"
-                  />
-                }
-                icon={<CaretDownIcon className="t-icon ml-1" />}
               />
             </Navbar.Items>
           </Toolbar.Item>
