@@ -6,6 +6,7 @@ import React from 'react'
 import type { RepoType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { getRelativeTime } from 'src/utils'
+import { GITHUB_URL } from 'src/utils/constants'
 
 export type RepositoryNameProps = {
   id: string
@@ -23,7 +24,11 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
       case 'other':
         return <RepositoryIcon className="t-icon text-semantic-mutedIcon w-4" />
       default:
-        return <GithubIcon className="t-icon text-semantic-mutedIcon w-4" />
+        return (
+          <a target='_blank' href={GITHUB_URL + props.name} rel='noopener noreferrer'>
+            <GithubIcon className="t-icon text-semantic-mutedIcon w-4" />
+          </a>
+        )
     }
   }
 
