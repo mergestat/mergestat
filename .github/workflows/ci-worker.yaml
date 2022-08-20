@@ -1,8 +1,8 @@
-name: CI
+name: CI Worker (Golang)
 on: [push, pull_request]
 jobs:
   build:
-    name: Worker CI (Golang)
+    name: CI Worker (Golang)
     runs-on: ubuntu-latest
 
     steps:
