@@ -2,15 +2,8 @@ name: CI
 on: [push, pull_request]
 jobs:
   build:
-    name: Build for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            asset_name: mergestat-linux-amd64
-          - os: macos-latest
-            asset_name: mergestat-macos-amd64
+    name: Worker CI (Golang)
+    runs-on: ubuntu-latest
 
     steps:
     - name: Set up Go 1.18

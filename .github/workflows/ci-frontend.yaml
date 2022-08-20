@@ -7,18 +7,11 @@ env: # environment variables (available in any part of the action)
 
 jobs:
   ui-frontend:
-    name: Build UI for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Frontend CI (UI)
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./ui
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            asset_name: mergestat-linux-amd64
-          - os: macos-latest
-            asset_name: mergestat-macos-amd64
 
     steps:
       - name: Install NodeJS
