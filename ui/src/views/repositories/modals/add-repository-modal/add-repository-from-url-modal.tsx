@@ -1,6 +1,9 @@
 import { Button, HelpText, Input, Label, ListItem } from '@mergestat/blocks'
 import { PlusIcon, RepositoryIcon } from '@mergestat/icons'
+import Image from 'next/image'
 import React from 'react'
+import { GITHUB_URL } from 'src/utils/constants'
+import useURLRepo from '../../hooks/useUrlRepo'
 
 const EmptyRepositories: React.FC = () => {
   return (
@@ -12,11 +15,23 @@ const EmptyRepositories: React.FC = () => {
   )
 }
 
-export const AddRepositoryFromURLModal: React.FC = () => {
-  const { addURL, removeURL, repositories } = useURLRepositories()
-  const [url, setURL] = React.useState('')
+const RepoIcon: React.FC<{ repository: string }> = ({ repository }) => {
+  return (repository.includes('github')
+    ? <Image
+      src={`${GITHUB_URL}/${repository.replace(GITHUB_URL, '').split('/')[0]}.png?size=40`}
+      width={40}
+      height={40}
+      loader={({ src }) => `${src}?w=1&q=50`}
+      objectFit="contain"
+      className="rounded"
+      alt=''
+    />
+    : <RepositoryIcon className="t-icon" />
+  )
+}
 
-  const isURLValid = React.useMemo(() => false, [])
+export const AddRepositoryFromURLModal: React.FC = () => {
+  const { addURL, removeURL, setURL, reposToAdd, url } = useURLRepo()
 
   return (
     <div className="p-6 w-full grid grid-rows-content-layout">
@@ -35,7 +50,6 @@ export const AddRepositoryFromURLModal: React.FC = () => {
             skin="secondary"
             className="whitespace-nowrap"
             startIcon={<PlusIcon className="t-icon" />}
-            disabled={isURLValid}
             onClick={() => addURL(url)}
           >
             Add
@@ -43,17 +57,17 @@ export const AddRepositoryFromURLModal: React.FC = () => {
         </div>
       </div>
       <div className="overflow-y-auto h-80">
-        {repositories.length === 0 && <EmptyRepositories />}
-        {repositories.length > 0 && (
+        {reposToAdd.length === 0 && <EmptyRepositories />}
+        {reposToAdd.length > 0 && (
           <div className="border border-gray-200 rounded">
-            {repositories.map((repository, index) => (
+            {reposToAdd.map((repository, index) => (
               <ListItem
                 key={index}
                 title={repository}
+                subline={repository}
                 className={'p-2 border-b'}
-                subline={repository + '/example-repo-name'}
-                startIcon={<RepositoryIcon className="t-icon" />}
-                onCloseClick={() => removeURL(repository)}
+                startIcon={<RepoIcon repository={repository} />}
+                onClick={() => removeURL(repository)}
               />
             ))}
           </div>
@@ -61,24 +75,4 @@ export const AddRepositoryFromURLModal: React.FC = () => {
       </div>
     </div>
   )
-}
-
-const useURLRepositories = () => {
-  const [repositories, setRepositories] = React.useState<Array<string>>([])
-
-  const addURL = (url: string) => {
-    if (!url) return
-    if (repositories.includes(url)) return
-    setRepositories(prev => [...prev, url])
-  }
-
-  const removeURL = (url: string) => {
-    setRepositories((prev) => prev.filter((repo) => repo !== url))
-  }
-
-  return {
-    repositories,
-    addURL,
-    removeURL,
-  }
 }

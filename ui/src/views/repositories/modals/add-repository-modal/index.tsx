@@ -1,8 +1,9 @@
 import { Button, Modal, Toolbar } from '@mergestat/blocks'
 import { XIcon } from '@mergestat/icons'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { RepoExportT } from 'src/@types'
 import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
+import { ADD_REPO } from 'src/utils/constants'
 import { AddRepositoryFromCSVModal } from './add-repository-from-csv-modal'
 import { AddRepositoryFromGitOrganizationModal } from './add-repository-from-git-organization-modal'
 import { AddRepositoryFromGitUserModal } from './add-repository-from-git-user-modal'
@@ -12,14 +13,11 @@ import { ModalSideBar } from './modal-sidebar'
 
 export const AddRepositoryModal: React.FC = () => {
   const { setShowAddRepositoryModal } = useRepositoriesSetState()
+  const [selectedTab, setSelectedTab] = useState<RepoExportT>(ADD_REPO.url)
 
-  // TODO: make this type global once we have the graphql api
-  const [selectedTab, setSelectedTab] = React.useState<RepoExportT>('url')
-
-  const close = React.useCallback(() => {
+  const close = useCallback(() => {
     setShowAddRepositoryModal(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [setShowAddRepositoryModal])
 
   return (
     <Modal open onClose={close} size="lg" className="max-w-6xl">
@@ -44,12 +42,10 @@ export const AddRepositoryModal: React.FC = () => {
       <Modal.Body>
         <div className="w-full flex">
           <ModalSideBar onTabSelected={setSelectedTab} />
-          {selectedTab === 'csv' && <AddRepositoryFromCSVModal />}
-          {selectedTab === 'gh-org' && (
-            <AddRepositoryFromGitOrganizationModal />
-          )}
-          {selectedTab === 'gh-user' && <AddRepositoryFromGitUserModal />}
-          {selectedTab === 'url' && <AddRepositoryFromURLModal />}
+          {selectedTab === ADD_REPO.url && <AddRepositoryFromURLModal />}
+          {selectedTab === ADD_REPO.csv && <AddRepositoryFromCSVModal />}
+          {selectedTab === ADD_REPO.ghOrg && <AddRepositoryFromGitOrganizationModal />}
+          {selectedTab === ADD_REPO.ghUser && <AddRepositoryFromGitUserModal />}
         </div>
       </Modal.Body>
       <ModalFooter selectedTab={selectedTab} />

@@ -4,6 +4,7 @@ import cx from 'classnames'
 import Image from 'next/image'
 import React from 'react'
 import type { RepoType } from 'src/@types'
+import { GITHUB_URL } from 'src/utils/constants'
 
 type RepoImagePropsT = {
   repoType?: RepoType
@@ -24,7 +25,7 @@ const RepoImage: React.FC<RepoImagePropsT> = ({
     >
       {repoType === 'github'
         ? <Image
-          src={`https://github.com/${orgName}.png?size=40`}
+          src={`${GITHUB_URL}/${orgName}.png?size=40`}
           width={40}
           height={40}
           loader={({ src }) => `${src}?w=1&q=50`}

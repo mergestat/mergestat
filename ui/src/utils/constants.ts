@@ -15,3 +15,10 @@ export enum TEST_IDS {
   inputRepoSearch = 'input-repo-search',
   repoNameTable = 'repo-name-table',
 }
+
+export enum ADD_REPO {
+  url = 'url',
+  csv = 'csv',
+  ghOrg = 'gh-org',
+  ghUser = 'gh-user',
+}

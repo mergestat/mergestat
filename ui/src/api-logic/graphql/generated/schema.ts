@@ -8538,6 +8538,14 @@ export type UpdateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeA
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
 };
 
+export type AddRepoMutationVariables = Exact<{
+  repo: Scalars['String'];
+  isGithub: Scalars['Boolean'];
+}>;
+
+
+export type AddRepoMutation = { createRepo?: { repo?: { id: any, repo: string } | null } | null };
+
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;

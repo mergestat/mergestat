@@ -7,6 +7,7 @@ type RepositoriesContextT = {
   showAddRepositoryModal: boolean
   showSyncRepoModal: boolean
   search: string
+  reposToAdd: string[]
 }
 
 type UseRepositoriesContextT = [
@@ -19,7 +20,8 @@ const initialState: RepositoriesContextT = {
   showAutoImportModal: false,
   showAddRepositoryModal: false,
   showSyncRepoModal: false,
-  search: ''
+  search: '',
+  reposToAdd: []
 }
 
 function useRepositories(): UseRepositoriesContextT {
@@ -79,13 +81,21 @@ function useRepositoriesSetState() {
     }))
   }
 
+  const setReposToAdd = (reposToAdd: string[]) => {
+    setState(prev => ({
+      ...prev,
+      reposToAdd
+    }))
+  }
+
   return {
     _,
     setShowOpenRepositoryModal,
     setShowAutoImportModal,
     setShowAddRepositoryModal,
     setShowSyncRepoModal,
-    setSearch
+    setSearch,
+    setReposToAdd
   }
 }
 
