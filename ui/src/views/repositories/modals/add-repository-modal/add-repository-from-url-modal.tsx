@@ -2,7 +2,7 @@ import { Button, HelpText, Input, Label, ListItem } from '@mergestat/blocks'
 import { PlusIcon, RepositoryIcon } from '@mergestat/icons'
 import Image from 'next/image'
 import React from 'react'
-import { GITHUB_URL } from 'src/utils/constants'
+import { GITHUB_URL, TEST_IDS } from 'src/utils/constants'
 import useURLRepo from '../../hooks/useUrlRepo'
 
 const EmptyRepositories: React.FC = () => {
@@ -43,12 +43,14 @@ export const AddRepositoryFromURLModal: React.FC = () => {
             id="repoUrl"
             value={url}
             type="text"
+            data-testid={TEST_IDS.addRepoInputText}
             placeholder="github.com/owner/repo"
             onChange={(e) => setURL(e.currentTarget.value)}
           />
           <Button
             skin="secondary"
             className="whitespace-nowrap"
+            data-testid={TEST_IDS.addRepoButton}
             startIcon={<PlusIcon className="t-icon" />}
             onClick={() => addURL(url)}
           >

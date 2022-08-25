@@ -6,7 +6,7 @@ import { AddRepoMutation } from 'src/api-logic/graphql/generated/schema'
 import ADD_REPO from 'src/api-logic/graphql/mutations/add-repo'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { showErrorAlert, showSuccessAlert, showWarningAlert } from 'src/utils/alerts'
-import { GITHUB_URL } from 'src/utils/constants'
+import { GITHUB_URL, TEST_IDS } from 'src/utils/constants'
 
 type ModalFooterProps = {
   selectedTab: RepoExportT
@@ -55,6 +55,7 @@ export const ModalFooter: React.FC<ModalFooterProps> = () => {
             <Button
               className="ml-2"
               skin="primary"
+              data-testid={TEST_IDS.addRepoToDbButton}
               disabled={reposToAdd.length === 0}
               onClick={add}
             >

@@ -37,7 +37,7 @@ export const ModalSideBar: React.FC<ModalSideBarProps> = ({ onTabSelected }: Mod
           ? <Tooltip key={index} content='Coming soon!' placement='right' offset={[0, 10]}>
             <RadioCard {...radioProps} />
           </Tooltip>
-          : <RadioCard {...radioProps} />
+          : <RadioCard key={index} {...radioProps} />
       }
       )}
     </div>

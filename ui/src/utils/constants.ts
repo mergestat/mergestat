@@ -14,6 +14,9 @@ export enum TEST_IDS {
   repoDataDropdown = 'repo-data-dropdown',
   inputRepoSearch = 'input-repo-search',
   repoNameTable = 'repo-name-table',
+  addRepoInputText = 'add-repo-input-text',
+  addRepoButton = 'add-repo-button',
+  addRepoToDbButton = 'add-repo-to-db-button',
 }
 
 export enum ADD_REPO {

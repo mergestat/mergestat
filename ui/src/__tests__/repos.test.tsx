@@ -6,6 +6,8 @@ import { TEST_IDS } from 'src/utils/constants'
 import RepositoriesView from 'src/views/repositories'
 import { RepositoriesTable } from 'src/views/repositories/components'
 import { RepositoryStatus } from 'src/views/repositories/components/repositories-table/repositories-table-columns'
+import { AddRepositoryModal } from 'src/views/repositories/modals/add-repository-modal'
+import { apolloMockAddNewRepo } from 'src/__mocks__/repo-add.mock'
 import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
 import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposWithData, DynamicValues, mockRepoData } from 'src/__mocks__/repos.mock'
 
@@ -74,14 +76,53 @@ describe('GraphQL queries: (Repos)', () => {
     )
 
     await waitFor(() => {
+      // Get input seacr to type
       const searchInput = screen.getByTestId(TEST_IDS.inputRepoSearch)
       if (searchInput) {
+        // Typing 'angular'
         fireEvent.change(searchInput, { target: { value: DynamicValues.angular } })
         expect((searchInput as HTMLInputElement).value).toBe(DynamicValues.angular)
 
+        // Check table to have angular repo record
         const repoName = screen.getByTestId(TEST_IDS.repoNameTable)
         expect(repoName).toHaveTextContent('angular/angular')
       }
     })
+  })
+
+  it('calling useMutation(): adding a repo', async () => {
+    render(
+      <MockedProvider mocks={[apolloMockAddNewRepo]} addTypename={false}>
+        <RepositoriesProvider>
+          <AddRepositoryModal />
+        </RepositoriesProvider>
+      </MockedProvider>
+    )
+
+    // Get 'Add from URL' tab and click on it
+    const elements = screen.getAllByText(/Add from URL/i)
+    const tab = elements.find(ele => ele instanceof HTMLDivElement)
+    fireEvent.click(tab as HTMLDivElement)
+
+    // Get input to add repo
+    const inputText = screen.getByTestId(TEST_IDS.addRepoInputText)
+    if (inputText) {
+      fireEvent.change(inputText, { target: { value: DynamicValues.newRepoToAdd } })
+      expect((inputText as HTMLInputElement).value).toBe(DynamicValues.newRepoToAdd)
+
+      // Click to add in memory table
+      const addButton = screen.getByTestId(TEST_IDS.addRepoButton)
+      fireEvent.click(addButton)
+
+      // Finally click in 'Add Repository' to add repo to data base
+      const addToDbButton = screen.getByTestId(TEST_IDS.addRepoToDbButton)
+      fireEvent.click(addToDbButton)
+
+      // Check success alert
+      await waitFor(() => {
+        const successAlert = screen.getByText('Repo \'mergestat/docs\' added')
+        expect(successAlert).toBeInTheDocument()
+      })
+    }
   })
 })
