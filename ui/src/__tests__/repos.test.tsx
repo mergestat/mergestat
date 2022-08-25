@@ -1,6 +1,7 @@
 import { MockedProvider } from '@apollo/react-testing'
 import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import 'intersection-observer'
 import { RepositoriesProvider } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import RepositoriesView from 'src/views/repositories'
@@ -76,7 +77,7 @@ describe('GraphQL queries: (Repos)', () => {
     )
 
     await waitFor(() => {
-      // Get input seacr to type
+      // Get input search to type
       const searchInput = screen.getByTestId(TEST_IDS.inputRepoSearch)
       if (searchInput) {
         // Typing 'angular'
@@ -107,8 +108,8 @@ describe('GraphQL queries: (Repos)', () => {
     // Get input to add repo
     const inputText = screen.getByTestId(TEST_IDS.addRepoInputText)
     if (inputText) {
-      fireEvent.change(inputText, { target: { value: DynamicValues.newRepoToAdd } })
-      expect((inputText as HTMLInputElement).value).toBe(DynamicValues.newRepoToAdd)
+      fireEvent.change(inputText, { target: { value: `${DynamicValues.urlGithub}${DynamicValues.newRepoToAdd}` } })
+      expect((inputText as HTMLInputElement).value).toBe(`${DynamicValues.urlGithub}${DynamicValues.newRepoToAdd}`)
 
       // Click to add in memory table
       const addButton = screen.getByTestId(TEST_IDS.addRepoButton)
@@ -120,7 +121,7 @@ describe('GraphQL queries: (Repos)', () => {
 
       // Check success alert
       await waitFor(() => {
-        const successAlert = screen.getByText('Repo \'mergestat/docs\' added')
+        const successAlert = screen.getByText(`Repo '${DynamicValues.newRepoToAdd}' added`)
         expect(successAlert).toBeInTheDocument()
       })
     }

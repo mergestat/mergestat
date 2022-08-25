@@ -3,8 +3,9 @@ import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
 
 export enum DynamicValues {
+  urlGithub = 'https://github.com/',
   angular = 'angular',
-  newRepoToAdd = 'https://github.com/mergestat/docs'
+  newRepoToAdd = 'mergestat/docs'
 }
 
 export const mockRepoData: GetReposQuery = {

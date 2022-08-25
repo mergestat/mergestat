@@ -7,7 +7,7 @@ export const mockRepoSatus: AddRepoMutation = {
   createRepo: {
     repo: {
       id: faker.datatype.uuid(),
-      repo: 'https://github.com/mergestat/docs',
+      repo: `${DynamicValues.urlGithub}${DynamicValues.newRepoToAdd}`,
     },
   }
 }
@@ -15,7 +15,7 @@ export const mockRepoSatus: AddRepoMutation = {
 export const apolloMockAddNewRepo = {
   request: {
     query: ADD_REPO,
-    variables: { repo: DynamicValues.newRepoToAdd, isGithub: true }
+    variables: { repo: `${DynamicValues.urlGithub}${DynamicValues.newRepoToAdd}`, isGithub: true }
   },
   result: {
     data: mockRepoSatus
