@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ApolloError, useMutation } from '@apollo/client'
 import { Button, Modal, Toolbar } from '@mergestat/blocks'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -6,6 +7,7 @@ import ADD_REPO from 'src/api-logic/graphql/mutations/add-repo'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { showErrorAlert, showSuccessAlert, showWarningAlert } from 'src/utils/alerts'
 import { TEST_IDS } from 'src/utils/constants'
+import useRepos from '../../hooks/useRepos'
 
 type ModalFooterProps = {
   selectedTab: RepoExportT
@@ -16,7 +18,8 @@ export const ModalFooter: React.FC<ModalFooterProps> = () => {
   const [addedWarning, setAddedWarning] = useState(0)
 
   const { setShowAddRepositoryModal, setReposToAdd } = useRepositoriesSetState()
-  const [{ reposToAdd }] = useRepositoriesContext()
+  const [{ search, reposToAdd }] = useRepositoriesContext()
+  const { refetch } = useRepos(search)
 
   const [addRepo] = useMutation(ADD_REPO, {
     onError: (error: ApolloError) => {
@@ -30,7 +33,6 @@ export const ModalFooter: React.FC<ModalFooterProps> = () => {
 
   const close = useCallback(() => {
     setShowAddRepositoryModal(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -39,9 +41,10 @@ export const ModalFooter: React.FC<ModalFooterProps> = () => {
       addedWarning > 0 && showWarningAlert(`${addedWarning} already existing repos`)
 
       setReposToAdd([])
+      refetch()
       close()
     }
-  }, [addedSuccess, addedWarning, reposToAdd, setReposToAdd, close])
+  }, [addedSuccess, addedWarning])
 
   const add = () => {
     reposToAdd.forEach(repo => {

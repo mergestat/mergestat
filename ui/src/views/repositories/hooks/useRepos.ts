@@ -29,7 +29,7 @@ const useRepos = (search: string) => {
     showErrorAlert(error.message)
   }
 
-  return { showTable, loading, data }
+  return { showTable, loading, data, refetch }
 }
 
 export default useRepos
