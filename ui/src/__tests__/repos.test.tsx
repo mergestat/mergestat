@@ -121,7 +121,7 @@ describe('GraphQL queries: (Repos)', () => {
 
       // Check success alert
       await waitFor(() => {
-        const successAlert = screen.getByText(`Repo '${DynamicValues.newRepoToAdd}' added`)
+        const successAlert = screen.getByText('1 repos added')
         expect(successAlert).toBeInTheDocument()
       })
     }
