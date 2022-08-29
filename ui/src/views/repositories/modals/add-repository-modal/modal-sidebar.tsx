@@ -3,13 +3,14 @@ import { GithubIcon, LinkIcon, TableIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import React from 'react'
 import { RepoExportT } from 'src/@types'
+import { ADD_REPO } from 'src/utils/constants'
 
 type ModalSideBarProps = {
   onTabSelected: (tab: RepoExportT) => void
 }
 
 export const ModalSideBar: React.FC<ModalSideBarProps> = ({ onTabSelected }: ModalSideBarProps) => {
-  const [selectedTab, setSelectedTab] = React.useState<RepoExportT>('url')
+  const [selectedTab, setSelectedTab] = React.useState<RepoExportT>(ADD_REPO.url)
 
   React.useEffect(() => {
     if (onTabSelected) {
@@ -36,7 +37,7 @@ export const ModalSideBar: React.FC<ModalSideBarProps> = ({ onTabSelected }: Mod
           ? <Tooltip key={index} content='Coming soon!' placement='right' offset={[0, 10]}>
             <RadioCard {...radioProps} />
           </Tooltip>
-          : <RadioCard {...radioProps} />
+          : <RadioCard key={index} {...radioProps} />
       }
       )}
     </div>
@@ -55,24 +56,24 @@ const sidebarTabs: SideBarTab[] = [
   {
     startIcon: <LinkIcon className='t-icon' />,
     label: 'Add from URL',
-    type: 'url',
+    type: ADD_REPO.url,
   },
   {
     startIcon: <TableIcon className='t-icon' />,
     label: 'Add from CSV',
-    type: 'csv',
+    type: ADD_REPO.csv,
   },
   {
     startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub org',
-    type: 'gh-org',
+    type: ADD_REPO.ghOrg,
     disabled: true,
     comingSoon: true
   },
   {
     startIcon: <GithubIcon className='t-icon' />,
     label: 'Add from GitHub user',
-    type: 'gh-user',
+    type: ADD_REPO.ghUser,
     disabled: true,
     comingSoon: true
   },
