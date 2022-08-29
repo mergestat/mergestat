@@ -37,8 +37,8 @@ export const ModalFooter: React.FC<ModalFooterProps> = () => {
 
   useEffect(() => {
     if (reposToAdd.length !== 0 && addedSuccess + addedWarning === reposToAdd.length) {
-      addedSuccess > 0 && showSuccessAlert(`${addedSuccess} repos added`)
-      addedWarning > 0 && showWarningAlert(`${addedWarning} already existing repos`)
+      addedSuccess > 0 && showSuccessAlert(`${addedSuccess} repo${addedSuccess > 1 ? 's' : ''} added`)
+      addedWarning > 0 && showWarningAlert(`${addedWarning} repo${addedWarning > 1 ? 's' : ''} already exist${addedWarning === 1 ? 's' : ''}`)
 
       setReposToAdd([])
       refetch()
