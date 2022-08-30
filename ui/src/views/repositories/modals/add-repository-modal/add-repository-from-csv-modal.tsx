@@ -1,26 +1,17 @@
 import { Label, Textarea } from '@mergestat/blocks'
-import React, { ChangeEvent, useCallback, useEffect } from 'react'
+import React, { ChangeEvent, useEffect } from 'react'
 import { useRepositoriesSetState } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 
 export const AddRepositoryFromCSVModal: React.FC = () => {
-  const { setReposToAdd } = useRepositoriesSetState()
+  const { resetValues, setCSVText } = useRepositoriesSetState()
 
-  const onChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
-    const lines = e.target.value.split(/\r?\n/)
-    const matrix = lines.map(line => line.split(',').map(ele => ele.trim()))
-
-    let newRepos: string[] = []
-    matrix.forEach(line => {
-      if (line[0] !== '' && !newRepos.includes(line[0])) {
-        newRepos = [...newRepos, line[0]]
-      }
-    })
-    setReposToAdd(newRepos)
-  }, [setReposToAdd])
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setCSVText(e.target.value)
+  }
 
   useEffect(() => {
-    return () => setReposToAdd([])
+    return () => resetValues()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
