@@ -15,7 +15,7 @@ services:
       - "--schema"
       - "mergestat,public"
       - "--append-plugins"
-      - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/exec-sql/index.js"
+      - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/exec-sql/index.js,/graphql/service-credentials/index.js"
       - "-o"
       - "--subscriptions"
       - "--watch"
@@ -28,3 +28,5 @@ services:
       - "--allow-explain"
       - "--enable-query-batching"
       - "--legacy-relations=omit"
+    environment:
+      FUSE_SECRET: password
