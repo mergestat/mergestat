@@ -27,7 +27,7 @@ const useAddRepos = () => {
   /**
    * Method to close repo addition modal
    */
-  const close = useCallback(() => {
+  const closeModal = useCallback(() => {
     setReposToAdd([])
     setShowAddRepositoryModal(false)
   }, [])
@@ -39,7 +39,7 @@ const useAddRepos = () => {
 
       setReposToAdd([])
       refetch()
-      close()
+      closeModal()
     }
   }, [addedSuccess, addedWarning])
 
@@ -85,7 +85,8 @@ const useAddRepos = () => {
 
   return {
     addFromURL,
-    addFromCSV
+    addFromCSV,
+    closeModal
   }
 }
 

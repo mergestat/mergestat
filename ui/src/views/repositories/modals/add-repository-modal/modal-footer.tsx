@@ -12,14 +12,14 @@ type ModalFooterProps = {
 
 export const ModalFooter: React.FC<ModalFooterProps> = ({ selectedTab }) => {
   const [{ reposToAdd, csvText }] = useRepositoriesContext()
-  const { addFromURL, addFromCSV } = useAddRepos()
+  const { addFromURL, addFromCSV, closeModal } = useAddRepos()
 
   return (
     <Modal.Footer>
       <Toolbar className="h-16 px-6">
         <Toolbar.Right>
           <Toolbar.Item>
-            <Button skin="secondary" onClick={close}>
+            <Button skin="secondary" onClick={closeModal}>
               Cancel
             </Button>
             <Button
