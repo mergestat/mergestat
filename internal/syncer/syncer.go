@@ -12,6 +12,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jmoiron/sqlx"
+	libgit2 "github.com/libgit2/git2go/v33"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mergestat/fuse/internal/db"
 	_ "github.com/mergestat/mergestat/pkg/sqlite"
@@ -187,10 +188,46 @@ func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
 	var credentials []byte
 	if err := row.Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return "", fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
-	} else {
+	}
+
+	if credentials == nil {
 		// default to the `GITHUB_TOKEN` env var if nothing in the DB
 		credentials = []byte(os.Getenv("GITHUB_TOKEN"))
 	}
 
 	return string(credentials), nil
+}
+
+// cloneRepo is a helper function for cloning a repository to a path on disk
+func (w *worker) cloneRepo(ghToken, url, path string) (*libgit2.Repository, error) {
+	var creds *libgit2.Credential
+	var err error
+	if creds, err = libgit2.NewCredentialUserpassPlaintext(ghToken, ""); err != nil {
+		return nil, err
+	}
+	defer creds.Free()
+
+	var credentialsCallback libgit2.CredentialsCallback
+	// only create a credentials callback if a token is provided
+	// an empty string in the credentials seems to trigger a panic in libgit2
+	// https://github.com/libgit2/git2go/issues/928
+	if ghToken != "" {
+		credentialsCallback = func(url string, username_from_url string, allowed_types libgit2.CredentialType) (*libgit2.Credential, error) {
+			return creds, nil
+		}
+	}
+
+	var repo *libgit2.Repository
+	if repo, err = libgit2.Clone(url, path, &libgit2.CloneOptions{
+		Bare: true,
+		FetchOptions: libgit2.FetchOptions{
+			RemoteCallbacks: libgit2.RemoteCallbacks{
+				CredentialsCallback: credentialsCallback,
+			},
+		},
+	}); err != nil {
+		return nil, err
+	}
+
+	return repo, nil
 }
