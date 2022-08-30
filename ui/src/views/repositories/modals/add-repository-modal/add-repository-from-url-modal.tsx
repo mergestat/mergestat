@@ -44,7 +44,7 @@ export const AddRepositoryFromURLModal: React.FC = () => {
             value={url}
             type="text"
             data-testid={TEST_IDS.addRepoInputText}
-            placeholder="github.com/owner/repo"
+            placeholder="https://github.com/owner/repo"
             onChange={(e) => setURL(e.currentTarget.value)}
           />
           <Button
