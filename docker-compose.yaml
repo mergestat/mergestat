@@ -20,6 +20,7 @@ services:
     environment:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
       GITHUB_RATE_LIMIT: 1/2
+      FUSE_SECRET: password
     env_file:
       - .env-worker
     ports:
@@ -41,7 +42,7 @@ services:
       - "--schema"
       - "mergestat,public"
       - "--append-plugins"
-      - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/exec-sql/index.js"
+      - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/exec-sql/index.js,/graphql/service-credentials/index.js"
       - "-o"
       - "--subscriptions"
       - "--retry-on-init-fail"
@@ -53,6 +54,8 @@ services:
       - "--enable-query-batching"
       - "--disable-query-log"
       - "--legacy-relations=omit"
+    environment:
+      FUSE_SECRET: password
 
   ui:
     restart: always
