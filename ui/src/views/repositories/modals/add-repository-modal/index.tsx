@@ -25,7 +25,7 @@ export const AddRepositoryModal: React.FC = () => {
         <Toolbar className="h-16 px-6">
           <Toolbar.Left>
             <Toolbar.Item>
-              <Modal.Title>Add Repository</Modal.Title>
+              <Modal.Title>Add Repositories</Modal.Title>
             </Toolbar.Item>
           </Toolbar.Left>
           <Toolbar.Right>

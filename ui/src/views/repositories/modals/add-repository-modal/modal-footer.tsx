@@ -73,7 +73,7 @@ export const ModalFooter: React.FC<ModalFooterProps> = () => {
               disabled={reposToAdd.length === 0}
               onClick={add}
             >
-              Add Repository
+              Add Repositories
             </Button>
           </Toolbar.Item>
         </Toolbar.Right>
