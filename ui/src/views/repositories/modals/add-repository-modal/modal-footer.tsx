@@ -32,10 +32,13 @@ export const ModalFooter: React.FC<ModalFooterProps> = () => {
   })
 
   const close = useCallback(() => {
+    setReposToAdd([])
     setShowAddRepositoryModal(false)
   }, [])
 
   useEffect(() => {
+    console.log('addedSuccess: ', addedSuccess)
+    console.log('addedWarning: ', addedWarning)
     if (reposToAdd.length !== 0 && addedSuccess + addedWarning === reposToAdd.length) {
       addedSuccess > 0 && showSuccessAlert(`${addedSuccess} repo${addedSuccess > 1 ? 's' : ''} added`)
       addedWarning > 0 && showWarningAlert(`${addedWarning} repo${addedWarning > 1 ? 's' : ''} already exist${addedWarning === 1 ? 's' : ''}`)
