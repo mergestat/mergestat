@@ -17,6 +17,7 @@ export enum TEST_IDS {
   addRepoInputText = 'add-repo-input-text',
   addRepoButton = 'add-repo-button',
   addRepoToDbButton = 'add-repo-to-db-button',
+  addRepoTextArea = 'add-repo-text-area',
 }
 
 export enum ADD_REPO {
