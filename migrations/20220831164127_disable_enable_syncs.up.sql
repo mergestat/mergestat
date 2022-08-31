@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE mergestat.repo_syncs
+ADD COLUMN enabled BOOLEAN NOT NULL DEFAULT true;
+
+COMMIT;
