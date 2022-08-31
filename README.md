@@ -48,4 +48,24 @@ Now if you visit `http://localhost:3000/` you should be able to access a Grafana
 - [x] `GITHUB_REPO_PRS` ([#2](https://github.com/mergestat/fuse/issues/2))
 - [x] `GITHUB_REPO_ISSUES` ([#2](https://github.com/mergestat/fuse/issues/2))
 - [x] `GITHUB_REPO_STARS` ([#2](https://github.com/mergestat/fuse/issues/2))
-- [x] `GITHUB_PR_REVIEWS` ([#18](https://github.com/mergestat/fuse/issues/18)) 
+- [x] `GITHUB_PR_REVIEWS` ([#18](https://github.com/mergestat/fuse/issues/18))
+
+### Database Migrations
+
+#### Running & Testing Locally
+
+We use this tool https://github.com/golang-migrate/migrate/tree/master/cmd/migrate to handle migrations.
+In order to *generate* new migrations, use the `migrate` CLI like so:
+
+```
+migrate create -ext sql -dir migrations/ your_migration_subject
+```
+
+You can then run `docker-compose up` (without `-d`) so that you can check in the logs if the migration is successful.
+
+#### Dealing with Dirty Migrations
+
+- Stop the docker container with all the images but the `postgress` one.
+- Then use this command `migrate -path ./migrations -database "postgres://postgres:password@localhost:5432/postgres?sslmode=disable" force {last-successful-version}`.
+- After that delete the up and down of your failed migration and recreate another migration by `migrate create -ext sql -dir migrations/ you_migration_subject`.
+- And you should be good to go.
