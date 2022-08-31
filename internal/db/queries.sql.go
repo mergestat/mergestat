@@ -81,7 +81,7 @@ func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
 
 const enqueueAllCompletedSyncs = `-- name: EnqueueAllCompletedSyncs :exec
 INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
-SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
+SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE enabled AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
 `
 
 func (q *Queries) EnqueueAllCompletedSyncs(ctx context.Context) error {
