@@ -21,3 +21,11 @@ export const apolloMockAddNewRepo = {
     data: mockRepoSatus
   }
 }
+
+export const apolloMockAddExistingRepo = {
+  request: {
+    query: ADD_REPO,
+    variables: { repo: `${DynamicValues.urlGithub}${DynamicValues.existingRepo}`, isGithub: true }
+  },
+  error: new Error('duplicate key value violates unique constraint "repos_repo_ref_unique"')
+}

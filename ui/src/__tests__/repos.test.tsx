@@ -8,7 +8,7 @@ import RepositoriesView from 'src/views/repositories'
 import { RepositoriesTable } from 'src/views/repositories/components'
 import { RepositoryStatus } from 'src/views/repositories/components/repositories-table/repositories-table-columns'
 import { AddRepositoryModal } from 'src/views/repositories/modals/add-repository-modal'
-import { apolloMockAddNewRepo } from 'src/__mocks__/repo-add.mock'
+import { apolloMockAddExistingRepo, apolloMockAddNewRepo } from 'src/__mocks__/repo-add.mock'
 import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
 import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposWithData, DynamicValues, mockRepoData } from 'src/__mocks__/repos.mock'
 
@@ -91,7 +91,7 @@ describe('GraphQL queries: (Repos)', () => {
     })
   })
 
-  it('calling useMutation(): adding a repo', async () => {
+  it('calling useMutation(): adding a repo by URL', async () => {
     render(
       <MockedProvider mocks={[apolloMockAddNewRepo]} addTypename={false}>
         <RepositoriesProvider>
@@ -123,6 +123,46 @@ describe('GraphQL queries: (Repos)', () => {
       await waitFor(() => {
         const successAlert = screen.getByText('1 repo added')
         expect(successAlert).toBeInTheDocument()
+      })
+    }
+  })
+
+  it('calling useMutation(): adding a repo by CSV', async () => {
+    render(
+      <MockedProvider mocks={[apolloMockAddNewRepo, apolloMockAddExistingRepo, apolloMockReposWithData]} addTypename={false}>
+        <RepositoriesProvider>
+          <AddRepositoryModal />
+        </RepositoriesProvider>
+      </MockedProvider>
+    )
+
+    // Get 'Add from CSV' tab and click on it
+    const elements = screen.getAllByText(/Add from CSV/i)
+    const tab = elements.find(ele => ele instanceof HTMLDivElement)
+    fireEvent.click(tab as HTMLDivElement)
+
+    // Get text area to add repo
+    const textArea = screen.getByTestId(TEST_IDS.addRepoTextArea)
+    if (textArea) {
+      const text = `${DynamicValues.urlGithub}${DynamicValues.newRepoToAdd}
+      ${DynamicValues.urlGithub}${DynamicValues.existingRepo}`
+
+      fireEvent.change(textArea, { target: { value: text } })
+      expect((textArea as HTMLInputElement).value).toBe(text)
+
+      // Finally click in 'Add Repository' to add repo to data base
+      const addToDbButton = screen.getByTestId(TEST_IDS.addRepoToDbButton)
+      fireEvent.click(addToDbButton)
+
+      // Check success alert
+      await waitFor(() => {
+        const warningAlert = screen.getByText('1 repo added')
+        expect(warningAlert).toBeInTheDocument()
+      })
+
+      await waitFor(() => {
+        const warningAlert = screen.getByText('1 repo already exists')
+        expect(warningAlert).toBeInTheDocument()
       })
     }
   })

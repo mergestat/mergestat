@@ -47,7 +47,7 @@ export const PageHeader: React.FC = () => {
           onClick={() => setShowAddRepositoryModal(true)}
           skin="secondary"
         >
-          Add Repository
+          Add Repositories
         </Button>
       </div>
     </div>

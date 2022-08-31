@@ -8,6 +8,7 @@ type RepositoriesContextT = {
   showSyncRepoModal: boolean
   search: string
   reposToAdd: string[]
+  csvText: string
 }
 
 type UseRepositoriesContextT = [
@@ -21,7 +22,8 @@ const initialState: RepositoriesContextT = {
   showAddRepositoryModal: false,
   showSyncRepoModal: false,
   search: '',
-  reposToAdd: []
+  reposToAdd: [],
+  csvText: '',
 }
 
 function useRepositories(): UseRepositoriesContextT {
@@ -88,6 +90,21 @@ function useRepositoriesSetState() {
     }))
   }
 
+  const setCSVText = (csvText: string) => {
+    setState(prev => ({
+      ...prev,
+      csvText
+    }))
+  }
+
+  const resetValues = () => {
+    setState(prev => ({
+      ...prev,
+      csvText: '',
+      reposToAdd: []
+    }))
+  }
+
   return {
     _,
     setShowOpenRepositoryModal,
@@ -95,7 +112,9 @@ function useRepositoriesSetState() {
     setShowAddRepositoryModal,
     setShowSyncRepoModal,
     setSearch,
-    setReposToAdd
+    setReposToAdd,
+    setCSVText,
+    resetValues
   }
 }
 
