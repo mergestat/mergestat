@@ -40,6 +40,7 @@ type githubRepoIssue struct {
 	Title               *string    `db:"title"`
 	UpdatedAt           *time.Time `db:"updated_at"`
 	URL                 *string    `db:"url"`
+	Labels              []byte     `db:"labels"`
 }
 
 // sendBatchGitHubRepoIssues uses the pg COPY protocol to send a batch of GitHub repo issues
@@ -68,10 +69,17 @@ func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, repo 
 		"title",
 		"updated_at",
 		"url",
+		"labels",
 	}
 
 	inputs := make([][]interface{}, 0, len(batch))
+
 	for _, issue := range batch {
+
+		if issue.Labels == nil {
+			issue.Labels = []byte("[]")
+		}
+
 		input := []interface{}{
 			repo,
 			issue.AuthorLogin,
@@ -96,6 +104,7 @@ func (w *worker) sendBatchGitHubRepoIssues(ctx context.Context, tx pgx.Tx, repo 
 			issue.Title,
 			issue.UpdatedAt,
 			issue.URL,
+			issue.Labels,
 		}
 		inputs = append(inputs, input)
 	}
