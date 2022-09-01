@@ -4511,6 +4511,7 @@ export type Mutation = {
   deleteServiceAuthCredentialType?: Maybe<DeleteServiceAuthCredentialTypePayload>;
   /** Deletes a single `ServiceAuthCredentialType` using its globally unique id. */
   deleteServiceAuthCredentialTypeByNodeId?: Maybe<DeleteServiceAuthCredentialTypePayload>;
+  replaceGitHubPAT?: Maybe<Scalars['Boolean']>;
   /** Updates a single `GitCommit` using a unique key and a patch. */
   updateGitCommit?: Maybe<UpdateGitCommitPayload>;
   /** Updates a single `GitCommit` using its globally unique id and a patch. */
@@ -5013,6 +5014,12 @@ export type MutationDeleteServiceAuthCredentialTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteServiceAuthCredentialTypeByNodeIdArgs = {
   input: DeleteServiceAuthCredentialTypeByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationReplaceGitHubPatArgs = {
+  pat: Scalars['String'];
 };
 
 
@@ -6977,6 +6984,7 @@ export type RepoSyncType = Node & {
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `RepoSync`. */
   repoSyncsBySyncType: RepoSyncsConnection;
+  shortName: Scalars['String'];
   type: Scalars['String'];
 };
 
@@ -6999,6 +7007,8 @@ export type RepoSyncTypeRepoSyncsBySyncTypeArgs = {
 export type RepoSyncTypeCondition = {
   /** Checks for equality with the object’s `description` field. */
   description?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `shortName` field. */
+  shortName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
 };
@@ -7013,6 +7023,8 @@ export type RepoSyncTypeFilter = {
   not?: InputMaybe<RepoSyncTypeFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<RepoSyncTypeFilter>>;
+  /** Filter by the object’s `shortName` field. */
+  shortName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `type` field. */
   type?: InputMaybe<StringFilter>;
 };
@@ -7020,12 +7032,14 @@ export type RepoSyncTypeFilter = {
 /** An input for mutations affecting `RepoSyncType` */
 export type RepoSyncTypeInput = {
   description?: InputMaybe<Scalars['String']>;
+  shortName?: InputMaybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
 /** Represents an update to a `RepoSyncType`. Fields that are set will be updated. */
 export type RepoSyncTypePatch = {
   description?: InputMaybe<Scalars['String']>;
+  shortName?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -7056,6 +7070,8 @@ export enum RepoSyncTypesOrderBy {
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ShortNameAsc = 'SHORT_NAME_ASC',
+  ShortNameDesc = 'SHORT_NAME_DESC',
   TypeAsc = 'TYPE_ASC',
   TypeDesc = 'TYPE_DESC'
 }
@@ -8545,6 +8561,13 @@ export type AddRepoMutationVariables = Exact<{
 
 
 export type AddRepoMutation = { createRepo?: { repo?: { id: any, repo: string } | null } | null };
+
+export type SetGithubPatMutationVariables = Exact<{
+  pat: Scalars['String'];
+}>;
+
+
+export type SetGithubPatMutation = { replaceGitHubPAT?: boolean | null };
 
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];

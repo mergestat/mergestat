@@ -3,17 +3,12 @@ import { Button, Input, Panel, Toolbar, VerticalNav } from '@mergestat/blocks'
 import { CircleCheckFilledIcon, CircleWarningFilledIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
+import { LINKS_TO, TEST_IDS } from 'src/utils/constants'
+import useSetPat from 'src/views/repositories/hooks/useSetPat'
 
 const Settings: NextPage = () => {
-  const [showValidation, setShowValidation] = useState(false)
-  const [isTokenValid, setIsTokenValid] = useState(false)
-
-  function changeValidation() {
-    setShowValidation(true)
-    setIsTokenValid(!isTokenValid)
-  }
+  const { pat, showValidation, isTokenValid, validatePAT, changeToken, handleSavePAT } = useSetPat()
 
   return (
 		<Fragment>
@@ -33,8 +28,8 @@ const Settings: NextPage = () => {
 						</div>
 						<div className="flex-1 overflow-auto p-8">
 							<VerticalNav>
-								<VerticalNav.Item text="Github Authentication" active={true} />
 								<VerticalNav.Item text="General" disabled={true} />
+								<VerticalNav.Item text="GitHub Authentication" active={true} />
 							</VerticalNav>
 						</div>
 					</div>
@@ -52,16 +47,26 @@ const Settings: NextPage = () => {
 							<Panel className="shadow-sm">
 								<Panel.Body className="py-8">
 									<h3 className="t-h3">GitHub Personal Access Token</h3>
-									<p className="mb-6 text-gray-500">Learn more about <Link href="/">
-										<span className="t-link cursor-pointer">how to generate a personal access token</span></Link>.
+									<p className="mb-6 text-gray-500">Learn more about <a target='_blank'
+										href={LINKS_TO.createPAt}
+										className="t-link"
+										rel='noopener noreferrer'>how to generate a personal access token</a>.
 									</p>
 									<form className="mb-6">
 										<div className="flex items-center space-x-3">
-											<Input className="max-w-lg" type="password" />
+											<Input className="max-w-lg"
+												data-testid={TEST_IDS.patInputText}
+												type="password"
+												autoComplete="off"
+												value={pat}
+												onChange={changeToken}
+											/>
 											<Button
 												label="Validate"
 												skin="secondary"
-												onClick={changeValidation}
+												disabled={pat === ''}
+												data-testid={TEST_IDS.patValidateToken}
+												onClick={validatePAT}
 											/>
 
 											{(showValidation && isTokenValid) && (
@@ -77,9 +82,12 @@ const Settings: NextPage = () => {
 												</div>
 											)}
 										</div>
-
 									</form>
-									<Button label="Save" />
+									<Button
+										label="Save"
+										disabled={pat === ''}
+										data-testid={TEST_IDS.patSetToken}
+										onClick={handleSavePAT} />
 								</Panel.Body>
 							</Panel>
 						</div>

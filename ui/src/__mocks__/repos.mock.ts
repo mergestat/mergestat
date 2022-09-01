@@ -6,7 +6,9 @@ export enum DynamicValues {
   urlGithub = 'https://github.com/',
   angular = 'angular',
   newRepoToAdd = 'mergestat/docs',
-  existingRepo = 'mergestat/mergestat'
+  existingRepo = 'mergestat/mergestat',
+  validPAT = 'ghp_cJYwtBb8DbdXNYAw3wegVcTFDYJQhu0QpmCQ',
+  invalidPAT = 'gho_cJYwtBb8DbdXNYAw3wegVcTFDYJQhpmCQ'
 }
 
 export const mockRepoData: GetReposQuery = {
