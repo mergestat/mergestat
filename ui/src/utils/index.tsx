@@ -4,19 +4,12 @@ import { RepoSyncStateT } from 'src/@types'
 
 export function checkRepoValidate(repo: string, checkDomain = true) {
   return checkDomain
-    ? /((http|https):\/\/)?(www\.)?[a-z0-9\-.]{3,}\.[a-zA-Z0-9]+[/]{1,}.[^/.*]/.test(
-      repo
-    )
-    : /(((http|https):\/\/)?(www\.)?[a-z0-9\-.]{3,}\.)?[a-zA-Z0-9]+[/]{1,}.[^/.*]/.test(
-      repo
-    )
+    ? /((http|https):\/\/)?(www\.)?[a-z0-9\-.]{3,}\.[a-zA-Z0-9]+[/]{1,}.[^/.*]/.test(repo)
+    : /(((http|https):\/\/)?(www\.)?[a-z0-9\-.]{3,}\.)?[a-zA-Z0-9]+[/]{1,}.[^/.*]/.test(repo)
 }
 
 export function getRepoFromUrl(url: string) {
-  return url.replace(
-    /((http|https):\/\/)?(www\.)?[a-z0-9\-.]{3,}\.[a-zA-Z0-9]+[/]{1,}/,
-    ''
-  )
+  return url.replace(/((http|https):\/\/)?(www\.)?[a-z0-9\-.]{3,}\.[a-zA-Z0-9]+[/]{1,}/, '')
 }
 
 export function numberWithCommas(x: number) {
@@ -33,6 +26,15 @@ export function selectAllState(data: Array<{ isSelected: boolean, [key: string]:
     : selectedDataLen === data.length
       ? CHECKBOX_STATES.Checked
       : CHECKBOX_STATES.Indeterminate
+}
+
+/**
+ * Method to validate given token is a right Github PAT
+ * @param token Token string to validate
+ * @returns true if token is a right Github PAT, otherwise return false
+ */
+export function validateGitHubPAT(token: string) {
+  return /^ghp_[a-zA-Z0-9]{36}$/ig.test(token)
 }
 
 /**

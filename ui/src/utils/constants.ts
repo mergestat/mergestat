@@ -18,6 +18,9 @@ export enum TEST_IDS {
   addRepoButton = 'add-repo-button',
   addRepoToDbButton = 'add-repo-to-db-button',
   addRepoTextArea = 'add-repo-text-area',
+  patInputText = 'pat-input-text',
+  patValidateToken = 'pat-validate-token',
+  patSetToken = 'pat-set-token',
 }
 
 export enum ADD_REPO {
@@ -25,4 +28,8 @@ export enum ADD_REPO {
   csv = 'csv',
   ghOrg = 'gh-org',
   ghUser = 'gh-user',
+}
+
+export const LINKS_TO = {
+  createPAt: 'https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token',
 }
