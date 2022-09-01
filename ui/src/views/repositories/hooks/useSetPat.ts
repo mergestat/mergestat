@@ -23,6 +23,7 @@ const useSetPat = () => {
 
   const changeToken = (e: ChangeEvent<HTMLInputElement>) => {
     setPAT(e.target.value)
+    setShowValidation(false)
   }
 
   /**
@@ -46,6 +47,7 @@ const useSetPat = () => {
    * Method to save access token in data base
    */
   const handleSavePAT = async () => {
+    setShowValidation(false)
     const isRight = await isARightToken()
     if (isRight) {
       savePAT({
