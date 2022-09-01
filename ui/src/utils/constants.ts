@@ -3,6 +3,10 @@ export const DATE_FORMAT = {
   B: 'dd LLL yyyy - HH:mm'
 }
 
+export const API = {
+  GITHUB_GRAPHQL: 'https://api.github.com/graphql',
+}
+
 export const GITHUB_URL = 'https://github.com/'
 
 export const MERGESTAT_TITLE = 'MergeStat |'

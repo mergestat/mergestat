@@ -57,6 +57,7 @@ const Settings: NextPage = () => {
 											<Input className="max-w-lg"
 												data-testid={TEST_IDS.patInputText}
 												type="password"
+												autoComplete="off"
 												value={pat}
 												onChange={changeToken}
 											/>

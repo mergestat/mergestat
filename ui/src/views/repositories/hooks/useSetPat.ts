@@ -1,5 +1,6 @@
 import { ApolloError, useMutation } from '@apollo/client'
 import { ChangeEvent, useState } from 'react'
+import { validateGtihubToken } from 'src/api-logic/axios/api'
 import SET_PAT from 'src/api-logic/graphql/mutations/set-pat'
 import { validateGitHubPAT } from 'src/utils'
 import { showErrorAlert, showSuccessAlert } from 'src/utils/alerts'
@@ -14,23 +15,38 @@ const useSetPat = () => {
       showErrorAlert(error.message)
     },
     onCompleted: () => {
-      showSuccessAlert('PAT saved')
+      showSuccessAlert('GitHub access token saved')
       setShowValidation(false)
       setPAT('')
     }
   })
 
-  const validatePAT = () => {
-    setShowValidation(true)
-    setIsTokenValid(validateGitHubPAT(pat))
-  }
-
   const changeToken = (e: ChangeEvent<HTMLInputElement>) => {
     setPAT(e.target.value)
   }
 
-  const handleSavePAT = () => {
-    const isRight = validateGitHubPAT(pat)
+  /**
+   * Method to validate token with correct structure and login against GitHub API
+   * @returns true if token is right, otherwise return false
+   */
+  const isARightToken = async () => {
+    const isRigthGitHubToken = await validateGtihubToken(pat)
+    return validateGitHubPAT(pat) && isRigthGitHubToken
+  }
+
+  /**
+   * Method just to validate given token (triggered when click 'Validate' button)
+   */
+  const validatePAT = async () => {
+    setIsTokenValid(await isARightToken())
+    setShowValidation(true)
+  }
+
+  /**
+   * Method to save access token in data base
+   */
+  const handleSavePAT = async () => {
+    const isRight = await isARightToken()
     if (isRight) {
       savePAT({
         variables: {
