@@ -57,6 +57,7 @@ type githubRepoPR struct {
 	Title               *string    `db:"title"`
 	UpdatedAt           *time.Time `db:"updated_at"`
 	URL                 *string    `db:"url"`
+	Labels              []byte     `db:"labels"`
 }
 
 // sendBatchGitHubRepoPRs uses the pg COPY protocol to send a batch of GitHub repo PRs
@@ -102,10 +103,17 @@ func (w *worker) sendBatchGitHubRepoPRs(ctx context.Context, tx pgx.Tx, repo uui
 		"title",
 		"updated_at",
 		"url",
+		"labels",
 	}
 
 	inputs := make([][]interface{}, 0, len(batch))
+
 	for _, pr := range batch {
+
+		if pr.Labels == nil {
+			pr.Labels = []byte("[]")
+		}
+
 		input := []interface{}{
 			repo,
 			pr.Additions,
@@ -147,6 +155,7 @@ func (w *worker) sendBatchGitHubRepoPRs(ctx context.Context, tx pgx.Tx, repo uui
 			pr.Title,
 			pr.UpdatedAt,
 			pr.URL,
+			pr.Labels,
 		}
 		inputs = append(inputs, input)
 	}
