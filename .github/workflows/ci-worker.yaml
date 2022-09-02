@@ -1,5 +1,5 @@
 name: CI Worker (Golang)
-on: [push, pull_request]
+on: [push]
 jobs:
   build:
     name: CI Worker (Golang)
