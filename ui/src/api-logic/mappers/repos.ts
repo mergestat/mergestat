@@ -1,6 +1,6 @@
 import { RepoDataPropsT, RepoDataStatusT, RepoSyncStateT } from 'src/@types'
 import { capitalize, mapToRepoSyncStateT } from 'src/utils'
-import { GITHUB_URL } from 'src/utils/constants'
+import { GITHUB_URL, SYNC_REPO_METHOD } from 'src/utils/constants'
 import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
 
 interface SyncTypeFlatten {
@@ -30,6 +30,11 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
       id: r?.id,
       name: r?.repo.replace(GITHUB_URL, '') || '',
       createdAt: new Date(r?.createdAt),
+      autoImportFrom: r?.repoImport
+        ? r?.repoImport?.type === SYNC_REPO_METHOD.GH_USER
+          ? `user: ${r?.repoImport?.settings.user}`
+          : `org: ${r?.repoImport?.settings.org}`
+        : undefined,
       lastSync: '',
       type: r?.isGithub ? 'github' : 'other',
       tags: [],

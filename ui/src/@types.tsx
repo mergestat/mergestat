@@ -32,7 +32,7 @@ export type RepoDataPropsT = {
   name: string
   createdAt: Date
   type: RepoType
-  automaticImport?: boolean
+  autoImportFrom?: string
   tags: Array<{ title: string, checked: boolean }>
   lastSync: string
   status: Array<RepoDataStatusT>

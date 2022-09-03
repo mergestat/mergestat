@@ -10,6 +10,10 @@ const GET_REPOS = gql`
         createdAt
         isGithub
         tags
+        repoImport {
+          type
+          settings
+        }
         repoSyncs {
           totalCount
           nodes {

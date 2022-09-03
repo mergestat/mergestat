@@ -31,7 +31,6 @@ export const PageHeader: React.FC = () => {
             className="z-20 text-base font-normal"
             startIcon={<AutoImportIcon className="t-icon" />}
             onButtonClick={() => setShowSyncRepoModal(true)}
-            disabled={true}
             items={[
               {
                 text: 'Manage auto imports',

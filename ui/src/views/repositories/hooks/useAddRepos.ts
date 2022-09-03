@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ApolloError, useMutation } from '@apollo/client'
 import { useCallback, useEffect, useState } from 'react'
-import ADD_REPO from 'src/api-logic/graphql/mutations/add-repo'
+import { ADD_REPO } from 'src/api-logic/graphql/mutations/add-repo'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { showErrorAlert, showSuccessAlert, showWarningAlert } from 'src/utils/alerts'
 import useRepos from './useRepos'
