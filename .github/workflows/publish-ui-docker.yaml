@@ -6,12 +6,11 @@ on:
       - '**'
     tags:
       - 'v*.*.*'
-  pull_request:
-    branches:
-      - 'main'
 
 jobs:
   docker:
+    # only publish docker image if the PR is from a MergeStat repo
+    if: github.repository_owner == 'mergestat'
     runs-on: ubuntu-latest
     steps:
       -
