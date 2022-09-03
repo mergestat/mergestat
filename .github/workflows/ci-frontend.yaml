@@ -1,6 +1,6 @@
 name: CI Frontend (UI)
 
-on: [push]
+on: [push, pull_request]
 
 env: # environment variables (available in any part of the action)
   NODE_VERSION: 16
