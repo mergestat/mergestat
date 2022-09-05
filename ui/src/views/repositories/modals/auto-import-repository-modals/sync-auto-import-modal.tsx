@@ -3,13 +3,10 @@ import { Button, Input, Label, Modal, RadioCard, Toolbar } from '@mergestat/bloc
 import { GithubIcon, XIcon } from '@mergestat/icons'
 import React, { useState } from 'react'
 import { AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
-import { useGeneralSetState } from 'src/state/contexts'
+import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { showErrorAlert } from 'src/utils/alerts'
 import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
-
-type SyncRepoModalProps = {
-  onClose: () => void
-}
+import useRepos from '../../hooks/useRepos'
 
 type ImportRadioType = {
   startIcon: React.ReactNode
@@ -30,24 +27,30 @@ const IMPORT_TYPE_RADIO_GROUP: ImportRadioType[] = [
   },
 ]
 
-export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
+export const SyncAutoImportReposModal = () => {
   const [importType, setImportType] = useState<SYNC_REPO_METHOD>(SYNC_REPO_METHOD.GH_ORG)
   const [orgUserText, serOrgUserText] = useState('')
 
-  const { setAutoImportingRepos } = useGeneralSetState()
+  const { setShowSyncRepoModal } = useRepositoriesSetState()
+  const [{ search }] = useRepositoriesContext()
+  const { refetch } = useRepos(search)
+
+  const closeModal = () => {
+    setShowSyncRepoModal(false)
+  }
 
   const [autoImportRepos] = useMutation(AUTO_IMPORT_REPOS, {
     onError: (error: ApolloError) => {
       showErrorAlert(error.message)
     },
     onCompleted: () => {
-      setAutoImportingRepos(true)
-      onClose()
+      refetch()
+      closeModal()
     }
   })
 
   return (
-    <Modal open onClose={onClose} modalWrapperClassName="z-50">
+    <Modal open onClose={closeModal} modalWrapperClassName="z-50">
       <Modal.Header>
         <Toolbar className="h-16 px-8">
           <Toolbar.Left>
@@ -60,7 +63,7 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
               <Button
                 skin="borderless-muted"
                 startIcon={<XIcon className="t-icon" />}
-                onClick={onClose}
+                onClick={closeModal}
               />
             </Toolbar.Item>
           </Toolbar.Right>
@@ -109,7 +112,7 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
         <Toolbar className="h-16 px-6">
           <Toolbar.Right>
             <Toolbar.Item>
-              <Button skin="secondary" onClick={onClose}>
+              <Button skin="secondary" onClick={closeModal}>
                 Cancel
               </Button>
               <Button

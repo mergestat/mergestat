@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
@@ -9,27 +8,16 @@ import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals
 import { Alert, Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 import Loading from 'src/components/Loading'
-import { useGeneralContext, useGeneralSetState } from 'src/state/contexts'
 import useRepos from './hooks/useRepos'
 
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
-  const [{ autoImportingRepos }] = useGeneralContext()
-
   const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
-  const { setAutoImportingRepos } = useGeneralSetState()
 
-  const { showTable, loading, data } = useRepos(search)
+  const { showTable, loading, data, showBanner } = useRepos(search)
 
   // - Todo: connect selectedRepositoriesCount from RepositoriesTable
   const selectedRepositoriesCount = 0
-
-  useEffect(() => {
-    autoImportingRepos && setTimeout(() => {
-      setAutoImportingRepos(false)
-    }, 20000)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoImportingRepos])
 
   return (
     <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">
@@ -38,9 +26,9 @@ const RepositoriesView: React.FC = () => {
         {showTable && <FilterHeader />}
       </div>
       <div className="flex-1 items-center p-8 overflow-auto">
-        {autoImportingRepos &&
+        {showBanner &&
           <Alert type="info" theme="light" title="Auto importing repos" className='mb-5'>
-            The repos from the auto import setting will appear shortly once synced.
+            Repositories from an auto-import will appear here once they are finished syncing.
           </Alert>
         }
 
@@ -103,11 +91,7 @@ const RepositoriesView: React.FC = () => {
         />
       )}
       {showSyncRepoModal && (
-        <SyncAutoImportReposModal
-          onClose={() => {
-            setShowSyncRepoModal(false)
-          }}
-        />
+        <SyncAutoImportReposModal />
       )}
     </main>
   )

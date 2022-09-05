@@ -2,7 +2,7 @@ import { MockedProvider } from '@apollo/react-testing'
 import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import 'intersection-observer'
-import { GeneralProvider, RepositoriesProvider } from 'src/state/contexts'
+import { RepositoriesProvider } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import RepositoriesView from 'src/views/repositories'
 import { RepositoriesTable } from 'src/views/repositories/components'
@@ -43,11 +43,9 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useQuery(): data is fetched', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposWithData]} addTypename={false}>
-        <GeneralProvider>
-          <RepositoriesProvider>
-            <RepositoriesView />
-          </RepositoriesProvider>
-        </GeneralProvider>
+        <RepositoriesProvider>
+          <RepositoriesView />
+        </RepositoriesProvider>
       </MockedProvider>
     )
 
@@ -59,11 +57,9 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useQuery(): no data is fetched', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposEmpty]} addTypename={false}>
-        <GeneralProvider>
-          <RepositoriesProvider>
-            <RepositoriesView />
-          </RepositoriesProvider>
-        </GeneralProvider>
+        <RepositoriesProvider>
+          <RepositoriesView />
+        </RepositoriesProvider>
       </MockedProvider>
     )
 
@@ -75,11 +71,9 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useQuery() and refetch(): searching \'mergestat\' repo', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposWithData, apolloMockJustAngularRepo]} addTypename={false}>
-        <GeneralProvider>
-          <RepositoriesProvider>
-            <RepositoriesView />
-          </RepositoriesProvider>
-        </GeneralProvider>
+        <RepositoriesProvider>
+          <RepositoriesView />
+        </RepositoriesProvider>
       </MockedProvider>
     )
 
@@ -177,12 +171,10 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useMutation(): auto import repos from user', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposWithData, apolloMockAutoImportUser]} addTypename={false}>
-        <GeneralProvider>
-          <RepositoriesProvider>
-            <RepositoriesView />
-            <SyncAutoImportReposModal onClose={() => null} />
-          </RepositoriesProvider>
-        </GeneralProvider>
+        <RepositoriesProvider>
+          <RepositoriesView />
+          <SyncAutoImportReposModal />
+        </RepositoriesProvider>
       </MockedProvider>
     )
 
@@ -202,7 +194,7 @@ describe('GraphQL queries: (Repos)', () => {
 
       // Check success banner alert
       await waitFor(() => {
-        const bannerAlert = screen.getByText('The repos from the auto import setting will appear shortly once synced.')
+        const bannerAlert = screen.getByText('Repositories from an auto-import will appear here once they are finished syncing.')
         expect(bannerAlert).toBeInTheDocument()
       })
     }

@@ -14,6 +14,9 @@ export enum DynamicValues {
 }
 
 export const mockRepoData: GetReposQuery = {
+  repoImports: {
+    totalCount: 1
+  },
   repos: {
     totalCount: 2,
     nodes: [
@@ -121,6 +124,7 @@ export const mockRepoData: GetReposQuery = {
 }
 
 export const mockJustAngularRepo: GetReposQuery = {
+  repoImports: null,
   repos: {
     totalCount: 2,
     nodes: [
