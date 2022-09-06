@@ -13,7 +13,7 @@ export type RepositoryNameProps = {
   name: string
   type: RepoType
   createdAt: Date
-  automaticImport?: boolean
+  autoImportFrom?: string
 }
 
 export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
@@ -57,10 +57,10 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
           <div className="border-l border-semantic-border px-2">
             {repoTypeIcon()}
           </div>
-          {props.automaticImport && (
+          {props.autoImportFrom && (
             <div className="border-l border-semantic-border px-2">
               <Tooltip
-                content="Auto imported from user-name"
+                content={`Auto imported from ${props.autoImportFrom}`}
                 placement="bottom"
               >
                 <AutoImportIcon className="t-icon text-semantic-mutedIcon w-4" />

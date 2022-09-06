@@ -1,11 +1,12 @@
+import { ApolloError, useMutation } from '@apollo/client'
 import { Button, Input, Label, Modal, RadioCard, Toolbar } from '@mergestat/blocks'
 import { GithubIcon, XIcon } from '@mergestat/icons'
 import React, { useState } from 'react'
-
-enum SYNC_REPO_METHOD {
-  GH_ORG,
-  GH_USER,
-}
+import { AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
+import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
+import { showErrorAlert } from 'src/utils/alerts'
+import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
+import useRepos from '../../hooks/useRepos'
 
 type ImportRadioType = {
   startIcon: React.ReactNode
@@ -26,17 +27,30 @@ const IMPORT_TYPE_RADIO_GROUP: ImportRadioType[] = [
   },
 ]
 
-type SyncRepoModalProps = {
-  onClose: () => void
-}
+export const SyncAutoImportReposModal = () => {
+  const [importType, setImportType] = useState<SYNC_REPO_METHOD>(SYNC_REPO_METHOD.GH_ORG)
+  const [orgUserText, serOrgUserText] = useState('')
 
-export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
-  const [importType, setImportType] = useState<SYNC_REPO_METHOD>(
-    SYNC_REPO_METHOD.GH_ORG
-  )
+  const { setShowSyncRepoModal } = useRepositoriesSetState()
+  const [{ search }] = useRepositoriesContext()
+  const { refetch } = useRepos(search)
+
+  const closeModal = () => {
+    setShowSyncRepoModal(false)
+  }
+
+  const [autoImportRepos] = useMutation(AUTO_IMPORT_REPOS, {
+    onError: (error: ApolloError) => {
+      showErrorAlert(error.message)
+    },
+    onCompleted: () => {
+      refetch()
+      closeModal()
+    }
+  })
 
   return (
-    <Modal open onClose={onClose} modalWrapperClassName="z-50">
+    <Modal open onClose={closeModal} modalWrapperClassName="z-50">
       <Modal.Header>
         <Toolbar className="h-16 px-8">
           <Toolbar.Left>
@@ -49,7 +63,7 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
               <Button
                 skin="borderless-muted"
                 startIcon={<XIcon className="t-icon" />}
-                onClick={onClose}
+                onClick={closeModal}
               />
             </Toolbar.Item>
           </Toolbar.Right>
@@ -59,8 +73,7 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
         <div className="w-full p-8">
           <div>
             <p className="text-gray-500 mb-6">
-              This will automatically import all repos from your GitHub
-              organization or GitHub User.
+              This will automatically import all repos from your GitHub organization or GitHub User.
             </p>
           </div>
           <div className="mb-6">
@@ -82,17 +95,14 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
           </div>
           <div>
             <Label>
-              {importType === SYNC_REPO_METHOD.GH_ORG
-                ? 'Organization name'
-                : 'User name'}
+              {importType === SYNC_REPO_METHOD.GH_ORG ? 'Organization name' : 'User name'}
             </Label>
             <div className="flex w-full items-center gap-2">
               <Input
-                placeholder={
-                  importType === SYNC_REPO_METHOD.GH_ORG
-                    ? 'organization-name'
-                    : 'user-name'
-                }
+                placeholder={importType === SYNC_REPO_METHOD.GH_ORG ? 'organization-name' : 'user-name'}
+                onChange={(e) => serOrgUserText(e.target.value)}
+                data-testid={TEST_IDS.autoImportInputText}
+                value={orgUserText}
               />
             </div>
           </div>
@@ -102,15 +112,20 @@ export const SyncAutoImportReposModal = ({ onClose }: SyncRepoModalProps) => {
         <Toolbar className="h-16 px-6">
           <Toolbar.Right>
             <Toolbar.Item>
-              <Button skin="secondary" onClick={onClose}>
+              <Button skin="secondary" onClick={closeModal}>
                 Cancel
               </Button>
               <Button
                 className="ml-2"
                 skin="primary"
-                onClick={() => {
-                  onClose()
-                }}
+                disabled={orgUserText === ''}
+                data-testid={TEST_IDS.autoImportButton}
+                onClick={() => autoImportRepos({
+                  variables: {
+                    type: importType,
+                    settings: { [importType === SYNC_REPO_METHOD.GH_ORG ? 'org' : 'user']: orgUserText }
+                  }
+                })}
               >
                 Create Auto Import
               </Button>

@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { AddRepoMutation } from 'src/api-logic/graphql/generated/schema'
-import ADD_REPO from 'src/api-logic/graphql/mutations/add-repo'
+import { AddRepoImportMutation, AddRepoMutation } from 'src/api-logic/graphql/generated/schema'
+import { ADD_REPO, AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
+import { SYNC_REPO_METHOD } from 'src/utils/constants'
 import { DynamicValues } from './repos.mock'
 
 export const mockRepoSatus: AddRepoMutation = {
@@ -28,4 +29,24 @@ export const apolloMockAddExistingRepo = {
     variables: { repo: `${DynamicValues.urlGithub}${DynamicValues.existingRepo}`, isGithub: true }
   },
   error: new Error('duplicate key value violates unique constraint "repos_repo_ref_unique"')
+}
+
+export const mockAutoImportUser: AddRepoImportMutation = {
+  createRepoImport: {
+    repoImport: {
+      id: faker.datatype.uuid(),
+      type: `${SYNC_REPO_METHOD.GH_USER}`,
+      settings: { user: DynamicValues.autoImportUser }
+    },
+  }
+}
+
+export const apolloMockAutoImportUser = {
+  request: {
+    query: AUTO_IMPORT_REPOS,
+    variables: { type: SYNC_REPO_METHOD.GH_USER, settings: { user: DynamicValues.autoImportUser } }
+  },
+  result: {
+    data: mockAutoImportUser
+  }
 }

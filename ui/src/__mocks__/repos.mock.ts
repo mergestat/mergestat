@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
+import { SYNC_REPO_METHOD } from 'src/utils/constants'
 
 export enum DynamicValues {
   urlGithub = 'https://github.com/',
@@ -8,10 +9,14 @@ export enum DynamicValues {
   newRepoToAdd = 'mergestat/docs',
   existingRepo = 'mergestat/mergestat',
   validPAT = 'ghp_cJYwtBb8DbdXNYAw3wegVcTFDYJQhu0QpmCQ',
-  invalidPAT = 'gho_cJYwtBb8DbdXNYAw3wegVcTFDYJQhpmCQ'
+  invalidPAT = 'gho_cJYwtBb8DbdXNYAw3wegVcTFDYJQhpmCQ',
+  autoImportUser = 'gdcanonn'
 }
 
 export const mockRepoData: GetReposQuery = {
+  repoImports: {
+    totalCount: 1
+  },
   repos: {
     totalCount: 2,
     nodes: [
@@ -23,6 +28,10 @@ export const mockRepoData: GetReposQuery = {
         tags: [
 
         ],
+        repoImport: {
+          type: SYNC_REPO_METHOD.GH_USER,
+          settings: { user: DynamicValues.autoImportUser }
+        },
         repoSyncs: {
           totalCount: 0,
           nodes: [
@@ -38,6 +47,7 @@ export const mockRepoData: GetReposQuery = {
         tags: [
 
         ],
+        repoImport: null,
         repoSyncs: {
           totalCount: 5,
           nodes: [
@@ -114,6 +124,7 @@ export const mockRepoData: GetReposQuery = {
 }
 
 export const mockJustAngularRepo: GetReposQuery = {
+  repoImports: null,
   repos: {
     totalCount: 2,
     nodes: [
@@ -125,6 +136,7 @@ export const mockJustAngularRepo: GetReposQuery = {
         tags: [
 
         ],
+        repoImport: null,
         repoSyncs: {
           totalCount: 0,
           nodes: [

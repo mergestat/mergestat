@@ -8,7 +8,8 @@ import RepositoriesView from 'src/views/repositories'
 import { RepositoriesTable } from 'src/views/repositories/components'
 import { RepositoryStatus } from 'src/views/repositories/components/repositories-table/repositories-table-columns'
 import { AddRepositoryModal } from 'src/views/repositories/modals/add-repository-modal'
-import { apolloMockAddExistingRepo, apolloMockAddNewRepo } from 'src/__mocks__/repo-add.mock'
+import { SyncAutoImportReposModal } from 'src/views/repositories/modals/auto-import-repository-modals/sync-auto-import-modal'
+import { apolloMockAddExistingRepo, apolloMockAddNewRepo, apolloMockAutoImportUser } from 'src/__mocks__/repo-add.mock'
 import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
 import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposWithData, DynamicValues, mockRepoData } from 'src/__mocks__/repos.mock'
 
@@ -163,6 +164,38 @@ describe('GraphQL queries: (Repos)', () => {
       await waitFor(() => {
         const warningAlert = screen.getByText('1 repo already exists')
         expect(warningAlert).toBeInTheDocument()
+      })
+    }
+  })
+
+  it('calling useMutation(): auto import repos from user', async () => {
+    render(
+      <MockedProvider mocks={[apolloMockReposWithData, apolloMockAutoImportUser]} addTypename={false}>
+        <RepositoriesProvider>
+          <RepositoriesView />
+          <SyncAutoImportReposModal />
+        </RepositoriesProvider>
+      </MockedProvider>
+    )
+
+    // Get 'Add from GitHub User' button and click on it
+    const rabioButton = screen.getByText(/Add from GitHub User/i)
+    fireEvent.click(rabioButton as HTMLDivElement)
+
+    // Get input text to add repos
+    const inputText = screen.getByTestId(TEST_IDS.autoImportInputText)
+    if (inputText) {
+      fireEvent.change(inputText, { target: { value: DynamicValues.autoImportUser } })
+      expect((inputText as HTMLInputElement).value).toBe(DynamicValues.autoImportUser)
+
+      // Finally click in 'Create Auto Import' to add repos to data base
+      const autoImportButton = screen.getByTestId(TEST_IDS.autoImportButton)
+      fireEvent.click(autoImportButton as HTMLButtonElement)
+
+      // Check success banner alert
+      await waitFor(() => {
+        const bannerAlert = screen.getByText('Repositories from an auto-import will appear here once they are finished syncing.')
+        expect(bannerAlert).toBeInTheDocument()
       })
     }
   })

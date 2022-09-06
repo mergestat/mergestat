@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
@@ -6,17 +5,16 @@ import { AddRepositoryModal } from './modals/add-repository-modal'
 import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
 
-import { Button, Toolbar } from '@mergestat/blocks'
+import { Alert, Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 import Loading from 'src/components/Loading'
 import useRepos from './hooks/useRepos'
 
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
-
   const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
 
-  const { showTable, loading, data } = useRepos(search)
+  const { showTable, loading, data, showBanner } = useRepos(search)
 
   // - Todo: connect selectedRepositoriesCount from RepositoriesTable
   const selectedRepositoriesCount = 0
@@ -28,6 +26,12 @@ const RepositoriesView: React.FC = () => {
         {showTable && <FilterHeader />}
       </div>
       <div className="flex-1 items-center p-8 overflow-auto">
+        {showBanner &&
+          <Alert type="info" theme="light" title="Auto importing repos" className='mb-5'>
+            Repositories from an auto-import will appear here once they are finished syncing.
+          </Alert>
+        }
+
         {loading
           ? <Loading />
           : (data ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
@@ -87,11 +91,7 @@ const RepositoriesView: React.FC = () => {
         />
       )}
       {showSyncRepoModal && (
-        <SyncAutoImportReposModal
-          onClose={() => {
-            setShowSyncRepoModal(false)
-          }}
-        />
+        <SyncAutoImportReposModal />
       )}
     </main>
   )

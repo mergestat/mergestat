@@ -8562,6 +8562,14 @@ export type AddRepoMutationVariables = Exact<{
 
 export type AddRepoMutation = { createRepo?: { repo?: { id: any, repo: string } | null } | null };
 
+export type AddRepoImportMutationVariables = Exact<{
+  type: Scalars['String'];
+  settings: Scalars['JSON'];
+}>;
+
+
+export type AddRepoImportMutation = { createRepoImport?: { repoImport?: { id: any, type: string, settings: any } | null } | null };
+
 export type SetGithubPatMutationVariables = Exact<{
   pat: Scalars['String'];
 }>;
@@ -8581,7 +8589,7 @@ export type GetReposQueryVariables = Exact<{
 }>;
 
 
-export type GetReposQuery = { repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };
+export type GetReposQuery = { repoImports?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];

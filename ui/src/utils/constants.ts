@@ -25,6 +25,8 @@ export enum TEST_IDS {
   patInputText = 'pat-input-text',
   patValidateToken = 'pat-validate-token',
   patSetToken = 'pat-set-token',
+  autoImportInputText = 'auto-import-input-text',
+  autoImportButton = 'auto-import-button',
 }
 
 export enum ADD_REPO {
@@ -32,6 +34,11 @@ export enum ADD_REPO {
   csv = 'csv',
   ghOrg = 'gh-org',
   ghUser = 'gh-user',
+}
+
+export enum SYNC_REPO_METHOD {
+  GH_ORG = 'GITHUB_ORG',
+  GH_USER = 'GITHUB_USER',
 }
 
 export const LINKS_TO = {
