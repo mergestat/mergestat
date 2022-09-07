@@ -1,4 +1,4 @@
-import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
+import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
 import { AddRepositoryModal } from './modals/add-repository-modal'
@@ -12,8 +12,6 @@ import useRepos from './hooks/useRepos'
 
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
-  const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
-
   const { showTable, loading, data, showBanner } = useRepos(search)
 
   // - Todo: connect selectedRepositoriesCount from RepositoriesTable
@@ -82,17 +80,8 @@ const RepositoriesView: React.FC = () => {
         </div>
       )}
       {showAddRepositoryModal && <AddRepositoryModal />}
-      {showAutoImportModal && (
-        <ManageAutoImportReposModal
-          onClose={() => setShowAutoImportModal(false)}
-          onSyncModalOpen={() => {
-            setShowSyncRepoModal(true)
-          }}
-        />
-      )}
-      {showSyncRepoModal && (
-        <SyncAutoImportReposModal />
-      )}
+      {showAutoImportModal && <ManageAutoImportReposModal />}
+      {showSyncRepoModal && <SyncAutoImportReposModal />}
     </main>
   )
 }

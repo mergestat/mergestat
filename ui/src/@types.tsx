@@ -101,3 +101,12 @@ export type SettingsDataType = {
   column: string
   type: string
 }
+
+/** Repo Imports Data Props Type */
+
+export type RepoImportData = {
+  importDone: boolean
+  source: string
+  type: string
+  lastSync: string
+}

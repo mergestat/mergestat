@@ -27,6 +27,8 @@ export enum TEST_IDS {
   patSetToken = 'pat-set-token',
   autoImportInputText = 'auto-import-input-text',
   autoImportButton = 'auto-import-button',
+  importsTableList = 'imports-table-list',
+  importsRow = 'imports-row',
 }
 
 export enum ADD_REPO {
