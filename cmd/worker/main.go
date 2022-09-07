@@ -65,10 +65,11 @@ func repoLocator() services.RepoLocator {
 // }
 
 func main() {
+	debug := os.Getenv("DEBUG") == "1"
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
 
-	if fileInfo, _ := os.Stdout.Stat(); (fileInfo.Mode()&os.ModeCharDevice) != 0 || os.Getenv("DEBUG") == "1" {
-		l := logger.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.Stamp})
+	if fileInfo, _ := os.Stdout.Stat(); (fileInfo.Mode()&os.ModeCharDevice) != 0 || debug {
+		l := logger.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.Stamp}).Level(zerolog.DebugLevel)
 		logger = l
 	}
 
