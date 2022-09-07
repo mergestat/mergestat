@@ -8580,7 +8580,7 @@ export type SetGithubPatMutation = { replaceGitHubPAT?: boolean | null };
 export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ type: string, settings: any, lastImport?: any | null }> } | null };
+export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, lastImport?: any | null }> } | null };
 
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];

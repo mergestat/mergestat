@@ -68,8 +68,8 @@ export const ManageAutoImportReposModal = () => {
                     </thead>
 
                     <tbody className='bg-white'>
-                      {imports.map((imp, index) => (
-                        <tr key={`imports-${index}`} data-testid={TEST_IDS.importsRow}>
+                      {imports.map(imp => (
+                        <tr key={imp.id} data-testid={TEST_IDS.importsRow}>
                           <td className='px-6 py-3 w-4 pr-0'>
                             {imp.importDone
                               ? <CircleCheckFilledIcon className="t-icon text-semantic-success" />

@@ -105,6 +105,7 @@ export type SettingsDataType = {
 /** Repo Imports Data Props Type */
 
 export type RepoImportData = {
+  id: string
   importDone: boolean
   source: string
   type: string

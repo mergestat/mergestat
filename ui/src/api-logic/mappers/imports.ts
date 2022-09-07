@@ -13,6 +13,7 @@ const mapToImportsData = (data: GetRepoImportsQuery | undefined): Array<RepoImpo
   data?.repoImports?.nodes.forEach((imp) => {
     // Consolidated Import info
     const importInfo: RepoImportData = {
+      id: imp.id,
       importDone: !!imp.lastImport,
       type: imp.type,
       source: imp.type === SYNC_REPO_METHOD.GH_USER ? imp.settings.user : imp.settings.org,

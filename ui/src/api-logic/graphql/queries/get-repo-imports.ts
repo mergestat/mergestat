@@ -5,6 +5,7 @@ const GET_REPO_IMPORTS = gql`
     repoImports(orderBy: CREATED_AT_DESC) {
       totalCount
       nodes {
+        id
         type
         settings
         lastImport
