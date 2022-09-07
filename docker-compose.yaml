@@ -32,6 +32,7 @@ services:
       context: ./graphql
     depends_on:
       - postgres
+      - worker # this is to ensure all migrations are run before the API starts up
     ports:
       - 5433:5433
     command:
