@@ -60,7 +60,7 @@ func (i *importer) Start(ctx context.Context, interval time.Duration) {
 func (i *importer) exec(ctx context.Context) error {
 	var imports []db.ListRepoImportsDueForImportRow
 	var err error
-	if imports, err = db.New(i.pool).ListRepoImportsDueForImport(ctx); err != nil {
+	if imports, err = i.db.ListRepoImportsDueForImport(ctx); err != nil {
 		return err
 	}
 
