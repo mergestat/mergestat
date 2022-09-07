@@ -6,6 +6,7 @@ import { AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { showErrorAlert } from 'src/utils/alerts'
 import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
+import useRepoImports from '../../hooks/useRepoImports'
 import useRepos from '../../hooks/useRepos'
 
 type ImportRadioType = {
@@ -32,8 +33,10 @@ export const SyncAutoImportReposModal = () => {
   const [orgUserText, serOrgUserText] = useState('')
 
   const { setShowSyncRepoModal } = useRepositoriesSetState()
-  const [{ search }] = useRepositoriesContext()
+  const [{ showAutoImportModal, search }] = useRepositoriesContext()
+
   const { refetch } = useRepos(search)
+  const { refetch: refetchImports } = useRepoImports()
 
   const closeModal = () => {
     setShowSyncRepoModal(false)
@@ -45,6 +48,7 @@ export const SyncAutoImportReposModal = () => {
     },
     onCompleted: () => {
       refetch()
+      showAutoImportModal && refetchImports()
       closeModal()
     }
   })

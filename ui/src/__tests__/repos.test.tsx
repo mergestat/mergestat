@@ -8,7 +8,9 @@ import RepositoriesView from 'src/views/repositories'
 import { RepositoriesTable } from 'src/views/repositories/components'
 import { RepositoryStatus } from 'src/views/repositories/components/repositories-table/repositories-table-columns'
 import { AddRepositoryModal } from 'src/views/repositories/modals/add-repository-modal'
+import { ManageAutoImportReposModal } from 'src/views/repositories/modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from 'src/views/repositories/modals/auto-import-repository-modals/sync-auto-import-modal'
+import { apolloMockImports } from 'src/__mocks__/imports.mock'
 import { apolloMockAddExistingRepo, apolloMockAddNewRepo, apolloMockAutoImportUser } from 'src/__mocks__/repo-add.mock'
 import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
 import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposWithData, DynamicValues, mockRepoData } from 'src/__mocks__/repos.mock'
@@ -198,5 +200,28 @@ describe('GraphQL queries: (Repos)', () => {
         expect(bannerAlert).toBeInTheDocument()
       })
     }
+  })
+
+  it('calling useQuery(): auto imports list', async () => {
+    render(
+      <MockedProvider mocks={[apolloMockImports, apolloMockAutoImportUser]} addTypename={false}>
+        <RepositoriesProvider>
+          <RepositoriesView />
+          <ManageAutoImportReposModal />
+        </RepositoriesProvider>
+      </MockedProvider>
+    )
+
+    // Checks imports table is rendered
+    await waitFor(() => {
+      const table = screen.getByTestId(TEST_IDS.importsTableList)
+      expect(table).toBeInTheDocument()
+    })
+
+    // Checks imports table has 4 rows
+    await waitFor(() => {
+      const rows = screen.getAllByTestId(TEST_IDS.importsRow)
+      expect(rows.length).toBe(4)
+    })
   })
 })

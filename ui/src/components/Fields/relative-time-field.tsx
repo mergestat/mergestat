@@ -25,7 +25,7 @@ export const RelativeTimeField: React.FC<RelativeTimeFieldProps> = ({ date, sync
     }
     return () => clearInterval(intervalId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [date])
 
   return (
     <div className={cx(styles, { 'bg-gray-50': syncData?.status.syncState === 'disabled' })}>

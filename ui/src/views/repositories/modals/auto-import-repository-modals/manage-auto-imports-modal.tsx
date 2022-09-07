@@ -1,121 +1,14 @@
-import { Button, Table } from '@mergestat/blocks'
-import {
-  AutoImportIcon,
-  CircleCheckFilledIcon,
-  GithubIcon,
-  TrashIcon,
-  XIcon
-} from '@mergestat/icons'
-import React from 'react'
+import { Button, Panel } from '@mergestat/blocks'
+import { AutoImportIcon, CircleCheckFilledIcon, ClockIcon, GithubIcon, TrashIcon, XIcon } from '@mergestat/icons'
+import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
+import Loading from 'src/components/Loading'
+import { useRepositoriesSetState } from 'src/state/contexts'
+import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
+import useRepoImports from '../../hooks/useRepoImports'
 
-type ColumnsT = {
-  title?: string | undefined
-  dataIndex?: unknown
-  className?: string | undefined
-  key?: unknown
-  render?: unknown
-}
-
-type AutoImportManagePropsT = {
-  onClose: () => void
-  onSyncModalOpen: () => void
-}
-export const ManageAutoImportReposModal = ({
-  onClose,
-  onSyncModalOpen,
-}: AutoImportManagePropsT) => {
-  const columns: ColumnsT[] = [
-    {
-      className: 'w-4 pr-0',
-      dataIndex: 'successIcon',
-      key: 'successIcon',
-    },
-    {
-      title: 'Source',
-      className: 'col',
-      dataIndex: 'source',
-      key: 'source',
-    },
-    {
-      title: 'Import type',
-      className: 'col',
-      dataIndex: 'type',
-      key: 'type',
-    },
-    {
-      title: 'Last sync',
-      className: 'text-semantic-mutedText ',
-      dataIndex: 'last',
-      key: 'last',
-    },
-    {
-      title: '',
-      className: 'w-4 cursor-pointer',
-      dataIndex: 'delIcon',
-      key: 'delIcon',
-    },
-  ]
-
-  const dataSource: {
-    successIcon: string | React.ReactElement
-    source: string
-    type: React.ReactElement
-    last: string
-    delIcon: React.ReactElement
-  }[] = [
-    {
-      successIcon: <CircleCheckFilledIcon className="t-icon text-semantic-success" />,
-      source: 'user-name',
-      type: (
-          <p className="flex items-center gap">
-            <GithubIcon className="t-icon t-icon-small t-icon-muted  mr-2" />
-            GitHub User
-          </p>
-      ),
-      last: '2 hours ago',
-      delIcon: <Button
-          isIconOnly
-          size="small"
-          skin="borderless-muted"
-          startIcon={<TrashIcon />}
-        />
-
-    },
-    {
-      successIcon: <CircleCheckFilledIcon className="t-icon text-semantic-success" />,
-      source: 'organization-name',
-      type: (
-          <p className="flex items-center gap">
-            <GithubIcon className="t-icon t-icon-small t-icon-muted mr-2" />
-            GitHub Organization
-          </p>
-      ),
-      last: '2 hours ago',
-      delIcon: <Button
-          isIconOnly
-          size="small"
-          skin="borderless-muted"
-          startIcon={<TrashIcon />}
-        />
-    },
-    {
-      successIcon: <CircleCheckFilledIcon className="t-icon text-semantic-success" />,
-      source: 'organization-name',
-      type: (
-          <p className="flex items-center gap">
-            <GithubIcon className="t-icon t-icon-small t-icon-muted mr-2" />
-            GitHub Organization
-          </p>
-      ),
-      last: '2 hours ago',
-      delIcon: <Button
-          isIconOnly
-          size="small"
-          skin="borderless-muted"
-          startIcon={<TrashIcon />}
-        />
-    },
-  ]
+export const ManageAutoImportReposModal = () => {
+  const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
+  const { loading, imports } = useRepoImports()
 
   return (
     <div className="absolute top-0 left-0 bg-gray-50 w-full h-full z-40">
@@ -124,7 +17,7 @@ export const ManageAutoImportReposModal = ({
           <Button
             skin="borderless-muted"
             startIcon={<XIcon className="t-icon" />}
-            onClick={onClose}
+            onClick={() => setShowAutoImportModal(false)}
           />
 
           <h2 className="t-toolbar-title border-l border-semantic-border ml-2 pl-5">
@@ -134,14 +27,88 @@ export const ManageAutoImportReposModal = ({
         <Button
           skin="secondary"
           startIcon={<AutoImportIcon className="t-icon mr-2" />}
-          onClick={onSyncModalOpen}
+          onClick={() => setShowSyncRepoModal(true)}
         >
           Create Auto import
         </Button>
       </div>
-      <div className="m-8 shadow-sm">
-        <Table columns={columns} dataSource={dataSource} />
-      </div>
+      {loading
+        ? <Loading />
+        : <div className="m-8 pb-8 shadow-sm">
+          <Panel className="rounded-md w-full shadow-sm">
+            <Panel.Body className="p-0">
+              {imports.length < 1
+                ? <div className='flex justify-center items-center bg-white py-5'>
+                  No data available!
+                </div>
+                : <div className='overflow-hidden bg-white h-full'>
+                  <table data-testid={TEST_IDS.importsTableList} className='t-table-default'>
+                    <thead>
+                      <tr className='bg-white'>
+                        <th scope="col" key='successIcon' className='px-6'>
+                          <span className='mr-1 select-none'></span>
+                        </th>
+
+                        <th scope="col" key='tags' className='px-6'>
+                          <span className='mr-1 select-none'>Source</span>
+                        </th>
+
+                        <th scope="col" key='last' className='px-6'>
+                          <span className='mr-1 select-none'>Import type</span>
+                        </th>
+
+                        <th scope="col" key='status' className='px-6'>
+                          <span className='mr-1 select-none'>Last sync</span>
+                        </th>
+
+                        <th scope="col" key='option' className='px-6'>
+                          <span className='mr-1 select-none'></span>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody className='bg-white'>
+                      {imports.map(imp => (
+                        <tr key={imp.id} data-testid={TEST_IDS.importsRow}>
+                          <td className='px-6 py-3 w-4 pr-0'>
+                            {imp.importDone
+                              ? <CircleCheckFilledIcon className="t-icon text-semantic-success" />
+                              : <ClockIcon className='t-icon text-semantic-mutedIcon' />
+                            }
+                          </td>
+
+                          <td className='px-6 py-3 col'>
+                            {imp.source}
+                          </td>
+
+                          <td className='px-6 py-3 col'>
+                            <div className="flex items-center gap">
+                              <GithubIcon className="t-icon t-icon-small t-icon-muted mr-2" />
+                              {imp.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub User' : 'GitHub Organization'}
+                            </div>
+                          </td>
+
+                          <td className='px-6 py-3 text-semantic-mutedText'>
+                            <RelativeTimeField date={imp.lastSync} />
+                          </td>
+
+                          <td className='px-6 py-3 w-4 cursor-pointer'>
+                            <Button
+                              isIconOnly
+                              size="small"
+                              skin="borderless-muted"
+                              startIcon={<TrashIcon className="t-icon" />}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>}
+            </Panel.Body>
+          </Panel>
+        </div>
+      }
     </div>
   )
 }
