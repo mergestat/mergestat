@@ -39,6 +39,7 @@ func NewImporter(logger *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB)
 func (i *importer) Start(ctx context.Context, interval time.Duration) {
 	i.logger.Info().Msg("beginning repo import cycle")
 	exec := func() {
+		i.logger.Debug().Msg("executing repo import check")
 		if err := i.exec(ctx); err != nil {
 			i.logger.Err(err).Msg("encountered error during repo import")
 		}
@@ -60,7 +61,7 @@ func (i *importer) Start(ctx context.Context, interval time.Duration) {
 func (i *importer) exec(ctx context.Context) error {
 	var imports []db.ListRepoImportsDueForImportRow
 	var err error
-	if imports, err = db.New(i.pool).ListRepoImportsDueForImport(ctx); err != nil {
+	if imports, err = i.db.ListRepoImportsDueForImport(ctx); err != nil {
 		return err
 	}
 
