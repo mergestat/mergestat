@@ -7,7 +7,7 @@ import { GetRepoImportsQuery } from '../graphql/generated/schema'
  * @param data Repo import list that comes from data base in GetRepoImportsQuery format
  * @returns Repo import list from data base mapped to RepoImportData list
  */
-const mapToImpotsData = (data: GetRepoImportsQuery | undefined): Array<RepoImportData> => {
+const mapToImportsData = (data: GetRepoImportsQuery | undefined): Array<RepoImportData> => {
   const mappedData: Array<RepoImportData> = []
 
   data?.repoImports?.nodes.forEach((imp) => {
@@ -24,4 +24,4 @@ const mapToImpotsData = (data: GetRepoImportsQuery | undefined): Array<RepoImpor
   return mappedData
 }
 
-export { mapToImpotsData }
+export { mapToImportsData }

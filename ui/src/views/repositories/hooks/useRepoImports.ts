@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { RepoImportData } from 'src/@types'
 import { GetRepoImportsQuery } from 'src/api-logic/graphql/generated/schema'
 import GET_REPO_IMPORTS from 'src/api-logic/graphql/queries/get-repo-imports'
-import { mapToImpotsData } from 'src/api-logic/mappers/imports'
+import { mapToImportsData } from 'src/api-logic/mappers/imports'
 import { showErrorAlert } from 'src/utils/alerts'
 
 const useRepoImports = () => {
@@ -14,7 +14,7 @@ const useRepoImports = () => {
   })
 
   useEffect(() => {
-    setImports(mapToImpotsData(data))
+    setImports(mapToImportsData(data))
   }, [data])
 
   if (error) {
