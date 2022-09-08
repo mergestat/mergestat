@@ -24,19 +24,19 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnType
                 <thead>
                   <tr className='bg-white'>
                     <th scope='col' key='syncStateIcon' className='whitespace-nowrap px-6'>
-                      <span className='mr-1 select-none'></span>
+                      <span className='mr-1 select-none'>Status</span>
                     </th>
 
                     <th scope="col" key='data' className='whitespace-nowrap px-6 pl-0'>
-                      <span className='mr-1 select-none'>Data</span>
+                      <span className='mr-1 select-none'>Sync Type</span>
                     </th>
 
                     <th scope="col" key='latestRun' className='whitespace-nowrap px-6 pl-0'>
-                      <span className='mr-1 select-none'>Lastest Run</span>
+                      <span className='mr-1 select-none'>Latest Run</span>
                     </th>
 
                     <th scope="col" key='status' className='whitespace-nowrap px-6 pl-0'>
-                      <span className='mr-1 select-none'>Status</span>
+                      <span className='mr-1 select-none'>Latest Results</span>
                     </th>
 
                     <th scope="col" key='syncNow' className='whitespace-nowrap px-6'>
@@ -53,7 +53,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnType
                   {data.map((sync) => (
                     <tr key={sync.data.id}>
                       <td className="w-12 h-20 p-0">
-                        <div className={cx('h-full px-6 flex', { 'bg-gray-50': sync.status.syncState === 'disabled' })}>
+                        <div className={cx('h-full px-6 flex justify-center', { 'bg-gray-50': sync.status.syncState === 'disabled' })}>
                           <RepoSyncIcon type={sync.status.syncState} className="my-auto" />
                         </div>
                       </td>
