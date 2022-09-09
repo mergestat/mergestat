@@ -53,7 +53,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILTER_REGEX_EXCLUDE: "(.*pgk/.*|.*internal/db/.*.go|.*schema.sql)"
+          FILTER_REGEX_EXCLUDE: "(.*pkg/sqlite/.*|.*internal/db/.*.go|.*schema.sql)"
 
           LINTER_RULES_PATH: /
           SQLFLUFF_CONFIG_FILE: .sqlfluff
