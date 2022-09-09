@@ -4,7 +4,7 @@ import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import Loading from 'src/components/Loading'
 import { useRepositoriesSetState } from 'src/state/contexts'
 import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
-import useRepoImports from '../../../hooks/useRepoImports'
+import useRepoImports from 'src/views/hooks/useRepoImports'
 
 export const ManageAutoImportReposModal = () => {
   const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()

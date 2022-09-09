@@ -3,7 +3,7 @@ import { PlusIcon, RepositoryIcon } from '@mergestat/icons'
 import Image from 'next/image'
 import React from 'react'
 import { GITHUB_URL, TEST_IDS } from 'src/utils/constants'
-import useURLRepo from '../../../hooks/useUrlRepo'
+import useURLRepo from 'src/views/hooks/useUrlRepo'
 
 const EmptyRepositories: React.FC = () => {
   return (

@@ -8,7 +8,7 @@ import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals
 import { Alert, Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 import Loading from 'src/components/Loading'
-import useRepos from '../hooks/useRepos'
+import useRepos from 'src/views/hooks/useRepos'
 
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
