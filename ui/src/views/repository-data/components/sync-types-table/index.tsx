@@ -4,6 +4,7 @@ import React, { PropsWithChildren } from 'react'
 import { RepoSyncDataType } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
+import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
 
 type SycnTypesTableProps = PropsWithChildren<{
@@ -51,9 +52,9 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnType
 
                 <tbody className='bg-white'>
                   {data.map((sync) => (
-                    <tr key={sync.data.id}>
+                    <tr data-testid={TEST_IDS.syncsTypesRow} key={sync.data.id}>
                       <td className="w-12 h-20 p-0">
-                        <div className={cx('h-full px-6 flex justify-center', { 'bg-gray-50': sync.status.syncState === 'disabled' })}>
+                        <div className={cx('h-full px-6 flex justify-center', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
                           <RepoSyncIcon type={sync.status.syncState} className="my-auto" />
                         </div>
                       </td>
@@ -63,7 +64,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnType
                           id={sync.data.id}
                           title={sync.data.title}
                           brief={sync.data.brief}
-                          disabled={sync.status.syncState === 'disabled'}
+                          disabled={sync.status.syncState === SYNC_STATUS.disabled}
                         />
                       </td>
 
@@ -74,16 +75,16 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ data }: SycnType
                       <td className='text-gray-500 h-20 p-0'>
                         <RepositorySyncStatus
                           data={sync.status.data}
-                          disabled={sync.status.syncState === 'disabled'}
+                          disabled={sync.status.syncState === SYNC_STATUS.disabled}
                         />
                       </td>
 
                       <td className='h-20 p-0'>
-                        <RepositorySyncNow syncStatus={sync.status.syncState} />
+                        <RepositorySyncNow id={sync.data.id} syncStatus={sync.status.syncState} />
                       </td>
 
                       <td className='px-6 w-4'>
-                        <div className={cx('h-full flex', { 'bg-gray-50': sync.status.syncState === 'disabled' })}>
+                        <div className={cx('h-full flex', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
                           <div className='my-auto mx-6'>
                             <RepositoryTableRowOptions state={sync.status.syncState} />
                           </div>

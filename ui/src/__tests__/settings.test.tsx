@@ -4,7 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import axios from 'axios'
 import Settings from 'src/pages/settings'
 import { TEST_IDS } from 'src/utils/constants'
-import { DynamicValues } from 'src/__mocks__/repos.mock'
+import { DynamicValues } from 'src/__mocks__/constants.mock'
 import { apolloMockSetPAT, mockGitHubToken } from 'src/__mocks__/settings.mock'
 
 jest.mock('axios')

@@ -29,6 +29,8 @@ export enum TEST_IDS {
   autoImportButton = 'auto-import-button',
   importsTableList = 'imports-table-list',
   importsRow = 'imports-row',
+  syncsTypesRow = 'syncs-types-row',
+  syncsTypesSyncNowButton = 'syncs-types-sync-now-button',
 }
 
 export enum ADD_REPO {
@@ -41,6 +43,15 @@ export enum ADD_REPO {
 export enum SYNC_REPO_METHOD {
   GH_ORG = 'GITHUB_ORG',
   GH_USER = 'GITHUB_USER',
+}
+
+export enum SYNC_STATUS {
+  disabled = 'disabled',
+  running = 'running',
+  queued = 'queued',
+  succeeded = 'succeeded',
+  failed = 'failed',
+  empty = 'empty'
 }
 
 export const LINKS_TO = {

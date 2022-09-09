@@ -5,10 +5,10 @@ import React from 'react'
 import { SyncTypeData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { GITHUB_URL } from 'src/utils/constants'
+import { GITHUB_URL, SYNC_STATUS } from 'src/utils/constants'
 import { RepoDataLogs, SyncSettings } from './components'
 
-const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
+const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow }) => {
   const router = useRouter()
   const repoName = repo.name.split('/')[0]
 
@@ -29,7 +29,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
     },
     {
       text: sync?.title || '',
-      startIcon: <RepoSyncIcon type={sync?.syncState || 'empty'} />
+      startIcon: <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />
     }
   ]
 
@@ -55,6 +55,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
                 <Button
                   startIcon={<RefreshIcon className="t-icon" />}
                   className="ml-3"
+                  onClick={syncNow}
                 >
                   Sync Now
                 </Button>

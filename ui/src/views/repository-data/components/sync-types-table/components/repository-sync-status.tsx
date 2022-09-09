@@ -3,6 +3,7 @@ import type { RepoSyncStateT, SyncStatusDataT } from 'src/@types'
 
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { getRelativeTime } from 'src/utils'
+import { SYNC_STATUS } from 'src/utils/constants'
 
 type RepositorySyncStatusProps = {
   data?: SyncStatusDataT[]
@@ -54,7 +55,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     data = data.slice(len - limit)
   }
 
-  const chartArray = Array.from({ length: 15 }, (x, i) => (i in data) ? data[i] : { runningTime: 3, runningTimeReadable: '', status: 'empty', doneAt: undefined }).reverse()
+  const chartArray = Array.from({ length: 15 }, (x, i) => (i in data) ? data[i] : { runningTime: 3, runningTimeReadable: '', status: SYNC_STATUS.empty, doneAt: undefined }).reverse()
   const valueArray = chartArray.map((d: SyncStatusDataT) => d.runningTime)
   const points = dataToPoints({ data: valueArray, limit, width, height, margin, max, min })
 
@@ -68,11 +69,11 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 
   const statusColor = (status: string) => {
     switch (status) {
-      case 'empty':
+      case SYNC_STATUS.empty:
         return '#E5E7EB'
-      case 'succeeded':
+      case SYNC_STATUS.succeeded:
         return '#6EE7B7'
-      case 'failed':
+      case SYNC_STATUS.failed:
         return '#FB7185'
       default:
         return '#7DD3FC'
@@ -111,7 +112,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
       }}
       className='my-2 w-32'
     >
-      {(displayTooltip && tooltipData?.status !== 'empty') && (
+      {(displayTooltip && tooltipData?.status !== SYNC_STATUS.empty) && (
         <div
           ref={tooltipRef}
           className={`${displayTooltip ? 'visible' : 'invisible'
@@ -184,7 +185,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                   onMouseMove={onMouseMove.bind({}, i)}
                   onClick={onBarClick.bind({}, data[i])}
                   onMouseLeave={() => setActiveBar(null)}
-                  className={tooltipData?.status !== 'empty' ? 'cursor-pointer' : ''}
+                  className={tooltipData?.status !== SYNC_STATUS.empty ? 'cursor-pointer' : ''}
                 />
               </Fragment>
             )

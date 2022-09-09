@@ -5,7 +5,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Fragment } from 'react'
 import { LINKS_TO, TEST_IDS } from 'src/utils/constants'
-import useSetPat from 'src/views/repositories/hooks/useSetPat'
+import useSetPat from 'src/views/hooks/useSetPat'
 
 const Settings: NextPage = () => {
   const { pat, showValidation, isTokenValid, validatePAT, changeToken, handleSavePAT } = useSetPat()

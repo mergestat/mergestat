@@ -1,5 +1,6 @@
 import type { RepoDataStatusT, RepoSyncStateT } from 'src/@types'
 import { RelativeTimeText } from 'src/components/Fields/relative-time-text'
+import { SYNC_STATUS } from 'src/utils/constants'
 import { RepoDataDropDown } from 'src/views/repositories/drop-downs'
 
 export type RepositoryStatusProps = {
@@ -8,7 +9,7 @@ export type RepositoryStatusProps = {
 }
 
 const getLastSync = (type: RepoSyncStateT, lastSync: string) => {
-  return type === 'running' ? 'running' : type === 'queued' ? 'queued' : lastSync ? <RelativeTimeText date={lastSync} prefix='Last sync' /> : ''
+  return type === SYNC_STATUS.running ? SYNC_STATUS.running : type === SYNC_STATUS.queued ? SYNC_STATUS.queued : lastSync ? <RelativeTimeText date={lastSync} prefix='Last sync' /> : ''
 }
 
 export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ idRepo, status }: RepositoryStatusProps) => {

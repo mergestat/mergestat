@@ -6,8 +6,8 @@ import { AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { showErrorAlert } from 'src/utils/alerts'
 import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
-import useRepoImports from '../../hooks/useRepoImports'
-import useRepos from '../../hooks/useRepos'
+import useRepoImports from '../../../hooks/useRepoImports'
+import useRepos from '../../../hooks/useRepos'
 
 type ImportRadioType = {
   startIcon: React.ReactNode

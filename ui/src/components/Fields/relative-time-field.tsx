@@ -2,6 +2,7 @@ import cx from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { RepoSyncDataType } from 'src/@types'
 import { getRelativeTime } from 'src/utils'
+import { SYNC_STATUS } from 'src/utils/constants'
 
 export type RelativeTimeFieldProps = {
   date: string
@@ -28,7 +29,7 @@ export const RelativeTimeField: React.FC<RelativeTimeFieldProps> = ({ date, sync
   }, [date])
 
   return (
-    <div className={cx(styles, { 'bg-gray-50': syncData?.status.syncState === 'disabled' })}>
+    <div className={cx(styles, { 'bg-gray-50': syncData?.status.syncState === SYNC_STATUS.disabled })}>
       {dateRun}
     </div>
   )
