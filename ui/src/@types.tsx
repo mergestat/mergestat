@@ -50,6 +50,7 @@ export type SyncStatusDataT = {
 export type RepoSyncDataType = {
   data: {
     id: string
+    type: string
     title: string
     brief: string
   }
@@ -61,6 +62,7 @@ export type RepoSyncDataType = {
 }
 
 export type RepoSyncData = {
+  id: string
   name: string
   type: RepoType
   syncs?: Array<RepoSyncDataType>

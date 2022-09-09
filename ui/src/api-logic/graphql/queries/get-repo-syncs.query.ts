@@ -10,9 +10,6 @@ const GET_REPO_SYNCS = gql`
         nodes {
           id
           syncType
-          repoSyncTypeBySyncType {
-            description
-          }
           repoSyncQueues(first: 15, orderBy: CREATED_AT_DESC) {
             nodes {
               id
@@ -22,6 +19,13 @@ const GET_REPO_SYNCS = gql`
             }
           }
         }
+      }
+    }
+    repoSyncTypes {
+      nodes {
+        type
+        description
+        shortName
       }
     }
   }
