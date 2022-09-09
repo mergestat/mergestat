@@ -1,7 +1,7 @@
 import { differenceInSeconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, SyncStatusDataT } from 'src/@types'
 import { getSimpleDurationTime, mapToRepoSyncStateT } from 'src/utils'
-import { GITHUB_URL } from 'src/utils/constants'
+import { GITHUB_URL, SYNC_STATUS } from 'src/utils/constants'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
 /**
@@ -29,7 +29,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
       latestRun: s?.repoSyncQueues.nodes[0]?.startedAt ?? s?.repoSyncQueues.nodes[1]?.startedAt,
       status: {
         data: [],
-        syncState: s?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(s?.repoSyncQueues.nodes[0]?.status || '') : 'empty',
+        syncState: s?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(s?.repoSyncQueues.nodes[0]?.status || '') : SYNC_STATUS.empty,
       }
     }
 
@@ -38,7 +38,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
       const queueData: SyncStatusDataT = {
         status: mapToRepoSyncStateT(q?.status || ''),
         runningTime: q?.doneAt ? differenceInSeconds(new Date(q?.doneAt), new Date(q?.startedAt)) : 0, // Determine chart height
-        runningTimeReadable: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : q?.startedAt ? 'running' : 'queued',
+        runningTimeReadable: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : q?.startedAt ? SYNC_STATUS.running : SYNC_STATUS.queued,
         doneAt: q?.doneAt ?? new Date(q?.doneAt)
       }
       syncData.status.data?.push(queueData)

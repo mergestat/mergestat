@@ -8577,6 +8577,13 @@ export type SetGithubPatMutationVariables = Exact<{
 
 export type SetGithubPatMutation = { replaceGitHubPAT?: boolean | null };
 
+export type SyncMutationVariables = Exact<{
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type SyncMutation = { createRepoSyncQueue?: { repoSyncQueue?: { id: any, status: string, createdAt: any } | null } | null };
+
 export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 
 

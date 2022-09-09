@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { AddRepoImportMutation, AddRepoMutation } from 'src/api-logic/graphql/generated/schema'
 import { ADD_REPO, AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
-import { DynamicValues } from './repos.mock'
+import { DynamicValues } from './constants.mock'
 
 export const mockRepoSatus: AddRepoMutation = {
   createRepo: {

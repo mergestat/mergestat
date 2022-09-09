@@ -94,6 +94,7 @@ export type SyncTypeData = {
   }
   sync?: SyncTypeInfo
   logs?: Array<SyncLogsType>
+  syncNow?: () => void
 }
 
 export type SettingsDataType = {

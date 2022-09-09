@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 import { SetGithubPatMutation } from 'src/api-logic/graphql/generated/schema'
 import SET_PAT from 'src/api-logic/graphql/mutations/set-pat'
-import { DynamicValues } from './repos.mock'
+import { DynamicValues } from './constants.mock'
 
 export const mockSetPAT: SetGithubPatMutation = {
   replaceGitHubPAT: true

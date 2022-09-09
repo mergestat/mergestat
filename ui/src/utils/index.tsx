@@ -1,6 +1,7 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncStateT } from 'src/@types'
+import { SYNC_STATUS } from './constants'
 
 export function checkRepoValidate(repo: string, checkDomain = true) {
   return checkDomain
@@ -86,16 +87,16 @@ export function getSimpleDurationTime(start: Date, end: Date): string {
 export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
   switch (status) {
     case 'DONE':
-      return 'succeeded'
+      return SYNC_STATUS.succeeded
     case 'RUNNING':
-      return 'running'
+      return SYNC_STATUS.running
     case 'QUEUED':
-      return 'queued'
+      return SYNC_STATUS.queued
     case 'FAILED':
-      return 'failed'
+      return SYNC_STATUS.failed
     case 'DISABLED':
-      return 'disabled'
+      return SYNC_STATUS.disabled
     default:
-      return 'empty'
+      return SYNC_STATUS.empty
   }
 }

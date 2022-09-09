@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { PropsWithChildren, ReactNode } from 'react'
 import { RepoSyncStateT } from 'src/@types'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { TEST_IDS } from 'src/utils/constants'
+import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 
 type RepoDataDropDownProps = {
   data: Array<{ url: string, title: string, lastSync: string | ReactNode }>
@@ -41,19 +41,19 @@ export const RepoDataDropDown: React.FC<RepoDataDropDownProps> = ({ data, status
 
 function getRepoStatusComponent(status: RepoSyncStateT, count: number): React.ReactNode {
   switch (status) {
-    case 'succeeded':
+    case SYNC_STATUS.succeeded:
       return <IconAndQuantity count={count}>
         <CircleCheckFilledIcon className="t-icon text-semantic-success" />
       </IconAndQuantity>
-    case 'failed':
+    case SYNC_STATUS.failed:
       return <IconAndQuantity count={count}>
         <CircleErrorFilledIcon className="t-icon text-semantic-danger" />
       </IconAndQuantity>
-    case 'queued':
+    case SYNC_STATUS.queued:
       return <IconAndQuantity count={count}>
         <ClockIcon className='t-icon text-semantic-mutedIcon' />
       </IconAndQuantity>
-    case 'running':
+    case SYNC_STATUS.running:
       return <IconAndQuantity count={count}>
         <Spinner size="sm" className="mr-2" />
       </IconAndQuantity>

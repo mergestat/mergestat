@@ -4,7 +4,7 @@ import React from 'react'
 import { RepoExportT } from 'src/@types'
 import { useRepositoriesContext } from 'src/state/contexts'
 import { ADD_REPO as ADD_REPO_ENUM, TEST_IDS } from 'src/utils/constants'
-import useAddRepos from '../../hooks/useAddRepos'
+import useAddRepos from 'src/views/hooks/useAddRepos'
 
 type ModalFooterProps = {
   selectedTab: RepoExportT

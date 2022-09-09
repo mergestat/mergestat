@@ -5,7 +5,7 @@ import React from 'react'
 import { SyncLogsType, SyncTypeData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { GITHUB_URL } from 'src/utils/constants'
+import { GITHUB_URL, SYNC_STATUS } from 'src/utils/constants'
 import { LogsInfo } from './components'
 
 const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
@@ -30,12 +30,12 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
     },
     {
       text: sync?.title || '',
-      startIcon: <RepoSyncIcon type={sync?.syncState || 'empty'} />,
+      startIcon: <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />,
       onClick: () => router.push(`/repos/${repo.id}/${sync?.id}`),
     },
     {
       text: logInfo?.syncStartText || '',
-      startIcon: <RepoSyncIcon type={logInfo?.syncType || 'empty'} />,
+      startIcon: <RepoSyncIcon type={logInfo?.syncType || SYNC_STATUS.empty} />,
     }
   ]
 

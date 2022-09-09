@@ -1,29 +1,11 @@
-import { Fragment } from 'react'
 import Head from 'next/head'
-import RepoDataView from 'src/views/repository-data'
-import { useRouter } from 'next/router'
-import { useQuery } from '@apollo/client'
-import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/get-repo-syncs.query'
-import { mapToSyncsData } from 'src/api-logic/mappers/repo-syncs'
+import { Fragment } from 'react'
 import Loading from 'src/components/Loading'
-import { showErrorAlert } from 'src/utils/alerts'
-import { MERGESTAT_TITLE } from 'src/utils/constants'
+import useSyncs from 'src/views/hooks/useSyncs'
+import RepoDataView from 'src/views/repository-data'
 
 const RepoDetailsPage = () => {
-  const router = useRouter()
-  const { repository } = router.query
-
-  const { loading, error, data } = useQuery(GET_REPO_SYNCS, {
-    variables: { id: repository },
-    pollInterval: 5000,
-  })
-
-  const repo = mapToSyncsData(data)
-  const title = `${MERGESTAT_TITLE} ${repo?.name}`
-
-  if (error) {
-    showErrorAlert(error.message)
-  }
+  const { loading, repo, title } = useSyncs()
 
   return (
     <Fragment>

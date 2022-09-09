@@ -1,11 +1,12 @@
 import { faker } from '@faker-js/faker'
+import { SYNC_STATUS } from 'src/utils/constants'
 import { RepositoryStatusProps } from 'src/views/repositories/components/repositories-table/repositories-table-columns'
 
 export const mockRepoSatus: RepositoryStatusProps = {
   idRepo: faker.datatype.uuid(),
   status: [
     {
-      type: 'succeeded',
+      type: SYNC_STATUS.succeeded,
       count: 5,
       syncs: [
         {

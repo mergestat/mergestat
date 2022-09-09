@@ -2,16 +2,7 @@ import { faker } from '@faker-js/faker'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
-
-export enum DynamicValues {
-  urlGithub = 'https://github.com/',
-  angular = 'angular',
-  newRepoToAdd = 'mergestat/docs',
-  existingRepo = 'mergestat/mergestat',
-  validPAT = 'ghp_cJYwtBb8DbdXNYAw3wegVcTFDYJQhu0QpmCQ',
-  invalidPAT = 'gho_cJYwtBb8DbdXNYAw3wegVcTFDYJQhpmCQ',
-  autoImportUser = 'gdcanonn'
-}
+import { DynamicValues } from './constants.mock'
 
 export const mockRepoData: GetReposQuery = {
   repoImports: {

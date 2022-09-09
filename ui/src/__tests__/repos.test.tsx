@@ -10,10 +10,11 @@ import { RepositoryStatus } from 'src/views/repositories/components/repositories
 import { AddRepositoryModal } from 'src/views/repositories/modals/add-repository-modal'
 import { ManageAutoImportReposModal } from 'src/views/repositories/modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from 'src/views/repositories/modals/auto-import-repository-modals/sync-auto-import-modal'
+import { DynamicValues } from 'src/__mocks__/constants.mock'
 import { apolloMockImports } from 'src/__mocks__/imports.mock'
 import { apolloMockAddExistingRepo, apolloMockAddNewRepo, apolloMockAutoImportUser } from 'src/__mocks__/repo-add.mock'
 import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
-import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposWithData, DynamicValues, mockRepoData } from 'src/__mocks__/repos.mock'
+import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposWithData, mockRepoData } from 'src/__mocks__/repos.mock'
 
 afterEach(() => {
   cleanup()
