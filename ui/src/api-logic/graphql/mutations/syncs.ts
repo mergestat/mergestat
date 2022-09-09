@@ -13,4 +13,16 @@ const SYNC_NOW = gql`
     }
   }
 `
-export default SYNC_NOW
+
+const ADD_SYNC_TYPE = gql`
+  mutation addSyncType($repoId: UUID!, $syncType: String!) {
+    createRepoSync(input: {repoSync: {repoId: $repoId, syncType: $syncType}}) {
+      repoSync {
+        id
+        syncType
+      }
+    }
+  }
+`
+
+export { SYNC_NOW, ADD_SYNC_TYPE }

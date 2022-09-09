@@ -12,29 +12,34 @@ import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
   // General repo info
   const repoData: RepoSyncData = {
+    id: data?.repo?.id,
     name: data?.repo?.repo.replace(GITHUB_URL, '') || '',
     type: data?.repo?.isGithub ? 'github' : 'other',
   }
 
   const mappedData: Array<RepoSyncDataType> = []
 
-  data?.repo?.repoSyncs.nodes.forEach((s) => {
-    // 1. Get sync info
+  data?.repoSyncTypes?.nodes.forEach((st) => {
+    // 1. Find sync type data
+    const syncType = data?.repo?.repoSyncs.nodes.find(rs => st.type === rs.syncType)
+
+    // 2. Get sync info
     const syncData: RepoSyncDataType = {
       data: {
-        id: s.id,
-        title: s?.syncType.replace(/_/ig, ' ') || '',
-        brief: s?.repoSyncTypeBySyncType?.description || '',
+        id: syncType?.id,
+        type: st.type || '',
+        title: st.shortName || '',
+        brief: st.description || '',
       },
-      latestRun: s?.repoSyncQueues.nodes[0]?.startedAt ?? s?.repoSyncQueues.nodes[1]?.startedAt,
+      latestRun: syncType?.repoSyncQueues.nodes[0]?.startedAt ?? syncType?.repoSyncQueues.nodes[1]?.startedAt,
       status: {
         data: [],
-        syncState: s?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(s?.repoSyncQueues.nodes[0]?.status || '') : SYNC_STATUS.empty,
+        syncState: syncType?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(syncType?.repoSyncQueues.nodes[0]?.status || '') : SYNC_STATUS.empty,
       }
     }
 
-    // 2. Get status data of a sync (sync queues)
-    s?.repoSyncQueues.nodes.forEach((q) => {
+    // 3. Get status data of a sync (sync queues)
+    syncType?.repoSyncQueues.nodes.forEach((q) => {
       const queueData: SyncStatusDataT = {
         status: mapToRepoSyncStateT(q?.status || ''),
         runningTime: q?.doneAt ? differenceInSeconds(new Date(q?.doneAt), new Date(q?.startedAt)) : 0, // Determine chart height
