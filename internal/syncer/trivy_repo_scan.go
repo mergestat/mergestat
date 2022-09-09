@@ -31,7 +31,7 @@ func (w *worker) handleTrivyRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	cmd := exec.CommandContext(ctx, "trivy", "repository", j.Repo, "-q", "-f", "json")
+	cmd := exec.CommandContext(ctx, "trivy", "repository", j.Repo, "-q", "-f", "json", "--timeout", "30m")
 	cmd.Env = append(cmd.Env, fmt.Sprintf("GITHUB_TOKEN=%s", ghToken))
 
 	var output []byte
