@@ -9,6 +9,7 @@ import { TEST_IDS } from 'src/utils/constants'
 export const EmptyRepositoryTable: React.FC = () => {
   const { setShowAddRepositoryModal } = useRepositoriesSetState()
 
+  console.log('testing UILINT')
   return (
     <div data-testid={TEST_IDS.emptyRepositoryTable} className="flex items-center justify-center h-full w-full">
       <div className="w-full max-w-5xl">
