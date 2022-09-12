@@ -78,15 +78,19 @@ func (i *importer) exec(ctx context.Context) error {
 	return nil
 }
 
-var listGitHubOrgReposSQL = `SELECT name, topics FROM github_org_repos(?)`
-var listGitHubUserReposSQL = `SELECT name, topics FROM github_user_repos(?)`
+var (
+	listGitHubOrgReposSQL  = `SELECT name, topics FROM github_org_repos(?)`
+	listGitHubUserReposSQL = `SELECT name, topics FROM github_user_repos(?)`
+)
 
 type githubOrgRepoImportSettings struct {
-	Org string `json:"org"`
+	Org                string `json:"org"`
+	RemoveDeletedRepos bool   `json:"removeDeletedRepos"`
 }
 
 type githubUserRepoImportSettings struct {
-	User string `json:"user"`
+	User               string `json:"user"`
+	RemoveDeletedRepos bool   `json:"removeDeletedRepos"`
 }
 
 type githubRepo struct {
@@ -99,6 +103,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 	repos := make([]*githubRepo, 0)
 	var mergestatSQL string
 	var repoOwner string
+	var removeDeletedRepos bool
 
 	// first, determine what kind of GitHub import this is (ORG or USER) and set the mergestat SQL to use
 	switch imp.Type {
@@ -109,6 +114,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 		}
 
 		repoOwner = settings.Org
+		removeDeletedRepos = settings.RemoveDeletedRepos
 		mergestatSQL = listGitHubOrgReposSQL
 	case "GITHUB_USER":
 		var settings githubUserRepoImportSettings
@@ -117,6 +123,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 		}
 
 		repoOwner = settings.User
+		removeDeletedRepos = settings.RemoveDeletedRepos
 		mergestatSQL = listGitHubUserReposSQL
 	default:
 		return fmt.Errorf("unknown import type: %s", imp.Type)
@@ -127,12 +134,14 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 		return err
 	}
 
-	// start a new pg transaction to handle the repo upsert
+	// start a new pg transaction to handle the repo upsert and handle deletion of removed repos
 	var tx pgx.Tx
 	var err error
+
 	if tx, err = i.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return err
 	}
+
 	defer func() {
 		if err := tx.Rollback(ctx); err != nil {
 			if !errors.Is(err, pgx.ErrTxClosed) {
@@ -140,6 +149,13 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 			}
 		}
 	}()
+
+	if removeDeletedRepos {
+		err = i.handleDeletedRepos(ctx, tx, repos, repoOwner, imp.ID)
+		if err != nil {
+			return err
+		}
+	}
 
 	repoNames := make([]string, len(repos))
 
@@ -168,4 +184,23 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 	i.logger.Info().Strs("repos", repoNames).Msgf("importing repos from GitHub: %s", repoOwner)
 
 	return tx.Commit(ctx)
+}
+
+func (i *importer) handleDeletedRepos(ctx context.Context, tx pgx.Tx, repos []*githubRepo, repoOwner string, ID uuid.UUID) error {
+	var currentRepos []string
+	var err error
+
+	i.logger.Info().Msg("starting to delete removed repos")
+
+	for _, repo := range repos {
+		currentRepos = append(currentRepos, fmt.Sprintf("https://github.com/%s/%s", repoOwner, repo.Name))
+	}
+
+	if err = i.db.WithTx(tx).DeleteRemovedRepos(ctx, db.DeleteRemovedReposParams{Column1: ID, Column2: currentRepos}); err != nil {
+		return err
+	}
+
+	i.logger.Info().Msg("deletion of removed repos completed")
+
+	return err
 }
