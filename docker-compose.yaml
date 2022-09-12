@@ -55,6 +55,8 @@ services:
       - "--enable-query-batching"
       - "--disable-query-log"
       - "--legacy-relations=omit"
+      - "--jwt-secret=secret"
+      - "--default-role=anonymous"
     environment:
       FUSE_SECRET: password
       DISPLAY_PG_HOSTNAME: localhost
