@@ -1,21 +1,21 @@
 BEGIN;
 
--- create an anonymous role with no permissions for unauthenticated requests
+-- create an mergestat_anonymous role with no permissions for unauthenticated requests
 -- https://stackoverflow.com/questions/8092086/create-postgresql-role-user-if-it-doesnt-exist
 DO
 $do$
 BEGIN
    IF EXISTS (
       SELECT FROM pg_catalog.pg_roles
-      WHERE  rolname = 'anonymous') THEN
+      WHERE  rolname = 'mergestat_anonymous') THEN
 
-      RAISE NOTICE 'Role "anonymous" already exists. Skipping.';
+      RAISE NOTICE 'Role "mergestat_anonymous" already exists. Skipping.';
    ELSE
       BEGIN   -- nested block
-         CREATE ROLE anonymous LOGIN;
+         CREATE ROLE mergestat_anonymous LOGIN;
       EXCEPTION
          WHEN duplicate_object THEN
-            RAISE NOTICE 'Role "anonymous" was just created by a concurrent transaction. Skipping.';
+            RAISE NOTICE 'Role "mergestat_anonymous" was just created by a concurrent transaction. Skipping.';
       END;
    END IF;
 END

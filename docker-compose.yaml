@@ -56,7 +56,7 @@ services:
       - "--disable-query-log"
       - "--legacy-relations=omit"
       - "--jwt-secret=secret"
-      - "--default-role=anonymous"
+      - "--default-role=mergestat_anonymous"
     environment:
       FUSE_SECRET: password
       DISPLAY_PG_HOSTNAME: localhost
