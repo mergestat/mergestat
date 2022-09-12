@@ -7,13 +7,15 @@ import useSyncNow from 'src/views/hooks/useSyncNow'
 import useSyncs from 'src/views/hooks/useSyncs'
 
 export type RepositorySyncNowProps = {
-  id: string
+  repoId: string
+  syncType: string
+  syncTypeId: string
   syncStatus: RepoSyncStateT
 }
 
-export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ id, syncStatus }) => {
+export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, syncType, syncTypeId, syncStatus }) => {
   const { refetch } = useSyncs()
-  const { syncNow } = useSyncNow(refetch)
+  const { syncNow, addSyncType } = useSyncNow(refetch)
 
   if (syncStatus === SYNC_STATUS.disabled) return <div className='h-full bg-gray-50' />
 
@@ -31,11 +33,9 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ id, syncSt
       }
       size="small"
       onClick={() => {
-        syncNow({
-          variables: {
-            syncId: id
-          }
-        })
+        syncTypeId
+          ? syncNow({ variables: { syncId: syncTypeId } })
+          : addSyncType({ variables: { repoId, syncType } })
       }}
     >
       {syncStatus === SYNC_STATUS.running ? 'Syncing...' : 'Sync Now'}

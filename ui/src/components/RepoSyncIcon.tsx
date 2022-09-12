@@ -1,5 +1,5 @@
 import { Spinner } from '@mergestat/blocks'
-import { CircleCheckFilledIcon, CircleErrorFilledIcon, CircleInformationFilledIcon, ClockIcon } from '@mergestat/icons'
+import { CircleCheckFilledIcon, CircleErrorFilledIcon, CircleInformationFilledIcon, ClockIcon, MinusIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import type { RepoSyncStateT } from 'src/@types'
 import { SYNC_STATUS } from 'src/utils/constants'
@@ -22,6 +22,6 @@ export const RepoSyncIcon = ({ type, className = '' }: RepoSyncIconPropsT) => {
     case SYNC_STATUS.running:
       return <Spinner size="sm" className={className} />
     default:
-      return <></>
+      return <MinusIcon className={cx('t-icon text-semantic-mutedIcon', { [className]: className !== '' })} />
   }
 }

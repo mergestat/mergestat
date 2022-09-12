@@ -8584,6 +8584,14 @@ export type SyncMutationVariables = Exact<{
 
 export type SyncMutation = { createRepoSyncQueue?: { repoSyncQueue?: { id: any, status: string, createdAt: any } | null } | null };
 
+export type AddSyncTypeMutationVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncType: Scalars['String'];
+}>;
+
+
+export type AddSyncTypeMutation = { createRepoSync?: { repoSync?: { id: any, syncType: string } | null } | null };
+
 export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -8594,7 +8602,7 @@ export type GetRepoSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetRepoSyncsQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null }> } }> } } | null };
+export type GetRepoSyncsQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null }> } }> } } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
 
 export type GetReposQueryVariables = Exact<{
   search: Scalars['String'];

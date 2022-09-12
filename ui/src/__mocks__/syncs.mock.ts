@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
-import { GetRepoSyncsQuery, SyncMutation } from 'src/api-logic/graphql/generated/schema'
-import SYNC_NOW from 'src/api-logic/graphql/mutations/syncs'
+import { AddSyncTypeMutation, GetRepoSyncsQuery, SyncMutation } from 'src/api-logic/graphql/generated/schema'
+import { ADD_SYNC_TYPE, SYNC_NOW } from 'src/api-logic/graphql/mutations/syncs'
 import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/get-repo-syncs.query'
 import { DynamicValues } from './constants.mock'
 
@@ -97,9 +97,62 @@ const queueArray = (runningSync: boolean) => ([
   }
 ])
 
+const syncsTypesArray = [
+  {
+    type: 'GIT_COMMITS',
+    description: 'Retrieves the commit history of a repo',
+    shortName: 'Git Commits'
+  },
+  {
+    type: 'GIT_COMMIT_STATS',
+    description: 'Retrieves commit stats for a repo',
+    shortName: 'Git Commit Stats'
+  },
+  {
+    type: 'GIT_FILES',
+    description: 'Retrieves files (content and paths) of a git repo',
+    shortName: 'Git Files'
+  },
+  {
+    type: 'GITHUB_PR_COMMITS',
+    description: 'Retrieves commits for all pull requests in a GitHub repo',
+    shortName: 'GitHub PR Commits'
+  },
+  {
+    type: 'GITHUB_PR_REVIEWS',
+    description: 'Retrieves the reviews of all pull requests in a GitHub repo',
+    shortName: 'GitHub PR Reviews'
+  },
+  {
+    type: 'GITHUB_REPO_ISSUES',
+    description: 'Retrieves all the issues of a GitHub repo',
+    shortName: 'GitHub Repo Issues'
+  },
+  {
+    type: 'GITHUB_REPO_METADATA',
+    description: 'Retrieves metadata about a GitHub repo',
+    shortName: 'GitHub Repo Metadata'
+  },
+  {
+    type: 'GITHUB_REPO_PRS',
+    description: 'Retrieves all the pull requests of a GitHub repo',
+    shortName: 'GitHub Repo Pull Requests'
+  },
+  {
+    type: 'GITHUB_REPO_STARS',
+    description: 'Retrieves all stargazers of a GitHub repo',
+    shortName: 'GitHub Repo Stars'
+  },
+  {
+    type: 'GIT_REFS',
+    description: 'Retrieves all the refs of a git repo',
+    shortName: 'Git Refs'
+  }
+]
+
 export const mockSyncsTypesData = (runningSync: boolean): GetRepoSyncsQuery => ({
   repo: {
-    id: faker.datatype.uuid(),
+    id: DynamicValues.repoId,
     repo: 'https://github.com/mergestat/mergestat',
     isGithub: true,
     repoSyncs: {
@@ -107,9 +160,6 @@ export const mockSyncsTypesData = (runningSync: boolean): GetRepoSyncsQuery => (
         {
           id: DynamicValues.syncTypeGitCommitStatId,
           syncType: 'GIT_COMMIT_STATS',
-          repoSyncTypeBySyncType: {
-            description: 'Retrieves commit stats for a repo'
-          },
           repoSyncQueues: {
             nodes: queueArray(false)
           }
@@ -117,19 +167,19 @@ export const mockSyncsTypesData = (runningSync: boolean): GetRepoSyncsQuery => (
         {
           id: DynamicValues.syncTypeGitFilesId,
           syncType: 'GIT_FILES',
-          repoSyncTypeBySyncType: {
-            description: 'Retrieves files (content and paths) of a git repo'
-          },
           repoSyncQueues: {
             nodes: queueArray(runningSync)
           }
         }
       ],
     },
+  },
+  repoSyncTypes: {
+    nodes: syncsTypesArray
   }
-}
-)
+})
 
+// Apollo Mock: Sync Types
 export const apolloMockSyncsTypesData = {
   request: {
     query: GET_REPO_SYNCS,
@@ -140,6 +190,7 @@ export const apolloMockSyncsTypesData = {
   }
 }
 
+// Apollo Mock: Sync Types with a sync running
 export const apolloMockSyncsTypesRunningData = {
   request: {
     query: GET_REPO_SYNCS,
@@ -150,6 +201,7 @@ export const apolloMockSyncsTypesRunningData = {
   }
 }
 
+// Apollo Mock: Sync now
 export const mockSyncNow: SyncMutation = {
   createRepoSyncQueue: {
     repoSyncQueue: {
@@ -167,5 +219,46 @@ export const apolloMockSyncNow = {
   },
   result: {
     data: mockSyncNow
+  }
+}
+
+// Apollo Mock: Sync now after a sync type addition
+export const mockNextSyncNow: SyncMutation = {
+  createRepoSyncQueue: {
+    repoSyncQueue: {
+      id: faker.random.numeric(4),
+      status: 'QUEUED',
+      createdAt: faker.date.recent(),
+    },
+  }
+}
+
+export const apolloMockNextSyncNow = {
+  request: {
+    query: SYNC_NOW,
+    variables: { syncId: DynamicValues.newSyncTypeId }
+  },
+  result: {
+    data: mockNextSyncNow
+  }
+}
+
+// Apollo Mock: Add sync type
+export const mockAddSyncType: AddSyncTypeMutation = {
+  createRepoSync: {
+    repoSync: {
+      id: DynamicValues.newSyncTypeId,
+      syncType: 'GIT_COMMITS',
+    },
+  }
+}
+
+export const apolloMockAddSyncType = {
+  request: {
+    query: ADD_SYNC_TYPE,
+    variables: { repoId: DynamicValues.repoId, syncType: 'GIT_COMMITS' }
+  },
+  result: {
+    data: mockAddSyncType
   }
 }

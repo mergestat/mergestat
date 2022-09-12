@@ -21,7 +21,7 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
         </Tabs.List>
         <Tabs.Panels className="p-8 flex-1 overflow-auto">
           <Tabs.Panel>
-            <SycnTypesTable data={data?.syncs || []} />
+            <SycnTypesTable repoId={data?.id || ''} data={data?.syncs || []} />
           </Tabs.Panel>
           <Tabs.Panel>
             <RepoSettings />
