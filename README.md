@@ -29,6 +29,10 @@ We are working on GitHub auth alternatives, but for now a PAT is your best bet.
 
 You can manage a single PAT for your instance in the `Settings` area of the management UI.
 
+Now if you visit `http://localhost:3000/` you should be able to access Grafana where you can see example dashboards using the data from Fuse
+
+<img alt="MergeStat Fuse Example Dashboards" src="docs/fuse-examples.png" />
+
 ### Resetting an Instance
 
 If you'd like to "start from scratch" (i.e. reset the Fuse DB and start with a fresh deployment), run the following:
