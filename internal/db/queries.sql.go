@@ -23,6 +23,20 @@ func (q *Queries) DeleteGitHubRepoInfo(ctx context.Context, repoID uuid.UUID) er
 	return err
 }
 
+const deleteRemovedRepos = `-- name: DeleteRemovedRepos :exec
+DELETE FROM public.repos WHERE repo_import_id = $1::uuid AND NOT(repo = ANY($2::TEXT[]))
+`
+
+type DeleteRemovedReposParams struct {
+	Column1 uuid.UUID
+	Column2 []string
+}
+
+func (q *Queries) DeleteRemovedRepos(ctx context.Context, arg DeleteRemovedReposParams) error {
+	_, err := q.db.Exec(ctx, deleteRemovedRepos, arg.Column1, arg.Column2)
+	return err
+}
+
 const dequeueSyncJob = `-- name: DequeueSyncJob :one
 WITH dequeued AS (
 	UPDATE mergestat.repo_sync_queue SET status = 'RUNNING'
