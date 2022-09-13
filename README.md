@@ -12,43 +12,48 @@ It's intended purpose is to enable "operational analytics for engineering teams,
 
 <img alt="MergeStat Fuse Illustration" src="docs/illustration-logs.png" width="500" />
 
-## Testing locally
+## Running Locally
 
-Try Fuse out with `docker-compose` by running the following locally:
-
-First, clone this repository to a local directory.
-Create a file called `.env-worker` in the root and add the following:
-
-```
-GITHUB_TOKEN=ghp_XXXXX
-```
-
-Where `ghp_XXXXX` is replaced with a GitHub [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
-
-Then:
+Try Fuse out locally with `docker-compose` by cloning this repository and running
 
 ```sh
-# start the fuse stack in the background
-docker-compose up -d
-
-# add an initial repo and some data to sync
-docker-compose run --entrypoint ./docker-init-entrypoint.sh --rm worker add-repo https://github.com/mergestat/mergestat
+docker-compose up
 ```
 
-Now if you visit `http://localhost:3000/` you should be able to access a Grafana instance with a default chart.
+Now if you visit `http://localhost:3300/` you should be able to access our management UI where you can begin adding repositories and syncing data.
 
-## Roadmap
+**NOTE** if you'd like to make use of GitHub API data (any sync type that uses the GitHub API **including repo auto imports**) or any private GitHub repos you will need to supply a GitHub [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+We are working on GitHub auth alternatives, but for now a PAT is your best bet.
 
-### Sync Types
+<img alt="MergeStat Fuse GitHub PAT Management UI" src="docs/github-pat-logo.png" />
 
-- [x] `GIT_COMMITS`
-- [x] `GIT_COMMIT_STATS`
-- [x] `GIT_REFS` ([#1](https://github.com/mergestat/fuse/issues/1))
-- [x] `GITHUB_REPO_METADATA`
-- [x] `GITHUB_REPO_PRS` ([#2](https://github.com/mergestat/fuse/issues/2))
-- [x] `GITHUB_REPO_ISSUES` ([#2](https://github.com/mergestat/fuse/issues/2))
-- [x] `GITHUB_REPO_STARS` ([#2](https://github.com/mergestat/fuse/issues/2))
-- [x] `GITHUB_PR_REVIEWS` ([#18](https://github.com/mergestat/fuse/issues/18))
+You can manage a single PAT for your instance in the `Settings` area of the management UI.
+
+### Resetting an Instance
+
+If you'd like to "start from scratch" (i.e. reset the Fuse DB and start with a fresh deployment), run the following:
+
+```
+docker-compose down
+```
+
+```
+docker volume rm fuse_db_data
+```
+
+## Data Types
+
+- `GIT_COMMITS` Retrieves the commit history of a repo
+- `GIT_COMMIT_STATS` Retrieves commit stats for a repo
+- `GIT_FILES` Retrieves files (content and paths) of a git repo
+- `GITHUB_PR_COMMITS` Retrieves commits for all pull requests in a GitHub repo
+- `GITHUB_PR_REVIEWS` Retrieves the reviews of all pull requests in a GitHub repo
+- `GITHUB_REPO_ISSUES` Retrieves all the issues of a GitHub repo
+- `GITHUB_REPO_METADATA` Retrieves metadata about a GitHub repo
+- `GITHUB_REPO_PRS` Retrieves all the pull requests of a GitHub repo
+- `GITHUB_REPO_STARS` Retrieves all stargazers of a GitHub repo
+- `GIT_REFS` Retrieves all the refs of a git repo
+- `TRIVY_REPO_SCAN` Executes a trivy scan on a git repository
 
 ### Database Migrations
 
