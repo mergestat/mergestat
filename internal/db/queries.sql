@@ -81,7 +81,7 @@ UPDATE mergestat.repo_sync_queue SET last_keep_alive = now() WHERE id = $1;
 
 -- name: EnqueueAllCompletedSyncs :exec
 INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
-SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE enabled AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
+SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE schedule_enabled AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
 ;
 
 -- name: MarkSyncsAsTimedOut :many
