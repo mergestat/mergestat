@@ -20,17 +20,20 @@ import (
 )
 
 const (
-	syncTypeGitCommits         = "GIT_COMMITS"
-	syncTypeGitCommitStats     = "GIT_COMMIT_STATS"
-	syncTypeGitRefs            = "GIT_REFS"
-	syncTypeGitFiles           = "GIT_FILES"
+	syncTypeGitCommits     = "GIT_COMMITS"
+	syncTypeGitCommitStats = "GIT_COMMIT_STATS"
+	syncTypeGitRefs        = "GIT_REFS"
+	syncTypeGitFiles       = "GIT_FILES"
+	syncTypeGitBlame       = "GIT_BLAME"
+
 	syncTypeGitHubRepoMetadata = "GITHUB_REPO_METADATA"
 	syncTypeGitHubRepoPRs      = "GITHUB_REPO_PRS"
 	syncTypeGitHubRepoIssues   = "GITHUB_REPO_ISSUES"
 	syncTypeGitHubRepoStars    = "GITHUB_REPO_STARS"
 	syncTypeGitHubPRReviews    = "GITHUB_PR_REVIEWS"
 	syncTypeGitHubPRCommits    = "GITHUB_PR_COMMITS"
-	syncTypeTrivyRepoScan      = "TRIVY_REPO_SCAN"
+
+	syncTypeTrivyRepoScan = "TRIVY_REPO_SCAN"
 )
 
 type worker struct {
@@ -151,6 +154,8 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 		return w.handleGitCommitStats(ctx, j)
 	case syncTypeGitRefs:
 		return w.handleGitRefs(ctx, j)
+	case syncTypeGitBlame:
+		return w.handleGitBlame(ctx, j)
 	case syncTypeGitHubRepoMetadata:
 		return w.handleGitHubRepoMetadata(ctx, j)
 	case syncTypeGitHubRepoPRs:
@@ -202,7 +207,7 @@ func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
 }
 
 // cloneRepo is a helper function for cloning a repository to a path on disk
-func (w *worker) cloneRepo(ghToken, url, path string) (*libgit2.Repository, error) {
+func (w *worker) cloneRepo(ghToken, url, path string, bare bool) (*libgit2.Repository, error) {
 	var creds *libgit2.Credential
 	var err error
 	if creds, err = libgit2.NewCredentialUserpassPlaintext(ghToken, ""); err != nil {
@@ -222,11 +227,14 @@ func (w *worker) cloneRepo(ghToken, url, path string) (*libgit2.Repository, erro
 
 	var repo *libgit2.Repository
 	if repo, err = libgit2.Clone(url, path, &libgit2.CloneOptions{
-		Bare: true,
+		Bare: bare,
 		FetchOptions: libgit2.FetchOptions{
 			RemoteCallbacks: libgit2.RemoteCallbacks{
 				CredentialsCallback: credentialsCallback,
 			},
+		},
+		CheckoutOptions: libgit2.CheckoutOptions{
+			Strategy: libgit2.CheckoutForce,
 		},
 	}); err != nil {
 		return nil, err

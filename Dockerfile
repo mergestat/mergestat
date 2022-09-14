@@ -10,7 +10,7 @@ RUN PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/
 
 FROM debian:buster-slim
 RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    ca-certificates curl postgresql-client && \
+    ca-certificates curl postgresql-client git && \
     rm -rf /var/lib/apt/lists/*
 
 # copy over migrations
