@@ -9,6 +9,7 @@ import { Alert, Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 import Loading from 'src/components/Loading'
 import useRepos from 'src/views/hooks/useRepos'
+import { EmptyRepository } from './components/empty-repository'
 import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
 const RepositoriesView: React.FC = () => {
@@ -33,7 +34,11 @@ const RepositoriesView: React.FC = () => {
 
         {loading
           ? <Loading />
-          : (data?.repos?.totalCount && data?.repos?.totalCount > 0 ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
+          : data?.repos?.totalCount && data?.repos?.totalCount > 0
+            ? <RepositoriesTable data={data} />
+            : data?.serviceAuthCredentials?.totalCount && data?.serviceAuthCredentials?.totalCount > 0
+              ? <EmptyRepository />
+              : <EmptyRepositoryTable />
         }
       </div>
 

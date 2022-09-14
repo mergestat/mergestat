@@ -1,5 +1,5 @@
 import { ApolloError, useMutation } from '@apollo/client'
-import { Button, Modal, Toolbar } from '@mergestat/blocks'
+import { Alert, Button, Modal, Toolbar } from '@mergestat/blocks'
 import { TrashIcon, XIcon } from '@mergestat/icons'
 import React, { useCallback } from 'react'
 import REMOVE_REPO from 'src/api-logic/graphql/mutations/remove-repo'
@@ -48,7 +48,12 @@ export const RemoveRepositoryModal: React.FC = () => {
         </Toolbar>
       </Modal.Header>
       <Modal.Body>
-        <div className="p-6">¿Are you sure to remove <b>{repoToRemove?.name}</b>?</div>
+        {repoToRemove?.autoImported &&
+          <Alert type="warning" theme="light" className='mx-4 mt-6 mb-2 text-xs'>
+            This repo was added by an automatic import, it will be re-added on the next run, unless the repo auto import is removed.
+          </Alert>
+        }
+        <div className="px-6 pt-2 pb-6">Are you sure you want to remove <b>{repoToRemove?.name}</b>?</div>
       </Modal.Body>
       <Modal.Footer>
         <Toolbar className="h-16 px-6">
@@ -69,7 +74,7 @@ export const RemoveRepositoryModal: React.FC = () => {
                 startIcon={<TrashIcon className="t-icon" />}
                 className="my-3"
               >
-                Delete Repository
+                Remove Repository
               </Button>
             </Toolbar.Item>
           </Toolbar.Right>

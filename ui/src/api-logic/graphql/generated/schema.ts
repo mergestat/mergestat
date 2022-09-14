@@ -261,6 +261,8 @@ export type CreateGitRefPayload = {
   gitRefEdge?: Maybe<GitRefsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GitRef`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -359,6 +361,8 @@ export type CreateGithubPullRequestCommitPayload = {
   githubPullRequestCommitEdge?: Maybe<GithubPullRequestCommitsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubPullRequestCommit`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -425,6 +429,8 @@ export type CreateGithubPullRequestReviewPayload = {
   githubPullRequestReviewEdge?: Maybe<GithubPullRequestReviewsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubPullRequestReview`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -903,6 +909,40 @@ export type CreateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeA
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
 };
 
+/** All input for the create `TrivyRepoScan` mutation. */
+export type CreateTrivyRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `TrivyRepoScan` to be created by this mutation. */
+  trivyRepoScan: TrivyRepoScanInput;
+};
+
+/** The output of our create `TrivyRepoScan` mutation. */
+export type CreateTrivyRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `TrivyRepoScan`. */
+  repo?: Maybe<Repo>;
+  /** The `TrivyRepoScan` that was created by this mutation. */
+  trivyRepoScan?: Maybe<TrivyRepoScan>;
+  /** An edge for our `TrivyRepoScan`. May be used by Relay 1. */
+  trivyRepoScanEdge?: Maybe<TrivyRepoScansEdge>;
+};
+
+
+/** The output of our create `TrivyRepoScan` mutation. */
+export type CreateTrivyRepoScanPayloadTrivyRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<TrivyRepoScansOrderBy>>;
+};
+
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
 export type DatetimeFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -1057,6 +1097,8 @@ export type DeleteGitRefPayload = {
   gitRefEdge?: Maybe<GitRefsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GitRef`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -1159,6 +1201,8 @@ export type DeleteGithubPullRequestCommitPayload = {
   githubPullRequestCommitEdge?: Maybe<GithubPullRequestCommitsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubPullRequestCommit`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -1237,6 +1281,8 @@ export type DeleteGithubPullRequestReviewPayload = {
   githubPullRequestReviewEdge?: Maybe<GithubPullRequestReviewsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubPullRequestReview`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -1892,7 +1938,53 @@ export type DeleteServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeA
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
 };
 
+/** All input for the `deleteTrivyRepoScanByNodeId` mutation. */
+export type DeleteTrivyRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `TrivyRepoScan` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteTrivyRepoScan` mutation. */
+export type DeleteTrivyRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `TrivyRepoScan` mutation. */
+export type DeleteTrivyRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedTrivyRepoScanNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `TrivyRepoScan`. */
+  repo?: Maybe<Repo>;
+  /** The `TrivyRepoScan` that was deleted by this mutation. */
+  trivyRepoScan?: Maybe<TrivyRepoScan>;
+  /** An edge for our `TrivyRepoScan`. May be used by Relay 1. */
+  trivyRepoScanEdge?: Maybe<TrivyRepoScansEdge>;
+};
+
+
+/** The output of our delete `TrivyRepoScan` mutation. */
+export type DeleteTrivyRepoScanPayloadTrivyRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<TrivyRepoScansOrderBy>>;
+};
+
 export type GitBranch = {
+  _mergestatSyncedAt?: Maybe<Scalars['Datetime']>;
   fullName?: Maybe<Scalars['String']>;
   hash?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -1908,6 +2000,8 @@ export type GitBranch = {
  * for equality and combined with a logical ‘and.’
  */
 export type GitBranchCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `fullName` field. */
   fullName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `hash` field. */
@@ -1928,6 +2022,8 @@ export type GitBranchCondition = {
 
 /** A filter to be used against `GitBranch` object types. All fields are combined with a logical ‘and.’ */
 export type GitBranchFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GitBranchFilter>>;
   /** Filter by the object’s `fullName` field. */
@@ -1954,6 +2050,7 @@ export type GitBranchFilter = {
 
 /** An input for mutations affecting `GitBranch` */
 export type GitBranchInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   fullName?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
@@ -2002,11 +2099,14 @@ export enum GitBranchesOrderBy {
   TargetAsc = 'TARGET_ASC',
   TargetDesc = 'TARGET_DESC',
   TypeAsc = 'TYPE_ASC',
-  TypeDesc = 'TYPE_DESC'
+  TypeDesc = 'TYPE_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** Git repository commits */
 export type GitCommit = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   authorEmail: Scalars['String'];
   authorName: Scalars['String'];
   authorWhen: Scalars['Datetime'];
@@ -2028,6 +2128,8 @@ export type GitCommit = Node & {
  * for equality and combined with a logical ‘and.’
  */
 export type GitCommitCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `authorEmail` field. */
   authorEmail?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `authorName` field. */
@@ -2052,6 +2154,8 @@ export type GitCommitCondition = {
 
 /** A filter to be used against `GitCommit` object types. All fields are combined with a logical ‘and.’ */
 export type GitCommitFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GitCommitFilter>>;
   /** Filter by the object’s `authorEmail` field. */
@@ -2082,6 +2186,7 @@ export type GitCommitFilter = {
 
 /** An input for mutations affecting `GitCommit` */
 export type GitCommitInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   authorEmail: Scalars['String'];
   authorName: Scalars['String'];
   authorWhen: Scalars['Datetime'];
@@ -2096,6 +2201,7 @@ export type GitCommitInput = {
 
 /** Represents an update to a `GitCommit`. Fields that are set will be updated. */
 export type GitCommitPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   authorEmail?: InputMaybe<Scalars['String']>;
   authorName?: InputMaybe<Scalars['String']>;
   authorWhen?: InputMaybe<Scalars['Datetime']>;
@@ -2110,6 +2216,7 @@ export type GitCommitPatch = {
 
 /** Commit stats */
 export type GitCommitStat = {
+  _mergestatSyncedAt: Scalars['Datetime'];
   additions: Scalars['Int'];
   commitHash: Scalars['String'];
   deletions: Scalars['Int'];
@@ -2124,6 +2231,8 @@ export type GitCommitStat = {
  * tested for equality and combined with a logical ‘and.’
  */
 export type GitCommitStatCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `additions` field. */
   additions?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `commitHash` field. */
@@ -2138,6 +2247,8 @@ export type GitCommitStatCondition = {
 
 /** A filter to be used against `GitCommitStat` object types. All fields are combined with a logical ‘and.’ */
 export type GitCommitStatFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `additions` field. */
   additions?: InputMaybe<IntFilter>;
   /** Checks for all expressions in this list. */
@@ -2158,6 +2269,7 @@ export type GitCommitStatFilter = {
 
 /** An input for mutations affecting `GitCommitStat` */
 export type GitCommitStatInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   additions: Scalars['Int'];
   commitHash: Scalars['String'];
   deletions: Scalars['Int'];
@@ -2197,7 +2309,9 @@ export enum GitCommitStatsOrderBy {
   FilePathDesc = 'FILE_PATH_DESC',
   Natural = 'NATURAL',
   RepoIdAsc = 'REPO_ID_ASC',
-  RepoIdDesc = 'REPO_ID_DESC'
+  RepoIdDesc = 'REPO_ID_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** A connection to a list of `GitCommit` values. */
@@ -2244,11 +2358,14 @@ export enum GitCommitsOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RepoIdAsc = 'REPO_ID_ASC',
-  RepoIdDesc = 'REPO_ID_DESC'
+  RepoIdDesc = 'REPO_ID_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** Git repository files */
 export type GitFile = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   contents?: Maybe<Scalars['String']>;
   executable: Scalars['Boolean'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -2261,6 +2378,8 @@ export type GitFile = Node & {
 
 /** A condition to be used against `GitFile` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type GitFileCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `contents` field. */
   contents?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `executable` field. */
@@ -2273,6 +2392,8 @@ export type GitFileCondition = {
 
 /** A filter to be used against `GitFile` object types. All fields are combined with a logical ‘and.’ */
 export type GitFileFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GitFileFilter>>;
   /** Filter by the object’s `contents` field. */
@@ -2291,6 +2412,7 @@ export type GitFileFilter = {
 
 /** An input for mutations affecting `GitFile` */
 export type GitFileInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   contents?: InputMaybe<Scalars['String']>;
   executable: Scalars['Boolean'];
   path: Scalars['String'];
@@ -2299,6 +2421,7 @@ export type GitFileInput = {
 
 /** Represents an update to a `GitFile`. Fields that are set will be updated. */
 export type GitFilePatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   contents?: InputMaybe<Scalars['String']>;
   executable?: InputMaybe<Scalars['Boolean']>;
   path?: InputMaybe<Scalars['String']>;
@@ -2337,17 +2460,22 @@ export enum GitFilesOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RepoIdAsc = 'REPO_ID_ASC',
-  RepoIdDesc = 'REPO_ID_DESC'
+  RepoIdDesc = 'REPO_ID_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** Refs for a Git repo */
 export type GitRef = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   fullName: Scalars['String'];
   hash?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   remote?: Maybe<Scalars['String']>;
+  /** Reads a single `Repo` that is related to this `GitRef`. */
+  repo?: Maybe<Repo>;
   repoId: Scalars['UUID'];
   tagCommitHash?: Maybe<Scalars['String']>;
   target?: Maybe<Scalars['String']>;
@@ -2356,6 +2484,8 @@ export type GitRef = Node & {
 
 /** A condition to be used against `GitRef` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type GitRefCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `fullName` field. */
   fullName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `hash` field. */
@@ -2376,6 +2506,8 @@ export type GitRefCondition = {
 
 /** A filter to be used against `GitRef` object types. All fields are combined with a logical ‘and.’ */
 export type GitRefFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GitRefFilter>>;
   /** Filter by the object’s `fullName` field. */
@@ -2402,6 +2534,7 @@ export type GitRefFilter = {
 
 /** An input for mutations affecting `GitRef` */
 export type GitRefInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   fullName: Scalars['String'];
   hash?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
@@ -2414,6 +2547,7 @@ export type GitRefInput = {
 
 /** Represents an update to a `GitRef`. Fields that are set will be updated. */
 export type GitRefPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   fullName?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
@@ -2464,10 +2598,13 @@ export enum GitRefsOrderBy {
   TargetAsc = 'TARGET_ASC',
   TargetDesc = 'TARGET_DESC',
   TypeAsc = 'TYPE_ASC',
-  TypeDesc = 'TYPE_DESC'
+  TypeDesc = 'TYPE_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 export type GitTag = {
+  _mergestatSyncedAt?: Maybe<Scalars['Datetime']>;
   fullName?: Maybe<Scalars['String']>;
   hash?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -2480,6 +2617,8 @@ export type GitTag = {
 
 /** A condition to be used against `GitTag` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type GitTagCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `fullName` field. */
   fullName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `hash` field. */
@@ -2500,6 +2639,8 @@ export type GitTagCondition = {
 
 /** A filter to be used against `GitTag` object types. All fields are combined with a logical ‘and.’ */
 export type GitTagFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GitTagFilter>>;
   /** Filter by the object’s `fullName` field. */
@@ -2526,6 +2667,7 @@ export type GitTagFilter = {
 
 /** An input for mutations affecting `GitTag` */
 export type GitTagInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   fullName?: InputMaybe<Scalars['String']>;
   hash?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
@@ -2574,11 +2716,14 @@ export enum GitTagsOrderBy {
   TargetAsc = 'TARGET_ASC',
   TargetDesc = 'TARGET_DESC',
   TypeAsc = 'TYPE_ASC',
-  TypeDesc = 'TYPE_DESC'
+  TypeDesc = 'TYPE_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** GitHub issues */
 export type GithubIssue = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   authorLogin?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['String']>;
   closed?: Maybe<Scalars['Boolean']>;
@@ -2590,6 +2735,7 @@ export type GithubIssue = Node & {
   editorLogin?: Maybe<Scalars['String']>;
   includesCreatedEdit?: Maybe<Scalars['Boolean']>;
   labelCount?: Maybe<Scalars['Int']>;
+  labels: Scalars['JSON'];
   lastEditedAt?: Maybe<Scalars['Datetime']>;
   locked?: Maybe<Scalars['Boolean']>;
   milestoneCount?: Maybe<Scalars['Int']>;
@@ -2613,6 +2759,8 @@ export type GithubIssue = Node & {
  * for equality and combined with a logical ‘and.’
  */
 export type GithubIssueCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `authorLogin` field. */
   authorLogin?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `body` field. */
@@ -2635,6 +2783,8 @@ export type GithubIssueCondition = {
   includesCreatedEdit?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `labelCount` field. */
   labelCount?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `labels` field. */
+  labels?: InputMaybe<Scalars['JSON']>;
   /** Checks for equality with the object’s `lastEditedAt` field. */
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `locked` field. */
@@ -2663,6 +2813,8 @@ export type GithubIssueCondition = {
 
 /** A filter to be used against `GithubIssue` object types. All fields are combined with a logical ‘and.’ */
 export type GithubIssueFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GithubIssueFilter>>;
   /** Filter by the object’s `authorLogin` field. */
@@ -2687,6 +2839,8 @@ export type GithubIssueFilter = {
   includesCreatedEdit?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `labelCount` field. */
   labelCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `labels` field. */
+  labels?: InputMaybe<JsonFilter>;
   /** Filter by the object’s `lastEditedAt` field. */
   lastEditedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `locked` field. */
@@ -2719,6 +2873,7 @@ export type GithubIssueFilter = {
 
 /** An input for mutations affecting `GithubIssue` */
 export type GithubIssueInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   authorLogin?: InputMaybe<Scalars['String']>;
   body?: InputMaybe<Scalars['String']>;
   closed?: InputMaybe<Scalars['Boolean']>;
@@ -2730,6 +2885,7 @@ export type GithubIssueInput = {
   editorLogin?: InputMaybe<Scalars['String']>;
   includesCreatedEdit?: InputMaybe<Scalars['Boolean']>;
   labelCount?: InputMaybe<Scalars['Int']>;
+  labels?: InputMaybe<Scalars['JSON']>;
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
   locked?: InputMaybe<Scalars['Boolean']>;
   milestoneCount?: InputMaybe<Scalars['Int']>;
@@ -2746,6 +2902,7 @@ export type GithubIssueInput = {
 
 /** Represents an update to a `GithubIssue`. Fields that are set will be updated. */
 export type GithubIssuePatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   authorLogin?: InputMaybe<Scalars['String']>;
   body?: InputMaybe<Scalars['String']>;
   closed?: InputMaybe<Scalars['Boolean']>;
@@ -2757,6 +2914,7 @@ export type GithubIssuePatch = {
   editorLogin?: InputMaybe<Scalars['String']>;
   includesCreatedEdit?: InputMaybe<Scalars['Boolean']>;
   labelCount?: InputMaybe<Scalars['Int']>;
+  labels?: InputMaybe<Scalars['JSON']>;
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
   locked?: InputMaybe<Scalars['Boolean']>;
   milestoneCount?: InputMaybe<Scalars['Int']>;
@@ -2813,6 +2971,8 @@ export enum GithubIssuesOrderBy {
   EditorLoginDesc = 'EDITOR_LOGIN_DESC',
   IncludesCreatedEditAsc = 'INCLUDES_CREATED_EDIT_ASC',
   IncludesCreatedEditDesc = 'INCLUDES_CREATED_EDIT_DESC',
+  LabelsAsc = 'LABELS_ASC',
+  LabelsDesc = 'LABELS_DESC',
   LabelCountAsc = 'LABEL_COUNT_ASC',
   LabelCountDesc = 'LABEL_COUNT_DESC',
   LastEditedAtAsc = 'LAST_EDITED_AT_ASC',
@@ -2841,11 +3001,14 @@ export enum GithubIssuesOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC',
   UrlAsc = 'URL_ASC',
-  UrlDesc = 'URL_DESC'
+  UrlDesc = 'URL_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** GitHub pull requests */
 export type GithubPullRequest = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   additions?: Maybe<Scalars['Int']>;
   authorAssociation?: Maybe<Scalars['String']>;
   authorAvatarUrl?: Maybe<Scalars['String']>;
@@ -2870,6 +3033,7 @@ export type GithubPullRequest = Node & {
   headRepositoryName?: Maybe<Scalars['String']>;
   isDraft?: Maybe<Scalars['Boolean']>;
   labelCount?: Maybe<Scalars['Int']>;
+  labels: Scalars['JSON'];
   lastEditedAt?: Maybe<Scalars['Datetime']>;
   locked?: Maybe<Scalars['Boolean']>;
   maintainerCanModify?: Maybe<Scalars['Boolean']>;
@@ -2895,6 +3059,7 @@ export type GithubPullRequest = Node & {
 
 /** GitHub pull request commits */
 export type GithubPullRequestCommit = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   additions?: Maybe<Scalars['Int']>;
   authorEmail?: Maybe<Scalars['String']>;
   authorName?: Maybe<Scalars['String']>;
@@ -2909,6 +3074,8 @@ export type GithubPullRequestCommit = Node & {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   prNumber: Scalars['Int'];
+  /** Reads a single `Repo` that is related to this `GithubPullRequestCommit`. */
+  repo?: Maybe<Repo>;
   repoId: Scalars['UUID'];
   url?: Maybe<Scalars['String']>;
 };
@@ -2918,6 +3085,8 @@ export type GithubPullRequestCommit = Node & {
  * fields are tested for equality and combined with a logical ‘and.’
  */
 export type GithubPullRequestCommitCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `additions` field. */
   additions?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `authorEmail` field. */
@@ -2950,6 +3119,8 @@ export type GithubPullRequestCommitCondition = {
 
 /** A filter to be used against `GithubPullRequestCommit` object types. All fields are combined with a logical ‘and.’ */
 export type GithubPullRequestCommitFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `additions` field. */
   additions?: InputMaybe<IntFilter>;
   /** Checks for all expressions in this list. */
@@ -2988,6 +3159,7 @@ export type GithubPullRequestCommitFilter = {
 
 /** An input for mutations affecting `GithubPullRequestCommit` */
 export type GithubPullRequestCommitInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   additions?: InputMaybe<Scalars['Int']>;
   authorEmail?: InputMaybe<Scalars['String']>;
   authorName?: InputMaybe<Scalars['String']>;
@@ -3006,6 +3178,7 @@ export type GithubPullRequestCommitInput = {
 
 /** Represents an update to a `GithubPullRequestCommit`. Fields that are set will be updated. */
 export type GithubPullRequestCommitPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   additions?: InputMaybe<Scalars['Int']>;
   authorEmail?: InputMaybe<Scalars['String']>;
   authorName?: InputMaybe<Scalars['String']>;
@@ -3074,7 +3247,9 @@ export enum GithubPullRequestCommitsOrderBy {
   RepoIdAsc = 'REPO_ID_ASC',
   RepoIdDesc = 'REPO_ID_DESC',
   UrlAsc = 'URL_ASC',
-  UrlDesc = 'URL_DESC'
+  UrlDesc = 'URL_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /**
@@ -3082,6 +3257,8 @@ export enum GithubPullRequestCommitsOrderBy {
  * tested for equality and combined with a logical ‘and.’
  */
 export type GithubPullRequestCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `additions` field. */
   additions?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `authorAssociation` field. */
@@ -3130,6 +3307,8 @@ export type GithubPullRequestCondition = {
   isDraft?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `labelCount` field. */
   labelCount?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `labels` field. */
+  labels?: InputMaybe<Scalars['JSON']>;
   /** Checks for equality with the object’s `lastEditedAt` field. */
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `locked` field. */
@@ -3168,6 +3347,8 @@ export type GithubPullRequestCondition = {
 
 /** A filter to be used against `GithubPullRequest` object types. All fields are combined with a logical ‘and.’ */
 export type GithubPullRequestFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `additions` field. */
   additions?: InputMaybe<IntFilter>;
   /** Checks for all expressions in this list. */
@@ -3218,6 +3399,8 @@ export type GithubPullRequestFilter = {
   isDraft?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `labelCount` field. */
   labelCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `labels` field. */
+  labels?: InputMaybe<JsonFilter>;
   /** Filter by the object’s `lastEditedAt` field. */
   lastEditedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `locked` field. */
@@ -3260,6 +3443,7 @@ export type GithubPullRequestFilter = {
 
 /** An input for mutations affecting `GithubPullRequest` */
 export type GithubPullRequestInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   additions?: InputMaybe<Scalars['Int']>;
   authorAssociation?: InputMaybe<Scalars['String']>;
   authorAvatarUrl?: InputMaybe<Scalars['String']>;
@@ -3284,6 +3468,7 @@ export type GithubPullRequestInput = {
   headRepositoryName?: InputMaybe<Scalars['String']>;
   isDraft?: InputMaybe<Scalars['Boolean']>;
   labelCount?: InputMaybe<Scalars['Int']>;
+  labels?: InputMaybe<Scalars['JSON']>;
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
   locked?: InputMaybe<Scalars['Boolean']>;
   maintainerCanModify?: InputMaybe<Scalars['Boolean']>;
@@ -3305,6 +3490,7 @@ export type GithubPullRequestInput = {
 
 /** Represents an update to a `GithubPullRequest`. Fields that are set will be updated. */
 export type GithubPullRequestPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   additions?: InputMaybe<Scalars['Int']>;
   authorAssociation?: InputMaybe<Scalars['String']>;
   authorAvatarUrl?: InputMaybe<Scalars['String']>;
@@ -3329,6 +3515,7 @@ export type GithubPullRequestPatch = {
   headRepositoryName?: InputMaybe<Scalars['String']>;
   isDraft?: InputMaybe<Scalars['Boolean']>;
   labelCount?: InputMaybe<Scalars['Int']>;
+  labels?: InputMaybe<Scalars['JSON']>;
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
   locked?: InputMaybe<Scalars['Boolean']>;
   maintainerCanModify?: InputMaybe<Scalars['Boolean']>;
@@ -3350,6 +3537,7 @@ export type GithubPullRequestPatch = {
 
 /** GitHub pull request reviews */
 export type GithubPullRequestReview = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   authorAssociation?: Maybe<Scalars['String']>;
   authorCanPushToRepository?: Maybe<Scalars['Boolean']>;
   authorLogin?: Maybe<Scalars['String']>;
@@ -3365,6 +3553,8 @@ export type GithubPullRequestReview = Node & {
   nodeId: Scalars['ID'];
   prNumber: Scalars['Int'];
   publishedAt?: Maybe<Scalars['Datetime']>;
+  /** Reads a single `Repo` that is related to this `GithubPullRequestReview`. */
+  repo?: Maybe<Repo>;
   repoId: Scalars['UUID'];
   state?: Maybe<Scalars['String']>;
   submittedAt?: Maybe<Scalars['Datetime']>;
@@ -3376,6 +3566,8 @@ export type GithubPullRequestReview = Node & {
  * fields are tested for equality and combined with a logical ‘and.’
  */
 export type GithubPullRequestReviewCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `authorAssociation` field. */
   authorAssociation?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `authorCanPushToRepository` field. */
@@ -3414,6 +3606,8 @@ export type GithubPullRequestReviewCondition = {
 
 /** A filter to be used against `GithubPullRequestReview` object types. All fields are combined with a logical ‘and.’ */
 export type GithubPullRequestReviewFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GithubPullRequestReviewFilter>>;
   /** Filter by the object’s `authorAssociation` field. */
@@ -3458,6 +3652,7 @@ export type GithubPullRequestReviewFilter = {
 
 /** An input for mutations affecting `GithubPullRequestReview` */
 export type GithubPullRequestReviewInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   authorAssociation?: InputMaybe<Scalars['String']>;
   authorCanPushToRepository?: InputMaybe<Scalars['Boolean']>;
   authorLogin?: InputMaybe<Scalars['String']>;
@@ -3479,6 +3674,7 @@ export type GithubPullRequestReviewInput = {
 
 /** Represents an update to a `GithubPullRequestReview`. Fields that are set will be updated. */
 export type GithubPullRequestReviewPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   authorAssociation?: InputMaybe<Scalars['String']>;
   authorCanPushToRepository?: InputMaybe<Scalars['Boolean']>;
   authorLogin?: InputMaybe<Scalars['String']>;
@@ -3556,7 +3752,9 @@ export enum GithubPullRequestReviewsOrderBy {
   SubmittedAtAsc = 'SUBMITTED_AT_ASC',
   SubmittedAtDesc = 'SUBMITTED_AT_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** A connection to a list of `GithubPullRequest` values. */
@@ -3627,6 +3825,8 @@ export enum GithubPullRequestsOrderBy {
   HeadRepositoryNameDesc = 'HEAD_REPOSITORY_NAME_DESC',
   IsDraftAsc = 'IS_DRAFT_ASC',
   IsDraftDesc = 'IS_DRAFT_DESC',
+  LabelsAsc = 'LABELS_ASC',
+  LabelsDesc = 'LABELS_DESC',
   LabelCountAsc = 'LABEL_COUNT_ASC',
   LabelCountDesc = 'LABEL_COUNT_DESC',
   LastEditedAtAsc = 'LAST_EDITED_AT_ASC',
@@ -3665,11 +3865,14 @@ export enum GithubPullRequestsOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC',
   UrlAsc = 'URL_ASC',
-  UrlDesc = 'URL_DESC'
+  UrlDesc = 'URL_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** GitHub metadata about a repo */
 export type GithubRepoInfo = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   createdAt?: Maybe<Scalars['Datetime']>;
   defaultBranchName?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -3709,6 +3912,8 @@ export type GithubRepoInfo = Node & {
  * tested for equality and combined with a logical ‘and.’
  */
 export type GithubRepoInfoCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `defaultBranchName` field. */
@@ -3769,6 +3974,8 @@ export type GithubRepoInfoCondition = {
 
 /** A filter to be used against `GithubRepoInfo` object types. All fields are combined with a logical ‘and.’ */
 export type GithubRepoInfoFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GithubRepoInfoFilter>>;
   /** Filter by the object’s `createdAt` field. */
@@ -3835,6 +4042,7 @@ export type GithubRepoInfoFilter = {
 
 /** An input for mutations affecting `GithubRepoInfo` */
 export type GithubRepoInfoInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   defaultBranchName?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
@@ -3867,6 +4075,7 @@ export type GithubRepoInfoInput = {
 
 /** Represents an update to a `GithubRepoInfo`. Fields that are set will be updated. */
 export type GithubRepoInfoPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   defaultBranchName?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
@@ -3977,11 +4186,14 @@ export enum GithubRepoInfosOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC',
   WatchersCountAsc = 'WATCHERS_COUNT_ASC',
-  WatchersCountDesc = 'WATCHERS_COUNT_DESC'
+  WatchersCountDesc = 'WATCHERS_COUNT_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** GitHub stargazers for a repo */
 export type GithubStargazer = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   avatarUrl?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   company?: Maybe<Scalars['String']>;
@@ -4006,6 +4218,8 @@ export type GithubStargazer = Node & {
  * tested for equality and combined with a logical ‘and.’
  */
 export type GithubStargazerCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `avatarUrl` field. */
   avatarUrl?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `bio` field. */
@@ -4036,6 +4250,8 @@ export type GithubStargazerCondition = {
 
 /** A filter to be used against `GithubStargazer` object types. All fields are combined with a logical ‘and.’ */
 export type GithubStargazerFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GithubStargazerFilter>>;
   /** Filter by the object’s `avatarUrl` field. */
@@ -4072,6 +4288,7 @@ export type GithubStargazerFilter = {
 
 /** An input for mutations affecting `GithubStargazer` */
 export type GithubStargazerInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   avatarUrl?: InputMaybe<Scalars['String']>;
   bio?: InputMaybe<Scalars['String']>;
   company?: InputMaybe<Scalars['String']>;
@@ -4089,6 +4306,7 @@ export type GithubStargazerInput = {
 
 /** Represents an update to a `GithubStargazer`. Fields that are set will be updated. */
 export type GithubStargazerPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   avatarUrl?: InputMaybe<Scalars['String']>;
   bio?: InputMaybe<Scalars['String']>;
   company?: InputMaybe<Scalars['String']>;
@@ -4154,7 +4372,9 @@ export enum GithubStargazersOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC',
   WebsiteAsc = 'WEBSITE_ASC',
-  WebsiteDesc = 'WEBSITE_DESC'
+  WebsiteDesc = 'WEBSITE_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
@@ -4423,6 +4643,8 @@ export type Mutation = {
   createServiceAuthCredential?: Maybe<CreateServiceAuthCredentialPayload>;
   /** Creates a single `ServiceAuthCredentialType`. */
   createServiceAuthCredentialType?: Maybe<CreateServiceAuthCredentialTypePayload>;
+  /** Creates a single `TrivyRepoScan`. */
+  createTrivyRepoScan?: Maybe<CreateTrivyRepoScanPayload>;
   /** Deletes a single `GitCommit` using a unique key. */
   deleteGitCommit?: Maybe<DeleteGitCommitPayload>;
   /** Deletes a single `GitCommit` using its globally unique id. */
@@ -4511,6 +4733,10 @@ export type Mutation = {
   deleteServiceAuthCredentialType?: Maybe<DeleteServiceAuthCredentialTypePayload>;
   /** Deletes a single `ServiceAuthCredentialType` using its globally unique id. */
   deleteServiceAuthCredentialTypeByNodeId?: Maybe<DeleteServiceAuthCredentialTypePayload>;
+  /** Deletes a single `TrivyRepoScan` using a unique key. */
+  deleteTrivyRepoScan?: Maybe<DeleteTrivyRepoScanPayload>;
+  /** Deletes a single `TrivyRepoScan` using its globally unique id. */
+  deleteTrivyRepoScanByNodeId?: Maybe<DeleteTrivyRepoScanPayload>;
   replaceGitHubPAT?: Maybe<Scalars['Boolean']>;
   /** Updates a single `GitCommit` using a unique key and a patch. */
   updateGitCommit?: Maybe<UpdateGitCommitPayload>;
@@ -4600,6 +4826,10 @@ export type Mutation = {
   updateServiceAuthCredentialType?: Maybe<UpdateServiceAuthCredentialTypePayload>;
   /** Updates a single `ServiceAuthCredentialType` using its globally unique id and a patch. */
   updateServiceAuthCredentialTypeByNodeId?: Maybe<UpdateServiceAuthCredentialTypePayload>;
+  /** Updates a single `TrivyRepoScan` using a unique key and a patch. */
+  updateTrivyRepoScan?: Maybe<UpdateTrivyRepoScanPayload>;
+  /** Updates a single `TrivyRepoScan` using its globally unique id and a patch. */
+  updateTrivyRepoScanByNodeId?: Maybe<UpdateTrivyRepoScanPayload>;
 };
 
 
@@ -4750,6 +4980,12 @@ export type MutationCreateServiceAuthCredentialArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateServiceAuthCredentialTypeArgs = {
   input: CreateServiceAuthCredentialTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateTrivyRepoScanArgs = {
+  input: CreateTrivyRepoScanInput;
 };
 
 
@@ -5014,6 +5250,18 @@ export type MutationDeleteServiceAuthCredentialTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteServiceAuthCredentialTypeByNodeIdArgs = {
   input: DeleteServiceAuthCredentialTypeByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTrivyRepoScanArgs = {
+  input: DeleteTrivyRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTrivyRepoScanByNodeIdArgs = {
+  input: DeleteTrivyRepoScanByNodeIdInput;
 };
 
 
@@ -5286,6 +5534,18 @@ export type MutationUpdateServiceAuthCredentialTypeByNodeIdArgs = {
   input: UpdateServiceAuthCredentialTypeByNodeIdInput;
 };
 
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTrivyRepoScanArgs = {
+  input: UpdateTrivyRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTrivyRepoScanByNodeIdArgs = {
+  input: UpdateTrivyRepoScanByNodeIdInput;
+};
+
 /** An object with a globally unique `ID`. */
 export type Node = {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -5362,7 +5622,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitCommit | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration | ServiceAuthCredential | ServiceAuthCredentialType>;
+  node?: Maybe<GitCommit | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration | ServiceAuthCredential | ServiceAuthCredentialType | TrivyRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /**
@@ -5431,6 +5691,13 @@ export type Query = Node & {
   serviceAuthCredentialTypes?: Maybe<ServiceAuthCredentialTypesConnection>;
   /** Reads and enables pagination through a set of `ServiceAuthCredential`. */
   serviceAuthCredentials?: Maybe<ServiceAuthCredentialsConnection>;
+  trivyRepoScan?: Maybe<TrivyRepoScan>;
+  /** Reads a single `TrivyRepoScan` using its globally unique `ID`. */
+  trivyRepoScanByNodeId?: Maybe<TrivyRepoScan>;
+  /** Reads and enables pagination through a set of `TrivyRepoScan`. */
+  trivyRepoScans?: Maybe<TrivyRepoScansConnection>;
+  /** Reads and enables pagination through a set of `TrivyRepoVulnerability`. */
+  trivyRepoVulnerabilities?: Maybe<TrivyRepoVulnerabilitiesConnection>;
 };
 
 
@@ -6046,8 +6313,47 @@ export type QueryServiceAuthCredentialsArgs = {
   orderBy?: InputMaybe<Array<ServiceAuthCredentialsOrderBy>>;
 };
 
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTrivyRepoScanArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTrivyRepoScanByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTrivyRepoScansArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<TrivyRepoScanCondition>;
+  filter?: InputMaybe<TrivyRepoScanFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<TrivyRepoScansOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTrivyRepoVulnerabilitiesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<TrivyRepoVulnerabilityCondition>;
+  filter?: InputMaybe<TrivyRepoVulnerabilityFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<TrivyRepoVulnerabilitiesOrderBy>>;
+};
+
 /** Git repositories to track */
 export type Repo = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
   createdAt: Scalars['Datetime'];
   /** Reads and enables pagination through a set of `GitCommitStat`. */
   gitCommitStats: GitCommitStatsConnection;
@@ -6055,8 +6361,14 @@ export type Repo = Node & {
   gitCommits: GitCommitsConnection;
   /** Reads and enables pagination through a set of `GitFile`. */
   gitFiles: GitFilesConnection;
+  /** Reads and enables pagination through a set of `GitRef`. */
+  gitRefs: GitRefsConnection;
   /** Reads and enables pagination through a set of `GithubIssue`. */
   githubIssues: GithubIssuesConnection;
+  /** Reads and enables pagination through a set of `GithubPullRequestCommit`. */
+  githubPullRequestCommits: GithubPullRequestCommitsConnection;
+  /** Reads and enables pagination through a set of `GithubPullRequestReview`. */
+  githubPullRequestReviews: GithubPullRequestReviewsConnection;
   /** Reads and enables pagination through a set of `GithubPullRequest`. */
   githubPullRequests: GithubPullRequestsConnection;
   /** Reads a single `GithubRepoInfo` that is related to this `Repo`. */
@@ -6076,6 +6388,8 @@ export type Repo = Node & {
   repoSyncs: RepoSyncsConnection;
   settings: Scalars['JSON'];
   tags: Scalars['JSON'];
+  /** Reads a single `TrivyRepoScan` that is related to this `Repo`. */
+  trivyRepoScan?: Maybe<TrivyRepoScan>;
 };
 
 
@@ -6119,6 +6433,19 @@ export type RepoGitFilesArgs = {
 
 
 /** Git repositories to track */
+export type RepoGitRefsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitRefCondition>;
+  filter?: InputMaybe<GitRefFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
+};
+
+
+/** Git repositories to track */
 export type RepoGithubIssuesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -6128,6 +6455,32 @@ export type RepoGithubIssuesArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<GithubIssuesOrderBy>>;
+};
+
+
+/** Git repositories to track */
+export type RepoGithubPullRequestCommitsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubPullRequestCommitCondition>;
+  filter?: InputMaybe<GithubPullRequestCommitFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubPullRequestCommitsOrderBy>>;
+};
+
+
+/** Git repositories to track */
+export type RepoGithubPullRequestReviewsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubPullRequestReviewCondition>;
+  filter?: InputMaybe<GithubPullRequestReviewFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubPullRequestReviewsOrderBy>>;
 };
 
 
@@ -6171,6 +6524,8 @@ export type RepoRepoSyncsArgs = {
 
 /** A condition to be used against `Repo` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type RepoCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `id` field. */
@@ -6191,6 +6546,8 @@ export type RepoCondition = {
 
 /** A filter to be used against `Repo` object types. All fields are combined with a logical ‘and.’ */
 export type RepoFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<RepoFilter>>;
   /** Filter by the object’s `createdAt` field. */
@@ -6455,6 +6812,7 @@ export enum RepoImportsOrderBy {
 
 /** An input for mutations affecting `Repo` */
 export type RepoInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
   isGithub?: InputMaybe<Scalars['Boolean']>;
@@ -6467,6 +6825,7 @@ export type RepoInput = {
 
 /** Represents an update to a `Repo`. Fields that are set will be updated. */
 export type RepoPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
   isGithub?: InputMaybe<Scalars['Boolean']>;
@@ -6488,6 +6847,7 @@ export type RepoSync = Node & {
   repoSyncQueues: RepoSyncQueuesConnection;
   /** Reads a single `RepoSyncType` that is related to this `RepoSync`. */
   repoSyncTypeBySyncType?: Maybe<RepoSyncType>;
+  scheduleEnabled: Scalars['Boolean'];
   settings: Scalars['JSON'];
   syncType: Scalars['String'];
 };
@@ -6513,6 +6873,8 @@ export type RepoSyncCondition = {
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `repoId` field. */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `scheduleEnabled` field. */
+  scheduleEnabled?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `settings` field. */
   settings?: InputMaybe<Scalars['JSON']>;
   /** Checks for equality with the object’s `syncType` field. */
@@ -6531,6 +6893,8 @@ export type RepoSyncFilter = {
   or?: InputMaybe<Array<RepoSyncFilter>>;
   /** Filter by the object’s `repoId` field. */
   repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `scheduleEnabled` field. */
+  scheduleEnabled?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `settings` field. */
   settings?: InputMaybe<JsonFilter>;
   /** Filter by the object’s `syncType` field. */
@@ -6541,6 +6905,7 @@ export type RepoSyncFilter = {
 export type RepoSyncInput = {
   id?: InputMaybe<Scalars['UUID']>;
   repoId: Scalars['UUID'];
+  scheduleEnabled?: InputMaybe<Scalars['Boolean']>;
   settings?: InputMaybe<Scalars['JSON']>;
   syncType: Scalars['String'];
 };
@@ -6744,6 +7109,7 @@ export enum RepoSyncLogsOrderBy {
 export type RepoSyncPatch = {
   id?: InputMaybe<Scalars['UUID']>;
   repoId?: InputMaybe<Scalars['UUID']>;
+  scheduleEnabled?: InputMaybe<Scalars['Boolean']>;
   settings?: InputMaybe<Scalars['JSON']>;
   syncType?: InputMaybe<Scalars['String']>;
 };
@@ -7105,6 +7471,8 @@ export enum RepoSyncsOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RepoIdAsc = 'REPO_ID_ASC',
   RepoIdDesc = 'REPO_ID_DESC',
+  ScheduleEnabledAsc = 'SCHEDULE_ENABLED_ASC',
+  ScheduleEnabledDesc = 'SCHEDULE_ENABLED_DESC',
   SettingsAsc = 'SETTINGS_ASC',
   SettingsDesc = 'SETTINGS_DESC',
   SyncTypeAsc = 'SYNC_TYPE_ASC',
@@ -7151,7 +7519,9 @@ export enum ReposOrderBy {
   SettingsAsc = 'SETTINGS_ASC',
   SettingsDesc = 'SETTINGS_DESC',
   TagsAsc = 'TAGS_ASC',
-  TagsDesc = 'TAGS_DESC'
+  TagsDesc = 'TAGS_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 export type SchemaMigration = Node & {
@@ -7498,6 +7868,221 @@ export type StringFilter = {
   startsWithInsensitive?: InputMaybe<Scalars['String']>;
 };
 
+export type TrivyRepoScan = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `Repo` that is related to this `TrivyRepoScan`. */
+  repo?: Maybe<Repo>;
+  repoId: Scalars['UUID'];
+  results: Scalars['JSON'];
+};
+
+/**
+ * A condition to be used against `TrivyRepoScan` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type TrivyRepoScanCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `results` field. */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `TrivyRepoScan` object types. All fields are combined with a logical ‘and.’ */
+export type TrivyRepoScanFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<TrivyRepoScanFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<TrivyRepoScanFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<TrivyRepoScanFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `results` field. */
+  results?: InputMaybe<JsonFilter>;
+};
+
+/** An input for mutations affecting `TrivyRepoScan` */
+export type TrivyRepoScanInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  repoId: Scalars['UUID'];
+  results: Scalars['JSON'];
+};
+
+/** Represents an update to a `TrivyRepoScan`. Fields that are set will be updated. */
+export type TrivyRepoScanPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  repoId?: InputMaybe<Scalars['UUID']>;
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A connection to a list of `TrivyRepoScan` values. */
+export type TrivyRepoScansConnection = {
+  /** A list of edges which contains the `TrivyRepoScan` and cursor to aid in pagination. */
+  edges: Array<TrivyRepoScansEdge>;
+  /** A list of `TrivyRepoScan` objects. */
+  nodes: Array<TrivyRepoScan>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `TrivyRepoScan` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `TrivyRepoScan` edge in the connection. */
+export type TrivyRepoScansEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `TrivyRepoScan` at the end of the edge. */
+  node: TrivyRepoScan;
+};
+
+/** Methods to use when ordering `TrivyRepoScan`. */
+export enum TrivyRepoScansOrderBy {
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  ResultsAsc = 'RESULTS_ASC',
+  ResultsDesc = 'RESULTS_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+/** A connection to a list of `TrivyRepoVulnerability` values. */
+export type TrivyRepoVulnerabilitiesConnection = {
+  /** A list of edges which contains the `TrivyRepoVulnerability` and cursor to aid in pagination. */
+  edges: Array<TrivyRepoVulnerabilitiesEdge>;
+  /** A list of `TrivyRepoVulnerability` objects. */
+  nodes: Array<TrivyRepoVulnerability>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `TrivyRepoVulnerability` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `TrivyRepoVulnerability` edge in the connection. */
+export type TrivyRepoVulnerabilitiesEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `TrivyRepoVulnerability` at the end of the edge. */
+  node: TrivyRepoVulnerability;
+};
+
+/** Methods to use when ordering `TrivyRepoVulnerability`. */
+export enum TrivyRepoVulnerabilitiesOrderBy {
+  ClassAsc = 'CLASS_ASC',
+  ClassDesc = 'CLASS_DESC',
+  Natural = 'NATURAL',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  TargetAsc = 'TARGET_ASC',
+  TargetDesc = 'TARGET_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  VulnerabilityAsc = 'VULNERABILITY_ASC',
+  VulnerabilityDesc = 'VULNERABILITY_DESC',
+  VulnerabilityDescriptionAsc = 'VULNERABILITY_DESCRIPTION_ASC',
+  VulnerabilityDescriptionDesc = 'VULNERABILITY_DESCRIPTION_DESC',
+  VulnerabilityIdAsc = 'VULNERABILITY_ID_ASC',
+  VulnerabilityIdDesc = 'VULNERABILITY_ID_DESC',
+  VulnerabilityInstalledVersionAsc = 'VULNERABILITY_INSTALLED_VERSION_ASC',
+  VulnerabilityInstalledVersionDesc = 'VULNERABILITY_INSTALLED_VERSION_DESC',
+  VulnerabilityPkgNameAsc = 'VULNERABILITY_PKG_NAME_ASC',
+  VulnerabilityPkgNameDesc = 'VULNERABILITY_PKG_NAME_DESC',
+  VulnerabilitySeverityAsc = 'VULNERABILITY_SEVERITY_ASC',
+  VulnerabilitySeverityDesc = 'VULNERABILITY_SEVERITY_DESC',
+  VulnerabilityTitleAsc = 'VULNERABILITY_TITLE_ASC',
+  VulnerabilityTitleDesc = 'VULNERABILITY_TITLE_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+export type TrivyRepoVulnerability = {
+  _mergestatSyncedAt?: Maybe<Scalars['Datetime']>;
+  class?: Maybe<Scalars['String']>;
+  repoId?: Maybe<Scalars['UUID']>;
+  target?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  vulnerability?: Maybe<Scalars['JSON']>;
+  vulnerabilityDescription?: Maybe<Scalars['String']>;
+  vulnerabilityId?: Maybe<Scalars['String']>;
+  vulnerabilityInstalledVersion?: Maybe<Scalars['String']>;
+  vulnerabilityPkgName?: Maybe<Scalars['String']>;
+  vulnerabilitySeverity?: Maybe<Scalars['String']>;
+  vulnerabilityTitle?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `TrivyRepoVulnerability` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type TrivyRepoVulnerabilityCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `class` field. */
+  class?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `target` field. */
+  target?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `vulnerability` field. */
+  vulnerability?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `vulnerabilityDescription` field. */
+  vulnerabilityDescription?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `vulnerabilityId` field. */
+  vulnerabilityId?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `vulnerabilityInstalledVersion` field. */
+  vulnerabilityInstalledVersion?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `vulnerabilityPkgName` field. */
+  vulnerabilityPkgName?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `vulnerabilitySeverity` field. */
+  vulnerabilitySeverity?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `vulnerabilityTitle` field. */
+  vulnerabilityTitle?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `TrivyRepoVulnerability` object types. All fields are combined with a logical ‘and.’ */
+export type TrivyRepoVulnerabilityFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<TrivyRepoVulnerabilityFilter>>;
+  /** Filter by the object’s `class` field. */
+  class?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<TrivyRepoVulnerabilityFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<TrivyRepoVulnerabilityFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `target` field. */
+  target?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `vulnerability` field. */
+  vulnerability?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `vulnerabilityDescription` field. */
+  vulnerabilityDescription?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `vulnerabilityId` field. */
+  vulnerabilityId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `vulnerabilityInstalledVersion` field. */
+  vulnerabilityInstalledVersion?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `vulnerabilityPkgName` field. */
+  vulnerabilityPkgName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `vulnerabilitySeverity` field. */
+  vulnerabilitySeverity?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `vulnerabilityTitle` field. */
+  vulnerabilityTitle?: InputMaybe<StringFilter>;
+};
+
 /** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
 export type UuidFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -7661,6 +8246,8 @@ export type UpdateGitRefPayload = {
   gitRefEdge?: Maybe<GitRefsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GitRef`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -7771,6 +8358,8 @@ export type UpdateGithubPullRequestCommitPayload = {
   githubPullRequestCommitEdge?: Maybe<GithubPullRequestCommitsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubPullRequestCommit`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -7853,6 +8442,8 @@ export type UpdateGithubPullRequestReviewPayload = {
   githubPullRequestReviewEdge?: Maybe<GithubPullRequestReviewsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubPullRequestReview`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -8554,6 +9145,54 @@ export type UpdateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeA
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
 };
 
+/** All input for the `updateTrivyRepoScanByNodeId` mutation. */
+export type UpdateTrivyRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `TrivyRepoScan` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `TrivyRepoScan` being updated. */
+  patch: TrivyRepoScanPatch;
+};
+
+/** All input for the `updateTrivyRepoScan` mutation. */
+export type UpdateTrivyRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `TrivyRepoScan` being updated. */
+  patch: TrivyRepoScanPatch;
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `TrivyRepoScan` mutation. */
+export type UpdateTrivyRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `TrivyRepoScan`. */
+  repo?: Maybe<Repo>;
+  /** The `TrivyRepoScan` that was updated by this mutation. */
+  trivyRepoScan?: Maybe<TrivyRepoScan>;
+  /** An edge for our `TrivyRepoScan`. May be used by Relay 1. */
+  trivyRepoScanEdge?: Maybe<TrivyRepoScansEdge>;
+};
+
+
+/** The output of our update `TrivyRepoScan` mutation. */
+export type UpdateTrivyRepoScanPayloadTrivyRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<TrivyRepoScansOrderBy>>;
+};
+
 export type AddRepoMutationVariables = Exact<{
   repo: Scalars['String'];
   isGithub: Scalars['Boolean'];
@@ -8609,14 +9248,14 @@ export type GetRepoSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetRepoSyncsQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null }> } }> } } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
+export type GetRepoSyncsQuery = { serviceAuthCredentials?: { totalCount: number } | null, repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null }> } }> } } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
 
 export type GetReposQueryVariables = Exact<{
   search: Scalars['String'];
 }>;
 
 
-export type GetReposQuery = { repoImports?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };
+export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];

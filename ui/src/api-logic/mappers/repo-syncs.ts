@@ -15,6 +15,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     id: data?.repo?.id,
     name: data?.repo?.repo.replace(GITHUB_URL, '') || '',
     type: data?.repo?.isGithub ? 'github' : 'other',
+    gitHubPat: (data?.serviceAuthCredentials?.totalCount && data?.serviceAuthCredentials?.totalCount > 0) || false
   }
 
   const mappedData: Array<RepoSyncDataType> = []

@@ -2,6 +2,9 @@ import { gql } from '@apollo/client'
 
 const GET_REPOS = gql`
   query getRepos($search: String!) {
+    serviceAuthCredentials(filter: {type: {equalTo: "GITHUB_PAT"}}) {
+      totalCount
+    }
     repoImports(filter: { lastImport: { isNull: true } }) {
       totalCount
     }

@@ -6,13 +6,14 @@ import { TEST_IDS } from 'src/utils/constants'
 type RemoveRepositoryProps = {
   id: string
   name: string
+  autoImported: boolean
 }
 
-export const RepositoryAdditionalActionsDropDown: React.FC<RemoveRepositoryProps> = ({ id, name }: RemoveRepositoryProps) => {
+export const RepositoryAdditionalActionsDropDown: React.FC<RemoveRepositoryProps> = ({ id, name, autoImported }: RemoveRepositoryProps) => {
   const { setShowRemoveRepositoryModal, setRepoToRemove } = useRepositoriesSetState()
 
   const prepareToRemove = () => {
-    setRepoToRemove({ id, name })
+    setRepoToRemove({ id, name, autoImported })
     setShowRemoveRepositoryModal(true)
   }
 

@@ -151,6 +151,9 @@ const syncsTypesArray = [
 ]
 
 export const mockSyncsTypesData = (runningSync: boolean): GetRepoSyncsQuery => ({
+  serviceAuthCredentials: {
+    totalCount: 1,
+  },
   repo: {
     id: DynamicValues.repoId,
     repo: 'https://github.com/mergestat/mergestat',

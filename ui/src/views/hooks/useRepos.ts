@@ -14,7 +14,7 @@ const useRepos = (search: string, poll = false) => {
   })
 
   const validateData = useCallback(() => {
-    if (data && !showTable) {
+    if (!showTable && data?.repos?.totalCount && data?.repos?.totalCount > 0) {
       setShowTable(true)
     }
     setShowBanner(data?.repoImports?.totalCount ? data?.repoImports?.totalCount > 0 : false)

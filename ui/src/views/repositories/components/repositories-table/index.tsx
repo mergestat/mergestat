@@ -83,7 +83,11 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                       </td>
 
                       <td className='px-6 w-4'>
-                        <RepositoryAdditionalActionsDropDown id={repo.id} name={repo.name} />
+                        <RepositoryAdditionalActionsDropDown
+                          id={repo.id}
+                          name={repo.name}
+                          autoImported={!!repo.autoImportFrom}
+                        />
                       </td>
                     </tr>
                   ))}

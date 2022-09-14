@@ -5,6 +5,9 @@ import { SYNC_REPO_METHOD } from 'src/utils/constants'
 import { DynamicValues } from './constants.mock'
 
 export const mockRepoData: GetReposQuery = {
+  serviceAuthCredentials: {
+    totalCount: 1,
+  },
   repoImports: {
     totalCount: 1
   },
@@ -115,6 +118,9 @@ export const mockRepoData: GetReposQuery = {
 }
 
 export const mockJustAngularRepo: GetReposQuery = {
+  serviceAuthCredentials: {
+    totalCount: 1,
+  },
   repoImports: null,
   repos: {
     totalCount: 2,
@@ -138,6 +144,17 @@ export const mockJustAngularRepo: GetReposQuery = {
     ]
   }
 }
+
+export const mockNoGitHubPat = (gitHubPat: boolean): GetReposQuery => ({
+  serviceAuthCredentials: {
+    totalCount: gitHubPat ? 1 : 0,
+  },
+  repoImports: null,
+  repos: {
+    totalCount: 0,
+    nodes: []
+  }
+})
 
 export const apolloMockReposWithData = {
   request: {
@@ -166,5 +183,25 @@ export const apolloMockReposEmpty = {
   },
   result: {
     data: undefined
+  }
+}
+
+export const apolloMockReposEmptyNoGitHubPat = {
+  request: {
+    query: GET_REPOS,
+    variables: { search: '' }
+  },
+  result: {
+    data: mockNoGitHubPat(false)
+  }
+}
+
+export const apolloMockReposEmptyGitHubPat = {
+  request: {
+    query: GET_REPOS,
+    variables: { search: '' }
+  },
+  result: {
+    data: mockNoGitHubPat(true)
   }
 }

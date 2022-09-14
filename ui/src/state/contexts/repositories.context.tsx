@@ -4,6 +4,7 @@ import React, { PropsWithChildren } from 'react'
 type RepoInfoT = {
   id: string
   name: string
+  autoImported: boolean
 }
 
 type RepositoriesContextT = {

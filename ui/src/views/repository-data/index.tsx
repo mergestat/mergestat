@@ -3,6 +3,7 @@ import React from 'react'
 import { RepoSyncData } from 'src/@types'
 import { useRepositoriesContext } from 'src/state/contexts'
 import { EmptyRepositoryTable } from '../repositories/components'
+import { EmptyRepository } from '../repositories/components/empty-repository'
 import { AddRepositoryModal } from '../repositories/modals/add-repository-modal'
 import { PageHeader, RepoSettings, SycnTypesTable } from './components'
 
@@ -36,7 +37,7 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
             </Tabs.Panels>
           </Tabs.Group>
         </>
-        : <EmptyRepositoryTable />
+        : data?.gitHubPat ? <EmptyRepository /> : <EmptyRepositoryTable />
       }
       {showAddRepositoryModal && <AddRepositoryModal />}
     </main>

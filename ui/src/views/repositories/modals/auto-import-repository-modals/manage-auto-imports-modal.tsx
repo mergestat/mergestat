@@ -34,7 +34,7 @@ export const ManageAutoImportReposModal = () => {
       </div>
       {loading
         ? <Loading />
-        : <div className="m-8 pb-8 shadow-sm">
+        : <div className="m-8 pb-8">
           <Panel className="rounded-md w-full shadow-sm">
             <Panel.Body className="p-0">
               {imports.length < 1
