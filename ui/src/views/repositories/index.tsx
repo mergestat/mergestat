@@ -9,10 +9,11 @@ import { Alert, Button, Toolbar } from '@mergestat/blocks'
 import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
 import Loading from 'src/components/Loading'
 import useRepos from 'src/views/hooks/useRepos'
+import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
 const RepositoriesView: React.FC = () => {
-  const [{ showAddRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
-  const { showTable, loading, data, showBanner } = useRepos(search)
+  const [{ showAddRepositoryModal, showRemoveRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
+  const { showTable, loading, data, showBanner } = useRepos(search, true)
 
   // - Todo: connect selectedRepositoriesCount from RepositoriesTable
   const selectedRepositoriesCount = 0
@@ -32,7 +33,7 @@ const RepositoriesView: React.FC = () => {
 
         {loading
           ? <Loading />
-          : (data ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
+          : (data?.repos?.totalCount && data?.repos?.totalCount > 0 ? <RepositoriesTable data={data} /> : <EmptyRepositoryTable />)
         }
       </div>
 
@@ -79,9 +80,10 @@ const RepositoriesView: React.FC = () => {
           </Toolbar>
         </div>
       )}
+      {showRemoveRepositoryModal && <RemoveRepositoryModal />}
       {showAddRepositoryModal && <AddRepositoryModal />}
-      {showAutoImportModal && <ManageAutoImportReposModal />}
       {showSyncRepoModal && <SyncAutoImportReposModal />}
+      {showAutoImportModal && <ManageAutoImportReposModal />}
     </main>
   )
 }

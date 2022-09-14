@@ -30,7 +30,11 @@ describe('Components: (Repos)', () => {
   })
 
   it('rendering component <RepositoriesTable /> when list has data', () => {
-    render(<RepositoriesTable data={mockRepoData} />)
+    render(
+      <RepositoriesProvider>
+        <RepositoriesTable data={mockRepoData} />
+      </RepositoriesProvider>
+    )
     const element = screen.getByTestId(TEST_IDS.repoTableList)
     expect(element).toBeInTheDocument()
   })

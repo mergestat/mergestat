@@ -8570,6 +8570,13 @@ export type AddRepoImportMutationVariables = Exact<{
 
 export type AddRepoImportMutation = { createRepoImport?: { repoImport?: { id: any, type: string, settings: any } | null } | null };
 
+export type RemoveRepoMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveRepoMutation = { deleteRepo?: { deletedRepoNodeId?: string | null } | null };
+
 export type SetGithubPatMutationVariables = Exact<{
   pat: Scalars['String'];
 }>;

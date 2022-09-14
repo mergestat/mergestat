@@ -4,13 +4,13 @@ import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
 import { showErrorAlert } from 'src/utils/alerts'
 
-const useRepos = (search: string) => {
+const useRepos = (search: string, poll = false) => {
   const [showTable, setShowTable] = useState(false)
   const [showBanner, setShowBanner] = useState(false)
 
   const { loading, error, data, refetch } = useQuery<GetReposQuery>(GET_REPOS, {
     variables: { search },
-    pollInterval: 5000,
+    ...(poll && { pollInterval: 5000 }),
   })
 
   const validateData = useCallback(() => {

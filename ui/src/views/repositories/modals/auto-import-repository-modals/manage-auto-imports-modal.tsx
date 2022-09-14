@@ -8,7 +8,7 @@ import useRepoImports from 'src/views/hooks/useRepoImports'
 
 export const ManageAutoImportReposModal = () => {
   const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
-  const { loading, imports } = useRepoImports()
+  const { loading, imports } = useRepoImports(true)
 
   return (
     <div className="absolute top-0 left-0 bg-gray-50 w-full h-full z-40">

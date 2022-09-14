@@ -43,9 +43,7 @@ export const EmptyRepositoryTable: React.FC = () => {
                   </Button>
                 </div>
               </div>
-
             </div>
-
           </Panel.Body>
         </Panel>
       </div>

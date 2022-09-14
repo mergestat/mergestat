@@ -31,6 +31,7 @@ export enum TEST_IDS {
   importsRow = 'imports-row',
   syncsTypesRow = 'syncs-types-row',
   syncsTypesSyncNowButton = 'syncs-types-sync-now-button',
+  removeRepoThreeDots = 'remove-repo-three-dots'
 }
 
 export enum ADD_REPO {
