@@ -12,6 +12,7 @@ export const GITHUB_URL = 'https://github.com/'
 export const MERGESTAT_TITLE = 'MergeStat |'
 
 export enum TEST_IDS {
+  emptyRepository = 'empty-repository',
   emptyRepositoryTable = 'empty-repository-table',
   repoListEmpty = 'repo-list-empty',
   repoTableList = 'repo-table-list',
@@ -31,6 +32,7 @@ export enum TEST_IDS {
   importsRow = 'imports-row',
   syncsTypesRow = 'syncs-types-row',
   syncsTypesSyncNowButton = 'syncs-types-sync-now-button',
+  removeRepoThreeDots = 'remove-repo-three-dots'
 }
 
 export enum ADD_REPO {

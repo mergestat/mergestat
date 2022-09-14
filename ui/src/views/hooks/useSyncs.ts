@@ -6,13 +6,13 @@ import { mapToSyncsData } from 'src/api-logic/mappers/repo-syncs'
 import { showErrorAlert } from 'src/utils/alerts'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
 
-const useSyncs = () => {
+const useSyncs = (poll = false) => {
   const router = useRouter()
   const { repository } = router.query
 
   const { loading, error, data, refetch } = useQuery<GetRepoSyncsQuery>(GET_REPO_SYNCS, {
     variables: { id: repository },
-    pollInterval: 5000,
+    ...(poll && { pollInterval: 5000 }),
   })
 
   const repo = mapToSyncsData(data)

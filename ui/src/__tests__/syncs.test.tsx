@@ -2,6 +2,7 @@
 import { MockedProvider } from '@apollo/react-testing'
 import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import 'intersection-observer'
 import { useRouter } from 'next/router'
 import RepoDetailsPage from 'src/pages/repos/[repository]'
 import { TEST_IDS } from 'src/utils/constants'

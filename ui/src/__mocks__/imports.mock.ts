@@ -7,6 +7,7 @@ export const mockImportsData: GetRepoImportsQuery = {
     totalCount: 4,
     nodes: [
       {
+        id: faker.datatype.uuid(),
         type: 'GITHUB_USER',
         settings: {
           user: 'jhcanonn'
@@ -14,6 +15,7 @@ export const mockImportsData: GetRepoImportsQuery = {
         lastImport: null
       },
       {
+        id: faker.datatype.uuid(),
         type: 'GITHUB_USER',
         settings: {
           user: 'gdcanonn'
@@ -21,6 +23,7 @@ export const mockImportsData: GetRepoImportsQuery = {
         lastImport: faker.date.recent(9),
       },
       {
+        id: faker.datatype.uuid(),
         type: 'GITHUB_ORG',
         settings: {
           org: 'mergestat'
@@ -28,6 +31,7 @@ export const mockImportsData: GetRepoImportsQuery = {
         lastImport: faker.date.recent(9),
       },
       {
+        id: faker.datatype.uuid(),
         type: 'GITHUB_ORG',
         settings: {
           org: 'mergestat'

@@ -3,13 +3,11 @@ import { AutoImportIcon, CogIcon, PlusIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
+import useRepoImports from 'src/views/hooks/useRepoImports'
 
 export const PageHeader: React.FC = () => {
-  const {
-    setShowAddRepositoryModal,
-    setShowAutoImportModal,
-    setShowSyncRepoModal
-  } = useRepositoriesSetState()
+  const { setShowAddRepositoryModal, setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
+  const { refetch } = useRepoImports()
 
   const router = useRouter()
   const crumbs = [
@@ -37,7 +35,10 @@ export const PageHeader: React.FC = () => {
                 icon: <CogIcon className="t-icon mr-2" />,
               },
             ]}
-            onItemClick={() => setShowAutoImportModal(true)}
+            onItemClick={() => {
+              refetch()
+              setShowAutoImportModal(true)
+            }}
           />
         </div>
 

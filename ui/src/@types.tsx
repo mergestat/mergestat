@@ -65,6 +65,7 @@ export type RepoSyncData = {
   id: string
   name: string
   type: RepoType
+  gitHubPat: boolean
   syncs?: Array<RepoSyncDataType>
 }
 

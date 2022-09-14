@@ -8,7 +8,7 @@ import useRepoImports from 'src/views/hooks/useRepoImports'
 
 export const ManageAutoImportReposModal = () => {
   const { setShowAutoImportModal, setShowSyncRepoModal } = useRepositoriesSetState()
-  const { loading, imports } = useRepoImports()
+  const { loading, imports } = useRepoImports(true)
 
   return (
     <div className="absolute top-0 left-0 bg-gray-50 w-full h-full z-40">
@@ -34,7 +34,7 @@ export const ManageAutoImportReposModal = () => {
       </div>
       {loading
         ? <Loading />
-        : <div className="m-8 pb-8 shadow-sm">
+        : <div className="m-8 pb-8">
           <Panel className="rounded-md w-full shadow-sm">
             <Panel.Body className="p-0">
               {imports.length < 1
