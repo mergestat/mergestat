@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/jackc/pgx/v4"
@@ -98,7 +97,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 	l := w.loggerForJob(j)
 
 	// TODO(patrickdevivo) uplift the following os.Getenv call to one place, pass value down as a param
-	tmpPath, err := ioutil.TempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
+	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
 	if err != nil {
 		return err
 	}
@@ -114,7 +113,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 	}
 
 	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ghToken, j.Repo, tmpPath); err != nil {
+	if repo, err = w.cloneRepo(ghToken, j.Repo, tmpPath, true); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 	defer repo.Free()

@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 	"unicode/utf8"
@@ -56,7 +55,7 @@ FROM files(?);
 func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	tmpPath, err := ioutil.TempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
+	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
@@ -72,7 +71,7 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ghToken, j.Repo, tmpPath); err != nil {
+	if repo, err = w.cloneRepo(ghToken, j.Repo, tmpPath, true); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 	defer repo.Free()
