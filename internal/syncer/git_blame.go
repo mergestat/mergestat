@@ -127,10 +127,26 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 
 		for lineIdx, blame := range res {
 			lineNo := lineIdx + 1
+
+			if blame == nil {
+				w.logger.Warn().Str("repo", j.Repo).Str("file", o.Path).Int("lineIdx", lineIdx).Msgf("nil blame line encountered")
+				continue
+			}
+
+			var authorEmail, authorName *string
+			var authorWhen *time.Time
+			// TODO(patrickdevivo) we shouldn't be seeing a nil Author here, but we are
+			// until we can audit what's going on in the `gitutils` package let's add a check here
+			if blame.Author != nil {
+				authorEmail = &blame.Author.Email
+				authorName = &blame.Author.Name
+				authorWhen = &blame.Author.When
+			}
+
 			blamedLines = append(blamedLines, &blameLine{
-				AuthorEmail: &blame.Author.Email,
-				AuthorName:  &blame.Author.Name,
-				AuthorWhen:  &blame.Author.When,
+				AuthorEmail: authorEmail,
+				AuthorName:  authorName,
+				AuthorWhen:  authorWhen,
 				CommitHash:  &blame.SHA,
 				LineNo:      &lineNo,
 				Line:        &blame.Line,
