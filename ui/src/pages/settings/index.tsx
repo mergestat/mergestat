@@ -1,5 +1,5 @@
 
-import { Button, Input, Panel, Toolbar, VerticalNav } from '@mergestat/blocks'
+import { Alert, Button, Input, Panel, Toolbar, VerticalNav } from '@mergestat/blocks'
 import { CircleCheckFilledIcon, CircleWarningFilledIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
 import Head from 'next/head'
@@ -47,15 +47,17 @@ const Settings: NextPage = () => {
 							<Panel className="shadow-sm">
 								<Panel.Body className="py-8">
 									<h3 className="t-h3">GitHub Personal Access Token</h3>
-									<p className="mb-6 text-gray-500">Learn more about <a target='_blank'
-										href={LINKS_TO.createPAt}
-										className="t-link"
-										rel='noopener noreferrer'>how to generate a personal access token</a>.
-									</p>
+									<Alert type="info" theme="light" className='mb-5'>
+										<p>
+											In order to access the  GitHub API and any private GitHub repositories, we need to authenticate with <a target='_blank' href={LINKS_TO.createPAt} className="t-link font-bold" rel='noopener noreferrer'>a personal access token</a> (PAT).
+											Other authentication methods (such as an OAuth based flow) may become available in the future.
+										</p>
+									</Alert>
 									<form className="mb-6">
 										<div className="flex items-center space-x-3">
 											<Input className="max-w-lg"
 												data-testid={TEST_IDS.patInputText}
+												placeholder="ghp_s0mEsecReTt0k3n"
 												type="password"
 												autoComplete="off"
 												value={pat}
