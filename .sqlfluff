@@ -11,7 +11,7 @@ templater = raw
 # Comma separated list of rules to check, default to all
 rules = all
 # Comma separated list of rules to exclude, or None
-exclude_rules = L016,L044,L006,L028,L014
+exclude_rules = L016,L044,L006,L028,L014,L025,L010,L029,L027,L030
 # The depth to recursively parse to (0 for unlimited)
 recurse = 0
 # Below controls SQLFluff output, see max_line_length for SQL output
@@ -19,7 +19,7 @@ output_line_length = 80
 # Number of passes to run before admitting defeat
 runaway_limit = 10
 # Ignore errors by category (one or more of the following, separated by commas: lexing,linting,parsing,templating)
-ignore = None
+ignore = lexing,parsing
 # Ignore linting errors found within sections of code coming directly from
 # templated code (e.g. from within Jinja curly braces. Note that it does not
 # ignore errors from literal code found within template loops.
@@ -38,7 +38,7 @@ fix_even_unparsable = False
 # This limit skips files over a certain character length
 # and warns the user what has happened.
 # Set this to 0 to disable.
-large_file_skip_char_limit = 20000
+large_file_skip_byte_limit = 20000
 
 [sqlfluff:indentation]
 # See https://docs.sqlfluff.com/en/stable/indentation.html

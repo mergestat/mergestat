@@ -1,8 +1,8 @@
 SET check_function_bodies = false;
 CREATE SCHEMA mergestat;
 CREATE FUNCTION mergestat.set_current_timestamp_updated_at() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
+LANGUAGE plpgsql
+AS $$
 DECLARE
   _new record;
 BEGIN
@@ -12,8 +12,8 @@ BEGIN
 END;
 $$;
 CREATE FUNCTION public.repo_sync_queue_status_update_trigger() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
+LANGUAGE plpgsql
+AS $$
 BEGIN
 	IF NEW.status = 'RUNNING' AND OLD.status = 'QUEUED' THEN
 		NEW.started_at = now();
@@ -25,7 +25,7 @@ END;
 $$;
 CREATE TABLE mergestat.repo_sync_queue (
     id bigint NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT null,
     repo_sync_id uuid NOT NULL,
     status text NOT NULL,
     started_at timestamp with time zone,
@@ -33,26 +33,27 @@ CREATE TABLE mergestat.repo_sync_queue (
     last_keep_alive timestamp with time zone
 );
 CREATE VIEW mergestat.latest_repo_syncs AS
- SELECT DISTINCT ON (repo_sync_queue.repo_sync_id) repo_sync_queue.id,
+SELECT DISTINCT ON (repo_sync_queue.repo_sync_id)
+    repo_sync_queue.id,
     repo_sync_queue.created_at,
     repo_sync_queue.repo_sync_id,
     repo_sync_queue.status,
     repo_sync_queue.started_at,
     repo_sync_queue.done_at
-   FROM mergestat.repo_sync_queue
-  WHERE (repo_sync_queue.status = 'DONE'::text)
-  ORDER BY repo_sync_queue.repo_sync_id, repo_sync_queue.created_at DESC;
+FROM mergestat.repo_sync_queue
+WHERE (repo_sync_queue.status = 'DONE'::text)
+ORDER BY repo_sync_queue.repo_sync_id ASC, repo_sync_queue.created_at DESC;
 CREATE TABLE mergestat.repo_import_types (
     type text NOT NULL,
     description text NOT NULL
 );
 COMMENT ON TABLE mergestat.repo_import_types IS 'Types of repo imports';
 CREATE TABLE mergestat.repo_imports (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT null,
+    created_at timestamp with time zone DEFAULT now() NOT null,
+    updated_at timestamp with time zone DEFAULT now() NOT null,
     type text NOT NULL,
-    settings jsonb DEFAULT jsonb_build_object() NOT NULL,
+    settings jsonb DEFAULT jsonb_build_object() NOT null,
     last_import timestamp with time zone,
     import_interval interval DEFAULT '00:30:00'::interval,
     last_import_started_at timestamp with time zone,
@@ -65,24 +66,24 @@ CREATE TABLE mergestat.repo_sync_log_types (
 );
 CREATE TABLE mergestat.repo_sync_logs (
     id bigint NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT null,
     log_type text NOT NULL,
     message text NOT NULL,
     repo_sync_queue_id bigint NOT NULL
 );
 CREATE SEQUENCE mergestat.repo_sync_logs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 ALTER SEQUENCE mergestat.repo_sync_logs_id_seq OWNED BY mergestat.repo_sync_logs.id;
 CREATE SEQUENCE mergestat.repo_sync_queue_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 ALTER SEQUENCE mergestat.repo_sync_queue_id_seq OWNED BY mergestat.repo_sync_queue.id;
 CREATE TABLE mergestat.repo_sync_queue_status_types (
     type text NOT NULL,
@@ -95,8 +96,8 @@ CREATE TABLE mergestat.repo_sync_types (
 CREATE TABLE mergestat.repo_syncs (
     repo_id uuid NOT NULL,
     sync_type text NOT NULL,
-    settings jsonb DEFAULT jsonb_build_object() NOT NULL,
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL
+    settings jsonb DEFAULT jsonb_build_object() NOT null,
+    id uuid DEFAULT public.gen_random_uuid() NOT null
 );
 CREATE TABLE public.git_refs (
     repo_id uuid NOT NULL,
@@ -110,7 +111,8 @@ CREATE TABLE public.git_refs (
 );
 COMMENT ON TABLE public.git_refs IS 'Refs for a Git repo';
 CREATE VIEW public.git_branches AS
- SELECT git_refs.repo_id,
+SELECT
+    git_refs.repo_id,
     git_refs.full_name,
     git_refs.hash,
     git_refs.name,
@@ -118,8 +120,8 @@ CREATE VIEW public.git_branches AS
     git_refs.target,
     git_refs.type,
     git_refs.tag_commit_hash
-   FROM public.git_refs
-  WHERE (git_refs.type = 'branch'::text);
+FROM public.git_refs
+WHERE (git_refs.type = 'branch'::text);
 CREATE TABLE public.git_commit_stats (
     repo_id uuid NOT NULL,
     commit_hash text NOT NULL,
@@ -149,7 +151,8 @@ CREATE TABLE public.git_files (
 );
 COMMENT ON TABLE public.git_files IS 'Git repository files';
 CREATE VIEW public.git_tags AS
- SELECT git_refs.repo_id,
+SELECT
+    git_refs.repo_id,
     git_refs.full_name,
     git_refs.hash,
     git_refs.name,
@@ -157,8 +160,8 @@ CREATE VIEW public.git_tags AS
     git_refs.target,
     git_refs.type,
     git_refs.tag_commit_hash
-   FROM public.git_refs
-  WHERE (git_refs.type = 'tag'::text);
+FROM public.git_refs
+WHERE (git_refs.type = 'tag'::text);
 CREATE TABLE public.github_issues (
     repo_id uuid NOT NULL,
     author_login text,
@@ -208,18 +211,18 @@ COMMENT ON TABLE public.github_pull_request_reviews IS 'GitHub pull request revi
 CREATE TABLE public.github_pull_request_commits (
     repo_id uuid NOT NULL,
     pr_number integer NOT NULL,
-    hash text,	
-    message text,	
-    author_name text,	
-    author_email text,	
+    hash text,
+    message text,
+    author_name text,
+    author_email text,
     author_when timestamp with time zone,
-    committer_name text,	
-    committer_email text,	
+    committer_name text,
+    committer_email text,
     committer_when timestamp with time zone,
     additions integer,
     deletions integer,
     changed_files integer,
-    url	TEXT
+    url text
 );
 COMMENT ON TABLE public.github_pull_request_commits IS 'GitHub pull request commits';
 CREATE TABLE public.github_pull_requests (
@@ -314,90 +317,90 @@ CREATE TABLE public.github_stargazers (
 );
 COMMENT ON TABLE public.github_stargazers IS 'GitHub stargazers for a repo';
 CREATE TABLE public.repos (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT null,
     repo text NOT NULL,
     ref text,
     is_github boolean,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    settings jsonb DEFAULT jsonb_build_object() NOT NULL,
-    tags jsonb DEFAULT jsonb_build_array() NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT null,
+    settings jsonb DEFAULT jsonb_build_object() NOT null,
+    tags jsonb DEFAULT jsonb_build_array() NOT null,
     repo_import_id uuid
 );
 COMMENT ON TABLE public.repos IS 'Git repositories to track';
 ALTER TABLE ONLY mergestat.repo_sync_logs ALTER COLUMN id SET DEFAULT nextval('mergestat.repo_sync_logs_id_seq'::regclass);
 ALTER TABLE ONLY mergestat.repo_sync_queue ALTER COLUMN id SET DEFAULT nextval('mergestat.repo_sync_queue_id_seq'::regclass);
 ALTER TABLE ONLY mergestat.repo_import_types
-    ADD CONSTRAINT repo_import_types_pkey PRIMARY KEY (type);
+ADD CONSTRAINT repo_import_types_pkey PRIMARY KEY (type);
 ALTER TABLE ONLY mergestat.repo_imports
-    ADD CONSTRAINT repo_imports_pkey PRIMARY KEY (id);
+ADD CONSTRAINT repo_imports_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY mergestat.repo_sync_log_types
-    ADD CONSTRAINT repo_sync_log_types_pkey PRIMARY KEY (type);
+ADD CONSTRAINT repo_sync_log_types_pkey PRIMARY KEY (type);
 ALTER TABLE ONLY mergestat.repo_sync_logs
-    ADD CONSTRAINT repo_sync_logs_pkey PRIMARY KEY (id);
+ADD CONSTRAINT repo_sync_logs_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY mergestat.repo_sync_queue
-    ADD CONSTRAINT repo_sync_queue_pkey PRIMARY KEY (id);
+ADD CONSTRAINT repo_sync_queue_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY mergestat.repo_sync_queue_status_types
-    ADD CONSTRAINT repo_sync_queue_status_types_pkey PRIMARY KEY (type);
+ADD CONSTRAINT repo_sync_queue_status_types_pkey PRIMARY KEY (type);
 ALTER TABLE ONLY mergestat.repo_syncs
-    ADD CONSTRAINT repo_sync_settings_pkey PRIMARY KEY (id);
+ADD CONSTRAINT repo_sync_settings_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY mergestat.repo_sync_types
-    ADD CONSTRAINT repo_sync_types_pkey PRIMARY KEY (type);
+ADD CONSTRAINT repo_sync_types_pkey PRIMARY KEY (type);
 ALTER TABLE ONLY mergestat.repo_syncs
-    ADD CONSTRAINT repo_syncs_repo_id_sync_type_key UNIQUE (repo_id, sync_type);
+ADD CONSTRAINT repo_syncs_repo_id_sync_type_key UNIQUE (repo_id, sync_type);
 ALTER TABLE ONLY public.git_commits
-    ADD CONSTRAINT commits_pkey PRIMARY KEY (repo_id, hash);
+ADD CONSTRAINT commits_pkey PRIMARY KEY (repo_id, hash);
 ALTER TABLE ONLY public.git_files
-    ADD CONSTRAINT files_pkey PRIMARY KEY (repo_id, path);
+ADD CONSTRAINT files_pkey PRIMARY KEY (repo_id, path);
 ALTER TABLE ONLY public.git_refs
-    ADD CONSTRAINT git_refs_pkey PRIMARY KEY (repo_id, full_name);
+ADD CONSTRAINT git_refs_pkey PRIMARY KEY (repo_id, full_name);
 ALTER TABLE ONLY public.github_issues
-    ADD CONSTRAINT github_issues_pkey PRIMARY KEY (repo_id, database_id);
+ADD CONSTRAINT github_issues_pkey PRIMARY KEY (repo_id, database_id);
 ALTER TABLE ONLY public.github_pull_request_reviews
-    ADD CONSTRAINT github_pull_request_reviews_pkey PRIMARY KEY (id);
+ADD CONSTRAINT github_pull_request_reviews_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.github_pull_request_commits
-    ADD CONSTRAINT github_pull_request_commits_pkey PRIMARY KEY (repo_id, pr_number, hash);
+ADD CONSTRAINT github_pull_request_commits_pkey PRIMARY KEY (repo_id, pr_number, hash);
 ALTER TABLE ONLY public.github_pull_requests
-    ADD CONSTRAINT github_pull_requests_pkey PRIMARY KEY (repo_id, database_id);
+ADD CONSTRAINT github_pull_requests_pkey PRIMARY KEY (repo_id, database_id);
 ALTER TABLE ONLY public.github_repo_info
-    ADD CONSTRAINT github_repo_info_owner_name_key UNIQUE (owner, name);
+ADD CONSTRAINT github_repo_info_owner_name_key UNIQUE (owner, name);
 ALTER TABLE ONLY public.github_repo_info
-    ADD CONSTRAINT github_repo_info_pkey PRIMARY KEY (repo_id);
+ADD CONSTRAINT github_repo_info_pkey PRIMARY KEY (repo_id);
 ALTER TABLE ONLY public.github_stargazers
-    ADD CONSTRAINT github_stargazers_pkey PRIMARY KEY (repo_id, login);
+ADD CONSTRAINT github_stargazers_pkey PRIMARY KEY (repo_id, login);
 ALTER TABLE ONLY public.repos
-    ADD CONSTRAINT repos_pkey PRIMARY KEY (id);
-CREATE INDEX commits_author_when_idx ON public.git_commits USING btree (repo_id, author_when);
-CREATE UNIQUE INDEX repos_repo_ref_unique ON public.repos USING btree (repo, ((ref IS NULL))) WHERE (ref IS NULL);
+ADD CONSTRAINT repos_pkey PRIMARY KEY (id);
+CREATE INDEX commits_author_when_idx ON public.git_commits USING btree(repo_id, author_when);
+CREATE UNIQUE INDEX repos_repo_ref_unique ON public.repos USING btree(repo, ((ref IS NULL))) WHERE (ref IS NULL);
 CREATE TRIGGER repo_sync_queue_status_update_trigger BEFORE UPDATE ON mergestat.repo_sync_queue FOR EACH ROW EXECUTE FUNCTION public.repo_sync_queue_status_update_trigger();
 CREATE TRIGGER set_mergestat_repo_imports_updated_at BEFORE UPDATE ON mergestat.repo_imports FOR EACH ROW EXECUTE FUNCTION mergestat.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_mergestat_repo_imports_updated_at ON mergestat.repo_imports IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 ALTER TABLE ONLY mergestat.repo_imports
-    ADD CONSTRAINT repo_imports_type_fkey FOREIGN KEY (type) REFERENCES mergestat.repo_import_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT repo_imports_type_fkey FOREIGN KEY (type) REFERENCES mergestat.repo_import_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY mergestat.repo_sync_logs
-    ADD CONSTRAINT repo_sync_logs_log_type_fkey FOREIGN KEY (log_type) REFERENCES mergestat.repo_sync_log_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT repo_sync_logs_log_type_fkey FOREIGN KEY (log_type) REFERENCES mergestat.repo_sync_log_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY mergestat.repo_sync_logs
-    ADD CONSTRAINT repo_sync_logs_repo_sync_queue_id_fkey FOREIGN KEY (repo_sync_queue_id) REFERENCES mergestat.repo_sync_queue(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT repo_sync_logs_repo_sync_queue_id_fkey FOREIGN KEY (repo_sync_queue_id) REFERENCES mergestat.repo_sync_queue(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY mergestat.repo_sync_queue
-    ADD CONSTRAINT repo_sync_queue_repo_sync_id_fkey FOREIGN KEY (repo_sync_id) REFERENCES mergestat.repo_syncs(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT repo_sync_queue_repo_sync_id_fkey FOREIGN KEY (repo_sync_id) REFERENCES mergestat.repo_syncs(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY mergestat.repo_sync_queue
-    ADD CONSTRAINT repo_sync_queue_status_fkey FOREIGN KEY (status) REFERENCES mergestat.repo_sync_queue_status_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT repo_sync_queue_status_fkey FOREIGN KEY (status) REFERENCES mergestat.repo_sync_queue_status_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY mergestat.repo_syncs
-    ADD CONSTRAINT repo_sync_settings_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT repo_sync_settings_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY mergestat.repo_syncs
-    ADD CONSTRAINT repo_syncs_sync_type_fkey FOREIGN KEY (sync_type) REFERENCES mergestat.repo_sync_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT repo_syncs_sync_type_fkey FOREIGN KEY (sync_type) REFERENCES mergestat.repo_sync_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.git_commit_stats
-    ADD CONSTRAINT commit_stats_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ADD CONSTRAINT commit_stats_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 ALTER TABLE ONLY public.git_commits
-    ADD CONSTRAINT commits_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;
+ADD CONSTRAINT commits_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE ONLY public.git_files
-    ADD CONSTRAINT files_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;
+ADD CONSTRAINT files_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE ONLY public.github_issues
-    ADD CONSTRAINT github_issues_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT github_issues_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.github_pull_requests
-    ADD CONSTRAINT github_pull_requests_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT github_pull_requests_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.github_repo_info
-    ADD CONSTRAINT github_repo_info_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT github_repo_info_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.github_stargazers
-    ADD CONSTRAINT github_stargazers_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT github_stargazers_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.repos
-    ADD CONSTRAINT repos_repo_import_id_fkey FOREIGN KEY (repo_import_id) REFERENCES mergestat.repo_imports(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ADD CONSTRAINT repos_repo_import_id_fkey FOREIGN KEY (repo_import_id) REFERENCES mergestat.repo_imports(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
