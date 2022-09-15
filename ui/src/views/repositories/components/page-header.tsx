@@ -25,13 +25,13 @@ export const PageHeader: React.FC = () => {
       <div className="flex items-center gap-3">
         <div className="relative">
           <SplitButton
-            text="Create Auto Import"
+            text="Create Repo Auto Import"
             className="z-20 text-base font-normal"
             startIcon={<AutoImportIcon className="t-icon" />}
             onButtonClick={() => setShowSyncRepoModal(true)}
             items={[
               {
-                text: 'Manage auto imports',
+                text: 'Manage Repo Auto Imports',
                 icon: <CogIcon className="t-icon mr-2" />,
               },
             ]}
