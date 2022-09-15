@@ -9,6 +9,11 @@ const GET_REPO_SYNCS = gql`
       id
       repo
       isGithub
+      tags
+      repoImport {
+        type
+        settings
+      }
       repoSyncs {
         nodes {
           id

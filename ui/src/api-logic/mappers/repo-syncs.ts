@@ -1,7 +1,7 @@
 import { differenceInSeconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, SyncStatusDataT } from 'src/@types'
 import { getSimpleDurationTime, mapToRepoSyncStateT } from 'src/utils'
-import { GITHUB_URL, SYNC_STATUS } from 'src/utils/constants'
+import { GITHUB_URL, SYNC_REPO_METHOD, SYNC_STATUS } from 'src/utils/constants'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
 /**
@@ -15,7 +15,12 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     id: data?.repo?.id,
     name: data?.repo?.repo.replace(GITHUB_URL, '') || '',
     type: data?.repo?.isGithub ? 'github' : 'other',
-    gitHubPat: (data?.serviceAuthCredentials?.totalCount && data?.serviceAuthCredentials?.totalCount > 0) || false
+    gitHubPat: (data?.serviceAuthCredentials?.totalCount && data?.serviceAuthCredentials?.totalCount > 0) || false,
+    autoImportFrom: data?.repo?.repoImport
+      ? data?.repo?.repoImport?.type === SYNC_REPO_METHOD.GH_USER
+        ? `user: ${data?.repo?.repoImport?.settings.user}`
+        : `org: ${data?.repo?.repoImport?.settings.org}`
+      : undefined,
   }
 
   const mappedData: Array<RepoSyncDataType> = []
