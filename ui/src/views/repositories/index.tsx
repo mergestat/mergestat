@@ -34,7 +34,7 @@ const RepositoriesView: React.FC = () => {
 
         {loading
           ? <Loading />
-          : data?.repos?.totalCount && data?.repos?.totalCount > 0
+          : data?.allRepos?.totalCount && data?.allRepos?.totalCount > 0
             ? <RepositoriesTable data={data} />
             : data?.serviceAuthCredentials?.totalCount && data?.serviceAuthCredentials?.totalCount > 0
               ? <EmptyRepository />

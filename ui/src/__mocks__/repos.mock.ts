@@ -11,6 +11,9 @@ export const mockRepoData: GetReposQuery = {
   repoImports: {
     totalCount: 1
   },
+  allRepos: {
+    totalCount: 2
+  },
   repos: {
     totalCount: 2,
     nodes: [
@@ -118,6 +121,9 @@ export const mockJustAngularRepo: GetReposQuery = {
     totalCount: 1,
   },
   repoImports: null,
+  allRepos: {
+    totalCount: 2
+  },
   repos: {
     totalCount: 2,
     nodes: [
@@ -139,11 +145,28 @@ export const mockJustAngularRepo: GetReposQuery = {
   }
 }
 
+export const mockWithoutResult: GetReposQuery = {
+  serviceAuthCredentials: {
+    totalCount: 1,
+  },
+  repoImports: null,
+  allRepos: {
+    totalCount: 2
+  },
+  repos: {
+    totalCount: 0,
+    nodes: []
+  }
+}
+
 export const mockNoGitHubPat = (gitHubPat: boolean): GetReposQuery => ({
   serviceAuthCredentials: {
     totalCount: gitHubPat ? 1 : 0,
   },
   repoImports: null,
+  allRepos: {
+    totalCount: 0
+  },
   repos: {
     totalCount: 0,
     nodes: []
@@ -167,6 +190,16 @@ export const apolloMockJustAngularRepo = {
   },
   result: {
     data: mockJustAngularRepo
+  }
+}
+
+export const apolloMockWithoutResults = {
+  request: {
+    query: GET_REPOS,
+    variables: { search: DynamicValues.weirdSearch }
+  },
+  result: {
+    data: mockWithoutResult
   }
 }
 
