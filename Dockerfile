@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1-experimental
+
 FROM golang:1.18-buster AS builder
 RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates cmake libssl-dev
 COPY scripts/install_libgit2.sh install_libgit2.sh
@@ -6,7 +8,8 @@ WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 COPY . .
-RUN PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ make
+RUN --mount=type=cache,target=/root/.cache/go-build \
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ make
 
 FROM debian:buster-slim
 RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
