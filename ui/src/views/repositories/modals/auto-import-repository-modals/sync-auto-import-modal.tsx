@@ -1,5 +1,5 @@
 import { ApolloError, useMutation } from '@apollo/client'
-import { Button, Input, Label, Modal, RadioCard, Toolbar } from '@mergestat/blocks'
+import { Alert, Button, Input, Label, Modal, RadioCard, Toolbar } from '@mergestat/blocks'
 import { GithubIcon, XIcon } from '@mergestat/icons'
 import React, { useState } from 'react'
 import { AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
@@ -59,7 +59,7 @@ export const SyncAutoImportReposModal = () => {
         <Toolbar className="h-16 px-8">
           <Toolbar.Left>
             <Toolbar.Item>
-              <Modal.Title>Sync repos</Modal.Title>
+              <Modal.Title>Create Repo Auto Import</Modal.Title>
             </Toolbar.Item>
           </Toolbar.Left>
           <Toolbar.Right>
@@ -76,9 +76,9 @@ export const SyncAutoImportReposModal = () => {
       <Modal.Body>
         <div className="w-full p-8">
           <div>
-            <p className="text-gray-500 mb-6">
-              This will automatically import all repos from your GitHub organization or GitHub User.
-            </p>
+            <Alert type="info" className="mb-6">
+              A <strong>repo auto import</strong> automatically imports git repos from a GitHub organization or user, including new repos that are added in the future.
+            </Alert>
           </div>
           <div className="mb-6">
             <Label className="mb-1">Import type</Label>
@@ -99,11 +99,11 @@ export const SyncAutoImportReposModal = () => {
           </div>
           <div>
             <Label>
-              {importType === SYNC_REPO_METHOD.GH_ORG ? 'Organization name' : 'User name'}
+              {importType === SYNC_REPO_METHOD.GH_ORG ? 'Organization name' : 'Username'}
             </Label>
             <div className="flex w-full items-center gap-2">
               <Input
-                placeholder={importType === SYNC_REPO_METHOD.GH_ORG ? 'organization-name' : 'user-name'}
+                placeholder={importType === SYNC_REPO_METHOD.GH_ORG ? 'organization-name' : 'username'}
                 onChange={(e) => serOrgUserText(e.target.value)}
                 data-testid={TEST_IDS.autoImportInputText}
                 value={orgUserText}
@@ -131,7 +131,7 @@ export const SyncAutoImportReposModal = () => {
                   }
                 })}
               >
-                Create Auto Import
+                Create Repo Auto Import
               </Button>
             </Toolbar.Item>
           </Toolbar.Right>

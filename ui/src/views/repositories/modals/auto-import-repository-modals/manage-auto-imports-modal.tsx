@@ -1,4 +1,4 @@
-import { Button, Panel } from '@mergestat/blocks'
+import { Alert, Button, Panel } from '@mergestat/blocks'
 import { AutoImportIcon, CircleCheckFilledIcon, ClockIcon, GithubIcon, TrashIcon, XIcon } from '@mergestat/icons'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import Loading from 'src/components/Loading'
@@ -21,7 +21,7 @@ export const ManageAutoImportReposModal = () => {
           />
 
           <h2 className="t-toolbar-title border-l border-semantic-border ml-2 pl-5">
-            Manage auto imports
+            Manage Repo Auto Imports
           </h2>
         </div>
         <Button
@@ -29,14 +29,18 @@ export const ManageAutoImportReposModal = () => {
           startIcon={<AutoImportIcon className="t-icon mr-2" />}
           onClick={() => setShowSyncRepoModal(true)}
         >
-          Create Auto import
+          Create Repo Auto import
         </Button>
       </div>
       {loading
         ? <Loading />
         : <div className="m-8 pb-8">
           <Panel className="rounded-md w-full shadow-sm">
-            <Panel.Body className="p-0">
+            <Panel.Body className="p-10">
+              <Alert type="info" className="mb-10">
+                <strong>Repo auto imports</strong> automatically import repositories from a GitHub org or user, allowing MergeStat to pickup new repositories (and remove deleted ones) as they are added in GitHub.
+              </Alert>
+
               {imports.length < 1
                 ? <div className='flex justify-center items-center bg-white py-5'>
                   No data available!
@@ -50,7 +54,7 @@ export const ManageAutoImportReposModal = () => {
                         </th>
 
                         <th scope="col" key='tags' className='px-6'>
-                          <span className='mr-1 select-none'>Source</span>
+                          <span className='mr-1 select-none'>Org or username</span>
                         </th>
 
                         <th scope="col" key='last' className='px-6'>
