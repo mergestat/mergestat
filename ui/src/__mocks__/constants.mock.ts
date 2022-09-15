@@ -1,6 +1,7 @@
 export enum DynamicValues {
   urlGithub = 'https://github.com/',
   angular = 'angular',
+  weirdSearch = 'qwerwefvs',
   newRepoToAdd = 'mergestat/docs',
   existingRepo = 'mergestat/mergestat',
   validPAT = 'ghp_cJYwtBb8DbdXNYAw3wegVcTFDYJQhu0QpmCQ',

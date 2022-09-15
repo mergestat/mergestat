@@ -14,7 +14,7 @@ import { DynamicValues } from 'src/__mocks__/constants.mock'
 import { apolloMockImports } from 'src/__mocks__/imports.mock'
 import { apolloMockAddExistingRepo, apolloMockAddNewRepo, apolloMockAutoImportUser } from 'src/__mocks__/repo-add.mock'
 import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
-import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposEmptyGitHubPat, apolloMockReposEmptyNoGitHubPat, apolloMockReposWithData, mockRepoData } from 'src/__mocks__/repos.mock'
+import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposEmptyGitHubPat, apolloMockReposEmptyNoGitHubPat, apolloMockReposWithData, apolloMockWithoutResults, mockRepoData } from 'src/__mocks__/repos.mock'
 
 afterEach(() => {
   cleanup()
@@ -22,13 +22,6 @@ afterEach(() => {
 })
 
 describe('Components: (Repos)', () => {
-  it('rendering component <RepositoriesTable /> when list is empty (No data available!)', () => {
-    render(<RepositoriesTable />)
-    const element = screen.getByTestId(TEST_IDS.repoListEmpty)
-    expect(element).toBeInTheDocument()
-    expect(element?.textContent).toBe('No data available!')
-  })
-
   it('rendering component <RepositoriesTable /> when list has data', () => {
     render(
       <RepositoriesProvider>
@@ -123,6 +116,31 @@ describe('GraphQL queries: (Repos)', () => {
         // Check table to have angular repo record
         const repoName = screen.getByTestId(TEST_IDS.repoNameTable)
         expect(repoName).toHaveTextContent('angular/angular')
+      }
+    })
+  })
+
+  it('calling useQuery() and refetch(): searching repos without any result', async () => {
+    render(
+      <MockedProvider mocks={[apolloMockReposWithData, apolloMockWithoutResults]} addTypename={false}>
+        <RepositoriesProvider>
+          <RepositoriesView />
+        </RepositoriesProvider>
+      </MockedProvider>
+    )
+
+    await waitFor(() => {
+      // Get input search to type
+      const searchInput = screen.getByTestId(TEST_IDS.inputRepoSearch)
+      if (searchInput) {
+        // Typing 'qwerwefvs'
+        fireEvent.change(searchInput, { target: { value: DynamicValues.weirdSearch } })
+        expect((searchInput as HTMLInputElement).value).toBe(DynamicValues.weirdSearch)
+
+        // Checks if table is empty
+        const element = screen.getByTestId(TEST_IDS.repoListEmpty)
+        expect(element).toBeInTheDocument()
+        expect(element?.textContent).toBe('No data available!')
       }
     })
   })
