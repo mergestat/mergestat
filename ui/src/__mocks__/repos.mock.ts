@@ -19,9 +19,7 @@ export const mockRepoData: GetReposQuery = {
         repo: 'https://github.com/angular/angular',
         createdAt: faker.date.recent(2),
         isGithub: true,
-        tags: [
-
-        ],
+        tags: [],
         repoImport: {
           type: SYNC_REPO_METHOD.GH_USER,
           settings: { user: DynamicValues.autoImportUser }
@@ -38,9 +36,7 @@ export const mockRepoData: GetReposQuery = {
         repo: 'https://github.com/mergestat/mergestat',
         createdAt: faker.date.recent(10),
         isGithub: true,
-        tags: [
-
-        ],
+        tags: [],
         repoImport: null,
         repoSyncs: {
           totalCount: 5,
@@ -130,9 +126,7 @@ export const mockJustAngularRepo: GetReposQuery = {
         repo: 'https://github.com/angular/angular',
         createdAt: faker.date.recent(2),
         isGithub: true,
-        tags: [
-
-        ],
+        tags: [],
         repoImport: null,
         repoSyncs: {
           totalCount: 0,

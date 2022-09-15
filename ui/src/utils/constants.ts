@@ -32,7 +32,9 @@ export enum TEST_IDS {
   importsRow = 'imports-row',
   syncsTypesRow = 'syncs-types-row',
   syncsTypesSyncNowButton = 'syncs-types-sync-now-button',
-  removeRepoThreeDots = 'remove-repo-three-dots'
+  removeRepoSettingsTab = 'remove-repo-settings-tab',
+  removeRepoButton = 'remove-repo-button',
+  removeRepoButtonModal = 'remove-repo-button-modal'
 }
 
 export enum ADD_REPO {

@@ -5,6 +5,7 @@ type RepoInfoT = {
   id: string
   name: string
   autoImported: boolean
+  redirect: boolean
 }
 
 type RepositoriesContextT = {

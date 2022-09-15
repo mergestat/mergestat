@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
-import { AddSyncTypeMutation, GetRepoSyncsQuery, SyncMutation } from 'src/api-logic/graphql/generated/schema'
+import { AddSyncTypeMutation, GetRepoSyncsQuery, RemoveRepoMutation, SyncMutation } from 'src/api-logic/graphql/generated/schema'
+import REMOVE_REPO from 'src/api-logic/graphql/mutations/remove-repo'
 import { ADD_SYNC_TYPE, SYNC_NOW } from 'src/api-logic/graphql/mutations/syncs'
 import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/get-repo-syncs.query'
 import { DynamicValues } from './constants.mock'
@@ -150,7 +151,7 @@ const syncsTypesArray = [
   }
 ]
 
-export const mockSyncsTypesData = (runningSync: boolean): GetRepoSyncsQuery => ({
+export const mockSyncsTypesData = (runningSync: boolean, autoImported = false): GetRepoSyncsQuery => ({
   serviceAuthCredentials: {
     totalCount: 1,
   },
@@ -158,6 +159,8 @@ export const mockSyncsTypesData = (runningSync: boolean): GetRepoSyncsQuery => (
     id: DynamicValues.repoId,
     repo: 'https://github.com/mergestat/mergestat',
     isGithub: true,
+    tags: [],
+    repoImport: autoImported ? { type: 'GITHUB_USER', settings: { user: 'gdcanonn' } } : null,
     repoSyncs: {
       nodes: [
         {
@@ -182,11 +185,17 @@ export const mockSyncsTypesData = (runningSync: boolean): GetRepoSyncsQuery => (
   }
 })
 
+export const mockRemoveRepo: RemoveRepoMutation = {
+  deleteRepo: {
+    deletedRepoNodeId: 'WyJyZXBvcyIsIjcyMTFiMmVjLTBlZTktNDZjNy1hMjQyLTU2Y2Q1NGU0MmVmYiJd',
+  }
+}
+
 // Apollo Mock: Sync Types
 export const apolloMockSyncsTypesData = {
   request: {
     query: GET_REPO_SYNCS,
-    variables: { id: DynamicValues.syncTypeId }
+    variables: { id: DynamicValues.repoId }
   },
   result: {
     data: mockSyncsTypesData(false)
@@ -197,7 +206,7 @@ export const apolloMockSyncsTypesData = {
 export const apolloMockSyncsTypesRunningData = {
   request: {
     query: GET_REPO_SYNCS,
-    variables: { id: DynamicValues.syncTypeId }
+    variables: { id: DynamicValues.repoId }
   },
   result: {
     data: mockSyncsTypesData(true)
@@ -263,5 +272,16 @@ export const apolloMockAddSyncType = {
   },
   result: {
     data: mockAddSyncType
+  }
+}
+
+// Apollo Mock: Remove a repository
+export const apolloMockRemoveRepo = {
+  request: {
+    query: REMOVE_REPO,
+    variables: { id: DynamicValues.repoId }
+  },
+  result: {
+    data: mockRemoveRepo
   }
 }

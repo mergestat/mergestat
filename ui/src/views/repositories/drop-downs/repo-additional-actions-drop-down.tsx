@@ -1,7 +1,6 @@
 import { Dropdown, Menu } from '@mergestat/blocks'
 import { CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
 import { useRepositoriesSetState } from 'src/state/contexts'
-import { TEST_IDS } from 'src/utils/constants'
 
 type RemoveRepositoryProps = {
   id: string
@@ -13,14 +12,13 @@ export const RepositoryAdditionalActionsDropDown: React.FC<RemoveRepositoryProps
   const { setShowRemoveRepositoryModal, setRepoToRemove } = useRepositoriesSetState()
 
   const prepareToRemove = () => {
-    setRepoToRemove({ id, name, autoImported })
+    setRepoToRemove({ id, name, autoImported, redirect: false })
     setShowRemoveRepositoryModal(true)
   }
 
   return (
     <Dropdown
       alignEnd
-      data-testid={TEST_IDS.removeRepoThreeDots}
       trigger={<DotsHorizontalIcon className="t-icon cursor-pointer" />}
       overlay={() => (
         <Menu className="whitespace-nowrap">
