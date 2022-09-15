@@ -8,6 +8,9 @@ const GET_REPOS = gql`
     repoImports(filter: { lastImport: { isNull: true } }) {
       totalCount
     }
+    reposBD: repos {
+      totalCount
+    }
     repos(orderBy: CREATED_AT_DESC, filter: {repo: {includes: $search}}) {
       totalCount
       nodes {
