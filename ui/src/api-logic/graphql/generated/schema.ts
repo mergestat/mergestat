@@ -9255,7 +9255,7 @@ export type GetReposQueryVariables = Exact<{
 }>;
 
 
-export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, reposBD?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };
+export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, allRepos?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any }> } }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];

@@ -11,7 +11,7 @@ export const mockRepoData: GetReposQuery = {
   repoImports: {
     totalCount: 1
   },
-  reposBD: {
+  allRepos: {
     totalCount: 2
   },
   repos: {
@@ -121,7 +121,7 @@ export const mockJustAngularRepo: GetReposQuery = {
     totalCount: 1,
   },
   repoImports: null,
-  reposBD: {
+  allRepos: {
     totalCount: 2
   },
   repos: {
@@ -150,7 +150,7 @@ export const mockWithoutResult: GetReposQuery = {
     totalCount: 1,
   },
   repoImports: null,
-  reposBD: {
+  allRepos: {
     totalCount: 2
   },
   repos: {
@@ -164,7 +164,7 @@ export const mockNoGitHubPat = (gitHubPat: boolean): GetReposQuery => ({
     totalCount: gitHubPat ? 1 : 0,
   },
   repoImports: null,
-  reposBD: {
+  allRepos: {
     totalCount: 0
   },
   repos: {
