@@ -62,7 +62,7 @@ export const ManageAutoImportReposModal = () => {
                         </th>
 
                         <th scope="col" key='status' className='px-6'>
-                          <span className='mr-1 select-none'>Last sync</span>
+                          <span className='mr-1 select-none'>Last import</span>
                         </th>
 
                         <th scope="col" key='option' className='px-6'>
