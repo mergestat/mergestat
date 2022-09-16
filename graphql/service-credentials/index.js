@@ -12,10 +12,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const graphile_utils_1 = require("graphile-utils");
 // FUSE_SECRET is used to encrypt credentials before they go into the DB
 const { FUSE_SECRET } = process.env;
+// If these env vars are set (DISPLAY_PG_*) they will be accessible via the databaseConnection Query
+// They are meant to be set by an operator for display in the /connect page of the UI
+const { DISPLAY_PG_HOSTNAME, DISPLAY_PG_PORT, DISPLAY_PG_DATABASE, DISPLAY_PG_USER } = process.env;
 module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
     typeDefs: (0, graphile_utils_1.gql) `
     extend type Mutation {
       replaceGitHubPAT(pat: String!): Boolean
+    }
+    extend type Query {
+      databaseConnection: DisplayDatabaseConnection
+    }
+    type DisplayDatabaseConnection {
+      host: String
+      port: Int
+      database: String
+      user: String
     }
   `,
     resolvers: {
@@ -42,5 +54,17 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                 });
             },
         },
+        Query: {
+            databaseConnection(_parent, _args, _context, _info) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    return {
+                        host: DISPLAY_PG_HOSTNAME || null,
+                        port: DISPLAY_PG_PORT || null,
+                        database: DISPLAY_PG_DATABASE || null,
+                        user: DISPLAY_PG_USER || null,
+                    };
+                });
+            }
+        }
     },
 });

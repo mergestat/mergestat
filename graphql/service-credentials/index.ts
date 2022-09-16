@@ -4,6 +4,10 @@ import { Client } from 'pg'
 // FUSE_SECRET is used to encrypt credentials before they go into the DB
 const { FUSE_SECRET } = process.env
 
+// If these env vars are set (DISPLAY_PG_*) they will be accessible via the databaseConnection Query
+// They are meant to be set by an operator for display in the /connect page of the UI
+const { DISPLAY_PG_HOSTNAME, DISPLAY_PG_PORT, DISPLAY_PG_DATABASE, DISPLAY_PG_USER } = process.env
+
 type ReplaceGitHubPATInput = {
   pat: string
 }
@@ -12,6 +16,15 @@ module.exports = makeExtendSchemaPlugin({
   typeDefs: gql`
     extend type Mutation {
       replaceGitHubPAT(pat: String!): Boolean
+    }
+    extend type Query {
+      databaseConnection: DisplayDatabaseConnection
+    }
+    type DisplayDatabaseConnection {
+      host: String
+      port: Int
+      database: String
+      user: String
     }
   `,
   resolvers: {
@@ -37,5 +50,15 @@ module.exports = makeExtendSchemaPlugin({
         }
       },
     },
+    Query: {
+      async databaseConnection(_parent: any, _args, _context: { pgClient: Client }, _info: any) {
+        return {
+          host: DISPLAY_PG_HOSTNAME || null,
+          port: DISPLAY_PG_PORT || null,
+          database: DISPLAY_PG_DATABASE || null,
+          user: DISPLAY_PG_USER || null,
+        }
+      }
+    }
   },
 });
