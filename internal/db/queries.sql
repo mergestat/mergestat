@@ -101,3 +101,9 @@ RETURNING repo_sync_queue_id
 DELETE FROM public.repos WHERE repo_import_id = $1::uuid AND NOT(repo = ANY($2::TEXT[]))
 ;
 
+-- name: CleanLogs :exec
+SELECT mergestat.simple_log_retention($1::INTEGER);
+
+-- name: CleanQueueLogs :exec
+SELECT mergestat.simple_sync_queue_retention($1::INTEGER);
+
