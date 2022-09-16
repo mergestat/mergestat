@@ -76,10 +76,9 @@ FROM public.git_refs
 WHERE (git_refs.type = 'tag'::text);
 
 CREATE OR REPLACE VIEW trivy_repo_vulnerabilities AS
-SELECT
+SELECT -- noqa: L034
     trivy_repo_scans.repo_id,
     v as vulnerability,
-    trivy_repo_scans._mergestat_synced_at,
     r.value->> 'Target' as target,
     r.value->> 'Class' as class,
     r.value->> 'Type' as type,
@@ -88,7 +87,8 @@ SELECT
     v->> 'InstalledVersion' as vulnerability_installed_version,
     v->> 'Severity' as vulnerability_severity,
     v->> 'Title' as vulnerability_title,
-    v->> 'Description' as vulnerability_description
+    v->> 'Description' as vulnerability_description,
+    trivy_repo_scans._mergestat_synced_at
 FROM trivy_repo_scans, jsonb_array_elements(results-> 'Results') AS r, jsonb_array_elements(r-> 'Vulnerabilities') AS v;
 
 
