@@ -30,3 +30,7 @@ services:
       - "--legacy-relations=omit"
     environment:
       FUSE_SECRET: password
+      DISPLAY_PG_HOSTNAME: localhost
+      DISPLAY_PG_PORT: 5432
+      DISPLAY_PG_DATABASE: postgres
+      DISPLAY_PG_USER: postgres
