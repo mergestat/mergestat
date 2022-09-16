@@ -14,6 +14,15 @@ import (
 	"github.com/jackc/pgtype"
 )
 
+const cleanOldRepoSyncQueue = `-- name: CleanOldRepoSyncQueue :exec
+SELECT mergestat.simple_repo_sync_queue_cleanup($1::INTEGER)
+`
+
+func (q *Queries) CleanOldRepoSyncQueue(ctx context.Context, dollar_1 int32) error {
+	_, err := q.db.Exec(ctx, cleanOldRepoSyncQueue, dollar_1)
+	return err
+}
+
 const deleteGitHubRepoInfo = `-- name: DeleteGitHubRepoInfo :exec
 DELETE FROM public.github_repo_info WHERE repo_id = $1
 `

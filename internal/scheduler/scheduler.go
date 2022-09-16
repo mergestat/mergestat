@@ -31,6 +31,12 @@ func (s *scheduler) Start(ctx context.Context, interval time.Duration) {
 		} else {
 			s.logger.Info().Msg("re-scheduling all completed syncs to run again")
 		}
+
+		if err := s.db.CleanOldRepoSyncQueue(ctx, 30); err != nil {
+			s.logger.Err(err).Msg("encountered error cleaning queue logs")
+		} else {
+			s.logger.Info().Msgf("successfully removed repo sync jobs older than %d days", 30)
+		}
 	}
 	exec()
 
