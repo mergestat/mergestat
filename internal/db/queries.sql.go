@@ -14,21 +14,12 @@ import (
 	"github.com/jackc/pgtype"
 )
 
-const cleanLogs = `-- name: CleanLogs :exec
-SELECT mergestat.simple_log_retention($1::INTEGER)
+const cleanOldRepoSyncQueue = `-- name: CleanOldRepoSyncQueue :exec
+SELECT mergestat.simple_repo_sync_queue_cleanup($1::INTEGER)
 `
 
-func (q *Queries) CleanLogs(ctx context.Context, dollar_1 int32) error {
-	_, err := q.db.Exec(ctx, cleanLogs, dollar_1)
-	return err
-}
-
-const cleanQueueLogs = `-- name: CleanQueueLogs :exec
-SELECT mergestat.simple_sync_queue_retention($1::INTEGER)
-`
-
-func (q *Queries) CleanQueueLogs(ctx context.Context, dollar_1 int32) error {
-	_, err := q.db.Exec(ctx, cleanQueueLogs, dollar_1)
+func (q *Queries) CleanOldRepoSyncQueue(ctx context.Context, dollar_1 int32) error {
+	_, err := q.db.Exec(ctx, cleanOldRepoSyncQueue, dollar_1)
 	return err
 }
 
