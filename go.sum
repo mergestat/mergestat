@@ -897,6 +897,8 @@ github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182aff
 github.com/maxbrunsfeld/counterfeiter/v6 v6.2.2/go.mod h1:eD9eIE7cdwcMi9rYluz88Jz2VyhSmden33/aXg4oVIY=
 github.com/mergestat/gitutils v0.0.0-20220914171827-3d3e275684fb h1:Z7YYU8oKtqQMUjGGGmbYk2lDKG5NYig6J5SoUlPm+N0=
 github.com/mergestat/gitutils v0.0.0-20220914171827-3d3e275684fb/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
+github.com/mergestat/gitutils v0.0.0-20220916224223-750ac9c435e1 h1:JySyA+wch8XI98oP5vzcm1y/DfJR94J7yJ21bAuR5TQ=
+github.com/mergestat/gitutils v0.0.0-20220916224223-750ac9c435e1/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
 github.com/mergestat/mergestat v0.5.8 h1:ZPvt07TrSoV8WpkxuvUE9iaw+wfeTI5S970y1U9Qfgo=
 github.com/mergestat/mergestat v0.5.8/go.mod h1:bgr9yZt5uhqc4UCh60I2bEAaL6jIPh2oLsyQf5Axnzw=
 github.com/mergestat/timediff v0.0.3 h1:ucCNh4/ZrTPjFZ081PccNbhx9spymCJkFxSzgVuPU+Y=
