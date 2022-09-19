@@ -2,6 +2,7 @@ package syncer
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -12,9 +13,16 @@ import (
 
 type syncLogType string
 
+type jobStatus string
+
 const (
 	SyncLogTypeInfo  syncLogType = "INFO"
 	SyncLogTypeError syncLogType = "ERROR"
+)
+
+const (
+	jobStatusTypeInit   jobStatus = "starting"
+	jobStatusTypeFinish jobStatus = "finishing"
 )
 
 type syncLog struct {
@@ -23,12 +31,26 @@ type syncLog struct {
 	RepoSyncQueueID int64
 }
 
+// formartBatchLogMessages generates a standardize message for sync logs
+func (w *worker) formatBatchLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus) error {
+
+	formattedMessage := fmt.Sprintf("%s %s sync for %s", status, j.SyncType, j.Repo)
+
+	err := w.sendBatchLogMessages(ctx, []*syncLog{
+		{
+			Type:            syncLogTypeOption,
+			RepoSyncQueueID: j.ID,
+			Message:         strings.ReplaceAll(formattedMessage, "_", " "),
+		}})
+
+	return err
+}
+
 // sendBatchLogMessages uses the pg COPY protocol to send a batch of sync logs
 func (w *worker) sendBatchLogMessages(ctx context.Context, batch []*syncLog) error {
 	inputs := make([][]interface{}, 0, len(batch))
 	for _, l := range batch {
-		cleanMessage := strings.ReplaceAll(l.Message, "_", " ")
-		input := []interface{}{l.Type, cleanMessage, l.RepoSyncQueueID}
+		input := []interface{}{l.Type, l.Message, l.RepoSyncQueueID}
 		inputs = append(inputs, input)
 	}
 
