@@ -3,7 +3,6 @@ package syncer
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v4"
@@ -40,7 +39,7 @@ func (w *worker) formatBatchLogMessages(ctx context.Context, syncLogTypeOption s
 		{
 			Type:            syncLogTypeOption,
 			RepoSyncQueueID: j.ID,
-			Message:         strings.ReplaceAll(formattedMessage, "_", " "),
+			Message:         formattedMessage,
 		}})
 
 	return err
