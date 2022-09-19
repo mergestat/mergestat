@@ -76,11 +76,12 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 	defer repo.Free()
 
+	// indicate that we're starting query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
 		{
 			Type:            SyncLogTypeInfo,
 			RepoSyncQueueID: j.ID,
-			Message:         "starting to execute files query",
+			Message:         fmt.Sprintf("starting %v sync for %v", j.SyncType, j.Repo),
 		},
 	}); err != nil {
 		return fmt.Errorf("log messages: %w", err)
@@ -116,11 +117,13 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("update status done: %w", err)
 	}
+
+	// indicate that we're finishing query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
 		{
 			Type:            SyncLogTypeInfo,
 			RepoSyncQueueID: j.ID,
-			Message:         "finished",
+			Message:         fmt.Sprintf("finished %v sync for %v", j.SyncType, j.Repo),
 		},
 	}); err != nil {
 		return fmt.Errorf("log messages: %w", err)

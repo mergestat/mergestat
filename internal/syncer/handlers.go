@@ -2,6 +2,7 @@ package syncer
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v4"
@@ -26,7 +27,8 @@ type syncLog struct {
 func (w *worker) sendBatchLogMessages(ctx context.Context, batch []*syncLog) error {
 	inputs := make([][]interface{}, 0, len(batch))
 	for _, l := range batch {
-		input := []interface{}{l.Type, l.Message, l.RepoSyncQueueID}
+		cleanMessage := strings.ReplaceAll(l.Message, "_", " ")
+		input := []interface{}{l.Type, cleanMessage, l.RepoSyncQueueID}
 		inputs = append(inputs, input)
 	}
 

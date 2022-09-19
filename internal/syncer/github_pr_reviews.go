@@ -91,14 +91,15 @@ func (w *worker) sendBatchGitHubPRReviews(ctx context.Context, tx pgx.Tx, repo u
 func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
+	// indicate that we're starting query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
 		{
 			Type:            SyncLogTypeInfo,
 			RepoSyncQueueID: j.ID,
-			Message:         "starting to execute GitHub PR reviews lookup query",
+			Message:         fmt.Sprintf("starting %v sync for %v", j.SyncType, j.Repo),
 		},
 	}); err != nil {
-		return err
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	id, err := uuid.FromString(j.RepoID.String())
@@ -146,6 +147,17 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)
+	}
+
+	// indicate that we're finishing query execution
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{
+		{
+			Type:            SyncLogTypeInfo,
+			RepoSyncQueueID: j.ID,
+			Message:         fmt.Sprintf("finished %v sync for %v", j.SyncType, j.Repo),
+		},
+	}); err != nil {
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	return tx.Commit(ctx)

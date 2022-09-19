@@ -102,9 +102,13 @@ func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) err
 
 	// indicate that we're starting query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "starting to execute refs query"},
+		{
+			Type:            SyncLogTypeInfo,
+			RepoSyncQueueID: j.ID,
+			Message:         fmt.Sprintf("starting %v sync for %v", j.SyncType, j.Repo),
+		},
 	}); err != nil {
-		return err
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	refs := make([]*ref, 0)
@@ -140,10 +144,15 @@ func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) err
 		return err
 	}
 
+	// indicate that we're finishing query execution
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "finished!"},
+		{
+			Type:            SyncLogTypeInfo,
+			RepoSyncQueueID: j.ID,
+			Message:         fmt.Sprintf("finished %v sync for %v", j.SyncType, j.Repo),
+		},
 	}); err != nil {
-		return err
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	return tx.Commit(ctx)
