@@ -37,6 +37,7 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
                 <RepoSettings
                   id={data.id}
                   name={data.name}
+                  tags={data.tags}
                   autoImported={!!data.autoImportFrom}
                 />
               </Tabs.Panel>

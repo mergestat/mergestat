@@ -4,24 +4,18 @@ import React from 'react'
 import { TagType } from 'src/@types'
 import { useRepositoriesSetState } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
-
-const tags: TagType[] = [
-  { title: 'team-a', checked: true },
-  { title: 'javascript', checked: true },
-  { title: 'team-a', checked: true },
-  { title: 'team-a', checked: true },
-  { title: 'team-a', checked: true },
-  { title: 'team-a', checked: false },
-]
+import useTags from 'src/views/hooks/useTags'
 
 type RepoSettingsProps = {
   id: string
   name: string
+  tags: TagType[]
   autoImported: boolean
 }
 
-export const RepoSettings: React.FC<RepoSettingsProps> = ({ id, name, autoImported }: RepoSettingsProps) => {
+export const RepoSettings: React.FC<RepoSettingsProps> = ({ id, name, tags, autoImported }: RepoSettingsProps) => {
   const { setShowRemoveRepositoryModal, setRepoToRemove } = useRepositoriesSetState()
+  const { saveTags } = useTags()
 
   const prepareToRemove = () => {
     setRepoToRemove({ id, name, autoImported, redirect: true })
@@ -35,7 +29,7 @@ export const RepoSettings: React.FC<RepoSettingsProps> = ({ id, name, autoImport
           <h3 className="t-panel-title">Tags</h3>
         </Panel.Header>
         <Panel.Body>
-          <MultiSelect setStateToProps={tags} />
+          <MultiSelect setStateToProps={tags} getState={(tags) => saveTags(id, tags)} />
         </Panel.Body>
       </Panel>
       <Button

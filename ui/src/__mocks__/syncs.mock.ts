@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { AddSyncTypeMutation, GetRepoSyncsQuery, RemoveRepoMutation, SyncMutation } from 'src/api-logic/graphql/generated/schema'
-import REMOVE_REPO from 'src/api-logic/graphql/mutations/remove-repo'
+import { REMOVE_REPO } from 'src/api-logic/graphql/mutations/repos'
 import { ADD_SYNC_TYPE, SYNC_NOW } from 'src/api-logic/graphql/mutations/syncs'
 import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/get-repo-syncs.query'
 import { DynamicValues } from './constants.mock'

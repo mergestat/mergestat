@@ -37,7 +37,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
         : undefined,
       lastSync: '',
       type: r?.isGithub ? 'github' : 'other',
-      tags: [],
+      tags: r?.tags.map((t: string) => ({ title: t, checked: true })),
       status: [],
     }
 
