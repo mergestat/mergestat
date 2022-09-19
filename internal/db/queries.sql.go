@@ -52,7 +52,7 @@ WITH dequeued AS (
 	WHERE id IN (
 		SELECT id FROM mergestat.repo_sync_queue
 		WHERE status = 'QUEUED'
-		ORDER BY repo_sync_queue.created_at ASC, repo_sync_queue.id ASC LIMIT 1 FOR UPDATE SKIP LOCKED
+		ORDER BY repo_sync_queue.priority ASC, repo_sync_queue.created_at ASC, repo_sync_queue.id ASC LIMIT 1 FOR UPDATE SKIP LOCKED
 	) RETURNING id, created_at, status, repo_sync_id
 )
 SELECT
