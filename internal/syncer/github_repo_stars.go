@@ -77,13 +77,8 @@ func (w *worker) sendBatchGitHubRepoStars(ctx context.Context, tx pgx.Tx, repo u
 func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{
-			Type:            SyncLogTypeInfo,
-			RepoSyncQueueID: j.ID,
-			Message:         "starting to execute GitHub repo stargazers lookup query",
-		},
-	}); err != nil {
+	// indicate that we're starting query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
 		return fmt.Errorf("log messages: %w", err)
 	}
 
@@ -127,6 +122,11 @@ func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJob
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)
+	}
+
+	// indicate that we're finishing query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	return tx.Commit(ctx)

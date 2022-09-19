@@ -81,13 +81,7 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
-	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{
-			Type:            SyncLogTypeInfo,
-			RepoSyncQueueID: j.ID,
-			Message:         "starting to execute GitHub PR commits lookup query",
-		},
-	}); err != nil {
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
 		return fmt.Errorf("log messages: %w", err)
 	}
 
@@ -133,6 +127,11 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)
+	}
+
+	// indicate that we're finishing query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	return tx.Commit(ctx)

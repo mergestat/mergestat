@@ -53,10 +53,8 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
-	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "starting to execute GitHub repo metadata lookup query"},
-	}); err != nil {
-		return err
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	var u *url.URL
@@ -213,6 +211,11 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err
+	}
+
+	// indicate that we're finishing query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	return tx.Commit(ctx)

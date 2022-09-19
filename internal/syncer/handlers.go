@@ -2,6 +2,7 @@ package syncer
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v4"
@@ -11,15 +12,37 @@ import (
 
 type syncLogType string
 
+type jobStatus string
+
 const (
 	SyncLogTypeInfo  syncLogType = "INFO"
 	SyncLogTypeError syncLogType = "ERROR"
+)
+
+const (
+	jobStatusTypeInit   jobStatus = "starting"
+	jobStatusTypeFinish jobStatus = "finishing"
 )
 
 type syncLog struct {
 	Type            syncLogType
 	Message         string
 	RepoSyncQueueID int64
+}
+
+// formartBatchLogMessages generates a standardize message for sync logs
+func (w *worker) formatBatchLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus) error {
+
+	formattedMessage := fmt.Sprintf("%s %s sync for %s", status, j.SyncType, j.Repo)
+
+	err := w.sendBatchLogMessages(ctx, []*syncLog{
+		{
+			Type:            syncLogTypeOption,
+			RepoSyncQueueID: j.ID,
+			Message:         formattedMessage,
+		}})
+
+	return err
 }
 
 // sendBatchLogMessages uses the pg COPY protocol to send a batch of sync logs

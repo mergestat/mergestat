@@ -65,10 +65,8 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 	defer repo.Free()
 
 	// indicate that we're starting query execution
-	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "starting to execute commit stats query"},
-	}); err != nil {
-		return err
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	stats := make([]*commitStat, 0)
@@ -185,10 +183,9 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		return err
 	}
 
-	if err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID, Message: "finished!"},
-	}); err != nil {
-		return err
+	// indicate that we're finishing query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
+		return fmt.Errorf("log messages: %w", err)
 	}
 
 	return tx.Commit(ctx)
