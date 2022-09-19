@@ -34,7 +34,6 @@ type syncLog struct {
 func (w *worker) formatBatchLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus) error {
 
 	formattedMessage := fmt.Sprintf("%s %s sync for %s", status, j.SyncType, j.Repo)
-
 	err := w.sendBatchLogMessages(ctx, []*syncLog{
 		{
 			Type:            syncLogTypeOption,
