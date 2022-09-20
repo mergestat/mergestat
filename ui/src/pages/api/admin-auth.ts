@@ -24,21 +24,19 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { user, password } = req.body
     const url = new URL(POSTGRES_CONNECTION || '')
+    
+    // override the user and password in the connection string with the ones provided by the client
+    url.username = user
+    url.password = password
 
     try {
       const client = new Client({
         // use the connection info supplied by the parsed POSTGRES_CONNECTION url
-        host: url.hostname,
-        port: Number(url.port) || 5432,
-        database: url.pathname.slice(1),
+        connectionString: url.toString(),
 
         // by default this is "no timeout"
         // so we set it here to have a hard limit
         connectionTimeoutMillis: 3000,
-
-        // use the username and password supplied by the client
-        user,
-        password,
       })
 
       await client.connect()
