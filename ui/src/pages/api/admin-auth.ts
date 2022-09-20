@@ -24,7 +24,7 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { user, password } = req.body
     const url = new URL(POSTGRES_CONNECTION || '')
-    
+
     // override the user and password in the connection string with the ones provided by the client
     url.username = user
     url.password = password
