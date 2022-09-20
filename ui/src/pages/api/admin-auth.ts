@@ -1,50 +1,65 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { Client } from 'pg'
 import { constants as HTTP_CONSTANTS } from 'http2'
 import { createSecretKey } from 'crypto'
 import * as jose from 'jose'
 
 const { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_UNAUTHORIZED } = HTTP_CONSTANTS
-const { ADMIN_PASSWORD, JWT_SECRET } = process.env
+const { POSTGRES_CONNECTION, JWT_SECRET } = process.env
 
-// adminAuth (/api/admin-auth) recieves a user-supplied "admin password" which gets
-// matched against a value supplied as an env token. If there's a match, issue a JWT
-// using JWT_SECRET which gets passed to Graphile for authentication
-// (used with mergestat-admin role)
+// adminAuth (/api/admin-auth) recieves a user and a password from the client
+// and returns a JWT if the password is correct (user exists in the DB)
 const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { adminPassword } = req.body
-
     if (req.method !== 'POST') {
       res.status(HTTP_STATUS_BAD_REQUEST).json({ error: 'must POST to this endpoint' })
       return
     }
 
-    if (!adminPassword) {
-      res.status(HTTP_STATUS_BAD_REQUEST).json({ error: 'must supply an admin password' })
-      return
-    }
-
-    if (!ADMIN_PASSWORD || !JWT_SECRET) {
-      if (!ADMIN_PASSWORD) console.warn('no ADMIN_PASSWORD set, login to UI will not work')
-      if (!JWT_SECRET) console.warn('no JWT_SECRET set, login to UI will not work')
-
+    if (!JWT_SECRET) {
+      console.warn('no JWT_SECRET set, login to UI will not work')
       res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({ error: 'problem with authentication configuration' })
       return
     }
 
-    if (adminPassword === ADMIN_PASSWORD) {
-      const jwt = await new jose.SignJWT({ role: 'mergestat_admin' })
-        .setProtectedHeader({ alg: 'HS256' })
-        .setIssuedAt()
-        .setIssuer('mergestat:fuse')
-        .setAudience('postgraphile')
-        .setExpirationTime('5h')
-        .sign(createSecretKey(JWT_SECRET, 'utf8'))
+    const { user, password } = req.body
+    const url = new URL(POSTGRES_CONNECTION || '')
 
-      res.json({ token: jwt })
-    } else {
-      res.status(HTTP_STATUS_UNAUTHORIZED).json({ error: 'incorrect password supplied' })
+    try {
+      const client = new Client({
+        // use the connection info supplied by the parsed POSTGRES_CONNECTION url
+        host: url.hostname,
+        port: Number(url.port) || 5432,
+        database: url.pathname.slice(1),
+
+        // by default this is "no timeout"
+        // so we set it here to have a hard limit
+        connectionTimeoutMillis: 3000,
+
+        // use the username and password supplied by the client
+        user,
+        password,
+      })
+
+      await client.connect()
+      await client.end()
+    } catch (connectErr) {
+      console.error(connectErr)
+      // if the connection fails, the user does not exist or the password is incorrect
+      res.status(HTTP_STATUS_UNAUTHORIZED).json({ error: 'invalid username or password' })
+      return
     }
+
+    // set the graphile role to use as the DB user
+    const jwt = await new jose.SignJWT({ role: user })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setIssuer('mergestat:fuse')
+      .setAudience('postgraphile')
+      .setExpirationTime('5h')
+      .sign(createSecretKey(JWT_SECRET, 'utf8'))
+
+    res.json({ token: jwt })
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message })
