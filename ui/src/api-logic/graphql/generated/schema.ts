@@ -9216,6 +9216,14 @@ export type RemoveRepoMutationVariables = Exact<{
 
 export type RemoveRepoMutation = { deleteRepo?: { deletedRepoNodeId?: string | null } | null };
 
+export type UpdateTagsMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  tags: Scalars['JSON'];
+}>;
+
+
+export type UpdateTagsMutation = { updateRepo?: { repo?: { id: any, tags: any } | null } | null };
+
 export type SetGithubPatMutationVariables = Exact<{
   pat: Scalars['String'];
 }>;

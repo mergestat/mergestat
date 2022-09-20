@@ -71,7 +71,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                       </td>
 
                       <td className='text-gray-500'>
-                        <RepositoryTagList tags={repo.tags} />
+                        <RepositoryTagList idRepo={repo.id} tags={repo.tags} />
                       </td>
 
                       <td className='h-20'>

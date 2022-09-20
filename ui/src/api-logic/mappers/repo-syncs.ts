@@ -16,6 +16,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     name: data?.repo?.repo.replace(GITHUB_URL, '') || '',
     type: data?.repo?.isGithub ? 'github' : 'other',
     gitHubPat: (data?.serviceAuthCredentials?.totalCount && data?.serviceAuthCredentials?.totalCount > 0) || false,
+    tags: data?.repo?.tags.map((t: string) => ({ title: t, checked: true })),
     autoImportFrom: data?.repo?.repoImport
       ? data?.repo?.repoImport?.type === SYNC_REPO_METHOD.GH_USER
         ? `user: ${data?.repo?.repoImport?.settings.user}`

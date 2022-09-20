@@ -5,7 +5,6 @@ import 'intersection-observer'
 import { RepositoriesProvider } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import RepositoriesView from 'src/views/repositories'
-import { RepositoriesTable } from 'src/views/repositories/components'
 import { RepositoryStatus } from 'src/views/repositories/components/repositories-table/repositories-table-columns'
 import { AddRepositoryModal } from 'src/views/repositories/modals/add-repository-modal'
 import { ManageAutoImportReposModal } from 'src/views/repositories/modals/auto-import-repository-modals/manage-auto-imports-modal'
@@ -14,7 +13,7 @@ import { DynamicValues } from 'src/__mocks__/constants.mock'
 import { apolloMockImports } from 'src/__mocks__/imports.mock'
 import { apolloMockAddExistingRepo, apolloMockAddNewRepo, apolloMockAutoImportUser } from 'src/__mocks__/repo-add.mock'
 import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
-import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposEmptyGitHubPat, apolloMockReposEmptyNoGitHubPat, apolloMockReposWithData, apolloMockWithoutResults, mockRepoData } from 'src/__mocks__/repos.mock'
+import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposEmptyGitHubPat, apolloMockReposEmptyNoGitHubPat, apolloMockReposWithData, apolloMockWithoutResults } from 'src/__mocks__/repos.mock'
 
 afterEach(() => {
   cleanup()
@@ -22,16 +21,6 @@ afterEach(() => {
 })
 
 describe('Components: (Repos)', () => {
-  it('rendering component <RepositoriesTable /> when list has data', () => {
-    render(
-      <RepositoriesProvider>
-        <RepositoriesTable data={mockRepoData} />
-      </RepositoriesProvider>
-    )
-    const element = screen.getByTestId(TEST_IDS.repoTableList)
-    expect(element).toBeInTheDocument()
-  })
-
   it('rendering component <RepositoryStatus />', async () => {
     render(<RepositoryStatus {...mockRepoSatus} />)
     const element = screen.getAllByTestId(TEST_IDS.repoDataDropdown)
