@@ -17,7 +17,7 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@apollo/react-testing": "^4.0.0",
-    "@mergestat/blocks": "^1.2.7",
+    "@mergestat/blocks": "^1.2.8",
     "@mergestat/icons": "^1.1.2",
     "@next/bundle-analyzer": "^12.1.4",
     "axios": "^0.27.2",

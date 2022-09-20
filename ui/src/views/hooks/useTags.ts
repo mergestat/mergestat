@@ -11,7 +11,6 @@ const useTags = () => {
   })
 
   const saveTags = (id: string, tags: TagType[]) => {
-    console.log('TAGs: ', tags)
     const newTags = tags.filter(t => t.checked).map(t => t.title)
     updateTags({ variables: { id, tags: newTags } })
   }

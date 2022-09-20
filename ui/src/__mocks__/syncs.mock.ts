@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
-import { AddSyncTypeMutation, GetRepoSyncsQuery, RemoveRepoMutation, SyncMutation } from 'src/api-logic/graphql/generated/schema'
-import { REMOVE_REPO } from 'src/api-logic/graphql/mutations/repos'
+import { AddSyncTypeMutation, GetRepoSyncsQuery, RemoveRepoMutation, SyncMutation, UpdateTagsMutation } from 'src/api-logic/graphql/generated/schema'
+import { REMOVE_REPO, UPDATE_TAGS } from 'src/api-logic/graphql/mutations/repos'
 import { ADD_SYNC_TYPE, SYNC_NOW } from 'src/api-logic/graphql/mutations/syncs'
 import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/get-repo-syncs.query'
 import { DynamicValues } from './constants.mock'
@@ -159,7 +159,7 @@ export const mockSyncsTypesData = (runningSync: boolean, autoImported = false): 
     id: DynamicValues.repoId,
     repo: 'https://github.com/mergestat/mergestat',
     isGithub: true,
-    tags: [],
+    tags: ['github', 'mergestat', 'syncs'],
     repoImport: autoImported ? { type: 'GITHUB_USER', settings: { user: 'gdcanonn' } } : null,
     repoSyncs: {
       nodes: [
@@ -188,6 +188,15 @@ export const mockSyncsTypesData = (runningSync: boolean, autoImported = false): 
 export const mockRemoveRepo: RemoveRepoMutation = {
   deleteRepo: {
     deletedRepoNodeId: 'WyJyZXBvcyIsIjcyMTFiMmVjLTBlZTktNDZjNy1hMjQyLTU2Y2Q1NGU0MmVmYiJd',
+  }
+}
+
+export const mockAddTags: UpdateTagsMutation = {
+  updateRepo: {
+    repo: {
+      id: DynamicValues.repoId,
+      tags: ['github', 'mergestat', 'syncs', 'new tag']
+    }
   }
 }
 
@@ -283,5 +292,16 @@ export const apolloMockRemoveRepo = {
   },
   result: {
     data: mockRemoveRepo
+  }
+}
+
+// Apollo Mock: Add a tag to a repository
+export const apolloMockAddTag = {
+  request: {
+    query: UPDATE_TAGS,
+    variables: { id: DynamicValues.repoId, tags: ['github', 'mergestat', 'syncs', 'new tag'] }
+  },
+  result: {
+    data: mockAddTags
   }
 }
