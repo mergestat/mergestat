@@ -41,6 +41,9 @@ export type RepoDataPropsT = {
 /** Repository Data Props Type */
 
 export type SyncStatusDataT = {
+  id: string
+  repoId: string
+  syncTypeId: string
   runningTime: number
   runningTimeReadable: string
   status: string
@@ -55,6 +58,7 @@ export type RepoSyncDataType = {
     brief: string
   }
   latestRun: string
+  avgRunningTime: string
   status: {
     data?: SyncStatusDataT[]
     syncState: RepoSyncStateT

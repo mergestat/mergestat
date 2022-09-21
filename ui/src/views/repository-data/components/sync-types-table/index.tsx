@@ -39,6 +39,10 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                       <span className='mr-1 select-none'>Latest Run</span>
                     </th>
 
+                    <th scope="col" key='latestRun' className='whitespace-nowrap px-6 pl-0'>
+                      <span className='mr-1 select-none'>Mean Running Time</span>
+                    </th>
+
                     <th scope="col" key='status' className='whitespace-nowrap px-6 pl-0'>
                       <span className='mr-1 select-none'>Latest Results</span>
                     </th>
@@ -73,6 +77,12 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
 
                       <td className='text-gray-500 h-20 p-0'>
                         <RelativeTimeField date={sync.latestRun} syncData={sync} styles={'text-semantic-mutedText h-full leading-20'} />
+                      </td>
+
+                      <td className='text-gray-500 h-20 p-0'>
+                        <div className='text-semantic-mutedText h-full leading-20 pl-5'>
+                          {sync.avgRunningTime}
+                        </div>
                       </td>
 
                       <td className='text-gray-500 h-20 p-0'>
