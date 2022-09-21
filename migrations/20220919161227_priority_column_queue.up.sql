@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE mergestat.repo_sync_queue
+ADD COLUMN priority INTEGER DEFAULT 0 NOT NULL;
+
+COMMIT;
