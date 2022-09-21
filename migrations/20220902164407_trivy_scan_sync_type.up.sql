@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS trivy_repo_scans (
 CREATE OR REPLACE VIEW trivy_repo_vulnerabilities AS
 SELECT
     trivy_repo_scans.repo_id,
-    v as vulnerability,
+    v::jsonb as vulnerability,
     r.value->> 'Target' as target,
     r.value->> 'Class' as class,
     r.value->> 'Type' as type,

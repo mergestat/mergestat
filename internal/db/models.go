@@ -12,69 +12,87 @@ import (
 	"github.com/jackc/pgtype"
 )
 
+type GitBlame struct {
+	RepoID            uuid.UUID
+	AuthorEmail       sql.NullString
+	AuthorName        sql.NullString
+	AuthorWhen        sql.NullTime
+	CommitHash        sql.NullString
+	LineNo            int32
+	Line              sql.NullString
+	Path              string
+	MergestatSyncedAt time.Time
+}
+
 type GitBranch struct {
-	RepoID        uuid.UUID
-	FullName      string
-	Hash          sql.NullString
-	Name          sql.NullString
-	Remote        sql.NullString
-	Target        sql.NullString
-	Type          sql.NullString
-	TagCommitHash sql.NullString
+	RepoID            uuid.UUID
+	FullName          string
+	Hash              sql.NullString
+	Name              sql.NullString
+	Remote            sql.NullString
+	Target            sql.NullString
+	Type              sql.NullString
+	TagCommitHash     sql.NullString
+	MergestatSyncedAt time.Time
 }
 
 // Git repository commits
 type GitCommit struct {
-	RepoID         uuid.UUID
-	Hash           string
-	Message        string
-	AuthorName     string
-	AuthorEmail    string
-	AuthorWhen     time.Time
-	CommitterName  string
-	CommitterEmail string
-	CommitterWhen  time.Time
-	Parents        int32
+	RepoID            uuid.UUID
+	Hash              string
+	Message           string
+	AuthorName        string
+	AuthorEmail       string
+	AuthorWhen        time.Time
+	CommitterName     string
+	CommitterEmail    string
+	CommitterWhen     time.Time
+	Parents           int32
+	MergestatSyncedAt time.Time
 }
 
 // Commit stats
 type GitCommitStat struct {
-	RepoID     uuid.UUID
-	CommitHash string
-	FilePath   string
-	Additions  int32
-	Deletions  int32
+	RepoID            uuid.UUID
+	CommitHash        string
+	FilePath          string
+	Additions         int32
+	Deletions         int32
+	MergestatSyncedAt time.Time
 }
 
 // Git repository files
 type GitFile struct {
-	RepoID     uuid.UUID
-	Path       string
-	Executable bool
-	Contents   sql.NullString
+	RepoID            uuid.UUID
+	Path              string
+	Executable        bool
+	Contents          sql.NullString
+	MergestatSyncedAt time.Time
 }
 
 // Refs for a Git repo
 type GitRef struct {
-	RepoID        uuid.UUID
-	FullName      string
-	Hash          sql.NullString
-	Name          sql.NullString
-	Remote        sql.NullString
-	Target        sql.NullString
-	Type          sql.NullString
-	TagCommitHash sql.NullString
+	RepoID            uuid.UUID
+	FullName          string
+	Hash              sql.NullString
+	Name              sql.NullString
+	Remote            sql.NullString
+	Target            sql.NullString
+	Type              sql.NullString
+	TagCommitHash     sql.NullString
+	MergestatSyncedAt time.Time
 }
 
 type GitTag struct {
-	RepoID        uuid.UUID
-	FullName      string
-	Hash          sql.NullString
-	Name          sql.NullString
-	Remote        sql.NullString
-	Target        sql.NullString
-	Type          sql.NullString
-	TagCommitHash sql.NullString
+	RepoID            uuid.UUID
+	FullName          string
+	Hash              sql.NullString
+	Name              sql.NullString
+	Remote            sql.NullString
+	Target            sql.NullString
+	Type              sql.NullString
+	TagCommitHash     sql.NullString
+	MergestatSyncedAt time.Time
 }
 
 // GitHub issues
@@ -102,6 +120,8 @@ type GithubIssue struct {
 	Title               sql.NullString
 	UpdatedAt           sql.NullTime
 	Url                 sql.NullString
+	Labels              pgtype.JSONB
+	MergestatSyncedAt   time.Time
 }
 
 // GitHub pull requests
@@ -147,24 +167,27 @@ type GithubPullRequest struct {
 	Title               sql.NullString
 	UpdatedAt           sql.NullTime
 	Url                 sql.NullString
+	Labels              pgtype.JSONB
+	MergestatSyncedAt   time.Time
 }
 
 // GitHub pull request commits
 type GithubPullRequestCommit struct {
-	RepoID         uuid.UUID
-	PrNumber       int32
-	Hash           sql.NullString
-	Message        sql.NullString
-	AuthorName     sql.NullString
-	AuthorEmail    sql.NullString
-	AuthorWhen     sql.NullTime
-	CommitterName  sql.NullString
-	CommitterEmail sql.NullString
-	CommitterWhen  sql.NullTime
-	Additions      sql.NullInt32
-	Deletions      sql.NullInt32
-	ChangedFiles   sql.NullInt32
-	Url            sql.NullString
+	RepoID            uuid.UUID
+	PrNumber          int32
+	Hash              sql.NullString
+	Message           sql.NullString
+	AuthorName        sql.NullString
+	AuthorEmail       sql.NullString
+	AuthorWhen        sql.NullTime
+	CommitterName     sql.NullString
+	CommitterEmail    sql.NullString
+	CommitterWhen     sql.NullTime
+	Additions         sql.NullInt32
+	Deletions         sql.NullInt32
+	ChangedFiles      sql.NullInt32
+	Url               sql.NullString
+	MergestatSyncedAt time.Time
 }
 
 // GitHub pull request reviews
@@ -186,6 +209,7 @@ type GithubPullRequestReview struct {
 	State                     sql.NullString
 	SubmittedAt               sql.NullTime
 	UpdatedAt                 sql.NullTime
+	MergestatSyncedAt         time.Time
 }
 
 // GitHub metadata about a repo
@@ -218,23 +242,25 @@ type GithubRepoInfo struct {
 	StargazersCount          sql.NullInt32
 	UpdatedAt                sql.NullTime
 	WatchersCount            sql.NullInt32
+	MergestatSyncedAt        time.Time
 }
 
 // GitHub stargazers for a repo
 type GithubStargazer struct {
-	RepoID    uuid.UUID
-	Login     string
-	Email     sql.NullString
-	Name      sql.NullString
-	Bio       sql.NullString
-	Company   sql.NullString
-	AvatarUrl sql.NullString
-	CreatedAt sql.NullTime
-	UpdatedAt sql.NullTime
-	Twitter   sql.NullString
-	Website   sql.NullString
-	Location  sql.NullString
-	StarredAt sql.NullTime
+	RepoID            uuid.UUID
+	Login             string
+	Email             sql.NullString
+	Name              sql.NullString
+	Bio               sql.NullString
+	Company           sql.NullString
+	AvatarUrl         sql.NullString
+	CreatedAt         sql.NullTime
+	UpdatedAt         sql.NullTime
+	Twitter           sql.NullString
+	Website           sql.NullString
+	Location          sql.NullString
+	StarredAt         sql.NullTime
+	MergestatSyncedAt time.Time
 }
 
 type MergestatLatestRepoSync struct {
@@ -265,10 +291,11 @@ type MergestatRepoImportType struct {
 }
 
 type MergestatRepoSync struct {
-	RepoID   uuid.UUID
-	SyncType string
-	Settings pgtype.JSONB
-	ID       uuid.UUID
+	RepoID          uuid.UUID
+	SyncType        string
+	Settings        pgtype.JSONB
+	ID              uuid.UUID
+	ScheduleEnabled bool
 }
 
 type MergestatRepoSyncLog struct {
@@ -302,16 +329,52 @@ type MergestatRepoSyncQueueStatusType struct {
 type MergestatRepoSyncType struct {
 	Type        string
 	Description sql.NullString
+	ShortName   string
+}
+
+type MergestatServiceAuthCredential struct {
+	ID          uuid.UUID
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	Type        string
+	Credentials []byte
+}
+
+type MergestatServiceAuthCredentialType struct {
+	Type        string
+	Description string
 }
 
 // Git repositories to track
 type Repo struct {
-	ID           uuid.UUID
-	Repo         string
-	Ref          sql.NullString
-	IsGithub     sql.NullBool
-	CreatedAt    time.Time
-	Settings     pgtype.JSONB
-	Tags         pgtype.JSONB
-	RepoImportID uuid.NullUUID
+	ID                uuid.UUID
+	Repo              string
+	Ref               sql.NullString
+	IsGithub          sql.NullBool
+	CreatedAt         time.Time
+	Settings          pgtype.JSONB
+	Tags              pgtype.JSONB
+	RepoImportID      uuid.NullUUID
+	MergestatSyncedAt time.Time
+}
+
+type TrivyRepoScan struct {
+	RepoID            uuid.UUID
+	Results           pgtype.JSONB
+	MergestatSyncedAt time.Time
+}
+
+type TrivyRepoVulnerability struct {
+	RepoID                        uuid.UUID
+	Vulnerability                 pgtype.JSONB
+	Target                        interface{}
+	Class                         interface{}
+	Type                          interface{}
+	VulnerabilityID               interface{}
+	VulnerabilityPkgName          interface{}
+	VulnerabilityInstalledVersion interface{}
+	VulnerabilitySeverity         interface{}
+	VulnerabilityTitle            interface{}
+	VulnerabilityDescription      interface{}
+	MergestatSyncedAt             time.Time
 }
