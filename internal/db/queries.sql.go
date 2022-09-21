@@ -57,7 +57,7 @@ WITH dequeued AS (
 )
 SELECT
 	dequeued.id, dequeued.created_at, dequeued.status, dequeued.repo_sync_id,
-	repo_syncs.repo_id, repo_syncs.sync_type, repo_syncs.settings, repo_syncs.id,
+	repo_syncs.repo_id, repo_syncs.sync_type, repo_syncs.settings, repo_syncs.id, repo_syncs.schedule_enabled,
 	repos.repo,
 	repos.ref,
 	repos.is_github,
@@ -68,18 +68,19 @@ JOIN repos ON repos.id = mergestat.repo_syncs.repo_id
 `
 
 type DequeueSyncJobRow struct {
-	ID           int64
-	CreatedAt    time.Time
-	Status       string
-	RepoSyncID   uuid.UUID
-	RepoID       uuid.UUID
-	SyncType     string
-	Settings     pgtype.JSONB
-	ID_2         uuid.UUID
-	Repo         string
-	Ref          sql.NullString
-	IsGithub     sql.NullBool
-	RepoSettings pgtype.JSONB
+	ID              int64
+	CreatedAt       time.Time
+	Status          string
+	RepoSyncID      uuid.UUID
+	RepoID          uuid.UUID
+	SyncType        string
+	Settings        pgtype.JSONB
+	ID_2            uuid.UUID
+	ScheduleEnabled bool
+	Repo            string
+	Ref             sql.NullString
+	IsGithub        sql.NullBool
+	RepoSettings    pgtype.JSONB
 }
 
 func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error) {
@@ -94,6 +95,7 @@ func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
 		&i.SyncType,
 		&i.Settings,
 		&i.ID_2,
+		&i.ScheduleEnabled,
 		&i.Repo,
 		&i.Ref,
 		&i.IsGithub,
