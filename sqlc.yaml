@@ -4,7 +4,7 @@ packages:
     name: "db"
     engine: "postgresql"
     sql_package: "pgx/v4"
-    schema: "schema.sql"
+    schema: "migrations"
     queries: "internal/db/queries.sql"
     overrides:
       - column: "mergestat.repo_imports.import_interval"

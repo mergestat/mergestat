@@ -78,7 +78,7 @@ WHERE (git_refs.type = 'tag'::text);
 CREATE OR REPLACE VIEW trivy_repo_vulnerabilities AS
 SELECT -- noqa: L034
     trivy_repo_scans.repo_id,
-    v as vulnerability,
+    v::jsonb as vulnerability,
     r.value->> 'Target' as target,
     r.value->> 'Class' as class,
     r.value->> 'Type' as type,
