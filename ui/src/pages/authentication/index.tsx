@@ -31,15 +31,20 @@ const Authentication = () => {
                 You’ve been logged out. Please log in again.
               </Alert>
             )}
-            <h2 className="t-h2">Log in</h2>
+            <Alert type="info" className="mb-6">
+              Login using your MergeStat <strong>database credentials</strong>.
+            </Alert>
+            {/* <h2 className="t-h2">Log in</h2> */}
             <form className="space-y-4">
               <div>
-                <Label>Name</Label>
-                <Input />
+                <Label>Database user
+                  <Input placeholder="username" />
+                </Label>
               </div>
               <div>
-                <Label>Password</Label>
-                <Input type="password" variant={ error ? 'error' : 'default' }/>
+                <Label>Database password
+                  <Input type="password" placeholder="password" variant={ error ? 'error' : 'default' }/>
+                </Label>
                 {error && (
                   <HelpText variant="error">Incorrect password</HelpText>
                 )}
