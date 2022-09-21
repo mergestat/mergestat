@@ -1,4 +1,4 @@
-import { HelpText, Icon, Navbar, Toolbar } from '@mergestat/blocks'
+import { Icon, Navbar, Toolbar } from '@mergestat/blocks'
 import { BookIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import React from 'react'
@@ -21,12 +21,12 @@ const NavHeader: React.FC = () => {
           </Toolbar.Item>
           <Navbar.Divider />
           <Toolbar.Item>
-            <HelpText className="text-white ml-3">
+            <div className="bg-gray-600 px-3 py-0.5 rounded-full text-gray-100 ml-3 text-sm font-medium">
               <a target='_blank' href='https://github.com/mergestat/fuse' rel='noopener noreferrer'>beta</a>
-            </HelpText>
+            </div>
           </Toolbar.Item>
         </Toolbar.Left>
-        <Toolbar.Right className="space-x-6">
+        <Toolbar.Right className="space-x-4">
           <Toolbar.Item>
             <Navbar.Items>
               <Navbar.Item
@@ -35,6 +35,13 @@ const NavHeader: React.FC = () => {
                 icon={<BookIcon className="t-icon" />}
               />
             </Navbar.Items>
+          </Toolbar.Item>
+          <Navbar.Divider />
+          <Toolbar.Item className="space-x-2">
+              <p className="font-medium text-white ml-3">Username</p>
+              <Link href="/authentication">
+                <span className="text-white underline opacity-60 cursor-pointer">Log out</span>
+              </Link>
           </Toolbar.Item>
         </Toolbar.Right>
       </Toolbar>
