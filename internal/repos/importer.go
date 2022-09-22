@@ -186,6 +186,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 		return err
 	}
 
+	//handle default syncs on repo importation
 	err = i.handleDefaultSyncSettings(ctx, tx, defaultSyncs, imp.ID)
 	if err != nil {
 		return err
@@ -219,15 +220,23 @@ func (i *importer) handleDefaultSyncSettings(ctx context.Context, tx pgx.Tx, def
 	var err error
 	var repoIDs []uuid.UUID
 
-	i.logger.Info().Msg("starting to insert default syncs")
+	i.logger.Info().Msgf("starting to insert default syncs for import %v", impID)
 
 	repoIDs, err = i.db.WithTx(tx).GetAllReposId(ctx, impID)
-
-	for _, repoID := range repoIDs {
-		err = i.insertSyncInQueue(ctx, tx, defaultSyncs, repoID)
+	if err != nil {
+		i.logger.Err(err).Msgf("failed to retrieve repoids for import %v", impID)
+		return err
 	}
 
-	i.logger.Info().Msg("Inserting of default syncs completed")
+	for _, repoID := range repoIDs {
+		if err = i.insertSyncInQueue(ctx, tx, defaultSyncs, repoID); err != nil {
+			i.logger.Err(err)
+			return err
+		}
+
+	}
+
+	i.logger.Info().Msgf("Inserting of default syncs completed for import %v", impID)
 
 	return err
 }
@@ -239,12 +248,13 @@ func (i *importer) insertSyncInQueue(ctx context.Context, tx pgx.Tx, defaultSync
 	defaultSyncs = append(defaultSyncs, "GIT_COMMIT_STATS")
 
 	for _, syncType := range defaultSyncs {
-		err = i.db.WithTx(tx).AddingNewDefaultSync(ctx, db.AddingNewDefaultSyncParams{Repoid: repoID, Synctype: syncType})
-		if err != nil {
+		if err = i.db.WithTx(tx).AddingNewDefaultSync(ctx, db.AddingNewDefaultSyncParams{Repoid: repoID, Synctype: syncType}); err != nil {
+			i.logger.Err(err).Msgf("error when adding default sync for repo %v", repoID)
 			return err
 		}
-		err = i.db.WithTx(tx).InsertNewSyncInQueue(ctx, syncType)
-		if err != nil {
+
+		if err = i.db.WithTx(tx).InsertNewSyncInQueue(ctx, syncType); err != nil {
+			i.logger.Err(err).Msgf("error when adding default sync into queue for repo %v", repoID)
 			return err
 		}
 
