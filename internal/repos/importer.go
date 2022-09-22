@@ -84,13 +84,15 @@ var (
 )
 
 type githubOrgRepoImportSettings struct {
-	Org                string `json:"org"`
-	RemoveDeletedRepos bool   `json:"removeDeletedRepos"`
+	Org                string   `json:"org"`
+	RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
+	DefaultSyncs       []string `json:"defaultSyncs"`
 }
 
 type githubUserRepoImportSettings struct {
-	User               string `json:"user"`
-	RemoveDeletedRepos bool   `json:"removeDeletedRepos"`
+	User               string   `json:"user"`
+	RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
+	DefaultSyncs       []string `json:"defaultSyncs"`
 }
 
 type githubRepo struct {
@@ -104,6 +106,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 	var mergestatSQL string
 	var repoOwner string
 	var removeDeletedRepos bool
+	var defaultSyncs []string
 
 	// first, determine what kind of GitHub import this is (ORG or USER) and set the mergestat SQL to use
 	switch imp.Type {
@@ -115,6 +118,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 
 		repoOwner = settings.Org
 		removeDeletedRepos = settings.RemoveDeletedRepos
+		defaultSyncs = settings.DefaultSyncs
 		mergestatSQL = listGitHubOrgReposSQL
 	case "GITHUB_USER":
 		var settings githubUserRepoImportSettings
@@ -124,6 +128,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 
 		repoOwner = settings.User
 		removeDeletedRepos = settings.RemoveDeletedRepos
+		defaultSyncs = settings.DefaultSyncs
 		mergestatSQL = listGitHubUserReposSQL
 	default:
 		return fmt.Errorf("unknown import type: %s", imp.Type)
@@ -181,6 +186,11 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 		return err
 	}
 
+	err = i.handleDefaultSyncSettings(ctx, tx, defaultSyncs, imp.ID)
+	if err != nil {
+		return err
+	}
+
 	i.logger.Info().Strs("repos", repoNames).Msgf("importing repos from GitHub: %s", repoOwner)
 
 	return tx.Commit(ctx)
@@ -202,5 +212,42 @@ func (i *importer) handleDeletedRepos(ctx context.Context, tx pgx.Tx, repos []*g
 
 	i.logger.Info().Msg("deletion of removed repos completed")
 
+	return err
+}
+
+func (i *importer) handleDefaultSyncSettings(ctx context.Context, tx pgx.Tx, defaultSyncs []string, impID uuid.UUID) error {
+	var err error
+	var repoIDs []uuid.UUID
+
+	i.logger.Info().Msg("starting to insert default syncs")
+
+	repoIDs, err = i.db.WithTx(tx).GetAllReposId(ctx, impID)
+
+	for _, repoID := range repoIDs {
+		err = i.insertSyncInQueue(ctx, tx, defaultSyncs, repoID)
+	}
+
+	i.logger.Info().Msg("Inserting of default syncs completed")
+
+	return err
+}
+
+func (i *importer) insertSyncInQueue(ctx context.Context, tx pgx.Tx, defaultSyncs []string, repoID uuid.UUID) error {
+	var err error
+
+	defaultSyncs = append(defaultSyncs, "GIT_COMMITS")
+	defaultSyncs = append(defaultSyncs, "GIT_COMMIT_STATS")
+
+	for _, syncType := range defaultSyncs {
+		err = i.db.WithTx(tx).AddingNewDefaultSync(ctx, db.AddingNewDefaultSyncParams{Repoid: repoID, Synctype: syncType})
+		if err != nil {
+			return err
+		}
+		err = i.db.WithTx(tx).InsertNewSyncInQueue(ctx, syncType)
+		if err != nil {
+			return err
+		}
+
+	}
 	return err
 }

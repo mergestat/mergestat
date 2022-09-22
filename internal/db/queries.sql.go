@@ -14,6 +14,20 @@ import (
 	"github.com/jackc/pgtype"
 )
 
+const addingNewDefaultSync = `-- name: AddingNewDefaultSync :exec
+INSERT INTO mergestat.repo_syncs (repo_id, sync_type) VALUES ($1::uuid,$2::text)
+`
+
+type AddingNewDefaultSyncParams struct {
+	Repoid   uuid.UUID
+	Synctype string
+}
+
+func (q *Queries) AddingNewDefaultSync(ctx context.Context, arg AddingNewDefaultSyncParams) error {
+	_, err := q.db.Exec(ctx, addingNewDefaultSync, arg.Repoid, arg.Synctype)
+	return err
+}
+
 const cleanOldRepoSyncQueue = `-- name: CleanOldRepoSyncQueue :exec
 SELECT mergestat.simple_repo_sync_queue_cleanup($1::INTEGER)
 `
@@ -145,6 +159,30 @@ func (q *Queries) EnqueueAllSyncs(ctx context.Context) error {
 	return err
 }
 
+const getAllReposId = `-- name: GetAllReposId :many
+SELECT id FROM public.repos WHERE repo_import_id = $1::uuid
+`
+
+func (q *Queries) GetAllReposId(ctx context.Context, importid uuid.UUID) ([]uuid.UUID, error) {
+	rows, err := q.db.Query(ctx, getAllReposId, importid)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []uuid.UUID
+	for rows.Next() {
+		var id uuid.UUID
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+		items = append(items, id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getRepoImportByID = `-- name: GetRepoImportByID :one
 SELECT id, created_at, updated_at, type, settings, last_import, import_interval, last_import_started_at FROM mergestat.repo_imports
 WHERE id = $1 LIMIT 1
@@ -242,6 +280,15 @@ func (q *Queries) InsertGitHubRepoInfo(ctx context.Context, arg InsertGitHubRepo
 		arg.UpdatedAt,
 		arg.WatchersCount,
 	)
+	return err
+}
+
+const insertNewSyncInQueue = `-- name: InsertNewSyncInQueue :exec
+INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status) SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE sync_type = $1::text
+`
+
+func (q *Queries) InsertNewSyncInQueue(ctx context.Context, synctype string) error {
+	_, err := q.db.Exec(ctx, insertNewSyncInQueue, synctype)
 	return err
 }
 
