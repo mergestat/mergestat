@@ -319,6 +319,7 @@ type MergestatRepoSyncQueue struct {
 	StartedAt     sql.NullTime
 	DoneAt        sql.NullTime
 	LastKeepAlive sql.NullTime
+	Priority      int32
 }
 
 type MergestatRepoSyncQueueStatusType struct {

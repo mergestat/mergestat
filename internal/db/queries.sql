@@ -73,8 +73,28 @@ UPDATE mergestat.repo_sync_queue SET status = $1
 WHERE id = (SELECT id FROM mergestat.repo_sync_queue WHERE repo_sync_queue.id = $2 LIMIT 1);
 
 -- name: EnqueueAllSyncs :exec
+WITH ranked_queue AS (
+    SELECT
+       rsq.done_at,
+       DENSE_RANK() OVER(ORDER BY rsq.created_at DESC) AS rank_num
+    FROM mergestat.repo_syncs
+    INNER JOIN mergestat.repo_sync_queue AS rsq ON mergestat.repo_syncs.id = rsq.repo_sync_id
+)
 INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
-SELECT id, 'QUEUED' FROM mergestat.repo_syncs;
+SELECT
+    id,
+    'QUEUED' AS status
+FROM mergestat.repo_syncs
+WHERE schedule_enabled
+    AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
+    AND NOT EXISTS (
+        SELECT done_at
+        FROM ranked_queue
+        WHERE
+            ranked_queue.rank_num >= 1
+            AND ranked_queue.done_at IS NULL
+    )
+;
 
 -- name: SetLatestKeepAliveForJob :exec
 UPDATE mergestat.repo_sync_queue SET last_keep_alive = now() WHERE id = $1;
