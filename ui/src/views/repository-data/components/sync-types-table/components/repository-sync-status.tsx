@@ -42,7 +42,6 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const [displayTooltip, setDisplayTooltip] = useState(false)
   const [tooltipData, setTooltipData] = useState<SyncStatusDataT | null>(null)
   const [eventPosition, setEventPosition] = useState<PositionType | null>(null)
-  const [hoverPosition, setHoverPosition] = useState<PositionType | null>(null)
   const [activeBar, setActiveBar] = useState<number | null>(null)
 
   const router = useRouter()
@@ -87,38 +86,13 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     }
   }
 
-  const onMouseMove = (index: number) => {
-    setDisplayTooltip(true)
-    setHoverPosition(eventPosition)
-    setTooltipData(chartArray[index])
-    setActiveBar(index)
-  }
-
   const onBarClick = (p: SyncStatusDataT) => {
     router.push(`/repos/${p.repoId}/${p.syncTypeId}/${p.id}`)
   }
 
   return (
-    <div
-      onMouseMove={(event) => {
-        if (displayTooltip && hoverPosition) {
-          const horizontalDisplacement = Math.abs(event.pageY - hoverPosition.y)
-          const verticalDisplacement = Math.abs(event.pageX - hoverPosition.x)
-          // hide the tooltip if the cursor moved more than 10 px in any direction
-          if (horizontalDisplacement > 10 || verticalDisplacement > 10) {
-            setDisplayTooltip(false)
-            setHoverPosition(null)
-          }
-        }
-
-        setEventPosition({ x: event.pageX, y: event.pageY })
-      }}
-      onMouseLeave={() => {
-        setDisplayTooltip(false)
-        setHoverPosition(null)
-      }}
-      className='my-2 w-32'
-    >
+    <>
+      {/** Tooltip */}
       {(displayTooltip && tooltipData?.status !== SYNC_STATUS.empty) && (
         <div
           ref={tooltipRef}
@@ -152,54 +126,66 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
         </div>
       )}
 
-      <svg
-        viewBox={`0 0 ${width} ${height}`}
-        preserveAspectRatio={preserveAspectRatio}
+      {/** Bars */}
+      <div
+        className='my-2 w-32'
+        onMouseLeave={() => setDisplayTooltip(false)}
       >
-        <g transform="scale(1,-1)">
-          {[...points].reverse().map((p, i) => {
-            const id = 'round-corner_' + i
-            const x = p.x - (barLineWidth + strokeWidth) / 2
-            const y = -height
-            const varHeight = Math.max(0, height - p.y)
-            const r = 1
-            const color = statusColor(chartArray[i].status)
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          preserveAspectRatio={preserveAspectRatio}
+        >
+          <g transform="scale(1,-1)">
+            {[...points].reverse().map((p, i) => {
+              const id = 'round-corner_' + i
+              const x = p.x - (barLineWidth + strokeWidth) / 2
+              const y = -height
+              const varHeight = Math.max(0, height - p.y)
+              const r = 1
+              const color = statusColor(chartArray[i].status)
 
-            return (
-              <Fragment key={Math.random()}>
-                <defs>
-                  <clipPath id={id}>
-                    <rect
-                      x={x}
-                      y={y - 2 * r}
-                      width={barLineWidth}
-                      height={varHeight}
-                      rx={r}
-                      strokeWidth={activeBar === i ? 2 : 0}
-                    />
-                  </clipPath>
-                </defs>
-                <rect
-                  key={i}
-                  clipPath={`url(#${id})`}
-                  x={x}
-                  y={y}
-                  width={barLineWidth}
-                  height={varHeight}
-                  strokeWidth={activeBar === i ? 2 : 0}
-                  fill={color}
-                  style={style}
-                  onMouseMove={onMouseMove.bind({}, i)}
-                  onClick={() => onBarClick(data[i])}
-                  onMouseLeave={() => setActiveBar(null)}
-                  className={tooltipData?.status !== SYNC_STATUS.empty ? 'cursor-pointer' : ''}
-                />
-              </Fragment>
-            )
-          })}
-        </g>
-      </svg>
-    </div>
+              return (
+                <Fragment key={Math.random()}>
+                  <defs>
+                    <clipPath id={id}>
+                      <rect
+                        x={x}
+                        y={y - 2 * r}
+                        width={barLineWidth}
+                        height={varHeight}
+                        rx={r}
+                        strokeWidth={activeBar === i ? 2 : 0}
+                      />
+                    </clipPath>
+                  </defs>
+                  <rect
+                    key={i}
+                    clipPath={`url(#${id})`}
+                    x={x}
+                    y={y}
+                    width={barLineWidth}
+                    height={varHeight}
+                    strokeWidth={activeBar === i ? 2 : 0}
+                    fill={color}
+                    style={style}
+                    onClick={() => onBarClick(data[i])}
+                    onMouseMove={(event) => {
+                      setEventPosition({ x: event.pageX, y: event.pageY })
+                      setTooltipData(chartArray[i])
+
+                      setDisplayTooltip(true)
+                      setActiveBar(i)
+                    }}
+                    onMouseLeave={() => setActiveBar(null)}
+                    className={tooltipData?.status !== SYNC_STATUS.empty ? 'cursor-pointer' : ''}
+                  />
+                </Fragment>
+              )
+            })}
+          </g>
+        </svg>
+      </div>
+    </>
   )
 }
 
