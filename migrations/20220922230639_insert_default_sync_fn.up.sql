@@ -1,6 +1,6 @@
 BEGIN;
 CREATE OR REPLACE FUNCTION mergestat.insert_default_sync(imported_repo_id_param uuid, sync_type_param text)
-RETURNS BOOLEAN
+RETURNS boolean
 AS
 $$
 begin
