@@ -186,8 +186,8 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 		return err
 	}
 
-	//handle default syncs on repo importation
-	err = i.handleDefaultSyncSettings(ctx, tx, defaultSyncs, imp.ID)
+	//handle default syncs on repo importation(draft version will not have if statement)
+	err = i.handleDefaultSyncs(ctx, tx, defaultSyncs, imp.ID)
 	if err != nil {
 		return err
 	}
@@ -216,15 +216,14 @@ func (i *importer) handleDeletedRepos(ctx context.Context, tx pgx.Tx, repos []*g
 	return err
 }
 
-func (i *importer) handleDefaultSyncSettings(ctx context.Context, tx pgx.Tx, defaultSyncs []string, impID uuid.UUID) error {
+func (i *importer) handleDefaultSyncs(ctx context.Context, tx pgx.Tx, defaultSyncs []string, impID uuid.UUID) error {
 	var err error
 	var repoIDs []uuid.UUID
 
-	i.logger.Info().Msgf("starting to insert default syncs for import %v", impID)
+	i.logger.Info().Msgf("starting to insert default syncs for import %s", impID)
 
-	repoIDs, err = i.db.WithTx(tx).GetAllReposId(ctx, impID)
-	if err != nil {
-		i.logger.Err(err).Msgf("failed to retrieve repoids for import %v", impID)
+	if repoIDs, err = i.db.WithTx(tx).GetAllReposId(ctx, impID); err != nil {
+		i.logger.Err(err).Msgf("failed to retrieve repoids for import %s", impID)
 		return err
 	}
 
@@ -236,28 +235,34 @@ func (i *importer) handleDefaultSyncSettings(ctx context.Context, tx pgx.Tx, def
 
 	}
 
-	i.logger.Info().Msgf("Inserting of default syncs completed for import %v", impID)
+	i.logger.Info().Msgf("inserting of default syncs completed for import %s", impID)
 
 	return err
 }
 
 func (i *importer) insertSyncInQueue(ctx context.Context, tx pgx.Tx, defaultSyncs []string, repoID uuid.UUID) error {
 	var err error
-
+	var syncExistance bool
+	//testing methods that will be removed after draft
 	defaultSyncs = append(defaultSyncs, "GIT_COMMITS")
 	defaultSyncs = append(defaultSyncs, "GIT_COMMIT_STATS")
 
 	for _, syncType := range defaultSyncs {
-		if err = i.db.WithTx(tx).AddingNewDefaultSync(ctx, db.AddingNewDefaultSyncParams{Repoid: repoID, Synctype: syncType}); err != nil {
-			i.logger.Err(err).Msgf("error when adding default sync for repo %v", repoID)
+		//we check if the sync already exist for that specific repo and sync type
+		if syncExistance, err = i.db.WithTx(tx).AddingNewDefaultSync(ctx, db.AddingNewDefaultSyncParams{Repoid: repoID, Synctype: syncType}); err != nil {
+			i.logger.Err(err).Msgf("error when adding default sync for repo %s", repoID)
 			return err
 		}
-
-		if err = i.db.WithTx(tx).InsertNewSyncInQueue(ctx, syncType); err != nil {
-			i.logger.Err(err).Msgf("error when adding default sync into queue for repo %v", repoID)
-			return err
+		//if the sync exist we continue to next interation ,else we insert a new queue for that sync
+		if syncExistance {
+			i.logger.Info().Msgf("default sync %s already exist for repo %s", syncType, repoID)
+			continue
+		} else {
+			if err = i.db.WithTx(tx).InsertNewSyncInQueue(ctx, db.InsertNewSyncInQueueParams{Synctype: syncType, Repoid: repoID}); err != nil {
+				i.logger.Err(err).Msgf("error when adding default sync into queue for repo %s", repoID)
+				return err
+			}
 		}
-
 	}
 	return err
 }

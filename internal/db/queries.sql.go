@@ -14,8 +14,8 @@ import (
 	"github.com/jackc/pgtype"
 )
 
-const addingNewDefaultSync = `-- name: AddingNewDefaultSync :exec
-INSERT INTO mergestat.repo_syncs (repo_id, sync_type) VALUES ($1::uuid,$2::text)
+const addingNewDefaultSync = `-- name: AddingNewDefaultSync :one
+SELECT mergestat.insert_default_sync($1::uuid,$2::text)
 `
 
 type AddingNewDefaultSyncParams struct {
@@ -23,9 +23,11 @@ type AddingNewDefaultSyncParams struct {
 	Synctype string
 }
 
-func (q *Queries) AddingNewDefaultSync(ctx context.Context, arg AddingNewDefaultSyncParams) error {
-	_, err := q.db.Exec(ctx, addingNewDefaultSync, arg.Repoid, arg.Synctype)
-	return err
+func (q *Queries) AddingNewDefaultSync(ctx context.Context, arg AddingNewDefaultSyncParams) (bool, error) {
+	row := q.db.QueryRow(ctx, addingNewDefaultSync, arg.Repoid, arg.Synctype)
+	var insert_default_sync bool
+	err := row.Scan(&insert_default_sync)
+	return insert_default_sync, err
 }
 
 const cleanOldRepoSyncQueue = `-- name: CleanOldRepoSyncQueue :exec
@@ -284,11 +286,20 @@ func (q *Queries) InsertGitHubRepoInfo(ctx context.Context, arg InsertGitHubRepo
 }
 
 const insertNewSyncInQueue = `-- name: InsertNewSyncInQueue :exec
-INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status) SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE sync_type = $1::text
+INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
+SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE sync_type = $1::text
+AND repo_id = $2::uuid AND schedule_enabled AND id NOT IN 
+(SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
+ON CONFLICT DO NOTHING
 `
 
-func (q *Queries) InsertNewSyncInQueue(ctx context.Context, synctype string) error {
-	_, err := q.db.Exec(ctx, insertNewSyncInQueue, synctype)
+type InsertNewSyncInQueueParams struct {
+	Synctype string
+	Repoid   uuid.UUID
+}
+
+func (q *Queries) InsertNewSyncInQueue(ctx context.Context, arg InsertNewSyncInQueueParams) error {
+	_, err := q.db.Exec(ctx, insertNewSyncInQueue, arg.Synctype, arg.Repoid)
 	return err
 }
 
