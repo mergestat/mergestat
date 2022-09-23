@@ -76,7 +76,18 @@ export function simplifyTime(time: string) {
  * @returns Abbreviated duration time (e.g.: '1h 2m 3s', '2m 3s')
  */
 export function getSimpleDurationTime(start: Date, end: Date): string {
-  return simplifyTime(formatDuration(intervalToDuration({ start, end })))
+  const duration = simplifyTime(formatDuration(intervalToDuration({ start, end })))
+  return duration !== '' ? duration : 'less than 1s'
+}
+
+/**
+ * Method to get duration time abbreviated given time in seconds
+ * @param seconds Seconds to evaluate
+ * @returns Abbreviated duration time (e.g.: '1h 2m 3s', '2m 3s')
+ */
+export function getSimpleDurationTimeSeconds(seconds: number) {
+  const duration = simplifyTime(formatDuration(intervalToDuration({ start: 0, end: seconds * 1000 })))
+  return duration !== '' ? duration : 'less than 1s'
 }
 
 /**

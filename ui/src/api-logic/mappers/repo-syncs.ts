@@ -1,6 +1,6 @@
 import { differenceInSeconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, SyncStatusDataT } from 'src/@types'
-import { getSimpleDurationTime, mapToRepoSyncStateT } from 'src/utils'
+import { getSimpleDurationTime, getSimpleDurationTimeSeconds, mapToRepoSyncStateT } from 'src/utils'
 import { GITHUB_URL, SYNC_REPO_METHOD, SYNC_STATUS } from 'src/utils/constants'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
@@ -39,6 +39,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
         brief: st.description || '',
       },
       latestRun: syncType?.repoSyncQueues.nodes[0]?.startedAt ?? syncType?.repoSyncQueues.nodes[1]?.startedAt,
+      avgRunningTime: 'N/A',
       status: {
         data: [],
         syncState: syncType?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(syncType?.repoSyncQueues.nodes[0]?.status || '') : SYNC_STATUS.empty,
@@ -46,15 +47,28 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     }
 
     // 3. Get status data of a sync (sync queues)
+    let succeededSyncs: number[] = []
     syncType?.repoSyncQueues.nodes.forEach((q) => {
       const queueData: SyncStatusDataT = {
+        id: q.id,
+        repoId: data?.repo?.id,
+        syncTypeId: syncType?.id,
         status: mapToRepoSyncStateT(q?.status || ''),
         runningTime: q?.doneAt ? differenceInSeconds(new Date(q?.doneAt), new Date(q?.startedAt)) : 0, // Determine chart height
         runningTimeReadable: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : q?.startedAt ? SYNC_STATUS.running : SYNC_STATUS.queued,
         doneAt: q?.doneAt ?? new Date(q?.doneAt)
       }
+
+      if (queueData.status === SYNC_STATUS.succeeded) {
+        succeededSyncs = [...succeededSyncs, queueData.runningTime]
+      }
       syncData.status.data?.push(queueData)
     })
+
+    if (succeededSyncs.length > 0) {
+      const avg = succeededSyncs.reduce((prev, cur) => (cur += prev)) / succeededSyncs.length
+      syncData.avgRunningTime = getSimpleDurationTimeSeconds(avg)
+    }
 
     mappedData.push(syncData)
   })

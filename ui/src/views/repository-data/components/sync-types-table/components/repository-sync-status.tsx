@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React, { CSSProperties, Fragment, useRef, useState } from 'react'
 import type { RepoSyncStateT, SyncStatusDataT } from 'src/@types'
 
@@ -34,17 +35,16 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     style = {},
     barWidth = 4,
     margin = 2,
-    limit = 15,
-    max = 10,
-    min = 0,
+    limit = 15
   }
 ) => {
   const tooltipRef = useRef<HTMLDivElement>(null)
   const [displayTooltip, setDisplayTooltip] = useState(false)
   const [tooltipData, setTooltipData] = useState<SyncStatusDataT | null>(null)
   const [eventPosition, setEventPosition] = useState<PositionType | null>(null)
-  const [hoverPosition, setHoverPosition] = useState<PositionType | null>(null)
   const [activeBar, setActiveBar] = useState<number | null>(null)
+
+  const router = useRouter()
 
   if (disabled) { return <div className="flex flex-col justify-center h-full text-sm text-semantic-mutedText bg-gray-50">Disabled</div> }
 
@@ -55,9 +55,15 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     data = data.slice(len - limit)
   }
 
-  const chartArray = Array.from({ length: 15 }, (x, i) => (i in data) ? data[i] : { runningTime: 3, runningTimeReadable: '', status: SYNC_STATUS.empty, doneAt: undefined }).reverse()
+  const chartArray = Array.from(
+    { length: 15 },
+    (x, i) => (i in data)
+      ? data[i]
+      : { id: '', repoId: '', syncTypeId: '', runningTime: 3, runningTimeReadable: '', status: SYNC_STATUS.empty, doneAt: undefined }
+  )
+
   const valueArray = chartArray.map((d: SyncStatusDataT) => d.runningTime)
-  const points = dataToPoints({ data: valueArray, limit, width, height, margin, max, min })
+  const points = dataToPoints({ data: valueArray, limit, width, margin })
 
   const strokeWidth: number = 1 * ((style && style.strokeWidth ? +style.strokeWidth : 0) || 0)
   const marginWidth = margin ? 2 * margin : 0
@@ -80,45 +86,20 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     }
   }
 
-  const onMouseMove = (index: number) => {
-    setDisplayTooltip(true)
-    setHoverPosition(eventPosition)
-    setTooltipData(chartArray[index])
-    setActiveBar(index)
-  }
-
   const onBarClick = (p: SyncStatusDataT) => {
-    alert(p.status)
+    router.push(`/repos/${p.repoId}/${p.syncTypeId}/${p.id}`)
   }
 
   return (
-    <div
-      onMouseMove={(event) => {
-        if (displayTooltip && hoverPosition) {
-          const horizontalDisplacement = Math.abs(event.pageY - hoverPosition.y)
-          const verticalDisplacement = Math.abs(event.pageX - hoverPosition.x)
-          // hide the tooltip if the cursor moved more than 10 px in any direction
-          if (horizontalDisplacement > 10 || verticalDisplacement > 10) {
-            setDisplayTooltip(false)
-            setHoverPosition(null)
-          }
-        }
-
-        setEventPosition({ x: event.pageX, y: event.pageY })
-      }}
-      onMouseLeave={() => {
-        setDisplayTooltip(false)
-        setHoverPosition(null)
-      }}
-      className='my-2 w-32'
-    >
+    <>
+      {/** Tooltip */}
       {(displayTooltip && tooltipData?.status !== SYNC_STATUS.empty) && (
         <div
           ref={tooltipRef}
           className={`${displayTooltip ? 'visible' : 'invisible'
             } absolute z-50 bg-gray-900 rounded text-gray-300 text-sm opacity-80 p-3 whitespace-nowrap`}
           style={{
-            top: eventPosition?.y ? eventPosition?.y - 80 : 0,
+            top: eventPosition?.y ? eventPosition?.y - 95 : 0,
             left: eventPosition?.x
               ? eventPosition?.x -
               ((tooltipRef?.current) ? tooltipRef?.current.clientWidth / 2 : 0)
@@ -134,65 +115,77 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
             )}
             <div>
               <span className="font-medium text-white mb-0.5">{tooltipData?.status ? tooltipData?.status.charAt(0).toUpperCase() + tooltipData?.status.slice(1) : ''}</span>
-              <div className="flex items-center">
-                <span className="text-sm border-r border-gray-600 mr-1.5 pr-1.5 leading-4">
+              <div className="flex flex-col justify-center">
+                <span className="text-sm mr-1.5 pr-1.5 leading-4">
                   {tooltipData?.doneAt ? getRelativeTime(new Date(tooltipData?.doneAt)) : ''}
                 </span>
-                <span className="text-sm">{tooltipData?.runningTimeReadable}</span>
+                <span className="text-sm">{`Duration: ${tooltipData?.runningTimeReadable}`}</span>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      <svg
-        viewBox={`0 0 ${width} ${height}`}
-        preserveAspectRatio={preserveAspectRatio}
+      {/** Bars */}
+      <div
+        className='my-2 w-32'
+        onMouseLeave={() => setDisplayTooltip(false)}
       >
-        <g transform="scale(1,-1)">
-          {[...points].map((p, i) => {
-            const id = 'round-corner_' + i
-            const x = p.x - (barLineWidth + strokeWidth) / 2
-            const y = -height
-            const varHeight = Math.max(0, height - p.y)
-            const r = 1
-            const color = statusColor(chartArray[i].status)
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          preserveAspectRatio={preserveAspectRatio}
+        >
+          <g transform="scale(1,-1)">
+            {[...points].reverse().map((p, i) => {
+              const id = 'round-corner_' + i
+              const x = p.x - (barLineWidth + strokeWidth) / 2
+              const y = -height
+              const varHeight = Math.max(0, height - p.y)
+              const r = 1
+              const color = statusColor(chartArray[i].status)
 
-            return (
-              <Fragment key={Math.random()}>
-                <defs>
-                  <clipPath id={id}>
-                    <rect
-                      x={x}
-                      y={y - 2 * r}
-                      width={barLineWidth}
-                      height={varHeight}
-                      rx={r}
-                      strokeWidth={activeBar === i ? 2 : 0}
-                    />
-                  </clipPath>
-                </defs>
-                <rect
-                  key={i}
-                  clipPath={`url(#${id})`}
-                  x={x}
-                  y={y}
-                  width={barLineWidth}
-                  height={varHeight}
-                  strokeWidth={activeBar === i ? 2 : 0}
-                  fill={color}
-                  style={style}
-                  onMouseMove={onMouseMove.bind({}, i)}
-                  onClick={onBarClick.bind({}, data[i])}
-                  onMouseLeave={() => setActiveBar(null)}
-                  className={tooltipData?.status !== SYNC_STATUS.empty ? 'cursor-pointer' : ''}
-                />
-              </Fragment>
-            )
-          })}
-        </g>
-      </svg>
-    </div>
+              return (
+                <Fragment key={Math.random()}>
+                  <defs>
+                    <clipPath id={id}>
+                      <rect
+                        x={x}
+                        y={y - 2 * r}
+                        width={barLineWidth}
+                        height={varHeight}
+                        rx={r}
+                        strokeWidth={activeBar === i ? 2 : 0}
+                      />
+                    </clipPath>
+                  </defs>
+                  <rect
+                    key={i}
+                    clipPath={`url(#${id})`}
+                    x={x}
+                    y={y}
+                    width={barLineWidth}
+                    height={varHeight}
+                    strokeWidth={activeBar === i ? 2 : 0}
+                    fill={color}
+                    style={style}
+                    onClick={() => onBarClick(data[i])}
+                    onMouseMove={(event) => {
+                      setEventPosition({ x: event.pageX, y: event.pageY })
+                      setTooltipData(chartArray[i])
+
+                      setDisplayTooltip(true)
+                      setActiveBar(i)
+                    }}
+                    onMouseLeave={() => setActiveBar(null)}
+                    className={tooltipData?.status !== SYNC_STATUS.empty ? 'cursor-pointer' : ''}
+                  />
+                </Fragment>
+              )
+            })}
+          </g>
+        </svg>
+      </div>
+    </>
   )
 }
 
@@ -210,18 +203,14 @@ const dataToPoints = ({
   data,
   limit,
   width = 1,
-  height = 1,
   margin = 0,
-  max = Math.max(...data),
-  min = Math.min(...data),
 }: DataToPointsArgs) => {
   const len = data.length
 
-  const vfactor = (height - margin * 2) / (max - min || 2)
   const hfactor = (width - margin * 2) / ((limit || len) - (len > 1 ? 1 : 0))
 
   return data.map((d, i) => ({
     x: (limit - len + i) * hfactor + margin,
-    y: (max === min ? 1 : max - d) * vfactor + margin,
+    y: 0,
   }))
 }
