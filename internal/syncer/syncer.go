@@ -92,7 +92,6 @@ func (w *worker) exec(ctx context.Context, id string) {
 			}
 		default:
 			j, err := w.dequeue(ctx)
-
 			if err != nil {
 				// if error is a context cancellation, go to next tick of loop where
 				// done case will be selected
