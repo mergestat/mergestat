@@ -115,10 +115,31 @@ func (q *Queries) EnqueueAllCompletedSyncs(ctx context.Context) error {
 }
 
 const enqueueAllSyncs = `-- name: EnqueueAllSyncs :exec
+WITH ranked_queue AS (
+    SELECT
+       rsq.done_at,
+       DENSE_RANK() OVER(ORDER BY rsq.created_at DESC) AS rank_num
+    FROM mergestat.repo_syncs
+    INNER JOIN mergestat.repo_sync_queue AS rsq ON mergestat.repo_syncs.id = rsq.repo_sync_id
+)
 INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
-SELECT id, 'QUEUED' FROM mergestat.repo_syncs
+SELECT
+    id,
+    'QUEUED' AS status
+FROM mergestat.repo_syncs
+WHERE schedule_enabled
+    AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
+    AND NOT EXISTS (
+        SELECT done_at
+        FROM ranked_queue
+        WHERE
+            ranked_queue.rank_num >= 1
+            AND ranked_queue.done_at IS NULL
+    )
 `
 
+// We use a CTE here to retrieve all the repo_sync_jobs that were previously enqueued, to make sure that we *do not* re-enqueue anything new until the previously enqueued jobs are *completed*.
+// This allows us to make sure all repo syncs complete before we reschedule a new batch.
 func (q *Queries) EnqueueAllSyncs(ctx context.Context) error {
 	_, err := q.db.Exec(ctx, enqueueAllSyncs)
 	return err
@@ -304,7 +325,7 @@ WITH timed_out_sync_jobs AS (
 		(last_keep_alive < now() - '10 minutes'::interval)
 		OR
 		(last_keep_alive IS NULL AND created_at < now() - '10 minutes'::interval)) -- if worker crashed before last_keep_alive was first set
-	RETURNING id, created_at, repo_sync_id, status, started_at, done_at, last_keep_alive
+	RETURNING id, created_at, repo_sync_id, status, started_at, done_at, last_keep_alive, priority
 )
 INSERT INTO mergestat.repo_sync_logs (repo_sync_queue_id, log_type, message)
 SELECT id, 'ERROR', 'No response from job within reasonable interval. Timing out.' FROM timed_out_sync_jobs
