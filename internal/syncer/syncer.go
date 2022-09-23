@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	SyncTypeGitCommits     = "GIT_COMMITS"
+	syncTypeGitCommits     = "GIT_COMMITS"
 	syncTypeGitCommitStats = "GIT_COMMIT_STATS"
 	syncTypeGitRefs        = "GIT_REFS"
 	syncTypeGitFiles       = "GIT_FILES"
@@ -43,12 +43,6 @@ type worker struct {
 	db           *db.Queries
 	concurrency  int
 	pollInterval time.Duration
-}
-
-type githubUserRepoImportSettings struct {
-	User               string   `json:"user"`
-	RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
-	DefaultSyncs       []string `json:"defaultSyncs"`
 }
 
 func New(pool *pgxpool.Pool, mergestat *sqlx.DB, logger *zerolog.Logger, concurrency int, pollInterval time.Duration) *worker {
@@ -111,12 +105,6 @@ func (w *worker) exec(ctx context.Context, id string) {
 			}
 
 			w.loggerForJob(j).Info().Msg("dequeued job")
-			/*var settings githubUserRepoImportSettings
-			if err := json.Unmarshal(j.Settings.Bytes, &settings); err != nil {
-				w.logger.Err(err).Msgf("error sending log error message: %v", err)
-			}
-
-			w.handleDefaultSyncSettings(ctx, settings.DefaultSyncs)*/
 
 			if err := w.handle(ctx, j); err != nil {
 				if !errors.Is(err, context.Canceled) {
@@ -159,7 +147,7 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	defer done()
 
 	switch j.SyncType {
-	case SyncTypeGitCommits:
+	case syncTypeGitCommits:
 		return w.handleGitCommits(ctx, j)
 	case syncTypeGitFiles:
 		return w.handleGitFiles(ctx, j)
@@ -187,35 +175,6 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 		return fmt.Errorf("unknown sync type: %s for job ID: %d", j.SyncType, j.ID)
 	}
 }
-
-/*func (w *worker) handleDefaultSyncSettings(ctx context.Context, defaultSyncs []string) error {
-	fmt.Print(defaultSyncs)
-	w.logger.Info().Msg("starting to insert default syncs")
-	var tx pgx.Tx
-	var err error
-
-	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
-		return err
-	}
-
-	defer func() {
-		if err := tx.Rollback(ctx); err != nil {
-			if !errors.Is(err, pgx.ErrTxClosed) {
-				w.logger.Err(err).Msg("could not rollback transaction")
-			}
-		}
-	}()
-
-	if err = w.db.WithTx(tx).InsertDefaultSyncTypes(ctx,
-		db.InsertDefaultSyncTypesParams{Type: SyncTypeGitCommits, Description: "Retrieves the commit history of a repo", Shortname: "Git Commits"},
-	); err != nil {
-		return err
-	}
-
-	w.logger.Info().Msg("Inserting of default syncs completed")
-
-	return tx.Commit(ctx)
-}*/
 
 // Start starts running the workers until the ctx is canceled.
 func (w *worker) Start(ctx context.Context) {
