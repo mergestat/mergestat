@@ -72,6 +72,8 @@ INSERT INTO mergestat.repo_sync_logs (log_type, message, repo_sync_queue_id) VAL
 UPDATE mergestat.repo_sync_queue SET status = $1 
 WHERE id = (SELECT id FROM mergestat.repo_sync_queue WHERE repo_sync_queue.id = $2 LIMIT 1);
 
+-- We use a CTE here to retrieve all the repo_sync_jobs that were previously enqueued, to make sure that we *do not* re-enqueue anything new until the previously enqueued jobs are *completed*.
+-- This allows us to make sure all repo syncs complete before we reschedule a new batch.
 -- name: EnqueueAllSyncs :exec
 WITH ranked_queue AS (
     SELECT
