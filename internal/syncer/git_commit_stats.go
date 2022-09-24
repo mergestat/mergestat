@@ -22,21 +22,23 @@ func (w *worker) sendBatchCommitStats(ctx context.Context, tx pgx.Tx, j *db.Dequ
 		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
 			return err
 		}
-		input := []interface{}{repoID, c.CommitHash.String, c.FilePath.String, c.Additions.Int64, c.Deletions.Int64}
+		input := []interface{}{repoID, c.CommitHash.String, c.FilePath.String, c.Additions.Int64, c.Deletions.Int64, c.NewFileMode.Int64, c.OldFileMode.Int64}
 		inputs = append(inputs, input)
 	}
 
-	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_commit_stats"}, []string{"repo_id", "commit_hash", "file_path", "additions", "deletions"}, pgx.CopyFromRows(inputs)); err != nil {
+	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_commit_stats"}, []string{"repo_id", "commit_hash", "file_path", "additions", "deletions", "old_file_mode", "new_file_mode"}, pgx.CopyFromRows(inputs)); err != nil {
 		return err
 	}
 	return nil
 }
 
 type commitStat struct {
-	CommitHash sql.NullString `db:"commit_hash"`
-	FilePath   sql.NullString `db:"file_path"`
-	Additions  sql.NullInt64  `db:"additions"`
-	Deletions  sql.NullInt64  `db:"deletions"`
+	CommitHash  sql.NullString `db:"commit_hash"`
+	FilePath    sql.NullString `db:"file_path"`
+	Additions   sql.NullInt64  `db:"additions"`
+	Deletions   sql.NullInt64  `db:"deletions"`
+	OldFileMode sql.NullInt64  `db:"old_file_mode"`
+	NewFileMode sql.NullInt64  `db:"new_file_mode"`
 }
 
 func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobRow) error {
@@ -126,11 +128,15 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		}
 
 		err = diff.ForEach(func(delta libgit2.DiffDelta, progress float64) (libgit2.DiffForEachHunkCallback, error) {
+			// TODO(patrickdevivo) should we also include the old file path? (delta.OldFile.Path)
+			// if so, we might want to change file_path column to new_file_path and add old_file_path
 			stat := &commitStat{
-				CommitHash: sql.NullString{String: c.Id().String(), Valid: true},
-				FilePath:   sql.NullString{String: delta.NewFile.Path, Valid: true},
-				Additions:  sql.NullInt64{Int64: 0, Valid: true},
-				Deletions:  sql.NullInt64{Int64: 0, Valid: true},
+				CommitHash:  sql.NullString{String: c.Id().String(), Valid: true},
+				FilePath:    sql.NullString{String: delta.NewFile.Path, Valid: true},
+				Additions:   sql.NullInt64{Int64: 0, Valid: true},
+				Deletions:   sql.NullInt64{Int64: 0, Valid: true},
+				OldFileMode: sql.NullInt64{Int64: int64(delta.OldFile.Mode), Valid: true},
+				NewFileMode: sql.NullInt64{Int64: int64(delta.NewFile.Mode), Valid: true},
 			}
 
 			stats = append(stats, stat)
