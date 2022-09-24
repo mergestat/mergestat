@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { autoUpdate, useDismiss, useFloating, useFocus, useHover, useInteractions, useRole } from '@floating-ui/react-dom-interactions'
 import { useRouter } from 'next/router'
-import React, { CSSProperties, Fragment, useRef, useState } from 'react'
-import type { SyncStatusDataT } from 'src/@types'
+import React, { CSSProperties, Fragment, useState } from 'react'
+import type { RepoSyncStateT, SyncStatusDataT } from 'src/@types'
 
+import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
+import { getRelativeTime } from 'src/utils'
 import { SYNC_STATUS } from 'src/utils/constants'
 
 type RepositorySyncStatusProps = {
@@ -18,11 +21,6 @@ type RepositorySyncStatusProps = {
   min?: number
 }
 
-type PositionType = {
-  x: number
-  y: number
-}
-
 export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   {
     data = [],
@@ -35,11 +33,20 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     limit = 15
   }
 ) => {
-  const tooltipRef = useRef<HTMLDivElement>(null)
   const [displayTooltip, setDisplayTooltip] = useState(false)
   const [tooltipData, setTooltipData] = useState<SyncStatusDataT | null>(null)
-  const [eventPosition, setEventPosition] = useState<PositionType | null>(null)
   const [activeBar, setActiveBar] = useState<number | null>(null)
+  const { x, y, reference, floating, strategy, context } = useFloating({
+    open: displayTooltip,
+    onOpenChange: setDisplayTooltip,
+    whileElementsMounted: autoUpdate,
+  })
+  useInteractions([
+    useHover(context),
+    useFocus(context),
+    useRole(context),
+    useDismiss(context),
+  ])
 
   const router = useRouter()
 
@@ -86,18 +93,15 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 
   return (
     <>
-      {/* * Tooltip
-      {(displayTooltip && tooltipData?.status !== SYNC_STATUS.empty) && (
+      {/** Tooltip */}
+      {displayTooltip && (tooltipData?.status !== SYNC_STATUS.empty) && (
         <div
-          ref={tooltipRef}
-          className={`${displayTooltip ? 'visible' : 'invisible'
-            } absolute z-50 bg-gray-900 rounded text-gray-300 text-sm opacity-80 p-3 whitespace-nowrap`}
+          ref={floating}
+          className={'absolute z-50 bg-gray-900 rounded text-gray-300 text-sm opacity-80 p-3 whitespace-nowrap'}
           style={{
-            top: eventPosition?.y ? eventPosition?.y - 95 : 0,
-            left: eventPosition?.x
-              ? eventPosition?.x -
-              ((tooltipRef?.current) ? tooltipRef?.current.clientWidth / 2 : 0)
-              : 0,
+            position: strategy,
+            top: y ?? 0,
+            left: x ?? 0,
           }}
         >
           <div className="flex items-center">
@@ -118,12 +122,12 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
             </div>
           </div>
         </div>
-      )} */}
+      )}
 
       {/** Bars */}
       <div
-        className='my-2 w-32 interactive'
-        onMouseLeave={() => setDisplayTooltip(false)}
+        className='my-2 w-32'
+        ref={reference}
       >
         <svg
           viewBox={`0 0 ${width} ${height}`}
@@ -163,11 +167,9 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                     fill={color}
                     style={style}
                     onClick={() => onBarClick(data[i])}
-                    onMouseMove={(event) => {
-                      setEventPosition({ x: event.pageX, y: event.pageY })
+                    onMouseMove={() => {
                       setTooltipData(chartArray[i])
 
-                      setDisplayTooltip(true)
                       setActiveBar(i)
                     }}
                     onMouseLeave={() => setActiveBar(null)}

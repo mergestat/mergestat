@@ -17,6 +17,8 @@
   "dependencies": {
     "@apollo/client": "^3.7.0",
     "@apollo/react-testing": "^4.0.0",
+    "@floating-ui/react-dom": "^1.0.0",
+    "@floating-ui/react-dom-interactions": "^0.10.1",
     "@mergestat/blocks": "^1.4.3",
     "@mergestat/icons": "^1.2.2",
     "@monaco-editor/react": "^4.4.6",
