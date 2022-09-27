@@ -1,9 +1,13 @@
 import Head from 'next/head'
-import { Fragment } from 'react'
+import { ChangeEvent, Fragment, useState } from 'react'
 
-import { Alert, Button, Icon, Label, Panel, Input, HelpText } from '@mergestat/blocks'
+import { Alert, Button, HelpText, Icon, Input, Label, Panel } from '@mergestat/blocks'
+import { auth } from 'src/api-logic/axios/api'
 
-const Authentication = () => {
+const LoginPage = () => {
+  const [user, setUser] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+
   const loggedOut = false
   const error = false
 
@@ -16,34 +20,35 @@ const Authentication = () => {
         <Panel className="w-full max-w-lg">
           <Panel.Header>
             <Icon
-                as="/logo.svg"
-                width={144}
-                className="flex w-auto items-center"
-              />
+              as="/logo.svg"
+              width={144}
+              className="flex w-auto items-center"
+            />
           </Panel.Header>
           <Panel.Body>
             {loggedOut && (
-              <Alert
-                theme="light"
-                type="warning"
-                className="mb-6"
-              >
+              <Alert theme="light" type="warning" className="mb-6" >
                 You’ve been logged out. Please log in again.
               </Alert>
             )}
             <Alert type="info" className="mb-6">
               Login using your MergeStat <strong>database credentials</strong>.
             </Alert>
+
             {/* <h2 className="t-h2">Log in</h2> */}
             <form className="space-y-4">
               <div>
                 <Label>Database user
-                  <Input placeholder="username" />
+                  <Input value={user} placeholder="username"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setUser(e.target.value)}
+                  />
                 </Label>
               </div>
               <div>
                 <Label>Database password
-                  <Input type="password" placeholder="password" variant={ error ? 'error' : 'default' }/>
+                  <Input type="password" value={password} placeholder="password" variant={error ? 'error' : 'default'}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                  />
                 </Label>
                 {error && (
                   <HelpText variant="error">Incorrect password</HelpText>
@@ -52,6 +57,7 @@ const Authentication = () => {
               <Button
                 isBlock
                 label="Log in"
+                onClick={() => auth(user, password)}
               />
             </form>
           </Panel.Body>
@@ -61,6 +67,6 @@ const Authentication = () => {
   )
 }
 
-Authentication.layout = 'fullscreen'
+LoginPage.layout = 'fullscreen'
 
-export default Authentication
+export default LoginPage

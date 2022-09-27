@@ -17,3 +17,18 @@ export const validateGtihubToken = async (pat: string) => {
     return false
   }
 }
+
+/**
+ * Method to login to Postgrahile
+ * @param user Database user
+ * @param password Database password
+ * @returns returns true if it is logged
+ */
+export const auth = async (user: string, password: string) => {
+  try {
+    const response = await axios.post('/api/admin-auth', { user, password })
+    return response.status === 200
+  } catch (error) {
+    return false
+  }
+}

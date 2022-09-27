@@ -38,10 +38,10 @@ const NavHeader: React.FC = () => {
           </Toolbar.Item>
           <Navbar.Divider />
           <Toolbar.Item className="space-x-2">
-              <p className="font-medium text-white ml-3">Username</p>
-              <Link href="/authentication">
-                <span className="text-white underline opacity-60 cursor-pointer">Log out</span>
-              </Link>
+            <p className="font-medium text-white ml-3">Username</p>
+            <Link href="/login">
+              <span className="text-white underline opacity-60 cursor-pointer">Log out</span>
+            </Link>
           </Toolbar.Item>
         </Toolbar.Right>
       </Toolbar>

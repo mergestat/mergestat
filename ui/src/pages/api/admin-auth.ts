@@ -1,8 +1,9 @@
+import { setCookie } from 'cookies-next'
+import { createSecretKey } from 'crypto'
+import { constants as HTTP_CONSTANTS } from 'http2'
+import * as jose from 'jose'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Client } from 'pg'
-import { constants as HTTP_CONSTANTS } from 'http2'
-import { createSecretKey } from 'crypto'
-import * as jose from 'jose'
 
 const { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_UNAUTHORIZED } = HTTP_CONSTANTS
 const { POSTGRES_CONNECTION, JWT_SECRET } = process.env
@@ -57,7 +58,8 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
       .setExpirationTime('5h')
       .sign(createSecretKey(JWT_SECRET, 'utf8'))
 
-    res.json({ token: jwt })
+    setCookie('jwt', jwt, { req, res, maxAge: 5000, httpOnly: true, secure: true, path: '/api/graphql' })
+    res.json({ loggedIn: true })
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message })
