@@ -1,8 +1,8 @@
 BEGIN;
 
 ALTER TABLE public.git_commit_stats
-ADD COLUMN old_file_mode text,
-ADD COLUMN new_file_mode text;
+ADD COLUMN old_file_mode text DEFAULT 'unknown' NOT NULL,
+ADD COLUMN new_file_mode text DEFAULT 'unknown' NOT NULL;
 
 -- Add a primary key to the table, which was omitted previously because we didn't have enough columns
 -- to guarantee uniqueness. Now that we have file modes, we can guarantee uniqueness.
