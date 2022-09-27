@@ -13,6 +13,33 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+type GitFileModeObjectType string
+
+const (
+	GitFileModeObjectTypeUnknown     GitFileModeObjectType = "unknown"
+	GitFileModeObjectTypeNone        GitFileModeObjectType = "none"
+	GitFileModeObjectTypeRegularFile GitFileModeObjectType = "regular_file"
+	GitFileModeOjectTypeSymbolicLink GitFileModeObjectType = "symbolic_link"
+	GitFileModeOjectTypeGitLink      GitFileModeObjectType = "git_link"
+)
+
+// gitFileModeObjectTypeFromUint16 takes a git stats file mode and returns the GitFileModeObjectType.
+// See here for more info on the modes: https://unix.stackexchange.com/questions/450480/file-permission-with-six-bytes-in-git-what-does-it-mean
+func gitFileModeObjectTypeFromUint16(mode uint16) GitFileModeObjectType {
+	switch mode >> 12 {
+	case 0:
+		return GitFileModeObjectTypeNone
+	case 0b1110:
+		return GitFileModeOjectTypeGitLink
+	case 0b1010:
+		return GitFileModeOjectTypeSymbolicLink
+	case 0b1000:
+		return GitFileModeObjectTypeRegularFile
+	default:
+		return GitFileModeObjectTypeUnknown
+	}
+}
+
 // sendBatchCommitStats uses the pg COPY protocol to send a batch of commit stats
 func (w *worker) sendBatchCommitStats(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*commitStat) error {
 	inputs := make([][]interface{}, 0, len(batch))
@@ -22,7 +49,7 @@ func (w *worker) sendBatchCommitStats(ctx context.Context, tx pgx.Tx, j *db.Dequ
 		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
 			return err
 		}
-		input := []interface{}{repoID, c.CommitHash.String, c.FilePath.String, c.Additions.Int64, c.Deletions.Int64, c.NewFileMode.Int64, c.OldFileMode.Int64}
+		input := []interface{}{repoID, c.CommitHash.String, c.FilePath.String, c.Additions.Int64, c.Deletions.Int64, c.NewFileMode.String, c.OldFileMode.String}
 		inputs = append(inputs, input)
 	}
 
@@ -37,8 +64,8 @@ type commitStat struct {
 	FilePath    sql.NullString `db:"file_path"`
 	Additions   sql.NullInt64  `db:"additions"`
 	Deletions   sql.NullInt64  `db:"deletions"`
-	OldFileMode sql.NullInt64  `db:"old_file_mode"`
-	NewFileMode sql.NullInt64  `db:"new_file_mode"`
+	OldFileMode sql.NullString `db:"old_file_mode"`
+	NewFileMode sql.NullString `db:"new_file_mode"`
 }
 
 func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobRow) error {
@@ -135,8 +162,8 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 				FilePath:    sql.NullString{String: delta.NewFile.Path, Valid: true},
 				Additions:   sql.NullInt64{Int64: 0, Valid: true},
 				Deletions:   sql.NullInt64{Int64: 0, Valid: true},
-				OldFileMode: sql.NullInt64{Int64: int64(delta.OldFile.Mode), Valid: true},
-				NewFileMode: sql.NullInt64{Int64: int64(delta.NewFile.Mode), Valid: true},
+				OldFileMode: sql.NullString{String: string(gitFileModeObjectTypeFromUint16((delta.OldFile.Mode))), Valid: true},
+				NewFileMode: sql.NullString{String: string(gitFileModeObjectTypeFromUint16(delta.NewFile.Mode)), Valid: true},
 			}
 
 			stats = append(stats, stat)
