@@ -186,10 +186,12 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 		return err
 	}
 
-	//handle default syncs on repo importation(draft version will not have if statement)
-	err = i.handleDefaultSyncs(ctx, tx, defaultSyncTypes, imp.ID)
-	if err != nil {
-		return err
+	//handle default syncs on repo import
+	if len(defaultSyncTypes) > 0 {
+		err = i.handleDefaultSyncs(ctx, tx, defaultSyncTypes, imp.ID)
+		if err != nil {
+			return err
+		}
 	}
 
 	i.logger.Info().Strs("repos", repoNames).Msgf("importing repos from GitHub: %s", repoOwner)
@@ -228,7 +230,7 @@ func (i *importer) handleDefaultSyncs(ctx context.Context, tx pgx.Tx, defaultSyn
 	}
 
 	for _, repoID := range repoIDs {
-		if err = i.insertSyncInQueue(ctx, tx, defaultSyncTypes, repoID); err != nil {
+		if err = i.insertDefaultSyncTypes(ctx, tx, defaultSyncTypes, repoID); err != nil {
 			i.logger.Err(err)
 			return err
 		}
@@ -240,11 +242,8 @@ func (i *importer) handleDefaultSyncs(ctx context.Context, tx pgx.Tx, defaultSyn
 	return err
 }
 
-func (i *importer) insertSyncInQueue(ctx context.Context, tx pgx.Tx, defaultSyncTypes []string, repoID uuid.UUID) error {
+func (i *importer) insertDefaultSyncTypes(ctx context.Context, tx pgx.Tx, defaultSyncTypes []string, repoID uuid.UUID) error {
 	var err error
-	//testing methods that will be removed after draft
-	defaultSyncTypes = append(defaultSyncTypes, "GIT_COMMITS")
-	defaultSyncTypes = append(defaultSyncTypes, "GIT_COMMIT_STATS")
 
 	for _, syncType := range defaultSyncTypes {
 		if err = i.db.WithTx(tx).InsertNewDefaultSync(ctx, db.InsertNewDefaultSyncParams{Repoid: repoID, Synctype: syncType}); err != nil {
