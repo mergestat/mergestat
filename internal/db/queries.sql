@@ -126,17 +126,11 @@ DELETE FROM public.repos WHERE repo_import_id = $1::uuid AND NOT(repo = ANY($2::
 -- name: CleanOldRepoSyncQueue :exec
 SELECT mergestat.simple_repo_sync_queue_cleanup($1::INTEGER);
 
--- name: GetAllReposId :many
+-- name: GetRepoIDsFromRepoImport :many
 SELECT id FROM public.repos WHERE repo_import_id = @importID::uuid
 ;
 
--- name: AddingNewDefaultSync :one
-SELECT mergestat.insert_default_sync(@repoID::uuid,@syncType::text);
+-- name: InsertNewDefaultSync :exec
+INSERT INTO mergestat.repo_syncs (repo_id, sync_type) VALUES(@repoID::uuid,@syncType::text) ON CONFLICT DO NOTHING;
 
--- name: InsertNewSyncInQueue :exec
-INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
-SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE sync_type = @syncType::text
-AND repo_id = @repoID::uuid AND schedule_enabled AND id NOT IN 
-(SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
-ON CONFLICT DO NOTHING
-;
+

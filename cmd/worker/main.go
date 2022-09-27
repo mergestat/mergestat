@@ -219,7 +219,7 @@ func main() {
 	// either via the database/app or possibly with env vars
 	go func() {
 		defer wg.Done()
-		scheduler.New(&logger, pool).Start(ctx, 1*time.Minute)
+		scheduler.New(&logger, pool).Start(ctx, 10*time.Minute)
 	}()
 
 	go func() {
