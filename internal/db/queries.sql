@@ -132,5 +132,3 @@ SELECT id FROM public.repos WHERE repo_import_id = @importID::uuid
 
 -- name: InsertNewDefaultSync :exec
 INSERT INTO mergestat.repo_syncs (repo_id, sync_type) VALUES(@repoID::uuid,@syncType::text) ON CONFLICT DO NOTHING;
-
-
