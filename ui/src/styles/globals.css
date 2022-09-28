@@ -119,3 +119,21 @@
   height: 1px !important;
   overflow: hidden !important;
 }
+
+.t-table-bordered td {
+  @apply border
+         border-gray-200;
+}
+
+.t-table-bordered td:first-child {
+  @apply border-l-0;
+}
+
+.t-table-bordered td:last-child {
+  @apply border-r-0;
+}
+
+.t-table-bordered tr:last-child td{
+  @apply  border
+          border-b-0;
+}
