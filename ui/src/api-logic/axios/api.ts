@@ -1,5 +1,16 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
+import { showErrorAlert } from 'src/utils/alerts'
 import { API } from 'src/utils/constants'
+
+/**
+ * Method to handle Axios error
+ * @param error Thrown error
+ * @returns false
+ */
+const handleAxiosError = (error: AxiosError) => {
+  showErrorAlert(error.message)
+  return false
+}
 
 /**
  * Method to try to login against Github to validate token
@@ -14,12 +25,12 @@ export const validateGtihubToken = async (pat: string) => {
     )
     return response.status === 200
   } catch (error) {
-    return false
+    return handleAxiosError(error as AxiosError)
   }
 }
 
 /**
- * Method to login to Postgrahile
+ * Method to login to Postgraphile
  * @param user Database user
  * @param password Database password
  * @returns true if it is logged in, otherwise returns false
@@ -29,12 +40,12 @@ export const auth = async (user: string, password: string) => {
     const response = await axios.post('/api/admin-auth', { user, password })
     return response.status === 200
   } catch (error) {
-    return false
+    return handleAxiosError(error as AxiosError)
   }
 }
 
 /**
- * Method to logout to Postgrahile
+ * Method to logout to Postgraphile
  * @returns true if it is logged out, otherwise returns false
  */
 export const logout = async () => {
@@ -42,6 +53,6 @@ export const logout = async () => {
     const response = await axios.post('/api/logout')
     return response.status === 200
   } catch (error) {
-    return false
+    return handleAxiosError(error as AxiosError)
   }
 }
