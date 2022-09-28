@@ -1,4 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
 import { concatPagination } from '@apollo/client/utilities'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
@@ -6,13 +7,27 @@ import { useMemo } from 'react'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
+const httpLink = new HttpLink({
+  uri: '/api/graphql',
+  credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+})
+
+const logoutLink = onError(({ graphQLErrors }) => {
+  if (graphQLErrors) {
+    for (const err of graphQLErrors) {
+      if (err.message.includes('permission denied for')) {
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login?lostSession=true'
+        }
+      }
+    }
+  }
+})
+
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: new HttpLink({
-      uri: '/api/graphql',
-      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
-    }),
+    link: logoutLink.concat(httpLink),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {

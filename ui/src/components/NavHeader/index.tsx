@@ -1,9 +1,18 @@
 import { Icon, Navbar, Toolbar } from '@mergestat/blocks'
 import { BookIcon } from '@mergestat/icons'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
+import { logout } from 'src/api-logic/axios/api'
 
 const NavHeader: React.FC = () => {
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    const loggedout = await logout()
+    loggedout && router.push('/login')
+  }
+
   return (
     <nav className="px-6 w-full bg-gray-700">
       <Toolbar className="h-14">
@@ -39,9 +48,11 @@ const NavHeader: React.FC = () => {
           <Navbar.Divider />
           <Toolbar.Item className="space-x-2">
             <p className="font-medium text-white ml-3">Username</p>
-            <Link href="/login">
-              <span className="text-white underline opacity-60 cursor-pointer">Log out</span>
-            </Link>
+            <div onClick={handleLogout} aria-hidden="true">
+              <span className="text-white underline opacity-60 cursor-pointer">
+                Log out
+              </span>
+            </div>
           </Toolbar.Item>
         </Toolbar.Right>
       </Toolbar>

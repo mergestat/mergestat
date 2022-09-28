@@ -22,11 +22,24 @@ export const validateGtihubToken = async (pat: string) => {
  * Method to login to Postgrahile
  * @param user Database user
  * @param password Database password
- * @returns returns true if it is logged
+ * @returns true if it is logged in, otherwise returns false
  */
 export const auth = async (user: string, password: string) => {
   try {
     const response = await axios.post('/api/admin-auth', { user, password })
+    return response.status === 200
+  } catch (error) {
+    return false
+  }
+}
+
+/**
+ * Method to logout to Postgrahile
+ * @returns true if it is logged out, otherwise returns false
+ */
+export const logout = async () => {
+  try {
+    const response = await axios.post('/api/logout')
     return response.status === 200
   } catch (error) {
     return false
