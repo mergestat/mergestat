@@ -104,16 +104,6 @@ func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
 	return i, err
 }
 
-const enqueueAllCompletedSyncs = `-- name: EnqueueAllCompletedSyncs :exec
-INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
-SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE schedule_enabled AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
-`
-
-func (q *Queries) EnqueueAllCompletedSyncs(ctx context.Context) error {
-	_, err := q.db.Exec(ctx, enqueueAllCompletedSyncs)
-	return err
-}
-
 const enqueueAllSyncs = `-- name: EnqueueAllSyncs :exec
 WITH ranked_queue AS (
     SELECT
@@ -146,11 +136,16 @@ func (q *Queries) EnqueueAllSyncs(ctx context.Context) error {
 }
 
 const getRepoIDsFromRepoImport = `-- name: GetRepoIDsFromRepoImport :many
-SELECT id FROM public.repos WHERE repo_import_id = $1::uuid
+SELECT id FROM public.repos WHERE repo_import_id = $1::uuid AND repo = ANY($2::TEXT[])
 `
 
-func (q *Queries) GetRepoIDsFromRepoImport(ctx context.Context, importid uuid.UUID) ([]uuid.UUID, error) {
-	rows, err := q.db.Query(ctx, getRepoIDsFromRepoImport, importid)
+type GetRepoIDsFromRepoImportParams struct {
+	Importid  uuid.UUID
+	Reposurls []string
+}
+
+func (q *Queries) GetRepoIDsFromRepoImport(ctx context.Context, arg GetRepoIDsFromRepoImportParams) ([]uuid.UUID, error) {
+	rows, err := q.db.Query(ctx, getRepoIDsFromRepoImport, arg.Importid, arg.Reposurls)
 	if err != nil {
 		return nil, err
 	}
@@ -188,6 +183,30 @@ func (q *Queries) GetRepoImportByID(ctx context.Context, id uuid.UUID) (Mergesta
 		&i.LastImportStartedAt,
 	)
 	return i, err
+}
+
+const getRepoUrlFromImport = `-- name: GetRepoUrlFromImport :many
+SELECT repo FROM public.repos WHERE repo_import_id = $1::uuid
+`
+
+func (q *Queries) GetRepoUrlFromImport(ctx context.Context, importid uuid.UUID) ([]string, error) {
+	rows, err := q.db.Query(ctx, getRepoUrlFromImport, importid)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var repo string
+		if err := rows.Scan(&repo); err != nil {
+			return nil, err
+		}
+		items = append(items, repo)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const insertGitHubRepoInfo = `-- name: InsertGitHubRepoInfo :exec

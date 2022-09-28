@@ -59,6 +59,8 @@ type GitCommitStat struct {
 	Additions         int32
 	Deletions         int32
 	MergestatSyncedAt time.Time
+	OldFileMode       string
+	NewFileMode       string
 }
 
 // Git repository files

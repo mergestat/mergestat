@@ -28,7 +28,7 @@ func New(logger *zerolog.Logger, pool *pgxpool.Pool) *scheduler {
 func (s *scheduler) Start(ctx context.Context, interval time.Duration) {
 	s.logger.Info().Msg("starting scheduler")
 	exec := func() {
-		if err := s.db.EnqueueAllCompletedSyncs(ctx); err != nil {
+		if err := s.db.EnqueueAllSyncs(ctx); err != nil {
 			s.logger.Err(err).Msg("encountered error during scheduler execution")
 		} else {
 			s.logger.Info().Msg("re-scheduling all completed syncs to run again")

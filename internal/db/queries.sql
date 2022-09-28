@@ -101,11 +101,6 @@ WHERE schedule_enabled
 -- name: SetLatestKeepAliveForJob :exec
 UPDATE mergestat.repo_sync_queue SET last_keep_alive = now() WHERE id = $1;
 
--- name: EnqueueAllCompletedSyncs :exec
-INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
-SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE schedule_enabled AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
-;
-
 -- name: MarkSyncsAsTimedOut :many
 WITH timed_out_sync_jobs AS (
 	UPDATE mergestat.repo_sync_queue SET status = 'DONE' WHERE status = 'RUNNING' AND (
@@ -127,7 +122,11 @@ DELETE FROM public.repos WHERE repo_import_id = $1::uuid AND NOT(repo = ANY($2::
 SELECT mergestat.simple_repo_sync_queue_cleanup($1::INTEGER);
 
 -- name: GetRepoIDsFromRepoImport :many
-SELECT id FROM public.repos WHERE repo_import_id = @importID::uuid
+SELECT id FROM public.repos WHERE repo_import_id = @importID::uuid AND repo = ANY(@reposUrls::TEXT[])
+;
+
+-- name: GetRepoUrlFromImport :many
+SELECT repo FROM public.repos WHERE repo_import_id = @importID::uuid
 ;
 
 -- name: InsertNewDefaultSync :exec
