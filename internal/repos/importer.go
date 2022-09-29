@@ -201,7 +201,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 			return err
 		}
 
-		i.logger.Info().Msg("Enqueuing all available syncs for newly imported repos")
+		i.logger.Info().Msg("enqueuing all available syncs for newly imported repos")
 		if err = i.db.WithTx(tx).EnqueueAllSyncs(ctx); err != nil {
 			return err
 		}
