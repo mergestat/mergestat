@@ -71,7 +71,9 @@ services:
     ports:
       - 3300:3000
     environment:
-      POSTGRAPHILE_API: http://graphql:5433/graphql    
+      POSTGRAPHILE_API: http://graphql:5433/graphql  
+    labels:
+      shipyard.route: '/'
 
   grafana:
     image: grafana/grafana-oss:latest
