@@ -233,6 +233,7 @@ func (i *importer) handleDeletedRepos(ctx context.Context, tx pgx.Tx, repos []*g
 	return err
 }
 
+// getNewImportedRepoUrls retrieves the URLs of all repos that are now being _added_ by an import
 func (i *importer) getNewImportedRepoUrls(ctx context.Context, tx pgx.Tx, repos []*githubRepo, repoOwner string, impID uuid.UUID) ([]string, error) {
 	var err error
 	var currentRepoUrls []string
@@ -267,6 +268,7 @@ func (i *importer) getNewImportedRepoUrls(ctx context.Context, tx pgx.Tx, repos 
 	return newImportedRepoUrls, err
 }
 
+// handleDefaultSyncs if the repo auto import has any default syncs defined, insert those into the DB
 func (i *importer) handleDefaultSyncs(ctx context.Context, tx pgx.Tx, defaultSyncTypes []string, impID uuid.UUID, newlyAddedRepos []string) error {
 	var err error
 	var repoIDs []uuid.UUID
