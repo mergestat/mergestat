@@ -48,10 +48,10 @@ const Settings: NextPage = () => {
 								<Panel.Body className="py-8">
 									<h3 className="t-h3">GitHub Personal Access Token</h3>
 									<Alert type="info" theme="light" className='mb-5'>
-										<p>
+										<span>
 											In order to access the  GitHub API and any private GitHub repositories, we need to authenticate with <a target='_blank' href={LINKS_TO.createPAt} className="t-link font-bold" rel='noopener noreferrer'>a personal access token</a> (PAT).
 											Other authentication methods (such as an OAuth based flow) may become available in the future.
-										</p>
+										</span>
 									</Alert>
 									<form className="mb-6">
 										<div className="flex items-center space-x-3">

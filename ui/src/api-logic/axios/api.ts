@@ -8,7 +8,9 @@ import { API } from 'src/utils/constants'
  * @returns false
  */
 const handleAxiosError = (error: AxiosError) => {
-  showErrorAlert(error.message)
+  if (error.response?.status !== 401) {
+    showErrorAlert(error.message)
+  }
   return false
 }
 

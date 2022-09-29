@@ -1,12 +1,20 @@
+import { useQuery } from '@apollo/client'
 import { Icon, Navbar, Toolbar } from '@mergestat/blocks'
 import { BookIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { logout } from 'src/api-logic/axios/api'
+import { CurrentUserQuery } from 'src/api-logic/graphql/generated/schema'
+import CURRENT_USER from 'src/api-logic/graphql/queries/auth'
 
 const NavHeader: React.FC = () => {
   const router = useRouter()
+
+  const { data } = useQuery<CurrentUserQuery>(CURRENT_USER, { fetchPolicy: 'no-cache' })
+  if (data?.currentMergeStatUser === 'mergestat_anonymous') {
+    router.push({ pathname: '/login', query: { lostSession: true } })
+  }
 
   const handleLogout = async () => {
     const loggedout = await logout()
@@ -47,7 +55,7 @@ const NavHeader: React.FC = () => {
           </Toolbar.Item>
           <Navbar.Divider />
           <Toolbar.Item className="space-x-2">
-            <p className="font-medium text-white ml-3">Username</p>
+            <p className="font-medium text-white ml-3">{data?.currentMergeStatUser}</p>
             <div onClick={handleLogout} aria-hidden="true">
               <span className="text-white underline opacity-60 cursor-pointer">
                 Log out

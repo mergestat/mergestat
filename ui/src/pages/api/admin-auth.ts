@@ -1,5 +1,4 @@
 import { setCookie } from 'cookies-next'
-import { createSecretKey } from 'crypto'
 import { constants as HTTP_CONSTANTS } from 'http2'
 import * as jose from 'jose'
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -57,7 +56,7 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
       .setIssuer('mergestat:fuse')
       .setAudience('postgraphile')
       .setExpirationTime('5h')
-      .sign(createSecretKey(JWT_SECRET, 'utf8'))
+      .sign(new TextEncoder().encode(JWT_SECRET))
 
     setCookie(COOKIE.jwt, jwt, { req, res, maxAge: (60 * 60 * 5), httpOnly: true, secure: true, sameSite: 'strict', path: '/api/graphql' })
     res.json({ loggedIn: true })

@@ -16,7 +16,7 @@ const LoginPage = () => {
   const handleLogin = async () => {
     setError(false)
     const login = await auth(user, password)
-    login ? router.push('repos') : setError(true)
+    login ? router.push('/repos') : setError(true)
   }
 
   return (
@@ -65,11 +65,7 @@ const LoginPage = () => {
                   <HelpText variant="error">Incorrect password</HelpText>
                 )}
               </div>
-              <Button
-                isBlock
-                label="Log in"
-                onClick={() => auth(user, password)}
-              />
+              <Button isBlock label="Log in" onClick={handleLogin} />
             </form>
           </Panel.Body>
         </Panel>
