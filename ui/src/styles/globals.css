@@ -167,3 +167,11 @@
             border-gray-450;
 }
 
+.t-alert-full-width {
+  @apply border-0
+         text-sm
+         py-3
+         px-8
+         rounded-t-none;
+}
+
