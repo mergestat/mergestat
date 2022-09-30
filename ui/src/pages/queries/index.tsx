@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Editor from '@monaco-editor/react'
 import { Fragment, useRef, useEffect } from 'react'
 
-import { Avatar, Badge, Button, Input, Label, Select, Spinner, Toolbar } from '@mergestat/blocks'
+import { Alert, Avatar, Badge, Button, Input, Label, Select, Spinner, Toolbar } from '@mergestat/blocks'
 import {
   CircleInformationIcon,
   CircleWarningIcon,
@@ -31,6 +31,7 @@ const Queries: NextPage = () => {
   SELECT author_name, count(*) FROM commits GROUP BY author_name ORDER BY count(*) DESC`
 
   const state: States = States.Filled
+  const rowLimitReached = true
 
   const resizeElement = useRef<HTMLDivElement | null>(null)
   const resizerElement = useRef<HTMLDivElement | null>(null)
@@ -244,6 +245,15 @@ const Queries: NextPage = () => {
                 </Toolbar>
               </div>
               <div className='overflow-hidden flex-1 flex flex-col bg-white h-full w-full'>
+                {rowLimitReached && (
+                  <Alert
+                    theme="light"
+                    type="warning"
+                    className='t-alert-full-width items-center'
+                  >
+                    Query results are limited to 1000 rows.
+                  </Alert>
+                )}
                 <div className='overflow-auto w-full flex-1'>
                   <table className='t-table-default t-table-nowrap t-table-bordered'>
                     <thead>
