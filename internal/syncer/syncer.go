@@ -208,12 +208,16 @@ func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
 
 // cloneRepo is a helper function for cloning a repository to a path on disk
 func (w *worker) cloneRepo(ghToken, url, path string, bare bool) (*libgit2.Repository, error) {
+	logger := w.logger.Info().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "")
+
 	var creds *libgit2.Credential
 	var err error
 	if creds, err = libgit2.NewCredentialUserpassPlaintext(ghToken, ""); err != nil {
 		return nil, err
 	}
 	defer creds.Free()
+
+	logger.Msgf("starting git repostory clone: %s", url)
 
 	var credentialsCallback libgit2.CredentialsCallback
 	// only create a credentials callback if a token is provided
@@ -239,6 +243,8 @@ func (w *worker) cloneRepo(ghToken, url, path string, bare bool) (*libgit2.Repos
 	}); err != nil {
 		return nil, err
 	}
+
+	logger.Msgf("finished git repostory clone: %s", url)
 
 	return repo, nil
 }
