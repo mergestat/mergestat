@@ -92,7 +92,7 @@ const Queries: NextPage = () => {
             ref={resizeElement}
             style={{ height: '320px', minHeight: '200px' }}
           >
-            <div className='h-full flex relative py-4 bg-white rounded-t border border-gray-300'>
+            <div className='h-full flex relative py-4 bg-white rounded border border-gray-300'>
               <Editor
                 className='text-sm font-mono'
                 value={query}
