@@ -255,7 +255,7 @@ const Queries: NextPage = () => {
                   </Alert>
                 )}
                 <div className='overflow-auto w-full flex-1'>
-                  <table className='t-table-default t-table-nowrap t-table-bordered'>
+                  <table className='t-table-default t-table-sticky-header t-table-nowrap t-table-bordered t-table-dense'>
                     <thead>
                       <tr className='bg-white'>
                         <th scope='col' className='whitespace-nowrap pr-6 pl-8'>
@@ -268,10 +268,31 @@ const Queries: NextPage = () => {
                           <span className='mr-1'>data</span>
                         </th>
                         <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>data</span>
+                          <span className='mr-1'>count</span>
+                        </th>
+                        <th scope='col' className='whitespace-nowrap px-6'>
+                          <span className='mr-1'>data_column</span>
+                        </th>
+                        <th scope='col' className='whitespace-nowrap px-6'>
+                          <span className='mr-1'>data_column</span>
+                        </th>
+                        <th scope='col' className='whitespace-nowrap px-6'>
+                          <span className='mr-1'>data_column</span>
+                        </th>
+                        <th scope='col' className='whitespace-nowrap px-6'>
+                          <span className='mr-1'>data_column</span>
+                        </th>
+                        <th scope='col' className='whitespace-nowrap px-6'>
+                          <span className='mr-1'>data_column</span>
+                        </th>
+                        <th scope='col' className='whitespace-nowrap px-6'>
+                          <span className='mr-1'>data_column</span>
+                        </th>
+                        <th scope='col' className='whitespace-nowrap px-6'>
+                          <span className='mr-1'>data_column</span>
                         </th>
                         <th scope='col' className='whitespace-nowrap pl-6 pr-8'>
-                          <span className='mr-1'>count</span>
+                          <span className='mr-1'>data_column</span>
                         </th>
                       </tr>
                     </thead>
@@ -282,11 +303,18 @@ const Queries: NextPage = () => {
                         17, 18, 19, 20
                       ].map((row) => (
                         <tr key={row}>
-                          <td className='w-0 py-2 pl-8'>Cody Fisher</td>
-                          <td className='w-0 py-2 px-6'>cody.fisher@email.com</td>
-                          <td className='w-0 py-2 px-6'>Data point</td>
-                          <td className='w-0 py-2 px-6'>Data point</td>
-                          <td className='w-0 py-2 pl-6 pr-'>123</td>
+                          <td className='w-0 pl-8 max-w-xs truncate'>Cody Fisher</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>cody.fisher@email.com</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>123</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
+                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
+                          <td className='w-0 pl-6 max-w-xs truncate pr-8'>Data point</td>
                         </tr>
                       ))}
                     </tbody>
@@ -295,7 +323,7 @@ const Queries: NextPage = () => {
               </div>
               <div className='bg-white overflow-auto flex h-16 flex-shrink-0 w-full border-t px-8'>
                 <Toolbar className='t-toolbar flex-1 w-auto h-full space-x-4'>
-                  <Toolbar.Left className='space-x-4'>
+                  <Toolbar.Left className='space-x-3'>
                     <div className='flex items-center'>
                       <Label className='mr-2' htmlFor='format'>
                         Format
@@ -309,27 +337,23 @@ const Queries: NextPage = () => {
                         <option value='CSV'>CSV</option>
                       </Select>
                     </div>
-                    <div className='flex-none'>
-                      <div className='t-button-toolbar'>
-                        <Button
-                          skin='secondary'
-                          className='mr-2'
-                          startIcon={
-                            <ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />
-                          }
-                        >
-                          Copy
-                        </Button>
-                        <Button
-                          skin='secondary'
-                          startIcon={
-                            <DownloadIcon className='t-icon t-icon-heroicons-download' />
-                          }
-                        >
-                          Download
-                        </Button>
-                      </div>
-                    </div>
+                    <Button
+                      skin='secondary'
+                      className='mr-2'
+                      startIcon={
+                        <ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />
+                      }
+                    >
+                      Copy
+                    </Button>
+                    <Button
+                      skin='secondary'
+                      startIcon={
+                        <DownloadIcon className='t-icon t-icon-heroicons-download' />
+                      }
+                    >
+                      Download
+                    </Button>
                   </Toolbar.Left>
                   <Toolbar.Right className='space-x-4 divide-x'>
                     <Toolbar.Item>

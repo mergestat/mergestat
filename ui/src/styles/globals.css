@@ -1,8 +1,10 @@
 @import '@mergestat/blocks/styles/main.css';
 
-/* @tailwind base;
+/*
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
+*/
 
 .content-area {
   height: calc(100% - theme('height.14')); /* Nav height is h-14 */
@@ -32,23 +34,66 @@
 
 }
 
-.t-table-bordered td {
-  @apply border
-         border-gray-200;
+.t-table-default th {
+  @apply bg-gray-50
+          text-gray-700
+          font-semibold;
 }
 
-.t-table-bordered td:first-child {
+.t-table-bordered td,
+.t-table-bordered th {
+  @apply border
+         border-gray-250;
+}
+
+.t-table-bordered th {
+  @apply border-t-0
+         border-b-2;
+}
+
+.t-table-bordered tr:last-child td {
+  @apply  border-0
+          border-r
+          border-l;
+}
+
+.t-table-bordered td:first-child,
+.t-table-bordered th:first-child,
+.t-table-bordered tr:last-child td:first-child  {
   @apply border-l-0;
 }
 
-.t-table-bordered td:last-child {
+.t-table-bordered td:last-child,
+.t-table-bordered th:last-child,
+.t-table-bordered tr:last-child td:last-child  {
   @apply border-r-0;
 }
 
-.t-table-bordered tr:last-child td{
-  @apply  border
-          border-b-0;
+
+.t-table-dense td {
+  @apply py-2.5
+         text-sm;
 }
+
+.t-table-dense th {
+  @apply pt-3.5
+         pb-2
+         text-sm;
+}
+
+.t-table-sticky-header {
+  border-collapse: collapse;
+}
+
+.t-table-sticky-header thead tr th:before {
+  content: '';
+  @apply absolute
+         left-0
+         w-full
+         -bottom-px
+         border-b-2;
+}
+
 .t-resizer {
   @apply bg-gray-50
          mix-blend-multiply
@@ -81,9 +126,16 @@
 
 .t-alert-full-width {
   @apply border-0
+         border-b
          text-sm
-         py-3
+         py-2.5
          px-8
-         rounded-t-none;
+         rounded-none;
 }
 
+.t-alert-warning {
+  background: #FEF7EB;
+  color: #705F43;
+  border-color: #FCE2B6;
+
+}
