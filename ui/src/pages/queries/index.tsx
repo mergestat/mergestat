@@ -217,7 +217,7 @@ const Queries: NextPage = () => {
           {/* Filled state */}
           {(state as States) === States.Filled && (
             <>
-              <div className='bg-white overflow-auto flex -mt-2 h-16 flex-shrink-0 w-full border-b px-8'>
+              <div className='bg-white overflow-auto flex h-16 flex-shrink-0 w-full border-b px-8'>
                 <Toolbar className='flex-1 w-auto h-full space-x-4'>
                   <Toolbar.Left className='space-x-4'>
                     <Toolbar.Item>

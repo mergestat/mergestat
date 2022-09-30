@@ -137,3 +137,33 @@
   @apply  border
           border-b-0;
 }
+.t-resizer {
+  @apply bg-gray-50
+         mix-blend-multiply
+         py-1;
+}
+
+
+.t-resizer:before {
+    content: '';
+    @apply w-10
+           mx-auto
+           h-1
+           rounded-full
+           block
+           border-0
+           bg-gray-400;
+}
+
+.t-resizer:active,
+.t-resizer:hover {
+    @apply bg-gray-100;
+}
+
+
+.t-resizer:active:before,
+.t-resizer:hover:before {
+    @apply bg-gray-450
+            border-gray-450;
+}
+
