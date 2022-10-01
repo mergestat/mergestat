@@ -3,7 +3,7 @@ import { CaretDownIcon, CaretRightIcon } from '@mergestat/icons'
 import React, { Fragment, useEffect, useState } from 'react'
 import { SyncLogsType } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
-import { LogsTableRowOptions, SyncType } from './components'
+import { SyncType } from './components'
 
 interface LogsTableProps {
   logs: Array<SyncLogsType>
@@ -48,8 +48,8 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                       <span className='mr-1 select-none'>Sync Type</span>
                     </th>
 
-                    <th scope="col" key='records' className='whitespace-nowrap px-6 pl-0 w-40'>
-                      <span className='mr-1 select-none'>Records</span>
+                    <th scope="col" key='logEntries' className='whitespace-nowrap px-6 pl-0 w-40'>
+                      <span className='mr-1 select-none'>Log Entries</span>
                     </th>
 
                     <th scope="col" key='duration' className='whitespace-nowrap px-6 pl-0 w-40'>
@@ -58,10 +58,6 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
 
                     <th scope="col" key='syncStart' className='whitespace-nowrap px-6 pl-0 w-40'>
                       <span className='mr-1 select-none'>Sync Start</span>
-                    </th>
-
-                    <th scope="col" key='options' className='whitespace-nowrap px-6'>
-                      <span className='mr-1 select-none'></span>
                     </th>
                   </tr>
                 </thead>
@@ -94,15 +90,11 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                         <td className='text-gray-500'>
                           <RelativeTimeField date={log.syncStart} styles={'text-semantic-mutedText'} />
                         </td>
-
-                        <td className='text-gray-500 mx-6'>
-                          <LogsTableRowOptions />
-                        </td>
                       </tr>
                       {log.collapsed && (
                         <tr>
                           <td colSpan={6} className="p-6 bg-gray-50">
-                            <LogBox logs={log.logs || []} onCopy={() => null} />
+                            {log.logs?.length ? <LogBox logs={log.logs || []} onCopy={() => null} /> : <span className='text-semantic-mutedText'>No log entries yet</span>}
                           </td>
                         </tr>
                       )}

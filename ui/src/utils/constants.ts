@@ -1,5 +1,5 @@
 export const DATE_FORMAT = {
-  A: 'yyyy/MM/dd HH:mm',
+  A: 'MM/dd/yyyy HH:mm:ss',
   B: 'dd LLL yyyy - HH:mm'
 }
 

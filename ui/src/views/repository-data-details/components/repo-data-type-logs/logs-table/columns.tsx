@@ -1,5 +1,5 @@
 import type { RepoSyncStateT, SyncLogsType } from 'src/@types'
-import { LogsTableRowOptions, SyncType } from './components'
+import { SyncType } from './components'
 
 export const columns: Array<Record<string, unknown>> = [
   {
@@ -40,12 +40,5 @@ export const columns: Array<Record<string, unknown>> = [
     render: (syncStart: string) => (
       <span className='text-semantic-mutedText'>{syncStart}</span>
     )
-  },
-  {
-    className: 'text-gray-500 mx-6',
-    headerClassName: 'w-10',
-    dataIndex: 'options',
-    key: 'options',
-    render: () => <LogsTableRowOptions />
-  },
+  }
 ]
