@@ -67,7 +67,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
 
     if (succeededSyncs.length > 0) {
       const avg = succeededSyncs.reduce((prev, cur) => (cur += prev)) / succeededSyncs.length
-      syncData.avgRunningTime = getSimpleDurationTimeSeconds(avg/1000)
+      syncData.avgRunningTime = getSimpleDurationTimeSeconds(avg / 1000)
     }
 
     mappedData.push(syncData)
