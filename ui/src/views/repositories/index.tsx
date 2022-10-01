@@ -4,7 +4,7 @@ import { AddRepositoryModal } from './modals/add-repository-modal'
 import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
 
-import { Alert } from '@mergestat/blocks'
+import { Alert, Spinner } from '@mergestat/blocks'
 import Loading from 'src/components/Loading'
 import useRepos from 'src/views/hooks/useRepos'
 import { EmptyRepository } from './components/empty-repository'
@@ -22,7 +22,17 @@ const RepositoriesView: React.FC = () => {
       </div>
       <div className="flex-1 items-center p-8 overflow-auto">
         {showBanner &&
-          <Alert type="info" theme="light" title="Auto importing repos" className='mb-5'>
+          <Alert
+            type="info"
+            theme="light"
+            title={(
+              <div>
+                <span>Auto importing repos</span>
+                <div className='float-right'><Spinner size='sm' /></div>
+              </div>
+            )}
+            className='mb-5'
+          >
             Repositories from an auto-import will appear here once they are finished syncing.
           </Alert>
         }
