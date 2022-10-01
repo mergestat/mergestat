@@ -95,6 +95,11 @@ func collectCommits(ctx context.Context, repo *libgit2.Repository) ([]*commit, e
 func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
+	// indicate that we're starting query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+		return fmt.Errorf("log messages: %w", err)
+	}
+
 	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
@@ -111,11 +116,6 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return fmt.Errorf("git clone: %w", err)
 	}
 	defer repo.Free()
-
-	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
-		return fmt.Errorf("log messages: %w", err)
-	}
 
 	commits, err := collectCommits(ctx, repo)
 	if err != nil {

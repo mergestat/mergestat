@@ -54,6 +54,11 @@ FROM files(?);
 func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
+	// indicate that we're starting query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+		return fmt.Errorf("log messages: %w", err)
+	}
+
 	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
@@ -70,11 +75,6 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return fmt.Errorf("git clone: %w", err)
 	}
 	defer repo.Free()
-
-	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
-		return fmt.Errorf("log messages: %w", err)
-	}
 
 	files := make([]*file, 0)
 	if err = w.mergestat.SelectContext(ctx, &files, selectFiles, tmpPath, tmpPath); err != nil {

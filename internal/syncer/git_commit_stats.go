@@ -70,6 +70,11 @@ type commitStat struct {
 func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
+	// indicate that we're starting query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+		return fmt.Errorf("log messages: %w", err)
+	}
+
 	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
@@ -86,11 +91,6 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		return fmt.Errorf("git clone: %w", err)
 	}
 	defer repo.Free()
-
-	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
-		return fmt.Errorf("log messages: %w", err)
-	}
 
 	stats := make([]*commitStat, 0)
 
