@@ -118,7 +118,16 @@ func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) err
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM git_refs WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	r, err := tx.Exec(ctx, "DELETE FROM git_refs WHERE repo_id = $1;", j.RepoID.String())
+	if err != nil {
+		return err
+	}
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("removed %d row(s) from git_refs", r.RowsAffected()),
+	}}); err != nil {
 		return err
 	}
 
@@ -127,6 +136,14 @@ func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) err
 	}
 
 	l.Info().Msgf("sent batch of %d refs", len(refs))
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("inserted %d row(s) into git_refs", len(refs)),
+	}}); err != nil {
+		return err
+	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err

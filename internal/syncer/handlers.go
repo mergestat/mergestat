@@ -32,16 +32,11 @@ type syncLog struct {
 
 // formartBatchLogMessages generates a standardize message for sync logs
 func (w *worker) formatBatchLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus) error {
-
-	formattedMessage := fmt.Sprintf("%s %s sync for %s", status, j.SyncType, j.Repo)
-	err := w.sendBatchLogMessages(ctx, []*syncLog{
-		{
-			Type:            syncLogTypeOption,
-			RepoSyncQueueID: j.ID,
-			Message:         formattedMessage,
-		}})
-
-	return err
+	return w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            syncLogTypeOption,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("%s %s sync for %s", status, j.SyncType, j.Repo),
+	}})
 }
 
 // sendBatchLogMessages uses the pg COPY protocol to send a batch of sync logs
