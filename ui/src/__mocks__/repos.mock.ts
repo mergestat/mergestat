@@ -36,7 +36,7 @@ export const mockRepoData: GetReposQuery = {
       },
       {
         id: faker.datatype.uuid(),
-        repo: 'https://github.com/mergestat/mergestat',
+        repo: 'https://github.com/mergestat/mergestat-lite',
         createdAt: faker.date.recent(10),
         isGithub: true,
         tags: [],
