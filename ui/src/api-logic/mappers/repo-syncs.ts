@@ -38,7 +38,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
         title: st.shortName || '',
         brief: st.description || '',
       },
-      latestRun: syncType?.repoSyncQueues.nodes[0]?.startedAt ?? syncType?.repoSyncQueues.nodes[1]?.startedAt,
+      latestRun: syncType?.repoSyncQueues.nodes[0]?.doneAt ?? syncType?.repoSyncQueues.nodes[1]?.doneAt,
       avgRunningTime: '-',
       status: {
         data: [],
