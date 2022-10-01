@@ -53,9 +53,7 @@ export function capitalize(phrase: string) {
  * @returns Date time ago relative to current date (e.g.: 'less than 20 seconds ago', '1 minute ago')
  */
 export function getRelativeTime(baseDate: Date): string {
-  const distance = formatDistance(new Date(), baseDate, {
-    includeSeconds: true,
-  })
+  const distance = formatDistance(new Date(), baseDate, {})
 
   return `${distance} ago`
 }
@@ -77,7 +75,7 @@ export function simplifyTime(time: string) {
  */
 export function getSimpleDurationTime(start: Date, end: Date): string {
   const duration = simplifyTime(formatDuration(intervalToDuration({ start, end })))
-  return duration !== '' ? duration : 'less than 1s'
+  return duration !== '' ? duration : '-'
 }
 
 /**
@@ -87,7 +85,7 @@ export function getSimpleDurationTime(start: Date, end: Date): string {
  */
 export function getSimpleDurationTimeSeconds(seconds: number) {
   const duration = simplifyTime(formatDuration(intervalToDuration({ start: 0, end: seconds * 1000 })))
-  return duration !== '' ? duration : 'less than 1s'
+  return duration !== '' ? duration : '-'
 }
 
 /**

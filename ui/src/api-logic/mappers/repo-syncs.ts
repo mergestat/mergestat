@@ -1,4 +1,4 @@
-import { differenceInSeconds } from 'date-fns'
+import { differenceInMilliseconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, SyncStatusDataT } from 'src/@types'
 import { getSimpleDurationTime, getSimpleDurationTimeSeconds, mapToRepoSyncStateT } from 'src/utils'
 import { GITHUB_URL, SYNC_REPO_METHOD, SYNC_STATUS } from 'src/utils/constants'
@@ -39,7 +39,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
         brief: st.description || '',
       },
       latestRun: syncType?.repoSyncQueues.nodes[0]?.startedAt ?? syncType?.repoSyncQueues.nodes[1]?.startedAt,
-      avgRunningTime: 'N/A',
+      avgRunningTime: '-',
       status: {
         data: [],
         syncState: syncType?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(syncType?.repoSyncQueues.nodes[0]?.status || '') : SYNC_STATUS.empty,
@@ -54,7 +54,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
         repoId: data?.repo?.id,
         syncTypeId: syncType?.id,
         status: mapToRepoSyncStateT(q?.status || ''),
-        runningTime: q?.doneAt ? differenceInSeconds(new Date(q?.doneAt), new Date(q?.startedAt)) : 0, // Determine chart height
+        runningTime: q?.doneAt ? differenceInMilliseconds(new Date(q?.doneAt), new Date(q?.startedAt)) : 0,
         runningTimeReadable: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : q?.startedAt ? SYNC_STATUS.running : SYNC_STATUS.queued,
         doneAt: q?.doneAt ?? new Date(q?.doneAt)
       }
@@ -67,7 +67,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
 
     if (succeededSyncs.length > 0) {
       const avg = succeededSyncs.reduce((prev, cur) => (cur += prev)) / succeededSyncs.length
-      syncData.avgRunningTime = getSimpleDurationTimeSeconds(avg)
+      syncData.avgRunningTime = getSimpleDurationTimeSeconds(avg/1000)
     }
 
     mappedData.push(syncData)
