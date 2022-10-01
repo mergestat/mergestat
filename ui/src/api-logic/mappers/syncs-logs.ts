@@ -23,7 +23,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
   data?.repo?.repoSyncs.nodes.forEach((s) => {
     repoData.sync = {
       id: s.id,
-      title: s?.syncType.replace(/_/ig, ' ') || '',
+      title: s?.repoSyncTypeBySyncType?.shortName || '',
       brief: s?.repoSyncTypeBySyncType?.description || '',
       syncState: s?.repoSyncQueues.nodes.length !== 0 ? mapToRepoSyncStateT(s?.repoSyncQueues.nodes[0]?.status || '') : SYNC_STATUS.empty,
     }

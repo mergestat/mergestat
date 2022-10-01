@@ -11,6 +11,7 @@ const GET_SYNC_HISTORY_LOGS = gql`
           id
           syncType
           repoSyncTypeBySyncType {
+            shortName
             description
           }
           repoSyncQueues(first: 50, orderBy: CREATED_AT_DESC) {
@@ -47,6 +48,7 @@ const GET_LOGS_OF_A_SYNC = gql`
           id
           syncType
           repoSyncTypeBySyncType {
+            shortName
             description
           }
           repoSyncQueues(condition: {id: $logId}) {

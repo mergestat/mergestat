@@ -1,5 +1,5 @@
 import { RepoDataPropsT, RepoDataStatusT, RepoSyncStateT } from 'src/@types'
-import { capitalize, mapToRepoSyncStateT } from 'src/utils'
+import { mapToRepoSyncStateT } from 'src/utils'
 import { GITHUB_URL, SYNC_REPO_METHOD } from 'src/utils/constants'
 import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
 
