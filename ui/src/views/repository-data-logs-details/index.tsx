@@ -56,7 +56,12 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
 
       <div className="flex-1 overflow-auto p-8 space-y-8">
         <LogsInfo id={logInfo?.id || ''} syncStart={logInfo?.syncStart || ''} duration={logInfo?.duration || ''} />
-        <LogBox logs={logInfo?.logs || []} onCopy={() => null} />
+        {logInfo?.logs?.length
+          ? <LogBox logs={logInfo?.logs || []} onCopy={() => null} />
+          : (
+          <div className='m-5'>
+            <span className='text-semantic-mutedText'>No log entries yet</span>
+          </div>)}
       </div>
     </main>
   )

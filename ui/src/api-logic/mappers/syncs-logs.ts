@@ -37,13 +37,13 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
         title: s?.syncType || '',
         syncType: q.status ? mapToRepoSyncStateT(q.status) : SYNC_STATUS.empty,
         records: q.repoSyncLogs.totalCount,
-        duration: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : q?.startedAt ? SYNC_STATUS.running : SYNC_STATUS.queued,
+        duration: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : '-',
         syncStart: q?.startedAt,
         syncStartText: `Sync ${format(new Date(q?.startedAt), DATE_FORMAT.B)}`
       }
 
-      // 3. Get list logs info. (e.g.: '2021/06/09 02:21 INFO: This is a log line ...')
-      logData.logs = q.repoSyncLogs.nodes.map((log) => `${lightFormat(new Date(log.createdAt), DATE_FORMAT.A)} ${log.logType}: ${log.message} ...`)
+      // 3. Get list logs info. (e.g.: '2021/06/09 02:21 INFO: This is a log line')
+      logData.logs = q.repoSyncLogs.nodes.map((log) => `${lightFormat(new Date(log.createdAt), DATE_FORMAT.A)} ${log.logType}: ${log.message}`)
       logsData.push(logData)
     })
 
