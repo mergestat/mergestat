@@ -1,4 +1,4 @@
-import { Checkbox, Panel } from '@mergestat/blocks'
+import { Panel } from '@mergestat/blocks'
 import React, { PropsWithChildren } from 'react'
 import type { RepoDataPropsT } from 'src/@types'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
@@ -27,10 +27,6 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
               <table data-testid={TEST_IDS.repoTableList} className='t-table-default'>
                 <thead>
                   <tr className='bg-white'>
-                    <th className="w-0 pl-6">
-                      <Checkbox />
-                    </th>
-
                     <th scope="col" key='name' className='whitespace-nowrap px-6'>
                       <span className='mr-1 select-none'>Repository</span>
                     </th>
@@ -56,10 +52,6 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                 <tbody className='bg-white'>
                   {repos.map((repo) => (
                     <tr key={repo.id}>
-                      <td className="w-0 pl-6">
-                        <Checkbox />
-                      </td>
-
                       <td className=''>
                         <RepositoryName
                           id={repo.id}

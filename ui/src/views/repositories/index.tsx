@@ -1,12 +1,10 @@
 import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
-import { SyncDataDropDown } from './drop-downs/sync-repos-data-drop-down'
 import { AddRepositoryModal } from './modals/add-repository-modal'
 import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
 import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
 
-import { Alert, Button, Toolbar } from '@mergestat/blocks'
-import { CaretDownIcon, PencilIcon, RefreshIcon } from '@mergestat/icons'
+import { Alert } from '@mergestat/blocks'
 import Loading from 'src/components/Loading'
 import useRepos from 'src/views/hooks/useRepos'
 import { EmptyRepository } from './components/empty-repository'
@@ -15,9 +13,6 @@ import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showRemoveRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
   const { showTable, loading, data, showBanner } = useRepos(search, true)
-
-  // - Todo: connect selectedRepositoriesCount from RepositoriesTable
-  const selectedRepositoriesCount = 0
 
   return (
     <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">
@@ -42,49 +37,6 @@ const RepositoriesView: React.FC = () => {
         }
       </div>
 
-      {showTable && (
-        <div className="bg-white h-14  border-t flex items-center px-8">
-          <Toolbar>
-            <Toolbar.Left>
-              <Toolbar.Item className="mr-2">
-                <div className="flex items-center gap-6">
-                  <p className="font-medium text-sm text-semantic-mutedText">
-                    {selectedRepositoriesCount} of{' '}
-                    { } repos selected
-                  </p>
-                </div>
-              </Toolbar.Item>
-              <Toolbar.Item>
-                <div className="flex items-center gap-2">
-                  <SyncDataDropDown
-                    triger={
-                      <Button
-                        endIcon={<CaretDownIcon className="t-icon" />}
-                        startIcon={<RefreshIcon className="t-icon" />}
-                        skin="secondary"
-                        size="small"
-                      // disabled={selectedRepositoriesCount === 0}
-                      >
-                        Sync Data
-                      </Button>
-                    }
-                  />
-
-                  <Button
-                    endIcon={<CaretDownIcon className="t-icon" />}
-                    startIcon={<PencilIcon className="t-icon" />}
-                    skin="secondary"
-                    size="small"
-                  // disabled={selectedRepositoriesCount === 0}
-                  >
-                    Edit Tags
-                  </Button>
-                </div>
-              </Toolbar.Item>
-            </Toolbar.Left>
-          </Toolbar>
-        </div>
-      )}
       {showRemoveRepositoryModal && <RemoveRepositoryModal />}
       {showAddRepositoryModal && <AddRepositoryModal />}
       {showSyncRepoModal && <SyncAutoImportReposModal />}
