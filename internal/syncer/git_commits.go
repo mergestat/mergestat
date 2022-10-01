@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"os"
 
 	"github.com/jackc/pgx/v4"
 	libgit2 "github.com/libgit2/git2go/v33"
@@ -96,16 +95,11 @@ func collectCommits(ctx context.Context, repo *libgit2.Repository) ([]*commit, e
 func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	// TODO(patrickdevivo) uplift the following os.Getenv call to one place, pass value down as a param
-	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
+	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
 	if err != nil {
-		return err
+		return fmt.Errorf("temp dir: %w", err)
 	}
-	defer func() {
-		if err := os.RemoveAll(tmpPath); err != nil {
-			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
-		}
-	}()
+	defer cleanup()
 
 	var ghToken string
 	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
@@ -113,7 +107,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 	}
 
 	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ghToken, j.Repo, tmpPath, true); err != nil {
+	if repo, err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 	defer repo.Free()
