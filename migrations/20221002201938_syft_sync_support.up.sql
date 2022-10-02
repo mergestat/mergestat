@@ -11,16 +11,16 @@ CREATE OR REPLACE VIEW syft_repo_artifacts AS
 SELECT
     syft_repo_scans.repo_id,
     a::jsonb AS artifact,
-    a->>'id' AS id,
-    a->>'name' AS name,
-    a->>'version' AS version,
-    a->>'type' AS type,
-    a->>'foundBy' AS found_by,
-    a->>'locations' AS locations,
-    a->>'licenses' AS licenses,
-    a->>'language' AS language,
-    a->>'cpes' AS cpes,
-    a->>'purl' AS purl
-FROM syft_repo_scans, jsonb_array_elements(results->'artifacts') AS a;
+    a->> 'id' AS id,
+    a->> 'name' AS name,
+    a->> 'version' AS version,
+    a->> 'type' AS type,
+    a->> 'foundBy' AS found_by,
+    a->> 'locations' AS locations,
+    a->> 'licenses' AS licenses,
+    a->> 'language' AS language,
+    a->> 'cpes' AS cpes,
+    a->> 'purl' AS purl
+FROM syft_repo_scans, jsonb_array_elements(results-> 'artifacts') AS a;
 
 COMMIT;
