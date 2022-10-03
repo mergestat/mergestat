@@ -227,7 +227,7 @@ func (w *worker) createTempDirForGitClone(job *db.DequeueSyncJobRow) (string, fu
 
 // cloneRepo is a helper function for cloning a repository to a path on disk
 func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare bool, job *db.DequeueSyncJobRow) (*libgit2.Repository, error) {
-	logger := w.logger.Info().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "")
+	logger := w.logger.With().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "").Logger()
 
 	var creds *libgit2.Credential
 	var err error
@@ -236,7 +236,7 @@ func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare 
 	}
 	defer creds.Free()
 
-	logger.Msgf("starting git repostory clone: %s", url)
+	logger.Info().Msgf("starting git repository clone: %s", url)
 
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
@@ -271,7 +271,7 @@ func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare 
 		return nil, err
 	}
 
-	logger.Msgf("finished git repostory clone: %s", url)
+	logger.Info().Msgf("finished git repository clone: %s", url)
 
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
