@@ -1,7 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Editor from '@monaco-editor/react'
-import { Fragment, useRef, useEffect } from 'react'
+import React, { Component, Fragment, useRef, useEffect } from "react";
+import { Table, Column, Cell } from "@blueprintjs/table";
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/table/lib/css/table.css";
 
 import { Alert, Avatar, Badge, Button, Input, Label, Select, Spinner, Toolbar } from '@mergestat/blocks'
 import {
@@ -30,11 +33,26 @@ const Queries: NextPage = () => {
 
   SELECT author_name, count(*) FROM commits GROUP BY author_name ORDER BY count(*) DESC`
 
+  const renderCell = () => {
+    return <Cell>Data point</Cell>;
+  };
+  const renderAuthorNameCell = () => {
+    return <Cell>johndoe</Cell>;
+  };
+  const renderAuthorEmailCell = () => {
+    return <Cell>john.doe@gmail.com</Cell>;
+  };
+  const renderCountCell = () => {
+    return <Cell>123</Cell>;
+  };
+
   const state: States = States.Filled
   const rowLimitReached = true
 
   const resizeElement = useRef<HTMLDivElement | null>(null)
   const resizerElement = useRef<HTMLDivElement | null>(null)
+
+
 
   useEffect(() => {
     const handleResize = (e: MouseEvent) => {
@@ -254,71 +272,18 @@ const Queries: NextPage = () => {
                     Query results are limited to 1000 rows.
                   </Alert>
                 )}
+                {/* Query results table */}
                 <div className='overflow-auto w-full flex-1'>
-                  <table className='t-table-default t-table-sticky-header t-table-nowrap t-table-bordered t-table-dense'>
-                    <thead>
-                      <tr className='bg-white'>
-                        <th scope='col' className='whitespace-nowrap pr-6 pl-8'>
-                          <span className='mr-1'>author_name</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>author_email</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>data</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>count</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>data_column</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>data_column</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>data_column</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>data_column</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>data_column</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>data_column</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap px-6'>
-                          <span className='mr-1'>data_column</span>
-                        </th>
-                        <th scope='col' className='whitespace-nowrap pl-6 pr-8'>
-                          <span className='mr-1'>data_column</span>
-                        </th>
-                      </tr>
-                    </thead>
-
-                    <tbody className='bg-white'>
-                      {[
-                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-                        17, 18, 19, 20
-                      ].map((row) => (
-                        <tr key={row}>
-                          <td className='w-0 pl-8 max-w-xs truncate'>Cody Fisher</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>cody.fisher@email.com</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>123</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
-                          <td className='w-0 px-6 max-w-xs truncate'>Data point</td>
-                          <td className='w-0 pl-6 max-w-xs truncate pr-8'>Data point</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <Table numRows={50} className="t-table-default w-full">
+                  <Column name="author_name" cellRenderer={renderAuthorNameCell} />
+                  <Column
+                    name="author_email"
+                    cellRenderer={renderAuthorEmailCell}
+                  />
+                  <Column name="count" cellRenderer={renderCountCell} />
+                  <Column name="data" cellRenderer={renderCell} />
+                  <Column name="data" cellRenderer={renderCell} />
+                </Table>
                 </div>
               </div>
               <div className='bg-white overflow-auto flex h-16 flex-shrink-0 w-full border-t px-8'>

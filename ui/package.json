@@ -17,6 +17,8 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@apollo/react-testing": "^4.0.0",
+    "@blueprintjs/core": "^4.10.2",
+    "@blueprintjs/table": "^4.6.8",
     "@mergestat/blocks": "^1.2.8",
     "@mergestat/icons": "^1.1.2",
     "@monaco-editor/react": "^4.4.6",
@@ -35,6 +37,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-error-boundary": "^3.1.4",
+    "react-redux": "^8.0.4",
     "sharp": "^0.30.7",
     "styled-components": "^5.3.5"
   },
