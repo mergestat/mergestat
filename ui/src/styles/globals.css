@@ -135,7 +135,14 @@
   background: #FEF7EB;
   color: #705F43;
   border-color: #FCE2B6;
+}
 
+.t-input-small,
+.t-select-small {
+  @apply px-2
+         text-sm
+         leading-4
+         py-1.5
 }
 
 /* Blueprintjs table styling overrides */
@@ -146,12 +153,17 @@
   @apply bg-gray-50;
 }
 
-.bp-4-table-row-headers {
-  @apply text-gray-500;
+
+.bp4-table-row-name {
+  @apply font-medium
+         text-gray-500
+         py-1.5
+         text-xs;
 }
 
 .bp4-table-column-headers {
-  @apply text-gray-900;
+  @apply text-gray-800
+          font-medium;
 }
 
 .bp4-table-bottom-container {
@@ -160,14 +172,12 @@
 
 .bp4-table-cell {
     box-shadow: inset 0 -1px 0 rgb(209 213 219), inset -1px 0 0 rgba(209 213 219);
+    @apply text-sm
+           py-0.5;
 }
 
 .bp4-table-column-headers .bp4-table-header {
     box-shadow: 0 1px 0 rgb(209 213 219), inset -1px 0 0 rgb(209 213 219);
-}
-
-.bp4-table-row-headers .bp4-table-header {
-    box-shadow: inset 0 -1px 0 rgb(209 213 219), 1px 0 0 rgb(209 213 219);
 }
 
 .bp4-table-selection-region {

@@ -32,10 +32,13 @@ const Queries: NextPage = () => {
   SELECT author_name, count(*) FROM commits GROUP BY author_name ORDER BY count(*) DESC`
 
   const state: States = States.Filled
-  const rowLimitReached = true
+  const rowLimitReached = false
 
   const resizeElement = useRef<HTMLDivElement | null>(null)
   const resizerElement = useRef<HTMLDivElement | null>(null)
+
+  const numRows = 20;
+  const rowHeight = 26;
 
   const renderDataCell = () => {
     return <Cell>Data point</Cell>
@@ -273,7 +276,8 @@ const Queries: NextPage = () => {
                 )}
                 {/* Query results table */}
                 <div className='overflow-auto w-full flex-1'>
-                <Table numRows={50} className='t-table-default w-full'>
+                <Table numRows={numRows} className='t-table-default w-full' rowHeights={[...Array(numRows)].map(() => rowHeight)}
+>
                   <Column name='author_name' cellRenderer={renderAuthorNameCell} />
                   <Column
                     name='author_email'
@@ -287,16 +291,16 @@ const Queries: NextPage = () => {
                 </Table>
                 </div>
               </div>
-              <div className='bg-white overflow-auto flex h-16 flex-shrink-0 w-full border-t px-8'>
+              <div className='bg-white overflow-auto flex h-14 flex-shrink-0 w-full border-t px-8'>
                 <Toolbar className='t-toolbar flex-1 w-auto h-full space-x-4'>
                   <Toolbar.Left className='space-x-3'>
                     <div className='flex items-center'>
-                      <Label className='mr-2' htmlFor='format'>
+                      <Label className='text-sm mr-2' htmlFor='format'>
                         Format
                       </Label>
                       <Select
                         id='format'
-                        className='w-24'
+                        className='t-select-small w-24'
                         defaultValue='JSON'
                       >
                         <option value='JSON'>JSON</option>
@@ -306,6 +310,7 @@ const Queries: NextPage = () => {
                     <Button
                       skin='secondary'
                       className='mr-2'
+                      size="small"
                       startIcon={
                         <ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />
                       }
@@ -314,6 +319,7 @@ const Queries: NextPage = () => {
                     </Button>
                     <Button
                       skin='secondary'
+                      size="small"
                       startIcon={
                         <DownloadIcon className='t-icon t-icon-heroicons-download' />
                       }
@@ -324,12 +330,12 @@ const Queries: NextPage = () => {
                   <Toolbar.Right className='space-x-4 divide-x'>
                     <Toolbar.Item>
                       <div className='flex items-center'>
-                        <Label className='mr-2 whitespace-nowrap' htmlFor='rowsPerPage'>
+                        <Label className='text-sm mr-2 whitespace-nowrap' htmlFor='rowsPerPage'>
                           Rows per page
                         </Label>
                         <Select
                           id='rowsPerPage'
-                          className='w-20'
+                          className='t-select-small w-20'
                           defaultValue='20'
                         >
                           <option value='10'>10</option>
@@ -345,12 +351,14 @@ const Queries: NextPage = () => {
                         <Button
                           isIconOnly
                           disabled
+                          size="small"
                           skin='borderless'
                           className='border-0'
                           startIcon={<ChevronLeftIcon className='t-icon' />}
                         />
                         <Button
                           isIconOnly
+                          size="small"
                           skin='borderless'
                           startIcon={<ChevronRightIcon className='t-icon' />}
                         />
