@@ -15,7 +15,7 @@ import (
 	libgit2 "github.com/libgit2/git2go/v33"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mergestat/fuse/internal/db"
-	_ "github.com/mergestat/mergestat/pkg/sqlite"
+	_ "github.com/mergestat/mergestat-lite/pkg/sqlite"
 	"github.com/rs/zerolog"
 )
 

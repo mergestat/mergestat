@@ -157,7 +157,7 @@ export const mockSyncsTypesData = (runningSync: boolean, autoImported = false): 
   },
   repo: {
     id: DynamicValues.repoId,
-    repo: 'https://github.com/mergestat/mergestat',
+    repo: 'https://github.com/mergestat/mergestat-lite',
     isGithub: true,
     tags: ['github', 'mergestat', 'syncs'],
     repoImport: autoImported ? { type: 'GITHUB_USER', settings: { user: 'gdcanonn' } } : null,
