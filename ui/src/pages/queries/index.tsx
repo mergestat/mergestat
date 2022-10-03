@@ -38,7 +38,6 @@ const Queries: NextPage = () => {
   const resizerElement = useRef<HTMLDivElement | null>(null)
 
   const numRows = 20;
-  const rowHeight = 26;
 
   const renderDataCell = () => {
     return <Cell>Data point</Cell>
@@ -276,8 +275,7 @@ const Queries: NextPage = () => {
                 )}
                 {/* Query results table */}
                 <div className='overflow-auto w-full flex-1'>
-                <Table numRows={numRows} className='t-table-default w-full' rowHeights={[...Array(numRows)].map(() => rowHeight)}
->
+                <Table numRows={numRows} className='t-table-default w-full'>
                   <Column name='author_name' cellRenderer={renderAuthorNameCell} />
                   <Column
                     name='author_email'
@@ -346,7 +344,7 @@ const Queries: NextPage = () => {
                       </div>
                     </Toolbar.Item>
                     <Toolbar.Item className='pl-4'>
-                      <div className='flex items-center space-x-2'>
+                      <div className='flex items-center space-x-1'>
                         <p className='text-semantic-mutedText whitespace-nowrap text-sm'>1-50 of 1000</p>
                         <Button
                           isIconOnly
