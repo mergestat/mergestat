@@ -94,7 +94,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                       {log.collapsed && (
                         <tr>
                           <td colSpan={6} className="p-6 bg-gray-50">
-                            {log.logs?.length ? <LogBox logs={log.logs || []} onCopy={() => null} /> : <span className='text-semantic-mutedText'>No log entries yet</span>}
+                            {log.logs?.length ? <LogBox logs={log.logs || []} onCopy={() => null} /> : <span className='text-semantic-mutedText text-sm'>No log entries yet</span>}
                           </td>
                         </tr>
                       )}
