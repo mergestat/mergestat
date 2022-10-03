@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Editor from '@monaco-editor/react'
-import React, { Component, Fragment, useRef, useEffect } from "react";
-import { Table, Column, Cell } from "@blueprintjs/table";
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/table/lib/css/table.css";
+import { Fragment, useRef, useEffect } from 'react'
+import { Table, Column, Cell } from '@blueprintjs/table'
+import '@blueprintjs/core/lib/css/blueprint.css'
+import '@blueprintjs/table/lib/css/table.css'
 
 import { Alert, Avatar, Badge, Button, Input, Label, Select, Spinner, Toolbar } from '@mergestat/blocks'
 import {
@@ -33,26 +33,27 @@ const Queries: NextPage = () => {
 
   SELECT author_name, count(*) FROM commits GROUP BY author_name ORDER BY count(*) DESC`
 
-  const renderCell = () => {
-    return <Cell>Data point</Cell>;
-  };
-  const renderAuthorNameCell = () => {
-    return <Cell>johndoe</Cell>;
-  };
-  const renderAuthorEmailCell = () => {
-    return <Cell>john.doe@gmail.com</Cell>;
-  };
-  const renderCountCell = () => {
-    return <Cell>123</Cell>;
-  };
-
   const state: States = States.Filled
   const rowLimitReached = true
 
   const resizeElement = useRef<HTMLDivElement | null>(null)
   const resizerElement = useRef<HTMLDivElement | null>(null)
 
+  const renderDataCell = () => {
+    return <Cell>Data point</Cell>
+  }
 
+  const renderAuthorNameCell = () => {
+    return <Cell>johndoe</Cell>
+  }
+
+  const renderAuthorEmailCell = () => {
+    return <Cell>john.doe@gmail.com</Cell>
+  }
+
+  const renderCountCell = () => {
+    return <Cell>123</Cell>
+  }
 
   useEffect(() => {
     const handleResize = (e: MouseEvent) => {
@@ -265,8 +266,8 @@ const Queries: NextPage = () => {
               <div className='overflow-hidden flex-1 flex flex-col bg-white h-full w-full'>
                 {rowLimitReached && (
                   <Alert
-                    theme="light"
-                    type="warning"
+                    theme='light'
+                    type='warning'
                     className='t-alert-full-width items-center'
                   >
                     Query results are limited to 1000 rows.
@@ -274,15 +275,17 @@ const Queries: NextPage = () => {
                 )}
                 {/* Query results table */}
                 <div className='overflow-auto w-full flex-1'>
-                <Table numRows={50} className="t-table-default w-full">
-                  <Column name="author_name" cellRenderer={renderAuthorNameCell} />
+                <Table numRows={50} className='t-table-default w-full'>
+                  <Column name='author_name' cellRenderer={renderAuthorNameCell} />
                   <Column
-                    name="author_email"
+                    name='author_email'
                     cellRenderer={renderAuthorEmailCell}
                   />
-                  <Column name="count" cellRenderer={renderCountCell} />
-                  <Column name="data" cellRenderer={renderCell} />
-                  <Column name="data" cellRenderer={renderCell} />
+                  <Column name='count' cellRenderer={renderCountCell} />
+                  <Column name='data' cellRenderer={renderDataCell} />
+                  <Column name='data' cellRenderer={renderDataCell} />
+                  <Column name='data' cellRenderer={renderDataCell} />
+                  <Column name='data' cellRenderer={renderDataCell} />
                 </Table>
                 </div>
               </div>
@@ -295,7 +298,7 @@ const Queries: NextPage = () => {
                       </Label>
                       <Select
                         id='format'
-                        className="w-24"
+                        className='w-24'
                         defaultValue='JSON'
                       >
                         <option value='JSON'>JSON</option>
@@ -328,7 +331,7 @@ const Queries: NextPage = () => {
                         </Label>
                         <Select
                           id='rowsPerPage'
-                          className="w-20"
+                          className='w-20'
                           defaultValue='20'
                         >
                           <option value='10'>10</option>
