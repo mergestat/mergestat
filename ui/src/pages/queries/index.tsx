@@ -3,8 +3,6 @@ import Head from 'next/head'
 import Editor from '@monaco-editor/react'
 import { Fragment, useRef, useEffect } from 'react'
 import { Table, Column, Cell } from '@blueprintjs/table'
-import '@blueprintjs/core/lib/css/blueprint.css'
-import '@blueprintjs/table/lib/css/table.css'
 
 import { Alert, Avatar, Badge, Button, Input, Label, Select, Spinner, Toolbar } from '@mergestat/blocks'
 import {
