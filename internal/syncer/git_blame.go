@@ -6,11 +6,14 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"time"
 	"unicode/utf8"
 
+	"github.com/go-enry/go-enry/v2"
 	"github.com/jackc/pgx/v4"
 	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/fuse/internal/db"
@@ -105,6 +108,31 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		if o.Type != "blob" {
 			continue
 		}
+
+		// skip running git blame on binary files
+		// first detect if a file is binary or not
+		fullPath := filepath.Join(tmpPath, o.Path)
+		if f, err := os.Open(fullPath); err != nil {
+			w.logger.Err(err).Msgf("error opening file in repo: %s, %v", fullPath, err)
+			continue
+		} else {
+			defer f.Close()
+
+			// only read the first 8kb of the file to detect if it's binary or not
+			buffer := make([]byte, 8000)
+			var bytesRead int
+			if bytesRead, err = f.Read(buffer); err != nil && !errors.Is(err, io.EOF) {
+				w.logger.Err(err).Msgf("error reading file in repo: %s, %v", fullPath, err)
+			}
+
+			// See here: https://github.com/go-enry/go-enry/blob/v2.8.2/utils.go#L80 for the implementation of IsBinary
+			// basically just looking for a byte(0) in the first portion of the file
+			if enry.IsBinary(buffer[:bytesRead]) {
+				w.logger.Info().Msgf("skipping binary file: %s", fullPath)
+				continue
+			}
+		}
+
 		res, err := blame.Exec(ctx, tmpPath, o.Path)
 		if err != nil {
 			if exitErr, ok := err.(*exec.ExitError); ok {
@@ -118,25 +146,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		for lineIdx, blame := range res {
 			lineNo := lineIdx + 1
 
-			if blame == nil {
-				w.logger.Warn().Str("repo", j.Repo).Str("file", o.Path).Int("lineIdx", lineIdx).Msgf("nil blame line encountered")
-				continue
-			}
-
-			var authorEmail, authorName *string
-			var authorWhen *time.Time
-			// TODO(patrickdevivo) we shouldn't be seeing a nil Author here, but we are
-			// until we can audit what's going on in the `gitutils` package let's add a check here
-			if blame.Author != nil {
-				authorEmail = &blame.Author.Email
-				authorName = &blame.Author.Name
-				authorWhen = &blame.Author.When
-			}
-
 			blamedLines = append(blamedLines, &blameLine{
-				AuthorEmail: authorEmail,
-				AuthorName:  authorName,
-				AuthorWhen:  authorWhen,
+				AuthorEmail: &blame.Author.Email,
+				AuthorName:  &blame.Author.Name,
+				AuthorWhen:  &blame.Author.When,
 				CommitHash:  &blame.SHA,
 				LineNo:      &lineNo,
 				Line:        &blame.Line,
