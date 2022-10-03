@@ -87,12 +87,18 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 	}
 
 	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
+
+	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
-	defer repo.Free()
 
 	stats := make([]*commitStat, 0)
+
+	if repo, err = libgit2.OpenRepository(tmpPath); err != nil {
+		return err
+	}
+
+	defer repo.Free()
 
 	walk, err := repo.Walk()
 	if err != nil {
