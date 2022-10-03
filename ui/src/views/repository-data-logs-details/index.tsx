@@ -1,4 +1,4 @@
-import { BreadcrumbNav, Button, LogBox } from '@mergestat/blocks'
+import { BreadcrumbNav, Button, LogBox, Panel } from '@mergestat/blocks'
 import { DotsHorizontalIcon, ExternalLinkIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -59,9 +59,11 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
         {logInfo?.logs?.length
           ? <LogBox logs={logInfo?.logs || []} onCopy={() => null} />
           : (
-          <div className='m-5'>
-            <span className='text-semantic-mutedText'>No log entries yet</span>
-          </div>)}
+            <Panel>
+              <Panel.Body className="flex items-center justify-center">
+                <span className='text-semantic-mutedText text-sm'>No log entries yet</span>
+              </Panel.Body>
+            </Panel>)}
       </div>
     </main>
   )
