@@ -60,7 +60,7 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
           ? <LogBox logs={logInfo?.logs || []} onCopy={() => null} />
           : (
             <Panel>
-              <Panel.Body className="flex items-center justify-center">
+              <Panel.Body className="flex items-center justify-center py-8">
                 <span className='text-semantic-mutedText text-sm'>No log entries yet</span>
               </Panel.Body>
             </Panel>)}
