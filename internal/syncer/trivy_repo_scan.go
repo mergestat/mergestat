@@ -49,8 +49,17 @@ func (w *worker) handleTrivyRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM trivy_repo_scans WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	r, err := tx.Exec(ctx, "DELETE FROM trivy_repo_scans WHERE repo_id = $1;", j.RepoID.String())
+	if err != nil {
 		return fmt.Errorf("exec delete: %w", err)
+	}
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("removed %d row(s) from trivy_repo_scans", r.RowsAffected()),
+	}}); err != nil {
+		return err
 	}
 
 	if _, err := tx.Exec(ctx, "INSERT INTO trivy_repo_scans (repo_id, results) VALUES ($1, $2)", j.RepoID, output); err != nil {
@@ -58,6 +67,14 @@ func (w *worker) handleTrivyRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	l.Info().Msg("inserted trivy scan results")
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         "inserted trivy scan results into trivy_repo_scans",
+	}}); err != nil {
+		return err
+	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("update status done: %w", err)

@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"os"
 	"strings"
 	"unicode/utf8"
 
@@ -55,15 +54,16 @@ FROM files(?);
 func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
+	// indicate that we're starting query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+		return fmt.Errorf("log messages: %w", err)
+	}
+
+	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
-	defer func() {
-		if err := os.RemoveAll(tmpPath); err != nil {
-			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
-		}
-	}()
+	defer cleanup()
 
 	var ghToken string
 	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
@@ -71,15 +71,10 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ghToken, j.Repo, tmpPath, true); err != nil {
+	if repo, err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 	defer repo.Free()
-
-	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
-		return fmt.Errorf("log messages: %w", err)
-	}
 
 	files := make([]*file, 0)
 	if err = w.mergestat.SelectContext(ctx, &files, selectFiles, tmpPath, tmpPath); err != nil {
@@ -98,8 +93,17 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM git_files WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	r, err := tx.Exec(ctx, "DELETE FROM git_files WHERE repo_id = $1;", j.RepoID.String())
+	if err != nil {
 		return fmt.Errorf("exec delete: %w", err)
+	}
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("removed %d row(s) from git_files", r.RowsAffected()),
+	}}); err != nil {
+		return err
 	}
 
 	if err := w.sendBatchFiles(ctx, tx, j, files); err != nil {
@@ -107,6 +111,14 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	l.Info().Msgf("sent batch of %d files", len(files))
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("inserted %d row(s) into git_files", len(files)),
+	}}); err != nil {
+		return err
+	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("update status done: %w", err)

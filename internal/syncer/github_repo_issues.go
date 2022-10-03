@@ -152,17 +152,32 @@ func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJo
 		}
 	}()
 
-	if res, err := tx.Exec(ctx, "DELETE FROM github_issues WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	r, err := tx.Exec(ctx, "DELETE FROM github_issues WHERE repo_id = $1;", j.RepoID.String())
+	if err != nil {
 		return fmt.Errorf("delete rows: %w", err)
-	} else {
-		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
+	}
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("removed %d row(s) from github_issues", r.RowsAffected()),
+	}}); err != nil {
+		return err
 	}
 
 	if err := w.sendBatchGitHubRepoIssues(ctx, tx, id, issues); err != nil {
 		return fmt.Errorf("insert issues: %w", err)
 	}
 
-	l.Info().Msgf("retrieved repo issues: %d", len(issues))
+	l.Info().Msgf("inserted repo issues: %d", len(issues))
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("inserted %d row(s) into github_issues", len(issues)),
+	}}); err != nil {
+		return err
+	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)

@@ -113,11 +113,29 @@ func (w *worker) handleGitHubRepoStars(ctx context.Context, j *db.DequeueSyncJob
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM github_stargazers WHERE repo_id = $1;", id.String()); err != nil {
+	r, err := tx.Exec(ctx, "DELETE FROM github_stargazers WHERE repo_id = $1;", id.String())
+	if err != nil {
 		return fmt.Errorf("delete stars: %w", err)
 	}
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("removed %d row(s) from github_stargazers", r.RowsAffected()),
+	}}); err != nil {
+		return err
+	}
+
 	if err := w.sendBatchGitHubRepoStars(ctx, tx, id, stars); err != nil {
 		return fmt.Errorf("batch insert stars: %w", err)
+	}
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("inserted %d row(s) into github_stargazers", len(stars)),
+	}}); err != nil {
+		return err
 	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {

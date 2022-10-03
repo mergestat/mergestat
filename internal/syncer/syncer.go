@@ -206,8 +206,24 @@ func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
 	return string(credentials), nil
 }
 
+// createTempDirForGitClone creates a temporary directory for cloning a repository to
+// at a standardized path. The path is returned along with a cleanup function that should be called
+// at the end of a sync job, when the repository is no longer needed.
+func (w *worker) createTempDirForGitClone(job *db.DequeueSyncJobRow) (string, func(), error) {
+	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
+	if err != nil {
+		return "", nil, fmt.Errorf("temp dir: %w", err)
+	}
+
+	return tmpPath, func() {
+		if err := os.RemoveAll(tmpPath); err != nil {
+			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
+		}
+	}, nil
+}
+
 // cloneRepo is a helper function for cloning a repository to a path on disk
-func (w *worker) cloneRepo(ghToken, url, path string, bare bool) (*libgit2.Repository, error) {
+func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare bool, job *db.DequeueSyncJobRow) (*libgit2.Repository, error) {
 	logger := w.logger.Info().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "")
 
 	var creds *libgit2.Credential
@@ -218,6 +234,14 @@ func (w *worker) cloneRepo(ghToken, url, path string, bare bool) (*libgit2.Repos
 	defer creds.Free()
 
 	logger.Msgf("starting git repostory clone: %s", url)
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: job.ID,
+		Message:         "starting git clone: " + url,
+	}}); err != nil {
+		return nil, err
+	}
 
 	var credentialsCallback libgit2.CredentialsCallback
 	// only create a credentials callback if a token is provided
@@ -245,6 +269,14 @@ func (w *worker) cloneRepo(ghToken, url, path string, bare bool) (*libgit2.Repos
 	}
 
 	logger.Msgf("finished git repostory clone: %s", url)
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: job.ID,
+		Message:         "finished git clone successfully: " + url,
+	}}); err != nil {
+		return nil, err
+	}
 
 	return repo, nil
 }
