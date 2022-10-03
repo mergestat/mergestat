@@ -1,0 +1,1667 @@
+{
+    "__inputs": [
+      {
+        "name": "DS_POSTGRES",
+        "label": "postgres",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "postgres",
+        "pluginName": "PostgreSQL"
+      }
+    ],
+    "__elements": {},
+    "__requires": [
+      {
+        "type": "panel",
+        "id": "bargauge",
+        "name": "Bar gauge",
+        "version": ""
+      },
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "9.0.6"
+      },
+      {
+        "type": "datasource",
+        "id": "postgres",
+        "name": "PostgreSQL",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "timeseries",
+        "name": "Time series",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 1,
+    "id": null,
+    "links": [],
+    "liveNow": true,
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 11,
+        "panels": [],
+        "title": "Summary",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "count Total Commits"
+              },
+              "properties": [
+                {
+                  "id": "custom.lineWidth",
+                  "value": 4
+                },
+                {
+                  "id": "displayName",
+                  "value": "Total Commits"
+                },
+                {
+                  "id": "custom.lineStyle",
+                  "value": {
+                    "dash": [
+                      10,
+                      10
+                    ],
+                    "fill": "dash"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 1
+        },
+        "id": 2,
+        "options": {
+          "legend": {
+            "calcs": [
+              "max",
+              "min",
+              "mean",
+              "sum"
+            ],
+            "displayMode": "table",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "time_series",
+            "group": [],
+            "hide": false,
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tCOUNT(DISTINCT public.git_commits.hash) as count,\n\t'Total Commits' AS base_repository_name,\n\t$__timeGroup(public.git_commits.committer_when, '${interval}', 0) AS time\nFROM public.git_commits\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY time, base_repository_name\nORDER BY time, count",
+            "refId": "B",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tCOUNT(DISTINCT public.git_commits.hash) as count,\n\tpublic.github_repo_info.owner || '/' || public.github_repo_info.name AS base_repository_name,\n\t$__timeGroup(public.git_commits.committer_when, '${interval}', 0) AS time\nFROM public.git_commits\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY time, base_repository_name\nORDER BY time, count",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Commits by Repo",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 1
+        },
+        "id": 18,
+        "options": {
+          "legend": {
+            "calcs": [
+              "max",
+              "min",
+              "mean",
+              "sum"
+            ],
+            "displayMode": "table",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tCOUNT(*) as count,\n\tTo_Char(public.git_commits.author_when, 'Day') AS day_of_week,\n\t$__timeGroup(public.git_commits.committer_when, '${interval}', 0) AS time\nFROM public.git_commits\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY 2, 3\nORDER BY time, count",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Commits by Day of Week",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "Commit Additions - Deletions",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "net_changes Total Net Changes"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Total Net Changes"
+                },
+                {
+                  "id": "custom.lineWidth",
+                  "value": 4
+                },
+                {
+                  "id": "custom.lineStyle",
+                  "value": {
+                    "dash": [
+                      10,
+                      10
+                    ],
+                    "fill": "dash"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 9
+        },
+        "id": 7,
+        "options": {
+          "legend": {
+            "calcs": [
+              "max",
+              "min",
+              "mean",
+              "sum"
+            ],
+            "displayMode": "table",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "time_series",
+            "group": [],
+            "hide": false,
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tSUM(public.git_commit_stats.additions - public.git_commit_stats.deletions) AS net_changes,\n\t'Total Net Changes' AS base_repository_name,\n\t$__timeGroup(public.git_commits.committer_when, '${interval}', 0) AS time\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY 2, 3\nORDER BY 3",
+            "refId": "B",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tSUM(public.git_commit_stats.additions - public.git_commit_stats.deletions) AS net_changes,\n\tpublic.github_repo_info.owner || '/' || public.github_repo_info.name AS base_repository_name,\n\t$__timeGroup(public.git_commits.committer_when, '${interval}', 0) AS time\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY 2, 3\nORDER BY 3",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Net Changes by Repo",
+        "transformations": [],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "Commit Additions + Deletions",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "absolute_changes Total Absolute Changes"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Total Absolute Changes"
+                },
+                {
+                  "id": "custom.lineWidth",
+                  "value": 4
+                },
+                {
+                  "id": "custom.lineStyle",
+                  "value": {
+                    "dash": [
+                      10,
+                      10
+                    ],
+                    "fill": "dash"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 9
+        },
+        "id": 12,
+        "options": {
+          "legend": {
+            "calcs": [
+              "max",
+              "min",
+              "mean",
+              "sum"
+            ],
+            "displayMode": "table",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "time_series",
+            "group": [],
+            "hide": false,
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tSUM(public.git_commit_stats.additions + public.git_commit_stats.deletions) AS absolute_changes,\n\t'Total Absolute Changes' AS base_repository_name,\n\t$__timeGroup(public.git_commits.committer_when, '${interval}', 0) AS time\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY 2, 3\nORDER BY 3",
+            "refId": "B",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tSUM(public.git_commit_stats.additions + public.git_commit_stats.deletions) AS absolute_changes,\n\tpublic.github_repo_info.owner || '/' || public.github_repo_info.name AS base_repository_name,\n\t$__timeGroup(public.git_commits.committer_when, '${interval}', 0) AS time\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY 2, 3\nORDER BY 3",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Absolute Changes by Repo",
+        "transformations": [],
+        "type": "timeseries"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 9,
+        "panels": [],
+        "title": "Net Changes",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "Commit Additions - Deletions",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 18
+        },
+        "id": 4,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^net_changes$/",
+            "limit": 5000,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tSUM(public.git_commit_stats.additions - public.git_commit_stats.deletions) AS net_changes,\n\tpublic.github_repo_info.owner || '/' || public.github_repo_info.name AS base_repository_name\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY 2\nORDER BY 1 DESC",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Net Changes by Repo",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "Commit Additions - Deletions",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 18
+        },
+        "id": 6,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^net_changes$/",
+            "limit": 5000,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  COUNT(DISTINCT concat(public.git_commit_stats.repo_id,public.git_commit_stats.commit_hash)) AS commit_count,\n\tSUM(public.git_commit_stats.additions - public.git_commit_stats.deletions) AS net_changes,\n\tpublic.git_commits.author_name\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY public.git_commits.author_name\nORDER BY 2 DESC",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Net Changes by Author",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "Commit Additions - Deletions",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 26
+        },
+        "id": 5,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^net_changes$/",
+            "limit": 5000,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tSUM(public.git_commit_stats.additions - public.git_commit_stats.deletions) AS net_changes,\n\tpublic.github_repo_info.owner || '/' || public.github_repo_info.name AS base_repository_name,\n\tpublic.git_commit_stats.file_path\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY base_repository_name, file_path\nORDER BY 1 DESC",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Net Changes by Repo by File",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 34
+        },
+        "id": 14,
+        "panels": [],
+        "title": "Absolute Changes",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "Commit Additions + Deletions",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 35
+        },
+        "id": 15,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^net_changes$/",
+            "limit": 5000,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tSUM(public.git_commit_stats.additions + public.git_commit_stats.deletions) AS net_changes,\n\tpublic.github_repo_info.owner || '/' || public.github_repo_info.name AS base_repository_name\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY base_repository_name\nORDER BY 1 DESC",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Absolute Changes by Repo",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "Commit Additions + Deletions",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 35
+        },
+        "id": 16,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^net_changes$/",
+            "limit": 5000,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  COUNT(DISTINCT concat(public.git_commit_stats.repo_id,public.git_commit_stats.commit_hash)) AS commit_count,\n\tSUM(public.git_commit_stats.additions + public.git_commit_stats.deletions) AS net_changes,\n\tpublic.git_commits.author_name\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY public.git_commits.author_name\nORDER BY 2 DESC",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Absolute Changes by Author",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "Commit Additions + Deletions",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 43
+        },
+        "id": 17,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^net_changes$/",
+            "limit": 5000,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tSUM(public.git_commit_stats.additions + public.git_commit_stats.deletions) AS net_changes,\n\tpublic.github_repo_info.owner || '/' || public.github_repo_info.name AS base_repository_name,\n\tpublic.git_commit_stats.file_path\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY base_repository_name, file_path\nORDER BY 1 DESC",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Absolute Changes by Repo by File",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 51
+        },
+        "id": 20,
+        "panels": [],
+        "title": "Day of Week",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 52
+        },
+        "id": 21,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^commit_count$/",
+            "limit": 5000,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tCOUNT(DISTINCT concat(public.git_commit_stats.repo_id,public.git_commit_stats.commit_hash)) AS commit_count,\n\tTo_Char(public.git_commits.author_when, 'Day') AS day_of_week,\n\textract(dow from public.git_commits.author_when) AS day_of_week_num\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY 2,3\nORDER BY 3",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Commits By Day of Week",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 52
+        },
+        "id": 24,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^commit_count$/",
+            "limit": 5000,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tCOUNT(DISTINCT concat(public.git_commit_stats.repo_id,public.git_commit_stats.commit_hash)) AS commit_count,\n\tpublic.github_repo_info.owner || '/' || public.github_repo_info.name AS base_repository_name,\n\tTo_Char(public.git_commits.author_when, 'Day') AS day_of_week,\n\textract(dow from public.git_commits.author_when) AS day_of_week_num\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY 2,3, 4\nORDER BY 2, 4",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Commits By Repo By Day of Week",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_POSTGRES}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "locale"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 60
+        },
+        "id": 23,
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^commit_count$/",
+            "limit": 5000,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "9.0.6",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "${DS_POSTGRES}"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n\tCOUNT(DISTINCT concat(public.git_commit_stats.repo_id,public.git_commit_stats.commit_hash)) AS commit_count,\n\tpublic.git_commits.author_name,\n\tTo_Char(public.git_commits.author_when, 'Day') AS day_of_week,\n\textract(dow from public.git_commits.author_when) AS day_of_week_num\nFROM public.git_commits\nINNER JOIN public.git_commit_stats ON public.git_commits.hash = public.git_commit_stats.commit_hash and public.git_commits.repo_id = public.git_commit_stats.repo_id\nINNER JOIN public.github_repo_info ON public.git_commits.repo_id = public.github_repo_info.repo_id\nINNER JOIN public.repos ON public.git_commits.repo_id = public.repos.id\nWHERE public.git_commits.committer_when IS NOT NULL AND public.git_commits.parents < 2\nAND $__timeFilter(public.git_commits.committer_when) AND '${repositories:json}'::jsonb ? (public.github_repo_info.owner || '/' || public.github_repo_info.name)\nAND (CASE WHEN jsonb_array_length('${repository_tags:json}'::jsonb) <> 0 THEN (public.repos.tags @> '${repository_tags:json}'::jsonb) ELSE true END)\nGROUP BY 2,3,4\nORDER BY 2,4",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Commits By Author By Day of Week",
+        "transformations": [],
+        "type": "bargauge"
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 36,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {},
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRES}"
+          },
+          "definition": "SELECT owner || '/' || name FROM github_repo_info JOIN repos ON github_repo_info.repo_id = repos.id",
+          "description": "All repositories indexed by MergeStat",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Repositories",
+          "multi": true,
+          "name": "repositories",
+          "options": [],
+          "query": "SELECT owner || '/' || name FROM github_repo_info JOIN repos ON github_repo_info.repo_id = repos.id",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "allValue": "[]",
+          "current": {},
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRES}"
+          },
+          "definition": "SELECT DISTINCT value FROM repos, jsonb_array_elements_text(tags) ",
+          "description": "Filter by repos with specific tags. If \"All\" is selected, any repo will match (including those without tags)",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Repository Tags",
+          "multi": true,
+          "name": "repository_tags",
+          "options": [],
+          "query": "SELECT DISTINCT value FROM repos, jsonb_array_elements_text(tags) ",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "auto": true,
+          "auto_count": 30,
+          "auto_min": "1d",
+          "current": {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          "hide": 0,
+          "label": "Interval",
+          "name": "interval",
+          "options": [
+            {
+              "selected": false,
+              "text": "auto",
+              "value": "$__auto_interval_interval"
+            },
+            {
+              "selected": false,
+              "text": "1d",
+              "value": "1d"
+            },
+            {
+              "selected": true,
+              "text": "7d",
+              "value": "7d"
+            },
+            {
+              "selected": false,
+              "text": "14d",
+              "value": "14d"
+            },
+            {
+              "selected": false,
+              "text": "30d",
+              "value": "30d"
+            },
+            {
+              "selected": false,
+              "text": "90d",
+              "value": "90d"
+            },
+            {
+              "selected": false,
+              "text": "180d",
+              "value": "180d"
+            }
+          ],
+          "query": "1d,7d,14d,30d,90d,180d",
+          "queryValue": "",
+          "refresh": 2,
+          "skipUrlSync": false,
+          "type": "interval"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-90d",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Commits",
+    "uid": "PyNLihynk",
+    "version": 10,
+    "weekStart": "monday"
+  }

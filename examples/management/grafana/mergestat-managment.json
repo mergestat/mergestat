@@ -1,4 +1,41 @@
 {
+    "__inputs": [
+      {
+        "name": "DS_POSTGRES",
+        "label": "Postgres",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "postgres",
+        "pluginName": "PostgreSQL"
+      }
+    ],
+    "__elements": [],
+    "__requires": [
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "9.0.0"
+      },
+      {
+        "type": "datasource",
+        "id": "postgres",
+        "name": "PostgreSQL",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "stat",
+        "name": "Stat",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "table",
+        "name": "Table",
+        "version": ""
+      }
+    ],
     "annotations": {
       "list": [
         {
@@ -24,7 +61,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 8,
+    "id": null,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -44,7 +81,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "SXQZgpP7z"
+          "uid": "${DS_POSTGRES}"
         },
         "fieldConfig": {
           "defaults": {
@@ -94,12 +131,12 @@
           },
           "textMode": "auto"
         },
-        "pluginVersion": "9.0.6",
+        "pluginVersion": "9.0.0",
         "targets": [
           {
             "datasource": {
               "type": "postgres",
-              "uid": "SXQZgpP7z"
+              "uid": "${DS_POSTGRES}"
             },
             "format": "table",
             "group": [],
@@ -133,7 +170,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "SXQZgpP7z"
+          "uid": "${DS_POSTGRES}"
         },
         "fieldConfig": {
           "defaults": {
@@ -183,12 +220,12 @@
           },
           "textMode": "auto"
         },
-        "pluginVersion": "9.0.6",
+        "pluginVersion": "9.0.0",
         "targets": [
           {
             "datasource": {
               "type": "postgres",
-              "uid": "SXQZgpP7z"
+              "uid": "${DS_POSTGRES}"
             },
             "format": "table",
             "group": [],
@@ -222,7 +259,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "SXQZgpP7z"
+          "uid": "${DS_POSTGRES}"
         },
         "fieldConfig": {
           "defaults": {
@@ -273,12 +310,12 @@
           },
           "textMode": "auto"
         },
-        "pluginVersion": "9.0.6",
+        "pluginVersion": "9.0.0",
         "targets": [
           {
             "datasource": {
               "type": "postgres",
-              "uid": "SXQZgpP7z"
+              "uid": "${DS_POSTGRES}"
             },
             "format": "table",
             "group": [],
@@ -312,7 +349,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "SXQZgpP7z"
+          "uid": "${DS_POSTGRES}"
         },
         "fieldConfig": {
           "defaults": {
@@ -363,12 +400,12 @@
           },
           "textMode": "auto"
         },
-        "pluginVersion": "9.0.6",
+        "pluginVersion": "9.0.0",
         "targets": [
           {
             "datasource": {
               "type": "postgres",
-              "uid": "SXQZgpP7z"
+              "uid": "${DS_POSTGRES}"
             },
             "format": "table",
             "group": [],
@@ -415,7 +452,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "SXQZgpP7z"
+          "uid": "${DS_POSTGRES}"
         },
         "fieldConfig": {
           "defaults": {
@@ -501,12 +538,12 @@
           "showHeader": true,
           "sortBy": []
         },
-        "pluginVersion": "9.0.6",
+        "pluginVersion": "9.0.0",
         "targets": [
           {
             "datasource": {
               "type": "postgres",
-              "uid": "SXQZgpP7z"
+              "uid": "${DS_POSTGRES}"
             },
             "format": "table",
             "group": [],
@@ -540,7 +577,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "SXQZgpP7z"
+          "uid": "${DS_POSTGRES}"
         },
         "description": "Only includes tables that contain a repo_id column",
         "fieldConfig": {
@@ -639,12 +676,12 @@
           "showHeader": true,
           "sortBy": []
         },
-        "pluginVersion": "9.0.6",
+        "pluginVersion": "9.0.0",
         "targets": [
           {
             "datasource": {
               "type": "postgres",
-              "uid": "SXQZgpP7z"
+              "uid": "${DS_POSTGRES}"
             },
             "format": "table",
             "group": [],
@@ -691,7 +728,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "SXQZgpP7z"
+          "uid": "${DS_POSTGRES}"
         },
         "fieldConfig": {
           "defaults": {
@@ -708,7 +745,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -767,7 +805,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "SXQZgpP7z"
+              "uid": "${DS_POSTGRES}"
             },
             "format": "table",
             "group": [],
@@ -801,7 +839,7 @@
       {
         "datasource": {
           "type": "postgres",
-          "uid": "SXQZgpP7z"
+          "uid": "${DS_POSTGRES}"
         },
         "fieldConfig": {
           "defaults": {
@@ -818,7 +856,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -877,7 +916,7 @@
           {
             "datasource": {
               "type": "postgres",
-              "uid": "SXQZgpP7z"
+              "uid": "${DS_POSTGRES}"
             },
             "format": "table",
             "group": [],
@@ -924,8 +963,8 @@
       "hidden": true
     },
     "timezone": "",
-    "title": "Fuse Management",
+    "title": "MergeStat Management",
     "uid": "w4uxJIm4k",
-    "version": 1,
+    "version": 7,
     "weekStart": ""
   }
