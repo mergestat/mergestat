@@ -29,9 +29,13 @@ We are working on GitHub auth alternatives, but for now a PAT is your best bet.
 
 You can manage a single PAT for your instance in the `Settings` area of the management UI.
 
-Now you can also visit `http://localhost:3000/` to access a local [Grafana](https://grafana.com/) instance with example dashboards using the data from Fuse 🎉 :
+## Examples
 
-<img alt="MergeStat Fuse Example Dashboards" src="docs/fuse-examples.png" />
+Take a look at all of our [examples](./examples/examples.md)
+
+You can also visit `http://localhost:3000/` to access a local [Grafana](https://grafana.com/) instance with example dashboards using the data from Fuse 🎉 :
+
+<img alt="MergeStat Fuse Example Dashboards" src="examples/templates/grafana/screenshots/mergestat-examples.png" />
 
 ### Resetting an Instance
 
@@ -90,3 +94,15 @@ To run `fuse` on Windows you will need to use [WSL](https://learn.microsoft.com/
 
  - Follow the instructions provided [here](https://learn.microsoft.com/en-us/windows/wsl/setup/environment) to make correct use of WSL
  - Try to run `docker-compose up` inside the WSL
+
+ ## SQL Linting
+
+The .sql files in this repo are linted using [sqlfluff](https://github.com/sqlfluff/sqlfluff) and .sqlfluff configuration file at the root of this repo.
+
+To check for linting issues run this command from the root of the root directory
+
+    sqlfluff lint
+
+To force linting issue fixes run this command from the root of the root directory
+
+    sqlfluff fix
