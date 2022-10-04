@@ -1,9 +1,9 @@
-import { ApolloError, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { ChangeEvent, useState } from 'react'
 import { validateGtihubToken } from 'src/api-logic/axios/api'
 import SET_PAT from 'src/api-logic/graphql/mutations/set-pat'
 import { validateGitHubPAT } from 'src/utils'
-import { showErrorAlert, showSuccessAlert } from 'src/utils/alerts'
+import { showSuccessAlert } from 'src/utils/alerts'
 
 const useSetPat = () => {
   const [showValidation, setShowValidation] = useState(false)
@@ -11,9 +11,6 @@ const useSetPat = () => {
   const [pat, setPAT] = useState('')
 
   const [savePAT] = useMutation(SET_PAT, {
-    onError: (error: ApolloError) => {
-      showErrorAlert(error.message)
-    },
     onCompleted: () => {
       showSuccessAlert('GitHub access token saved')
       setShowValidation(false)

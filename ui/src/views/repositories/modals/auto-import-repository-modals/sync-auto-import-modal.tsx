@@ -1,10 +1,9 @@
-import { ApolloError, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Alert, Button, Input, Label, Modal, RadioCard, Toolbar } from '@mergestat/blocks'
 import { GithubIcon, XIcon } from '@mergestat/icons'
 import React, { useState } from 'react'
 import { AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
-import { showErrorAlert } from 'src/utils/alerts'
 import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
 import useRepoImports from 'src/views/hooks/useRepoImports'
 import useRepos from 'src/views/hooks/useRepos'
@@ -43,9 +42,6 @@ export const SyncAutoImportReposModal = () => {
   }
 
   const [autoImportRepos] = useMutation(AUTO_IMPORT_REPOS, {
-    onError: (error: ApolloError) => {
-      showErrorAlert(error.message)
-    },
     onCompleted: () => {
       refetch()
       showAutoImportModal && refetchImports()
