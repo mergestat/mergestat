@@ -55,6 +55,8 @@ services:
       - "--enable-query-batching"
       - "--disable-query-log"
       - "--legacy-relations=omit"
+      - "--jwt-secret=secret"
+      - "--default-role=mergestat_anonymous"
     environment:
       FUSE_SECRET: password
       DISPLAY_PG_HOSTNAME: localhost
@@ -71,7 +73,9 @@ services:
     ports:
       - 3300:3000
     environment:
-      POSTGRAPHILE_API: http://graphql:5433/graphql  
+      POSTGRAPHILE_API: http://graphql:5433/graphql
+      POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
+      JWT_SECRET: secret # should match - "--jwt-secret=secret" flag in graphql service
     labels:
       shipyard.route: '/'
 

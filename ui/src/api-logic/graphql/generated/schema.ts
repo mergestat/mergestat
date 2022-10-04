@@ -103,6 +103,40 @@ export type BooleanFilter = {
   notIn?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
+/** All input for the create `GitBlame` mutation. */
+export type CreateGitBlameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `GitBlame` to be created by this mutation. */
+  gitBlame: GitBlameInput;
+};
+
+/** The output of our create `GitBlame` mutation. */
+export type CreateGitBlamePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GitBlame` that was created by this mutation. */
+  gitBlame?: Maybe<GitBlame>;
+  /** An edge for our `GitBlame`. May be used by Relay 1. */
+  gitBlameEdge?: Maybe<GitBlamesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GitBlame`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our create `GitBlame` mutation. */
+export type CreateGitBlamePayloadGitBlameEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitBlamesOrderBy>>;
+};
+
 /** All input for the create `GitBranch` mutation. */
 export type CreateGitBranchInput = {
   /**
@@ -843,6 +877,38 @@ export type CreateSchemaMigrationPayloadSchemaMigrationEdgeArgs = {
   orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
 };
 
+/** All input for the create `SchemaMigrationsHistory` mutation. */
+export type CreateSchemaMigrationsHistoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `SchemaMigrationsHistory` to be created by this mutation. */
+  schemaMigrationsHistory: SchemaMigrationsHistoryInput;
+};
+
+/** The output of our create `SchemaMigrationsHistory` mutation. */
+export type CreateSchemaMigrationsHistoryPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SchemaMigrationsHistory` that was created by this mutation. */
+  schemaMigrationsHistory?: Maybe<SchemaMigrationsHistory>;
+  /** An edge for our `SchemaMigrationsHistory`. May be used by Relay 1. */
+  schemaMigrationsHistoryEdge?: Maybe<SchemaMigrationsHistoriesEdge>;
+};
+
+
+/** The output of our create `SchemaMigrationsHistory` mutation. */
+export type CreateSchemaMigrationsHistoryPayloadSchemaMigrationsHistoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<SchemaMigrationsHistoriesOrderBy>>;
+};
+
 /** All input for the create `ServiceAuthCredential` mutation. */
 export type CreateServiceAuthCredentialInput = {
   /**
@@ -969,6 +1035,53 @@ export type DatetimeFilter = {
   notIn?: InputMaybe<Array<Scalars['Datetime']>>;
 };
 
+/** All input for the `deleteGitBlameByNodeId` mutation. */
+export type DeleteGitBlameByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GitBlame` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteGitBlame` mutation. */
+export type DeleteGitBlameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  lineNo: Scalars['Int'];
+  path: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `GitBlame` mutation. */
+export type DeleteGitBlamePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedGitBlameNodeId?: Maybe<Scalars['ID']>;
+  /** The `GitBlame` that was deleted by this mutation. */
+  gitBlame?: Maybe<GitBlame>;
+  /** An edge for our `GitBlame`. May be used by Relay 1. */
+  gitBlameEdge?: Maybe<GitBlamesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GitBlame`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our delete `GitBlame` mutation. */
+export type DeleteGitBlamePayloadGitBlameEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitBlamesOrderBy>>;
+};
+
 /** All input for the `deleteGitCommitByNodeId` mutation. */
 export type DeleteGitCommitByNodeIdInput = {
   /**
@@ -1013,6 +1126,54 @@ export type DeleteGitCommitPayload = {
 /** The output of our delete `GitCommit` mutation. */
 export type DeleteGitCommitPayloadGitCommitEdgeArgs = {
   orderBy?: InputMaybe<Array<GitCommitsOrderBy>>;
+};
+
+/** All input for the `deleteGitCommitStatByNodeId` mutation. */
+export type DeleteGitCommitStatByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GitCommitStat` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteGitCommitStat` mutation. */
+export type DeleteGitCommitStatInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  commitHash: Scalars['String'];
+  filePath: Scalars['String'];
+  newFileMode: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `GitCommitStat` mutation. */
+export type DeleteGitCommitStatPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedGitCommitStatNodeId?: Maybe<Scalars['ID']>;
+  /** The `GitCommitStat` that was deleted by this mutation. */
+  gitCommitStat?: Maybe<GitCommitStat>;
+  /** An edge for our `GitCommitStat`. May be used by Relay 1. */
+  gitCommitStatEdge?: Maybe<GitCommitStatsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GitCommitStat`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our delete `GitCommitStat` mutation. */
+export type DeleteGitCommitStatPayloadGitCommitStatEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitCommitStatsOrderBy>>;
 };
 
 /** All input for the `deleteGitFileByNodeId` mutation. */
@@ -1850,6 +2011,49 @@ export type DeleteSchemaMigrationPayloadSchemaMigrationEdgeArgs = {
   orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
 };
 
+/** All input for the `deleteSchemaMigrationsHistoryByNodeId` mutation. */
+export type DeleteSchemaMigrationsHistoryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SchemaMigrationsHistory` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteSchemaMigrationsHistory` mutation. */
+export type DeleteSchemaMigrationsHistoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['Int'];
+};
+
+/** The output of our delete `SchemaMigrationsHistory` mutation. */
+export type DeleteSchemaMigrationsHistoryPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedSchemaMigrationsHistoryNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SchemaMigrationsHistory` that was deleted by this mutation. */
+  schemaMigrationsHistory?: Maybe<SchemaMigrationsHistory>;
+  /** An edge for our `SchemaMigrationsHistory`. May be used by Relay 1. */
+  schemaMigrationsHistoryEdge?: Maybe<SchemaMigrationsHistoriesEdge>;
+};
+
+
+/** The output of our delete `SchemaMigrationsHistory` mutation. */
+export type DeleteSchemaMigrationsHistoryPayloadSchemaMigrationsHistoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<SchemaMigrationsHistoriesOrderBy>>;
+};
+
 /** All input for the `deleteServiceAuthCredentialByNodeId` mutation. */
 export type DeleteServiceAuthCredentialByNodeIdInput = {
   /**
@@ -1982,6 +2186,153 @@ export type DeleteTrivyRepoScanPayload = {
 export type DeleteTrivyRepoScanPayloadTrivyRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<TrivyRepoScansOrderBy>>;
 };
+
+export type DisplayDatabaseConnection = {
+  database?: Maybe<Scalars['String']>;
+  host?: Maybe<Scalars['String']>;
+  port?: Maybe<Scalars['Int']>;
+  user?: Maybe<Scalars['String']>;
+};
+
+export type GitBlame = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
+  authorEmail?: Maybe<Scalars['String']>;
+  authorName?: Maybe<Scalars['String']>;
+  authorWhen?: Maybe<Scalars['Datetime']>;
+  commitHash?: Maybe<Scalars['String']>;
+  line?: Maybe<Scalars['String']>;
+  lineNo: Scalars['Int'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  path: Scalars['String'];
+  /** Reads a single `Repo` that is related to this `GitBlame`. */
+  repo?: Maybe<Repo>;
+  repoId: Scalars['UUID'];
+};
+
+/**
+ * A condition to be used against `GitBlame` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type GitBlameCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `authorEmail` field. */
+  authorEmail?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `authorName` field. */
+  authorName?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `authorWhen` field. */
+  authorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `commitHash` field. */
+  commitHash?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `line` field. */
+  line?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lineNo` field. */
+  lineNo?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `path` field. */
+  path?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `GitBlame` object types. All fields are combined with a logical ‘and.’ */
+export type GitBlameFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitBlameFilter>>;
+  /** Filter by the object’s `authorEmail` field. */
+  authorEmail?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorName` field. */
+  authorName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `authorWhen` field. */
+  authorWhen?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `commitHash` field. */
+  commitHash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `line` field. */
+  line?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lineNo` field. */
+  lineNo?: InputMaybe<IntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitBlameFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitBlameFilter>>;
+  /** Filter by the object’s `path` field. */
+  path?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+};
+
+/** An input for mutations affecting `GitBlame` */
+export type GitBlameInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  authorEmail?: InputMaybe<Scalars['String']>;
+  authorName?: InputMaybe<Scalars['String']>;
+  authorWhen?: InputMaybe<Scalars['Datetime']>;
+  commitHash?: InputMaybe<Scalars['String']>;
+  line?: InputMaybe<Scalars['String']>;
+  lineNo: Scalars['Int'];
+  path: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+/** Represents an update to a `GitBlame`. Fields that are set will be updated. */
+export type GitBlamePatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  authorEmail?: InputMaybe<Scalars['String']>;
+  authorName?: InputMaybe<Scalars['String']>;
+  authorWhen?: InputMaybe<Scalars['Datetime']>;
+  commitHash?: InputMaybe<Scalars['String']>;
+  line?: InputMaybe<Scalars['String']>;
+  lineNo?: InputMaybe<Scalars['Int']>;
+  path?: InputMaybe<Scalars['String']>;
+  repoId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A connection to a list of `GitBlame` values. */
+export type GitBlamesConnection = {
+  /** A list of edges which contains the `GitBlame` and cursor to aid in pagination. */
+  edges: Array<GitBlamesEdge>;
+  /** A list of `GitBlame` objects. */
+  nodes: Array<GitBlame>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GitBlame` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GitBlame` edge in the connection. */
+export type GitBlamesEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GitBlame` at the end of the edge. */
+  node: GitBlame;
+};
+
+/** Methods to use when ordering `GitBlame`. */
+export enum GitBlamesOrderBy {
+  AuthorEmailAsc = 'AUTHOR_EMAIL_ASC',
+  AuthorEmailDesc = 'AUTHOR_EMAIL_DESC',
+  AuthorNameAsc = 'AUTHOR_NAME_ASC',
+  AuthorNameDesc = 'AUTHOR_NAME_DESC',
+  AuthorWhenAsc = 'AUTHOR_WHEN_ASC',
+  AuthorWhenDesc = 'AUTHOR_WHEN_DESC',
+  CommitHashAsc = 'COMMIT_HASH_ASC',
+  CommitHashDesc = 'COMMIT_HASH_DESC',
+  LineAsc = 'LINE_ASC',
+  LineDesc = 'LINE_DESC',
+  LineNoAsc = 'LINE_NO_ASC',
+  LineNoDesc = 'LINE_NO_DESC',
+  Natural = 'NATURAL',
+  PathAsc = 'PATH_ASC',
+  PathDesc = 'PATH_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
 
 export type GitBranch = {
   _mergestatSyncedAt?: Maybe<Scalars['Datetime']>;
@@ -2215,12 +2566,16 @@ export type GitCommitPatch = {
 };
 
 /** Commit stats */
-export type GitCommitStat = {
+export type GitCommitStat = Node & {
   _mergestatSyncedAt: Scalars['Datetime'];
   additions: Scalars['Int'];
   commitHash: Scalars['String'];
   deletions: Scalars['Int'];
   filePath: Scalars['String'];
+  newFileMode: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  oldFileMode: Scalars['String'];
   /** Reads a single `Repo` that is related to this `GitCommitStat`. */
   repo?: Maybe<Repo>;
   repoId: Scalars['UUID'];
@@ -2241,6 +2596,10 @@ export type GitCommitStatCondition = {
   deletions?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `filePath` field. */
   filePath?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `newFileMode` field. */
+  newFileMode?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `oldFileMode` field. */
+  oldFileMode?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `repoId` field. */
   repoId?: InputMaybe<Scalars['UUID']>;
 };
@@ -2259,8 +2618,12 @@ export type GitCommitStatFilter = {
   deletions?: InputMaybe<IntFilter>;
   /** Filter by the object’s `filePath` field. */
   filePath?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `newFileMode` field. */
+  newFileMode?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<GitCommitStatFilter>;
+  /** Filter by the object’s `oldFileMode` field. */
+  oldFileMode?: InputMaybe<StringFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<GitCommitStatFilter>>;
   /** Filter by the object’s `repoId` field. */
@@ -2274,7 +2637,21 @@ export type GitCommitStatInput = {
   commitHash: Scalars['String'];
   deletions: Scalars['Int'];
   filePath: Scalars['String'];
+  newFileMode?: InputMaybe<Scalars['String']>;
+  oldFileMode?: InputMaybe<Scalars['String']>;
   repoId: Scalars['UUID'];
+};
+
+/** Represents an update to a `GitCommitStat`. Fields that are set will be updated. */
+export type GitCommitStatPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  additions?: InputMaybe<Scalars['Int']>;
+  commitHash?: InputMaybe<Scalars['String']>;
+  deletions?: InputMaybe<Scalars['Int']>;
+  filePath?: InputMaybe<Scalars['String']>;
+  newFileMode?: InputMaybe<Scalars['String']>;
+  oldFileMode?: InputMaybe<Scalars['String']>;
+  repoId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `GitCommitStat` values. */
@@ -2308,6 +2685,12 @@ export enum GitCommitStatsOrderBy {
   FilePathAsc = 'FILE_PATH_ASC',
   FilePathDesc = 'FILE_PATH_DESC',
   Natural = 'NATURAL',
+  NewFileModeAsc = 'NEW_FILE_MODE_ASC',
+  NewFileModeDesc = 'NEW_FILE_MODE_DESC',
+  OldFileModeAsc = 'OLD_FILE_MODE_ASC',
+  OldFileModeDesc = 'OLD_FILE_MODE_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RepoIdAsc = 'REPO_ID_ASC',
   RepoIdDesc = 'REPO_ID_DESC',
   MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
@@ -4595,6 +4978,8 @@ export enum LatestRepoSyncsOrderBy {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   addServiceAuthCredential?: Maybe<AddServiceAuthCredentialPayload>;
+  /** Creates a single `GitBlame`. */
+  createGitBlame?: Maybe<CreateGitBlamePayload>;
   /** Creates a single `GitBranch`. */
   createGitBranch?: Maybe<CreateGitBranchPayload>;
   /** Creates a single `GitCommit`. */
@@ -4639,16 +5024,26 @@ export type Mutation = {
   createRepoSyncType?: Maybe<CreateRepoSyncTypePayload>;
   /** Creates a single `SchemaMigration`. */
   createSchemaMigration?: Maybe<CreateSchemaMigrationPayload>;
+  /** Creates a single `SchemaMigrationsHistory`. */
+  createSchemaMigrationsHistory?: Maybe<CreateSchemaMigrationsHistoryPayload>;
   /** Creates a single `ServiceAuthCredential`. */
   createServiceAuthCredential?: Maybe<CreateServiceAuthCredentialPayload>;
   /** Creates a single `ServiceAuthCredentialType`. */
   createServiceAuthCredentialType?: Maybe<CreateServiceAuthCredentialTypePayload>;
   /** Creates a single `TrivyRepoScan`. */
   createTrivyRepoScan?: Maybe<CreateTrivyRepoScanPayload>;
+  /** Deletes a single `GitBlame` using a unique key. */
+  deleteGitBlame?: Maybe<DeleteGitBlamePayload>;
+  /** Deletes a single `GitBlame` using its globally unique id. */
+  deleteGitBlameByNodeId?: Maybe<DeleteGitBlamePayload>;
   /** Deletes a single `GitCommit` using a unique key. */
   deleteGitCommit?: Maybe<DeleteGitCommitPayload>;
   /** Deletes a single `GitCommit` using its globally unique id. */
   deleteGitCommitByNodeId?: Maybe<DeleteGitCommitPayload>;
+  /** Deletes a single `GitCommitStat` using a unique key. */
+  deleteGitCommitStat?: Maybe<DeleteGitCommitStatPayload>;
+  /** Deletes a single `GitCommitStat` using its globally unique id. */
+  deleteGitCommitStatByNodeId?: Maybe<DeleteGitCommitStatPayload>;
   /** Deletes a single `GitFile` using a unique key. */
   deleteGitFile?: Maybe<DeleteGitFilePayload>;
   /** Deletes a single `GitFile` using its globally unique id. */
@@ -4725,6 +5120,10 @@ export type Mutation = {
   deleteSchemaMigration?: Maybe<DeleteSchemaMigrationPayload>;
   /** Deletes a single `SchemaMigration` using its globally unique id. */
   deleteSchemaMigrationByNodeId?: Maybe<DeleteSchemaMigrationPayload>;
+  /** Deletes a single `SchemaMigrationsHistory` using a unique key. */
+  deleteSchemaMigrationsHistory?: Maybe<DeleteSchemaMigrationsHistoryPayload>;
+  /** Deletes a single `SchemaMigrationsHistory` using its globally unique id. */
+  deleteSchemaMigrationsHistoryByNodeId?: Maybe<DeleteSchemaMigrationsHistoryPayload>;
   /** Deletes a single `ServiceAuthCredential` using a unique key. */
   deleteServiceAuthCredential?: Maybe<DeleteServiceAuthCredentialPayload>;
   /** Deletes a single `ServiceAuthCredential` using its globally unique id. */
@@ -4738,10 +5137,19 @@ export type Mutation = {
   /** Deletes a single `TrivyRepoScan` using its globally unique id. */
   deleteTrivyRepoScanByNodeId?: Maybe<DeleteTrivyRepoScanPayload>;
   replaceGitHubPAT?: Maybe<Scalars['Boolean']>;
+  simpleRepoSyncQueueCleanup?: Maybe<SimpleRepoSyncQueueCleanupPayload>;
+  /** Updates a single `GitBlame` using a unique key and a patch. */
+  updateGitBlame?: Maybe<UpdateGitBlamePayload>;
+  /** Updates a single `GitBlame` using its globally unique id and a patch. */
+  updateGitBlameByNodeId?: Maybe<UpdateGitBlamePayload>;
   /** Updates a single `GitCommit` using a unique key and a patch. */
   updateGitCommit?: Maybe<UpdateGitCommitPayload>;
   /** Updates a single `GitCommit` using its globally unique id and a patch. */
   updateGitCommitByNodeId?: Maybe<UpdateGitCommitPayload>;
+  /** Updates a single `GitCommitStat` using a unique key and a patch. */
+  updateGitCommitStat?: Maybe<UpdateGitCommitStatPayload>;
+  /** Updates a single `GitCommitStat` using its globally unique id and a patch. */
+  updateGitCommitStatByNodeId?: Maybe<UpdateGitCommitStatPayload>;
   /** Updates a single `GitFile` using a unique key and a patch. */
   updateGitFile?: Maybe<UpdateGitFilePayload>;
   /** Updates a single `GitFile` using its globally unique id and a patch. */
@@ -4818,6 +5226,10 @@ export type Mutation = {
   updateSchemaMigration?: Maybe<UpdateSchemaMigrationPayload>;
   /** Updates a single `SchemaMigration` using its globally unique id and a patch. */
   updateSchemaMigrationByNodeId?: Maybe<UpdateSchemaMigrationPayload>;
+  /** Updates a single `SchemaMigrationsHistory` using a unique key and a patch. */
+  updateSchemaMigrationsHistory?: Maybe<UpdateSchemaMigrationsHistoryPayload>;
+  /** Updates a single `SchemaMigrationsHistory` using its globally unique id and a patch. */
+  updateSchemaMigrationsHistoryByNodeId?: Maybe<UpdateSchemaMigrationsHistoryPayload>;
   /** Updates a single `ServiceAuthCredential` using a unique key and a patch. */
   updateServiceAuthCredential?: Maybe<UpdateServiceAuthCredentialPayload>;
   /** Updates a single `ServiceAuthCredential` using its globally unique id and a patch. */
@@ -4836,6 +5248,12 @@ export type Mutation = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationAddServiceAuthCredentialArgs = {
   input: AddServiceAuthCredentialInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGitBlameArgs = {
+  input: CreateGitBlameInput;
 };
 
 
@@ -4972,6 +5390,12 @@ export type MutationCreateSchemaMigrationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateSchemaMigrationsHistoryArgs = {
+  input: CreateSchemaMigrationsHistoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateServiceAuthCredentialArgs = {
   input: CreateServiceAuthCredentialInput;
 };
@@ -4990,6 +5414,18 @@ export type MutationCreateTrivyRepoScanArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGitBlameArgs = {
+  input: DeleteGitBlameInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGitBlameByNodeIdArgs = {
+  input: DeleteGitBlameByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteGitCommitArgs = {
   input: DeleteGitCommitInput;
 };
@@ -4998,6 +5434,18 @@ export type MutationDeleteGitCommitArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteGitCommitByNodeIdArgs = {
   input: DeleteGitCommitByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGitCommitStatArgs = {
+  input: DeleteGitCommitStatInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGitCommitStatByNodeIdArgs = {
+  input: DeleteGitCommitStatByNodeIdInput;
 };
 
 
@@ -5230,6 +5678,18 @@ export type MutationDeleteSchemaMigrationByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSchemaMigrationsHistoryArgs = {
+  input: DeleteSchemaMigrationsHistoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSchemaMigrationsHistoryByNodeIdArgs = {
+  input: DeleteSchemaMigrationsHistoryByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteServiceAuthCredentialArgs = {
   input: DeleteServiceAuthCredentialInput;
 };
@@ -5272,6 +5732,24 @@ export type MutationReplaceGitHubPatArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationSimpleRepoSyncQueueCleanupArgs = {
+  input: SimpleRepoSyncQueueCleanupInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGitBlameArgs = {
+  input: UpdateGitBlameInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGitBlameByNodeIdArgs = {
+  input: UpdateGitBlameByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateGitCommitArgs = {
   input: UpdateGitCommitInput;
 };
@@ -5280,6 +5758,18 @@ export type MutationUpdateGitCommitArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateGitCommitByNodeIdArgs = {
   input: UpdateGitCommitByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGitCommitStatArgs = {
+  input: UpdateGitCommitStatInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGitCommitStatByNodeIdArgs = {
+  input: UpdateGitCommitStatByNodeIdInput;
 };
 
 
@@ -5512,6 +6002,18 @@ export type MutationUpdateSchemaMigrationByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSchemaMigrationsHistoryArgs = {
+  input: UpdateSchemaMigrationsHistoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSchemaMigrationsHistoryByNodeIdArgs = {
+  input: UpdateSchemaMigrationsHistoryByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateServiceAuthCredentialArgs = {
   input: UpdateServiceAuthCredentialInput;
 };
@@ -5566,12 +6068,22 @@ export type PageInfo = {
 
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
+  currentMergeStatUser?: Maybe<Scalars['String']>;
+  databaseConnection?: Maybe<DisplayDatabaseConnection>;
   execSQL?: Maybe<Scalars['JSON']>;
+  gitBlame?: Maybe<GitBlame>;
+  /** Reads a single `GitBlame` using its globally unique `ID`. */
+  gitBlameByNodeId?: Maybe<GitBlame>;
+  /** Reads and enables pagination through a set of `GitBlame`. */
+  gitBlames?: Maybe<GitBlamesConnection>;
   /** Reads and enables pagination through a set of `GitBranch`. */
   gitBranches?: Maybe<GitBranchesConnection>;
   gitCommit?: Maybe<GitCommit>;
   /** Reads a single `GitCommit` using its globally unique `ID`. */
   gitCommitByNodeId?: Maybe<GitCommit>;
+  gitCommitStat?: Maybe<GitCommitStat>;
+  /** Reads a single `GitCommitStat` using its globally unique `ID`. */
+  gitCommitStatByNodeId?: Maybe<GitCommitStat>;
   /** Reads and enables pagination through a set of `GitCommitStat`. */
   gitCommitStats?: Maybe<GitCommitStatsConnection>;
   /** Reads and enables pagination through a set of `GitCommit`. */
@@ -5622,7 +6134,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitCommit | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration | ServiceAuthCredential | ServiceAuthCredentialType | TrivyRepoScan>;
+  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | TrivyRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /**
@@ -5681,6 +6193,11 @@ export type Query = Node & {
   schemaMigrationByNodeId?: Maybe<SchemaMigration>;
   /** Reads and enables pagination through a set of `SchemaMigration`. */
   schemaMigrations?: Maybe<SchemaMigrationsConnection>;
+  /** Reads and enables pagination through a set of `SchemaMigrationsHistory`. */
+  schemaMigrationsHistories?: Maybe<SchemaMigrationsHistoriesConnection>;
+  schemaMigrationsHistory?: Maybe<SchemaMigrationsHistory>;
+  /** Reads a single `SchemaMigrationsHistory` using its globally unique `ID`. */
+  schemaMigrationsHistoryByNodeId?: Maybe<SchemaMigrationsHistory>;
   serviceAuthCredential?: Maybe<ServiceAuthCredential>;
   /** Reads a single `ServiceAuthCredential` using its globally unique `ID`. */
   serviceAuthCredentialByNodeId?: Maybe<ServiceAuthCredential>;
@@ -5710,6 +6227,33 @@ export type QueryExecSqlArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryGitBlameArgs = {
+  lineNo: Scalars['Int'];
+  path: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitBlameByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitBlamesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitBlameCondition>;
+  filter?: InputMaybe<GitBlameFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitBlamesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryGitBranchesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -5731,6 +6275,21 @@ export type QueryGitCommitArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryGitCommitByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitCommitStatArgs = {
+  commitHash: Scalars['String'];
+  filePath: Scalars['String'];
+  newFileMode: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitCommitStatByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
@@ -6265,6 +6824,31 @@ export type QuerySchemaMigrationsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QuerySchemaMigrationsHistoriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SchemaMigrationsHistoryCondition>;
+  filter?: InputMaybe<SchemaMigrationsHistoryFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SchemaMigrationsHistoriesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySchemaMigrationsHistoryArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySchemaMigrationsHistoryByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryServiceAuthCredentialArgs = {
   id: Scalars['UUID'];
 };
@@ -6355,6 +6939,8 @@ export type QueryTrivyRepoVulnerabilitiesArgs = {
 export type Repo = Node & {
   _mergestatSyncedAt: Scalars['Datetime'];
   createdAt: Scalars['Datetime'];
+  /** Reads and enables pagination through a set of `GitBlame`. */
+  gitBlames: GitBlamesConnection;
   /** Reads and enables pagination through a set of `GitCommitStat`. */
   gitCommitStats: GitCommitStatsConnection;
   /** Reads and enables pagination through a set of `GitCommit`. */
@@ -6390,6 +6976,19 @@ export type Repo = Node & {
   tags: Scalars['JSON'];
   /** Reads a single `TrivyRepoScan` that is related to this `Repo`. */
   trivyRepoScan?: Maybe<TrivyRepoScan>;
+};
+
+
+/** Git repositories to track */
+export type RepoGitBlamesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitBlameCondition>;
+  filter?: InputMaybe<GitBlameFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitBlamesOrderBy>>;
 };
 
 
@@ -7122,6 +7721,7 @@ export type RepoSyncQueue = Node & {
   lastKeepAlive?: Maybe<Scalars['Datetime']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  priority: Scalars['Int'];
   /** Reads a single `RepoSync` that is related to this `RepoSyncQueue`. */
   repoSync?: Maybe<RepoSync>;
   repoSyncId: Scalars['UUID'];
@@ -7158,6 +7758,8 @@ export type RepoSyncQueueCondition = {
   id?: InputMaybe<Scalars['BigInt']>;
   /** Checks for equality with the object’s `lastKeepAlive` field. */
   lastKeepAlive?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `priority` field. */
+  priority?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `repoSyncId` field. */
   repoSyncId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `startedAt` field. */
@@ -7184,6 +7786,8 @@ export type RepoSyncQueueFilter = {
   not?: InputMaybe<RepoSyncQueueFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<RepoSyncQueueFilter>>;
+  /** Filter by the object’s `priority` field. */
+  priority?: InputMaybe<IntFilter>;
   /** Filter by the object’s `repoSyncId` field. */
   repoSyncId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `startedAt` field. */
@@ -7198,6 +7802,7 @@ export type RepoSyncQueueInput = {
   doneAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['BigInt']>;
   lastKeepAlive?: InputMaybe<Scalars['Datetime']>;
+  priority?: InputMaybe<Scalars['Int']>;
   repoSyncId: Scalars['UUID'];
   startedAt?: InputMaybe<Scalars['Datetime']>;
   status: Scalars['String'];
@@ -7209,6 +7814,7 @@ export type RepoSyncQueuePatch = {
   doneAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['BigInt']>;
   lastKeepAlive?: InputMaybe<Scalars['Datetime']>;
+  priority?: InputMaybe<Scalars['Int']>;
   repoSyncId?: InputMaybe<Scalars['UUID']>;
   startedAt?: InputMaybe<Scalars['Datetime']>;
   status?: InputMaybe<Scalars['String']>;
@@ -7336,6 +7942,8 @@ export enum RepoSyncQueuesOrderBy {
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PriorityAsc = 'PRIORITY_ASC',
+  PriorityDesc = 'PRIORITY_DESC',
   RepoSyncIdAsc = 'REPO_SYNC_ID_ASC',
   RepoSyncIdDesc = 'REPO_SYNC_ID_DESC',
   StartedAtAsc = 'STARTED_AT_ASC',
@@ -7588,6 +8196,90 @@ export type SchemaMigrationsEdge = {
   node: SchemaMigration;
 };
 
+/** A connection to a list of `SchemaMigrationsHistory` values. */
+export type SchemaMigrationsHistoriesConnection = {
+  /** A list of edges which contains the `SchemaMigrationsHistory` and cursor to aid in pagination. */
+  edges: Array<SchemaMigrationsHistoriesEdge>;
+  /** A list of `SchemaMigrationsHistory` objects. */
+  nodes: Array<SchemaMigrationsHistory>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SchemaMigrationsHistory` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `SchemaMigrationsHistory` edge in the connection. */
+export type SchemaMigrationsHistoriesEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SchemaMigrationsHistory` at the end of the edge. */
+  node: SchemaMigrationsHistory;
+};
+
+/** Methods to use when ordering `SchemaMigrationsHistory`. */
+export enum SchemaMigrationsHistoriesOrderBy {
+  AppliedAtAsc = 'APPLIED_AT_ASC',
+  AppliedAtDesc = 'APPLIED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  VersionAsc = 'VERSION_ASC',
+  VersionDesc = 'VERSION_DESC'
+}
+
+export type SchemaMigrationsHistory = Node & {
+  appliedAt: Scalars['Datetime'];
+  id: Scalars['Int'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  version: Scalars['BigInt'];
+};
+
+/**
+ * A condition to be used against `SchemaMigrationsHistory` object types. All
+ * fields are tested for equality and combined with a logical ‘and.’
+ */
+export type SchemaMigrationsHistoryCondition = {
+  /** Checks for equality with the object’s `appliedAt` field. */
+  appliedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `version` field. */
+  version?: InputMaybe<Scalars['BigInt']>;
+};
+
+/** A filter to be used against `SchemaMigrationsHistory` object types. All fields are combined with a logical ‘and.’ */
+export type SchemaMigrationsHistoryFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SchemaMigrationsHistoryFilter>>;
+  /** Filter by the object’s `appliedAt` field. */
+  appliedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<IntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SchemaMigrationsHistoryFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SchemaMigrationsHistoryFilter>>;
+  /** Filter by the object’s `version` field. */
+  version?: InputMaybe<BigIntFilter>;
+};
+
+/** An input for mutations affecting `SchemaMigrationsHistory` */
+export type SchemaMigrationsHistoryInput = {
+  appliedAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  version: Scalars['BigInt'];
+};
+
+/** Represents an update to a `SchemaMigrationsHistory`. Fields that are set will be updated. */
+export type SchemaMigrationsHistoryPatch = {
+  appliedAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  version?: InputMaybe<Scalars['BigInt']>;
+};
+
 /** Methods to use when ordering `SchemaMigration`. */
 export enum SchemaMigrationsOrderBy {
   DirtyAsc = 'DIRTY_ASC',
@@ -7789,6 +8481,28 @@ export enum ServiceAuthCredentialsOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
+
+/** All input for the `simpleRepoSyncQueueCleanup` mutation. */
+export type SimpleRepoSyncQueueCleanupInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  daysToRetainParam?: InputMaybe<Scalars['Int']>;
+};
+
+/** The output of our `simpleRepoSyncQueueCleanup` mutation. */
+export type SimpleRepoSyncQueueCleanupPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  integer?: Maybe<Scalars['Int']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
@@ -8109,6 +8823,56 @@ export type UuidFilter = {
   notIn?: InputMaybe<Array<Scalars['UUID']>>;
 };
 
+/** All input for the `updateGitBlameByNodeId` mutation. */
+export type UpdateGitBlameByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GitBlame` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `GitBlame` being updated. */
+  patch: GitBlamePatch;
+};
+
+/** All input for the `updateGitBlame` mutation. */
+export type UpdateGitBlameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  lineNo: Scalars['Int'];
+  /** An object where the defined keys will be set on the `GitBlame` being updated. */
+  patch: GitBlamePatch;
+  path: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `GitBlame` mutation. */
+export type UpdateGitBlamePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GitBlame` that was updated by this mutation. */
+  gitBlame?: Maybe<GitBlame>;
+  /** An edge for our `GitBlame`. May be used by Relay 1. */
+  gitBlameEdge?: Maybe<GitBlamesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GitBlame`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our update `GitBlame` mutation. */
+export type UpdateGitBlamePayloadGitBlameEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitBlamesOrderBy>>;
+};
+
 /** All input for the `updateGitCommitByNodeId` mutation. */
 export type UpdateGitCommitByNodeIdInput = {
   /**
@@ -8156,6 +8920,57 @@ export type UpdateGitCommitPayload = {
 /** The output of our update `GitCommit` mutation. */
 export type UpdateGitCommitPayloadGitCommitEdgeArgs = {
   orderBy?: InputMaybe<Array<GitCommitsOrderBy>>;
+};
+
+/** All input for the `updateGitCommitStatByNodeId` mutation. */
+export type UpdateGitCommitStatByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GitCommitStat` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `GitCommitStat` being updated. */
+  patch: GitCommitStatPatch;
+};
+
+/** All input for the `updateGitCommitStat` mutation. */
+export type UpdateGitCommitStatInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  commitHash: Scalars['String'];
+  filePath: Scalars['String'];
+  newFileMode: Scalars['String'];
+  /** An object where the defined keys will be set on the `GitCommitStat` being updated. */
+  patch: GitCommitStatPatch;
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `GitCommitStat` mutation. */
+export type UpdateGitCommitStatPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GitCommitStat` that was updated by this mutation. */
+  gitCommitStat?: Maybe<GitCommitStat>;
+  /** An edge for our `GitCommitStat`. May be used by Relay 1. */
+  gitCommitStatEdge?: Maybe<GitCommitStatsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GitCommitStat`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our update `GitCommitStat` mutation. */
+export type UpdateGitCommitStatPayloadGitCommitStatEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitCommitStatsOrderBy>>;
 };
 
 /** All input for the `updateGitFileByNodeId` mutation. */
@@ -9051,6 +9866,52 @@ export type UpdateSchemaMigrationPayloadSchemaMigrationEdgeArgs = {
   orderBy?: InputMaybe<Array<SchemaMigrationsOrderBy>>;
 };
 
+/** All input for the `updateSchemaMigrationsHistoryByNodeId` mutation. */
+export type UpdateSchemaMigrationsHistoryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SchemaMigrationsHistory` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `SchemaMigrationsHistory` being updated. */
+  patch: SchemaMigrationsHistoryPatch;
+};
+
+/** All input for the `updateSchemaMigrationsHistory` mutation. */
+export type UpdateSchemaMigrationsHistoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['Int'];
+  /** An object where the defined keys will be set on the `SchemaMigrationsHistory` being updated. */
+  patch: SchemaMigrationsHistoryPatch;
+};
+
+/** The output of our update `SchemaMigrationsHistory` mutation. */
+export type UpdateSchemaMigrationsHistoryPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SchemaMigrationsHistory` that was updated by this mutation. */
+  schemaMigrationsHistory?: Maybe<SchemaMigrationsHistory>;
+  /** An edge for our `SchemaMigrationsHistory`. May be used by Relay 1. */
+  schemaMigrationsHistoryEdge?: Maybe<SchemaMigrationsHistoriesEdge>;
+};
+
+
+/** The output of our update `SchemaMigrationsHistory` mutation. */
+export type UpdateSchemaMigrationsHistoryPayloadSchemaMigrationsHistoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<SchemaMigrationsHistoriesOrderBy>>;
+};
+
 /** All input for the `updateServiceAuthCredentialByNodeId` mutation. */
 export type UpdateServiceAuthCredentialByNodeIdInput = {
   /**
@@ -9245,6 +10106,11 @@ export type AddSyncTypeMutationVariables = Exact<{
 
 
 export type AddSyncTypeMutation = { createRepoSync?: { repoSync?: { id: any, syncType: string } | null } | null };
+
+export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentUserQuery = { currentMergeStatUser?: string | null };
 
 export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 

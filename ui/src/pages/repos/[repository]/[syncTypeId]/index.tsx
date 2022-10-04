@@ -6,7 +6,6 @@ import { SyncTypeData } from 'src/@types'
 import { GET_SYNC_HISTORY_LOGS } from 'src/api-logic/graphql/queries/get-sync-history-logs.query'
 import { mapToSyncLogsData } from 'src/api-logic/mappers/syncs-logs'
 import Loading from 'src/components/Loading'
-import { showErrorAlert } from 'src/utils/alerts'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
 import useSyncNow from 'src/views/hooks/useSyncNow'
 import RepoDataTypeView from 'src/views/repository-data-details'
@@ -15,7 +14,7 @@ const DataTypePage = () => {
   const router = useRouter()
   const { repository, syncTypeId } = router.query
 
-  const { loading, error, data, refetch } = useQuery(GET_SYNC_HISTORY_LOGS, {
+  const { loading, data, refetch } = useQuery(GET_SYNC_HISTORY_LOGS, {
     variables: { repoId: repository, syncId: syncTypeId },
     pollInterval: 5000,
   })
@@ -24,10 +23,6 @@ const DataTypePage = () => {
 
   const repoData: SyncTypeData = mapToSyncLogsData(data)
   const title = `${MERGESTAT_TITLE} ${repoData.repo.name}`
-
-  if (error) {
-    showErrorAlert(error.message)
-  }
 
   return (
     <Fragment>

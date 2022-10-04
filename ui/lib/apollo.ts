@@ -1,18 +1,37 @@
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
 import { concatPagination } from '@apollo/client/utilities'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
+import { NextRouter, useRouter } from 'next/router'
 import { useMemo } from 'react'
+import { showErrorAlert } from 'src/utils/alerts'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
-function createApolloClient() {
+const httpLink = new HttpLink({
+  uri: '/api/graphql',
+  credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+})
+
+const logoutLink = (router: NextRouter) => onError(({ graphQLErrors }) => {
+  if (graphQLErrors) {
+    for (const err of graphQLErrors) {
+      if (err.message.includes('jwt expired')) {
+        router.push({ pathname: '/login', query: { lostSession: true } })
+      } else {
+        const message = err.message.includes('duplicate key value violates unique constraint')
+        if (!message) showErrorAlert(err.message)
+        return
+      }
+    }
+  }
+})
+
+function createApolloClient(router: NextRouter) {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: new HttpLink({
-      uri: '/api/graphql',
-      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
-    }),
+    link: logoutLink(router).concat(httpLink),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
@@ -25,8 +44,8 @@ function createApolloClient() {
   })
 }
 
-export function initializeApollo(initialState: NormalizedCacheObject | null = null) {
-  const _apolloClient = apolloClient ?? createApolloClient()
+export function initializeApollo(initialState: NormalizedCacheObject | null = null, router: NextRouter) {
+  const _apolloClient = apolloClient ?? createApolloClient(router)
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // get hydrated here
@@ -57,6 +76,7 @@ export function initializeApollo(initialState: NormalizedCacheObject | null = nu
 }
 
 export function useApollo(initialState: NormalizedCacheObject) {
-  const store = useMemo(() => initializeApollo(initialState), [initialState])
+  const router = useRouter()
+  const store = useMemo(() => initializeApollo(initialState, router), [initialState, router])
   return store
 }

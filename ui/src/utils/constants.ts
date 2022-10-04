@@ -58,6 +58,10 @@ export enum SYNC_STATUS {
   empty = 'empty'
 }
 
+export enum COOKIE {
+  jwt = 'jwt'
+}
+
 export const LINKS_TO = {
   createPAt: 'https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token',
 }
