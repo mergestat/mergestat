@@ -53,9 +53,7 @@ export function capitalize(phrase: string) {
  * @returns Date time ago relative to current date (e.g.: 'less than 20 seconds ago', '1 minute ago')
  */
 export function getRelativeTime(baseDate: Date): string {
-  const distance = formatDistance(new Date(), baseDate, {})
-
-  return `${distance} ago`
+  return formatDistance(baseDate, new Date(), { addSuffix: true }).replace(/less than a minute ago*/ig, 'just now')
 }
 
 /**
