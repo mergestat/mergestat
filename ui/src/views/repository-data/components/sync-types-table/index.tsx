@@ -39,7 +39,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                       <span className='mr-1 select-none'>Latest Run</span>
                     </th>
 
-                    <th scope="col" key='latestRun' className='whitespace-nowrap px-6 pl-0'>
+                    <th scope="col" key='meanRunningTime' className='whitespace-nowrap px-6 pl-0'>
                       <span className='mr-1 select-none'>Mean Running Time</span>
                     </th>
 
@@ -86,6 +86,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                       </td>
 
                       <td className='text-gray-500 h-20 p-0'>
+                        {sync.status.data && sync.status.data.length === 0 && <span>-</span>}
                         <RepositorySyncStatus
                           data={sync.status.data}
                           disabled={sync.status.syncState === SYNC_STATUS.disabled}

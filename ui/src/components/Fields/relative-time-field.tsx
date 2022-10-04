@@ -11,7 +11,7 @@ export type RelativeTimeFieldProps = {
 }
 
 export const RelativeTimeField: React.FC<RelativeTimeFieldProps> = ({ date, syncData, styles }) => {
-  const [dateRun, setDateRun] = useState<string>('N/A')
+  const [dateRun, setDateRun] = useState<string>('-')
 
   const recalculateTimeAgo = () => {
     const timeAgo = getRelativeTime(new Date(date))
