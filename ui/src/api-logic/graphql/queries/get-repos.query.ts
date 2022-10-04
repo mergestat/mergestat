@@ -23,11 +23,14 @@ const GET_REPOS = gql`
           type
           settings
         }
-        repoSyncs {
+        repoSyncs(orderBy: SYNC_TYPE_ASC) {
           totalCount
           nodes {
             id
             syncType
+            repoSyncTypeBySyncType {
+              shortName
+            }
             repoSyncQueues(first: 1, orderBy: CREATED_AT_DESC) {
               nodes {
                 id

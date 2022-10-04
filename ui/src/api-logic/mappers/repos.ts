@@ -1,5 +1,5 @@
 import { RepoDataPropsT, RepoDataStatusT, RepoSyncStateT } from 'src/@types'
-import { capitalize, mapToRepoSyncStateT } from 'src/utils'
+import { mapToRepoSyncStateT } from 'src/utils'
 import { GITHUB_URL, SYNC_REPO_METHOD } from 'src/utils/constants'
 import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
 
@@ -59,7 +59,7 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
   const syncTypes = r?.repoSyncs.nodes.map((st: RepoSync) => {
     const syncObj: SyncTypeFlatten = {
       idType: st?.id,
-      type: capitalize(st?.syncType.replace(/_/ig, ' ')),
+      type: st?.repoSyncTypeBySyncType?.shortName || '',
       idLastSync: '',
       status: '',
       lastSync: ''
