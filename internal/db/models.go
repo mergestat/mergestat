@@ -298,6 +298,7 @@ type MergestatRepoSync struct {
 	Settings        pgtype.JSONB
 	ID              uuid.UUID
 	ScheduleEnabled bool
+	Priority        int32
 }
 
 type MergestatRepoSyncLog struct {
@@ -333,6 +334,7 @@ type MergestatRepoSyncType struct {
 	Type        string
 	Description sql.NullString
 	ShortName   string
+	Priority    int32
 }
 
 type MergestatServiceAuthCredential struct {
@@ -359,6 +361,32 @@ type Repo struct {
 	Tags              pgtype.JSONB
 	RepoImportID      uuid.NullUUID
 	MergestatSyncedAt time.Time
+}
+
+type SchemaMigrationsHistory struct {
+	ID        int32
+	Version   int64
+	AppliedAt time.Time
+}
+
+type SyftRepoArtifact struct {
+	RepoID    uuid.UUID
+	Artifact  pgtype.JSONB
+	ID        interface{}
+	Name      interface{}
+	Version   interface{}
+	Type      interface{}
+	FoundBy   interface{}
+	Locations interface{}
+	Licenses  interface{}
+	Language  interface{}
+	Cpes      interface{}
+	Purl      interface{}
+}
+
+type SyftRepoScan struct {
+	RepoID  uuid.UUID
+	Results pgtype.JSONB
 }
 
 type TrivyRepoScan struct {

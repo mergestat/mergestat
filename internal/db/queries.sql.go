@@ -57,7 +57,7 @@ WITH dequeued AS (
 )
 SELECT
 	dequeued.id, dequeued.created_at, dequeued.status, dequeued.repo_sync_id,
-	repo_syncs.repo_id, repo_syncs.sync_type, repo_syncs.settings, repo_syncs.id, repo_syncs.schedule_enabled,
+	repo_syncs.repo_id, repo_syncs.sync_type, repo_syncs.settings, repo_syncs.id, repo_syncs.schedule_enabled, repo_syncs.priority,
 	repos.repo,
 	repos.ref,
 	repos.is_github,
@@ -77,6 +77,7 @@ type DequeueSyncJobRow struct {
 	Settings        pgtype.JSONB
 	ID_2            uuid.UUID
 	ScheduleEnabled bool
+	Priority        int32
 	Repo            string
 	Ref             sql.NullString
 	IsGithub        sql.NullBool
@@ -96,6 +97,7 @@ func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
 		&i.Settings,
 		&i.ID_2,
 		&i.ScheduleEnabled,
+		&i.Priority,
 		&i.Repo,
 		&i.Ref,
 		&i.IsGithub,
@@ -112,10 +114,11 @@ WITH ranked_queue AS (
     FROM mergestat.repo_syncs
     INNER JOIN mergestat.repo_sync_queue AS rsq ON mergestat.repo_syncs.id = rsq.repo_sync_id
 )
-INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
+INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status, priority)
 SELECT
     id,
-    'QUEUED' AS status
+    'QUEUED' AS status,
+	priority
 FROM mergestat.repo_syncs
 WHERE schedule_enabled
     AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
@@ -289,7 +292,11 @@ func (q *Queries) InsertGitHubRepoInfo(ctx context.Context, arg InsertGitHubRepo
 }
 
 const insertNewDefaultSync = `-- name: InsertNewDefaultSync :exec
-INSERT INTO mergestat.repo_syncs (repo_id, sync_type) VALUES($1::uuid,$2::text) ON CONFLICT DO NOTHING
+INSERT INTO mergestat.repo_syncs (repo_id, sync_type, priority, schedule_enabled)
+SELECT $1::uuid, type, priority, true
+FROM mergestat.repo_sync_types
+WHERE type = $2::text
+ON CONFLICT DO NOTHING
 `
 
 type InsertNewDefaultSyncParams struct {
