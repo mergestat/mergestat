@@ -35,6 +35,7 @@ const GET_REPOS = gql`
               nodes {
                 id
                 status
+                doneAt
                 createdAt
               }
             }

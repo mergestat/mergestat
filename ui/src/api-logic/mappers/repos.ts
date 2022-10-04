@@ -67,7 +67,7 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
 
     st?.repoSyncQueues.nodes.forEach((ls: RepoSyncQueue) => {
       syncObj.idLastSync = ls?.id || ''
-      syncObj.lastSync = ls?.createdAt || ''
+      syncObj.lastSync = ls?.doneAt || ''
       syncObj.status = ls?.status || ''
     })
 
