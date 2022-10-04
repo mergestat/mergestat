@@ -1,4 +1,4 @@
-import { ApolloError, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Alert, Button, Modal, Toolbar } from '@mergestat/blocks'
 import { TrashIcon, XIcon } from '@mergestat/icons'
 import cx from 'classnames'
@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import React, { useCallback } from 'react'
 import { REMOVE_REPO } from 'src/api-logic/graphql/mutations/repos'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
-import { showErrorAlert, showSuccessAlert } from 'src/utils/alerts'
+import { showSuccessAlert } from 'src/utils/alerts'
 import { TEST_IDS } from 'src/utils/constants'
 import useRepos from 'src/views/hooks/useRepos'
 
@@ -21,9 +21,6 @@ export const RemoveRepositoryModal: React.FC = () => {
   }, [setShowRemoveRepositoryModal])
 
   const [removeRepo] = useMutation(REMOVE_REPO, {
-    onError: (error: ApolloError) => {
-      showErrorAlert(error.message)
-    },
     onCompleted: () => {
       repoToRemove?.redirect && router.push('/repos')
       showSuccessAlert('Repository removed successfully')

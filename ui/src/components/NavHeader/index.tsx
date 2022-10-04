@@ -12,9 +12,6 @@ const NavHeader: React.FC = () => {
   const router = useRouter()
 
   const { data } = useQuery<CurrentUserQuery>(CURRENT_USER, { fetchPolicy: 'no-cache' })
-  if (data?.currentMergeStatUser === 'mergestat_anonymous') {
-    router.push({ pathname: '/login', query: { lostSession: true } })
-  }
 
   const handleLogout = async () => {
     const loggedout = await logout()

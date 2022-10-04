@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client'
 import { useCallback, useEffect, useState } from 'react'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
-import { showErrorAlert } from 'src/utils/alerts'
 
 const useRepos = (search: string, poll = false) => {
   const [showTable, setShowTable] = useState(false)
@@ -27,10 +26,6 @@ const useRepos = (search: string, poll = false) => {
   useEffect(() => {
     refetch({ search })
   }, [refetch, search])
-
-  if (error) {
-    showErrorAlert(error.message)
-  }
 
   return { showTable, loading, data, showBanner, refetch }
 }

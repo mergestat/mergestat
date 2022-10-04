@@ -36,7 +36,7 @@ const LoginPage = () => {
           <Panel.Body>
             {lostSession && (
               <Alert theme="light" type="warning" className="mb-6" >
-                You’ve lost session. Please log in again.
+                Your session has expired. Please log in again.
               </Alert>
             )}
 
