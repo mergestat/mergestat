@@ -1,13 +1,13 @@
-import { Avatar, Button, Panel } from '@mergestat/blocks'
-import { PlusIcon, WarningFilledIcon } from '@mergestat/icons'
+import { Button, Panel } from '@mergestat/blocks'
+import { GithubIcon } from '@mergestat/icons'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
+// import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { TEST_IDS } from 'src/utils/constants'
 
 export const EmptyRepositoryTable: React.FC = () => {
-  const { setShowAddRepositoryModal } = useRepositoriesSetState()
+  // const { setShowAddRepositoryModal } = useRepositoriesSetState()
 
   return (
     <div data-testid={TEST_IDS.emptyRepositoryTable} className="flex items-center justify-center h-full w-full">
@@ -18,7 +18,7 @@ export const EmptyRepositoryTable: React.FC = () => {
               <div className="w-full md_w-8/12 lg_w-6/12 p-8 lg_p-10 mx-auto">
                 <Image
                   className="inline-block"
-                  src={'/assets/illustration-repos.png'}
+                  src={'/assets/illustration-repo-syncs.png'}
                   width={300}
                   height={178}
                   layout="responsive"
@@ -27,20 +27,20 @@ export const EmptyRepositoryTable: React.FC = () => {
               </div>
 
               <div className="w-full lg_w-6/12 p-8 lg_p-10 flex flex-col items-center lg_items-start">
-                <Avatar className="mb-6" icon={<WarningFilledIcon className="t-icon" />} size="md" variant="warning" />
-                <h3 className="t-h3 mb-2">Start by adding a GitHub authentication token</h3>
-                <p className="text-semantic-mutedText">Add a personal access token to import repos from GitHub.</p>
+                {/* <Avatar className="mb-6" icon={<CogIcon className="t-icon" />} size="md" /> */}
+                <h3 className="t-h3 mb-2">GitHub Authentication Token</h3>
+                <p className="text-semantic-mutedText">Add a personal access token to start importing from GitHub (and to work with private repos).</p>
                 <div className="t-button-toolbar mt-8">
                   <Link href="/settings">
-                    <Button label="Authenticate GitHub" />
+                    <Button label="Authenticate GitHub" endIcon={<GithubIcon className="t-icon" />} />
                   </Link>
-                  <Button
+                  {/* <Button
                     startIcon={<PlusIcon className="t-icon" />}
                     onClick={() => setShowAddRepositoryModal(true)}
                     skin="secondary"
                   >
                     Add Repository
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>

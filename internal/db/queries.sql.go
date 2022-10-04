@@ -104,16 +104,6 @@ func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
 	return i, err
 }
 
-const enqueueAllCompletedSyncs = `-- name: EnqueueAllCompletedSyncs :exec
-INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status)
-SELECT id, 'QUEUED' FROM mergestat.repo_syncs WHERE schedule_enabled AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
-`
-
-func (q *Queries) EnqueueAllCompletedSyncs(ctx context.Context) error {
-	_, err := q.db.Exec(ctx, enqueueAllCompletedSyncs)
-	return err
-}
-
 const enqueueAllSyncs = `-- name: EnqueueAllSyncs :exec
 WITH ranked_queue AS (
     SELECT
@@ -145,6 +135,35 @@ func (q *Queries) EnqueueAllSyncs(ctx context.Context) error {
 	return err
 }
 
+const getRepoIDsFromRepoImport = `-- name: GetRepoIDsFromRepoImport :many
+SELECT id FROM public.repos WHERE repo_import_id = $1::uuid AND repo = ANY($2::TEXT[])
+`
+
+type GetRepoIDsFromRepoImportParams struct {
+	Importid  uuid.UUID
+	Reposurls []string
+}
+
+func (q *Queries) GetRepoIDsFromRepoImport(ctx context.Context, arg GetRepoIDsFromRepoImportParams) ([]uuid.UUID, error) {
+	rows, err := q.db.Query(ctx, getRepoIDsFromRepoImport, arg.Importid, arg.Reposurls)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []uuid.UUID
+	for rows.Next() {
+		var id uuid.UUID
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+		items = append(items, id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getRepoImportByID = `-- name: GetRepoImportByID :one
 SELECT id, created_at, updated_at, type, settings, last_import, import_interval, last_import_started_at FROM mergestat.repo_imports
 WHERE id = $1 LIMIT 1
@@ -164,6 +183,30 @@ func (q *Queries) GetRepoImportByID(ctx context.Context, id uuid.UUID) (Mergesta
 		&i.LastImportStartedAt,
 	)
 	return i, err
+}
+
+const getRepoUrlFromImport = `-- name: GetRepoUrlFromImport :many
+SELECT repo FROM public.repos WHERE repo_import_id = $1::uuid
+`
+
+func (q *Queries) GetRepoUrlFromImport(ctx context.Context, importid uuid.UUID) ([]string, error) {
+	rows, err := q.db.Query(ctx, getRepoUrlFromImport, importid)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var repo string
+		if err := rows.Scan(&repo); err != nil {
+			return nil, err
+		}
+		items = append(items, repo)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const insertGitHubRepoInfo = `-- name: InsertGitHubRepoInfo :exec
@@ -242,6 +285,20 @@ func (q *Queries) InsertGitHubRepoInfo(ctx context.Context, arg InsertGitHubRepo
 		arg.UpdatedAt,
 		arg.WatchersCount,
 	)
+	return err
+}
+
+const insertNewDefaultSync = `-- name: InsertNewDefaultSync :exec
+INSERT INTO mergestat.repo_syncs (repo_id, sync_type) VALUES($1::uuid,$2::text) ON CONFLICT DO NOTHING
+`
+
+type InsertNewDefaultSyncParams struct {
+	Repoid   uuid.UUID
+	Synctype string
+}
+
+func (q *Queries) InsertNewDefaultSync(ctx context.Context, arg InsertNewDefaultSyncParams) error {
+	_, err := q.db.Exec(ctx, insertNewDefaultSync, arg.Repoid, arg.Synctype)
 	return err
 }
 

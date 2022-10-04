@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"os"
 
 	"github.com/jackc/pgx/v4"
 	libgit2 "github.com/libgit2/git2go/v33"
@@ -71,16 +70,16 @@ type commitStat struct {
 func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	// TODO(patrickdevivo) uplift the following os.Getenv call to one place, pass value down as a param
-	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
-	if err != nil {
-		return err
+	// indicate that we're starting query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+		return fmt.Errorf("log messages: %w", err)
 	}
-	defer func() {
-		if err := os.RemoveAll(tmpPath); err != nil {
-			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
-		}
-	}()
+
+	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
+	if err != nil {
+		return fmt.Errorf("temp dir: %w", err)
+	}
+	defer cleanup()
 
 	var ghToken string
 	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
@@ -88,15 +87,10 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 	}
 
 	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ghToken, j.Repo, tmpPath, true); err != nil {
+	if repo, err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 	defer repo.Free()
-
-	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
-		return fmt.Errorf("log messages: %w", err)
-	}
 
 	stats := make([]*commitStat, 0)
 
@@ -202,7 +196,16 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM git_commit_stats WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	r, err := tx.Exec(ctx, "DELETE FROM git_commit_stats WHERE repo_id = $1;", j.RepoID.String())
+	if err != nil {
+		return err
+	}
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("removed %d row(s) from git_commit_stats", r.RowsAffected()),
+	}}); err != nil {
 		return err
 	}
 
@@ -211,6 +214,14 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 	}
 
 	l.Info().Msgf("imported %d commit stats", len(stats))
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("inserted %d row(s) into git_commit_stats", len(stats)),
+	}}); err != nil {
+		return err
+	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return err

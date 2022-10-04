@@ -76,9 +76,12 @@ services:
       POSTGRAPHILE_API: http://graphql:5433/graphql
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
       JWT_SECRET: secret # should match - "--jwt-secret=secret" flag in graphql service
+    labels:
+      shipyard.route: '/'
 
   grafana:
     image: grafana/grafana-oss:latest
+    user: root
     environment:
       PGHOST: postgres
       PGUSER: postgres
@@ -95,7 +98,13 @@ services:
       - grafana_log:/var/log/grafana
       - ./scripts/grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./scripts/grafana/provisioning:/etc/grafana/provisioning
-      - ./scripts/grafana/dashboards:/var/lib/grafana/dashboards/
+      - ./examples:/var/lib/examples
+      - /var/lib/grafana/dashboards/
+    entrypoint: ["bash"]
+    command: > # This is to set the datasource id in the examples to the datasource created for local grafana
+      -cx 'cp -r /var/lib/examples/* /var/lib/grafana/dashboards/
+      && find /var/lib/grafana/dashboards/ -name ''*.json'' | xargs grep -rnl "$${DS_POSTGRES}" | xargs -i@ sed -i "s/\$${DS_POSTGRES}/SXQZgpP7z/g" @
+      && exec grafana-server --config="/etc/grafana/grafana.ini"'
 
 volumes:
   db_data:

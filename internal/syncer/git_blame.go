@@ -8,10 +8,12 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"time"
 	"unicode/utf8"
 
+	"github.com/go-enry/go-enry/v2"
 	"github.com/jackc/pgx/v4"
 	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/fuse/internal/db"
@@ -60,15 +62,16 @@ type blameLine struct {
 func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
+	// indicate that we're starting query execution
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+		return fmt.Errorf("log messages: %w", err)
+	}
+
+	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
-	defer func() {
-		if err := os.RemoveAll(tmpPath); err != nil {
-			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
-		}
-	}()
+	defer cleanup()
 
 	var ghToken string
 	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
@@ -76,15 +79,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ghToken, j.Repo, tmpPath, false); err != nil {
+	if repo, err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, false, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 	defer repo.Free()
-
-	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
-		return fmt.Errorf("log messages: %w", err)
-	}
 
 	blamedLines := make([]*blameLine, 0)
 
@@ -110,6 +108,31 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		if o.Type != "blob" {
 			continue
 		}
+
+		// skip running git blame on binary files
+		// first detect if a file is binary or not
+		fullPath := filepath.Join(tmpPath, o.Path)
+		if f, err := os.Open(fullPath); err != nil {
+			w.logger.Err(err).Msgf("error opening file in repo: %s, %v", fullPath, err)
+			continue
+		} else {
+			defer f.Close()
+
+			// only read the first 8kb of the file to detect if it's binary or not
+			buffer := make([]byte, 8000)
+			var bytesRead int
+			if bytesRead, err = f.Read(buffer); err != nil && !errors.Is(err, io.EOF) {
+				w.logger.Err(err).Msgf("error reading file in repo: %s, %v", fullPath, err)
+			}
+
+			// See here: https://github.com/go-enry/go-enry/blob/v2.8.2/utils.go#L80 for the implementation of IsBinary
+			// basically just looking for a byte(0) in the first portion of the file
+			if enry.IsBinary(buffer[:bytesRead]) {
+				w.logger.Info().Msgf("skipping binary file: %s", fullPath)
+				continue
+			}
+		}
+
 		res, err := blame.Exec(ctx, tmpPath, o.Path)
 		if err != nil {
 			if exitErr, ok := err.(*exec.ExitError); ok {
@@ -123,25 +146,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		for lineIdx, blame := range res {
 			lineNo := lineIdx + 1
 
-			if blame == nil {
-				w.logger.Warn().Str("repo", j.Repo).Str("file", o.Path).Int("lineIdx", lineIdx).Msgf("nil blame line encountered")
-				continue
-			}
-
-			var authorEmail, authorName *string
-			var authorWhen *time.Time
-			// TODO(patrickdevivo) we shouldn't be seeing a nil Author here, but we are
-			// until we can audit what's going on in the `gitutils` package let's add a check here
-			if blame.Author != nil {
-				authorEmail = &blame.Author.Email
-				authorName = &blame.Author.Name
-				authorWhen = &blame.Author.When
-			}
-
 			blamedLines = append(blamedLines, &blameLine{
-				AuthorEmail: authorEmail,
-				AuthorName:  authorName,
-				AuthorWhen:  authorWhen,
+				AuthorEmail: &blame.Author.Email,
+				AuthorName:  &blame.Author.Name,
+				AuthorWhen:  &blame.Author.When,
 				CommitHash:  &blame.SHA,
 				LineNo:      &lineNo,
 				Line:        &blame.Line,
@@ -162,8 +170,17 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		}
 	}()
 
-	if _, err := tx.Exec(ctx, "DELETE FROM git_blame WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	r, err := tx.Exec(ctx, "DELETE FROM git_blame WHERE repo_id = $1;", j.RepoID.String())
+	if err != nil {
 		return fmt.Errorf("exec delete: %w", err)
+	}
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("removed %d row(s) from git_blame", r.RowsAffected()),
+	}}); err != nil {
+		return err
 	}
 
 	if err := w.sendBatchBlameLines(ctx, tx, j, blamedLines); err != nil {
@@ -171,6 +188,14 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	l.Info().Msgf("sent batch of %d blamed lines", len(blamedLines))
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("inserted %d row(s) into git_blame", len(blamedLines)),
+	}}); err != nil {
+		return err
+	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("update status done: %w", err)

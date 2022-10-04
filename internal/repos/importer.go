@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -84,13 +86,15 @@ var (
 )
 
 type githubOrgRepoImportSettings struct {
-	Org                string `json:"org"`
-	RemoveDeletedRepos bool   `json:"removeDeletedRepos"`
+	Org                string   `json:"org"`
+	RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
+	DefaultSyncTypes   []string `json:"defaultSyncTypes"`
 }
 
 type githubUserRepoImportSettings struct {
-	User               string `json:"user"`
-	RemoveDeletedRepos bool   `json:"removeDeletedRepos"`
+	User               string   `json:"user"`
+	RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
+	DefaultSyncTypes   []string `json:"defaultSyncTypes"`
 }
 
 type githubRepo struct {
@@ -104,6 +108,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 	var mergestatSQL string
 	var repoOwner string
 	var removeDeletedRepos bool
+	var defaultSyncTypes []string
 
 	// first, determine what kind of GitHub import this is (ORG or USER) and set the mergestat SQL to use
 	switch imp.Type {
@@ -115,6 +120,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 
 		repoOwner = settings.Org
 		removeDeletedRepos = settings.RemoveDeletedRepos
+		defaultSyncTypes = settings.DefaultSyncTypes
 		mergestatSQL = listGitHubOrgReposSQL
 	case "GITHUB_USER":
 		var settings githubUserRepoImportSettings
@@ -124,6 +130,7 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 
 		repoOwner = settings.User
 		removeDeletedRepos = settings.RemoveDeletedRepos
+		defaultSyncTypes = settings.DefaultSyncTypes
 		mergestatSQL = listGitHubUserReposSQL
 	default:
 		return fmt.Errorf("unknown import type: %s", imp.Type)
@@ -137,6 +144,8 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 	// start a new pg transaction to handle the repo upsert and handle deletion of removed repos
 	var tx pgx.Tx
 	var err error
+	var newImportedRepoUrls []string
+	defaultSyncs := len(defaultSyncTypes) > 0
 
 	if tx, err = i.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return err
@@ -155,6 +164,14 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 		if err != nil {
 			return err
 		}
+	}
+
+	if defaultSyncs {
+		i.logger.Info().Msgf("getting new repos urls for imp %s", imp.ID)
+		if newImportedRepoUrls, err = i.getNewImportedRepoUrls(ctx, tx, repos, repoOwner, imp.ID); err != nil {
+			return err
+		}
+		i.logger.Info().Msgf("getting new repos urls finished for imp %s", imp.ID)
 	}
 
 	repoNames := make([]string, len(repos))
@@ -177,6 +194,19 @@ func (i *importer) handleGitHubImport(ctx context.Context, imp db.ListRepoImport
 		repoNames[r] = repo.Name
 	}
 
+	//handle default syncs on new repo import
+	if defaultSyncs && len(newImportedRepoUrls) > 0 {
+		err = i.handleDefaultSyncs(ctx, tx, defaultSyncTypes, imp.ID, newImportedRepoUrls)
+		if err != nil {
+			return err
+		}
+
+		i.logger.Info().Msg("enqueuing all available syncs for newly imported repos")
+		if err = i.db.WithTx(tx).EnqueueAllSyncs(ctx); err != nil {
+			return err
+		}
+	}
+
 	if err := i.db.MarkRepoImportAsUpdated(ctx, imp.ID); err != nil {
 		return err
 	}
@@ -192,9 +222,7 @@ func (i *importer) handleDeletedRepos(ctx context.Context, tx pgx.Tx, repos []*g
 
 	i.logger.Info().Msg("starting to delete removed repos")
 
-	for _, repo := range repos {
-		currentRepos = append(currentRepos, fmt.Sprintf("https://github.com/%s/%s", repoOwner, repo.Name))
-	}
+	currentRepos = i.formatReposUrl(repos, repoOwner)
 
 	if err = i.db.WithTx(tx).DeleteRemovedRepos(ctx, db.DeleteRemovedReposParams{Column1: ID, Column2: currentRepos}); err != nil {
 		return err
@@ -203,4 +231,84 @@ func (i *importer) handleDeletedRepos(ctx context.Context, tx pgx.Tx, repos []*g
 	i.logger.Info().Msg("deletion of removed repos completed")
 
 	return err
+}
+
+// getNewImportedRepoUrls retrieves the URLs of all repos that are now being _added_ by an import
+func (i *importer) getNewImportedRepoUrls(ctx context.Context, tx pgx.Tx, repos []*githubRepo, repoOwner string, impID uuid.UUID) ([]string, error) {
+	var err error
+	var currentRepoUrls []string
+	var newImportedRepoUrls []string
+	importedRepoUrls := i.formatReposUrl(repos, repoOwner)
+
+	if currentRepoUrls, err = i.db.WithTx(tx).GetRepoUrlFromImport(ctx, impID); err != nil {
+		i.logger.Err(err).Msgf("failed to retrieve repoUrls for import %s", impID)
+		return nil, err
+	}
+
+	if len(currentRepoUrls) == 0 {
+		return importedRepoUrls, nil
+	}
+
+	sort.Strings(importedRepoUrls)
+	sort.Strings(currentRepoUrls)
+
+	for _, imported := range importedRepoUrls {
+		unique := true
+		for _, current := range currentRepoUrls {
+			if strings.Compare(imported, current) == 0 {
+				unique = false
+				break
+			}
+		}
+		if unique {
+			newImportedRepoUrls = append(newImportedRepoUrls, imported)
+		}
+	}
+
+	return newImportedRepoUrls, err
+}
+
+// handleDefaultSyncs if the repo auto import has any default syncs defined, insert those into the DB
+func (i *importer) handleDefaultSyncs(ctx context.Context, tx pgx.Tx, defaultSyncTypes []string, impID uuid.UUID, newlyAddedRepos []string) error {
+	var err error
+	var repoIDs []uuid.UUID
+
+	i.logger.Info().Msgf("starting to insert default syncs for import %s", impID)
+
+	if repoIDs, err = i.db.WithTx(tx).GetRepoIDsFromRepoImport(ctx, db.GetRepoIDsFromRepoImportParams{Importid: impID, Reposurls: newlyAddedRepos}); err != nil {
+		i.logger.Err(err).Msgf("failed to retrieve repoids for import %s", impID)
+		return err
+	}
+
+	for _, repoID := range repoIDs {
+		if err = i.insertDefaultSyncTypes(ctx, tx, defaultSyncTypes, repoID); err != nil {
+			i.logger.Err(err)
+			return err
+		}
+
+	}
+
+	i.logger.Info().Msgf("inserting of default syncs completed for import %s", impID)
+
+	return err
+}
+
+func (i *importer) insertDefaultSyncTypes(ctx context.Context, tx pgx.Tx, defaultSyncTypes []string, repoID uuid.UUID) error {
+	var err error
+
+	for _, syncType := range defaultSyncTypes {
+		if err = i.db.WithTx(tx).InsertNewDefaultSync(ctx, db.InsertNewDefaultSyncParams{Repoid: repoID, Synctype: syncType}); err != nil {
+			i.logger.Err(err).Msgf("error when adding default sync for repo %s", repoID)
+			return err
+		}
+	}
+	return err
+}
+
+func (i *importer) formatReposUrl(repos []*githubRepo, repoOwner string) []string {
+	var repoUrls []string
+	for _, repo := range repos {
+		repoUrls = append(repoUrls, fmt.Sprintf("https://github.com/%s/%s", repoOwner, repo.Name))
+	}
+	return repoUrls
 }

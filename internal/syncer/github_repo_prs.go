@@ -203,17 +203,32 @@ func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRo
 		}
 	}()
 
-	if res, err := tx.Exec(ctx, "DELETE FROM github_pull_requests WHERE repo_id = $1;", j.RepoID.String()); err != nil {
+	r, err := tx.Exec(ctx, "DELETE FROM github_pull_requests WHERE repo_id = $1;", j.RepoID.String())
+	if err != nil {
 		return fmt.Errorf("delete rows: %w", err)
-	} else {
-		l.Info().Msgf("deleted rows: %d", res.RowsAffected())
+	}
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("removed %d row(s) from github_pull_requests", r.RowsAffected()),
+	}}); err != nil {
+		return err
 	}
 
 	if err := w.sendBatchGitHubRepoPRs(ctx, tx, id, prs); err != nil {
 		return fmt.Errorf("insert PRs: %w", err)
 	}
 
-	l.Info().Msgf("retrieved repo PRs: %d", len(prs))
+	l.Info().Msgf("inserted repo PRs: %d", len(prs))
+
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: j.ID,
+		Message:         fmt.Sprintf("inserted %d row(s) into github_pull_requests", len(prs)),
+	}}); err != nil {
+		return err
+	}
 
 	if err := w.db.WithTx(tx).SetSyncJobStatus(ctx, db.SetSyncJobStatusParams{Status: "DONE", ID: j.ID}); err != nil {
 		return fmt.Errorf("sync job done: %w", err)

@@ -3,7 +3,7 @@ export enum DynamicValues {
   angular = 'angular',
   weirdSearch = 'qwerwefvs',
   newRepoToAdd = 'mergestat/docs',
-  existingRepo = 'mergestat/mergestat',
+  existingRepo = 'mergestat/mergestat-lite',
   validPAT = 'ghp_cJYwtBb8DbdXNYAw3wegVcTFDYJQhu0QpmCQ',
   invalidPAT = 'gho_cJYwtBb8DbdXNYAw3wegVcTFDYJQhpmCQ',
   autoImportUser = 'gdcanonn',
