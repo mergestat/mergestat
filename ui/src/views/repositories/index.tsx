@@ -25,10 +25,10 @@ const RepositoriesView: React.FC = () => {
           <Alert
             type="info"
             theme="light"
+            icon={<Spinner size='sm' className='self-center' />}
             title={(
               <div>
                 <span>Auto importing repos</span>
-                <div className='float-right'><Spinner size='sm' /></div>
               </div>
             )}
             className='mb-5'
