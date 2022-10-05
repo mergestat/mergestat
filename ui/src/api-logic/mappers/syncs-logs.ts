@@ -1,8 +1,8 @@
 import { format, lightFormat } from 'date-fns'
-import { RepoSyncQueueT, SyncLogsType, SyncTypeData } from 'src/@types'
+import { SyncLogsType, SyncTypeData } from 'src/@types'
 import { getSimpleDurationTime, getStatus } from 'src/utils'
 import { DATE_FORMAT, GITHUB_URL, SYNC_STATUS } from 'src/utils/constants'
-import { GetSyncHistoryLogsQuery } from '../graphql/generated/schema'
+import { GetSyncHistoryLogsQuery, RepoSyncQueue } from '../graphql/generated/schema'
 
 /**
  * Method which iterate each sync and map it to SyncTypeData to be shown in table
@@ -25,7 +25,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
       id: s.id,
       title: s?.repoSyncTypeBySyncType?.shortName || '',
       brief: s?.repoSyncTypeBySyncType?.description || '',
-      syncState: s?.repoSyncQueues.nodes.length !== 0 ? getStatus(s?.repoSyncQueues.nodes[0] as RepoSyncQueueT) : SYNC_STATUS.empty,
+      syncState: s?.repoSyncQueues.nodes.length !== 0 ? getStatus(s?.repoSyncQueues.nodes[0] as RepoSyncQueue) : SYNC_STATUS.empty,
     }
 
     // 2. Get logs data of the sync
@@ -35,7 +35,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
       const logData: SyncLogsType = {
         id: q.id,
         title: s?.syncType || '',
-        syncType: q.status ? getStatus(q as RepoSyncQueueT) : SYNC_STATUS.empty,
+        syncType: q.status ? getStatus(q as RepoSyncQueue) : SYNC_STATUS.empty,
         records: q.repoSyncLogs.totalCount,
         duration: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : '-',
         syncStart: q?.startedAt,
