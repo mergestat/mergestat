@@ -7,7 +7,6 @@ import (
 	"os/exec"
 
 	"github.com/jackc/pgx/v4"
-	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/fuse/internal/db"
 )
 
@@ -32,11 +31,11 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 		return err
 	}
 
-	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, false, j); err != nil {
+	//var repo *libgit2.Repository
+	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, false, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
-	defer repo.Free()
+	//defer repo.Free()
 
 	cmd := exec.CommandContext(ctx, "syft", ".", "-o", "json")
 	cmd.Dir = tmpPath

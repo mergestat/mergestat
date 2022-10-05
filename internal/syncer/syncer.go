@@ -217,6 +217,7 @@ func (w *worker) createTempDirForGitClone(job *db.DequeueSyncJobRow) (string, fu
 	if err != nil {
 		return "", nil, fmt.Errorf("temp dir: %w", err)
 	}
+	tmpPath = "." + tmpPath
 
 	return tmpPath, func() {
 		if err := os.RemoveAll(tmpPath); err != nil {
@@ -247,7 +248,7 @@ func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare 
 	}}); err != nil {
 		return err
 	}
-
+	w.logger.Info().Msgf("repourl %s path %s", url, path)
 	if err = clone.Exec(context.Background(), url, path, clone.WithBare(bare)); err != nil {
 		return err
 	}

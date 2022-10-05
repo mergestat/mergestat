@@ -48,14 +48,17 @@ type commit struct {
 }
 
 // collectCommits retrieves all the commits for a given repository and returns them as a slice
-func collectCommits(ctx context.Context, repoPath string) ([]*commit, error) {
+func (w *worker) collectCommits(ctx context.Context, repoPath string) ([]*commit, error) {
 	var err error
 	var repo *libgit2.Repository
 	commits := make([]*commit, 0)
 
+	w.logger.Info().Msgf("starting to open repo in %s", repoPath)
 	if repo, err = libgit2.OpenRepository(repoPath); err != nil {
 		return nil, err
 	}
+
+	w.logger.Info().Msgf("finishing to open repo in %s", repoPath)
 	defer repo.Free()
 
 	walk, err := repo.Walk()
@@ -122,7 +125,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return fmt.Errorf("git clone: %w", err)
 	}
 
-	commits, err := collectCommits(ctx, tmpPath)
+	commits, err := w.collectCommits(ctx, tmpPath)
 	if err != nil {
 		return err
 	}
