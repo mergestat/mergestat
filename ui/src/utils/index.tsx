@@ -100,8 +100,8 @@ export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
       return SYNC_STATUS.running
     case 'QUEUED':
       return SYNC_STATUS.queued
-    case 'FAILED':
-      return SYNC_STATUS.failed
+    case 'ERROR':
+      return SYNC_STATUS.error
     case 'DISABLED':
       return SYNC_STATUS.disabled
     default:
@@ -115,6 +115,6 @@ export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
  * @returns sync queue status
  */
 export const getStatus = (syncQueue: RepoSyncQueue): RepoSyncStateT => {
-  const status = syncQueue?.hasError ? 'FAILED' : syncQueue?.status
+  const status = syncQueue?.hasError ? 'ERROR' : syncQueue?.status
   return mapToRepoSyncStateT(status)
 }
