@@ -33,7 +33,7 @@ export const RepoSyncIcon = ({ type, className = '' }: RepoSyncIconPropsT) => {
       text = 'Last sync was successful'
       icon = <CircleCheckFilledIcon className={cx('t-icon text-semantic-success', { [className]: className !== '' })} />
       break
-    case SYNC_STATUS.failed:
+    case SYNC_STATUS.error:
       text = 'Last sync had an error'
       icon = <CircleErrorFilledIcon className={cx('t-icon text-semantic-danger', { [className]: className !== '' })} />
       break

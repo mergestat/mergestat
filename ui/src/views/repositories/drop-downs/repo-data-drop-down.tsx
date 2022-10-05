@@ -45,7 +45,7 @@ function getRepoStatusComponent(status: RepoSyncStateT, count: number): React.Re
       return <IconAndQuantity count={count}>
         <CircleCheckFilledIcon className="t-icon text-semantic-success" />
       </IconAndQuantity>
-    case SYNC_STATUS.failed:
+    case SYNC_STATUS.error:
       return <IconAndQuantity count={count}>
         <CircleErrorFilledIcon className="t-icon text-semantic-danger" />
       </IconAndQuantity>

@@ -11,6 +11,7 @@ const useSyncs = (poll = false) => {
 
   const { loading, data, refetch } = useQuery<GetRepoSyncsQuery>(GET_REPO_SYNCS, {
     variables: { id: repository },
+    fetchPolicy: 'no-cache',
     ...(poll && { pollInterval: 5000 }),
   })
 

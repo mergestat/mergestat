@@ -79,7 +79,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
         return '#E5E7EB'
       case SYNC_STATUS.succeeded:
         return '#6EE7B7'
-      case SYNC_STATUS.failed:
+      case SYNC_STATUS.error:
         return '#FB7185'
       default:
         return '#7DD3FC'

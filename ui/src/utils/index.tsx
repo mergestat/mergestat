@@ -1,6 +1,7 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncStateT } from 'src/@types'
+import { RepoSyncQueue } from 'src/api-logic/graphql/generated/schema'
 import { SYNC_STATUS } from './constants'
 
 export function checkRepoValidate(repo: string, checkDomain = true) {
@@ -99,11 +100,21 @@ export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
       return SYNC_STATUS.running
     case 'QUEUED':
       return SYNC_STATUS.queued
-    case 'FAILED':
-      return SYNC_STATUS.failed
+    case 'ERROR':
+      return SYNC_STATUS.error
     case 'DISABLED':
       return SYNC_STATUS.disabled
     default:
       return SYNC_STATUS.empty
   }
+}
+
+/**
+ * Method to get sync queue status
+ * @param syncQueue Sync type to evaluate
+ * @returns sync queue status
+ */
+export const getStatus = (syncQueue: RepoSyncQueue): RepoSyncStateT => {
+  const status = syncQueue?.hasError ? 'ERROR' : syncQueue?.status
+  return mapToRepoSyncStateT(status)
 }

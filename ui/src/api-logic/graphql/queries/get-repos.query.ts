@@ -37,6 +37,7 @@ const GET_REPOS = gql`
                 status
                 doneAt
                 createdAt
+                hasError
               }
             }
           }

@@ -24,6 +24,7 @@ const GET_REPO_SYNCS = gql`
               status
               startedAt
               doneAt
+              hasError
             }
           }
         }

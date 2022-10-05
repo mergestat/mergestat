@@ -15,6 +15,7 @@ const LogsDetailsPage = () => {
 
   const { loading, data } = useQuery(GET_LOGS_OF_A_SYNC, {
     variables: { repoId: repository, syncId: syncTypeId, logId: logID },
+    fetchPolicy: 'no-cache',
     pollInterval: 5000,
   })
 

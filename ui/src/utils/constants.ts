@@ -54,7 +54,7 @@ export enum SYNC_STATUS {
   running = 'running',
   queued = 'queued',
   succeeded = 'succeeded',
-  failed = 'failed',
+  error = 'error',
   empty = 'empty'
 }
 
