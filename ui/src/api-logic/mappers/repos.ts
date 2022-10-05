@@ -1,5 +1,5 @@
 import { RepoDataPropsT, RepoDataStatusT, RepoSyncStateT } from 'src/@types'
-import { mapToRepoSyncStateT } from 'src/utils'
+import { getStatus } from 'src/utils'
 import { GITHUB_URL, SYNC_REPO_METHOD } from 'src/utils/constants'
 import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
 
@@ -8,7 +8,7 @@ interface SyncTypeFlatten {
   type: string
   idLastSync: string
   lastSync: string
-  status: string
+  status: RepoSyncStateT
 }
 
 interface SyncCounter {
@@ -61,14 +61,14 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
       idType: st?.id,
       type: st?.repoSyncTypeBySyncType?.shortName || '',
       idLastSync: '',
-      status: '',
+      status: 'empty',
       lastSync: ''
     }
 
     st?.repoSyncQueues.nodes.forEach((ls: RepoSyncQueue) => {
       syncObj.idLastSync = ls?.id || ''
       syncObj.lastSync = ls?.doneAt || ''
-      syncObj.status = ls?.status || ''
+      syncObj.status = getStatus(ls as RepoSyncQueue) || ''
     })
 
     return syncObj
@@ -77,8 +77,7 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
   // 2. Syncs are grouped by status with its corresponding quantity
   const mapSyncs = new Map<RepoSyncStateT, SyncCounter>()
   syncTypes?.forEach((st: SyncTypeFlatten) => {
-    const status = mapToRepoSyncStateT(st.status)
-    let syncCounter = mapSyncs.get(status)
+    let syncCounter = mapSyncs.get(st.status)
 
     // 2.1. Grouping syncs to show in 'pop up'
     if (syncCounter) {
@@ -92,7 +91,7 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
         syncs: [st]
       }
     }
-    mapSyncs.set(status, syncCounter)
+    mapSyncs.set(st.status, syncCounter)
   })
 
   // 3. Previous info is transform to necesary RepoDataStatusT object

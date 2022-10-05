@@ -9,6 +9,7 @@ const useRepos = (search: string, poll = false) => {
 
   const { loading, error, data, refetch } = useQuery<GetReposQuery>(GET_REPOS, {
     variables: { search },
+    fetchPolicy: 'no-cache',
     ...(poll && { pollInterval: 5000 }),
   })
 

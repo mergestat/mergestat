@@ -21,6 +21,7 @@ const GET_SYNC_HISTORY_LOGS = gql`
               createdAt
               doneAt
               startedAt
+              hasError
               repoSyncLogs {
                 totalCount
                 nodes {
@@ -58,6 +59,7 @@ const GET_LOGS_OF_A_SYNC = gql`
               createdAt
               doneAt
               startedAt
+              hasError
               repoSyncLogs {
                 totalCount
                 nodes {

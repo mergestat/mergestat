@@ -16,6 +16,7 @@ const DataTypePage = () => {
 
   const { loading, data, refetch } = useQuery(GET_SYNC_HISTORY_LOGS, {
     variables: { repoId: repository, syncId: syncTypeId },
+    fetchPolicy: 'no-cache',
     pollInterval: 5000,
   })
 
