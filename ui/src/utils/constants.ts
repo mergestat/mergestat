@@ -41,6 +41,7 @@ export enum ADD_REPO {
   url = 'url',
   csv = 'csv',
   ghOrg = 'gh-org',
+  ghAuto = 'gh-auto',
   ghUser = 'gh-user',
 }
 

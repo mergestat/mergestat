@@ -64,10 +64,10 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
           </Toolbar>
 
           <Tabs.List className="bg-white w-full px-8">
-            <Tabs.Item className="">
+            <Tabs.Item>
               Logs
             </Tabs.Item>
-            <Tabs.Item className="">
+            <Tabs.Item>
               Sync Settings
             </Tabs.Item>
           </Tabs.List>

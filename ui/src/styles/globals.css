@@ -31,3 +31,54 @@
          hover_text-blue-700;
 
 }
+
+.t-input-with-prepend {
+  @apply flex
+         items-center;
+}
+
+.t-input-with-prepend *:first-child {
+  @apply z-10;
+}
+
+.t-input-with-prepend .t-button {
+  @apply rounded-r-none;
+}
+
+.t-input-with-prepend .t-input {
+  @apply rounded-l-none
+         -ml-px;
+}
+
+.t-modal {
+  max-height: calc(100vh - 4.8rem);
+}
+
+.t-table-clickable tr:hover,
+.t-table-clickable tr:focus-within {
+  @apply bg-gray-50
+          cursor-pointer;
+}
+
+.t-table-clickable td {
+  @apply relative;
+}
+
+.t-table-row-link {
+  @apply h-full
+         w-full
+         absolute
+         top-0
+         left-0
+         right-0
+         bottom-0;
+}
+
+.t-sr-only {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
