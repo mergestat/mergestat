@@ -166,7 +166,10 @@ export const AutoImportFromGitModal: React.FC = () => {
                                   <td className='py-3 pl-8 pr-4 w-0'>
                                       <Checkbox />
                                   </td>
-                                  <td className='py-3 pl-4 pr-8'>{syncType.shortName}</td>
+                                  <td className='py-3 pl-4 pr-8'>
+                                    <h4 className='font-medium mb-0.5'>{syncType.shortName}</h4>
+                                    <p className='text-semantic-mutedText text-sm'>{syncType.description}</p>
+                                  </td>
                               </tr>
                           ))}
                       </tbody>

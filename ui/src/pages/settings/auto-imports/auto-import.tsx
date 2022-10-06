@@ -86,8 +86,8 @@ const AutoImports: NextPage = () => {
         </Head>
         <SettingsView>
           {/* Main content */}
-          <div className='flex flex-col flex-1'>
-            <div className='bg-white h-16 w-full border-b px-8'>
+          <div className='w-full h-full flex flex-col flex-1 overflow-hidden'>
+            <div className='bg-white h-16 w-full border-b px-8 flex-0'>
               <Toolbar className='h-full'>
                 <Toolbar.Left>
                   <BreadcrumbNav data={crumbs} />
@@ -97,7 +97,7 @@ const AutoImports: NextPage = () => {
                 </Toolbar.Right>
               </Toolbar>
             </div>
-            <div className='flex-1 p-8'>
+            <div className='flex-1 p-8 overflow-auto'>
               <Panel className='rounded-md w-full shadow-sm'>
                 <Panel.Header>
                   <h4 className='t-h4 mb-0'>Select default syncs</h4>
@@ -118,7 +118,8 @@ const AutoImports: NextPage = () => {
                             <Checkbox />
                           </td>
                           <td className='py-3 pl-4 pr-8'>
-                            {syncType.shortName}
+                            <h4 className='font-medium mb-0.5'>{syncType.shortName}</h4>
+                            <p className='text-semantic-mutedText text-sm'>{syncType.description}</p>
                           </td>
                         </tr>
                       ))}
