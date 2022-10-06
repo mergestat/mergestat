@@ -8,7 +8,8 @@ interface Props {
 }
 
 const SettingsView = ({ children }: Props) => {
-  const { pathname } = useRouter()
+  const { pathname } = useRouter() || { pathname: { text: '' } }
+
   const active = (pathMenu: string) => pathname === pathMenu
 
   return (
@@ -27,7 +28,7 @@ const SettingsView = ({ children }: Props) => {
                     <VerticalNav>
                         <VerticalNav.Item text='General' disabled={true} />
                         <VerticalNav.Item href='/settings' text='GitHub Authentication' active={active('/settings')} />
-                        <VerticalNav.Item href='/settings/auto-imports' text='GitHub Auto Imports' active={active('/settings/auto-imports')} />
+                        <VerticalNav.Item href='/settings/auto-imports' text='GitHub Auto Imports' active={pathname.includes('/settings/auto-imports')} />
                     </VerticalNav>
                 </div>
             </div>
