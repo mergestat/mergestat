@@ -15,7 +15,7 @@
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.9",
+    "@apollo/client": "^3.7.0",
     "@apollo/react-testing": "^4.0.0",
     "@mergestat/blocks": "^1.4.2",
     "@mergestat/icons": "^1.2.2",
