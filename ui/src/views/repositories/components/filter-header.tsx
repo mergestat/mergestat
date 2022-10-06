@@ -14,7 +14,7 @@ export const FilterHeader: React.FC = () => {
   return (
     <div className="flex h-14 bg-white items-center justify-between px-8">
       <div className="flex gap-2">
-        <TagsListDropDown trigger={<Filter>Tags</Filter>} />
+        {/* <TagsListDropDown trigger={<Filter>Tags</Filter>} /> */}
       </div>
 
       <Input data-testid={TEST_IDS.inputRepoSearch}
