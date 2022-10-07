@@ -20,7 +20,7 @@ const useImports = () => {
 
   const [autoImportRepos] = useMutation(AUTO_IMPORT_REPOS, {
     onCompleted: () => {
-      showSuccessAlert('Auto import added')
+      showSuccessAlert('Repo auto import added')
       refetch()
       closeModal()
     }

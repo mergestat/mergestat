@@ -28,7 +28,7 @@ const SettingsView = ({ children }: Props) => {
             <VerticalNav>
               <VerticalNav.Item text='General' disabled={true} />
               <VerticalNav.Item href='/settings' text='GitHub Authentication' active={active('/settings')} />
-              <VerticalNav.Item href='/settings/auto-imports' text='GitHub Auto Imports' active={active('/settings/auto-imports')} />
+              <VerticalNav.Item href='/settings/repo-auto-imports' text='Repo Auto Imports' active={active('/settings/repo-auto-imports') || active('/settings/repo-auto-imports/[importId]')} />
             </VerticalNav>
           </div>
         </div>

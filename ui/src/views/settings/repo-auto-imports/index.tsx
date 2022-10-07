@@ -1,5 +1,5 @@
-import { Alert, ColoredBox, Dropdown, Menu, Panel, Toolbar } from '@mergestat/blocks'
-import { CircleCheckFilledIcon, ClockIcon, CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
+import { Alert, ColoredBox, Panel, Toolbar } from '@mergestat/blocks'
+import { CircleCheckFilledIcon, ClockIcon, TrashIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -10,11 +10,12 @@ import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import Loading from 'src/components/Loading'
 import RepoImage from 'src/components/RepoImage'
 import useRepoImports from 'src/views/hooks/useRepoImports'
+import { RemoveImportModal } from 'src/views/repositories/modals/remove-import-modal'
 import SettingsView from 'src/views/settings'
 
 const RowLink = ({ importId }: { importId: string }) => {
   return (
-    <Link href={`/settings/auto-imports/${importId}`} passHref>
+    <Link href={`/settings/repo-auto-imports/${importId}`} passHref>
       <a href='foo' className='t-table-row-link'>
         <span className='t-sr-only'>Go to detail</span>
       </a>
@@ -23,7 +24,7 @@ const RowLink = ({ importId }: { importId: string }) => {
 }
 
 const AutoImports: NextPage = () => {
-  const { loading, imports } = useRepoImports(true)
+  const { loading, imports, showRemoveImportModal, prepareToRemove } = useRepoImports(true)
 
   return (
     <>
@@ -37,7 +38,7 @@ const AutoImports: NextPage = () => {
             <div className='bg-white h-16 w-full border-b px-8'>
               <Toolbar className='h-full'>
                 <Toolbar.Left>
-                  <h2 className='t-h2 mb-0'>GitHub Auto Imports</h2>
+                  <h2 className='t-h2 mb-0'>Repo Auto Imports</h2>
                 </Toolbar.Left>
               </Toolbar>
             </div>
@@ -59,7 +60,7 @@ const AutoImports: NextPage = () => {
                           <tr className='bg-white'>
                             <th scope='col' key='name' className='whitespace-nowrap px-4'>Status</th>
                             <th scope='col' key='name' className='whitespace-nowrap px-4'>Name</th>
-                            <th scope='col' key='name' className='whitespace-nowrap px-4'>Last Sync</th>
+                            <th scope='col' key='name' className='whitespace-nowrap px-4'>Last Import</th>
                             <th scope='col' key='name' className='whitespace-nowrap px-4'></th>
                           </tr>
                         </thead>
@@ -97,30 +98,7 @@ const AutoImports: NextPage = () => {
                               <td className='text-gray-500 py-4 pl-4 pr-8'>
                                 <RowLink importId={imp.id} />
                                 <div className='t-button-toolbar'>
-                                  <Dropdown
-                                    alignEnd
-                                    trigger={
-                                      <DotsHorizontalIcon className='t-icon cursor-pointer' />
-                                    }
-                                    overlay={() => (
-                                      <Menu className='whitespace-nowrap'>
-                                        <Menu.Item
-                                          text='Auto Import settings'
-                                          withIcon
-                                          href='/settings/auto-imports/auto-import'
-                                          icon={<CogIcon className='t-icon mr-2' />}
-                                        />
-                                        <Menu.Divider />
-                                        <Menu.Item
-                                          text='Remove Auto Import'
-                                          withIcon
-                                          icon={
-                                            <TrashIcon className='t-icon mr-2' />
-                                          }
-                                        />
-                                      </Menu>
-                                    )}
-                                  />
+                                  <TrashIcon className="t-icon" onClick={() => prepareToRemove(imp.id, imp.source)} />
                                 </div>
                               </td>
                             </tr>
@@ -133,6 +111,8 @@ const AutoImports: NextPage = () => {
           </div>
         </SettingsView>
       </Fragment>
+
+      {showRemoveImportModal && <RemoveImportModal />}
     </>
   )
 }

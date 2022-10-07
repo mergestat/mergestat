@@ -10,7 +10,7 @@ type ModalSideBarProps = {
 }
 
 export const ModalSideBar: React.FC<ModalSideBarProps> = ({ onTabSelected }: ModalSideBarProps) => {
-  const [selectedTab, setSelectedTab] = React.useState<RepoExportT>(ADD_REPO.url)
+  const [selectedTab, setSelectedTab] = React.useState<RepoExportT>(ADD_REPO.ghAuto)
 
   React.useEffect(() => {
     if (onTabSelected) {
@@ -54,25 +54,18 @@ type SideBarTab = {
 
 const sidebarTabs: SideBarTab[] = [
   {
+    startIcon: <GithubIcon className='t-icon' />,
+    label: 'Automatic Import',
+    type: ADD_REPO.ghAuto,
+  },
+  {
     startIcon: <LinkIcon className='t-icon' />,
     label: 'Add from URL',
     type: ADD_REPO.url,
   },
   {
-    startIcon: <GithubIcon className='t-icon' />,
-    label: 'Auto import from GitHub',
-    type: ADD_REPO.ghAuto,
-  },
-  {
     startIcon: <TableIcon className='t-icon' />,
     label: 'Add from CSV',
     type: ADD_REPO.csv,
-  },
-  {
-    startIcon: <GithubIcon className='t-icon' />,
-    label: 'Add from GitHub',
-    type: ADD_REPO.ghOrg,
-    disabled: true,
-    comingSoon: true
   },
 ]

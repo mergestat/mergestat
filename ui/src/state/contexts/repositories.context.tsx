@@ -5,8 +5,8 @@ import { ImportSync } from 'src/@types'
 type RepoInfoT = {
   id: string
   name: string
-  autoImported: boolean
-  redirect: boolean
+  autoImported?: boolean
+  redirect?: boolean
 }
 
 type RepositoriesContextT = {
@@ -14,9 +14,11 @@ type RepositoriesContextT = {
   showAutoImportModal: boolean
   showAddRepositoryModal: boolean
   showRemoveRepositoryModal: boolean
+  showRemoveImportModal: boolean
   search: string
   reposToAdd: string[]
   repoToRemove: RepoInfoT | null
+  importToRemove: RepoInfoT | null
   csvText: string
   imports: ImportSync[]
 }
@@ -31,9 +33,11 @@ const initialState: RepositoriesContextT = {
   showAutoImportModal: false,
   showAddRepositoryModal: false,
   showRemoveRepositoryModal: false,
+  showRemoveImportModal: false,
   search: '',
   reposToAdd: [],
   repoToRemove: null,
+  importToRemove: null,
   csvText: '',
   imports: []
 }
@@ -88,6 +92,13 @@ function useRepositoriesSetState() {
     }))
   }
 
+  const setShowRemoveImportModal = (show: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showRemoveImportModal: show
+    }))
+  }
+
   const setSearch = (search: string) => {
     setState(prev => ({
       ...prev,
@@ -106,6 +117,13 @@ function useRepositoriesSetState() {
     setState(prev => ({
       ...prev,
       repoToRemove
+    }))
+  }
+
+  const setImportToRemove = (importToRemove: RepoInfoT) => {
+    setState(prev => ({
+      ...prev,
+      importToRemove
     }))
   }
 
@@ -137,9 +155,11 @@ function useRepositoriesSetState() {
     setShowAutoImportModal,
     setShowAddRepositoryModal,
     setShowRemoveRepositoryModal,
+    setShowRemoveImportModal,
     setSearch,
     setReposToAdd,
     setRepoToRemove,
+    setImportToRemove,
     setCSVText,
     setImports,
     resetValues

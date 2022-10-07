@@ -8,20 +8,21 @@ import { SyncType } from 'src/@types'
 import { GetRepoImportQuery } from 'src/api-logic/graphql/generated/schema'
 import { UPDATE_AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
 import { GET_REPO_IMPORT } from 'src/api-logic/graphql/queries/get-repo-imports'
+import Loading from 'src/components/Loading'
 import RepoImage from 'src/components/RepoImage'
 import { showSuccessAlert } from 'src/utils/alerts'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
 
 import SettingsView from 'src/views/settings'
 
-const AutoImports: NextPage = () => {
+const AutoImportsDetail: NextPage = () => {
   const [name, setName] = useState('')
   const [syncsTypesArray, setSyncsTypesArray] = useState<SyncType[]>([])
 
   const router = useRouter()
   const { importId } = router.query
 
-  const { data } = useQuery<GetRepoImportQuery>(GET_REPO_IMPORT, {
+  const { loading, data } = useQuery<GetRepoImportQuery>(GET_REPO_IMPORT, {
     variables: { id: importId },
     fetchPolicy: 'no-cache',
   })
@@ -29,7 +30,7 @@ const AutoImports: NextPage = () => {
   const [updateAutoImport] = useMutation(UPDATE_AUTO_IMPORT_REPOS, {
     onCompleted: () => {
       showSuccessAlert('Default syncs saved')
-      router.push('/settings/auto-imports')
+      router.push('/settings/repo-auto-imports')
     }
   })
 
@@ -67,8 +68,8 @@ const AutoImports: NextPage = () => {
 
   const crumbs = [
     {
-      text: 'Auto imports',
-      onClick: () => router.push('/settings/auto-imports'),
+      text: 'Repo Auto imports',
+      onClick: () => router.push('/settings/repo-auto-imports'),
     },
     {
       text: name,
@@ -88,49 +89,51 @@ const AutoImports: NextPage = () => {
         </Head>
         <SettingsView>
           {/* Main content */}
-          <div className='w-full h-full flex flex-col flex-1 overflow-hidden'>
-            <div className='bg-white h-16 w-full border-b px-8 flex-0'>
-              <Toolbar className='h-full'>
-                <Toolbar.Left>
-                  <BreadcrumbNav data={crumbs} />
-                </Toolbar.Left>
-                <Toolbar.Right>
-                  <Button label='Save' onClick={updateImport} />
-                </Toolbar.Right>
-              </Toolbar>
-            </div>
-            <div className='flex-1 p-8 overflow-auto'>
-              <Panel className='rounded-md w-full shadow-sm'>
-                <Panel.Header>
-                  <h4 className='t-h4 mb-0'>Select default syncs</h4>
-                </Panel.Header>
-                <Panel.Body className='p-0'>
-                  <table className='t-table-default'>
-                    <tbody className='bg-white'>
-                      {syncsTypesArray.map((syncType, index) => (
-                        <tr key={index}>
-                          <td className='py-3 pl-8 pr-4 w-0'>
-                            <Checkbox
-                              checked={syncType.checked}
-                              onChange={() => handleCheckBox(syncType.type)}
-                            />
-                          </td>
-                          <td className='py-3 pl-4 pr-8'>
-                            <h4 className='font-medium mb-0.5'>{syncType.shortName}</h4>
-                            <p className='text-semantic-mutedText text-sm'>{syncType.description}</p>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </Panel.Body>
-              </Panel>
-            </div>
-          </div>
+          {loading
+            ? <Loading />
+            : <div className='w-full h-full flex flex-col flex-1 overflow-hidden'>
+              <div className='bg-white h-16 w-full border-b px-8 flex-0'>
+                <Toolbar className='h-full'>
+                  <Toolbar.Left>
+                    <BreadcrumbNav data={crumbs} />
+                  </Toolbar.Left>
+                  <Toolbar.Right>
+                    <Button label='Save' onClick={updateImport} />
+                  </Toolbar.Right>
+                </Toolbar>
+              </div>
+              <div className='flex-1 p-8 overflow-auto'>
+                <Panel className='rounded-md w-full shadow-sm'>
+                  <Panel.Header>
+                    <h4 className='t-h4 mb-0'>Select default syncs</h4>
+                  </Panel.Header>
+                  <Panel.Body className='p-0'>
+                    <table className='t-table-default'>
+                      <tbody className='bg-white'>
+                        {syncsTypesArray.map((syncType, index) => (
+                          <tr key={index}>
+                            <td className='py-3 pl-8 pr-4 w-0'>
+                              <Checkbox
+                                checked={syncType.checked}
+                                onChange={() => handleCheckBox(syncType.type)}
+                              />
+                            </td>
+                            <td className='py-3 pl-4 pr-8'>
+                              <h4 className='font-medium mb-0.5'>{syncType.shortName}</h4>
+                              <p className='text-semantic-mutedText text-sm'>{syncType.description}</p>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Panel.Body>
+                </Panel>
+              </div>
+            </div>}
         </SettingsView>
       </Fragment>
     </>
   )
 }
 
-export default AutoImports
+export default AutoImportsDetail

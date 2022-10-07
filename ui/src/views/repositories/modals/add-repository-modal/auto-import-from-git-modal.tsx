@@ -1,7 +1,7 @@
 import { Button, Checkbox, Dropdown, Input, ListItem, Menu, Panel, Sidebar } from '@mergestat/blocks'
-import { CaretDownIcon, ChevronDownIcon, ChevronRightIcon, PlusIcon, RepositoryIcon } from '@mergestat/icons'
-import Image from 'next/image'
+import { CaretDownIcon, ChevronDownIcon, ChevronRightIcon, PlusIcon } from '@mergestat/icons'
 import React, { Fragment } from 'react'
+import RepoImage from 'src/components/RepoImage'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
 import useImports from 'src/views/hooks/useImports'
 
@@ -14,21 +14,6 @@ const EmptyState: React.FC = () => {
         </p>
       </div>
     </div>
-  )
-}
-
-const OrgIcon: React.FC<{ organization: string }> = ({ organization }) => {
-  return (organization.includes('github')
-    ? <Image
-      src={''}
-      width={40}
-      height={40}
-      loader={({ src }) => `${src}?w=1&q=50`}
-      objectFit='contain'
-      className='rounded'
-      alt=''
-    />
-    : <RepositoryIcon className='t-icon' />
   )
 }
 
@@ -90,7 +75,7 @@ export const AutoImportFromGitModal: React.FC = () => {
                 title={imp.name}
                 subline={imp.type === SYNC_REPO_METHOD.GH_ORG ? 'GitHub organization' : 'GitHub user'}
                 className={'px-4 py-2'}
-                startIcon={<OrgIcon organization={imp.name} />}
+                startIcon={<RepoImage repoType='github' orgName={imp.name} size="10" />}
                 onClick={() => false}
                 onTrashClick={() => removeURL(imp.name)}
               />
