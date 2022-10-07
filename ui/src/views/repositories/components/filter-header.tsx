@@ -12,14 +12,10 @@ export const FilterHeader: React.FC = () => {
 
   return (
     <div className="flex h-14 bg-white items-center justify-between px-8">
-      <div className="flex gap-2">
-        {/* <TagsListDropDown trigger={<Filter>Tags</Filter>} /> */}
-      </div>
-
       <Input data-testid={TEST_IDS.inputRepoSearch}
         placeholder="Search..."
         startIcon={<SearchIcon className="t-icon text-gray-400" />}
-        className="w-1/3"
+        className="w-full lg_w-2/5"
         onChange={onChange}
       />
     </div>
