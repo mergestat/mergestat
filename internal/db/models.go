@@ -335,6 +335,12 @@ type MergestatRepoSyncType struct {
 	Description sql.NullString
 	ShortName   string
 	Priority    int32
+	TypeGroup   sql.NullString
+}
+
+type MergestatRepoSyncTypeGroup struct {
+	Group           sql.NullString
+	ConcurrentSyncs sql.NullInt32
 }
 
 type MergestatServiceAuthCredential struct {

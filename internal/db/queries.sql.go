@@ -47,21 +47,37 @@ func (q *Queries) DeleteRemovedRepos(ctx context.Context, arg DeleteRemovedRepos
 }
 
 const dequeueSyncJob = `-- name: DequeueSyncJob :one
-WITH dequeued AS (
-	UPDATE mergestat.repo_sync_queue SET status = 'RUNNING'
-	WHERE id IN (
-		SELECT id FROM mergestat.repo_sync_queue
-		WHERE status = 'QUEUED'
-		ORDER BY repo_sync_queue.priority ASC, repo_sync_queue.created_at ASC, repo_sync_queue.id ASC LIMIT 1 FOR UPDATE SKIP LOCKED
-	) RETURNING id, created_at, status, repo_sync_id
+WITH
+running AS (
+        SELECT 
+            rsq.id,
+            rstg.group
+        FROM mergestat.repo_sync_queue rsq
+        INNER JOIN mergestat.repo_syncs rs ON rsq.repo_sync_id = rs.id
+        INNER JOIN mergestat.repo_sync_types rst ON rs.sync_type = rst.type
+        INNER JOIN mergestat.repo_sync_type_groups rstg ON rst.type_group = rstg.group
+        WHERE status = 'RUNNING'
+),
+dequeued AS (
+   UPDATE mergestat.repo_sync_queue SET status = 'RUNNING'
+   WHERE id IN (   
+        SELECT rsq.id
+        FROM mergestat.repo_sync_queue rsq
+        INNER JOIN mergestat.repo_syncs rs ON rsq.repo_sync_id = rs.id
+        INNER JOIN mergestat.repo_sync_types rst ON rs.sync_type = rst.type
+        INNER JOIN mergestat.repo_sync_type_groups rstg ON rst.type_group = rstg.group
+        WHERE status = 'QUEUED'
+        AND rstg.concurrent_syncs > (SELECT COUNT(*) from running where running.group = rstg.group)
+        ORDER BY rsq.priority ASC, rsq.created_at ASC, rsq.id ASC LIMIT 1 FOR UPDATE SKIP LOCKED
+   ) RETURNING id, created_at, status, repo_sync_id
 )
 SELECT
-	dequeued.id, dequeued.created_at, dequeued.status, dequeued.repo_sync_id,
-	repo_syncs.repo_id, repo_syncs.sync_type, repo_syncs.settings, repo_syncs.id, repo_syncs.schedule_enabled, repo_syncs.priority,
-	repos.repo,
-	repos.ref,
-	repos.is_github,
-	repos.settings AS repo_settings
+    dequeued.id, dequeued.created_at, dequeued.status, dequeued.repo_sync_id,
+    repo_syncs.repo_id, repo_syncs.sync_type, repo_syncs.settings, repo_syncs.id, repo_syncs.schedule_enabled, repo_syncs.priority,
+    repos.repo,
+    repos.ref,
+    repos.is_github,
+    repos.settings AS repo_settings
 FROM dequeued
 JOIN mergestat.repo_syncs ON mergestat.repo_syncs.id = dequeued.repo_sync_id
 JOIN repos ON repos.id = mergestat.repo_syncs.repo_id
@@ -110,25 +126,31 @@ const enqueueAllSyncs = `-- name: EnqueueAllSyncs :exec
 WITH ranked_queue AS (
     SELECT
        rsq.done_at,
-       DENSE_RANK() OVER(ORDER BY rsq.created_at DESC) AS rank_num
-    FROM mergestat.repo_syncs
-    INNER JOIN mergestat.repo_sync_queue AS rsq ON mergestat.repo_syncs.id = rsq.repo_sync_id
+       rst.type_group,
+       rsq.created_at,
+       DENSE_RANK() OVER(PARTITION BY rst.type_group ORDER BY rst.type_group, rsq.created_at DESC) AS rank_num
+    FROM mergestat.repo_syncs as rs
+    INNER JOIN mergestat.repo_sync_queue AS rsq ON rs.id = rsq.repo_sync_id
+    INNER JOIN mergestat.repo_sync_types AS rst ON rs.sync_type = rst.type
 )
 INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status, priority)
 SELECT
-    id,
+    rs.id,
     'QUEUED' AS status,
-	priority
-FROM mergestat.repo_syncs
+	rs.priority
+FROM mergestat.repo_syncs rs
+INNER JOIN mergestat.repo_sync_types AS rst ON rs.sync_type = rst.type
 WHERE schedule_enabled
     AND id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED')
     AND NOT EXISTS (
-        SELECT done_at
-        FROM ranked_queue
+        SELECT rq.done_at
+        FROM ranked_queue rq
         WHERE
-            ranked_queue.rank_num >= 1
-            AND ranked_queue.done_at IS NULL
+            rq.rank_num >= 1
+            AND rq.done_at IS NULL
+	AND rq.type_group = rst.type_group
     )
+ORDER BY rs.priority, rs.sync_type desc
 `
 
 // We use a CTE here to retrieve all the repo_sync_jobs that were previously enqueued, to make sure that we *do not* re-enqueue anything new until the previously enqueued jobs are *completed*.
@@ -214,15 +236,15 @@ func (q *Queries) GetRepoUrlFromImport(ctx context.Context, importid uuid.UUID) 
 
 const insertGitHubRepoInfo = `-- name: InsertGitHubRepoInfo :exec
 INSERT INTO public.github_repo_info (
-	repo_id, owner, name,
-	created_at, default_branch_name, description, disk_usage, fork_count, homepage_url,
-	is_archived, is_disabled, is_mirror, is_private, total_issues_count, latest_release_author,
-	latest_release_created_at, latest_release_name, latest_release_published_at, license_key,
-	license_name, license_nickname, open_graph_image_url, primary_language, pushed_at, releases_count,
-	stargazers_count, updated_at, watchers_count
+    repo_id, owner, name,
+    created_at, default_branch_name, description, disk_usage, fork_count, homepage_url,
+    is_archived, is_disabled, is_mirror, is_private, total_issues_count, latest_release_author,
+    latest_release_created_at, latest_release_name, latest_release_published_at, license_key,
+    license_name, license_nickname, open_graph_image_url, primary_language, pushed_at, releases_count,
+    stargazers_count, updated_at, watchers_count
 ) VALUES(
-	$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
-	$23, $24, $25, $26, $27, $28
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
+    $23, $24, $25, $26, $27, $28
 )
 `
 
@@ -326,16 +348,16 @@ func (q *Queries) InsertSyncJobLog(ctx context.Context, arg InsertSyncJobLogPara
 
 const listRepoImportsDueForImport = `-- name: ListRepoImportsDueForImport :many
 WITH dequeued AS (
-	UPDATE mergestat.repo_imports SET last_import_started_at = now()
-	WHERE id IN (
-		SELECT id FROM mergestat.repo_imports AS t
-		WHERE
-			(now() - t.last_import > t.import_interval OR t.last_import IS NULL)
-			AND
-			(now() - t.last_import_started_at > t.import_interval OR t.last_import_started_at IS NULL)
-		ORDER BY last_import ASC
-		FOR UPDATE SKIP LOCKED
-	) RETURNING id, created_at, updated_at, type, settings, last_import, import_interval, last_import_started_at
+    UPDATE mergestat.repo_imports SET last_import_started_at = now()
+    WHERE id IN (
+        SELECT id FROM mergestat.repo_imports AS t
+        WHERE
+            (now() - t.last_import > t.import_interval OR t.last_import IS NULL)
+            AND
+            (now() - t.last_import_started_at > t.import_interval OR t.last_import_started_at IS NULL)
+        ORDER BY last_import ASC
+        FOR UPDATE SKIP LOCKED
+    ) RETURNING id, created_at, updated_at, type, settings, last_import, import_interval, last_import_started_at
 )
 SELECT id, created_at, updated_at, type, settings FROM dequeued
 `
@@ -385,11 +407,11 @@ func (q *Queries) MarkRepoImportAsUpdated(ctx context.Context, id uuid.UUID) err
 
 const markSyncsAsTimedOut = `-- name: MarkSyncsAsTimedOut :many
 WITH timed_out_sync_jobs AS (
-	UPDATE mergestat.repo_sync_queue SET status = 'DONE' WHERE status = 'RUNNING' AND (
-		(last_keep_alive < now() - '10 minutes'::interval)
-		OR
-		(last_keep_alive IS NULL AND started_at < now() - '10 minutes'::interval)) -- if worker crashed before last_keep_alive was first set
-	RETURNING id, created_at, repo_sync_id, status, started_at, done_at, last_keep_alive, priority
+    UPDATE mergestat.repo_sync_queue SET status = 'DONE' WHERE status = 'RUNNING' AND (
+        (last_keep_alive < now() - '10 minutes'::interval)
+        OR
+        (last_keep_alive IS NULL AND started_at < now() - '10 minutes'::interval)) -- if worker crashed before last_keep_alive was first set
+    RETURNING id, created_at, repo_sync_id, status, started_at, done_at, last_keep_alive, priority
 )
 INSERT INTO mergestat.repo_sync_logs (repo_sync_queue_id, log_type, message)
 SELECT id, 'ERROR', 'No response from job within reasonable interval. Timing out.' FROM timed_out_sync_jobs
