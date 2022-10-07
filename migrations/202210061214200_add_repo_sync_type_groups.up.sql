@@ -1,15 +1,15 @@
 BEGIN;
 
-CREATE TABLE IF NOT EXISTS mergestat.repo_sync_type_groups 
+CREATE TABLE IF NOT EXISTS mergestat.repo_sync_type_groups
 (
-    "group"             TEXT, 
-    concurrent_syncs    INTEGER 
+    "group" TEXT,
+    concurrent_syncs INTEGER
 );
 
 INSERT INTO mergestat.repo_sync_type_groups ("group", concurrent_syncs)
 VALUES
-    ('DEFAULT', 10000),
-    ('GITHUB', 1)
+('DEFAULT', 10000),
+('GITHUB', 1)
 ON CONFLICT DO NOTHING;
 
 ALTER TABLE mergestat.repo_sync_types
@@ -51,4 +51,3 @@ SET
         END );
 
 COMMIT;
-
