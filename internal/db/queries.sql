@@ -35,9 +35,7 @@ running AS (
             rsq.id,
             rstg.group
         FROM mergestat.repo_sync_queue rsq
-        INNER JOIN mergestat.repo_syncs rs ON rsq.repo_sync_id = rs.id
-        INNER JOIN mergestat.repo_sync_types rst ON rs.sync_type = rst.type
-        INNER JOIN mergestat.repo_sync_type_groups rstg ON rst.type_group = rstg.group
+        INNER JOIN mergestat.repo_sync_type_groups rstg ON rsq.type_group = rstg.group
         WHERE status = 'RUNNING'
 ),
 dequeued AS (
@@ -45,9 +43,7 @@ dequeued AS (
    WHERE id IN (   
         SELECT rsq.id
         FROM mergestat.repo_sync_queue rsq
-        INNER JOIN mergestat.repo_syncs rs ON rsq.repo_sync_id = rs.id
-        INNER JOIN mergestat.repo_sync_types rst ON rs.sync_type = rst.type
-        INNER JOIN mergestat.repo_sync_type_groups rstg ON rst.type_group = rstg.group
+        INNER JOIN mergestat.repo_sync_type_groups rstg ON rsq.type_group = rstg.group
         WHERE status = 'QUEUED'
         AND rstg.concurrent_syncs > (SELECT COUNT(*) from running where running.group = rstg.group)
         ORDER BY rsq.priority ASC, rsq.created_at ASC, rsq.id ASC LIMIT 1 FOR UPDATE SKIP LOCKED
@@ -90,6 +86,7 @@ WHERE id = (SELECT id FROM mergestat.repo_sync_queue WHERE repo_sync_queue.id = 
 
 -- We use a CTE here to retrieve all the repo_sync_jobs that were previously enqueued, to make sure that we *do not* re-enqueue anything new until the previously enqueued jobs are *completed*.
 -- This allows us to make sure all repo syncs complete before we reschedule a new batch.
+-- We have now also added a concept of type groups which allows us to apply this same logic but by each group type which is where the PARTITION BY clause comes into play
 -- name: EnqueueAllSyncs :exec
 WITH ranked_queue AS (
     SELECT
@@ -100,12 +97,14 @@ WITH ranked_queue AS (
     FROM mergestat.repo_syncs as rs
     INNER JOIN mergestat.repo_sync_queue AS rsq ON rs.id = rsq.repo_sync_id
     INNER JOIN mergestat.repo_sync_types AS rst ON rs.sync_type = rst.type
+    WHERE rsq.done_at IS NULL
 )
-INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status, priority)
+INSERT INTO mergestat.repo_sync_queue (repo_sync_id, status, priority, type_group)
 SELECT
     rs.id,
     'QUEUED' AS status,
-	rs.priority
+	rs.priority,
+    rst.type_group
 FROM mergestat.repo_syncs rs
 INNER JOIN mergestat.repo_sync_types AS rst ON rs.sync_type = rst.type
 WHERE schedule_enabled
@@ -115,7 +114,6 @@ WHERE schedule_enabled
         FROM ranked_queue rq
         WHERE
             rq.rank_num >= 1
-            AND rq.done_at IS NULL
 	AND rq.type_group = rst.type_group
     )
 ORDER BY rs.priority, rs.sync_type desc

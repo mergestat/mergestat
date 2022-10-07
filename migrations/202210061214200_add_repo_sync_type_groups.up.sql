@@ -13,7 +13,10 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 ALTER TABLE mergestat.repo_sync_types
-ADD COLUMN IF NOT EXISTS type_group TEXT;
+ADD COLUMN IF NOT EXISTS type_group TEXT DEFAULT 'DEFAULT' NOT NULL;
+
+ALTER TABLE mergestat.repo_sync_queue
+ADD COLUMN IF NOT EXISTS type_group TEXT DEFAULT 'DEFAULT' NOT NULL;
 
 UPDATE
 mergestat.repo_sync_types
@@ -49,5 +52,7 @@ SET
             WHEN TYPE = 'GITHUB_PR_REVIEWS'
                 THEN 'GITHUB'
         END );
+
+CREATE INDEX IF NOT EXISTS idx_repo_sync_queue_done_At ON mergestat.repo_sync_queue (done_at DESC NULLS FIRST);
 
 COMMIT;
