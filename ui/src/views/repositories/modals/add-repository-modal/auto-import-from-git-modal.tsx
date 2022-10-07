@@ -1,7 +1,9 @@
-import { Button, Checkbox, Dropdown, Input, ListItem, Menu, Panel } from '@mergestat/blocks'
-import { CaretDownIcon, PlusIcon, RepositoryIcon } from '@mergestat/icons'
+import { Button, Checkbox, Dropdown, Input, ListItem, Menu, Panel, Sidebar } from '@mergestat/blocks'
+import { CaretDownIcon, ChevronDownIcon, ChevronRightIcon, PlusIcon, RepositoryIcon } from '@mergestat/icons'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { Fragment } from 'react'
+import { SYNC_REPO_METHOD } from 'src/utils/constants'
+import useImports from 'src/views/hooks/useImports'
 
 const EmptyState: React.FC = () => {
   return (
@@ -30,65 +32,11 @@ const OrgIcon: React.FC<{ organization: string }> = ({ organization }) => {
   )
 }
 
-const syncsTypesArray = [
-  {
-    type: 'GIT_COMMITS',
-    description: 'Retrieves the commit history of a repo',
-    shortName: 'Git Commits'
-  },
-  {
-    type: 'GIT_COMMIT_STATS',
-    description: 'Retrieves commit stats for a repo',
-    shortName: 'Git Commit Stats'
-  },
-  {
-    type: 'GIT_FILES',
-    description: 'Retrieves files (content and paths) of a git repo',
-    shortName: 'Git Files'
-  },
-  {
-    type: 'GITHUB_PR_COMMITS',
-    description: 'Retrieves commits for all pull requests in a GitHub repo',
-    shortName: 'GitHub PR Commits'
-  },
-  {
-    type: 'GITHUB_PR_REVIEWS',
-    description: 'Retrieves the reviews of all pull requests in a GitHub repo',
-    shortName: 'GitHub PR Reviews'
-  },
-  {
-    type: 'GITHUB_REPO_ISSUES',
-    description: 'Retrieves all the issues of a GitHub repo',
-    shortName: 'GitHub Repo Issues'
-  },
-  {
-    type: 'GITHUB_REPO_METADATA',
-    description: 'Retrieves metadata about a GitHub repo',
-    shortName: 'GitHub Repo Metadata'
-  },
-  {
-    type: 'GITHUB_REPO_PRS',
-    description: 'Retrieves all the pull requests of a GitHub repo',
-    shortName: 'GitHub Repo Pull Requests'
-  },
-  {
-    type: 'GITHUB_REPO_STARS',
-    description: 'Retrieves all stargazers of a GitHub repo',
-    shortName: 'GitHub Repo Stars'
-  },
-  {
-    type: 'GIT_REFS',
-    description: 'Retrieves all the refs of a git repo',
-    shortName: 'Git Refs'
-  }
-]
-
 export const AutoImportFromGitModal: React.FC = () => {
-  const [value, setValue] = useState('')
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setValue(event.target.value)
-
-  const [organization, setOrganization] = useState<string>('')
-  const addAutoImport = () => setOrganization(value)
+  const {
+    imports, importType, orgUserText,
+    addImport, removeURL, updateImports, handleCheckBox, setImportType, setOrgUserText
+  } = useImports()
 
   return (
     <div className='w-full flex flex-col'>
@@ -98,86 +46,89 @@ export const AutoImportFromGitModal: React.FC = () => {
           <p className='text-semantic-mutedText'>This will automatically import all repos from your GitHub organization or GitHub User.</p>
         </div>
         <div className='flex items-center gap-2 mb-6'>
-            <div className='t-input-with-prepend flex-1'>
-              <Dropdown
-                alignEnd
-                trigger={
-                  <Button
-                    label='Organization'
-                    endIcon={<CaretDownIcon className='t-icon' />}
-                    skin='secondary'
-                  />
-                }
-                overlay={() => (
-                  <Menu className='whitespace-nowrap w-full'>
-                    <Menu.Item text='Organization' />
-                    <Menu.Item text='User' />
-                  </Menu>
-                )}
-              />
-              <Input
-                id='orgName'
-                type='text'
-                value={value}
-                onChange={handleChange}
-                placeholder='organization-name'
-              />
-            </div>
-            <Button
-              skin='secondary'
-              className='whitespace-nowrap'
-              startIcon={<PlusIcon className='t-icon' />}
-              onClick={addAutoImport}
-            >
-              Add
-            </Button>
+          <div className='t-input-with-prepend flex-1'>
+            <Dropdown
+              alignEnd
+              trigger={
+                <Button
+                  label={importType === SYNC_REPO_METHOD.GH_ORG ? 'Organization' : 'User'}
+                  endIcon={<CaretDownIcon className='t-icon' />}
+                  skin='secondary'
+                />
+              }
+              overlay={() => (
+                <Menu className='whitespace-nowrap w-full'>
+                  <Menu.Item text='Organization' onClick={() => setImportType(SYNC_REPO_METHOD.GH_ORG)} />
+                  <Menu.Item text='User' onClick={() => setImportType(SYNC_REPO_METHOD.GH_USER)} />
+                </Menu>
+              )}
+            />
+            <Input
+              id='orgName'
+              type='text'
+              value={orgUserText}
+              onChange={(e) => setOrgUserText(e.target.value)}
+              placeholder={importType === SYNC_REPO_METHOD.GH_ORG ? 'organization-name' : 'user-name'}
+            />
           </div>
+          <Button
+            skin='secondary'
+            className='whitespace-nowrap'
+            startIcon={<PlusIcon className='t-icon' />}
+            onClick={addImport}
+          >
+            Add
+          </Button>
+        </div>
 
-        {organization.length === 0 && <EmptyState />}
+        {imports.length === 0 && <EmptyState />}
 
-        {organization.length > 0 && (
-          <>
-            <div className='border border-gray-200 rounded mb-6'>
+        {imports.map((imp, index) => (
+          <Fragment key={index}>
+            <div className='border border-gray-200 rounded mt-6 mb-3'>
               <ListItem
-                title={organization}
-                subline='GitHub organization'
+                title={imp.name}
+                subline={imp.type === SYNC_REPO_METHOD.GH_ORG ? 'GitHub organization' : 'GitHub user'}
                 className={'px-4 py-2'}
-                startIcon={<OrgIcon organization={organization} />}
+                startIcon={<OrgIcon organization={imp.name} />}
                 onClick={() => false}
-                onTrashClick={() => (console.log('test'))}
+                onTrashClick={() => removeURL(imp.name)}
               />
             </div>
             <Panel className='rounded-md w-full shadow-sm'>
-              <Panel.Header>
+              <div onClick={() => updateImports(imp.name, { key: 'opened', value: imp.opened })} aria-hidden="true">
+                <Panel.Header className='flex justify-between cursor-pointer'>
                   <h4 className='t-h4 mb-0'>Select default syncs</h4>
-              </Panel.Header>
-              <Panel.Body className='p-0'>
-                  <table className='t-table-default'>
-                      <thead>
-                      <tr className='bg-white'>
-                          <th scope='col' key='name' className='whitespace-nowrap px-4'></th>
-                          <th scope='col' key='name' className='whitespace-nowrap px-4'>Name</th>
+                  {!imp.opened && <ChevronRightIcon className='t-icon t-icon-heroicons-chevron-right' />}
+                  {imp.opened && <ChevronDownIcon className='t-icon t-icon-heroicons-chevron-down' />}
+                </Panel.Header>
+              </div>
+              {imp.opened && <Panel.Body className='p-0'>
+                <table className='t-table-default'>
+                  <tbody className='bg-white'>
+                    {imp.defaultSyncs.map((syncType, index) => (
+                      <tr key={index}>
+                        <td className='py-3 pl-8 pr-4 w-0'>
+                          <Checkbox
+                            checked={syncType.checked}
+                            onChange={() => handleCheckBox(imp.name, imp.defaultSyncs, syncType.type)}
+                          />
+                        </td>
+                        <td className='py-3 pl-4 pr-8'>
+                          <h4 className='font-medium mb-0.5'>{syncType.shortName}</h4>
+                          <p className='text-semantic-mutedText text-sm'>{syncType.description}</p>
+                        </td>
                       </tr>
-                      </thead>
-
-                      <tbody className='bg-white'>
-                          {syncsTypesArray.map((syncType, index) => (
-                              <tr key={index}>
-                                  <td className='py-3 pl-8 pr-4 w-0'>
-                                      <Checkbox />
-                                  </td>
-                                  <td className='py-3 pl-4 pr-8'>
-                                    <h4 className='font-medium mb-0.5'>{syncType.shortName}</h4>
-                                    <p className='text-semantic-mutedText text-sm'>{syncType.description}</p>
-                                  </td>
-                              </tr>
-                          ))}
-                      </tbody>
-                  </table>
-              </Panel.Body>
+                    ))}
+                  </tbody>
+                </table>
+              </Panel.Body>}
             </Panel>
-          </>
-        )}
+            {index !== imports.length - 1 && <div className='mt-6 mb-3'>
+              <Sidebar.Divider />
+            </div>}
+          </Fragment>
+        ))}
       </div>
     </div>
   )

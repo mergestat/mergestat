@@ -121,3 +121,17 @@ export type RepoImportData = {
   type: string
   lastSync: string
 }
+
+export type SyncType = {
+  type: string
+  description: string | null | undefined
+  shortName: string
+  checked: boolean
+}
+
+export type ImportSync = {
+  name: string
+  type: string
+  opened: boolean
+  defaultSyncs: Array<SyncType>
+}

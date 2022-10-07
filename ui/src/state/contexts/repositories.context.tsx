@@ -1,5 +1,6 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
+import { ImportSync } from 'src/@types'
 
 type RepoInfoT = {
   id: string
@@ -13,11 +14,11 @@ type RepositoriesContextT = {
   showAutoImportModal: boolean
   showAddRepositoryModal: boolean
   showRemoveRepositoryModal: boolean
-  showSyncRepoModal: boolean
   search: string
   reposToAdd: string[]
   repoToRemove: RepoInfoT | null
   csvText: string
+  imports: ImportSync[]
 }
 
 type UseRepositoriesContextT = [
@@ -30,11 +31,11 @@ const initialState: RepositoriesContextT = {
   showAutoImportModal: false,
   showAddRepositoryModal: false,
   showRemoveRepositoryModal: false,
-  showSyncRepoModal: false,
   search: '',
   reposToAdd: [],
   repoToRemove: null,
   csvText: '',
+  imports: []
 }
 
 function useRepositories(): UseRepositoriesContextT {
@@ -87,13 +88,6 @@ function useRepositoriesSetState() {
     }))
   }
 
-  const setShowSyncRepoModal = (show: boolean) => {
-    setState(prev => ({
-      ...prev,
-      showSyncRepoModal: show
-    }))
-  }
-
   const setSearch = (search: string) => {
     setState(prev => ({
       ...prev,
@@ -122,6 +116,13 @@ function useRepositoriesSetState() {
     }))
   }
 
+  const setImports = (imports: ImportSync[]) => {
+    setState(prev => ({
+      ...prev,
+      imports
+    }))
+  }
+
   const resetValues = () => {
     setState(prev => ({
       ...prev,
@@ -136,11 +137,11 @@ function useRepositoriesSetState() {
     setShowAutoImportModal,
     setShowAddRepositoryModal,
     setShowRemoveRepositoryModal,
-    setShowSyncRepoModal,
     setSearch,
     setReposToAdd,
     setRepoToRemove,
     setCSVText,
+    setImports,
     resetValues
   }
 }

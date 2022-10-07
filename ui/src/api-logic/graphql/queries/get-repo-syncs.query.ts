@@ -39,4 +39,16 @@ const GET_REPO_SYNCS = gql`
     }
   }
 `
-export default GET_REPO_SYNCS
+const GET_SYNC_TYPES = gql`
+  query getSyncTypes {
+    repoSyncTypes {
+      nodes {
+        type
+        description
+        shortName
+      }
+    }
+  }
+`
+
+export { GET_REPO_SYNCS, GET_SYNC_TYPES }
