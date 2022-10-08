@@ -6,7 +6,7 @@ import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useSyncNow from 'src/views/hooks/useSyncNow'
 import useSyncs from 'src/views/hooks/useSyncs'
 
-export type RepositorySyncNowProps = {
+export interface RepositorySyncNowProps {
   repoId: string
   syncType: string
   syncTypeId: string

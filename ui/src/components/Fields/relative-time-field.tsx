@@ -4,7 +4,7 @@ import { RepoSyncDataType } from 'src/@types'
 import { getRelativeTime } from 'src/utils'
 import { SYNC_STATUS } from 'src/utils/constants'
 
-export type RelativeTimeFieldProps = {
+export interface RelativeTimeFieldProps {
   date: string
   syncData?: RepoSyncDataType
   styles?: string

@@ -21,7 +21,7 @@ const useRepos = (search: string, poll = false) => {
   }, [data, showTable])
 
   useEffect(() => {
-    !loading && !error && validateData()
+    !loading && (error == null) && validateData()
   }, [loading, error, validateData])
 
   useEffect(() => {

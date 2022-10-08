@@ -5,7 +5,7 @@ import React from 'react'
 import { RepoExportT } from 'src/@types'
 import { ADD_REPO } from 'src/utils/constants'
 
-type ModalSideBarProps = {
+interface ModalSideBarProps {
   onTabSelected: (tab: RepoExportT) => void
 }
 
@@ -44,7 +44,7 @@ export const ModalSideBar: React.FC<ModalSideBarProps> = ({ onTabSelected }: Mod
   )
 }
 
-type SideBarTab = {
+interface SideBarTab {
   startIcon: JSX.Element
   label: string
   type: RepoExportT

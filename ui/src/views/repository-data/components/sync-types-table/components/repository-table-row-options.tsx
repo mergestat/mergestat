@@ -4,7 +4,7 @@ import React from 'react'
 import { RepoSyncStateT } from 'src/@types'
 import { SYNC_STATUS } from 'src/utils/constants'
 
-export type RepositoryDetailsRowOptionsProps = {
+export interface RepositoryDetailsRowOptionsProps {
   state: RepoSyncStateT
 }
 

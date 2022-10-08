@@ -10,13 +10,13 @@ import { LogsInfo } from './components'
 
 const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
   const router = useRouter()
-  const logInfo: SyncLogsType | undefined = logs && logs.length > 0 ? logs[0] : undefined
+  const logInfo: SyncLogsType | undefined = (logs != null) && logs.length > 0 ? logs[0] : undefined
   const repoName = repo.name.split('/')[0]
 
   const crumbs = [
     {
       text: 'Repos',
-      onClick: () => router.push('/repos'),
+      onClick: async () => await router.push('/repos'),
     },
     {
       text: repo.name,
@@ -26,12 +26,12 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
           <ExternalLinkIcon className='t-icon t-icon-small' />
         </a>
       ),
-      onClick: () => router.push(`/repos/${repo.id}`),
+      onClick: async () => await router.push(`/repos/${repo.id}`),
     },
     {
       text: sync?.title || '',
       startIcon: <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />,
-      onClick: () => router.push(`/repos/${repo.id}/${sync?.id}`),
+      onClick: async () => await router.push(`/repos/${repo.id}/${sync?.id}`),
     },
     {
       text: logInfo?.syncStartText || '',

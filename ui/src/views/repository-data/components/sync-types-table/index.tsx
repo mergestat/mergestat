@@ -9,7 +9,7 @@ import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTabl
 
 type SycnTypesTableProps = PropsWithChildren<{
   repoId: string
-  data: Array<RepoSyncDataType>
+  data: RepoSyncDataType[]
 }>
 
 export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: SycnTypesTableProps) => {
@@ -86,7 +86,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                       </td>
 
                       <td className='text-gray-500 h-20 p-0'>
-                        {sync.status.data && sync.status.data.length === 0 && <span>-</span>}
+                        {(sync.status.data != null) && sync.status.data.length === 0 && <span>-</span>}
                         <RepositorySyncStatus
                           data={sync.status.data}
                           disabled={sync.status.syncState === SYNC_STATUS.disabled}

@@ -20,7 +20,7 @@ export function numberWithCommas(x: number) {
 
 export function selectAllState(data: Array<{ isSelected: boolean, [key: string]: unknown }>) {
   const selectedDataLen: number = data.filter(
-    (d) => d.isSelected === true
+    (d) => d.isSelected
   ).length
 
   return selectedDataLen === 0

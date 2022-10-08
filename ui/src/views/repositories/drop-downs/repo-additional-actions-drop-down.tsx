@@ -2,7 +2,7 @@ import { Dropdown, Menu } from '@mergestat/blocks'
 import { CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
 import { useRepositoriesSetState } from 'src/state/contexts'
 
-type RemoveRepositoryProps = {
+interface RemoveRepositoryProps {
   id: string
   name: string
   autoImported: boolean

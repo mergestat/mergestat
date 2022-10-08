@@ -8,12 +8,12 @@
     "next",
     "next/core-web-vitals",
     "standard",
+    "standard-with-typescript",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:jsx-a11y/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:standard-typescript/recommended",
     "plugin:testing-library/react"
   ],
   "parser": "@typescript-eslint/parser",
@@ -23,7 +23,7 @@
     },
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": "./packages/**/tsconfig.json"
+    "project": "./tsconfig.json"
   },
   "plugins": [
     "react",
@@ -55,16 +55,32 @@
       "error",
       "only-multiline"
     ],
+    // TODO(patrickdevivo) the following are added to make the linter happy
+    // but should probably be removed and the code addressed
+    "@typescript-eslint/explicit-function-return-type": ["warn"],
+    "@typescript-eslint/strict-boolean-expressions": ["warn"],
+    "@typescript-eslint/no-floating-promises": ["warn"],
+    "@typescript-eslint/prefer-nullish-coalescing" : ["warn"],
+    "@typescript-eslint/restrict-template-expressions": ["warn"],
+    "@typescript-eslint/no-misused-promises": ["warn"],
     "no-tabs": [
       "error",
       {
         "allowIndentationTabs": true
       }
     ],
+    "@typescript-eslint/space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
     "space-before-function-paren": [
       "error",
       {
-        "anonymous": "always",
+        "anonymous": "never",
         "named": "never",
         "asyncArrow": "always"
       }

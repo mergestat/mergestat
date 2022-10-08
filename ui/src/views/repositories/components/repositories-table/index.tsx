@@ -13,7 +13,7 @@ type RepositoriesTableProps = PropsWithChildren<{
 }>
 
 export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: RepositoriesTableProps) => {
-  const repos: Array<RepoDataPropsT> = mapToRepoData(data)
+  const repos: RepoDataPropsT[] = mapToRepoData(data)
 
   return (
     <>

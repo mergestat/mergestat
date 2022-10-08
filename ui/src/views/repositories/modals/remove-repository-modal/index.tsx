@@ -72,7 +72,7 @@ export const RemoveRepositoryModal: React.FC = () => {
               </Button>
               <Button
                 skin="danger"
-                onClick={() => removeRepo({
+                onClick={async () => await removeRepo({
                   variables: { id: repoToRemove?.id }
                 })}
                 startIcon={<TrashIcon className="t-icon" />}

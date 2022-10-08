@@ -13,7 +13,7 @@ interface SyncTypeFlatten {
 
 interface SyncCounter {
   count: number
-  syncs: Array<SyncTypeFlatten>
+  syncs: SyncTypeFlatten[]
 }
 
 /**
@@ -21,8 +21,8 @@ interface SyncCounter {
  * @param data Repo list that comes from data base in GetReposQuery format
  * @returns Repo list from data base mapped to RepoDataPropsT list
  */
-const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> => {
-  const mappedData: Array<RepoDataPropsT> = []
+const mapToRepoData = (data: GetReposQuery | undefined): RepoDataPropsT[] => {
+  const mappedData: RepoDataPropsT[] = []
 
   data?.repos?.nodes.forEach((r) => {
     // Consolidated Repo info
@@ -30,7 +30,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
       id: r?.id,
       name: r?.repo.replace(GITHUB_URL, '') || '',
       createdAt: new Date(r?.createdAt),
-      autoImportFrom: r?.repoImport
+      autoImportFrom: ((r?.repoImport) != null)
         ? r?.repoImport?.type === SYNC_REPO_METHOD.GH_USER
           ? `user: ${r?.repoImport?.settings.user}`
           : `org: ${r?.repoImport?.settings.org}`
@@ -54,7 +54,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
  * @param repoInfo Repo main info where info is being consolidated
  * @returns List of sync statuses with its corresponding quantity
  */
-const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatusT> => {
+const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): RepoDataStatusT[] => {
   // 1. Syncs info is flatten in a simple object
   const syncTypes = r?.repoSyncs.nodes.map((st: RepoSync) => {
     const syncObj: SyncTypeFlatten = {
@@ -68,7 +68,7 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
     st?.repoSyncQueues.nodes.forEach((ls: RepoSyncQueue) => {
       syncObj.idLastSync = ls?.id || ''
       syncObj.lastSync = ls?.doneAt || ''
-      syncObj.status = getStatus(ls as RepoSyncQueue) || ''
+      syncObj.status = getStatus(ls) || ''
     })
 
     return syncObj
@@ -80,7 +80,7 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
     let syncCounter = mapSyncs.get(st.status)
 
     // 2.1. Grouping syncs to show in 'pop up'
-    if (syncCounter) {
+    if (syncCounter != null) {
       syncCounter = {
         count: ++syncCounter.count,
         syncs: [...syncCounter.syncs, st]
@@ -95,7 +95,7 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
   })
 
   // 3. Previous info is transform to necesary RepoDataStatusT object
-  const mappedSyncs: Array<RepoDataStatusT> = []
+  const mappedSyncs: RepoDataStatusT[] = []
   mapSyncs?.forEach((value, key) => {
     mappedSyncs.push({ type: key, count: value.count, syncs: value.syncs })
   })

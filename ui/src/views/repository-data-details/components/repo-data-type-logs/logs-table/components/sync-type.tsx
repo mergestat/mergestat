@@ -4,7 +4,7 @@ import React from 'react'
 import type { RepoSyncStateT } from 'src/@types'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 
-export type SyncTypeProps = {
+export interface SyncTypeProps {
   syncType: RepoSyncStateT
   id: string
 }

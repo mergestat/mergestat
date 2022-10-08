@@ -9,7 +9,7 @@ import { AddRepositoryModal } from '../repositories/modals/add-repository-modal'
 import { RemoveRepositoryModal } from '../repositories/modals/remove-repository-modal'
 import { PageHeader, RepoSettings, SycnTypesTable } from './components'
 
-type RepoDataViewProps = {
+interface RepoDataViewProps {
   data?: RepoSyncData
   children?: React.ReactNode
 }
@@ -31,7 +31,7 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
             </Tabs.List>
             <Tabs.Panels className="p-8 flex-1 overflow-auto">
               <Tabs.Panel>
-                <SycnTypesTable repoId={data?.id || ''} data={data?.syncs || []} />
+                <SycnTypesTable repoId={data?.id || ''} data={(data?.syncs) || []} />
               </Tabs.Panel>
               <Tabs.Panel>
                 <RepoSettings

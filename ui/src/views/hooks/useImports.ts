@@ -29,7 +29,7 @@ const useImports = () => {
 
   const addImport = () => {
     const imp = imports.find((imp) => imp.name === orgUserText)
-    if (!imp) {
+    if (imp == null) {
       setImports([...imports, { name: orgUserText, type: importType, opened: true, defaultSyncs: syncsTypesArray }])
       setImportType(SYNC_REPO_METHOD.GH_ORG)
       setOrgUserText('')
@@ -77,7 +77,7 @@ const useImports = () => {
       return { type: imp.type, settings }
     })
 
-    importToSend.map(imp => autoImportRepos({ variables: imp }))
+    importToSend.map(async imp => await autoImportRepos({ variables: imp }))
   }
 
   return {

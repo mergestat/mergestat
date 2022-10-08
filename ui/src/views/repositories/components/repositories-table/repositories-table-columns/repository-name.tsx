@@ -8,7 +8,7 @@ import RepoImage from 'src/components/RepoImage'
 import { getRelativeTime } from 'src/utils'
 import { GITHUB_URL, TEST_IDS } from 'src/utils/constants'
 
-export type RepositoryNameProps = {
+export interface RepositoryNameProps {
   id: string
   name: string
   type: RepoType

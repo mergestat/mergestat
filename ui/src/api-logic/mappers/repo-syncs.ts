@@ -17,14 +17,14 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     type: data?.repo?.isGithub ? 'github' : 'other',
     gitHubPat: (data?.serviceAuthCredentials?.totalCount && data?.serviceAuthCredentials?.totalCount > 0) || false,
     tags: data?.repo?.tags.map((t: string) => ({ title: t, checked: true })),
-    autoImportFrom: data?.repo?.repoImport
+    autoImportFrom: ((data?.repo?.repoImport) != null)
       ? data?.repo?.repoImport?.type === SYNC_REPO_METHOD.GH_USER
         ? `user: ${data?.repo?.repoImport?.settings.user}`
         : `org: ${data?.repo?.repoImport?.settings.org}`
       : undefined,
   }
 
-  const mappedData: Array<RepoSyncDataType> = []
+  const mappedData: RepoSyncDataType[] = []
 
   data?.repoSyncTypes?.nodes.forEach((st) => {
     // 1. Find sync type data

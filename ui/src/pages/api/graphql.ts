@@ -7,8 +7,8 @@ export const config = {
   },
 }
 
-const proxy = (req: NextApiRequest, res: NextApiResponse) => {
-  return httpProxyMiddleware(req, res, {
+const proxy = async (req: NextApiRequest, res: NextApiResponse) => {
+  return await httpProxyMiddleware(req, res, {
     target: process.env.POSTGRAPHILE_API,
     ignorePath: true,
     headers: {

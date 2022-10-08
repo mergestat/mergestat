@@ -49,7 +49,7 @@ const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: Current
                 alignEnd={false}
                 overlay={() => (
                   <Menu data-popper-placement="bottom-end">
-                    <Menu.Item text="Log out" onClick={handleLogout} icon={<LogoutIcon className="t-icon" />} />
+                    <Menu.Item text="Log out" onClick={() => { handleLogout() }} icon={<LogoutIcon className="t-icon" />} />
                   </Menu>
                 )}
                 trigger={

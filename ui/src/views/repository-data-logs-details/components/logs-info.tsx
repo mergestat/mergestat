@@ -2,7 +2,7 @@ import { KeyValue } from '@mergestat/blocks'
 import React from 'react'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 
-type LogsInfoProps = {
+interface LogsInfoProps {
   id: string
   syncStart: string
   duration: string

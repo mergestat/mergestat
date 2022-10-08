@@ -11,9 +11,9 @@ export const RepositoryTagItem: React.FC<RepositoryTagItemProps> = (props) => {
   )
 }
 
-export type RepositoryTagListProps = {
+export interface RepositoryTagListProps {
   idRepo: string
-  tags: Array<TagType>
+  tags: TagType[]
 }
 
 export const RepositoryTagList: React.FC<RepositoryTagListProps> = ({ idRepo, tags }) => {

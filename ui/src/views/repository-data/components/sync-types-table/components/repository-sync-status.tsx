@@ -6,7 +6,7 @@ import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { getRelativeTime } from 'src/utils'
 import { SYNC_STATUS } from 'src/utils/constants'
 
-type RepositorySyncStatusProps = {
+interface RepositorySyncStatusProps {
   data?: SyncStatusDataT[]
   disabled?: boolean
   width?: number
@@ -20,7 +20,7 @@ type RepositorySyncStatusProps = {
   min?: number
 }
 
-type PositionType = {
+interface PositionType {
   x: number
   y: number
 }
@@ -65,7 +65,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   const valueArray = chartArray.map((d: SyncStatusDataT) => d.runningTime)
   const points = dataToPoints({ data: valueArray, limit, width, margin })
 
-  const strokeWidth: number = 1 * ((style && style.strokeWidth ? +style.strokeWidth : 0) || 0)
+  const strokeWidth: number = 1 * ((style?.strokeWidth ? +style.strokeWidth : 0) || 0)
   const marginWidth = margin ? 2 * margin : 0
 
   const barLineWidth = barWidth ||
@@ -102,7 +102,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
             top: eventPosition?.y ? eventPosition?.y - 95 : 0,
             left: eventPosition?.x
               ? eventPosition?.x -
-              ((tooltipRef?.current) ? tooltipRef?.current.clientWidth / 2 : 0)
+              (((tooltipRef?.current) != null) ? tooltipRef?.current.clientWidth / 2 : 0)
               : 0,
           }}
         >
@@ -117,7 +117,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
               <span className="font-medium text-white mb-0.5">{tooltipData?.status ? tooltipData?.status.charAt(0).toUpperCase() + tooltipData?.status.slice(1) : ''}</span>
               <div className="flex flex-col justify-center">
                 <span className="text-sm mr-1.5 pr-1.5 leading-4">
-                  {tooltipData?.doneAt ? getRelativeTime(new Date(tooltipData?.doneAt)) : ''}
+                  {((tooltipData?.doneAt) != null) ? getRelativeTime(new Date(tooltipData?.doneAt)) : ''}
                 </span>
                 <span className="text-sm">{`Duration: ${tooltipData?.runningTimeReadable}`}</span>
               </div>
@@ -137,7 +137,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
         >
           <g transform="scale(1,-1)">
             {[...points].reverse().map((p, i) => {
-              const id = 'round-corner_' + i
+              const id = `round-corner_${i}`
               const x = p.x - (barLineWidth + strokeWidth) / 2
               const y = -height
               const varHeight = Math.max(0, height - p.y)

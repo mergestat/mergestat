@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import { AddSyncTypeMutation } from 'src/api-logic/graphql/generated/schema'
 import { ADD_SYNC_TYPE, SYNC_NOW } from 'src/api-logic/graphql/mutations/syncs'
 
-const useSyncNow = (refetch: () => void) => {
+const useSyncNow = (refetch: () => Promise<any>) => {
   const [syncNow] = useMutation(SYNC_NOW, {
     onCompleted: () => {
       refetch()

@@ -6,14 +6,14 @@ import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { SyncType } from './components'
 
 interface LogsTableProps {
-  logs: Array<SyncLogsType>
+  logs: SyncLogsType[]
   children?: React.ReactNode
 }
 
-const remap = (logs: Array<SyncLogsType>, previousData?: Array<SyncLogsType>): Array<SyncLogsType> => {
+const remap = (logs: SyncLogsType[], previousData?: SyncLogsType[]): SyncLogsType[] => {
   return logs.map((log) => ({
     ...log,
-    ...{ collapsed: previousData ? previousData.find(d => d.id === log.id)?.collapsed : false },
+    ...{ collapsed: (previousData != null) ? previousData.find(d => d.id === log.id)?.collapsed : false },
   }))
 }
 

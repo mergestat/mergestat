@@ -1,8 +1,8 @@
-export const sampleSyncData: {
+export const sampleSyncData: Array<{
   dataType: string
   reposCount: number
   disablefor: number
-}[] = [
+}> = [
   {
     dataType: 'Commit State',
     reposCount: 112,

@@ -2,7 +2,7 @@ import { Dropdown, MultiSelect } from '@mergestat/blocks'
 import { DotsHorizontalIcon } from '@mergestat/icons'
 import useTags from 'src/views/hooks/useTags'
 
-type RepositoryTagListProps = {
+interface RepositoryTagListProps {
   idRepo: string
   showMoreTags: boolean
   moreTags: number

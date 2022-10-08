@@ -4,7 +4,7 @@ import { LogsTable } from './logs-table'
 
 interface RepoDataLogsProps {
   syncData?: SyncTypeInfo
-  logs?: Array<SyncLogsType>
+  logs?: SyncLogsType[]
 }
 
 export const RepoDataLogs = ({ syncData, logs }: RepoDataLogsProps) => {

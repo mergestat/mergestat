@@ -6,7 +6,7 @@ export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
 export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
-export type TagType = {
+export interface TagType {
   title: string
   checked: boolean
   color?: string
@@ -14,20 +14,20 @@ export type TagType = {
 
 /** Repositories Data Props Type */
 
-export type RepoSyncDataT = {
+export interface RepoSyncDataT {
   idType: string
   type: string
   idLastSync: string
   lastSync: string
 }
 
-export type RepoDataStatusT = {
+export interface RepoDataStatusT {
   type: RepoSyncStateT
   count: number
-  syncs?: Array<RepoSyncDataT>
+  syncs?: RepoSyncDataT[]
 }
 
-export type RepoDataPropsT = {
+export interface RepoDataPropsT {
   id: string
   name: string
   createdAt: Date
@@ -35,12 +35,12 @@ export type RepoDataPropsT = {
   autoImportFrom?: string
   tags: Array<{ title: string, checked: boolean }>
   lastSync: string
-  status: Array<RepoDataStatusT>
+  status: RepoDataStatusT[]
 }
 
 /** Repository Data Props Type */
 
-export type SyncStatusDataT = {
+export interface SyncStatusDataT {
   id: string
   repoId: string
   syncTypeId: string
@@ -50,7 +50,7 @@ export type SyncStatusDataT = {
   doneAt?: Date
 }
 
-export type RepoSyncDataType = {
+export interface RepoSyncDataType {
   data: {
     id: string
     type: string
@@ -65,25 +65,25 @@ export type RepoSyncDataType = {
   }
 }
 
-export type RepoSyncData = {
+export interface RepoSyncData {
   id: string
   name: string
   type: RepoType
   gitHubPat: boolean
   tags: TagType[]
   autoImportFrom?: string
-  syncs?: Array<RepoSyncDataType>
+  syncs?: RepoSyncDataType[]
 }
 
 /** Repository Data Logs Type */
-export type SyncTypeInfo = {
+export interface SyncTypeInfo {
   id: string
   title: string
   brief: string
   syncState: RepoSyncStateT
 }
 
-export type SyncLogsType = {
+export interface SyncLogsType {
   id: string
   title: string
   syncType: RepoSyncStateT
@@ -95,18 +95,18 @@ export type SyncLogsType = {
   logs?: string[]
 }
 
-export type SyncTypeData = {
+export interface SyncTypeData {
   repo: {
     id: string
     name: string
     type: RepoType
   }
   sync?: SyncTypeInfo
-  logs?: Array<SyncLogsType>
+  logs?: SyncLogsType[]
   syncNow?: () => void
 }
 
-export type SettingsDataType = {
+export interface SettingsDataType {
   isSelected?: boolean
   column: string
   type: string
@@ -114,7 +114,7 @@ export type SettingsDataType = {
 
 /** Repo Imports Data Props Type */
 
-export type RepoImportData = {
+export interface RepoImportData {
   id: string
   importDone: boolean
   source: string
@@ -122,16 +122,16 @@ export type RepoImportData = {
   lastSync: string
 }
 
-export type SyncType = {
+export interface SyncType {
   type: string
   description: string | null | undefined
   shortName: string
   checked: boolean
 }
 
-export type ImportSync = {
+export interface ImportSync {
   name: string
   type: string
   opened: boolean
-  defaultSyncs: Array<SyncType>
+  defaultSyncs: SyncType[]
 }

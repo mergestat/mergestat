@@ -33,7 +33,7 @@ const DataTypePage = () => {
       {loading
         ? <Loading />
         : <RepoDataTypeView {...repoData}
-          syncNow={() => syncNow({
+          syncNow={async () => await syncNow({
             variables: { syncId: syncTypeId }
           })}
         />

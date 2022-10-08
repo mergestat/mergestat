@@ -2,10 +2,10 @@ import { Button, Checkbox, Input, Modal, Toolbar } from '@mergestat/blocks'
 import { SearchIcon, XIcon } from '@mergestat/icons'
 import React, { ChangeEvent } from 'react'
 
-type TagListFilterModalType = {
+interface TagListFilterModalType {
   open: boolean
   searchText?: string
-  tags: { title: string, checked: boolean }[]
+  tags: Array<{ title: string, checked: boolean }>
   handleCheck: (checked: boolean, index: number) => void
   handleSearch: (text: string) => void
   onClose: () => void

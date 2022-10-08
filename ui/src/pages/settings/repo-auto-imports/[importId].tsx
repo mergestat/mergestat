@@ -67,7 +67,7 @@ const AutoImportsDetail: NextPage = () => {
   const crumbs = [
     {
       text: 'Repo Auto Imports',
-      onClick: () => router.push('/settings/repo-auto-imports'),
+      onClick: async () => await router.push('/settings/repo-auto-imports'),
     },
     {
       text: name,

@@ -6,7 +6,7 @@ import { RepoSyncStateT } from 'src/@types'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 
-type RepoDataDropDownProps = {
+interface RepoDataDropDownProps {
   data: Array<{ url: string, title: string, lastSync: string | ReactNode }>
   status: RepoSyncStateT
 }
@@ -69,7 +69,7 @@ type RepositoryStatusProps = PropsWithChildren<{
 const IconAndQuantity: React.FC<RepositoryStatusProps> = ({ count, children }: RepositoryStatusProps) => {
   return (
     <Badge
-      label={'' + count}
+      label={`${count}`}
       startIcon={children}
       action={true}
     />

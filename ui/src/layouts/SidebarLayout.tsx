@@ -6,8 +6,8 @@ import { CurrentUserQuery } from 'src/api-logic/graphql/generated/schema'
 import CURRENT_USER from 'src/api-logic/graphql/queries/auth'
 import Loading from 'src/components/Loading'
 
-const NavHeader = dynamic(() => import('../components/NavHeader'))
-const Sidebar = dynamic(() => import('../components/Sidebar'))
+const NavHeader = dynamic(async () => await import('../components/NavHeader'))
+const Sidebar = dynamic(async () => await import('../components/Sidebar'))
 
 const SidebarLayout: React.FC = ({ children }: PropsWithChildren) => {
   const router = useRouter()

@@ -14,8 +14,8 @@ const httpLink = new HttpLink({
   credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
 })
 
-const logoutLink = (router: NextRouter) => onError(({ graphQLErrors }) => {
-  if (graphQLErrors) {
+const logoutLink = (router: NextRouter) => onError(({ graphQLErrors }: any) => {
+  if (graphQLErrors != null) {
     for (const err of graphQLErrors) {
       if (err.message.includes('jwt expired')) {
         router.push({ pathname: '/login', query: { lostSession: true } })
@@ -49,7 +49,7 @@ export function initializeApollo(initialState: NormalizedCacheObject | null = nu
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // get hydrated here
-  if (initialState) {
+  if (initialState != null) {
     // Get existing cache, loaded during client side data fetching
     const existingCache = _apolloClient.extract()
 

@@ -6,7 +6,7 @@ import React from 'react'
 import type { RepoType } from 'src/@types'
 import { GITHUB_URL } from 'src/utils/constants'
 
-type RepoImagePropsT = {
+interface RepoImagePropsT {
   repoType?: RepoType
   orgName?: string
   size?: '10' | '8'

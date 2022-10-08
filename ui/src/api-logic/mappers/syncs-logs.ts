@@ -29,7 +29,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
     }
 
     // 2. Get logs data of the sync
-    const logsData: Array<SyncLogsType> = []
+    const logsData: SyncLogsType[] = []
 
     s?.repoSyncQueues.nodes.forEach((q) => {
       const logData: SyncLogsType = {

@@ -6,7 +6,7 @@ import { useRepositoriesSetState } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import useTags from 'src/views/hooks/useTags'
 
-type RepoSettingsProps = {
+interface RepoSettingsProps {
   id: string
   name: string
   tags: TagType[]

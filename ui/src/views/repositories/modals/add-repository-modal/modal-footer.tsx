@@ -7,7 +7,7 @@ import { ADD_REPO as ADD_REPO_ENUM, TEST_IDS } from 'src/utils/constants'
 import useAddRepos from 'src/views/hooks/useAddRepos'
 import useImports from 'src/views/hooks/useImports'
 
-type ModalFooterProps = {
+interface ModalFooterProps {
   selectedTab: RepoExportT
 }
 

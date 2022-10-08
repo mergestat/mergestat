@@ -11,7 +11,7 @@ export const PageHeader: React.FC = () => {
   const crumbs = [
     {
       text: 'Repos',
-      onClick: () => router.push('/repos'),
+      onClick: async () => await router.push('/repos'),
     }
   ]
 

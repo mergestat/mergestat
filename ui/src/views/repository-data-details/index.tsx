@@ -15,7 +15,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
   const crumbs = [
     {
       text: 'Repos',
-      onClick: () => router.push('/repos'),
+      onClick: async () => await router.push('/repos'),
     },
     {
       text: repo.name,
@@ -25,7 +25,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
           <ExternalLinkIcon className='t-icon t-icon-small' />
         </a>
       ),
-      onClick: () => router.push(`/repos/${repo.id}`),
+      onClick: async () => await router.push(`/repos/${repo.id}`),
     },
     {
       text: sync?.title || '',

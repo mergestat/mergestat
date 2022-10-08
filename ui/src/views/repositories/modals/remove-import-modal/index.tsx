@@ -63,7 +63,7 @@ export const RemoveImportModal: React.FC = () => {
               </Button>
               <Button
                 skin="danger"
-                onClick={() => removeImport({
+                onClick={async () => await removeImport({
                   variables: { id: importToRemove?.id }
                 })}
                 startIcon={<TrashIcon className="t-icon" />}

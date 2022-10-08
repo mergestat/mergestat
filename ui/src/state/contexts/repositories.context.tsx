@@ -2,7 +2,7 @@ import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
 import { ImportSync } from 'src/@types'
 
-type RepoInfoT = {
+interface RepoInfoT {
   id: string
   name: string
   type?: string
@@ -10,7 +10,7 @@ type RepoInfoT = {
   redirect?: boolean
 }
 
-type RepositoriesContextT = {
+interface RepositoriesContextT {
   showOpenRepositoryModal: boolean
   showAutoImportModal: boolean
   showAddRepositoryModal: boolean

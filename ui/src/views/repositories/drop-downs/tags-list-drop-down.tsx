@@ -4,7 +4,7 @@ import React, { ChangeEvent, useId, useState } from 'react'
 import { TagType } from 'src/@types'
 import { TagListFilterModal } from '../modals'
 
-type TagsListDropDownProps = {
+interface TagsListDropDownProps {
   trigger?: JSX.Element
 }
 export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {

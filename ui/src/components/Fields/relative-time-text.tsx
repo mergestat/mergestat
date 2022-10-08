@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getRelativeTime, simplifyTime } from 'src/utils'
 
-export type RelativeTimeTextProps = {
+export interface RelativeTimeTextProps {
   date: string
   prefix?: string
   suffix?: string

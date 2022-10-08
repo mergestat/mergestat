@@ -1,7 +1,7 @@
 import { Dropdown } from '@mergestat/blocks'
 import { SyncDataTable } from './sync-data-table.tsx'
 
-type SyncDataDropDownProps = {
+interface SyncDataDropDownProps {
   triger: React.ReactNode
 }
 

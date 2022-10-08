@@ -4,12 +4,12 @@ import cx from 'classnames'
 import type { RepoSyncStateT } from 'src/@types'
 import { SYNC_STATUS } from 'src/utils/constants'
 
-type RepoSyncIconPropsT = {
+interface RepoSyncIconPropsT {
   type: RepoSyncStateT
   className?: string
 }
 
-type WithTooltipPropsT = {
+interface WithTooltipPropsT {
   status: string
   icon: JSX.Element
 }

@@ -7,7 +7,7 @@ import SidebarLayout from './SidebarLayout'
 
 import { ErrorFallback, MyErrorHandler } from '../components/ErrorBoundary'
 
-type LayoutProps = {
+interface LayoutProps {
   children?: {
     type: {
       layout: string | undefined

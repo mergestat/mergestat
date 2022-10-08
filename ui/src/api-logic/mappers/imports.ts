@@ -7,8 +7,8 @@ import { GetRepoImportsQuery } from '../graphql/generated/schema'
  * @param data Repo import list that comes from data base in GetRepoImportsQuery format
  * @returns Repo import list from data base mapped to RepoImportData list
  */
-const mapToImportsData = (data: GetRepoImportsQuery | undefined): Array<RepoImportData> => {
-  const mappedData: Array<RepoImportData> = []
+const mapToImportsData = (data: GetRepoImportsQuery | undefined): RepoImportData[] => {
+  const mappedData: RepoImportData[] = []
 
   data?.repoImports?.nodes.forEach((imp) => {
     // Consolidated Import info
