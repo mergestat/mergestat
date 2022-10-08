@@ -7,11 +7,8 @@ import { TEST_IDS } from 'src/utils/constants'
 import RepositoriesView from 'src/views/repositories'
 import { RepositoryStatus } from 'src/views/repositories/components/repositories-table/repositories-table-columns'
 import { AddRepositoryModal } from 'src/views/repositories/modals/add-repository-modal'
-import { ManageAutoImportReposModal } from 'src/views/repositories/modals/auto-import-repository-modals/manage-auto-imports-modal'
-import { SyncAutoImportReposModal } from 'src/views/repositories/modals/auto-import-repository-modals/sync-auto-import-modal'
 import { DynamicValues } from 'src/__mocks__/constants.mock'
-import { apolloMockImports } from 'src/__mocks__/imports.mock'
-import { apolloMockAddExistingRepo, apolloMockAddNewRepo, apolloMockAutoImportUser } from 'src/__mocks__/repo-add.mock'
+import { apolloMockAddExistingRepo, apolloMockAddNewRepo } from 'src/__mocks__/repo-add.mock'
 import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
 import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposEmptyGitHubPat, apolloMockReposEmptyNoGitHubPat, apolloMockReposWithData, apolloMockWithoutResults } from 'src/__mocks__/repos.mock'
 
@@ -208,60 +205,5 @@ describe('GraphQL queries: (Repos)', () => {
         expect(warningAlert).toBeInTheDocument()
       })
     }
-  })
-
-  it('calling useMutation(): auto import repos from user', async () => {
-    render(
-      <MockedProvider mocks={[apolloMockReposWithData, apolloMockAutoImportUser]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepositoriesView />
-          <SyncAutoImportReposModal />
-        </RepositoriesProvider>
-      </MockedProvider>
-    )
-
-    // Get 'Add from GitHub User' button and click on it
-    const rabioButton = screen.getByText(/Add from GitHub User/i)
-    fireEvent.click(rabioButton as HTMLDivElement)
-
-    // Get input text to add repos
-    const inputText = screen.getByTestId(TEST_IDS.autoImportInputText)
-    if (inputText) {
-      fireEvent.change(inputText, { target: { value: DynamicValues.autoImportUser } })
-      expect((inputText as HTMLInputElement).value).toBe(DynamicValues.autoImportUser)
-
-      // Finally click in 'Create Auto Import' to add repos to data base
-      const autoImportButton = screen.getByTestId(TEST_IDS.autoImportButton)
-      fireEvent.click(autoImportButton as HTMLButtonElement)
-
-      // Check success banner alert
-      await waitFor(() => {
-        const bannerAlert = screen.getByText('Repositories from an auto-import will appear here once they are finished syncing.')
-        expect(bannerAlert).toBeInTheDocument()
-      })
-    }
-  })
-
-  it('calling useQuery(): auto imports list', async () => {
-    render(
-      <MockedProvider mocks={[apolloMockImports, apolloMockAutoImportUser]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepositoriesView />
-          <ManageAutoImportReposModal />
-        </RepositoriesProvider>
-      </MockedProvider>
-    )
-
-    // Checks imports table is rendered
-    await waitFor(() => {
-      const table = screen.getByTestId(TEST_IDS.importsTableList)
-      expect(table).toBeInTheDocument()
-    })
-
-    // Checks imports table has 4 rows
-    await waitFor(() => {
-      const rows = screen.getAllByTestId(TEST_IDS.importsRow)
-      expect(rows.length).toBe(4)
-    })
   })
 })

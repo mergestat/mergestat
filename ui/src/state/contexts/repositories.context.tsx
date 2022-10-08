@@ -1,11 +1,13 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
+import { ImportSync } from 'src/@types'
 
 type RepoInfoT = {
   id: string
   name: string
-  autoImported: boolean
-  redirect: boolean
+  type?: string
+  autoImported?: boolean
+  redirect?: boolean
 }
 
 type RepositoriesContextT = {
@@ -13,11 +15,13 @@ type RepositoriesContextT = {
   showAutoImportModal: boolean
   showAddRepositoryModal: boolean
   showRemoveRepositoryModal: boolean
-  showSyncRepoModal: boolean
+  showRemoveImportModal: boolean
   search: string
   reposToAdd: string[]
   repoToRemove: RepoInfoT | null
+  importToRemove: RepoInfoT | null
   csvText: string
+  imports: ImportSync[]
 }
 
 type UseRepositoriesContextT = [
@@ -30,11 +34,13 @@ const initialState: RepositoriesContextT = {
   showAutoImportModal: false,
   showAddRepositoryModal: false,
   showRemoveRepositoryModal: false,
-  showSyncRepoModal: false,
+  showRemoveImportModal: false,
   search: '',
   reposToAdd: [],
   repoToRemove: null,
+  importToRemove: null,
   csvText: '',
+  imports: []
 }
 
 function useRepositories(): UseRepositoriesContextT {
@@ -87,10 +93,10 @@ function useRepositoriesSetState() {
     }))
   }
 
-  const setShowSyncRepoModal = (show: boolean) => {
+  const setShowRemoveImportModal = (show: boolean) => {
     setState(prev => ({
       ...prev,
-      showSyncRepoModal: show
+      showRemoveImportModal: show
     }))
   }
 
@@ -115,10 +121,24 @@ function useRepositoriesSetState() {
     }))
   }
 
+  const setImportToRemove = (importToRemove: RepoInfoT) => {
+    setState(prev => ({
+      ...prev,
+      importToRemove
+    }))
+  }
+
   const setCSVText = (csvText: string) => {
     setState(prev => ({
       ...prev,
       csvText
+    }))
+  }
+
+  const setImports = (imports: ImportSync[]) => {
+    setState(prev => ({
+      ...prev,
+      imports
     }))
   }
 
@@ -136,11 +156,13 @@ function useRepositoriesSetState() {
     setShowAutoImportModal,
     setShowAddRepositoryModal,
     setShowRemoveRepositoryModal,
-    setShowSyncRepoModal,
+    setShowRemoveImportModal,
     setSearch,
     setReposToAdd,
     setRepoToRemove,
+    setImportToRemove,
     setCSVText,
+    setImports,
     resetValues
   }
 }

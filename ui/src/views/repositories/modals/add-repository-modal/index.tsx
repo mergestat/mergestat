@@ -5,10 +5,8 @@ import { RepoExportT } from 'src/@types'
 import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { ADD_REPO } from 'src/utils/constants'
 import { AddRepositoryFromCSVModal } from './add-repository-from-csv-modal'
-import { AutoImportFromGitModal } from './auto-import-from-git-modal'
-import { AddRepositoryFromGitOrganizationModal } from './add-repository-from-git-organization-modal'
-import { AddRepositoryFromGitUserModal } from './add-repository-from-git-user-modal'
 import { AddRepositoryFromURLModal } from './add-repository-from-url-modal'
+import { AutoImportFromGitModal } from './auto-import-from-git-modal'
 import { ModalFooter } from './modal-footer'
 import { ModalSideBar } from './modal-sidebar'
 
@@ -41,12 +39,10 @@ export const AddRepositoryModal: React.FC = () => {
         </Toolbar>
       </Modal.Header>
       <Modal.Body className='overflow-hidden flex w-full'>
-          <ModalSideBar onTabSelected={setSelectedTab} />
-          {selectedTab === ADD_REPO.url && <AddRepositoryFromURLModal />}
-          {selectedTab === ADD_REPO.csv && <AddRepositoryFromCSVModal />}
-          {selectedTab === ADD_REPO.ghAuto && <AutoImportFromGitModal />}
-          {selectedTab === ADD_REPO.ghOrg && <AddRepositoryFromGitOrganizationModal />}
-          {selectedTab === ADD_REPO.ghUser && <AddRepositoryFromGitUserModal />}
+        <ModalSideBar onTabSelected={setSelectedTab} />
+        {selectedTab === ADD_REPO.ghAuto && <AutoImportFromGitModal />}
+        {selectedTab === ADD_REPO.url && <AddRepositoryFromURLModal />}
+        {selectedTab === ADD_REPO.csv && <AddRepositoryFromCSVModal />}
       </Modal.Body>
       <ModalFooter selectedTab={selectedTab} />
     </Modal>

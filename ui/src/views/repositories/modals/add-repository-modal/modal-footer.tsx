@@ -5,14 +5,16 @@ import { RepoExportT } from 'src/@types'
 import { useRepositoriesContext } from 'src/state/contexts'
 import { ADD_REPO as ADD_REPO_ENUM, TEST_IDS } from 'src/utils/constants'
 import useAddRepos from 'src/views/hooks/useAddRepos'
+import useImports from 'src/views/hooks/useImports'
 
 type ModalFooterProps = {
   selectedTab: RepoExportT
 }
 
 export const ModalFooter: React.FC<ModalFooterProps> = ({ selectedTab }) => {
-  const [{ reposToAdd, csvText }] = useRepositoriesContext()
+  const [{ reposToAdd, csvText, imports }] = useRepositoriesContext()
   const { addFromURL, addFromCSV, closeModal } = useAddRepos()
+  const { addImports } = useImports()
 
   return (
     <Modal.Footer>
@@ -28,11 +30,13 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({ selectedTab }) => {
               data-testid={TEST_IDS.addRepoToDbButton}
               disabled={
                 (selectedTab === ADD_REPO_ENUM.url && reposToAdd.length === 0) ||
-                (selectedTab === ADD_REPO_ENUM.csv && csvText === '')
+                (selectedTab === ADD_REPO_ENUM.csv && csvText === '') ||
+                (selectedTab === ADD_REPO_ENUM.ghAuto && imports.length === 0)
               }
               onClick={() => {
                 selectedTab === ADD_REPO_ENUM.url && addFromURL()
                 selectedTab === ADD_REPO_ENUM.csv && addFromCSV()
+                selectedTab === ADD_REPO_ENUM.ghAuto && addImports()
               }}
             >
               Add Repositories

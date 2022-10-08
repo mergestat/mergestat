@@ -1,8 +1,6 @@
 import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { AddRepositoryModal } from './modals/add-repository-modal'
-import { ManageAutoImportReposModal } from './modals/auto-import-repository-modals/manage-auto-imports-modal'
-import { SyncAutoImportReposModal } from './modals/auto-import-repository-modals/sync-auto-import-modal'
 
 import { Alert, Spinner } from '@mergestat/blocks'
 import Loading from 'src/components/Loading'
@@ -11,7 +9,7 @@ import { EmptyRepository } from './components/empty-repository'
 import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
 const RepositoriesView: React.FC = () => {
-  const [{ showAddRepositoryModal, showRemoveRepositoryModal, showAutoImportModal, showSyncRepoModal, search }] = useRepositoriesContext()
+  const [{ showAddRepositoryModal, showRemoveRepositoryModal, search }] = useRepositoriesContext()
   const { showTable, loading, data, showBanner } = useRepos(search, true)
 
   return (
@@ -49,8 +47,6 @@ const RepositoriesView: React.FC = () => {
 
       {showRemoveRepositoryModal && <RemoveRepositoryModal />}
       {showAddRepositoryModal && <AddRepositoryModal />}
-      {showSyncRepoModal && <SyncAutoImportReposModal />}
-      {showAutoImportModal && <ManageAutoImportReposModal />}
     </main>
   )
 }

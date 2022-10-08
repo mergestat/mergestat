@@ -23,7 +23,7 @@ const RepoImage: React.FC<RepoImagePropsT> = ({
       skin="default"
       className={cx({ 'border border-gray-200': repoType === 'github' })}
     >
-      {repoType === 'github'
+      {repoType === 'github' && orgName
         ? <Image
           src={`${GITHUB_URL}/${orgName}.png?size=40`}
           width={40}

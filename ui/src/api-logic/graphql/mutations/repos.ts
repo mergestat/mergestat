@@ -7,6 +7,15 @@ const REMOVE_REPO = gql`
     }
   }
 `
+
+const REMOVE_IMPORT = gql`
+  mutation removeImport($id: UUID!) {
+    deleteRepoImport(input: {id: $id}) {
+      deletedRepoImportNodeId
+    }
+  }
+`
+
 const UPDATE_TAGS = gql`
   mutation updateTags($id: UUID!, $tags: JSON!) {
     updateRepo(input: {id: $id, patch: {tags: $tags}}) {
@@ -18,4 +27,4 @@ const UPDATE_TAGS = gql`
   }
 `
 
-export { REMOVE_REPO, UPDATE_TAGS }
+export { REMOVE_REPO, REMOVE_IMPORT, UPDATE_TAGS }
