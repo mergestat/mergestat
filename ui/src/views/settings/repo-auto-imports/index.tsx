@@ -58,10 +58,10 @@ const AutoImports: NextPage = () => {
                       : <table className='t-table-default t-table-clickable'>
                         <thead>
                           <tr className='bg-white'>
-                            <th scope='col' key='name' className='whitespace-nowrap px-4'>Status</th>
+                            <th scope='col' key='status' className='whitespace-nowrap px-4'>Status</th>
                             <th scope='col' key='name' className='whitespace-nowrap px-4'>Name</th>
-                            <th scope='col' key='name' className='whitespace-nowrap px-4'>Last Import</th>
-                            <th scope='col' key='name' className='whitespace-nowrap px-4'></th>
+                            <th scope='col' key='lastImport' className='whitespace-nowrap px-4'>Last Import</th>
+                            <th scope='col' key='remove' className='whitespace-nowrap px-4'></th>
                           </tr>
                         </thead>
 
