@@ -1,10 +1,9 @@
-import { Filter, Input } from '@mergestat/blocks'
+import { Input } from '@mergestat/blocks'
 import { SearchIcon } from '@mergestat/icons'
 import { debounce } from 'lodash'
 import React from 'react'
 import { useRepositoriesSetState } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
-import { TagsListDropDown } from '../drop-downs'
 
 export const FilterHeader: React.FC = () => {
   const { setSearch } = useRepositoriesSetState()

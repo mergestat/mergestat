@@ -40,8 +40,7 @@ export enum TEST_IDS {
 export enum ADD_REPO {
   url = 'url',
   csv = 'csv',
-  ghOrg = 'gh-org',
-  ghUser = 'gh-user',
+  ghAuto = 'gh-auto',
 }
 
 export enum SYNC_REPO_METHOD {

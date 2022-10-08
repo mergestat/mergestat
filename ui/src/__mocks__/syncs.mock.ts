@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { AddSyncTypeMutation, GetRepoSyncsQuery, RemoveRepoMutation, SyncMutation, UpdateTagsMutation } from 'src/api-logic/graphql/generated/schema'
 import { REMOVE_REPO, UPDATE_TAGS } from 'src/api-logic/graphql/mutations/repos'
 import { ADD_SYNC_TYPE, SYNC_NOW } from 'src/api-logic/graphql/mutations/syncs'
-import GET_REPO_SYNCS from 'src/api-logic/graphql/queries/get-repo-syncs.query'
+import { GET_REPO_SYNCS } from 'src/api-logic/graphql/queries/get-repo-syncs.query'
 import { DynamicValues } from './constants.mock'
 
 const queueArray = (runningSync: boolean) => ([

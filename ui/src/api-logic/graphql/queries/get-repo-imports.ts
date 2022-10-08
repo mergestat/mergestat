@@ -13,4 +13,22 @@ const GET_REPO_IMPORTS = gql`
     }
   }
 `
-export default GET_REPO_IMPORTS
+const GET_REPO_IMPORT = gql`
+  query getRepoImport($id: UUID!) {
+    repoImport(id: $id) {
+      id
+      type
+      lastImport
+      settings
+    }
+    repoSyncTypes {
+      nodes {
+        type
+        description
+        shortName
+      }
+    }
+  }
+`
+
+export { GET_REPO_IMPORTS, GET_REPO_IMPORT }

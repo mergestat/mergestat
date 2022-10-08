@@ -10117,6 +10117,13 @@ export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, lastImport?: any | null }> } | null };
 
+export type GetRepoImportQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetRepoImportQuery = { repoImport?: { id: any, type: string, lastImport?: any | null, settings: any } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
+
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -10124,12 +10131,17 @@ export type GetRepoSyncsQueryVariables = Exact<{
 
 export type GetRepoSyncsQuery = { serviceAuthCredentials?: { totalCount: number } | null, repo?: { id: any, repo: string, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null, hasError?: boolean | null }> } }> } } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
 
+export type GetSyncTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSyncTypesQuery = { repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
+
 export type GetReposQueryVariables = Exact<{
   search: Scalars['String'];
 }>;
 
 
-export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, allRepos?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, doneAt?: any | null, createdAt: any }> } }> } }> } | null };
+export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, allRepos?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null }> } }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];

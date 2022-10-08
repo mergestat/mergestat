@@ -1,6 +1,6 @@
 export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'error' | 'empty'
 
-export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'csv'
+export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'gh-auto' | 'csv'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
@@ -120,4 +120,18 @@ export type RepoImportData = {
   source: string
   type: string
   lastSync: string
+}
+
+export type SyncType = {
+  type: string
+  description: string | null | undefined
+  shortName: string
+  checked: boolean
+}
+
+export type ImportSync = {
+  name: string
+  type: string
+  opened: boolean
+  defaultSyncs: Array<SyncType>
 }
