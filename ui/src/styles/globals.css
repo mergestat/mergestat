@@ -82,3 +82,21 @@
   height: 1px !important;
   overflow: hidden !important;
 }
+
+.t-nav-item > a,
+.t-nav-item > button {
+    @apply px-5
+           border-0
+           bg-transparent
+           gap-3
+           font-medium
+           inline-flex
+           items-center
+           h-full
+           focus_outline-none
+           focus_ring-2
+           ring-inset
+           focus_ring-blue-500
+           hover_bg-gray-600
+           cursor-pointer;
+}

@@ -1,5 +1,5 @@
-import { Icon, Navbar, Toolbar } from '@mergestat/blocks'
-import { BookIcon } from '@mergestat/icons'
+import { Avatar, Dropdown, Icon, Menu, Navbar, Toolbar } from '@mergestat/blocks'
+import { BookIcon, CaretDownIcon, LogoutIcon, UserIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -44,16 +44,25 @@ const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: Current
                 target="_blank"
                 icon={<BookIcon className="t-icon" />}
               />
+              <Navbar.Divider />
+              <Dropdown
+                alignEnd={false}
+                overlay={() => (
+                  <Menu data-popper-placement="bottom-end">
+                    <Menu.Item text="Log out" onClick={handleLogout} icon={<LogoutIcon className="t-icon" />} />
+                  </Menu>
+                )}
+                trigger={
+                  <div className="t-nav-item gap-2 flex-items-center">
+                    <button>
+                      <Avatar className="bg-gray-500" icon={<UserIcon className="t-icon text-white" />} />
+                      <span>{currentMergeStatUser}</span>
+                      <CaretDownIcon className="t-icon" />
+                    </button>
+                  </div>
+                }
+              />
             </Navbar.Items>
-          </Toolbar.Item>
-          <Navbar.Divider />
-          <Toolbar.Item className="space-x-2">
-            <p className="font-medium text-white ml-3">{currentMergeStatUser}</p>
-            <div onClick={handleLogout} aria-hidden="true">
-              <span className="text-white underline opacity-60 cursor-pointer">
-                Log out
-              </span>
-            </div>
           </Toolbar.Item>
         </Toolbar.Right>
       </Toolbar>
