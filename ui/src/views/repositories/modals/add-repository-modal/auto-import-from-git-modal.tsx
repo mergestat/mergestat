@@ -1,4 +1,4 @@
-import { Button, Checkbox, Dropdown, Input, ListItem, Menu, Panel, Sidebar } from '@mergestat/blocks'
+import { Alert, Button, Checkbox, Dropdown, Input, ListItem, Menu, Panel, Sidebar } from '@mergestat/blocks'
 import { CaretDownIcon, ChevronDownIcon, ChevronRightIcon, PlusIcon } from '@mergestat/icons'
 import React, { Fragment } from 'react'
 import RepoImage from 'src/components/RepoImage'
@@ -89,10 +89,11 @@ export const AutoImportFromGitModal: React.FC = () => {
                 </Panel.Header>
               </div>
               {imp.opened && <Panel.Body className='p-0'>
-                <table className='t-table-default'>
+                <Alert type='info' className='m-3' title='Default syncs are enabled for repos that are imported.' />
+                <table className='t-table-default t-table-clickable'>
                   <tbody className='bg-white'>
                     {imp.defaultSyncs.map((syncType, index) => (
-                      <tr key={index}>
+                      <tr key={index} onClick={() => handleCheckBox(imp.name, imp.defaultSyncs, syncType.type)}>
                         <td className='py-3 pl-8 pr-4 w-0'>
                           <Checkbox
                             checked={syncType.checked}

@@ -106,10 +106,10 @@ const AutoImportsDetail: NextPage = () => {
                     <h4 className='t-h4 mb-0'>Select default syncs</h4>
                   </Panel.Header>
                   <Panel.Body className='p-0'>
-                    <table className='t-table-default'>
+                    <table className='t-table-default t-table-clickable'>
                       <tbody className='bg-white'>
                         {syncsTypesArray.map((syncType, index) => (
-                          <tr key={index}>
+                          <tr key={index} onClick={() => handleCheckBox(syncType.type)}>
                             <td className='py-3 pl-8 pr-4 w-0'>
                               <Checkbox
                                 checked={syncType.checked}
