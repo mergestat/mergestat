@@ -98,7 +98,7 @@ const AutoImports: NextPage = () => {
                               <td className='text-gray-500 py-4 pl-4 pr-8'>
                                 <RowLink importId={imp.id} />
                                 <div className='t-button-toolbar'>
-                                  <TrashIcon className="t-icon" onClick={() => prepareToRemove(imp.id, imp.source)} />
+                                  <TrashIcon className="t-icon" onClick={() => prepareToRemove(imp.id, imp.source, imp.type)} />
                                 </div>
                               </td>
                             </tr>

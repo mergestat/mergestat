@@ -20,8 +20,8 @@ const useRepoImports = (poll = false) => {
     setImports(mapToImportsData(data))
   }, [data])
 
-  const prepareToRemove = (id: string, name: string) => {
-    setImportToRemove({ id, name })
+  const prepareToRemove = (id: string, name: string, type: string) => {
+    setImportToRemove({ id, name, type })
     setShowRemoveImportModal(true)
   }
 

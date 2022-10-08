@@ -5,6 +5,7 @@ import { ImportSync } from 'src/@types'
 type RepoInfoT = {
   id: string
   name: string
+  type?: string
   autoImported?: boolean
   redirect?: boolean
 }

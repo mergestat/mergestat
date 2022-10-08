@@ -42,8 +42,6 @@ const AutoImportsDetail: NextPage = () => {
 
     const list = data?.repoSyncTypes?.nodes.map(st => ({ type: st.type, description: st.description, shortName: st.shortName, checked: defaultSyncs.includes(st.type) }))
     setSyncsTypesArray(list || [])
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   const handleCheckBox = (type: string) => {
@@ -68,7 +66,7 @@ const AutoImportsDetail: NextPage = () => {
 
   const crumbs = [
     {
-      text: 'Repo Auto imports',
+      text: 'Repo Auto Imports',
       onClick: () => router.push('/settings/repo-auto-imports'),
     },
     {

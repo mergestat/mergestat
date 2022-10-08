@@ -5,7 +5,7 @@ import React, { useCallback } from 'react'
 import { REMOVE_IMPORT } from 'src/api-logic/graphql/mutations/repos'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { showSuccessAlert } from 'src/utils/alerts'
-import { TEST_IDS } from 'src/utils/constants'
+import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
 import useRepoImports from 'src/views/hooks/useRepoImports'
 
 export const RemoveImportModal: React.FC = () => {
@@ -19,7 +19,7 @@ export const RemoveImportModal: React.FC = () => {
 
   const [removeImport] = useMutation(REMOVE_IMPORT, {
     onCompleted: () => {
-      showSuccessAlert('Import removed successfully')
+      showSuccessAlert('Repo auto import removed')
       refetch()
       close()
     }
@@ -47,7 +47,7 @@ export const RemoveImportModal: React.FC = () => {
       </Modal.Header>
       <Modal.Body>
         <div className='px-6 py-6'>
-          Are you sure you want to remove <b>{importToRemove?.name}</b>?
+          Are you sure you want to remove the GitHub repo auto import for the <b>{importToRemove?.name}</b> {importToRemove?.type === SYNC_REPO_METHOD.GH_ORG ? 'organization' : 'user'}?
         </div>
       </Modal.Body>
       <Modal.Footer>

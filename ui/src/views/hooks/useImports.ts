@@ -22,6 +22,7 @@ const useImports = () => {
     onCompleted: () => {
       showSuccessAlert('Repo auto import added')
       refetch()
+      setImports([])
       closeModal()
     }
   })
