@@ -1244,6 +1244,8 @@ go.opentelemetry.io/proto/otlp v0.11.0/go.mod h1:QpEjXPrNQzrFDZgoTo49dgHR9RYRSrg
 go.riyazali.net/sqlite v0.0.0-20210707161919-414349b4032a/go.mod h1:UVocl0mLwS0QKUKa5mI6lppmBjvQnUEkFjFfoWqFWQU=
 go.riyazali.net/sqlite v0.0.0-20220326124836-471d5aaa9b7b h1:Lqoewchhaz6+WYIad4i2oUKjbDhy9fIgPno2ljMciDQ=
 go.riyazali.net/sqlite v0.0.0-20220326124836-471d5aaa9b7b/go.mod h1:UVocl0mLwS0QKUKa5mI6lppmBjvQnUEkFjFfoWqFWQU=
+go.riyazali.net/sqlite v0.0.0-20221009071723-df6a26c107b6 h1:ru9BiMhHhwm1hKRlNVRpjt00m3w+pb4tQW8im9UaKjA=
+go.riyazali.net/sqlite v0.0.0-20221009071723-df6a26c107b6/go.mod h1:UVocl0mLwS0QKUKa5mI6lppmBjvQnUEkFjFfoWqFWQU=
 go.uber.org/atomic v1.3.2/go.mod h1:gD2HeocX3+yG+ygLZcrzQJaqmWj9AIm7n08wl/qW/PE=
 go.uber.org/atomic v1.4.0/go.mod h1:gD2HeocX3+yG+ygLZcrzQJaqmWj9AIm7n08wl/qW/PE=
 go.uber.org/atomic v1.5.0/go.mod h1:sABNBOSYdrvTF6hTgEIbc7YasKWGhgEQZyfxyTvoXHQ=
