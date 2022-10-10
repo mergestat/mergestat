@@ -1,5 +1,6 @@
 
 import { Toolbar, VerticalNav } from '@mergestat/blocks'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 
@@ -26,9 +27,13 @@ const SettingsView = ({ children }: Props) => {
           </div>
           <div className='flex-1 overflow-auto p-8'>
             <VerticalNav>
-              <VerticalNav.Item text='General' disabled={true} />
-              <VerticalNav.Item href='/settings' text='GitHub Authentication' active={active('/settings')} />
-              <VerticalNav.Item href='/settings/repo-auto-imports' text='Repo Auto Imports' active={active('/settings/repo-auto-imports') || active('/settings/repo-auto-imports/[importId]')} />
+              {/* <VerticalNav.Item text='General' disabled={true} /> */}
+              <Link href='/settings'>
+                <VerticalNav.Item href='/settings' text='GitHub Authentication' active={active('/settings')} />
+              </Link>
+              <Link href='/settings/repo-auto-imports'>
+                <VerticalNav.Item href='/settings/repo-auto-imports' text='Repo Auto Imports' active={active('/settings/repo-auto-imports') || active('/settings/repo-auto-imports/[importId]')} />
+              </Link>
             </VerticalNav>
           </div>
         </div>
