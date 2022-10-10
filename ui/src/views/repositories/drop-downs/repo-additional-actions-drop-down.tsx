@@ -1,4 +1,4 @@
-import { Dropdown, Menu } from '@mergestat/blocks'
+import { Button, Dropdown, Menu } from '@mergestat/blocks'
 import { CogIcon, DotsHorizontalIcon, TrashIcon } from '@mergestat/icons'
 import { useRepositoriesSetState } from 'src/state/contexts'
 
@@ -19,22 +19,22 @@ export const RepositoryAdditionalActionsDropDown: React.FC<RemoveRepositoryProps
   return (
     <Dropdown
       alignEnd
-      trigger={<DotsHorizontalIcon className="t-icon cursor-pointer" />}
+      trigger={<Button skin='borderless-muted' startIcon={<DotsHorizontalIcon className='t-icon' />} isIconOnly />}
       overlay={() => (
-        <Menu className="whitespace-nowrap">
+        <Menu className='whitespace-nowrap'>
           <Menu.Item
             className='text-gray-700'
-            text="Repo settings"
+            text='Repo settings'
             withIcon
-            icon={<CogIcon className="t-icon mr-2" />}
+            icon={<CogIcon className='t-icon mr-2' />}
           />
           <Menu.Divider />
           <Menu.Item
             className='text-gray-700'
-            text="Remove Repo"
+            text='Remove Repo'
             withIcon
             onClick={prepareToRemove}
-            icon={<TrashIcon className="t-icon mr-2" />}
+            icon={<TrashIcon className='t-icon mr-2' />}
           />
         </Menu>
       )}

@@ -64,19 +64,35 @@
   @apply h-full
          w-full
          absolute
+         outline-none
          top-0
          left-0
          right-0
          bottom-0;
 }
 
-.t-sr-only {
-  position: absolute !important;
-  left: -10000px !important;
-  top: auto !important;
-  width: 1px !important;
-  height: 1px !important;
-  overflow: hidden !important;
+.t-table-row-muted {
+  @apply bg-gray-50;
+}
+
+.t-table-clickable tbody .t-table-row-muted:hover,
+.t-table-clickable tbody .t-table-row-muted:focus-within {
+  @apply bg-gray-100;
+}
+
+.t-table-default td,
+.t-table-default th {
+  @apply px-6;
+}
+
+.t-table-default td:first-child,
+.t-table-default th:first-child {
+  @apply pl-8;
+}
+
+.t-table-default td:last-child,
+.t-table-default th:last-child {
+  @apply pr-8;
 }
 
 .t-nav-item > a,

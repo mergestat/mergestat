@@ -22,31 +22,31 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
       case 'gitlab':
       case 'bitbucket':
       case 'other':
-        return <RepositoryIcon className="t-icon text-semantic-mutedIcon w-4" />
+        return <RepositoryIcon className='t-icon text-semantic-mutedIcon w-4' />
       default:
         return (
           <a target='_blank' href={GITHUB_URL + props.name} rel='noopener noreferrer'>
-            <GithubIcon className="t-icon text-semantic-mutedIcon w-4" />
+            <GithubIcon className='t-icon text-semantic-mutedIcon w-4' />
           </a>
         )
     }
   }
 
   return (
-    <div className="flex items-center gap-4 my-3 ml-6">
+    <div className='flex items-center gap-4 my-3'>
       <RepoImage
         repoType={props.type}
         orgName={props.name.split('/')[0]}
-        size="10"
+        size='10'
       />
       <div>
         <Link href={`/repos/${props.id}`}>
-          <h4 data-testid={TEST_IDS.repoNameTable} className="font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600">
+          <h4 data-testid={TEST_IDS.repoNameTable} className='font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600'>
             {props.name}
           </h4>
         </Link>
-        <div className="flex items-center">
-          <span className="pr-2 text-sm text-semantic-mutedText">
+        <div className='flex items-center'>
+          <span className='pr-2 text-sm text-semantic-mutedText'>
             <Tooltip
               content={`Added ${format(props.createdAt, 'PPp')}`}
               placement='bottom'
@@ -54,16 +54,16 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
               {getRelativeTime(props.createdAt)}
             </Tooltip>
           </span>
-          <div className="border-l border-semantic-border px-2">
+          <div className='border-l border-semantic-border px-2'>
             {repoTypeIcon()}
           </div>
           {props.autoImportFrom && (
-            <div className="border-l border-semantic-border px-2">
+            <div className='border-l border-semantic-border px-2'>
               <Tooltip
                 content={`Auto imported from ${props.autoImportFrom}`}
-                placement="bottom"
+                placement='bottom'
               >
-                <AutoImportIcon className="t-icon text-semantic-mutedIcon w-4" />
+                <AutoImportIcon className='t-icon text-semantic-mutedIcon w-4' />
               </Tooltip>
             </div>
           )}
