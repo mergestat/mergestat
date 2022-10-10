@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS mergestat.repo_sync_type_groups
 );
 
 ALTER TABLE mergestat.repo_sync_type_groups
-DROP CONSTRAINT IF EXISTS repo_sync_type_groups_group_pkey; 
+DROP CONSTRAINT IF EXISTS repo_sync_type_groups_group_pkey;
 
 ALTER TABLE ONLY mergestat.repo_sync_type_groups
 ADD CONSTRAINT repo_sync_type_groups_group_pkey PRIMARY KEY ("group");
