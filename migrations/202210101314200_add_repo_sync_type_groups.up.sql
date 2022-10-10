@@ -6,6 +6,12 @@ CREATE TABLE IF NOT EXISTS mergestat.repo_sync_type_groups
     concurrent_syncs INTEGER
 );
 
+ALTER TABLE mergestat.repo_sync_type_groups
+DROP CONSTRAINT IF EXISTS repo_sync_type_groups_group_pkey; 
+
+ALTER TABLE ONLY mergestat.repo_sync_type_groups
+ADD CONSTRAINT repo_sync_type_groups_group_pkey PRIMARY KEY ("group");
+
 INSERT INTO mergestat.repo_sync_type_groups ("group", concurrent_syncs)
 VALUES
 ('DEFAULT', 10000),
@@ -15,8 +21,20 @@ ON CONFLICT DO NOTHING;
 ALTER TABLE mergestat.repo_sync_types
 ADD COLUMN IF NOT EXISTS type_group TEXT DEFAULT 'DEFAULT' NOT NULL;
 
+ALTER TABLE mergestat.repo_sync_types
+DROP CONSTRAINT IF EXISTS repo_sync_types_type_group_fkey;
+
+ALTER TABLE mergestat.repo_sync_types
+ADD CONSTRAINT repo_sync_types_type_group_fkey FOREIGN KEY (type_group) REFERENCES mergestat.repo_sync_type_groups("group") ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 ALTER TABLE mergestat.repo_sync_queue
 ADD COLUMN IF NOT EXISTS type_group TEXT DEFAULT 'DEFAULT' NOT NULL;
+
+ALTER TABLE mergestat.repo_sync_queue
+DROP CONSTRAINT IF EXISTS repo_sync_queue_type_group_fkey;
+
+ALTER TABLE mergestat.repo_sync_queue
+ADD CONSTRAINT repo_sync_queue_type_group_fkey FOREIGN KEY (type_group) REFERENCES mergestat.repo_sync_type_groups("group") ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 UPDATE
 mergestat.repo_sync_types
