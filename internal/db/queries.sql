@@ -45,7 +45,7 @@ dequeued AS (
         FROM mergestat.repo_sync_queue rsq
         INNER JOIN mergestat.repo_sync_type_groups rstg ON rsq.type_group = rstg.group
         WHERE status = 'QUEUED'
-        AND rstg.concurrent_syncs > (SELECT COUNT(*) from running where running.group = rstg.group)
+        AND rstg.concurrent_syncs > (SELECT COUNT(*) FROM running WHERE running.group = rstg.group)
         ORDER BY rsq.priority ASC, rsq.created_at ASC, rsq.id ASC LIMIT 1 FOR UPDATE SKIP LOCKED
    ) RETURNING id, created_at, status, repo_sync_id
 )
