@@ -323,6 +323,7 @@ type MergestatRepoSyncQueue struct {
 	DoneAt        sql.NullTime
 	LastKeepAlive sql.NullTime
 	Priority      int32
+	TypeGroup     string
 }
 
 type MergestatRepoSyncQueueStatusType struct {
@@ -335,6 +336,12 @@ type MergestatRepoSyncType struct {
 	Description sql.NullString
 	ShortName   string
 	Priority    int32
+	TypeGroup   string
+}
+
+type MergestatRepoSyncTypeGroup struct {
+	Group           sql.NullString
+	ConcurrentSyncs sql.NullInt32
 }
 
 type MergestatServiceAuthCredential struct {
