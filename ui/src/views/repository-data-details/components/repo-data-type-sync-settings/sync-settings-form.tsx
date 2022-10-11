@@ -1,4 +1,4 @@
-import { Label, Panel, Select, Toggle, Typography } from '@mergestat/blocks'
+import { Label, Panel, Toggle, Typography } from '@mergestat/blocks'
 import React, { PropsWithChildren } from 'react'
 
 export const SyncSettingsForm = () => {
@@ -15,34 +15,6 @@ export const SyncSettingsForm = () => {
               <Toggle isChecked onChange={() => null} />
               <span className="text-semantic-text">Enable</span>
             </div>
-          </Formrow>
-          <Formrow>
-            <Label className='text-gray-600 font-medium'>Sync frequency</Label>
-            <Select className="w-64 bg-white">
-              {Array(4).fill(0).map((_, i) => (
-                <Select.Option
-                  key={i}
-                  className='text-semantic-text'
-                  value="option1"
-                >
-                  Option {i + 1}
-                </Select.Option>
-              ))}
-            </Select>
-          </Formrow>
-          <Formrow>
-            <Label className='text-gray-600 font-medium'>Label</Label>
-            <Select className="w-64 bg-white">
-              {Array(5).fill(0).map((_, i) => (
-                <Select.Option
-                  key={i}
-                  className='text-semantic-text'
-                  value="option1"
-                >
-                  Option {i + 1}
-                </Select.Option>
-              ))}
-            </Select>
           </Formrow>
         </form>
       </Panel.Body>
