@@ -29,7 +29,6 @@
   @apply underline
          text-blue-600
          hover_text-blue-700;
-
 }
 
 .t-input-with-prepend {
@@ -133,4 +132,16 @@
 .t-table-clickable tbody tr:focus-within {
   @apply bg-gray-50
           cursor-pointer;
+}
+.t-table-clickable td {
+  @apply relative;
+}
+
+.t-sr-only {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
 }
