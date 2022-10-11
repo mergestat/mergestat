@@ -1,20 +1,22 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/mergestat/fuse)](https://goreportcard.com/report/github.com/mergestat/fuse)
 [![CI Worker (Golang)](https://github.com/mergestat/fuse/actions/workflows/ci-worker.yaml/badge.svg)](https://github.com/mergestat/fuse/actions/workflows/ci-worker.yaml)
 [![CI Frontend (UI)](https://github.com/mergestat/fuse/actions/workflows/ci-frontend.yaml/badge.svg)](https://github.com/mergestat/fuse/actions/workflows/ci-frontend.yaml)
+[![Twitter Follow](https://img.shields.io/twitter/follow/mergestat)](https://twitter.com/mergestat)
+[![Slack Community](https://badgen.net/badge/icon/slack?icon=slack&label)](https://join.slack.com/t/mergestatcommunity/shared_invite/zt-xvvtvcz9-w3JJVIdhLgEWrVrKKNXOYg)
 
 # mergestat <a href="https://docs.mergestat.com/"><img align="right" src="https://github.com/mergestat/fuse/raw/main/docs/logo.png" alt="MergeStat Logo" height="100"></a>
 
 **beta**
 
-MergeStat is a project to sync data from [`mergestat-lite`](https://github.com/mergestat/mergestat-lite) queries into PostgreSQL tables.
-It behaves similar to an ETL tool, taking data from git repositories and the GitHub API and regularly updating tables in a database.
-It's intended purpose is to enable "operational analytics for engineering teams," where downstream tools may consume the data from the PostgreSQL database.
+MergeStat enables SQL queries for data in git repositories (and related sources, such as the GitHub API). It allows you to ask questions about the history and contents of your source code.
+
+See our [**documentation**](https://docs.mergestat.com/) for additional context.
 
 <img alt="MergeStat Fuse Illustration" src="docs/illustration-logs.png" width="500" />
 
 ## Running Locally
 
-Try Fuse out locally with `docker-compose` by cloning this repository and running
+Try MergeStat locally with `docker-compose` by cloning this repository and running
 
 ```sh
 docker-compose up
