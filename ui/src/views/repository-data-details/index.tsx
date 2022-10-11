@@ -1,5 +1,5 @@
 import { BreadcrumbNav, Button, Tabs, Toolbar } from '@mergestat/blocks'
-import { DotsHorizontalIcon, ExternalLinkIcon, RefreshIcon } from '@mergestat/icons'
+import { ExternalLinkIcon, RefreshIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { SyncTypeData } from 'src/@types'
@@ -47,11 +47,6 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
             </Toolbar.Left>
             <Toolbar.Right>
               <Toolbar.Item>
-                <Button
-                  skin="secondary"
-                  isIconOnly
-                  startIcon={<DotsHorizontalIcon className="t-icon" />}
-                />
                 <Button
                   startIcon={<RefreshIcon className="t-icon" />}
                   className="ml-3"
