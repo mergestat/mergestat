@@ -37,8 +37,8 @@ const Connect: NextPage = () => {
               <Panel className="shadow-sm rounded-md">
                 <Panel.Body className="p-8 overflow-hidden">
                   <div className="mb-6">
-                    <h3 className="t-h3">Connection details</h3>
-                    <p className="text-gray-500">This is some helptext with a short description to explain how to use this connect page.</p>
+                    <h3 className="t-h3">Connect to PostgreSQL Directly</h3>
+                    <p className="text-gray-500">Connect directly to the PostgreSQL instance MergeStat syncs data to.</p>
                   </div>
 
                   <Tabs>
@@ -63,6 +63,19 @@ const Connect: NextPage = () => {
                           </div>
 
                           <div className="md_flex items-center w-full py-3">
+                            <Label className="text-gray-500 w-40 md_w-56">Port</Label>
+                            <div className="flex items-center flex-1 space-x-4">
+                              <p className="flex-1 break-all">{data?.databaseConnection?.port}</p>
+                              <Button
+                                isIconOnly
+                                skin="borderless"
+                                startIcon={<DuplicateIcon className="t-icon" />}
+                                onClick={() => copy(data?.databaseConnection?.port?.toString())}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="md_flex items-center w-full py-3">
                             <Label className="text-gray-500 w-40 md_w-56">Username</Label>
                             <div className="flex items-center flex-1 space-x-4">
                               <p className="flex-1 break-all">{data?.databaseConnection?.user}</p>
@@ -75,24 +88,6 @@ const Connect: NextPage = () => {
                             </div>
                           </div>
 
-                          <div className="md_flex items-center w-full py-3">
-                            <Label className="text-gray-500 w-40 md_w-56">Password</Label>
-                            <div className="flex items-center flex-1 space-x-4">
-                              <div className="flex items-center space-x-2 flex-1">
-                                <p className="break-all">•••••••••••••••••••</p>
-                                <Button
-                                  label="Show"
-                                  size="small"
-                                  skin="borderless"
-                                />
-                              </div>
-                              <Button
-                                isIconOnly
-                                skin="borderless"
-                                startIcon={<DuplicateIcon className="t-icon" />}
-                              />
-                            </div>
-                          </div>
                           <div className="md_flex items-center w-full py-3">
                             <Label className="text-gray-500 w-40 md_w-56">Database</Label>
                             <div className="flex items-center flex-1 space-x-4">
@@ -110,7 +105,7 @@ const Connect: NextPage = () => {
                       <Tabs.Panel className="pt-6">
                         <div className="bg-gray-50 border rounded-md p-5 font-mono text-sm text-gray-500 mb-4">
                           <pre>
-                            <code className="whitespace-normal break-all">postgresql://{data?.databaseConnection?.user}:<a className="text-blue-600" href="#blank">show-password</a>@{data?.databaseConnection?.host}/{data?.databaseConnection?.database}</code>
+                            <code className="whitespace-normal break-all">postgresql://{data?.databaseConnection?.user}:<span className="text-blue-600">your-password-here</span>@{data?.databaseConnection?.host}/{data?.databaseConnection?.database}</code>
                           </pre>
                         </div>
                         <Button
@@ -118,7 +113,7 @@ const Connect: NextPage = () => {
                           startIcon={<DuplicateIcon className="t-icon" />}
                           skin="secondary"
                           size="small"
-                          onClick={() => copy(`postgresql://${data?.databaseConnection?.user}:@${data?.databaseConnection?.host}/${data?.databaseConnection?.database}`)}
+                          onClick={() => copy(`postgresql://${data?.databaseConnection?.user}:your-password-here@${data?.databaseConnection?.host}/${data?.databaseConnection?.database}`)}
                         />
 
                       </Tabs.Panel>
