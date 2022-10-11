@@ -8,7 +8,6 @@ import { SYNC_STATUS } from 'src/utils/constants'
 
 type RepositorySyncStatusProps = {
   data?: SyncStatusDataT[]
-  disabled?: boolean
   width?: number
   height?: number
   barWidth?: number
@@ -27,7 +26,6 @@ type PositionType = {
 
 export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   {
-    disabled,
     data = [],
     width = 112,
     height = 24,
@@ -46,10 +44,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 
   const router = useRouter()
 
-  if (disabled) { return <div className="flex flex-col justify-center h-full text-sm text-semantic-mutedText bg-gray-50">Disabled</div> }
-
   const len = data.length
-  if (len === 0) return null
 
   if (limit < len) {
     data = data.slice(len - limit)
@@ -128,7 +123,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 
       {/** Bars */}
       <div
-        className='my-2 w-32'
+        className='my-2 w-32 interactive'
         onMouseLeave={() => setDisplayTooltip(false)}
       >
         <svg
