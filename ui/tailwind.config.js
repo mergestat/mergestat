@@ -40,6 +40,9 @@ module.exports = {
       minHeight: {
         40: '10rem',
       },
+      minWidth: {
+        'sm': '24rem',
+      },
       width: {
         1.5: '6px',
         3.5: '14px',

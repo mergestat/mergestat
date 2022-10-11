@@ -1,5 +1,5 @@
-import { BreadcrumbNav, Button, LogBox, Panel } from '@mergestat/blocks'
-import { DotsHorizontalIcon, ExternalLinkIcon } from '@mergestat/icons'
+import { BreadcrumbNav, LogBox, Panel } from '@mergestat/blocks'
+import { ExternalLinkIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { SyncLogsType, SyncTypeData } from 'src/@types'
@@ -44,13 +44,6 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
       <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
         <div className="text-xl font-semibold">
           <BreadcrumbNav data={crumbs} />
-        </div>
-        <div className="flex gap-3">
-          <Button
-            skin="secondary"
-            isIconOnly
-            startIcon={<DotsHorizontalIcon className="t-icon" />}
-          />
         </div>
       </div>
 
