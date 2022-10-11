@@ -4,6 +4,7 @@ import { RepositoryStatusProps } from 'src/views/repositories/components/reposit
 
 export const mockRepoSatus: RepositoryStatusProps = {
   idRepo: faker.datatype.uuid(),
+  type: SYNC_STATUS.succeeded,
   status: [
     {
       type: SYNC_STATUS.succeeded,

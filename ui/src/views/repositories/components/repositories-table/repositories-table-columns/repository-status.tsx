@@ -23,7 +23,7 @@ export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ idRepo, stat
       {filteredArray.length > 0
         ? filteredArray.map((item, index) => (
           <RepoDataDropDown
-            key={index}
+            key={`repo-status-${index}`}
             status={item.type}
             data={item.syncs?.map((sync) => ({
               url: `/repos/${idRepo}/${sync.idType}/${sync.idLastSync}`,
