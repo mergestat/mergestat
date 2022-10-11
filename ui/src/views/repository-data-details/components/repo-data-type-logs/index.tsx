@@ -1,6 +1,7 @@
 import { Button, Panel } from '@mergestat/blocks'
 import { SyncLogsType, SyncTypeInfo } from 'src/@types'
 import { LogsTable } from './logs-table'
+import Link from 'next/link'
 
 interface RepoDataLogsProps {
   syncData?: SyncTypeInfo
@@ -9,17 +10,18 @@ interface RepoDataLogsProps {
 
 export const RepoDataLogs = ({ syncData, logs }: RepoDataLogsProps) => {
   return (
-    <div className="h-full">
-      <Panel className="shadow-sm mb-8">
+    <div className='h-full'>
+      <Panel className='shadow-sm mb-8'>
         <Panel.Body>
-          <h4 className="t-h4 mb-2">
+          <h4 className='t-h4 mb-2'>
             {syncData?.title}
           </h4>
-          <p className="text-semantic-mutedText">
+          <p className='text-semantic-mutedText mb-4'>
             {syncData?.brief}
           </p>
-
-          <Button skin="borderless" label="Learn more" />
+          <Link href='https://docs.mergestat.com/'>
+            <Button skin='borderless' label='Learn more' />
+          </Link>
         </Panel.Body>
       </Panel>
 
