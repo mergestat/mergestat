@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import React, { PropsWithChildren, useEffect } from 'react'
 import { CurrentUserQuery } from 'src/api-logic/graphql/generated/schema'
-import CURRENT_USER from 'src/api-logic/graphql/queries/auth'
+import { CURRENT_USER } from 'src/api-logic/graphql/queries/auth'
 import Loading from 'src/components/Loading'
 
 const NavHeader = dynamic(() => import('../components/NavHeader'))

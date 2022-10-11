@@ -10070,12 +10070,27 @@ export type AddRepoImportMutationVariables = Exact<{
 
 export type AddRepoImportMutation = { createRepoImport?: { repoImport?: { id: any, type: string, settings: any } | null } | null };
 
+export type UpdateRepoImportMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  settings: Scalars['JSON'];
+}>;
+
+
+export type UpdateRepoImportMutation = { updateRepoImport?: { repoImport?: { id: any, settings: any } | null } | null };
+
 export type RemoveRepoMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
 export type RemoveRepoMutation = { deleteRepo?: { deletedRepoNodeId?: string | null } | null };
+
+export type RemoveImportMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveImportMutation = { deleteRepoImport?: { deletedRepoImportNodeId?: string | null } | null };
 
 export type UpdateTagsMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -10111,6 +10126,11 @@ export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CurrentUserQuery = { currentMergeStatUser?: string | null };
+
+export type GetDatabaseConnectionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetDatabaseConnectionQuery = { databaseConnection?: { database?: string | null, host?: string | null, port?: number | null, user?: string | null } | null };
 
 export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 

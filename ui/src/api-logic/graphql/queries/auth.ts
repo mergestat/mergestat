@@ -5,4 +5,16 @@ const CURRENT_USER = gql`
     currentMergeStatUser
   }
 `
-export default CURRENT_USER
+
+const GET_DB_CONNECTION = gql`
+  query getDatabaseConnection {
+    databaseConnection {
+      database
+      host
+      port
+      user
+    }
+  }
+`
+
+export { CURRENT_USER, GET_DB_CONNECTION }
