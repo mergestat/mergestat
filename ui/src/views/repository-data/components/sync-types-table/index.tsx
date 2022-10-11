@@ -1,11 +1,13 @@
-import { Panel } from '@mergestat/blocks'
+import { Panel, Toggle } from '@mergestat/blocks'
 import cx from 'classnames'
 import React, { PropsWithChildren, useId } from 'react'
 import { RepoSyncDataType } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
+import { onTableRowClick } from 'src/utils'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
+import { useRouter } from 'next/router'
 
 type SycnTypesTableProps = PropsWithChildren<{
   repoId: string
@@ -13,60 +15,42 @@ type SycnTypesTableProps = PropsWithChildren<{
 }>
 
 export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: SycnTypesTableProps) => {
+  const router = useRouter()
+  const { repository } = router.query
   const id = useId()
 
   return (
-    <div className="rounded-md shadow-sm">
-      <Panel className="rounded-md w-full shadow-sm">
-        <Panel.Body className="p-0">
-          {data.length < 1
-            ? <div className='flex justify-center items-center bg-white py-5'>
-              No data available!
-            </div>
-            : <div className='overflow-hidden bg-white h-full'>
-              <table className='t-table-default'>
+    <Panel className='rounded-md w-full shadow-sm block'>
+      <Panel.Body className='p-0'>
+        {data.length < 1
+          ? <div className='flex justify-center items-center bg-white py-5'>
+            No data available!
+          </div>
+          : <div className='flex flex-col min-w-0 bg-white h-full'>
+            <div className='flex-1 overflow-x-auto overflow-y-hidden'>
+              <table className='t-table-default t-table-clickable'>
                 <thead>
                   <tr className='bg-white'>
-                    <th scope='col' key='syncStateIcon' className='whitespace-nowrap px-6'>
-                      <span className='mr-1 select-none'>Status</span>
-                    </th>
-
-                    <th scope="col" key='data' className='whitespace-nowrap px-6 pl-0'>
-                      <span className='mr-1 select-none'>Sync Type</span>
-                    </th>
-
-                    <th scope="col" key='latestRun' className='whitespace-nowrap px-6 pl-0'>
-                      <span className='mr-1 select-none'>Latest Run</span>
-                    </th>
-
-                    <th scope="col" key='meanRunningTime' className='whitespace-nowrap px-6 pl-0'>
-                      <span className='mr-1 select-none'>Mean Running Time</span>
-                    </th>
-
-                    <th scope="col" key='status' className='whitespace-nowrap px-6 pl-0'>
-                      <span className='mr-1 select-none'>Latest Results</span>
-                    </th>
-
-                    <th scope="col" key='syncNow' className='whitespace-nowrap px-6'>
-                      <span className='mr-1 select-none'></span>
-                    </th>
-
-                    <th scope="col" key='options' className='whitespace-nowrap px-6'>
-                      <span className='mr-1 select-none'></span>
-                    </th>
+                    <th scope='col' key='syncStateIcon' className='whitespace-nowrap w-0'>Status</th>
+                    <th scope='col' key='data' className='whitespace-nowrap'>Sync Type</th>
+                    <th scope='col' key='latestRun' className='whitespace-nowrap'>Latest Run</th>
+                    <th scope='col' key='meanRunningTime' className='whitespace-nowrap'>Mean Running Time</th>
+                    <th scope='col' key='status' className='whitespace-nowrap'>Latest Results</th>
+                    <th scope='col' key='schedule' className='whitespace-nowrap w-0'>Schedule</th>
+                    <th scope='col' key='options' className='whitespace-nowrap'></th>
                   </tr>
                 </thead>
 
                 <tbody className='bg-white'>
                   {data.map((sync, index) => (
-                    <tr data-testid={TEST_IDS.syncsTypesRow} key={sync.data.id ?? `${id}-${index}`}>
-                      <td className="w-12 h-20 p-0">
-                        <div className={cx('h-full px-6 flex justify-center items-center', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
-                          <RepoSyncIcon type={sync.status.syncState} className="my-auto" />
+                    <tr data-testid={TEST_IDS.syncsTypesRow} key={sync.data.id ?? `${id}-${index}`} onClick={(e) => onTableRowClick(e, `/repos/${repository}/${sync.data.id}`)}>
+                      <td className='w-0 h-20 p-0'>
+                        <div className={cx('h-full flex justify-center items-center', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
+                          <RepoSyncIcon type={sync.status.syncState} className='my-auto' />
                         </div>
                       </td>
 
-                      <td className='h-20 p-0'>
+                      <td className='min-w-sm h-20'>
                         <RepositoryData
                           id={sync.data.id}
                           title={sync.data.title}
@@ -75,36 +59,35 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                         />
                       </td>
 
-                      <td className='text-gray-500 h-20 p-0'>
-                        <RelativeTimeField date={sync.latestRun} syncData={sync} styles={'text-semantic-mutedText h-full leading-20'} />
+                      <td className='text-gray-500 h-20'>
+                        <RelativeTimeField date={sync.latestRun} syncData={sync} styles={'text-semantic-mutedText whitespace-nowrap'} />
                       </td>
 
-                      <td className='text-gray-500 h-20 p-0'>
-                        <div className='text-semantic-mutedText h-full leading-20 pl-5'>
+                      <td className='text-gray-500 h-20'>
+                        <div className='text-semantic-mutedText'>
                           {sync.avgRunningTime}
                         </div>
                       </td>
 
-                      <td className='text-gray-500 h-20 p-0'>
-                        {sync.status.data && sync.status.data.length === 0 && <span>-</span>}
+                      <td className='text-gray-500 h-20'>
                         <RepositorySyncStatus
                           data={sync.status.data}
-                          disabled={sync.status.syncState === SYNC_STATUS.disabled}
                         />
                       </td>
-
-                      <td className='h-20 p-0'>
-                        <RepositorySyncNow
-                          repoId={repoId}
-                          syncType={sync.data.type}
-                          syncTypeId={sync.data.id}
-                          syncStatus={sync.status.syncState}
-                        />
+                      <td className='w-0'>
+                        <div className='flex items-center justify-center'>
+                          <Toggle isChecked={!(sync.status.syncState === SYNC_STATUS.disabled)} onChange={() => console.log('test')}/>
+                        </div>
                       </td>
-
-                      <td className='px-6 w-4'>
+                      <td className='w-0'>
                         <div className={cx('h-full flex', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
-                          <div className='my-auto mx-6'>
+                          <div className='t-button-toolbar gap-4'>
+                            <RepositorySyncNow
+                              repoId={repoId}
+                              syncType={sync.data.type}
+                              syncTypeId={sync.data.id}
+                              syncStatus={sync.status.syncState}
+                            />
                             <RepositoryTableRowOptions state={sync.status.syncState} />
                           </div>
                         </div>
@@ -113,9 +96,9 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                   ))}
                 </tbody>
               </table>
-            </div>}
-        </Panel.Body>
-      </Panel>
-    </div>
+            </div>
+          </div>}
+      </Panel.Body>
+    </Panel>
   )
 }

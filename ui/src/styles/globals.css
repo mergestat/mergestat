@@ -60,10 +60,6 @@
           cursor-pointer;
 }
 
-.t-table-clickable td {
-  @apply relative;
-}
-
 .t-table-row-link {
   @apply h-full
          w-full
@@ -99,4 +95,26 @@
            focus_ring-blue-500
            hover_bg-gray-600
            cursor-pointer;
+}
+
+.t-table-default td,
+.t-table-default th {
+  @apply px-6;
+}
+
+.t-table-default td:first-child,
+.t-table-default th:first-child {
+  @apply pl-8;
+}
+
+.t-table-default td:last-child,
+.t-table-default th:last-child {
+  @apply pr-8;
+}
+
+
+.t-table-clickable tbody tr:hover,
+.t-table-clickable tbody tr:focus-within {
+  @apply bg-gray-50
+          cursor-pointer;
 }

@@ -21,7 +21,7 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, sy
 
   return (
     <Button
-      className="flex items-center float-right"
+      className="flex items-center float-right whitespace-nowrap"
       disabled={syncStatus === SYNC_STATUS.queued || syncStatus === SYNC_STATUS.running}
       skin="secondary"
       data-testid={TEST_IDS.syncsTypesSyncNowButton}
