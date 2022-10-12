@@ -99,7 +99,7 @@ type GitTag struct {
 
 type GithubActionsWorkflow struct {
 	RepoID            uuid.UUID
-	ID                int32
+	ID                int64
 	WorkflowNodeID    sql.NullString
 	Name              sql.NullString
 	Path              sql.NullString
@@ -114,7 +114,7 @@ type GithubActionsWorkflow struct {
 
 type GithubActionsWorkflowRun struct {
 	RepoID            uuid.UUID
-	ID                int32
+	ID                int64
 	WorkflowRunNodeID sql.NullString
 	Name              sql.NullString
 	HeadBranch        sql.NullString
@@ -123,8 +123,8 @@ type GithubActionsWorkflowRun struct {
 	Event             sql.NullString
 	Status            sql.NullString
 	Conclusion        sql.NullString
-	WorkflowID        int32
-	CheckSuiteID      sql.NullInt32
+	WorkflowID        int64
+	CheckSuiteID      sql.NullInt64
 	CheckSuiteNodeID  sql.NullString
 	Url               sql.NullString
 	HtmlUrl           sql.NullString
@@ -147,8 +147,8 @@ type GithubActionsWorkflowRun struct {
 
 type GithubActionsWorkflowRunJob struct {
 	RepoID            uuid.UUID
-	ID                int32
-	RunID             int32
+	ID                int64
+	RunID             int64
 	Log               sql.NullString
 	RunUrl            sql.NullString
 	JobNodeID         sql.NullString
@@ -166,7 +166,7 @@ type GithubActionsWorkflowRunJob struct {
 	Labels            pgtype.JSONB
 	RunnerID          sql.NullInt32
 	RunnerName        sql.NullString
-	RunnerGroupID     sql.NullInt32
+	RunnerGroupID     sql.NullInt64
 	RunnerGroupName   sql.NullString
 	MergestatSyncedAt time.Time
 }

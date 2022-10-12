@@ -174,7 +174,7 @@ WITH t AS (
 	) 
   VALUES(
     @repoID::uuid,
-	@id::INTEGER,
+	@id::BIGINT,
 	@workflowNodeID::TEXT,
 	@name::TEXT,
 	@path::TEXT,
@@ -239,7 +239,7 @@ WITH t AS(
 	head_repository_url)
 	VALUES(
  	@repo_id::UUID,
-	@id::INTEGER,
+	@id::BIGINT,
 	@workflowRunNodeId::TEXT,
     @name::TEXT,
 	@headBranch::TEXT,
@@ -248,8 +248,8 @@ WITH t AS(
 	@event::text,
 	@status::text,
 	@conclusion::text,
-	@workflowId::INTEGER,
-	@checkSuiteId::INTEGER,
+	@workflowId::BIGINT,
+	@checkSuiteId::BIGINT,
 	@checkSuiteNodeId::TEXT,
 	@url::TEXT,
 	@htmlUrl::TEXT,
@@ -333,8 +333,8 @@ WITH t AS (
 	)
 	VALUES(
 		@repoid::uuid,
-		@id::INTEGER,
-		@runid::INTEGER,
+		@id::BIGINT,
+		@runid::BIGINT,
 		@log::TEXT,
 		@runurl::TEXT,
 		@jobnodeid::TEXT,
@@ -351,7 +351,7 @@ WITH t AS (
 		@labels::JSONB,
 		@runnerid::INTEGER,
 		@runnername::TEXT,
-		@runnergroupid::INTEGER,
+		@runnergroupid::BIGINT,
 		@runnergroupname::TEXT)
 		ON CONFLICT (id)
 		DO UPDATE 

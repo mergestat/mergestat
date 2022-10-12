@@ -63,7 +63,7 @@ dequeued AS (
         FROM mergestat.repo_sync_queue rsq
         INNER JOIN mergestat.repo_sync_type_groups rstg ON rsq.type_group = rstg.group
         WHERE status = 'QUEUED'
-        AND rstg.concurrent_syncs > (SELECT COUNT(*) from running where running.group = rstg.group)
+        AND rstg.concurrent_syncs > (SELECT COUNT(*) FROM running WHERE running.group = rstg.group)
         ORDER BY rsq.priority ASC, rsq.created_at ASC, rsq.id ASC LIMIT 1 FOR UPDATE SKIP LOCKED
    ) RETURNING id, created_at, status, repo_sync_id
 )
@@ -494,7 +494,7 @@ WITH t AS(
 	head_repository_url)
 	VALUES(
  	$1::UUID,
-	$2::INTEGER,
+	$2::BIGINT,
 	$3::TEXT,
     $4::TEXT,
 	$5::TEXT,
@@ -503,8 +503,8 @@ WITH t AS(
 	$8::text,
 	$9::text,
 	$10::text,
-	$11::INTEGER,
-	$12::INTEGER,
+	$11::BIGINT,
+	$12::BIGINT,
 	$13::TEXT,
 	$14::TEXT,
 	$15::TEXT,
@@ -564,7 +564,7 @@ FROM t
 
 type UpserWorkflowRunsParams struct {
 	RepoID            uuid.UUID
-	ID                int32
+	ID                int64
 	Workflowrunnodeid string
 	Name              string
 	Headbranch        string
@@ -573,8 +573,8 @@ type UpserWorkflowRunsParams struct {
 	Event             string
 	Status            string
 	Conclusion        string
-	Workflowid        int32
-	Checksuiteid      int32
+	Workflowid        int64
+	Checksuiteid      int64
 	Checksuitenodeid  string
 	Url               string
 	Htmlurl           string
@@ -687,8 +687,8 @@ WITH t AS (
 	)
 	VALUES(
 		$1::uuid,
-		$2::INTEGER,
-		$3::INTEGER,
+		$2::BIGINT,
+		$3::BIGINT,
 		$4::TEXT,
 		$5::TEXT,
 		$6::TEXT,
@@ -705,9 +705,9 @@ WITH t AS (
 		$17::JSONB,
 		$18::INTEGER,
 		$19::TEXT,
-		$20::INTEGER,
+		$20::BIGINT,
 		$21::TEXT)
-		ON CONFLICT (ID)
+		ON CONFLICT (id)
 		DO UPDATE 
 		SET repo_id=EXCLUDED.repo_id,
 		    id=EXCLUDED.id,
@@ -741,8 +741,8 @@ FROM t
 
 type UpsertWorkflowRunJobsParams struct {
 	Repoid          uuid.UUID
-	ID              int32
-	Runid           int32
+	ID              int64
+	Runid           int64
 	Log             string
 	Runurl          string
 	Jobnodeid       string
@@ -759,7 +759,7 @@ type UpsertWorkflowRunJobsParams struct {
 	Labels          pgtype.JSONB
 	Runnerid        int32
 	Runnername      string
-	Runnergroupid   int32
+	Runnergroupid   int64
 	Runnergroupname string
 }
 
@@ -813,7 +813,7 @@ WITH t AS (
 	) 
   VALUES(
     $1::uuid,
-	$2::INTEGER,
+	$2::BIGINT,
 	$3::TEXT,
 	$4::TEXT,
 	$5::TEXT,
@@ -847,7 +847,7 @@ FROM t
 
 type UpsertWorkflowsInPublicParams struct {
 	Repoid         uuid.UUID
-	ID             int32
+	ID             int64
 	Workflownodeid string
 	Name           string
 	Path           string
