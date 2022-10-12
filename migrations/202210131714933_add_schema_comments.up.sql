@@ -46,7 +46,7 @@ COMMENT ON COLUMN public.git_refs.name IS 'name of the ref';
 COMMENT ON COLUMN public.git_refs.remote IS 'remote of the ref';
 COMMENT ON COLUMN public.git_refs.target IS 'target of the ref';
 COMMENT ON COLUMN public.git_refs.type IS 'type of the ref';
-COMMENT ON COLUMN public.git_refs.tag_commit_hash IS 'hash of the commit for refs that or of type tag';
+COMMENT ON COLUMN public.git_refs.tag_commit_hash IS 'hash of the commit for refs that are of type tag';
 COMMENT ON COLUMN public.git_refs._mergestat_synced_at IS 'timestamp when record was synced into the MergeStat database';
 
 COMMENT ON view public.git_branches IS 'view of git refs of type branch of a repo';
