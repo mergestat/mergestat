@@ -64,11 +64,6 @@ const sidebarTabs: SideBarTab[] = [
     type: ADD_REPO.url,
   },
   {
-    startIcon: <GithubIcon className='t-icon' />,
-    label: 'Auto import from GitHub',
-    type: ADD_REPO.ghAuto,
-  },
-  {
     startIcon: <TableIcon className='t-icon' />,
     label: 'Add from CSV',
     type: ADD_REPO.csv,
