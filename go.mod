@@ -16,7 +16,6 @@ require (
 require (
 	github.com/go-enry/go-enry/v2 v2.8.3
 	github.com/go-git/go-git/v5 v5.4.2
-	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgconn v1.13.0

@@ -57,7 +57,7 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 	// we get all available workflows
 	workflows, resp, err = w.handleWorkflows(ctx, owner, repoName, j.RepoID, tx)
 
-	w.logger.Info().Msgf("remaining quota %s", resp.Rate.Remaining)
+	w.logger.Info().Msgf("remaining quota %d", resp.Rate.Remaining)
 	if err != nil {
 		return err
 	}
@@ -65,7 +65,7 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 	if *workflows.TotalCount > 0 {
 		workflowRunsArr, resp, err = w.handleWorkflowRuns(ctx, owner, repoName, workflows)
 
-		w.logger.Info().Msgf("remaining quota %s", resp.Rate.Remaining)
+		w.logger.Info().Msgf("remaining quota %d", resp.Rate.Remaining)
 
 		if err != nil {
 			return err
@@ -74,7 +74,7 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 		if len(workflowRunsArr) > 0 {
 			w.logger.Info().Msg("getting workflow runs array")
 			workflowRunJobsArr, resp, err = w.handleWorkflowRunsJobs(ctx, owner, repoName, workflowRunsArr, j.RepoID, tx)
-			w.logger.Info().Msgf("remaining quota %s", resp.Rate.Remaining)
+			w.logger.Info().Msgf("remaining quota %d", resp.Rate.Remaining)
 
 			if err != nil {
 				return err
