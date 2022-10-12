@@ -195,8 +195,8 @@ COMMENT ON COLUMN public.github_repo_info.latest_release_author IS 'the author o
 COMMENT ON COLUMN public.github_repo_info.latest_release_created_at IS 'timestamp of the creation of the latest release in the repo';
 COMMENT ON COLUMN public.github_repo_info.latest_release_name IS 'the name of the latest release in the repo';
 COMMENT ON COLUMN public.github_repo_info.latest_release_published_at IS 'timestamp of the publishing of the latest release in the repo';
-COMMENT ON COLUMN public.github_repo_info.license_key IS 'the licence key for the repo';
-COMMENT ON COLUMN public.github_repo_info.license_name IS 'the licence name for the repo';
+COMMENT ON COLUMN public.github_repo_info.license_key IS 'the license key for the repo';
+COMMENT ON COLUMN public.github_repo_info.license_name IS 'the license name for the repo';
 COMMENT ON COLUMN public.github_repo_info.license_nickname IS 'the licence nickname for the repo';
 COMMENT ON COLUMN public.github_repo_info.open_graph_image_url IS 'the URL for the image used to represent this repository in Open Graph data';
 COMMENT ON COLUMN public.github_repo_info.primary_language IS 'the primary language for the repo';
