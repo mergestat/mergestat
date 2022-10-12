@@ -27,24 +27,9 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 	)
 
 	owner, repoName, err = w.getRepoOwnerAndRepoName(j.Repo)
-
 	if err != nil {
 		return err
 	}
-
-	var tx pgx.Tx
-
-	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
-		return fmt.Errorf("begin tx: %w", err)
-	}
-
-	defer func() {
-		if err := tx.Rollback(ctx); err != nil {
-			if !errors.Is(err, pgx.ErrTxClosed) {
-				w.logger.Err(err).Msgf("could not rollback transaction")
-			}
-		}
-	}()
 
 	//initialRate limit checker
 	_, resp, err = w.githubClient.RateLimits(ctx)
@@ -54,8 +39,9 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 	}
 
 	w.restRatelimitHandler(ctx, resp)
+
 	// we get all available workflows
-	workflows, resp, err = w.handleWorkflows(ctx, owner, repoName, j.RepoID, tx)
+	workflows, resp, err = w.handleWorkflows(ctx, owner, repoName, j.RepoID)
 
 	w.logger.Info().Msgf("remaining quota %d", resp.Rate.Remaining)
 	if err != nil {
@@ -73,15 +59,16 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 		// we handle all jobs for all workflow runs
 		if len(workflowRunsArr) > 0 {
 			w.logger.Info().Msg("getting workflow runs array")
-			workflowRunJobsArr, resp, err = w.handleWorkflowRunsJobs(ctx, owner, repoName, workflowRunsArr, j.RepoID, tx)
-			w.logger.Info().Msgf("remaining quota %d", resp.Rate.Remaining)
 
+			workflowRunJobsArr, resp, err = w.handleWorkflowRunsJobs(ctx, owner, repoName, workflowRunsArr, j.RepoID)
 			if err != nil {
 				return err
 			}
-			// we handle all job logs for each run
+			w.logger.Info().Msgf("remaining quota %d", resp.Rate.Remaining)
+
+			// we handle all job logs for each job
 			if len(workflowRunJobsArr) > 0 {
-				err = w.handleWorkflowRunsJobLogs(ctx, tx, owner, repoName, workflowRunJobsArr, j.RepoID)
+				err = w.handleWorkflowRunsJobLogs(ctx, owner, repoName, workflowRunJobsArr, j.RepoID)
 				if err != nil {
 					return err
 				}
@@ -92,35 +79,23 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 	}
 
 	w.logger.Info().Msgf("finished getting github Actions")
-	return tx.Commit(ctx)
+	return nil
 }
 
 // handleWorkflows
-func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, repoID uuid.UUID, tx pgx.Tx) (*github.Workflows, *github.Response, error) {
+func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, repoID uuid.UUID) (*github.Workflows, *github.Response, error) {
+
 	w.logger.Info().Msgf("getting all github workflows from repo %s", repo)
 	workflows, resp, err := w.githubClient.Actions.ListWorkflows(ctx, owner, repo, nil)
 
 	w.restRatelimitHandler(ctx, resp)
-
 	if *workflows.TotalCount > 0 {
-		for _, workflow := range workflows.Workflows {
-			if err := w.db.WithTx(tx).UpsertWorkflowsInPublic(ctx, db.UpsertWorkflowsInPublicParams{
-				Repoid:         repoID,
-				ID:             int32(*workflow.ID),
-				Workflownodeid: *workflow.NodeID,
-				Name:           *workflow.Name,
-				Path:           *workflow.Path,
-				State:          *workflow.State,
-				Createdat:      workflow.CreatedAt.Time,
-				Updatedat:      workflow.UpdatedAt.Time,
-				Url:            *workflow.URL,
-				Htmlurl:        *workflow.HTMLURL,
-				Badgeurl:       *workflow.BadgeURL,
-			}); err != nil {
-				return workflows, resp, err
-			}
+		if err := w.handleWorflowUpsert(ctx, workflows.Workflows, repoID); err != nil {
+			return workflows, resp, err
 		}
+
 	}
+
 	w.logger.Info().Msg("finished getting workflows")
 	return workflows, resp, err
 }
@@ -140,12 +115,11 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		for {
 
 			workflowRuns, response, err := w.githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, *workflow.ID, opt)
+			if err != nil {
+				return workflowRunsArr, response, err
+			}
 
 			resp = response
-
-			if err != nil {
-				return workflowRunsArr, resp, err
-			}
 
 			if *workflowRuns.TotalCount > 0 && len(workflowRuns.WorkflowRuns) > 0 {
 				workflowRunsArr = append(workflowRunsArr, workflowRuns.WorkflowRuns...)
@@ -167,7 +141,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	return workflowRunsArr, resp, nil
 }
 
-func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo string, workflowRunsArrr []*github.WorkflowRun, repoID uuid.UUID, tx pgx.Tx) ([]*github.WorkflowJob, *github.Response, error) {
+func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo string, workflowRunsArrr []*github.WorkflowRun, repoID uuid.UUID) ([]*github.WorkflowJob, *github.Response, error) {
 
 	var workflowRunJobsArr []*github.WorkflowJob
 	var resp *github.Response
@@ -205,7 +179,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 		opt.Page = 0
 
 		// we upsert the current run into a trasaction chain
-		if err := w.handleUpsertWorkflowRuns(ctx, tx, workflowRun, repoID); err != nil {
+		if err := w.handleUpsertWorkflowRuns(ctx, workflowRun, repoID); err != nil {
 			return workflowRunJobsArr, resp, err
 		}
 	}
@@ -214,7 +188,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	return workflowRunJobsArr, resp, nil
 }
 
-func (w *warehouse) handleWorkflowRunsJobLogs(ctx context.Context, tx pgx.Tx, owner, repo string, workflowRunJobsArr []*github.WorkflowJob, repoID uuid.UUID) error {
+func (w *warehouse) handleWorkflowRunsJobLogs(ctx context.Context, owner, repo string, workflowRunJobsArr []*github.WorkflowJob, repoID uuid.UUID) error {
 	var resp *github.Response
 	var log string
 	w.logger.Info().Msgf("getting all workflow run job logs for repo %s", repo)
@@ -226,22 +200,22 @@ func (w *warehouse) handleWorkflowRunsJobLogs(ctx context.Context, tx pgx.Tx, ow
 		if err != nil {
 			return err
 		}
+
 		if len(workflowJobLog.String()) > 0 {
 			log, err = w.parseJobLogs(workflowJobLog, strconv.Itoa(int(*workflowJob.ID)))
+			if err != nil {
+				return err
+			}
 		}
 
-		if err != nil {
+		if err := os.RemoveAll(strconv.Itoa(i)); err != nil {
+			w.logger.Err(err)
 			return err
 		}
 
 		w.restRatelimitHandler(ctx, resp)
 
-		if err := w.handleUpsertWorkflowJobs(ctx, tx, workflowJob, log, repoID); err != nil {
-			return err
-		}
-
-		if err := os.RemoveAll(strconv.Itoa(i)); err != nil {
-			w.logger.Err(err)
+		if err := w.handleUpsertWorkflowJobs(ctx, workflowJob, log, repoID); err != nil {
 			return err
 		}
 
@@ -250,7 +224,60 @@ func (w *warehouse) handleWorkflowRunsJobLogs(ctx context.Context, tx pgx.Tx, ow
 	return nil
 }
 
-func (w *warehouse) handleUpsertWorkflowRuns(ctx context.Context, tx pgx.Tx, workflowRun *github.WorkflowRun, repoID uuid.UUID) error {
+func (w *warehouse) handleWorflowUpsert(ctx context.Context, workflows []*github.Workflow, repoID uuid.UUID) error {
+
+	var tx pgx.Tx
+	var err error
+
+	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
+		return fmt.Errorf("begin tx: %w", err)
+	}
+
+	defer func() {
+		if err := tx.Rollback(ctx); err != nil {
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				w.logger.Err(err).Msgf("could not rollback transaction")
+			}
+		}
+	}()
+
+	for _, workflow := range workflows {
+		if err := w.db.WithTx(tx).UpsertWorkflowsInPublic(ctx, db.UpsertWorkflowsInPublicParams{
+			Repoid:         repoID,
+			ID:             int32(*workflow.ID),
+			Workflownodeid: *workflow.NodeID,
+			Name:           *workflow.Name,
+			Path:           *workflow.Path,
+			State:          *workflow.State,
+			Createdat:      workflow.CreatedAt.Time,
+			Updatedat:      workflow.UpdatedAt.Time,
+			Url:            *workflow.URL,
+			Htmlurl:        *workflow.HTMLURL,
+			Badgeurl:       *workflow.BadgeURL,
+		}); err != nil {
+			return err
+		}
+	}
+
+	w.logger.Info().Msgf("finished getting github Actions")
+	return tx.Commit(ctx)
+}
+func (w *warehouse) handleUpsertWorkflowRuns(ctx context.Context, workflowRun *github.WorkflowRun, repoID uuid.UUID) error {
+	var tx pgx.Tx
+	var err error
+
+	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
+		return fmt.Errorf("begin tx: %w", err)
+	}
+
+	defer func() {
+		if err := tx.Rollback(ctx); err != nil {
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				w.logger.Err(err).Msgf("could not rollback transaction")
+			}
+		}
+	}()
+
 	pullRequestsBytes, err := json.Marshal(&workflowRun.PullRequests)
 
 	if err != nil {
@@ -303,10 +330,25 @@ func (w *warehouse) handleUpsertWorkflowRuns(ctx context.Context, tx pgx.Tx, wor
 		return err
 	}
 
-	return nil
+	return tx.Commit(ctx)
 }
 
-func (w *warehouse) handleUpsertWorkflowJobs(ctx context.Context, tx pgx.Tx, workflowJob *github.WorkflowJob, log string, repoID uuid.UUID) error {
+func (w *warehouse) handleUpsertWorkflowJobs(ctx context.Context, workflowJob *github.WorkflowJob, log string, repoID uuid.UUID) error {
+
+	var tx pgx.Tx
+	var err error
+
+	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
+		return fmt.Errorf("begin tx: %w", err)
+	}
+
+	defer func() {
+		if err := tx.Rollback(ctx); err != nil {
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				w.logger.Err(err).Msgf("could not rollback transaction")
+			}
+		}
+	}()
 
 	stepsBytes, err := json.Marshal(&workflowJob.Steps)
 
@@ -350,5 +392,6 @@ func (w *warehouse) handleUpsertWorkflowJobs(ctx context.Context, tx pgx.Tx, wor
 	}); err != nil {
 		return err
 	}
-	return nil
+
+	return tx.Commit(ctx)
 }
