@@ -1,20 +1,22 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/mergestat/fuse)](https://goreportcard.com/report/github.com/mergestat/fuse)
 [![CI Worker (Golang)](https://github.com/mergestat/fuse/actions/workflows/ci-worker.yaml/badge.svg)](https://github.com/mergestat/fuse/actions/workflows/ci-worker.yaml)
 [![CI Frontend (UI)](https://github.com/mergestat/fuse/actions/workflows/ci-frontend.yaml/badge.svg)](https://github.com/mergestat/fuse/actions/workflows/ci-frontend.yaml)
+[![Twitter Follow](https://img.shields.io/twitter/follow/mergestat)](https://twitter.com/mergestat)
+[![Slack Community](https://badgen.net/badge/icon/slack?icon=slack&label)](https://join.slack.com/t/mergestatcommunity/shared_invite/zt-xvvtvcz9-w3JJVIdhLgEWrVrKKNXOYg)
 
-# fuse
+# mergestat <a href="https://docs.mergestat.com/"><img align="right" src="https://github.com/mergestat/fuse/raw/main/docs/logo.png" alt="MergeStat Logo" height="100"></a>
 
-**beta**
+MergeStat enables SQL queries for data in git repositories (and related sources, such as the GitHub API). It allows you to ask questions about the history and contents of your source code.
 
-MergeStat `fuse` is a project to sync data from [`mergestat-lite`](https://github.com/mergestat/mergestat-lite) queries into PostgreSQL tables.
-It behaves similar to an ETL tool, taking data from git repositories and the GitHub API and regularly updating tables in a database.
-It's intended purpose is to enable "operational analytics for engineering teams," where downstream tools may consume the data from the PostgreSQL database.
+**If you are looking for our CLI, which runs SQL queries against local git repositories, it's now called [`mergestat-lite`](https://github.com/mergestat/mergestat-lite)**
+
+See our [**documentation**](https://docs.mergestat.com/) for additional context.
 
 <img alt="MergeStat Fuse Illustration" src="docs/illustration-logs.png" width="500" />
 
 ## Running Locally
 
-Try Fuse out locally with `docker-compose` by cloning this repository and running
+Try MergeStat locally with `docker-compose` by cloning this repository and running
 
 ```sh
 docker-compose up
@@ -37,7 +39,7 @@ You can also visit `http://localhost:3000/` to access a local [Grafana](https://
 
 <img alt="MergeStat Fuse Example Dashboards" src="examples/templates/grafana/screenshots/mergestat-examples.png" />
 
-### Resetting an Instance
+### Resetting a Local Instance
 
 If you'd like to "start from scratch" (i.e. reset the Fuse DB and start with a fresh deployment), run the following:
 
@@ -48,61 +50,3 @@ docker-compose down
 ```
 docker volume rm fuse_db_data
 ```
-
-## Data Types
-
-- `GIT_COMMITS` Retrieves the commit history of a repo
-- `GIT_COMMIT_STATS` Retrieves commit stats for a repo
-- `GIT_FILES` Retrieves files (content and paths) of a git repo
-- `GITHUB_PR_COMMITS` Retrieves commits for all pull requests in a GitHub repo
-- `GITHUB_PR_REVIEWS` Retrieves the reviews of all pull requests in a GitHub repo
-- `GITHUB_REPO_ISSUES` Retrieves all the issues of a GitHub repo
-- `GITHUB_REPO_METADATA` Retrieves metadata about a GitHub repo
-- `GITHUB_REPO_PRS` Retrieves all the pull requests of a GitHub repo
-- `GITHUB_REPO_STARS` Retrieves all stargazers of a GitHub repo
-- `GIT_REFS` Retrieves all the refs of a git repo
-- `TRIVY_REPO_SCAN` Executes a trivy scan on a git repository
-
-### Database Migrations
-
-#### Running & Testing Locally
-
-We use this tool https://github.com/golang-migrate/migrate/tree/master/cmd/migrate to handle migrations.
-In order to *generate* new migrations, use the `migrate` CLI like so:
-
-```
-migrate create -ext sql -dir migrations/ your_migration_subject
-```
-
-You can then run `docker-compose up` (without `-d`) so that you can check in the logs if the migration is successful.
-
-#### Dealing with Dirty Migrations
-
-- Stop the docker container with all the images but the `postgress` one.
-- Then use this command `migrate -path ./migrations -database "postgres://postgres:password@localhost:5432/postgres?sslmode=disable" force {last-successful-version}`.
-- After that delete the up and down of your failed migration and recreate another migration by `migrate create -ext sql -dir migrations/ you_migration_subject`.
-- And you should be good to go.
-
-### Running on Windows
-
-To run `fuse` on Windows you will need to use [WSL](https://learn.microsoft.com/en-us/windows/wsl/about) (Windows subsystem for linux) and modify settings in the docker desktop application. 
-
- - Modify your current docker desktop settings to ones showed in the pictures.
-
-<img alt="MergeStat docker desktop general settings" src="docs/docker-general-settings.png" />
-<img alt="MergeStat docker desktop resources settings" src="docs/docker-resources-settings.png" />
-
- - Follow the instructions provided [here](https://learn.microsoft.com/en-us/windows/wsl/setup/environment) to make correct use of WSL
- - Try to run `docker-compose up` inside the WSL
-
- ## SQL Linting
-
-The .sql files in this repo are linted using [sqlfluff](https://github.com/sqlfluff/sqlfluff) and .sqlfluff configuration file at the root of this repo.
-
-To check for linting issues run this command from the root of the root directory
-
-    sqlfluff lint
-
-To force linting issue fixes run this command from the root of the root directory
-
-    sqlfluff fix
