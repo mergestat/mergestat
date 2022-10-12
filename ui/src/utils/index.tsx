@@ -30,30 +30,6 @@ export function selectAllState(data: Array<{ isSelected: boolean, [key: string]:
       : CHECKBOX_STATES.Indeterminate
 }
 
-let isCommandPressed = false
-
-export function onTableRowClick(e: any, href: string) {
-  // TODO(emily) make cmd + click work
-  window.addEventListener('keydown', (event) => {
-    if (event.which === 91) {
-      isCommandPressed = true
-    }
-  })
-
-  window.addEventListener('keyup', (event) => {
-    if (event.which === 91) {
-      isCommandPressed = false
-    }
-  })
-  if (!e.target.closest('button, a, input, .t-toggle-container, .interactive')) {
-    if (isCommandPressed) {
-      window.open(href, '_blank')
-    } else {
-      window.location.href = href
-    }
-  }
-}
-
 /**
  * Method to validate given token is a right Github PAT
  * @param token Token string to validate

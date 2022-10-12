@@ -49,13 +49,13 @@ export const RemoveRepositoryModal: React.FC = () => {
           </Toolbar.Right>
         </Toolbar>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className='p-8'>
         {repoToRemove?.autoImported &&
-          <Alert type="warning" theme="light" className='mx-4 mt-6 mb-2 text-xs'>
+          <Alert type="warning" theme="light" className='mb-6'>
             This repo was added by an automatic import, it will be re-added on the next run, unless the repo auto import is removed.
           </Alert>
         }
-        <div className={cx('px-6 pb-6', { 'pt-2': repoToRemove?.autoImported }, { 'pt-6': !repoToRemove?.autoImported })}>
+        <div className={cx({ 'pt-2': repoToRemove?.autoImported }, { 'pt-6': !repoToRemove?.autoImported })}>
           Are you sure you want to remove <b>{repoToRemove?.name}</b>?
         </div>
       </Modal.Body>

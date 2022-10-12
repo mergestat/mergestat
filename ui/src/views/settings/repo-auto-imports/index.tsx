@@ -1,27 +1,16 @@
-import { Alert, ColoredBox, Panel, Toolbar } from '@mergestat/blocks'
+import { Alert, Button, ColoredBox, Panel, Toolbar } from '@mergestat/blocks'
 import { CircleCheckFilledIcon, ClockIcon, TrashIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { Fragment } from 'react'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
-
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import Loading from 'src/components/Loading'
 import RepoImage from 'src/components/RepoImage'
 import useRepoImports from 'src/views/hooks/useRepoImports'
 import { RemoveImportModal } from 'src/views/repositories/modals/remove-import-modal'
 import SettingsView from 'src/views/settings'
-
-const RowLink = ({ importId }: { importId: string }) => {
-  return (
-    <Link href={`/settings/repo-auto-imports/${importId}`} passHref>
-      <a href='foo' className='t-table-row-link'>
-        <span className='t-sr-only'>Go to detail</span>
-      </a>
-    </Link>
-  )
-}
 
 const AutoImports: NextPage = () => {
   const { loading, imports, showRemoveImportModal, prepareToRemove } = useRepoImports(true)
@@ -69,22 +58,22 @@ const AutoImports: NextPage = () => {
                           {imports.map((imp, index) => (
                             <tr key={index}>
                               <td className='py-4 pl-8 pr-4 w-0'>
-                                <RowLink importId={imp.id} />
                                 {imp.importDone
                                   ? <CircleCheckFilledIcon className="t-icon text-semantic-success" />
                                   : <ClockIcon className='t-icon text-semantic-mutedIcon' />
                                 }
                               </td>
                               <td className='p-4'>
-                                <RowLink importId={imp.id} />
                                 <div className='flex items-center gap-4'>
                                   <ColoredBox size='10'>
                                     <RepoImage repoType='github' orgName={imp.source} size="10" />
                                   </ColoredBox>
                                   <div>
-                                    <h4 className='font-medium'>
-                                      {imp.source}
-                                    </h4>
+                                    <Link href={`/settings/repo-auto-imports/${imp.id}`}>
+                                      <h4 className='font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600'>
+                                        {imp.source}
+                                      </h4>
+                                    </Link>
                                     <p className='text-sm text-semantic-mutedText'>
                                       {imp.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub User' : 'GitHub Organization'}
                                     </p>
@@ -92,13 +81,11 @@ const AutoImports: NextPage = () => {
                                 </div>
                               </td>
                               <td className='text-gray-500 p-4'>
-                                <RowLink importId={imp.id} />
                                 <RelativeTimeField date={imp.lastSync} />
                               </td>
                               <td className='text-gray-500 py-4 pl-4 pr-8'>
-                                <RowLink importId={imp.id} />
                                 <div className='t-button-toolbar'>
-                                  <TrashIcon className="t-icon" onClick={() => prepareToRemove(imp.id, imp.source, imp.type)} />
+                                  <Button skin="borderless-muted" startIcon={<TrashIcon className="t-icon" />} isIconOnly onClick={() => prepareToRemove(imp.id, imp.source, imp.type)} />
                                 </div>
                               </td>
                             </tr>

@@ -1,11 +1,9 @@
 import { LogBox, Panel } from '@mergestat/blocks'
 import { CaretDownIcon, CaretRightIcon } from '@mergestat/icons'
 import React, { Fragment, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import { SyncLogsType } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { SyncType } from './components'
-import { onTableRowClick } from 'src/utils'
 
 interface LogsTableProps {
   logs: Array<SyncLogsType>
@@ -21,8 +19,6 @@ const remap = (logs: Array<SyncLogsType>, previousData?: Array<SyncLogsType>): A
 
 export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) => {
   const [data, setData] = useState(remap(logs))
-  const router = useRouter()
-  const { repository, syncTypeId } = router.query
 
   useEffect(() => {
     setData(remap(logs, data))
@@ -69,7 +65,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                   <tbody className='bg-white'>
                     {data.map((log, index) => (
                       <Fragment key={log.id} >
-                        <tr onClick={(e) => onTableRowClick(e, `/repos/${repository}/${syncTypeId}/${log.id}`)}>
+                        <tr>
                           <td className='w-0'>
                             <div className='-mx-3'>
                               <button className='t-button-icon focus:!outline-none'

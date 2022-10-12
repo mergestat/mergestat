@@ -15,20 +15,19 @@ export const RepoDataDropDown: React.FC<RepoDataDropDownProps> = ({ data, status
   return (
     <Dropdown
       overlay={() => (
-        <Menu className="rounded w-100 flex flex-col">
+        <Menu className="rounded w-100 flex flex-col max-h-80 overflow-auto">
           {data.map((item, index) => (
-            <Link key={index} href={item.url}>
+            <Link key={`repo-status-menu-${index}`} href={item.url}>
               <div data-testid={TEST_IDS.repoDataDropdown}
                 className="hover_bg-gray-50 py-3 px-4 flex items-center justify-between gap-3 focus-within_ text-base cursor-pointer">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <RepoSyncIcon type={status} className="t-icon" />
-                  <span className='text-semantic-text leading-5'>{item.title}</span>
+                  <div className='flex flex-col text-left'>
+                    <span className='text-sm font-medium text-semantic-text mb-0.5'>{item.title}</span>
+                    <span className='text-sm text-semantic-mutedText'>{item.lastSync}</span>
+                  </div>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <span className='text-sm text-semantic-mutedText'>{item.lastSync}</span>
-                  <ChevronRightIcon className='t-icon text-semantic-icon' />
-                </div>
+                <ChevronRightIcon className='t-icon text-semantic-icon' />
               </div>
             </Link>
           ))}
@@ -69,6 +68,7 @@ type RepositoryStatusProps = PropsWithChildren<{
 const IconAndQuantity: React.FC<RepositoryStatusProps> = ({ count, children }: RepositoryStatusProps) => {
   return (
     <Badge
+      className='interactive'
       label={'' + count}
       startIcon={children}
       action={true}
