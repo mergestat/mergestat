@@ -65,10 +65,12 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
           {props.autoImportFrom && (
             <div className='border-l border-semantic-border px-2'>
               <Tooltip
-                content={`Auto imported from ${props.autoImportFrom}`}
-                placement='bottom'
-              >
-                <AutoImportIcon className='t-icon text-semantic-mutedIcon w-4' />
+                  content={`Auto imported from ${props.autoImportFrom}`}
+                  placement='bottom'
+                >
+                <Link href='/settings/repo-auto-imports' passHref>
+                  <AutoImportIcon className='t-icon text-semantic-mutedIcon w-4 cursor-pointer' />
+                </Link>
               </Tooltip>
             </div>
           )}
