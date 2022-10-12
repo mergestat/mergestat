@@ -87,7 +87,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 
   return (
     <>
-      {/** Tooltip */}
+      {/* * Tooltip
       {(displayTooltip && tooltipData?.status !== SYNC_STATUS.empty) && (
         <div
           ref={tooltipRef}
@@ -119,7 +119,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/** Bars */}
       <div
