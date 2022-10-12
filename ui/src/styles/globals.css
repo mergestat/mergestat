@@ -55,8 +55,12 @@
 
 .t-table-clickable tbody tr:hover,
 .t-table-clickable tbody tr:focus-within {
-  @apply bg-gray-50
-          cursor-pointer;
+  @apply bg-gray-50;
+}
+
+.t-table-clickable tbody .t-table-row-muted:hover,
+.t-table-clickable tbody .t-table-row-muted:focus-within {
+  @apply bg-gray-100;
 }
 
 .t-table-row-link {
@@ -72,11 +76,6 @@
 
 .t-table-row-muted {
   @apply bg-gray-50;
-}
-
-.t-table-clickable tbody .t-table-row-muted:hover,
-.t-table-clickable tbody .t-table-row-muted:focus-within {
-  @apply bg-gray-100;
 }
 
 .t-table-default td,
@@ -110,31 +109,6 @@
            focus_ring-blue-500
            hover_bg-gray-600
            cursor-pointer;
-}
-
-.t-table-default td,
-.t-table-default th {
-  @apply px-6;
-}
-
-.t-table-default td:first-child,
-.t-table-default th:first-child {
-  @apply pl-8;
-}
-
-.t-table-default td:last-child,
-.t-table-default th:last-child {
-  @apply pr-8;
-}
-
-
-.t-table-clickable tbody tr:hover,
-.t-table-clickable tbody tr:focus-within {
-  @apply bg-gray-50
-          cursor-pointer;
-}
-.t-table-clickable td {
-  @apply relative;
 }
 
 .t-sr-only {

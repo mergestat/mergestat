@@ -4,10 +4,8 @@ import React, { PropsWithChildren, useId } from 'react'
 import { RepoSyncDataType } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { onTableRowClick } from 'src/utils'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
-import { useRouter } from 'next/router'
 
 type SycnTypesTableProps = PropsWithChildren<{
   repoId: string
@@ -15,8 +13,6 @@ type SycnTypesTableProps = PropsWithChildren<{
 }>
 
 export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: SycnTypesTableProps) => {
-  const router = useRouter()
-  const { repository } = router.query
   const id = useId()
 
   return (
@@ -43,7 +39,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
 
                 <tbody className='bg-white'>
                   {data.map((sync, index) => (
-                    <tr data-testid={TEST_IDS.syncsTypesRow} key={sync.data.id ?? `${id}-${index}`} onClick={(e) => onTableRowClick(e, `/repos/${repository}/${sync.data.id}`)}>
+                    <tr data-testid={TEST_IDS.syncsTypesRow} key={sync.data.id ?? `${id}-${index}`}>
                       <td className='w-0 h-20 p-0'>
                         <div className={cx('h-full flex justify-center items-center', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
                           <RepoSyncIcon type={sync.status.syncState} className='my-auto' />

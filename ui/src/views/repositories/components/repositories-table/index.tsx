@@ -5,7 +5,6 @@ import type { RepoDataPropsT } from 'src/@types'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import { mapToRepoData } from 'src/api-logic/mappers/repos'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
-import { onTableRowClick } from 'src/utils'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import { RepositoryAdditionalActionsDropDown } from 'src/views/repositories/drop-downs'
 import { RepositoryName, RepositoryStatus } from './repositories-table-columns'
@@ -48,7 +47,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
 
                   <tbody className='bg-white'>
                     {repos.map((repo) => (
-                      <tr key={repo.id} className={!repo.status.length ? 't-table-row-muted' : ''} onClick={(e) => onTableRowClick(e, `/repos/${repo.id}`)}>
+                      <tr key={repo.id} className={!repo.status.length ? 't-table-row-muted' : ''}>
                         <td className=''>
                           <RepositoryName
                             id={repo.id}
