@@ -61,7 +61,7 @@ COMMENT ON COLUMN public.git_branches._mergestat_synced_at IS 'timestamp when re
 
 COMMENT ON view public.git_tags IS 'view of git refs of type tag of a repo';
 COMMENT ON COLUMN public.git_tags.repo_id IS 'foreign key for public.repos.id';
-COMMENT ON COLUMN public.git_tags.hash IS 'hash of the commit for refs that are not of type tag';
+COMMENT ON COLUMN public.git_tags.hash IS 'hash of the ref that are of type tag';
 COMMENT ON COLUMN public.git_tags.name IS 'name of the ref';
 COMMENT ON COLUMN public.git_tags.remote IS 'remote of the ref';
 COMMENT ON COLUMN public.git_tags.target IS 'target of the ref';
