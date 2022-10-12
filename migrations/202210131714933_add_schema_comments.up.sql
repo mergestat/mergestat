@@ -158,7 +158,7 @@ COMMENT ON COLUMN public.github_pull_requests.is_draft IS 'boolean to determine 
 COMMENT ON COLUMN public.github_pull_requests.label_count IS 'number of labels associated to the pull request';
 COMMENT ON COLUMN public.github_pull_requests.last_edited_at IS 'timestamp of when the pull request was last edited';
 COMMENT ON COLUMN public.github_pull_requests.locked IS 'boolean to determine if the pull request is locked';
-COMMENT ON COLUMN public.github_pull_requests.maintainer_can_modify IS 'boolean to determine if a maintaner can modify the pull request';
+COMMENT ON COLUMN public.github_pull_requests.maintainer_can_modify IS 'boolean to determine if a maintainer can modify the pull request';
 ALTER TABLE github_pull_requests
 DROP COLUMN IF EXISTS mantainer_can_modify;
 COMMENT ON COLUMN public.github_pull_requests.mergeable IS 'mergeable state of the pull request';
