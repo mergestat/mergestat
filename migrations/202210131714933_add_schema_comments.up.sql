@@ -15,8 +15,8 @@ COMMENT ON COLUMN public.git_commit_stats.commit_hash IS 'hash of the commit';
 COMMENT ON COLUMN public.git_commit_stats.file_path IS 'path of the file the modification was made in';
 COMMENT ON COLUMN public.git_commit_stats.additions IS 'the number of additions in this path of the commit';
 COMMENT ON COLUMN public.git_commit_stats.deletions IS 'the number of deletions in this path of the commit';
-COMMENT ON COLUMN public.git_commit_stats.old_file_mode IS 'old file mode derived from git mode. possible values (unknown,none,regular_file,symbolic_link,git_link)';
-COMMENT ON COLUMN public.git_commit_stats.new_file_mode IS 'new file mode derived from git mode. possible values (unknown,none,regular_file,symbolic_link,git_link)';
+COMMENT ON COLUMN public.git_commit_stats.old_file_mode IS 'old file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link)';
+COMMENT ON COLUMN public.git_commit_stats.new_file_mode IS 'new file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link)';
 COMMENT ON COLUMN public.git_commit_stats._mergestat_synced_at IS 'timestamp when record was synced into the MergeStat database';
 
 COMMENT ON TABLE public.git_commits IS 'git commit history of a repo';
