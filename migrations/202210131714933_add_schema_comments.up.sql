@@ -66,7 +66,7 @@ COMMENT ON COLUMN public.git_tags.name IS 'name of the ref';
 COMMENT ON COLUMN public.git_tags.remote IS 'remote of the ref';
 COMMENT ON COLUMN public.git_tags.target IS 'target of the ref';
 COMMENT ON COLUMN public.git_tags.type IS 'type of the ref';
-COMMENT ON COLUMN public.git_tags.tag_commit_hash IS 'hash of the commit for refs that or of type tag';
+COMMENT ON COLUMN public.git_tags.tag_commit_hash IS 'hash of the commit for refs that are of type tag';
 COMMENT ON COLUMN public.git_tags._mergestat_synced_at IS 'timestamp when record was synced into the MergeStat database';
 
 COMMENT ON TABLE public.github_issues IS 'issues of a GitHub repo';
