@@ -230,7 +230,7 @@ COMMENT ON COLUMN public.repos.ref IS 'ref for the repo';
 COMMENT ON COLUMN public.repos.is_github IS 'boolean to determine if the repo is in GitHub';
 COMMENT ON COLUMN public.repos.created_at IS 'timestamp of when the MergeStat repo entry was created';
 COMMENT ON COLUMN public.repos.settings IS 'JSON settings for the repo';
-COMMENT ON COLUMN public.repos.tags IS 'array of tags for the repo for tags in GitHub as well as tags added in MergeStat';
+COMMENT ON COLUMN public.repos.tags IS 'array of tags for the repo for topics in GitHub as well as tags added in MergeStat';
 COMMENT ON COLUMN public.repos.repo_import_id IS 'foreign key for mergestat.repo_imports.id';
 ALTER TABLE public.repos
 DROP COLUMN IF EXISTS _mergestat_synced_at;
