@@ -97,6 +97,80 @@ type GitTag struct {
 	MergestatSyncedAt time.Time
 }
 
+type GithubActionsWorkflow struct {
+	RepoID            uuid.UUID
+	ID                int32
+	WorkflowNodeID    sql.NullString
+	Name              sql.NullString
+	Path              sql.NullString
+	State             sql.NullString
+	CreatedAt         sql.NullTime
+	UpdatedAt         sql.NullTime
+	Url               sql.NullString
+	HtmlUrl           sql.NullString
+	BadgeUrl          sql.NullString
+	MergestatSyncedAt time.Time
+}
+
+type GithubActionsWorkflowRun struct {
+	RepoID            uuid.UUID
+	ID                int32
+	WorkflowRunNodeID sql.NullString
+	Name              sql.NullString
+	HeadBranch        sql.NullString
+	RunNumber         sql.NullInt32
+	RunAttempt        sql.NullInt32
+	Event             sql.NullString
+	Status            sql.NullString
+	Conclusion        sql.NullString
+	WorkflowID        int32
+	CheckSuiteID      sql.NullInt32
+	CheckSuiteNodeID  sql.NullString
+	Url               sql.NullString
+	HtmlUrl           sql.NullString
+	PullRequests      pgtype.JSONB
+	CreatedAt         sql.NullTime
+	UpdatedAt         sql.NullTime
+	RunStartedAt      sql.NullTime
+	JobsUrl           sql.NullString
+	LogsUrl           sql.NullString
+	CheckSuiteUrl     sql.NullString
+	ArtifactsUrl      sql.NullString
+	CancelUrl         sql.NullString
+	RerunUrl          sql.NullString
+	HeadCommit        pgtype.JSONB
+	WorkflowUrl       sql.NullString
+	RepositoryUrl     sql.NullString
+	HeadRepositoryUrl sql.NullString
+	MergestatSyncedAt time.Time
+}
+
+type GithubActionsWorkflowRunJob struct {
+	RepoID            uuid.UUID
+	ID                int32
+	RunID             int32
+	Log               sql.NullString
+	RunUrl            sql.NullString
+	JobNodeID         sql.NullString
+	WorkflowJobNodeID sql.NullString
+	HeadSha           sql.NullString
+	Url               sql.NullString
+	HtmlUrl           sql.NullString
+	Status            sql.NullString
+	Conclusion        sql.NullString
+	StartedAt         sql.NullTime
+	CompletedAt       sql.NullTime
+	WorkflowName      sql.NullString
+	Steps             pgtype.JSONB
+	CheckRunUrl       sql.NullString
+	Labels            pgtype.JSONB
+	RunnerID          sql.NullInt32
+	RunnerName        sql.NullString
+	RunnerGroupID     sql.NullInt32
+	RunnerGroupName   sql.NullString
+	MergestatSyncedAt time.Time
+}
+
 // GitHub issues
 type GithubIssue struct {
 	RepoID              uuid.UUID
@@ -126,7 +200,7 @@ type GithubIssue struct {
 	MergestatSyncedAt   time.Time
 }
 
-// GitHub pull requests
+// GitHub Workflow Run Jobs
 type GithubPullRequest struct {
 	RepoID              uuid.UUID
 	Additions           sql.NullInt32
