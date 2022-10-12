@@ -5,9 +5,9 @@ import type { RepoDataPropsT } from 'src/@types'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import { mapToRepoData } from 'src/api-logic/mappers/repos'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
+import { useRepositoriesSetState } from 'src/state/contexts'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import { RepositoryName, RepositoryStatus } from './repositories-table-columns'
-import { useRepositoriesSetState } from 'src/state/contexts'
 
 type RepositoriesTableProps = PropsWithChildren<{
   data?: GetReposQuery
@@ -44,8 +44,8 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                       <th scope='col' key='last' className='whitespace-nowrap'>Last sync</th>
                       <th scope='col' key='total' className='whitespace-nowrap w-0 text-center'>Total</th>
                       <th scope='col' key='queued' className='whitespace-nowrap w-0 text-center'>Queued</th>
-                      <th scope='col' key='loading' className='whitespace-nowrap w-0 text-center'>Loading</th>
-                      <th scope='col' key='error' className='whitespace-nowrap w-0 text-center'>Errors</th>
+                      <th scope='col' key='running' className='whitespace-nowrap w-0 text-center'>Running</th>
+                      <th scope='col' key='error' className='whitespace-nowrap w-0 text-center'>Error</th>
                       <th scope='col' key='success' className='whitespace-nowrap w-0 text-center'>Success</th>
                       <th scope='col' key='option' className='whitespace-nowrap w-0'></th>
                     </tr>

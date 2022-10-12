@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 import type { RepoType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
-import { getRelativeTime } from 'src/utils'
+import { capitalize, getRelativeTime } from 'src/utils'
 import { GITHUB_URL, TEST_IDS } from 'src/utils/constants'
 
 export type RepositoryNameProps = {
@@ -56,7 +56,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
           </span>
           <div className='border-l border-semantic-border px-2'>
             <Tooltip
-              content={`${props.type} repository`}
+              content={`${capitalize(props.type)} repository`}
               placement='bottom'
             >
               {repoTypeIcon()}
@@ -65,9 +65,9 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
           {props.autoImportFrom && (
             <div className='border-l border-semantic-border px-2'>
               <Tooltip
-                  content={`Auto imported from ${props.autoImportFrom}`}
-                  placement='bottom'
-                >
+                content={`Auto imported from ${props.autoImportFrom}`}
+                placement='bottom'
+              >
                 <Link href='/settings/repo-auto-imports' passHref>
                   <AutoImportIcon className='t-icon text-semantic-mutedIcon w-4 cursor-pointer' />
                 </Link>
