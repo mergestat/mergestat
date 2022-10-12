@@ -1,13 +1,13 @@
-import { Badge, Panel } from '@mergestat/blocks'
-import { ChevronRightIcon, CircleInformationFilledIcon } from '@mergestat/icons'
+import { Badge, Button, Panel } from '@mergestat/blocks'
+import { ChevronRightIcon, CircleInformationFilledIcon, TrashIcon } from '@mergestat/icons'
 import React, { PropsWithChildren } from 'react'
 import type { RepoDataPropsT } from 'src/@types'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import { mapToRepoData } from 'src/api-logic/mappers/repos'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
-import { RepositoryAdditionalActionsDropDown } from 'src/views/repositories/drop-downs'
 import { RepositoryName, RepositoryStatus } from './repositories-table-columns'
+import { useRepositoriesSetState } from 'src/state/contexts'
 
 type RepositoriesTableProps = PropsWithChildren<{
   data?: GetReposQuery
@@ -20,6 +20,12 @@ export type RowLinkProps = {
 
 export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: RepositoriesTableProps) => {
   const repos: Array<RepoDataPropsT> = mapToRepoData(data)
+  const { setShowRemoveRepositoryModal, setRepoToRemove } = useRepositoriesSetState()
+
+  const prepareToRemove = (id: string, name: string, autoImported: boolean) => {
+    setRepoToRemove({ id, name, autoImported, redirect: false })
+    setShowRemoveRepositoryModal(true)
+  }
 
   return (
     <>
@@ -115,11 +121,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                             </td>
                             <td>
                               <div className='t-button-toolbar'>
-                                <RepositoryAdditionalActionsDropDown
-                                  id={repo.id}
-                                  name={repo.name}
-                                  autoImported={!!repo.autoImportFrom}
-                                />
+                                <Button skin="borderless-muted" startIcon={<TrashIcon className="t-icon" />} isIconOnly onClick={() => prepareToRemove(repo.id, repo.name, !!repo.autoImportFrom)} />
                               </div>
                             </td>
                           </>
@@ -130,11 +132,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                                 <span className='text-semantic-mutedText'>Set up sync types</span>
                                 <ChevronRightIcon className='t-icon t-icon-muted' />
                               </div>
-                              <RepositoryAdditionalActionsDropDown
-                                id={repo.id}
-                                name={repo.name}
-                                autoImported={!!repo.autoImportFrom}
-                              />
+                              <Button skin="borderless-muted" startIcon={<TrashIcon className="t-icon" />} isIconOnly onClick={() => prepareToRemove(repo.id, repo.name, !!repo.autoImportFrom)} />
                             </div>
                           </td>
                         }
