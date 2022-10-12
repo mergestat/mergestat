@@ -90,7 +90,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	}
 
 	for _, workflow := range workflowsPage {
-
+		w.logger.Info().Msgf("getting workflow runs and workflow jobs for workflow %s", *workflow.Name)
 		// we get a page of 30 workflow runs until next page is 0
 		for {
 

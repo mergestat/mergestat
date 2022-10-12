@@ -43,7 +43,7 @@ func New(ctx context.Context, db *db.Queries, pool *pgxpool.Pool, logger *zerolo
 
 func (w *warehouse) restRatelimitHandler(ctx context.Context, resp *github.Response) {
 	var remaining = resp.Rate.Remaining
-	var delay = 0 * time.Millisecond
+	var delay = 800 * time.Millisecond
 	var untilResetDur = time.Until(resp.Rate.Reset.Time)
 	secondsRemaining := untilResetDur.Seconds()
 
