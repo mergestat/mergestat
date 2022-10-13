@@ -146,7 +146,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 			}
 
 			if *workflowRunJobsPage.TotalCount > 0 && len(workflowRunJobsPage.Jobs) > 0 {
-				if err := w.handleWorkflowRunsJobLogs(ctx, owner, repo, repoID, workflowRunJobsPage.Jobs); err != nil {
+				if err := w.handleWorkflowJobLogs(ctx, owner, repo, repoID, workflowRunJobsPage.Jobs); err != nil {
 					return err
 				}
 			}
@@ -168,7 +168,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	return nil
 }
 
-func (w *warehouse) handleWorkflowRunsJobLogs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunJobsPage []*github.WorkflowJob) error {
+func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunJobsPage []*github.WorkflowJob) error {
 	var err error
 	var resp *github.Response
 	var log string
