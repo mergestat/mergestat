@@ -18,6 +18,7 @@ const GET_REPO_SYNCS = gql`
         nodes {
           id
           syncType
+          scheduleEnabled
           repoSyncQueues(first: 15, orderBy: CREATED_AT_DESC) {
             nodes {
               id

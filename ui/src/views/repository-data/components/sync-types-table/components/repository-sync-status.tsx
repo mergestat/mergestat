@@ -1,9 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRouter } from 'next/router'
 import React, { CSSProperties, Fragment, useRef, useState } from 'react'
-import type { RepoSyncStateT, SyncStatusDataT } from 'src/@types'
+import type { SyncStatusDataT } from 'src/@types'
 
-import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { getRelativeTime } from 'src/utils'
 import { SYNC_STATUS } from 'src/utils/constants'
 
 type RepositorySyncStatusProps = {

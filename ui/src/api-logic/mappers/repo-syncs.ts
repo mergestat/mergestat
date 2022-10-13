@@ -37,6 +37,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
         type: st.type || '',
         title: st.shortName || '',
         brief: st.description || '',
+        scheduleEnabled: syncType?.scheduleEnabled || false,
       },
       latestRun: syncType?.repoSyncQueues.nodes[0]?.doneAt ?? syncType?.repoSyncQueues.nodes[1]?.doneAt,
       avgRunningTime: '-',

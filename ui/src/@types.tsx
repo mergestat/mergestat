@@ -56,6 +56,7 @@ export type RepoSyncDataType = {
     type: string
     title: string
     brief: string
+    scheduleEnabled: boolean
   }
   latestRun: string
   avgRunningTime: string
@@ -80,6 +81,7 @@ export type SyncTypeInfo = {
   id: string
   title: string
   brief: string
+  scheduleEnabled: boolean
   syncState: RepoSyncStateT
 }
 
