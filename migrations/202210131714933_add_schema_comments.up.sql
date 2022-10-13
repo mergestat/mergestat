@@ -78,7 +78,7 @@ COMMENT ON COLUMN public.github_issues.closed_at IS 'timestamp of when the issue
 COMMENT ON COLUMN public.github_issues.created_via_email IS 'boolean to determine if the issue was created via email';
 COMMENT ON COLUMN public.github_issues.database_id IS 'GitHub database_id of the issue';
 COMMENT ON COLUMN public.github_issues.editor_login IS 'login of the editor of the issue';
-COMMENT ON COLUMN public.github_issues.includes_created_edit IS 'boolean to determine if the issue was edited and includes and edit with the creation data';
+COMMENT ON COLUMN public.github_issues.includes_created_edit IS 'boolean to determine if the issue was edited and includes an edit with the creation data';
 COMMENT ON COLUMN public.github_issues.label_count IS 'number of labels associated to the issue';
 COMMENT ON COLUMN public.github_issues.last_edited_at IS 'timestamp when the issue was edited';
 COMMENT ON COLUMN public.github_issues.locked IS 'boolean to determine if the issue is locked';
