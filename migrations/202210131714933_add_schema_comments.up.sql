@@ -139,7 +139,7 @@ COMMENT ON COLUMN public.github_pull_requests.author_login IS 'login of the auth
 COMMENT ON COLUMN public.github_pull_requests.author_association IS 'author association to the repo';
 COMMENT ON COLUMN public.github_pull_requests.author_avatar_url IS 'URL to the avatar of the author of the pull request';
 COMMENT ON COLUMN public.github_pull_requests.author_name IS 'name of the author of the pull request';
-COMMENT ON COLUMN public.github_pull_requests.base_ref_oid IS 'the base ref associated with the pull request';
+COMMENT ON COLUMN public.github_pull_requests.base_ref_oid IS 'the base ref object id associated with the pull request';
 COMMENT ON COLUMN public.github_pull_requests.base_ref_name IS 'the name of base ref associated with the pull request';
 COMMENT ON COLUMN public.github_pull_requests.base_repository_name IS 'the name of the base repo for the pull request';
 COMMENT ON COLUMN public.github_pull_requests.body IS 'body of the pull request';
