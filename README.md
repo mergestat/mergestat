@@ -1,6 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/mergestat/mergestat)](https://goreportcard.com/report/github.com/mergestat/mergestat)
 [![CI Worker (Golang)](https://github.com/mergestat/mergestat/actions/workflows/ci-worker.yaml/badge.svg)](https://github.com/mergestat/mergestat/actions/workflows/ci-worker.yaml)
-[![CI Frontend (UI)](https://github.com/mergestat/fmergestatuse/actions/workflows/ci-frontend.yaml/badge.svg)](https://github.com/mergestat/mergestat/actions/workflows/ci-frontend.yaml)
+[![CI Frontend (UI)](https://github.com/mergestat/mergestat/actions/workflows/ci-frontend.yaml/badge.svg)](https://github.com/mergestat/mergestat/actions/workflows/ci-frontend.yaml)
 [![Twitter Follow](https://img.shields.io/twitter/follow/mergestat)](https://twitter.com/mergestat)
 [![Slack Community](https://badgen.net/badge/icon/slack?icon=slack&label)](https://join.slack.com/t/mergestatcommunity/shared_invite/zt-xvvtvcz9-w3JJVIdhLgEWrVrKKNXOYg)
 
