@@ -105,8 +105,8 @@ COMMENT ON COLUMN public.github_pull_request_commits.author_when IS 'timestamp o
 COMMENT ON COLUMN public.github_pull_request_commits.committer_email IS 'email of the author who committed the modification';
 COMMENT ON COLUMN public.github_pull_request_commits.committer_name IS 'name of the author who committed the modification';
 COMMENT ON COLUMN public.github_pull_request_commits.committer_when IS 'timestamp of when the commit was made';
-COMMENT ON COLUMN public.github_pull_request_commits.additions IS 'the number of additions in this path of the commit';
-COMMENT ON COLUMN public.github_pull_request_commits.deletions IS 'the number of deletions in this path of the commit';
+COMMENT ON COLUMN public.github_pull_request_commits.additions IS 'the number of additions in the commit';
+COMMENT ON COLUMN public.github_pull_request_commits.deletions IS 'the number of deletions in the commit';
 COMMENT ON COLUMN public.github_pull_request_commits.changed_files IS 'the number of files changed/modified in the commit';
 COMMENT ON COLUMN public.github_pull_request_commits.url IS 'GitHub URL of the commit';
 COMMENT ON COLUMN public.github_pull_request_commits._mergestat_synced_at IS 'timestamp when record was synced into the MergeStat database';
