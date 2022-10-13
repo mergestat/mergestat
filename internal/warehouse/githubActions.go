@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
 	"strconv"
 
@@ -29,9 +30,7 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 	}
 
 	// we check the rate limit before any call to the GitHub API
-	_, resp, err = w.githubClient.RateLimits(ctx)
-
-	if err != nil {
+	if _, resp, err = w.githubClient.RateLimits(ctx); err != nil {
 		return err
 	}
 
@@ -39,9 +38,7 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 
 	w.logger.Info().Msgf("getting all github actions from repo %s", repoName)
 
-	err = w.handleWorkflows(ctx, owner, repoName, j.RepoID)
-
-	if err != nil {
+	if err = w.handleWorkflows(ctx, owner, repoName, j.RepoID); err != nil {
 		return err
 	}
 
@@ -50,21 +47,24 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 }
 
 func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, repoID uuid.UUID) error {
+	var err error
+	var resp *github.Response
+	var workflowsPage *github.Workflows
 	opt := &github.ListWorkflowRunsOptions{
 		ListOptions: github.ListOptions{PerPage: 30},
 	}
 
 	// we get a page of 30 workflows until next page is 0
 	for {
-		workflowsPage, resp, err := w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions)
-		if err != nil {
+
+		if workflowsPage, resp, err = w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions); err != nil {
 			return err
 		}
 
 		w.restRatelimitHandler(ctx, resp)
 
 		if *workflowsPage.TotalCount > 0 && len(workflowsPage.Workflows) > 0 {
-			if err := w.handleWorflowUpsert(ctx, workflowsPage.Workflows, repoID); err != nil {
+			if err := w.handleWorkflowsUpsert(ctx, workflowsPage.Workflows, repoID); err != nil {
 				return err
 			}
 
@@ -84,7 +84,9 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 }
 
 func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowsPage []*github.Workflow) error {
+	var err error
 	var resp *github.Response
+	var workflowRunsPage *github.WorkflowRuns
 	opt := &github.ListWorkflowRunsOptions{
 		ListOptions: github.ListOptions{PerPage: 30},
 	}
@@ -94,16 +96,13 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		// we get a page of 30 workflow runs until next page is 0
 		for {
 
-			workflowRunsPage, response, err := w.githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, *workflow.ID, opt)
-			if err != nil {
+			if workflowRunsPage, resp, err = w.githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, *workflow.ID, opt); err != nil {
 				return err
 			}
 
-			resp = response
-
 			if *workflowRunsPage.TotalCount > 0 && len(workflowRunsPage.WorkflowRuns) > 0 {
 
-				if err := w.handleUpsertWorkflowRuns(ctx, workflowRunsPage.WorkflowRuns, repoID); err != nil {
+				if err := w.handleWorkflowRunsUpsert(ctx, workflowRunsPage.WorkflowRuns, repoID); err != nil {
 					return err
 				}
 
@@ -114,13 +113,14 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 
 			w.restRatelimitHandler(ctx, resp)
 
-			if response.NextPage == 0 {
+			if resp.NextPage == 0 {
 				break
 			}
 
 			opt.Page = resp.NextPage
 
 		}
+
 		opt.Page = 0
 
 	}
@@ -129,8 +129,10 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 }
 
 func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunsPage []*github.WorkflowRun) error {
-
+	var err error
 	var resp *github.Response
+	var workflowRunJobsPage *github.Jobs
+
 	opt := &github.ListWorkflowJobsOptions{
 		ListOptions: github.ListOptions{PerPage: 30},
 	}
@@ -139,11 +141,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
-			workflowRunJobsPage, response, err := w.githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, *workflowRun.ID, opt)
-
-			resp = response
-
-			if err != nil {
+			if workflowRunJobsPage, resp, err = w.githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, *workflowRun.ID, opt); err != nil {
 				return err
 			}
 
@@ -155,7 +153,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 
 			w.restRatelimitHandler(ctx, resp)
 
-			if response.NextPage == 0 {
+			if resp.NextPage == 0 {
 				break
 			}
 
@@ -171,16 +169,15 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 }
 
 func (w *warehouse) handleWorkflowRunsJobLogs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunJobsPage []*github.WorkflowJob) error {
+	var err error
 	var resp *github.Response
 	var log string
+	var workflowJobLog *url.URL
 
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
 
-		workflowJobLog, response, err := w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true)
-
-		resp = response
-		if err != nil {
+		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil {
 			return err
 		}
 
@@ -198,7 +195,7 @@ func (w *warehouse) handleWorkflowRunsJobLogs(ctx context.Context, owner, repo s
 
 		w.restRatelimitHandler(ctx, resp)
 
-		if err := w.handleUpsertWorkflowJobs(ctx, workflowJob, log, repoID); err != nil {
+		if err := w.handleWorkflowJobUpsert(ctx, workflowJob, log, repoID); err != nil {
 			return err
 		}
 
@@ -206,7 +203,7 @@ func (w *warehouse) handleWorkflowRunsJobLogs(ctx context.Context, owner, repo s
 	return nil
 }
 
-func (w *warehouse) handleWorflowUpsert(ctx context.Context, workflows []*github.Workflow, repoID uuid.UUID) error {
+func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*github.Workflow, repoID uuid.UUID) error {
 
 	var tx pgx.Tx
 	var err error
@@ -244,9 +241,11 @@ func (w *warehouse) handleWorflowUpsert(ctx context.Context, workflows []*github
 	return tx.Commit(ctx)
 }
 
-func (w *warehouse) handleUpsertWorkflowRuns(ctx context.Context, workflowRunPage []*github.WorkflowRun, repoID uuid.UUID) error {
+func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPage []*github.WorkflowRun, repoID uuid.UUID) error {
 	var tx pgx.Tx
 	var err error
+	var pullRequestsBytes []byte
+	var headCommitBytes []byte
 
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -262,15 +261,11 @@ func (w *warehouse) handleUpsertWorkflowRuns(ctx context.Context, workflowRunPag
 
 	for _, workflowRun := range workflowRunPage {
 
-		pullRequestsBytes, err := json.Marshal(&workflowRun.PullRequests)
-
-		if err != nil {
+		if pullRequestsBytes, err = json.Marshal(&workflowRun.PullRequests); err != nil {
 			return err
 		}
 
-		headCommitBytes, err := json.Marshal(&workflowRun.HeadCommit)
-
-		if err != nil {
+		if headCommitBytes, err = json.Marshal(&workflowRun.HeadCommit); err != nil {
 			return err
 		}
 
@@ -319,10 +314,12 @@ func (w *warehouse) handleUpsertWorkflowRuns(ctx context.Context, workflowRunPag
 	return tx.Commit(ctx)
 }
 
-func (w *warehouse) handleUpsertWorkflowJobs(ctx context.Context, workflowJob *github.WorkflowJob, log string, repoID uuid.UUID) error {
+func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *github.WorkflowJob, log string, repoID uuid.UUID) error {
 
 	var tx pgx.Tx
 	var err error
+	var stepsBytes []byte
+	var labelsBytes []byte
 
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -336,15 +333,11 @@ func (w *warehouse) handleUpsertWorkflowJobs(ctx context.Context, workflowJob *g
 		}
 	}()
 
-	stepsBytes, err := json.Marshal(&workflowJob.Steps)
-
-	if err != nil {
+	if stepsBytes, err = json.Marshal(&workflowJob.Steps); err != nil {
 		return err
 	}
 
-	labelsBytes, err := json.Marshal(&workflowJob.Labels)
-
-	if err != nil {
+	if labelsBytes, err = json.Marshal(&workflowJob.Labels); err != nil {
 		return err
 	}
 
