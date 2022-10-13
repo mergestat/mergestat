@@ -349,7 +349,7 @@ WITH t AS (
 		@steps::JSONB,
 		@checkrunurl::TEXT,
 		@labels::JSONB,
-		@runnerid::INTEGER,
+		@runnerid::BIGINT,
 		@runnername::TEXT,
 		@runnergroupid::BIGINT,
 		@runnergroupname::TEXT)

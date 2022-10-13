@@ -703,7 +703,7 @@ WITH t AS (
 		$15::JSONB,
 		$16::TEXT,
 		$17::JSONB,
-		$18::INTEGER,
+		$18::BIGINT,
 		$19::TEXT,
 		$20::BIGINT,
 		$21::TEXT)
@@ -757,7 +757,7 @@ type UpsertWorkflowRunJobsParams struct {
 	Steps           pgtype.JSONB
 	Checkrunurl     string
 	Labels          pgtype.JSONB
-	Runnerid        int32
+	Runnerid        int64
 	Runnername      string
 	Runnergroupid   int64
 	Runnergroupname string

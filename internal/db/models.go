@@ -164,7 +164,7 @@ type GithubActionsWorkflowRunJob struct {
 	Steps             pgtype.JSONB
 	CheckRunUrl       sql.NullString
 	Labels            pgtype.JSONB
-	RunnerID          sql.NullInt32
+	RunnerID          sql.NullInt64
 	RunnerName        sql.NullString
 	RunnerGroupID     sql.NullInt64
 	RunnerGroupName   sql.NullString

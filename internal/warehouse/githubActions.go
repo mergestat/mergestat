@@ -341,6 +341,23 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 		return err
 	}
 
+	if workflowJob.RunnerID == nil {
+		workflowJob.RunnerID = new(int64)
+
+	}
+
+	if workflowJob.RunnerName == nil {
+		workflowJob.RunnerName = new(string)
+	}
+
+	if workflowJob.RunnerGroupID == nil {
+		workflowJob.RunnerGroupID = new(int64)
+	}
+
+	if workflowJob.RunnerGroupName == nil {
+		workflowJob.RunnerGroupName = new(string)
+	}
+
 	if err := w.db.WithTx(tx).UpsertWorkflowRunJobs(ctx, db.UpsertWorkflowRunJobsParams{
 		Repoid:       repoID,
 		ID:           *workflowJob.ID,
@@ -365,7 +382,8 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 			Status: pgtype.Present,
 			Bytes:  labelsBytes,
 		},
-		Runnerid:        int32(*workflowJob.RunnerID),
+		Runnerid:        *workflowJob.RunnerID,
+		Runnername:      *workflowJob.RunnerName,
 		Runnergroupid:   *workflowJob.RunnerGroupID,
 		Runnergroupname: *workflowJob.RunnerGroupName,
 	}); err != nil {

@@ -80,7 +80,7 @@ CREATE TABLE public.github_actions_workflow_run_jobs(
     steps JSONB,
     check_run_url TEXT,
     labels JSONB,
-    runner_id INTEGER,
+    runner_id BIGINT,
     runner_name TEXT,
     runner_group_id BIGINT,
     runner_group_name TEXT,
