@@ -5,6 +5,8 @@ import { RepoSyncDataType } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
+import useSyncNow from 'src/views/hooks/useSyncNow'
+import useSyncs from 'src/views/hooks/useSyncs'
 import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
 
 type SycnTypesTableProps = PropsWithChildren<{
@@ -14,6 +16,8 @@ type SycnTypesTableProps = PropsWithChildren<{
 
 export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: SycnTypesTableProps) => {
   const id = useId()
+  const { refetch } = useSyncs()
+  const { updateSchedule, addSyncType } = useSyncNow(refetch, true)
 
   return (
     <Panel className='rounded-md w-full shadow-sm block'>
@@ -72,7 +76,14 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                       </td>
                       <td className='w-0'>
                         <div className='flex items-center justify-center'>
-                          <Toggle isChecked={!(sync.status.syncState === SYNC_STATUS.disabled)} onChange={() => console.log('test')}/>
+                          <Toggle
+                            isChecked={sync.data.scheduleEnabled}
+                            onChange={() => {
+                              sync.data.id
+                                ? updateSchedule({ variables: { syncId: sync.data.id, schedule: !sync.data.scheduleEnabled } })
+                                : addSyncType({ variables: { repoId, syncType: sync.data.type } })
+                            }}
+                          />
                         </div>
                       </td>
                       <td className='w-0'>

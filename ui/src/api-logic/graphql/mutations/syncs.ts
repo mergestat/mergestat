@@ -25,4 +25,16 @@ const ADD_SYNC_TYPE = gql`
   }
 `
 
-export { SYNC_NOW, ADD_SYNC_TYPE }
+const UPDATE_SCHEDULE = gql`
+  mutation schedule($syncId: UUID!, $schedule: Boolean!) {
+    updateRepoSync(input: {patch: {scheduleEnabled: $schedule}, id: $syncId}) {
+      repoSync {
+        id
+        syncType
+        scheduleEnabled
+      }
+    }
+  }
+`
+
+export { SYNC_NOW, ADD_SYNC_TYPE, UPDATE_SCHEDULE }

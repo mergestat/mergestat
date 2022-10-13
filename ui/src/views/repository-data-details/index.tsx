@@ -1,5 +1,5 @@
-import { BreadcrumbNav, Button, Tabs, Toolbar } from '@mergestat/blocks'
-import { ExternalLinkIcon, RefreshIcon } from '@mergestat/icons'
+import { BreadcrumbNav, Button, Spinner, Tabs, Toolbar } from '@mergestat/blocks'
+import { ClockIcon, ExternalLinkIcon, RefreshIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { SyncTypeData } from 'src/@types'
@@ -48,8 +48,14 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
             <Toolbar.Right>
               <Toolbar.Item>
                 <Button
-                  startIcon={<RefreshIcon className="t-icon" />}
                   className="ml-3"
+                  startIcon={sync?.syncState === SYNC_STATUS.queued
+                    ? <ClockIcon className='t-icon' />
+                    : sync?.syncState === SYNC_STATUS.running
+                      ? <Spinner size='sm' className='mr-2' />
+                      : <RefreshIcon className="t-icon" />
+                  }
+                  disabled={sync?.syncState === SYNC_STATUS.queued || sync?.syncState === SYNC_STATUS.running}
                   onClick={syncNow}
                 >
                   Sync Now
