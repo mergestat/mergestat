@@ -151,7 +151,7 @@ COMMENT ON COLUMN public.github_pull_requests.created_at IS 'timestamp of when t
 COMMENT ON COLUMN public.github_pull_requests.created_via_email IS 'boolean to determine if the pull request was created via email';
 COMMENT ON COLUMN public.github_pull_requests.database_id IS 'GitHub database_id of the pull request';
 COMMENT ON COLUMN public.github_pull_requests.editor_login IS 'login of the editor of the pull request';
-COMMENT ON COLUMN public.github_pull_requests.head_ref_oid IS 'the head ref associated with the pull request';
+COMMENT ON COLUMN public.github_pull_requests.head_ref_oid IS 'the head ref object id associated with the pull request';
 COMMENT ON COLUMN public.github_pull_requests.head_ref_name IS 'the name of head ref associated with the pull request';
 COMMENT ON COLUMN public.github_pull_requests.head_repository_name IS 'the name of the head repo for the pull request';
 COMMENT ON COLUMN public.github_pull_requests.is_draft IS 'boolean to determine if the pull request is a draft';
