@@ -72,9 +72,7 @@ const AutoImportsDetail: NextPage = () => {
     {
       text: name,
       startIcon: (
-        <ColoredBox size='10'>
-          <RepoImage repoType='github' orgName={name} size="10" />
-        </ColoredBox>
+        <RepoImage repoType='github' orgName={name} size="8" />
       ),
     },
   ]
