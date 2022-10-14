@@ -21,7 +21,7 @@ const logoutLink = (router: NextRouter) => onError(({ graphQLErrors }) => {
         router.push({ pathname: '/login', query: { lostSession: true } })
       } else {
         const message = err.message.includes('duplicate key value violates unique constraint')
-        if (!message) showErrorAlert(err.message)
+        if (!message && !err.path?.includes('execSQL')) showErrorAlert(err.message)
         return
       }
     }

@@ -1,7 +1,7 @@
 import { Button, Panel } from '@mergestat/blocks'
+import Link from 'next/link'
 import { SyncLogsType, SyncTypeInfo } from 'src/@types'
 import { LogsTable } from './logs-table'
-import Link from 'next/link'
 
 interface RepoDataLogsProps {
   syncData?: SyncTypeInfo

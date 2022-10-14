@@ -10187,3 +10187,10 @@ export type GetLogsOfSyncQueryVariables = Exact<{
 
 
 export type GetLogsOfSyncQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string, description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+
+export type ExecuteSqlQueryVariables = Exact<{
+  sql: Scalars['String'];
+}>;
+
+
+export type ExecuteSqlQuery = { execSQL?: any | null };
