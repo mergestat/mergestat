@@ -1,4 +1,4 @@
-import { Button, Panel } from '@mergestat/blocks'
+import { Panel } from '@mergestat/blocks'
 import Link from 'next/link'
 import { SyncLogsType, SyncTypeInfo } from 'src/@types'
 import { LogsTable } from './logs-table'

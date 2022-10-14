@@ -30,10 +30,11 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery }: 
       window.addEventListener('mouseup', handleStopResize, false)
     }
 
-    resizerElement?.current?.addEventListener('mousedown', initResize, false)
+    const current = resizerElement?.current
+    current?.addEventListener('mousedown', initResize, false)
 
     return () => {
-      resizerElement?.current?.removeEventListener('mousedown', initResize, false)
+      current?.removeEventListener('mousedown', initResize, false)
       window.removeEventListener('mousemove', handleResize)
       window.removeEventListener('mouseup', handleStopResize)
     }
