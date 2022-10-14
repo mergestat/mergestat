@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import { BreadcrumbNav, Button, Checkbox, ColoredBox, Panel, Toolbar } from '@mergestat/blocks'
+import { BreadcrumbNav, Button, Checkbox, Panel, Toolbar } from '@mergestat/blocks'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
