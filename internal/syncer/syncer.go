@@ -36,7 +36,7 @@ const (
 
 	syncTypeTrivyRepoScan = "TRIVY_REPO_SCAN"
 	syncTypeSyftRepoScan  = "SYFT_REPO_SCAN"
-	syncTypeGithubActions = "GITHUB_ACTIONS"
+	syncTypeGitHubActions = "GITHUB_ACTIONS"
 )
 
 type worker struct {
@@ -175,7 +175,7 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 		return w.handleTrivyRepoScan(ctx, j)
 	case syncTypeSyftRepoScan:
 		return w.handleSyftRepoScan(ctx, j)
-	case syncTypeGithubActions:
+	case syncTypeGitHubActions:
 		return w.handleGithubActions(ctx, j)
 	default:
 		return fmt.Errorf("unknown sync type: %s for job ID: %d", j.SyncType, j.ID)

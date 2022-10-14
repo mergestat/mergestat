@@ -21,7 +21,6 @@ func (w *worker) handleGithubActions(ctx context.Context, j *db.DequeueSyncJobRo
 
 	var ghToken string
 	ghToken, err := w.fetchGitHubTokenFromDB(ctx)
-
 	if err != nil {
 		return err
 	}

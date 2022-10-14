@@ -2,9 +2,10 @@ package warehouse
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -65,6 +66,9 @@ func (w *warehouse) restRatelimitHandler(ctx context.Context, resp *github.Respo
 	}
 
 }
+
+// getRepoOwnerAndRepoName extracts the owner and repo name from the github repo url
+// and return the owner and repo respectively
 func (w *warehouse) getRepoOwnerAndRepoName(repoUrl string) (string, string, error) {
 	var sr string
 	var s []string
@@ -88,17 +92,48 @@ func (w *warehouse) getRepoOwnerAndRepoName(repoUrl string) (string, string, err
 	return s[0], s[1], nil
 }
 
-func (w *warehouse) parseJobLogs(logsUrl *url.URL, filepath string) (string, error) {
+func (w *warehouse) parseJobLogs(logsUrl *url.URL, filepathDir string, n int) (string, error) {
+
 	var bytes []byte
+	var filepath = filepathDir + "mergestat-workflow-log-" + fmt.Sprintf("%d", n)
 	_, err := grab.Get(filepath, logsUrl.String())
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
 
-	if bytes, err = ioutil.ReadFile(filepath); err != nil {
-		log.Fatal("Failed to read file: " + filepath)
+	if bytes, err = ioutil.ReadFile(filepathDir); err != nil {
+		return "", fmt.Errorf("failed to read file: %s", filepath)
 	}
 
 	return string(bytes), nil
+}
+
+func (w *warehouse) createTempDirForGitClone() (string, func(), error) {
+	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_WORKFLOW_LOGS_PATH"), "")
+
+	if err != nil {
+		return "", nil, fmt.Errorf("temp dir: %w", err)
+	}
+
+	return tmpPath, func() {
+		if err := os.RemoveAll(tmpPath); err != nil {
+			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
+		}
+	}, nil
+}
+
+func (w *warehouse) getPaginationOpt() (int, error) {
+	var paginationEnv string
+
+	if paginationEnv := os.Getenv("GIT_WORKFLOW_PAGINATION"); paginationEnv == "" {
+		return 30, nil
+	}
+
+	paginationOpt, err := strconv.Atoi(paginationEnv)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return paginationOpt, nil
 }

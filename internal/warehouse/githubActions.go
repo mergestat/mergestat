@@ -6,8 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"os"
-	"strconv"
 
 	"github.com/google/go-github/v47/github"
 	"github.com/google/uuid"
@@ -36,7 +34,7 @@ func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 
 	w.restRatelimitHandler(ctx, resp)
 
-	w.logger.Info().Msgf("getting all github actions from repo %s", repoName)
+	w.logger.Info().Msgf("starting to retrieve all github actions from repo %s", repoName)
 
 	if err = w.handleWorkflows(ctx, owner, repoName, j.RepoID); err != nil {
 		return err
@@ -50,8 +48,13 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 	var err error
 	var resp *github.Response
 	var workflowsPage *github.Workflows
+	pagination, err := w.getPaginationOpt()
+
+	if err != nil {
+		return err
+	}
 	opt := &github.ListWorkflowRunsOptions{
-		ListOptions: github.ListOptions{PerPage: 30},
+		ListOptions: github.ListOptions{PerPage: pagination},
 	}
 
 	// we get a page of 30 workflows until next page is 0
@@ -87,8 +90,13 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	var err error
 	var resp *github.Response
 	var workflowRunsPage *github.WorkflowRuns
+	pagination, err := w.getPaginationOpt()
+
+	if err != nil {
+		return err
+	}
 	opt := &github.ListWorkflowRunsOptions{
-		ListOptions: github.ListOptions{PerPage: 30},
+		ListOptions: github.ListOptions{PerPage: pagination},
 	}
 
 	for _, workflow := range workflowsPage {
@@ -132,9 +140,12 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	var err error
 	var resp *github.Response
 	var workflowRunJobsPage *github.Jobs
-
+	pagination, err := w.getPaginationOpt()
+	if err != nil {
+		return err
+	}
 	opt := &github.ListWorkflowJobsOptions{
-		ListOptions: github.ListOptions{PerPage: 30},
+		ListOptions: github.ListOptions{PerPage: pagination},
 	}
 
 	for _, workflowRun := range workflowRunsPage {
@@ -173,6 +184,15 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	var resp *github.Response
 	var log string
 	var workflowJobLog *url.URL
+	// we create a  tmp dir to store all downloaded files into it
+	filepath, cleanup, err := w.createTempDirForGitClone()
+
+	if err != nil {
+		return err
+	}
+
+	// we this fn finish we clean all in that tmp dir
+	defer cleanup()
 
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
@@ -182,15 +202,10 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 		}
 
 		if len(workflowJobLog.String()) > 0 {
-			log, err = w.parseJobLogs(workflowJobLog, strconv.Itoa(int(*workflowJob.ID)))
+			log, err = w.parseJobLogs(workflowJobLog, filepath, i)
 			if err != nil {
 				return err
 			}
-		}
-
-		if err := os.RemoveAll(strconv.Itoa(i)); err != nil {
-			w.logger.Err(err)
-			return err
 		}
 
 		w.restRatelimitHandler(ctx, resp)
