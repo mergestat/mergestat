@@ -95,13 +95,14 @@ func (w *warehouse) getRepoOwnerAndRepoName(repoUrl string) (string, string, err
 func (w *warehouse) parseJobLogs(logsUrl *url.URL, filepathDir string, n int) (string, error) {
 
 	var bytes []byte
-	var filepath = filepathDir + "mergestat-workflow-log-" + fmt.Sprintf("%d", n)
+	var filepath = filepathDir + "-mergestat-workflow-log-" + fmt.Sprintf("%d", n)
+
 	_, err := grab.Get(filepath, logsUrl.String())
 	if err != nil {
 		return "", err
 	}
 
-	if bytes, err = ioutil.ReadFile(filepathDir); err != nil {
+	if bytes, err = ioutil.ReadFile(filepath); err != nil {
 		return "", fmt.Errorf("failed to read file: %s", filepath)
 	}
 
