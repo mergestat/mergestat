@@ -20,7 +20,9 @@ export const RepoDataLogs = ({ syncData, logs }: RepoDataLogsProps) => {
             {syncData?.brief}
           </p>
           <Link href='https://docs.mergestat.com/'>
-            <Button skin='borderless' label='Learn more' />
+            <a target='_blank' href='https://docs.mergestat.com/' rel='noopener noreferrer' className="t-button t-button-borderless">
+              Learn more
+            </a>
           </Link>
         </Panel.Body>
       </Panel>
