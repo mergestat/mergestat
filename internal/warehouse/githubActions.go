@@ -56,7 +56,7 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 	opt := &github.ListWorkflowRunsOptions{
 		ListOptions: github.ListOptions{PerPage: pagination},
 	}
-
+	w.logger.Info().Msgf("getting workflows for repo %s", repo)
 	// we get a page of 30 workflows until next page is 0
 	for {
 
@@ -100,7 +100,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	}
 
 	for _, workflow := range workflowsPage {
-		w.logger.Info().Msgf("getting workflow runs and workflow jobs for workflow %s", *workflow.Name)
+		w.logger.Info().Msgf("getting workflow runs for workflow %s", *workflow.Name)
 		// we get a page of 30 workflow runs until next page is 0
 		for {
 
@@ -150,6 +150,8 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 
 	for _, workflowRun := range workflowRunsPage {
 
+		w.logger.Info().Msgf("getting workflow jobs for workflow run %s", *workflowRun.Name)
+
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
 			if workflowRunJobsPage, resp, err = w.githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, *workflowRun.ID, opt); err != nil {
@@ -196,6 +198,8 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
+
+		w.logger.Info().Msgf("getting workflow log for workflow job %s", *workflowJob.Name)
 
 		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil {
 			return err
