@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/mergestat/fuse/internal/db"
+	"github.com/mergestat/mergestat/internal/db"
 )
 
 const selectSingleGitHubRepo = `SELECT github_repo(?) AS repo`

@@ -53,7 +53,7 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
     const jwt = await new jose.SignJWT({ role: user })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setIssuer('mergestat:fuse')
+      .setIssuer('mergestat:mergestat')
       .setAudience('postgraphile')
       .setExpirationTime('5h')
       .sign(new TextEncoder().encode(JWT_SECRET))

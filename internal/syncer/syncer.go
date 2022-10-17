@@ -15,9 +15,9 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/mergestat/fuse/internal/db"
 	"github.com/mergestat/gitutils/clone"
 	_ "github.com/mergestat/mergestat-lite/pkg/sqlite"
+	"github.com/mergestat/mergestat/internal/db"
 	"github.com/rs/zerolog"
 )
 

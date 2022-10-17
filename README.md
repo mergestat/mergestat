@@ -48,5 +48,5 @@ docker-compose down
 ```
 
 ```
-docker volume rm fuse_db_data
+docker volume rm mergestat_db_data
 ```

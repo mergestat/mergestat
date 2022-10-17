@@ -2,7 +2,7 @@
 INSERT INTO public.repos (repo, is_github)
 VALUES
 ('https://github.com/mergestat/mergestat-lite', TRUE)
---,('https://github.com/mergestat/fuse', TRUE)
+--,('https://github.com/mergestat/mergestat', TRUE)
 --,('https://github.com/angular/angular', TRUE)
 ON CONFLICT DO NOTHING;
 

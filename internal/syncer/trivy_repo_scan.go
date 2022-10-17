@@ -7,7 +7,7 @@ import (
 	"os/exec"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/mergestat/fuse/internal/db"
+	"github.com/mergestat/mergestat/internal/db"
 )
 
 // handleTrivyRepoScan executes `trivy repo {git-repo} -f json` for a repo

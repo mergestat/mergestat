@@ -1,4 +1,4 @@
-module github.com/mergestat/fuse
+module github.com/mergestat/mergestat
 
 go 1.18
 
