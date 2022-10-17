@@ -217,7 +217,6 @@ func (w *worker) createTempDirForGitClone(job *db.DequeueSyncJobRow) (string, fu
 	if err != nil {
 		return "", nil, fmt.Errorf("temp dir: %w", err)
 	}
-	tmpPath = "." + tmpPath
 
 	return tmpPath, func() {
 		if err := os.RemoveAll(tmpPath); err != nil {
@@ -229,15 +228,7 @@ func (w *worker) createTempDirForGitClone(job *db.DequeueSyncJobRow) (string, fu
 // cloneRepo is a helper function for cloning a repository to a path on disk
 func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare bool, job *db.DequeueSyncJobRow) error {
 	logger := w.logger.With().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "").Logger()
-
-	//var creds *libgit2.Credential
-	//var err error
-
 	var err error
-	/*if creds, err = libgit2.NewCredentialUserpassPlaintext(ghToken, ""); err != nil {
-		return err
-	}
-	defer creds.Free()*/
 
 	logger.Info().Msgf("starting git repostory clone: %s ,tempPath=%s", url, path)
 
@@ -252,32 +243,6 @@ func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare 
 	if err = clone.Exec(context.Background(), url, path, clone.WithBare(bare)); err != nil {
 		return err
 	}
-	/*var credentialsCallback libgit2.CredentialsCallback
-	// only create a credentials callback if a token is provided
-	// an empty string in the credentials seems to trigger a panic in libgit2
-	// https://github.com/libgit2/git2go/issues/928
-	if ghToken != "" {
-		credentialsCallback = func(url string, username_from_url string, allowed_types libgit2.CredentialType) (*libgit2.Credential, error) {
-			return creds, nil
-		}
-	}
-
-	/*var repo *libgit2.Repository
-	if repo, err = libgit2.Clone(url, path, &libgit2.CloneOptions{
-		Bare: bare,
-		FetchOptions: libgit2.FetchOptions{
-			RemoteCallbacks: libgit2.RemoteCallbacks{
-				CredentialsCallback: credentialsCallback,
-			},
-		},
-		CheckoutOptions: libgit2.CheckoutOptions{
-			Strategy: libgit2.CheckoutForce,
-		},
-	}); err != nil {
-		return nil, err
-	}*/
-
-	logger.Info().Msgf("finished git repostory clone: %s ,tempPath= %s", url, path)
 
 	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
