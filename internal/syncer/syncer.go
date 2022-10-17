@@ -229,7 +229,7 @@ func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare 
 	logger := w.logger.With().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "").Logger()
 	var err error
 
-	logger.Info().Msgf("starting git repostory clone: %s", url)
+	logger.Info().Msgf("starting git repository clone: %s", url)
 
 	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
