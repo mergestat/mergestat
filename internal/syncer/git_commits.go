@@ -53,12 +53,10 @@ func (w *worker) collectCommits(ctx context.Context, repoPath string) ([]*commit
 	var repo *libgit2.Repository
 	commits := make([]*commit, 0)
 
-	w.logger.Info().Msgf("starting to open repo in %s", repoPath)
 	if repo, err = libgit2.OpenRepository(repoPath); err != nil {
 		return nil, err
 	}
 
-	w.logger.Info().Msgf("finishing to open repo in %s", repoPath)
 	defer repo.Free()
 
 	walk, err := repo.Walk()

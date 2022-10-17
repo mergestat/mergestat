@@ -69,11 +69,9 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return err
 	}
 
-	//var repo *libgit2.Repository
 	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
-	//defer repo.Free()
 
 	files := make([]*file, 0)
 	if err = w.mergestat.SelectContext(ctx, &files, selectFiles, tmpPath, tmpPath); err != nil {

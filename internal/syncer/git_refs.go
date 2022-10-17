@@ -92,11 +92,9 @@ func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) err
 		return err
 	}
 
-	//var repo *libgit2.Repository
 	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
-	//defer repo.Free()
 
 	refs := make([]*ref, 0)
 	if err = w.mergestat.SelectContext(ctx, &refs, selectRefs, tmpPath); err != nil {

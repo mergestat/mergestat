@@ -31,11 +31,9 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 		return err
 	}
 
-	//var repo *libgit2.Repository
 	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, false, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
-	//defer repo.Free()
 
 	cmd := exec.CommandContext(ctx, "syft", ".", "-o", "json")
 	cmd.Dir = tmpPath

@@ -140,7 +140,6 @@ func (w *worker) exec(ctx context.Context, id string) {
 
 // handle maps jobs to the right handler (see handlers.go)
 func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
-
 	w.loggerForJob(j).Info().Msg("handling job")
 
 	done := w.startKeepAlives(j, 30*time.Second)
@@ -230,7 +229,7 @@ func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare 
 	logger := w.logger.With().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "").Logger()
 	var err error
 
-	logger.Info().Msgf("starting git repostory clone: %s ,tempPath=%s", url, path)
+	logger.Info().Msgf("starting git repostory clone: %s", url)
 
 	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
@@ -239,10 +238,12 @@ func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare 
 	}}); err != nil {
 		return err
 	}
-	w.logger.Info().Msgf("repourl %s path %s", url, path)
+
 	if err = clone.Exec(context.Background(), url, path, clone.WithBare(bare)); err != nil {
 		return err
 	}
+
+	logger.Info().Msgf("finished git repository clone: %s", url)
 
 	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
