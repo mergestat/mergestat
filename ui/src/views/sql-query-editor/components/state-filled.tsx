@@ -1,5 +1,8 @@
 import { Alert, Badge, Button, Input, Label, Select, Toolbar } from '@mergestat/blocks'
 import { ChevronLeftIcon, ChevronRightIcon, CircleCheckFilledIcon, ClipboardIcon, DownloadIcon, SearchIcon } from '@mergestat/icons'
+import { useEffect, useState } from 'react'
+import { copy, paginate } from 'src/utils'
+import { EXPORT_FORMAT } from 'src/utils/constants'
 
 type QueryEditorFilledProps = {
   rowLimit: number
@@ -13,6 +16,11 @@ interface RecordData {
 }
 
 const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, data }: QueryEditorFilledProps) => {
+  const [result, setResult] = useState<Array<unknown>>(data)
+  const [rows, setRows] = useState<number>(20)
+  const [page, setPage] = useState<number>(0)
+  const [exportFormat, setExportFormat] = useState<string>(EXPORT_FORMAT.JSON)
+
   const getData = (value: string | number | boolean) => {
     if (value) {
       if (typeof value === 'boolean') {
@@ -23,6 +31,41 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
     }
     return value
   }
+
+  const getMax = () => {
+    const max = (page + 1) * rows
+    return max > data.length ? data.length : max
+  }
+
+  const getText = () => {
+    let text
+    if (exportFormat === EXPORT_FORMAT.JSON) {
+      text = JSON.stringify(data)
+    } else {
+      text = [
+        Object.keys(result[0] as RecordData).join(','),
+        ...data.map(d => Object.values(d as RecordData).map(getData).join(','))
+      ].join('\n')
+    }
+    return text
+  }
+
+  const copyToClipboard = () => {
+    copy(getText())
+  }
+
+  const exportData = () => {
+    const jsonString = `data:text/${exportFormat.toLowerCase()};chatset=utf-8,${encodeURIComponent(getText())}`
+    const link = document.createElement('a')
+    link.href = jsonString
+    link.download = `data.${exportFormat.toLowerCase()}`
+    link.click()
+  }
+
+  useEffect(() => {
+    setResult(paginate(data, rows, page))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows, page])
 
   return (
     <>
@@ -65,7 +108,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
           <table className='t-table-default t-table-sticky-header t-table-nowrap t-table-bordered t-table-dense'>
             <thead>
               <tr className='bg-white'>
-                {Object.keys(data[0] as RecordData).map((key, index) => (
+                {result.length > 0 && Object.keys(result[0] as RecordData).map((key, index) => (
                   <th key={`th-record-${index}`} scope='col' className='whitespace-nowrap pr-6 pl-8'>
                     <span className='mr-1'>{key}</span>
                   </th>
@@ -74,7 +117,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             </thead>
 
             <tbody className='bg-white'>
-              {data.map((record, indexRecord) => (
+              {result.map((record, indexRecord) => (
                 <tr key={`tr-record-${indexRecord}`}>
                   {Object.values(record as RecordData).map((value, index) => (
                     <td key={`td-record-${index}`} className='w-0 pl-8 max-w-xs truncate'>
@@ -96,13 +139,12 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
               <Label className='mr-2' htmlFor='format'>
                 Format
               </Label>
-              <Select
-                id='format'
-                className="w-24"
-                defaultValue='JSON'
+              <Select id='format' className="w-24"
+                defaultValue={EXPORT_FORMAT.JSON}
+                onChange={e => setExportFormat(e.target.value)}
               >
-                <option value='JSON'>JSON</option>
-                <option value='CSV'>CSV</option>
+                <option value={EXPORT_FORMAT.JSON}>{EXPORT_FORMAT.JSON}</option>
+                <option value={EXPORT_FORMAT.CSV}>{EXPORT_FORMAT.CSV}</option>
               </Select>
             </div>
             <Button
@@ -111,6 +153,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
               startIcon={
                 <ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />
               }
+              onClick={copyToClipboard}
             >
               Copy
             </Button>
@@ -119,6 +162,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
               startIcon={
                 <DownloadIcon className='t-icon t-icon-heroicons-download' />
               }
+              onClick={exportData}
             >
               Download
             </Button>
@@ -129,11 +173,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                 <Label className='mr-2 whitespace-nowrap' htmlFor='rowsPerPage'>
                   Rows per page
                 </Label>
-                <Select
-                  id='rowsPerPage'
-                  className="w-20"
-                  defaultValue='20'
-                >
+                <Select id='rowsPerPage' className="w-20" defaultValue='20' onChange={e => setRows(+e.target.value)}>
                   <option value='10'>10</option>
                   <option value='20'>20</option>
                   <option value='50'>50</option>
@@ -143,18 +183,23 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             </Toolbar.Item>
             <Toolbar.Item className='pl-4'>
               <div className='flex items-center space-x-2'>
-                <p className='text-semantic-mutedText whitespace-nowrap text-sm'>1-50 of 1000</p>
+                <p className='text-semantic-mutedText whitespace-nowrap text-sm'>
+                  {`${(page * rows) + 1}-${getMax()} of ${data.length}`}
+                </p>
                 <Button
                   isIconOnly
-                  disabled
+                  disabled={page === 0}
                   skin='borderless'
                   className='border-0'
                   startIcon={<ChevronLeftIcon className='t-icon' />}
+                  onClick={() => setPage(page - 1)}
                 />
                 <Button
                   isIconOnly
+                  disabled={getMax() >= data.length}
                   skin='borderless'
                   startIcon={<ChevronRightIcon className='t-icon' />}
+                  onClick={() => setPage(page + 1)}
                 />
               </div>
             </Toolbar.Item>

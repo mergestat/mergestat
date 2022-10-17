@@ -71,3 +71,8 @@ export enum States {
   Filled = 'Filled',
   Error = 'Error'
 }
+
+export enum EXPORT_FORMAT {
+  JSON = 'JSON',
+  CSV = 'CSV',
+}

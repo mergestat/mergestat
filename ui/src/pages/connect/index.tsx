@@ -7,15 +7,10 @@ import { Fragment } from 'react'
 import { GetDatabaseConnectionQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_DB_CONNECTION } from 'src/api-logic/graphql/queries/auth'
 import Loading from 'src/components/Loading'
-import { showSuccessAlert } from 'src/utils/alerts'
+import { copy } from 'src/utils'
 
 const Connect: NextPage = () => {
   const { loading, data } = useQuery<GetDatabaseConnectionQuery>(GET_DB_CONNECTION, { fetchPolicy: 'no-cache' })
-
-  const copy = (text: string | null | undefined) => {
-    navigator.clipboard.writeText(text || '')
-    showSuccessAlert('Copied')
-  }
 
   return (
     <Fragment>

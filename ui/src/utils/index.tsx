@@ -2,6 +2,7 @@ import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncStateT } from 'src/@types'
 import { RepoSyncQueue } from 'src/api-logic/graphql/generated/schema'
+import { showSuccessAlert } from './alerts'
 import { SYNC_STATUS } from './constants'
 
 export function checkRepoValidate(repo: string, checkDomain = true) {
@@ -117,4 +118,24 @@ export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
 export const getStatus = (syncQueue: RepoSyncQueue): RepoSyncStateT => {
   const status = syncQueue?.hasError ? 'ERROR' : syncQueue?.status
   return mapToRepoSyncStateT(status)
+}
+
+/**
+ * Method to paginate a given array
+ * @param array list to evaluate
+ * @param pageSize result size
+ * @param pageNumber index to start from
+ * @returns a new paginated array
+ */
+export const paginate = (array: Array<unknown>, pageSize: number, pageNumber: number) => {
+  return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize)
+}
+
+/**
+ * Method to copy to clipboard
+ * @param text Text to copy
+ */
+export const copy = (text: string | null | undefined) => {
+  navigator.clipboard.writeText(text || '')
+  showSuccessAlert('Copied')
 }
