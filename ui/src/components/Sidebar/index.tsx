@@ -11,18 +11,18 @@ const SidebarView: React.FC = () => {
 
   return (
     <Sidebar>
-      <Link href="/queries" passHref>
-        <Sidebar.Item
-          label="Queries"
-          active={isSidebarActive('queries')}
-          icon={<TerminalIcon className='t-icon' />}
-        />
-      </Link>
       <Link href="/repos" passHref>
         <Sidebar.Item
           label="Repos"
           active={isSidebarActive('repos')}
           icon={<RepositoryIcon className='t-icon' />}
+        />
+      </Link>
+      <Link href="/queries" passHref>
+        <Sidebar.Item
+          label="Queries"
+          active={isSidebarActive('queries')}
+          icon={<TerminalIcon className='t-icon' />}
         />
       </Link>
       <Link href="/connect" passHref>

@@ -13,6 +13,17 @@ interface RecordData {
 }
 
 const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, data }: QueryEditorFilledProps) => {
+  const getData = (value: string | number | boolean) => {
+    if (value) {
+      if (typeof value === 'boolean') {
+        return value.toString()
+      } else if (value.constructor === ({}).constructor || value.constructor === ([]).constructor) {
+        return JSON.stringify(value)
+      }
+    }
+    return value
+  }
+
   return (
     <>
       {/* Head section */}
@@ -67,7 +78,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                 <tr key={`tr-record-${indexRecord}`}>
                   {Object.values(record as RecordData).map((value, index) => (
                     <td key={`td-record-${index}`} className='w-0 pl-8 max-w-xs truncate'>
-                      {typeof value === 'boolean' ? value.toString() : value}
+                      {getData(value)}
                     </td>
                   ))}
                 </tr>
