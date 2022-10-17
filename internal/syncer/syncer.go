@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -239,6 +240,9 @@ func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare 
 		return err
 	}
 
+	// we add ghtoken to current repo url for private repos access
+	url = w.addGithubTokenToUrl(url, ghToken)
+
 	if err = clone.Exec(context.Background(), url, path, clone.WithBare(bare)); err != nil {
 		return err
 	}
@@ -254,4 +258,11 @@ func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare 
 	}
 
 	return nil
+}
+
+// addGithubTokenUrl is a helper fn to insert current ghtoken into a repo url
+// to been able to access private repositories
+func (w *worker) addGithubTokenToUrl(url, ghToken string) string {
+	s := "https://" + ghToken + "@"
+	return strings.Replace(url, "https://", s, -1)
 }
