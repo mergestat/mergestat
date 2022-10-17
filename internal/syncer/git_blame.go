@@ -15,7 +15,6 @@ import (
 
 	"github.com/go-enry/go-enry/v2"
 	"github.com/jackc/pgx/v4"
-	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/fuse/internal/db"
 	"github.com/mergestat/gitutils/blame"
 	"github.com/mergestat/gitutils/lstree"
@@ -78,11 +77,9 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return err
 	}
 
-	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, false, j); err != nil {
+	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, false, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
-	defer repo.Free()
 
 	blamedLines := make([]*blameLine, 0)
 

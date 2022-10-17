@@ -9,7 +9,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/jackc/pgx/v4"
-	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/fuse/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
@@ -70,11 +69,9 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return err
 	}
 
-	var repo *libgit2.Repository
-	if repo, err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
+	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
-	defer repo.Free()
 
 	files := make([]*file, 0)
 	if err = w.mergestat.SelectContext(ctx, &files, selectFiles, tmpPath, tmpPath); err != nil {

@@ -5,6 +5,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/url"
+
 	"os"
 	"sync"
 	"time"
@@ -12,20 +14,19 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jmoiron/sqlx"
-	libgit2 "github.com/libgit2/git2go/v33"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mergestat/fuse/internal/db"
+	"github.com/mergestat/gitutils/clone"
 	_ "github.com/mergestat/mergestat-lite/pkg/sqlite"
 	"github.com/rs/zerolog"
 )
 
 const (
-	syncTypeGitCommits     = "GIT_COMMITS"
-	syncTypeGitCommitStats = "GIT_COMMIT_STATS"
-	syncTypeGitRefs        = "GIT_REFS"
-	syncTypeGitFiles       = "GIT_FILES"
-	syncTypeGitBlame       = "GIT_BLAME"
-
+	syncTypeGitCommits         = "GIT_COMMITS"
+	syncTypeGitCommitStats     = "GIT_COMMIT_STATS"
+	syncTypeGitRefs            = "GIT_REFS"
+	syncTypeGitFiles           = "GIT_FILES"
+	syncTypeGitBlame           = "GIT_BLAME"
 	syncTypeGitHubRepoMetadata = "GITHUB_REPO_METADATA"
 	syncTypeGitHubRepoPRs      = "GITHUB_REPO_PRS"
 	syncTypeGitHubRepoIssues   = "GITHUB_REPO_ISSUES"
@@ -226,60 +227,51 @@ func (w *worker) createTempDirForGitClone(job *db.DequeueSyncJobRow) (string, fu
 }
 
 // cloneRepo is a helper function for cloning a repository to a path on disk
-func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare bool, job *db.DequeueSyncJobRow) (*libgit2.Repository, error) {
+func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare bool, job *db.DequeueSyncJobRow) error {
 	logger := w.logger.With().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "").Logger()
-
-	var creds *libgit2.Credential
 	var err error
-	if creds, err = libgit2.NewCredentialUserpassPlaintext(ghToken, ""); err != nil {
-		return nil, err
-	}
-	defer creds.Free()
 
 	logger.Info().Msgf("starting git repository clone: %s", url)
 
-	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
 		RepoSyncQueueID: job.ID,
 		Message:         "starting git clone: " + url,
 	}}); err != nil {
-		return nil, err
+		return err
 	}
 
-	var credentialsCallback libgit2.CredentialsCallback
-	// only create a credentials callback if a token is provided
-	// an empty string in the credentials seems to trigger a panic in libgit2
-	// https://github.com/libgit2/git2go/issues/928
-	if ghToken != "" {
-		credentialsCallback = func(url string, username_from_url string, allowed_types libgit2.CredentialType) (*libgit2.Credential, error) {
-			return creds, nil
-		}
+	// we add ghtoken to current repo url for private repos access
+	parsedUrl, err := w.addGithubTokenToUrl(url, ghToken)
+	if err != nil {
+		return err
 	}
 
-	var repo *libgit2.Repository
-	if repo, err = libgit2.Clone(url, path, &libgit2.CloneOptions{
-		Bare: bare,
-		FetchOptions: libgit2.FetchOptions{
-			RemoteCallbacks: libgit2.RemoteCallbacks{
-				CredentialsCallback: credentialsCallback,
-			},
-		},
-		CheckoutOptions: libgit2.CheckoutOptions{
-			Strategy: libgit2.CheckoutForce,
-		},
-	}); err != nil {
-		return nil, err
+	if err = clone.Exec(context.Background(), parsedUrl, path, clone.WithBare(bare)); err != nil {
+		return err
 	}
 
 	logger.Info().Msgf("finished git repository clone: %s", url)
 
-	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
+	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
 		RepoSyncQueueID: job.ID,
 		Message:         "finished git clone successfully: " + url,
 	}}); err != nil {
-		return nil, err
+		return err
 	}
 
-	return repo, nil
+	return nil
+}
+
+// addGithubTokenUrl is a helper fn to insert current ghtoken into a repo url
+// to been able to access private repositories
+func (w *worker) addGithubTokenToUrl(urlString, ghToken string) (string, error) {
+	parsedUrl, err := url.Parse(urlString)
+	if err != nil {
+		return "", err
+	}
+
+	parsedUrl.User = url.UserPassword(parsedUrl.Path, ghToken)
+	return parsedUrl.String(), nil
 }
