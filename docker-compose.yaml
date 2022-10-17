@@ -20,7 +20,7 @@ services:
     environment:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
       GITHUB_RATE_LIMIT: 1/2
-      FUSE_SECRET: password
+      ENCRYPTION_SECRET: password
     env_file:
       - .env-worker
     ports:
@@ -58,7 +58,7 @@ services:
       - "--jwt-secret=secret"
       - "--default-role=mergestat_anonymous"
     environment:
-      FUSE_SECRET: password
+      ENCRYPTION_SECRET: password
       DISPLAY_PG_HOSTNAME: localhost
       DISPLAY_PG_PORT: 5432
       DISPLAY_PG_DATABASE: postgres

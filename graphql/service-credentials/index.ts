@@ -1,8 +1,8 @@
 import { makeExtendSchemaPlugin, gql } from "graphile-utils"
 import { Client } from 'pg'
 
-// FUSE_SECRET is used to encrypt credentials before they go into the DB
-const { FUSE_SECRET } = process.env
+// ENCRYPTION_SECRET is used to encrypt credentials before they go into the DB
+const { ENCRYPTION_SECRET } = process.env
 
 // If these env vars are set (DISPLAY_PG_*) they will be accessible via the databaseConnection Query
 // They are meant to be set by an operator for display in the /connect page of the UI
@@ -39,7 +39,7 @@ module.exports = makeExtendSchemaPlugin({
           await context.pgClient.query("DELETE FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT'")
           
           // then do an insert using the add_service_auth_credential helper in the DB
-          await context.pgClient.query("SELECT mergestat.add_service_auth_credential('GITHUB_PAT', $1, $2)", [ args.pat, FUSE_SECRET ])
+          await context.pgClient.query("SELECT mergestat.add_service_auth_credential('GITHUB_PAT', $1, $2)", [ args.pat, ENCRYPTION_SECRET ])
 
           await context.pgClient.query('RELEASE SAVEPOINT replaceGitHubPAT;')
         } catch (e) {

@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphile_utils_1 = require("graphile-utils");
-// FUSE_SECRET is used to encrypt credentials before they go into the DB
-const { FUSE_SECRET } = process.env;
+// ENCRYPTION_SECRET is used to encrypt credentials before they go into the DB
+const { ENCRYPTION_SECRET } = process.env;
 // If these env vars are set (DISPLAY_PG_*) they will be accessible via the databaseConnection Query
 // They are meant to be set by an operator for display in the /connect page of the UI
 const { DISPLAY_PG_HOSTNAME, DISPLAY_PG_PORT, DISPLAY_PG_DATABASE, DISPLAY_PG_USER } = process.env;
@@ -41,7 +41,7 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                         // however the encryption adds a wrinkle to that
                         yield context.pgClient.query("DELETE FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT'");
                         // then do an insert using the add_service_auth_credential helper in the DB
-                        yield context.pgClient.query("SELECT mergestat.add_service_auth_credential('GITHUB_PAT', $1, $2)", [args.pat, FUSE_SECRET]);
+                        yield context.pgClient.query("SELECT mergestat.add_service_auth_credential('GITHUB_PAT', $1, $2)", [args.pat, ENCRYPTION_SECRET]);
                         yield context.pgClient.query('RELEASE SAVEPOINT replaceGitHubPAT;');
                     }
                     catch (e) {
