@@ -62,7 +62,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
   }
 
   const exportData = () => {
-    const jsonString = `data:text/${exportFormat.toLowerCase()};chatset=utf-8,${encodeURIComponent(getText())}`
+    const jsonString = `data:text/${exportFormat.toLowerCase()};charset=utf-8,${encodeURIComponent(getText())}`
     const link = document.createElement('a')
     link.href = jsonString
     link.download = `data.${exportFormat.toLowerCase()}`
