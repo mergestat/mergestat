@@ -2,6 +2,8 @@ package warehouse
 
 import (
 	"context"
+	"database/sql"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/url"
@@ -12,6 +14,7 @@ import (
 
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/google/go-github/v47/github"
+	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/mergestat/fuse/internal/db"
 	"github.com/rs/zerolog"
@@ -137,4 +140,77 @@ func (w *warehouse) getPaginationOpt() (int, error) {
 	}
 
 	return paginationOpt, nil
+}
+
+func (w *warehouse) interfaceToSqlJSONB(value interface{}) (pgtype.JSONB, error) {
+	var bytes []byte
+	var err error
+
+	if value == nil {
+		return pgtype.JSONB{
+			Bytes:  []byte(""),
+			Status: pgtype.Present,
+		}, nil
+	}
+
+	if bytes, err = json.Marshal(&value); err != nil {
+		return pgtype.JSONB{}, err
+	}
+
+	return pgtype.JSONB{
+		Bytes:  bytes,
+		Status: pgtype.Present,
+	}, nil
+
+}
+
+func (w *warehouse) stringToSqlnullString(v *string) sql.NullString {
+	sqlNullString := sql.NullString{}
+
+	if v == nil {
+		v = new(string)
+		sqlNullString.Valid = false
+	}
+
+	sqlNullString.String = *v
+
+	return sqlNullString
+}
+
+func (w *warehouse) dateToSqlNullTime(v *time.Time) sql.NullTime {
+	sqlNullTime := sql.NullTime{}
+
+	if v.IsZero() {
+		v = &time.Time{}
+		sqlNullTime.Valid = false
+	}
+
+	sqlNullTime.Time = *v
+	return sqlNullTime
+}
+
+func (w *warehouse) int32ToSqlNullInt32(v *int32) sql.NullInt32 {
+	sqlNullInt32 := sql.NullInt32{}
+
+	if v == nil {
+		v = new(int32)
+		sqlNullInt32.Valid = false
+	}
+
+	sqlNullInt32.Int32 = *v
+
+	return sqlNullInt32
+}
+
+func (w *warehouse) int64ToSqlNullInt64(v *int64) sql.NullInt64 {
+	sqlNullInt64 := sql.NullInt64{}
+
+	if v == nil {
+		v = new(int64)
+		sqlNullInt64.Valid = false
+	}
+
+	sqlNullInt64.Int64 = *v
+
+	return sqlNullInt64
 }

@@ -2,7 +2,6 @@ package warehouse
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/url"
@@ -131,6 +130,8 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 
 		opt.Page = 0
 
+		w.logger.Info().Msgf("finished getting all github actions from workflow %s", *workflow.Name)
+
 	}
 
 	return nil
@@ -144,13 +145,12 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	if err != nil {
 		return err
 	}
+
 	opt := &github.ListWorkflowJobsOptions{
 		ListOptions: github.ListOptions{PerPage: pagination},
 	}
 
 	for _, workflowRun := range workflowRunsPage {
-
-		w.logger.Info().Msgf("getting workflow jobs for workflow run %s", *workflowRun.Name)
 
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
@@ -193,21 +193,21 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 		return err
 	}
 
-	// we this fn finish we clean all in that tmp dir
+	// we this fn we clean all in that tmp dir
 	defer cleanup()
 
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
 
-		w.logger.Info().Msgf("getting workflow log for workflow job %s", *workflowJob.Name)
-
-		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil {
+		//TODO  (Ramiro Castillo) this resp error should be handled in a  retry logic pattern
+		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil && resp.Status != "500 Internal Server Error" {
 			return err
 		}
 
-		if len(workflowJobLog.String()) > 0 {
-			log, err = w.parseJobLogs(workflowJobLog, filepath, i)
-			if err != nil {
+		if workflowJobLog == nil {
+			log = ""
+		} else if len(workflowJobLog.String()) > 0 {
+			if log, err = w.parseJobLogs(workflowJobLog, filepath, i); err != nil {
 				return err
 			}
 		}
@@ -243,15 +243,15 @@ func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*gith
 		if err := w.db.WithTx(tx).UpsertWorkflowsInPublic(ctx, db.UpsertWorkflowsInPublicParams{
 			Repoid:         repoID,
 			ID:             *workflow.ID,
-			Workflownodeid: *workflow.NodeID,
-			Name:           *workflow.Name,
-			Path:           *workflow.Path,
-			State:          *workflow.State,
-			Createdat:      workflow.CreatedAt.Time,
-			Updatedat:      workflow.UpdatedAt.Time,
-			Url:            *workflow.URL,
-			Htmlurl:        *workflow.HTMLURL,
-			Badgeurl:       *workflow.BadgeURL,
+			Workflownodeid: w.stringToSqlnullString(workflow.NodeID),
+			Name:           w.stringToSqlnullString(workflow.Name),
+			Path:           w.stringToSqlnullString(workflow.Path),
+			State:          w.stringToSqlnullString(workflow.State),
+			Createdat:      w.dateToSqlNullTime(&workflow.CreatedAt.Time),
+			Updatedat:      w.dateToSqlNullTime(&workflow.UpdatedAt.Time),
+			Url:            w.stringToSqlnullString(workflow.URL),
+			Htmlurl:        w.stringToSqlnullString(workflow.HTMLURL),
+			Badgeurl:       w.stringToSqlnullString(workflow.BadgeURL),
 		}); err != nil {
 			return err
 		}
@@ -263,8 +263,8 @@ func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*gith
 func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPage []*github.WorkflowRun, repoID uuid.UUID) error {
 	var tx pgx.Tx
 	var err error
-	var pullRequestsBytes []byte
-	var headCommitBytes []byte
+	var jsonbPullRequest pgtype.JSONB
+	var jsonbHeadCommit pgtype.JSONB
 
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -280,50 +280,57 @@ func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPag
 
 	for _, workflowRun := range workflowRunPage {
 
-		if pullRequestsBytes, err = json.Marshal(&workflowRun.PullRequests); err != nil {
+		if workflowRun.Repository == nil {
+			workflowRun.Repository = &github.Repository{URL: new(string)}
+		}
+
+		if workflowRun.HeadRepository == nil {
+			workflowRun.HeadRepository = &github.Repository{URL: new(string)}
+		}
+
+		workflowRunRepositoryUrl := workflowRun.Repository.URL
+		workflowRunHeadRepoUrl := workflowRun.HeadRepository.URL
+		runNumber := int32(*workflowRun.RunNumber)
+		runAttemp := int32(*workflowRun.RunAttempt)
+
+		if jsonbPullRequest, err = w.interfaceToSqlJSONB(workflowRun.PullRequests); err != nil {
 			return err
 		}
 
-		if headCommitBytes, err = json.Marshal(&workflowRun.HeadCommit); err != nil {
+		if jsonbHeadCommit, err = w.interfaceToSqlJSONB(workflowRun.HeadCommit); err != nil {
 			return err
 		}
 
 		if err := w.db.WithTx(tx).UpserWorkflowRuns(ctx, db.UpserWorkflowRunsParams{
 			RepoID:            repoID,
 			ID:                *workflowRun.ID,
-			Workflowrunnodeid: *workflowRun.NodeID,
-			Name:              *workflowRun.Name,
-			Headbranch:        *workflowRun.HeadBranch,
-			Runnumber:         int32(*workflowRun.RunNumber),
-			Runattemp:         int32(*workflowRun.RunAttempt),
-			Event:             *workflowRun.Event,
-			Status:            *workflowRun.Status,
-			Conclusion:        *workflowRun.Conclusion,
+			Workflowrunnodeid: w.stringToSqlnullString(workflowRun.NodeID),
+			Name:              w.stringToSqlnullString(workflowRun.Name),
+			Headbranch:        w.stringToSqlnullString(workflowRun.HeadBranch),
+			Runnumber:         w.int32ToSqlNullInt32(&runNumber),
+			Runattemp:         w.int32ToSqlNullInt32(&runAttemp),
+			Event:             w.stringToSqlnullString(workflowRun.Event),
+			Status:            w.stringToSqlnullString(workflowRun.Status),
+			Conclusion:        w.stringToSqlnullString(workflowRun.Conclusion),
 			Workflowid:        *workflowRun.WorkflowID,
-			Checksuiteid:      *workflowRun.CheckSuiteID,
-			Checksuitenodeid:  *workflowRun.CheckSuiteNodeID,
-			Url:               *workflowRun.URL,
-			Htmlurl:           *workflowRun.HTMLURL,
-			Pullrequest: pgtype.JSONB{
-				Status: pgtype.Present,
-				Bytes:  pullRequestsBytes,
-			},
-			Createdat:     workflowRun.CreatedAt.Time,
-			Updatedat:     workflowRun.UpdatedAt.Time,
-			Runstartedat:  workflowRun.RunStartedAt.Time,
-			Jobsurl:       *workflowRun.JobsURL,
-			Logsurl:       *workflowRun.LogsURL,
-			Checksuiteurl: *workflowRun.CheckSuiteURL,
-			Artifactsurl:  *workflowRun.ArtifactsURL,
-			Cancelurl:     *workflowRun.CancelURL,
-			Rerunurl:      *workflowRun.RerunURL,
-			Headcommit: pgtype.JSONB{
-				Status: pgtype.Present,
-				Bytes:  headCommitBytes,
-			},
-			Workflowurl:       *workflowRun.WorkflowURL,
-			Repositoryurl:     *workflowRun.Repository.URL,
-			Headrepositoryurl: *workflowRun.HeadRepository.URL,
+			Checksuiteid:      w.int64ToSqlNullInt64(workflowRun.CheckSuiteID),
+			Checksuitenodeid:  w.stringToSqlnullString(workflowRun.CheckSuiteNodeID),
+			Url:               w.stringToSqlnullString(workflowRun.URL),
+			Htmlurl:           w.stringToSqlnullString(workflowRun.HTMLURL),
+			Pullrequest:       jsonbPullRequest,
+			Createdat:         w.dateToSqlNullTime(&workflowRun.CreatedAt.Time),
+			Updatedat:         w.dateToSqlNullTime(&workflowRun.UpdatedAt.Time),
+			Runstartedat:      w.dateToSqlNullTime(&workflowRun.RunStartedAt.Time),
+			Jobsurl:           w.stringToSqlnullString(workflowRun.JobsURL),
+			Logsurl:           w.stringToSqlnullString(workflowRun.LogsURL),
+			Checksuiteurl:     w.stringToSqlnullString(workflowRun.CheckSuiteURL),
+			Artifactsurl:      w.stringToSqlnullString(workflowRun.ArtifactsURL),
+			Cancelurl:         w.stringToSqlnullString(workflowRun.CancelURL),
+			Rerunurl:          w.stringToSqlnullString(workflowRun.RerunURL),
+			Headcommit:        jsonbHeadCommit,
+			Workflowurl:       w.stringToSqlnullString(workflowRun.WorkflowURL),
+			Repositoryurl:     w.stringToSqlnullString(workflowRunRepositoryUrl),
+			Headrepositoryurl: w.stringToSqlnullString(workflowRunHeadRepoUrl),
 		}); err != nil {
 			return err
 		}
@@ -337,8 +344,8 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 
 	var tx pgx.Tx
 	var err error
-	var stepsBytes []byte
-	var labelsBytes []byte
+	var jsonbSteps pgtype.JSONB
+	var jsonbLabels pgtype.JSONB
 
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -352,59 +359,36 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 		}
 	}()
 
-	if stepsBytes, err = json.Marshal(&workflowJob.Steps); err != nil {
+	if jsonbSteps, err = w.interfaceToSqlJSONB(&workflowJob.Steps); err != nil {
 		return err
 	}
 
-	if labelsBytes, err = json.Marshal(&workflowJob.Labels); err != nil {
+	if jsonbLabels, err = w.interfaceToSqlJSONB(&workflowJob.Labels); err != nil {
 		return err
-	}
-
-	if workflowJob.RunnerID == nil {
-		workflowJob.RunnerID = new(int64)
-
-	}
-
-	if workflowJob.RunnerName == nil {
-		workflowJob.RunnerName = new(string)
-	}
-
-	if workflowJob.RunnerGroupID == nil {
-		workflowJob.RunnerGroupID = new(int64)
-	}
-
-	if workflowJob.RunnerGroupName == nil {
-		workflowJob.RunnerGroupName = new(string)
 	}
 
 	if err := w.db.WithTx(tx).UpsertWorkflowRunJobs(ctx, db.UpsertWorkflowRunJobsParams{
-		Repoid:       repoID,
-		ID:           *workflowJob.ID,
-		Runid:        *workflowJob.RunID,
-		Log:          log,
-		Runurl:       *workflowJob.RunURL,
-		Jobnodeid:    *workflowJob.NodeID,
-		Headsha:      *workflowJob.HeadSHA,
-		Url:          *workflowJob.URL,
-		Htmlurl:      *workflowJob.HTMLURL,
-		Status:       *workflowJob.Status,
-		Conclusion:   *workflowJob.Conclusion,
-		Startedat:    workflowJob.StartedAt.Time,
-		Completedat:  workflowJob.CompletedAt.Time,
-		Workflowname: *workflowJob.Name,
-		Steps: pgtype.JSONB{
-			Status: pgtype.Present,
-			Bytes:  stepsBytes,
-		},
-		Checkrunurl: *workflowJob.CheckRunURL,
-		Labels: pgtype.JSONB{
-			Status: pgtype.Present,
-			Bytes:  labelsBytes,
-		},
-		Runnerid:        *workflowJob.RunnerID,
-		Runnername:      *workflowJob.RunnerName,
-		Runnergroupid:   *workflowJob.RunnerGroupID,
-		Runnergroupname: *workflowJob.RunnerGroupName,
+		Repoid:          repoID,
+		ID:              *workflowJob.ID,
+		Runid:           *workflowJob.RunID,
+		Log:             w.stringToSqlnullString(&log),
+		Runurl:          w.stringToSqlnullString(workflowJob.RunURL),
+		Jobnodeid:       w.stringToSqlnullString(workflowJob.NodeID),
+		Headsha:         w.stringToSqlnullString(workflowJob.HeadSHA),
+		Url:             w.stringToSqlnullString(workflowJob.URL),
+		Htmlurl:         w.stringToSqlnullString(workflowJob.HTMLURL),
+		Status:          w.stringToSqlnullString(workflowJob.Status),
+		Conclusion:      w.stringToSqlnullString(workflowJob.Conclusion),
+		Startedat:       w.dateToSqlNullTime(&workflowJob.StartedAt.Time),
+		Completedat:     w.dateToSqlNullTime(&workflowJob.CompletedAt.Time),
+		Workflowname:    w.stringToSqlnullString(workflowJob.Name),
+		Steps:           jsonbSteps,
+		Checkrunurl:     w.stringToSqlnullString(workflowJob.CheckRunURL),
+		Labels:          jsonbLabels,
+		Runnerid:        w.int64ToSqlNullInt64(workflowJob.RunnerID),
+		Runnername:      w.stringToSqlnullString(workflowJob.RunnerName),
+		Runnergroupid:   w.int64ToSqlNullInt64(workflowJob.RunnerGroupID),
+		Runnergroupname: w.stringToSqlnullString(workflowJob.RunnerGroupName),
 	}); err != nil {
 		return err
 	}

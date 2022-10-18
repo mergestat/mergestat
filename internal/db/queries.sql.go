@@ -494,34 +494,34 @@ WITH t AS(
 	head_repository_url)
 	VALUES(
  	$1::UUID,
-	$2::BIGINT,
-	$3::TEXT,
-    $4::TEXT,
-	$5::TEXT,
-	$6::INTEGER,
-	$7::INTEGER,
-	$8::text,
-	$9::text,
-	$10::text,
-	$11::BIGINT,
-	$12::BIGINT,
-	$13::TEXT,
-	$14::TEXT,
-	$15::TEXT,
+	$2,
+	$3,
+    $4,
+	$5,
+	$6,
+	$7,
+	$8,
+	$9,
+	$10,
+	$11,
+	$12,
+	$13,
+	$14,
+	$15,
 	$16::JSONB,
-	$17::TIMESTAMP,
-	$18::TIMESTAMP,
-	$19::TIMESTAMP,
-	$20::TEXT,
-	$21::TEXT,
-	$22::TEXT,
-	$23::TEXT,
-	$24::TEXT,
-	$25::TEXT,
+	$17,
+	$18,
+	$19,
+	$20,
+	$21,
+	$22,
+	$23,
+	$24,
+	$25,
 	$26::JSONB,
-	$27::TEXT,
-	$28::TEXT,
-	$29::TEXT)
+	$27,
+	$28,
+	$29)
 	ON CONFLICT (id)
     DO UPDATE
     SET repo_id=EXCLUDED.repo_id,
@@ -565,33 +565,33 @@ FROM t
 type UpserWorkflowRunsParams struct {
 	RepoID            uuid.UUID
 	ID                int64
-	Workflowrunnodeid string
-	Name              string
-	Headbranch        string
-	Runnumber         int32
-	Runattemp         int32
-	Event             string
-	Status            string
-	Conclusion        string
+	Workflowrunnodeid sql.NullString
+	Name              sql.NullString
+	Headbranch        sql.NullString
+	Runnumber         sql.NullInt32
+	Runattemp         sql.NullInt32
+	Event             sql.NullString
+	Status            sql.NullString
+	Conclusion        sql.NullString
 	Workflowid        int64
-	Checksuiteid      int64
-	Checksuitenodeid  string
-	Url               string
-	Htmlurl           string
+	Checksuiteid      sql.NullInt64
+	Checksuitenodeid  sql.NullString
+	Url               sql.NullString
+	Htmlurl           sql.NullString
 	Pullrequest       pgtype.JSONB
-	Createdat         time.Time
-	Updatedat         time.Time
-	Runstartedat      time.Time
-	Jobsurl           string
-	Logsurl           string
-	Checksuiteurl     string
-	Artifactsurl      string
-	Cancelurl         string
-	Rerunurl          string
+	Createdat         sql.NullTime
+	Updatedat         sql.NullTime
+	Runstartedat      sql.NullTime
+	Jobsurl           sql.NullString
+	Logsurl           sql.NullString
+	Checksuiteurl     sql.NullString
+	Artifactsurl      sql.NullString
+	Cancelurl         sql.NullString
+	Rerunurl          sql.NullString
 	Headcommit        pgtype.JSONB
-	Workflowurl       string
-	Repositoryurl     string
-	Headrepositoryurl string
+	Workflowurl       sql.NullString
+	Repositoryurl     sql.NullString
+	Headrepositoryurl sql.NullString
 }
 
 type UpserWorkflowRunsRow struct {
@@ -688,25 +688,25 @@ WITH t AS (
 	VALUES(
 		$1::uuid,
 		$2::BIGINT,
-		$3::BIGINT,
-		$4::TEXT,
-		$5::TEXT,
-		$6::TEXT,
-		$7::TEXT,
-		$8::TEXT,
-		$9::TEXT,
-		$10::TEXT,
-		$11::TEXT,
-		$12::TIMESTAMP,
-		$13::TIMESTAMP,
-		$14::TEXT,
+		$3,
+		$4,
+		$5,
+		$6,
+		$7,
+		$8,
+		$9,
+		$10,
+		$11,
+		$12,
+		$13,
+		$14,
 		$15::JSONB,
-		$16::TEXT,
+		$16,
 		$17::JSONB,
-		$18::BIGINT,
-		$19::TEXT,
-		$20::BIGINT,
-		$21::TEXT)
+		$18,
+		$19,
+		$20,
+		$21)
 		ON CONFLICT (id)
 		DO UPDATE 
 		SET repo_id=EXCLUDED.repo_id,
@@ -743,24 +743,24 @@ type UpsertWorkflowRunJobsParams struct {
 	Repoid          uuid.UUID
 	ID              int64
 	Runid           int64
-	Log             string
-	Runurl          string
-	Jobnodeid       string
-	Headsha         string
-	Url             string
-	Htmlurl         string
-	Status          string
-	Conclusion      string
-	Startedat       time.Time
-	Completedat     time.Time
-	Workflowname    string
+	Log             sql.NullString
+	Runurl          sql.NullString
+	Jobnodeid       sql.NullString
+	Headsha         sql.NullString
+	Url             sql.NullString
+	Htmlurl         sql.NullString
+	Status          sql.NullString
+	Conclusion      sql.NullString
+	Startedat       sql.NullTime
+	Completedat     sql.NullTime
+	Workflowname    sql.NullString
 	Steps           pgtype.JSONB
-	Checkrunurl     string
+	Checkrunurl     sql.NullString
 	Labels          pgtype.JSONB
-	Runnerid        int64
-	Runnername      string
-	Runnergroupid   int64
-	Runnergroupname string
+	Runnerid        sql.NullInt64
+	Runnername      sql.NullString
+	Runnergroupid   sql.NullInt64
+	Runnergroupname sql.NullString
 }
 
 type UpsertWorkflowRunJobsRow struct {
@@ -814,15 +814,15 @@ WITH t AS (
   VALUES(
     $1::uuid,
 	$2::BIGINT,
-	$3::TEXT,
-	$4::TEXT,
-	$5::TEXT,
-	$6::TEXT,
-	$7::TIMESTAMP,
-	$8::TIMESTAMP,
-	$9::TEXT,
-	$10::TEXT,
-	$11::TEXT) 
+	$3,
+	$4,
+	$5,
+	$6,
+	$7,
+	$8,
+	$9,
+	$10,
+	$11) 
   ON CONFLICT (id)
   DO UPDATE
   SET repo_id=EXCLUDED.repo_id,
@@ -848,15 +848,15 @@ FROM t
 type UpsertWorkflowsInPublicParams struct {
 	Repoid         uuid.UUID
 	ID             int64
-	Workflownodeid string
-	Name           string
-	Path           string
-	State          string
-	Createdat      time.Time
-	Updatedat      time.Time
-	Url            string
-	Htmlurl        string
-	Badgeurl       string
+	Workflownodeid sql.NullString
+	Name           sql.NullString
+	Path           sql.NullString
+	State          sql.NullString
+	Createdat      sql.NullTime
+	Updatedat      sql.NullTime
+	Url            sql.NullString
+	Htmlurl        sql.NullString
+	Badgeurl       sql.NullString
 }
 
 type UpsertWorkflowsInPublicRow struct {
