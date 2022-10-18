@@ -32,7 +32,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
         return JSON.stringify(value)
       }
     }
-    return value
+    return value.toString().replace(/,/g, '.').replace(/\n/g, ' ')
   }
 
   const getMax = () => {
