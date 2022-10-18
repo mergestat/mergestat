@@ -59,7 +59,7 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 	// we get a page of 30 workflows until next page is 0
 	for {
 
-		if workflowsPage, resp, err = w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions); err != nil {
+		if workflowsPage, resp, err = w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions); err != nil && resp.StatusCode == 400 {
 			return err
 		}
 
@@ -103,7 +103,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		// we get a page of 30 workflow runs until next page is 0
 		for {
 
-			if workflowRunsPage, resp, err = w.githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, *workflow.ID, opt); err != nil {
+			if workflowRunsPage, resp, err = w.githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, *workflow.ID, opt); err != nil && resp.StatusCode == 400 {
 				return err
 			}
 
@@ -154,7 +154,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
-			if workflowRunJobsPage, resp, err = w.githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, *workflowRun.ID, opt); err != nil {
+			if workflowRunJobsPage, resp, err = w.githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, *workflowRun.ID, opt); err != nil && resp.StatusCode == 400 {
 				return err
 			}
 
@@ -200,7 +200,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	for i, workflowJob := range workflowRunJobsPage {
 
 		//TODO  (Ramiro Castillo) this resp error should be handled in a  retry logic pattern
-		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil && resp.Status != "500 Internal Server Error" {
+		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil && resp.StatusCode == 400 {
 			return err
 		}
 
