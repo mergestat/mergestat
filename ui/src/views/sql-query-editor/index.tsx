@@ -1,6 +1,5 @@
 import { useLazyQuery } from '@apollo/client'
 import { Button, Spinner, Toolbar } from '@mergestat/blocks'
-import { CogIcon } from '@mergestat/icons'
 import { useEffect, useState } from 'react'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
@@ -13,11 +12,10 @@ import QueryEditorLoading from './components/state-loading'
 
 const QueryEditor: React.FC = () => {
   const ROWS_LIMIT = 1000
-  const initialSQL = `-- AskGit is a tool for running SQL queries on data in git repos:
-  -- https://github.com/augmentable-dev/askgit
-  -- Use this page to try out queries in your browser, URLs are share-able
-
-  SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY count(*) DESC`
+  const initialSQL = `-- Run (read-only) queries directly against the Postgres database
+-- For example, count commits by author across all repositories
+SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY count(*) DESC
+`
 
   const [query, setQuery] = useState<string>(initialSQL)
   const [state, setState] = useState<States>(States.Empty)
@@ -46,10 +44,7 @@ const QueryEditor: React.FC = () => {
           </Toolbar.Left>
           <Toolbar.Right>
             <Button className='whitespace-nowrap' label='Execute (Shift + Enter)'
-              startIcon={loading
-                ? <Spinner size='sm' className='mr-2' />
-                : <CogIcon className="t-icon" />
-              }
+              endIcon={loading && <Spinner size='sm' className='ml-2' />}
               disabled={loading}
               onClick={() => executeSQL({ variables: { sql: query } })}
             />
