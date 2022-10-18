@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/mergestat/fuse/internal/db"
+	"github.com/mergestat/mergestat/internal/db"
 	"github.com/rs/zerolog"
 )
 

@@ -24,7 +24,7 @@ POSTGRAPHILE_API='http://localhost:5433/graphql'
 
 > Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-## Fuse UI:
+## MergeStat UI:
 
 > Open [http://localhost:3001](http://localhost:3001) with your browser.
 

@@ -32,7 +32,7 @@ const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: Current
           <Navbar.Divider />
           <Toolbar.Item>
             <div className="bg-gray-600 px-3 py-0.5 rounded-full text-gray-100 ml-3 text-sm font-medium">
-              <a target='_blank' href='https://github.com/mergestat/fuse' rel='noopener noreferrer'>beta</a>
+              <a target='_blank' href='https://github.com/mergestat/mergestat' rel='noopener noreferrer'>beta</a>
             </div>
           </Toolbar.Item>
         </Toolbar.Left>

@@ -1,5 +1,5 @@
 {
-    "name": "@mergestat/fuse-service-credentials",
+    "name": "@mergestat/mergestat-service-credentials",
     "version": "0.0.1",
     "description": "Graphile plugin for managing service credentials",
     "main": "index.js",

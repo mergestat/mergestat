@@ -8,7 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v4"
 	libgit2 "github.com/libgit2/git2go/v33"
-	"github.com/mergestat/fuse/internal/db"
+	"github.com/mergestat/mergestat/internal/db"
 	uuid "github.com/satori/go.uuid"
 )
 

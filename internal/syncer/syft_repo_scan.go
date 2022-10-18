@@ -7,7 +7,7 @@ import (
 	"os/exec"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/mergestat/fuse/internal/db"
+	"github.com/mergestat/mergestat/internal/db"
 )
 
 // handleSyftRepoScan executes `syft {git-repo} -f json` for a repo
