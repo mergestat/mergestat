@@ -140,9 +140,9 @@
 }
 
 .t-table-bordered tr:last-child td {
-  @apply  border-0
-          border-r
-          border-l;
+  @apply  border-r
+          border-l
+          border-b;
 }
 
 .t-table-bordered td:first-child,
@@ -156,7 +156,6 @@
 .t-table-bordered tr:last-child td:last-child  {
   @apply border-r-0;
 }
-
 
 .t-table-dense td {
   @apply py-2.5
@@ -225,5 +224,4 @@
   background: #FEF7EB;
   color: #705F43;
   border-color: #FCE2B6;
-
 }

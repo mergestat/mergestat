@@ -5,10 +5,11 @@ import { useEffect, useRef } from 'react'
 type SQLEditorSectionProps = {
   query: string
   setQuery: (text: string | undefined) => void
+  onEnterKey?: () => void
   children?: React.ReactNode
 }
 
-const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery }: SQLEditorSectionProps) => {
+const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery, onEnterKey }: SQLEditorSectionProps) => {
   const resizeElement = useRef<HTMLDivElement | null>(null)
   const resizerElement = useRef<HTMLDivElement | null>(null)
 
@@ -39,6 +40,21 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery }: 
       window.removeEventListener('mouseup', handleStopResize)
     }
   }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.shiftKey && event.code === 'Enter') {
+        event.preventDefault()
+        if (onEnterKey) onEnterKey()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown, false)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [onEnterKey])
 
   return (
     <>

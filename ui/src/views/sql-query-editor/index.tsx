@@ -59,7 +59,13 @@ const QueryEditor: React.FC = () => {
 
       <div className='flex flex-col flex-1 items-center overflow-auto'>
         {/* SQL editor */}
-        <SQLEditorSection query={query} setQuery={(text) => setQuery(text || '')} />
+        <SQLEditorSection
+          query={query}
+          setQuery={(text) => setQuery(text || '')}
+          onEnterKey={() => {
+            if (!loading && query) { executeSQL({ variables: { sql: query } }) }
+          }}
+        />
 
         {/* Empty state */}
         {!error && state === States.Empty && <QueryEditorEmpty />}
@@ -71,7 +77,7 @@ const QueryEditor: React.FC = () => {
         {loading && <QueryEditorLoading />}
 
         {/* Filled state */}
-        {!error && data && <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />}
+        {!error && data && state !== States.Empty && <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />}
       </div>
     </main>
   )
