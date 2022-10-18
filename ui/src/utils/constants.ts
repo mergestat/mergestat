@@ -64,3 +64,15 @@ export enum COOKIE {
 export const LINKS_TO = {
   createPAt: 'https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token',
 }
+
+export enum States {
+  Empty = 'Empty',
+  Loading = 'Loading',
+  Filled = 'Filled',
+  Error = 'Error'
+}
+
+export enum EXPORT_FORMAT {
+  JSON = 'JSON',
+  CSV = 'CSV',
+}

@@ -2,6 +2,7 @@ import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncStateT } from 'src/@types'
 import { RepoSyncQueue } from 'src/api-logic/graphql/generated/schema'
+import { showSuccessAlert } from './alerts'
 import { SYNC_STATUS } from './constants'
 
 export function checkRepoValidate(repo: string, checkDomain = true) {
@@ -117,4 +118,47 @@ export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
 export const getStatus = (syncQueue: RepoSyncQueue): RepoSyncStateT => {
   const status = syncQueue?.hasError ? 'ERROR' : syncQueue?.status
   return mapToRepoSyncStateT(status)
+}
+
+/**
+ * Method to paginate a given array
+ * @param array list to evaluate
+ * @param pageSize result size
+ * @param pageNumber index to start from
+ * @returns a new paginated array
+ */
+export const paginate = (array: Array<string | number | boolean>, pageSize: number, pageNumber: number) => {
+  return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize)
+}
+
+/**
+ * Method to copy to clipboard
+ * @param text Text to copy
+ */
+export const copy = (text: string | null | undefined) => {
+  navigator.clipboard.writeText(text || '')
+  showSuccessAlert('Copied')
+}
+
+/**
+ * Method to filter an array (comparing all properties) by given search text
+ * @param array list to evaluate
+ * @param searchText text to filter for
+ * @returns a new filtered array
+ */
+export const filterByAllFields = (array: Array<string | number | boolean>, searchText: string) => {
+  return array.filter((data) => {
+    let flag = false
+    Object.values(data).forEach((val: string | number | boolean) => {
+      if (val && val.toString().toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+        flag = true
+      }
+    })
+
+    if (flag) {
+      return data
+    } else {
+      return false
+    }
+  })
 }

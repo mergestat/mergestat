@@ -1,5 +1,5 @@
 import { Sidebar } from '@mergestat/blocks'
-import { CogIcon, DatabaseIcon, RepositoryIcon } from '@mergestat/icons'
+import { CogIcon, DatabaseIcon, RepositoryIcon, TerminalIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -16,6 +16,13 @@ const SidebarView: React.FC = () => {
           label="Repos"
           active={isSidebarActive('repos')}
           icon={<RepositoryIcon className='t-icon' />}
+        />
+      </Link>
+      <Link href="/queries" passHref>
+        <Sidebar.Item
+          label="Queries"
+          active={isSidebarActive('queries')}
+          icon={<TerminalIcon className='t-icon' />}
         />
       </Link>
       <Link href="/connect" passHref>
