@@ -1,27 +1,30 @@
 import { Alert, Badge, Button, Input, Label, Select, Toolbar } from '@mergestat/blocks'
 import { ChevronLeftIcon, ChevronRightIcon, CircleCheckFilledIcon, ClipboardIcon, DownloadIcon, SearchIcon } from '@mergestat/icons'
+import cx from 'classnames'
+import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
-import { copy, paginate } from 'src/utils'
+import { copy, filterByAllFields, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
 
 type QueryEditorFilledProps = {
   rowLimit: number
   rowLimitReached: boolean
-  data: Array<unknown>
+  data: Array<string | number | boolean>
   children?: React.ReactNode
 }
 
-interface RecordData {
-  [key: string]: string | number | boolean
-}
-
 const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, data }: QueryEditorFilledProps) => {
-  const [result, setResult] = useState<Array<unknown>>(data)
+  const [result, setResult] = useState<Array<string | number | boolean>>(data)
   const [rows, setRows] = useState<number>(20)
   const [page, setPage] = useState<number>(0)
+  const [total, setTotal] = useState<number>(data.length)
+  const [search, setSearch] = useState<string>('')
   const [exportFormat, setExportFormat] = useState<string>(EXPORT_FORMAT.JSON)
 
   const getData = (value: string | number | boolean) => {
+    if (value === null) {
+      return 'null'
+    }
     if (value) {
       if (typeof value === 'boolean') {
         return value.toString()
@@ -34,7 +37,11 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
 
   const getMax = () => {
     const max = (page + 1) * rows
-    return max > data.length ? data.length : max
+    return max > total ? total : max
+  }
+
+  const isSpecial = (value: string | number | boolean) => {
+    return value === null || typeof value === 'boolean'
   }
 
   const getText = () => {
@@ -43,8 +50,8 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
       text = JSON.stringify(data)
     } else {
       text = [
-        Object.keys(result[0] as RecordData).join(','),
-        ...data.map(d => Object.values(d as RecordData).map(getData).join(','))
+        Object.keys(result[0]).join(','),
+        ...data.map(d => Object.values(d).map(getData).join(','))
       ].join('\n')
     }
     return text
@@ -62,8 +69,25 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
     link.click()
   }
 
+  const onChange = debounce((e) => setSearch(e.target.value), 300)
+
   useEffect(() => {
-    setResult(paginate(data, rows, page))
+    let result
+    if (search !== '') {
+      result = filterByAllFields(data, search)
+    } else {
+      result = data
+    }
+
+    setResult(result)
+    setTotal(result.length)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search])
+
+  useEffect(() => {
+    const result = filterByAllFields(data, search)
+    setResult(paginate(result, rows, page))
+    setTotal(result.length)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, page])
 
@@ -92,6 +116,8 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
               className='flex-1 ml-8 w-96 '
               placeholder='Search...'
               startIcon={<SearchIcon className='t-icon' />}
+              onChange={onChange}
+              onKeyPress={(e) => (e.key === 'Enter' && setSearch(e.target.value))}
             />
           </Toolbar.Right>
         </Toolbar>
@@ -108,7 +134,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
           <table className='t-table-default t-table-sticky-header t-table-nowrap t-table-bordered t-table-dense'>
             <thead>
               <tr className='bg-white'>
-                {result.length > 0 && Object.keys(result[0] as RecordData).map((key, index) => (
+                {result.length > 0 && Object.keys(result[0]).map((key, index) => (
                   <th key={`th-record-${index}`} scope='col' className='whitespace-nowrap pr-6 pl-8'>
                     <span className='mr-1'>{key}</span>
                   </th>
@@ -119,9 +145,9 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             <tbody className='bg-white'>
               {result.map((record, indexRecord) => (
                 <tr key={`tr-record-${indexRecord}`}>
-                  {Object.values(record as RecordData).map((value, index) => (
+                  {Object.values(record).map((value, index) => (
                     <td key={`td-record-${index}`} className='w-0 pl-8 max-w-xs truncate'>
-                      {getData(value)}
+                      <span className={cx({ 'text-blue-700': isSpecial(value) })}>{getData(value)}</span>
                     </td>
                   ))}
                 </tr>
@@ -184,7 +210,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             <Toolbar.Item className='pl-4'>
               <div className='flex items-center space-x-2'>
                 <p className='text-semantic-mutedText whitespace-nowrap text-sm'>
-                  {`${(page * rows) + 1}-${getMax()} of ${data.length}`}
+                  {`${(page * rows) + 1}-${getMax()} of ${total}`}
                 </p>
                 <Button
                   isIconOnly
@@ -196,7 +222,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                 />
                 <Button
                   isIconOnly
-                  disabled={getMax() >= data.length}
+                  disabled={getMax() >= total}
                   skin='borderless'
                   startIcon={<ChevronRightIcon className='t-icon' />}
                   onClick={() => setPage(page + 1)}

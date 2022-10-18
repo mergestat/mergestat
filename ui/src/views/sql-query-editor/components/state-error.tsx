@@ -18,7 +18,7 @@ const QueryEditorError: React.FC<QueryEditorErrorProps> = ({ errors }: QueryEdit
             </Toolbar.Item>
             <Toolbar.Item>
               <Badge
-                label='Failed'
+                label='Error'
                 variant='default'
                 className='bg-gray-50 rounded-full'
                 startIcon={
@@ -35,7 +35,7 @@ const QueryEditorError: React.FC<QueryEditorErrorProps> = ({ errors }: QueryEdit
           icon={<CircleWarningIcon className='t-icon' />}
         />
         <div className='text-center mt-6'>
-          <h4 className='t-h4'>Failed to execute query</h4>
+          <h4 className='t-h4'>Error executing query</h4>
           <p className='text-semantic-mutedText'>
             {errors?.message}
           </p>

@@ -1,5 +1,6 @@
 import { useLazyQuery } from '@apollo/client'
-import { Button, Toolbar } from '@mergestat/blocks'
+import { Button, Spinner, Toolbar } from '@mergestat/blocks'
+import { CogIcon } from '@mergestat/icons'
 import { useEffect, useState } from 'react'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
@@ -44,8 +45,12 @@ const QueryEditor: React.FC = () => {
             <h2 className='t-h2 mb-0'>Queries</h2>
           </Toolbar.Left>
           <Toolbar.Right>
-            <Button className='whitespace-nowrap' skin='secondary' label='Cancel' disabled />
             <Button className='whitespace-nowrap' label='Execute (Shift + R)'
+              startIcon={loading
+                ? <Spinner size='sm' className='mr-2' />
+                : <CogIcon className="t-icon" />
+              }
+              disabled={loading}
               onClick={() => executeSQL({ variables: { sql: query } })}
             />
           </Toolbar.Right>

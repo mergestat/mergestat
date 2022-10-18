@@ -127,7 +127,7 @@ export const getStatus = (syncQueue: RepoSyncQueue): RepoSyncStateT => {
  * @param pageNumber index to start from
  * @returns a new paginated array
  */
-export const paginate = (array: Array<unknown>, pageSize: number, pageNumber: number) => {
+export const paginate = (array: Array<string | number | boolean>, pageSize: number, pageNumber: number) => {
   return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize)
 }
 
@@ -138,4 +138,27 @@ export const paginate = (array: Array<unknown>, pageSize: number, pageNumber: nu
 export const copy = (text: string | null | undefined) => {
   navigator.clipboard.writeText(text || '')
   showSuccessAlert('Copied')
+}
+
+/**
+ * Method to filter an array (comparing all properties) by given search text
+ * @param array list to evaluate
+ * @param searchText text to filter for
+ * @returns a new filtered array
+ */
+export const filterByAllFields = (array: Array<string | number | boolean>, searchText: string) => {
+  return array.filter((data) => {
+    let flag = false
+    Object.values(data).forEach((val: string | number | boolean) => {
+      if (val && val.toString().toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+        flag = true
+      }
+    })
+
+    if (flag) {
+      return data
+    } else {
+      return false
+    }
+  })
 }
