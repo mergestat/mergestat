@@ -45,7 +45,7 @@ const QueryEditor: React.FC = () => {
             <h2 className='t-h2 mb-0'>Queries</h2>
           </Toolbar.Left>
           <Toolbar.Right>
-            <Button className='whitespace-nowrap' label='Execute (Shift + R)'
+            <Button className='whitespace-nowrap' label='Execute (Shift + Enter)'
               startIcon={loading
                 ? <Spinner size='sm' className='mr-2' />
                 : <CogIcon className="t-icon" />
