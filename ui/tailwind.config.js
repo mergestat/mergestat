@@ -86,6 +86,6 @@ module.exports = {
       gradientColorStops: ['active'],
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
   separator: '_',
 }
