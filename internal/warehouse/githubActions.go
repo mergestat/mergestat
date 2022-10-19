@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
-	"github.com/mergestat/fuse/internal/db"
+	"github.com/mergestat/mergestat/internal/db"
 )
 
 func (w *warehouse) GithubActions(ctx context.Context, j *db.DequeueSyncJobRow) error {

@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/jackc/pgx/v4"
-	"github.com/mergestat/fuse/internal/db"
-	"github.com/mergestat/fuse/internal/warehouse"
+	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/warehouse"
 )
 
 func (w *worker) handleGithubActions(ctx context.Context, j *db.DequeueSyncJobRow) error {
