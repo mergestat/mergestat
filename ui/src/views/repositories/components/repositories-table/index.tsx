@@ -37,7 +37,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
             </div>
             : <div className='flex flex-col min-w-0 bg-white h-full'>
               <div className='flex-1 overflow-x-auto overflow-y-hidden'>
-                <table data-testid={TEST_IDS.repoTableList} className='t-table-default t-table-clickable'>
+                <table data-testid={TEST_IDS.repoTableList} className='t-table-default t-table-hover'>
                   <thead>
                     <tr className='bg-white'>
                       <th scope='col' key='name' className='whitespace-nowrap'>Repository</th>

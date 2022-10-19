@@ -39,7 +39,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
             </div>
             : <div className='flex flex-col min-w-0 bg-white h-full'>
                 <div className='flex-1 overflow-x-auto overflow-y-hidden'>
-                <table className='t-table-default t-table-clickable'>
+                <table className='t-table-default t-table-hover'>
                   <thead>
                     <tr className='bg-white'>
                       <th className='w-0'></th>

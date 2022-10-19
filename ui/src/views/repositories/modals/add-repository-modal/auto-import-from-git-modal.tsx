@@ -90,7 +90,7 @@ export const AutoImportFromGitModal: React.FC = () => {
               </div>
               {imp.opened && <Panel.Body className='p-0'>
                 <Alert type='info' className='m-3' title='Default syncs are enabled for repos that are imported.' />
-                <table className='t-table-default t-table-clickable'>
+                <table className='t-table-default t-table-hover'>
                   <tbody className='bg-white'>
                     {imp.defaultSyncs.map((syncType, index) => (
                       <tr key={index} onClick={() => handleCheckBox(imp.name, imp.defaultSyncs, syncType.type)}>

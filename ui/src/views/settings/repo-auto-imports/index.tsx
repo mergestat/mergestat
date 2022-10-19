@@ -44,7 +44,7 @@ const AutoImports: NextPage = () => {
                       ? <div className='flex justify-center items-center bg-white py-5'>
                         No data available!
                       </div>
-                      : <table className='t-table-default t-table-clickable'>
+                      : <table className='t-table-default t-table-hover'>
                         <thead>
                           <tr className='bg-white'>
                             <th scope='col' key='status' className='whitespace-nowrap px-4'>Status</th>
