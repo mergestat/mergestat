@@ -49,7 +49,7 @@ export const RemoveRepositoryModal: React.FC = () => {
           </Toolbar.Right>
         </Toolbar>
       </Modal.Header>
-      <Modal.Body className='p-8'>
+      <Modal.Body className='p-6'>
         {repoToRemove?.autoImported &&
           <Alert type="warning" theme="light" className='mb-6'>
             This repo was added by an automatic import, it will be re-added on the next run, unless the repo auto import is removed.
