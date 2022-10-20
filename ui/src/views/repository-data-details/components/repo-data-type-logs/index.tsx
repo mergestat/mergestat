@@ -16,7 +16,7 @@ export const RepoDataLogs = ({ syncData, logs }: RepoDataLogsProps) => {
           <h4 className='t-h4 mb-2'>
             {syncData?.title}
           </h4>
-          <p className='text-semantic-mutedText mb-4'>
+          <p className='t-text-muted mb-4'>
             {syncData?.brief}
           </p>
           <Link href='https://docs.mergestat.com/'>

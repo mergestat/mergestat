@@ -22,7 +22,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
       startIcon: <RepoImage repoType={repo.type} orgName={repoName} />,
       endIcon: (
         <a target="_blank" href={repo.type === 'github' ? GITHUB_URL + repoName : repoName} rel="noopener noreferrer">
-          <ExternalLinkIcon className='t-icon t-icon-small' />
+          <ExternalLinkIcon className='t-icon t-icon-muted t-icon-small' />
         </a>
       ),
       onClick: () => router.push(`/repos/${repo.id}`),

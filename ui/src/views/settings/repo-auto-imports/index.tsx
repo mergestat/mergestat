@@ -59,8 +59,8 @@ const AutoImports: NextPage = () => {
                             <tr key={index}>
                               <td className='py-4 pl-8 pr-4 w-0'>
                                 {imp.importDone
-                                  ? <CircleCheckFilledIcon className="t-icon text-semantic-success" />
-                                  : <ClockIcon className='t-icon text-semantic-mutedIcon' />
+                                  ? <CircleCheckFilledIcon className="t-icon t-icon-success" />
+                                  : <ClockIcon className='t-icon t-icon-muted' />
                                 }
                               </td>
                               <td className='p-4'>
@@ -70,11 +70,11 @@ const AutoImports: NextPage = () => {
                                   </ColoredBox>
                                   <div>
                                     <Link href={`/settings/repo-auto-imports/${imp.id}`}>
-                                      <h4 className='font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600'>
+                                      <h4 className='font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600'>
                                         {imp.source}
                                       </h4>
                                     </Link>
-                                    <p className='text-sm text-semantic-mutedText'>
+                                    <p className='text-sm t-text-muted'>
                                       {imp.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub User' : 'GitHub Organization'}
                                     </p>
                                   </div>

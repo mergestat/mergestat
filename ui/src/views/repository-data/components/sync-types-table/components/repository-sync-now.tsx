@@ -26,10 +26,10 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, sy
       skin="secondary"
       data-testid={TEST_IDS.syncsTypesSyncNowButton}
       startIcon={syncStatus === SYNC_STATUS.queued
-        ? <ClockIcon className='t-icon text-semantic-mutedIcon' />
+        ? <ClockIcon className='t-icon t-icon-muted' />
         : syncStatus === SYNC_STATUS.running
           ? <Spinner size='sm' className='mr-2' />
-          : <RefreshIcon className="t-icon text-semantic-icon" />
+          : <RefreshIcon className="t-icon t-icon-default" />
       }
       size="small"
       onClick={() => {

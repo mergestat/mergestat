@@ -17,16 +17,16 @@ export const RepositoryData: React.FC<RepositoryDataProps> = (props) => {
     <div className={cx('py-5 flex flex-col justify-center items-start h-full', { 'bg-gray-50': props.disabled })}>
       {props.id
         ? <Link href={`/repos/${repository}/${props.id}`}>
-          <h4 className="font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600">
+          <h4 className="font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600">
             {props.title}
           </h4>
         </Link>
-        : <h4 className="font-medium mb-0.5 text-semantic-text">
+        : <h4 className="font-medium mb-0.5 t-text-default">
           {props.title}
         </h4>
       }
 
-      <p className="text-sm text-semantic-mutedText">
+      <p className="text-sm t-text-muted">
         {props.brief}
       </p>
     </div>

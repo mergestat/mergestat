@@ -27,19 +27,19 @@ export const RepoSyncIcon = ({ type, className = '' }: RepoSyncIconPropsT) => {
   switch (type) {
     case SYNC_STATUS.disabled:
       text = 'Sync is disabled'
-      icon = <CircleInformationFilledIcon className={cx('t-icon text-semantic-mutedIcon', { [className]: className !== '' })} />
+      icon = <CircleInformationFilledIcon className={cx('t-icon t-icon-muted', { [className]: className !== '' })} />
       break
     case SYNC_STATUS.succeeded:
       text = 'Last sync was successful'
-      icon = <CircleCheckFilledIcon className={cx('t-icon text-semantic-success', { [className]: className !== '' })} />
+      icon = <CircleCheckFilledIcon className={cx('t-icon t-icon-success', { [className]: className !== '' })} />
       break
     case SYNC_STATUS.error:
       text = 'Last sync had an error'
-      icon = <CircleErrorFilledIcon className={cx('t-icon text-semantic-danger', { [className]: className !== '' })} />
+      icon = <CircleErrorFilledIcon className={cx('t-icon t-icon-danger', { [className]: className !== '' })} />
       break
     case SYNC_STATUS.queued:
       text = 'Sync is queued to run'
-      icon = <ClockIcon className={cx('t-icon text-semantic-mutedIcon', { [className]: className !== '' })} />
+      icon = <ClockIcon className={cx('t-icon t-icon-muted', { [className]: className !== '' })} />
       break
     case SYNC_STATUS.running:
       text = 'Sync is currently running'
@@ -47,7 +47,7 @@ export const RepoSyncIcon = ({ type, className = '' }: RepoSyncIconPropsT) => {
       break
     default:
       text = 'No sync history'
-      icon = <MinusIcon className={cx('t-icon text-semantic-mutedIcon', { [className]: className !== '' })} />
+      icon = <MinusIcon className={cx('t-icon t-icon-muted', { [className]: className !== '' })} />
       break
   }
   return <WithTooltip status={text} icon={icon} />

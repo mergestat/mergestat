@@ -67,7 +67,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                         {repo.status.length
                           ? <>
                             <td className='h-20'>
-                              <RelativeTimeField date={repo.lastSync} styles={'text-semantic-mutedText whitespace-nowrap'} />
+                              <RelativeTimeField date={repo.lastSync} styles={'t-text-muted whitespace-nowrap'} />
                             </td>
                             <td className='h-20 w-0'>
                               <div className='flex items-center justify-center'>
@@ -129,7 +129,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: Re
                             <div className='t-button-toolbar gap-6'>
                               <div className='flex items-center justify-center gap-2'>
                                 <CircleInformationFilledIcon className='t-icon t-icon-muted' />
-                                <span className='text-semantic-mutedText'>Set up sync types</span>
+                                <span className='t-text-muted'>Set up sync types</span>
                                 <ChevronRightIcon className='t-icon t-icon-muted' />
                               </div>
                               <Button skin="borderless-muted" startIcon={<TrashIcon className="t-icon" />} isIconOnly onClick={() => prepareToRemove(repo.id, repo.name, !!repo.autoImportFrom)} />

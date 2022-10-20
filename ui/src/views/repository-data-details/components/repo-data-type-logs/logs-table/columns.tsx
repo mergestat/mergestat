@@ -18,7 +18,7 @@ export const columns: Array<Record<string, unknown>> = [
     dataIndex: 'records',
     key: 'records',
     render: (records?: string) => (
-      records ? <span className='text-semantic-mutedText'>{records}</span> : '-'
+      records ? <span className='t-text-muted'>{records}</span> : '-'
     )
   },
   {
@@ -28,7 +28,7 @@ export const columns: Array<Record<string, unknown>> = [
     dataIndex: 'duration',
     key: 'duration',
     render: (duration: string) => (
-      <span className='text-semantic-mutedText'>{duration}</span>
+      <span className='t-text-muted'>{duration}</span>
     )
   },
   {
@@ -38,7 +38,7 @@ export const columns: Array<Record<string, unknown>> = [
     dataIndex: 'syncStart',
     key: 'syncStart',
     render: (syncStart: string) => (
-      <span className='text-semantic-mutedText'>{syncStart}</span>
+      <span className='t-text-muted'>{syncStart}</span>
     )
   }
 ]

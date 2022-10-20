@@ -36,7 +36,7 @@ const QueryEditorError: React.FC<QueryEditorErrorProps> = ({ errors }: QueryEdit
         />
         <div className='text-center mt-6'>
           <h4 className='t-h4'>Error executing query</h4>
-          <p className='text-semantic-mutedText'>
+          <p className='t-text-muted'>
             {errors?.message}
           </p>
         </div>

@@ -23,7 +23,7 @@ export const PageHeader = ({ name, type }: PageHeaderProps) => {
       startIcon: <RepoImage repoType={type} orgName={repoName} />,
       endIcon: (
         <a target='_blank' href={type === 'github' ? GITHUB_URL + repoName : repoName} rel='noopener noreferrer'>
-          <ExternalLinkIcon className='t-icon t-icon-small' />
+          <ExternalLinkIcon className='t-icon t-icon-muted t-icon-small' />
         </a>
       ),
     }

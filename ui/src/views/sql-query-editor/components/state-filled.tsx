@@ -209,7 +209,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             </Toolbar.Item>
             <Toolbar.Item className='pl-4'>
               <div className='flex items-center space-x-2'>
-                <p className='text-semantic-mutedText whitespace-nowrap text-sm'>
+                <p className='t-text-muted whitespace-nowrap text-sm'>
                   {`${(page * rows) + 1}-${getMax()} of ${total}`}
                 </p>
                 <Button

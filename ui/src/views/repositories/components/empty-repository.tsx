@@ -11,7 +11,7 @@ export const EmptyRepository: React.FC = () => {
     <div data-testid={TEST_IDS.emptyRepository} className="flex items-center justify-center h-full w-full">
       <div className="flex flex-col items-center">
         <Avatar icon={<RepositoryIcon className='t-icon' />} size='lg' />
-        <p className="text-semantic-mutedText py-5">No repositories added yet</p>
+        <p className="t-text-muted py-5">No repositories added yet</p>
         <Button
           startIcon={<PlusIcon className="t-icon" />}
           onClick={() => setShowAddRepositoryModal(true)}
