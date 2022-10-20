@@ -15,16 +15,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        semantic: {
-          header: '#111827',
-          text: '#374151',
-          mutedText: '#727C8D',
-          mutedIcon: '#9CA3AF',
-          border: '#E5E7EB',
-          icon: '#6B7280',
-          danger: '#DC2626',
-          success: '#10B981',
-        },
         gray: {
           150: '#EBECEF',
           250: '#DDDFE4',
@@ -86,6 +76,6 @@ module.exports = {
       gradientColorStops: ['active'],
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
   separator: '_',
 }

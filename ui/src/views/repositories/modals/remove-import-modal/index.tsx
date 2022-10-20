@@ -47,7 +47,7 @@ export const RemoveImportModal: React.FC = () => {
       </Modal.Header>
       <Modal.Body>
         <div className='px-6 py-6'>
-          Are you sure you want to remove the GitHub repo auto import for the <b>{importToRemove?.name}</b> {importToRemove?.type === SYNC_REPO_METHOD.GH_ORG ? 'organization' : 'user'}?
+          Are you sure you want to remove the GitHub repo auto import for the <strong className="font-semibold text-gray-800">{importToRemove?.name}</strong> {importToRemove?.type === SYNC_REPO_METHOD.GH_ORG ? 'organization' : 'user'}?
         </div>
       </Modal.Body>
       <Modal.Footer>

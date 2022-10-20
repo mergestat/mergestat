@@ -11,7 +11,7 @@ export const RowOptions: React.FC = () => {
           <Menu.Item text="Enable For All" />
         </Menu>
       )}
-      trigger={<DotsHorizontalIcon className="t-icon cursor-pointer text-semantic-icon" />}
+      trigger={<DotsHorizontalIcon className="t-icon cursor-pointer t-icon-default" />}
     />
   )
 }

@@ -39,7 +39,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
             </div>
             : <div className='flex flex-col min-w-0 bg-white h-full'>
                 <div className='flex-1 overflow-x-auto overflow-y-hidden'>
-                <table className='t-table-default t-table-clickable'>
+                <table className='t-table-default t-table-hover'>
                   <thead>
                     <tr className='bg-white'>
                       <th className='w-0'></th>
@@ -82,21 +82,21 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
                           </td>
 
                           <td className='text-gray-500'>
-                            {log.records ? <span className='text-semantic-mutedText'>{log.records}</span> : '-'}
+                            {log.records ? <span className='t-text-muted'>{log.records}</span> : '-'}
                           </td>
 
                           <td className='text-gray-500'>
-                            <span className='text-semantic-mutedText'>{log.duration}</span>
+                            <span className='t-text-muted'>{log.duration}</span>
                           </td>
 
                           <td className='text-gray-500'>
-                            <RelativeTimeField date={log.syncStart} styles={'text-semantic-mutedText whitespace-nowrap'} />
+                            <RelativeTimeField date={log.syncStart} styles={'t-text-muted whitespace-nowrap'} />
                           </td>
                         </tr>
                         {log.collapsed && (
                           <tr>
                             <td colSpan={6} className='p-6 bg-gray-50'>
-                              {log.logs?.length ? <LogBox logs={log.logs || []} onCopy={() => null} /> : <span className='text-semantic-mutedText text-sm'>No log entries yet</span>}
+                              {log.logs?.length ? <LogBox logs={log.logs || []} onCopy={() => null} /> : <span className='t-text-muted text-sm'>No log entries yet</span>}
                             </td>
                           </tr>
                         )}

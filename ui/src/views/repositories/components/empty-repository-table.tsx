@@ -29,7 +29,7 @@ export const EmptyRepositoryTable: React.FC = () => {
               <div className="w-full lg_w-6/12 p-8 lg_p-10 flex flex-col items-center lg_items-start">
                 {/* <Avatar className="mb-6" icon={<CogIcon className="t-icon" />} size="md" /> */}
                 <h3 className="t-h3 mb-2">GitHub Authentication Token</h3>
-                <p className="text-semantic-mutedText">Add a personal access token to start importing from GitHub (and to work with private repos).</p>
+                <p className="t-text-muted">Add a personal access token to start importing from GitHub (and to work with private repos).</p>
                 <div className="t-button-toolbar mt-8">
                   <Link href="/settings">
                     <Button label="Authenticate GitHub" endIcon={<GithubIcon className="t-icon" />} />

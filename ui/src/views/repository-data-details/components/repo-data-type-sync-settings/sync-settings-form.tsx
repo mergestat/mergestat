@@ -1,4 +1,4 @@
-import { Label, Panel, Toggle, Typography } from '@mergestat/blocks'
+import { Label, Panel, Toggle } from '@mergestat/blocks'
 import React, { PropsWithChildren } from 'react'
 import Loading from 'src/components/Loading'
 import useSyncsLogs from 'src/views/hooks/useSyncsLogs'
@@ -12,7 +12,7 @@ export const SyncSettingsForm = () => {
         ? <Loading />
         : <Panel className="shadow-sm">
           <Panel.Header>
-            <Typography.Title className='text-semantic-header font-semibold'>Sync settings</Typography.Title>
+            <h3 className="t-panel-title">Sync settings</h3>
           </Panel.Header>
           <Panel.Body>
             <form className="flex flex-col gap-2">
@@ -25,7 +25,7 @@ export const SyncSettingsForm = () => {
                       variables: { syncId: syncTypeId, schedule: !repoData.sync?.scheduleEnabled }
                     })}
                   />
-                  <span className="text-semantic-text">Enable</span>
+                  <span className="t-text-default">Enable</span>
                 </div>
               </Formrow>
             </form>

@@ -25,76 +25,12 @@
 */
 
 
-
-/* TODO: Move to blocks */
-.t-link {
-  @apply underline
-         text-blue-600
-         hover_text-blue-700;
-}
-
-.t-input-with-prepend {
-  @apply flex
-         items-center;
-}
-
-.t-input-with-prepend *:first-child {
-  @apply z-10;
-}
-
-.t-input-with-prepend .t-button {
-  @apply rounded-r-none;
-}
-
-.t-input-with-prepend .t-input {
-  @apply rounded-l-none
-         -ml-px;
-}
-
+/* TODO(emily): fix override max-h-full class in t-modal styles in blocks */
 .t-modal {
   max-height: calc(100vh - 4.8rem);
 }
 
-.t-table-clickable tbody tr:hover,
-.t-table-clickable tbody tr:focus-within {
-  @apply bg-gray-50;
-}
-
-.t-table-clickable tbody .t-table-row-muted:hover,
-.t-table-clickable tbody .t-table-row-muted:focus-within {
-  @apply bg-gray-100;
-}
-
-.t-table-row-link {
-  @apply h-full
-         w-full
-         absolute
-         outline-none
-         top-0
-         left-0
-         right-0
-         bottom-0;
-}
-
-.t-table-row-muted {
-  @apply bg-gray-50;
-}
-
-.t-table-default td,
-.t-table-default th {
-  @apply px-6;
-}
-
-.t-table-default td:first-child,
-.t-table-default th:first-child {
-  @apply pl-8;
-}
-
-.t-table-default td:last-child,
-.t-table-default th:last-child {
-  @apply pr-8;
-}
-
+/* TODO(emily): add button styles to blocks */
 .t-nav-item > a,
 .t-nav-item > button {
     @apply px-5
@@ -113,115 +49,8 @@
            cursor-pointer;
 }
 
-.t-sr-only {
-  position: absolute !important;
-  left: -10000px !important;
-  top: auto !important;
-  width: 1px !important;
-  height: 1px !important;
-  overflow: hidden !important;
-}
-
-.t-table-default th {
-  @apply bg-gray-50
-          text-gray-700
-          font-semibold;
-}
-
-.t-table-bordered td,
-.t-table-bordered th {
-  @apply border
-         border-gray-250;
-}
-
-.t-table-bordered th {
-  @apply border-t-0
-         border-b-2;
-}
-
-.t-table-bordered tr:last-child td {
-  @apply  border-r
-          border-l
-          border-b;
-}
-
-.t-table-bordered td:first-child,
-.t-table-bordered th:first-child,
-.t-table-bordered tr:last-child td:first-child  {
-  @apply border-l-0;
-}
-
-.t-table-bordered td:last-child,
-.t-table-bordered th:last-child,
-.t-table-bordered tr:last-child td:last-child  {
-  @apply border-r-0;
-}
-
-.t-table-dense td {
-  @apply py-2.5
-         text-sm;
-}
-
-.t-table-dense th {
-  @apply pt-3.5
-         pb-2
-         text-sm;
-}
-
-.t-table-sticky-header {
-  border-collapse: collapse;
-}
-
-.t-table-sticky-header thead tr th:before {
-  content: '';
-  @apply absolute
-         left-0
-         w-full
-         -bottom-px
-         border-b-2;
-}
-
+/* TODO(emily) re-add missing resizer styles to blocks */
 .t-resizer {
-  @apply bg-gray-50
-         mix-blend-multiply
-         py-1;
-}
-
-
-.t-resizer:before {
-    content: '';
-    @apply w-10
-           mx-auto
-           h-1
-           rounded-full
-           block
-           border-0
-           bg-gray-400;
-}
-
-.t-resizer:active,
-.t-resizer:hover {
-    @apply bg-gray-100;
-}
-
-
-.t-resizer:active:before,
-.t-resizer:hover:before {
-    @apply bg-gray-450
-            border-gray-450;
-}
-
-.t-alert-full-width {
-  @apply border-0
-         border-b
-         text-sm
-         py-2.5
-         px-8
-         rounded-none;
-}
-
-.t-alert-warning {
-  background: #FEF7EB;
-  color: #705F43;
-  border-color: #FCE2B6;
+  cursor: row-resize;
+  @apply w-full;
 }

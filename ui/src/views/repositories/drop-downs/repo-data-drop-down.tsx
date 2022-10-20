@@ -23,11 +23,11 @@ export const RepoDataDropDown: React.FC<RepoDataDropDownProps> = ({ data, status
                 <div className="flex items-center gap-3">
                   <RepoSyncIcon type={status} className="t-icon" />
                   <div className='flex flex-col text-left'>
-                    <span className='text-sm font-medium text-semantic-text mb-0.5'>{item.title}</span>
-                    <span className='text-sm text-semantic-mutedText'>{item.lastSync}</span>
+                    <span className='text-sm font-medium t-text-default mb-0.5'>{item.title}</span>
+                    <span className='text-sm t-text-muted'>{item.lastSync}</span>
                   </div>
                 </div>
-                <ChevronRightIcon className='t-icon text-semantic-icon' />
+                <ChevronRightIcon className='t-icon t-icon-default' />
               </div>
             </Link>
           ))}
@@ -42,15 +42,15 @@ function getRepoStatusComponent(status: RepoSyncStateT, count: number): React.Re
   switch (status) {
     case SYNC_STATUS.succeeded:
       return <IconAndQuantity count={count}>
-        <CircleCheckFilledIcon className="t-icon text-semantic-success" />
+        <CircleCheckFilledIcon className="t-icon t-icon-success" />
       </IconAndQuantity>
     case SYNC_STATUS.error:
       return <IconAndQuantity count={count}>
-        <CircleErrorFilledIcon className="t-icon text-semantic-danger" />
+        <CircleErrorFilledIcon className="t-icon t-icon-danger" />
       </IconAndQuantity>
     case SYNC_STATUS.queued:
       return <IconAndQuantity count={count}>
-        <ClockIcon className='t-icon text-semantic-mutedIcon' />
+        <ClockIcon className='t-icon t-icon-muted' />
       </IconAndQuantity>
     case SYNC_STATUS.running:
       return <IconAndQuantity count={count}>

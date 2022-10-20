@@ -104,7 +104,7 @@ const AutoImportsDetail: NextPage = () => {
                     <h4 className='t-h4 mb-0'>Select default syncs</h4>
                   </Panel.Header>
                   <Panel.Body className='p-0'>
-                    <table className='t-table-default t-table-clickable'>
+                    <table className='t-table-default t-table-hover'>
                       <tbody className='bg-white'>
                         {syncsTypesArray.map((syncType, index) => (
                           <tr key={index} onClick={() => handleCheckBox(syncType.type)}>
@@ -116,7 +116,7 @@ const AutoImportsDetail: NextPage = () => {
                             </td>
                             <td className='py-3 pl-4 pr-8'>
                               <h4 className='font-medium mb-0.5'>{syncType.shortName}</h4>
-                              <p className='text-semantic-mutedText text-sm'>{syncType.description}</p>
+                              <p className='t-text-muted text-sm'>{syncType.description}</p>
                             </td>
                           </tr>
                         ))}

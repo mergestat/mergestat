@@ -28,7 +28,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
           </div>
           : <div className='flex flex-col min-w-0 bg-white h-full'>
             <div className='flex-1 overflow-x-auto overflow-y-hidden'>
-              <table className='t-table-default t-table-clickable'>
+              <table className='t-table-default t-table-hover'>
                 <thead>
                   <tr className='bg-white'>
                     <th scope='col' key='syncStateIcon' className='whitespace-nowrap w-0'>Status</th>
@@ -60,11 +60,11 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                       </td>
 
                       <td className='text-gray-500 h-20'>
-                        <RelativeTimeField date={sync.latestRun} syncData={sync} styles={'text-semantic-mutedText whitespace-nowrap'} />
+                        <RelativeTimeField date={sync.latestRun} syncData={sync} styles={'t-text-muted whitespace-nowrap'} />
                       </td>
 
                       <td className='text-gray-500 h-20'>
-                        <div className='text-semantic-mutedText'>
+                        <div className='t-text-muted'>
                           {sync.avgRunningTime}
                         </div>
                       </td>

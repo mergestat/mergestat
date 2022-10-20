@@ -9,7 +9,7 @@ const EmptyState: React.FC = () => {
   return (
     <div className='h-80'>
       <div className='flex items-center justify-center h-20 p-10 border border-gray-200 rounded'>
-        <p className='text-semantic-mutedText text-center text-sm'>
+        <p className='t-text-muted text-center text-sm'>
           Enter GitHub organization or username to configure the auto import settings.
         </p>
       </div>
@@ -28,7 +28,7 @@ export const AutoImportFromGitModal: React.FC = () => {
       <div className='p-6 flex-1 overflow-auto'>
         <div className='mb-6'>
           <h3 className='t-h3'>Auto import from GitHub</h3>
-          <p className='text-semantic-mutedText'>This will automatically import all repos from your GitHub organization or GitHub User.</p>
+          <p className='t-text-muted'>This will automatically import all repos from your GitHub organization or GitHub User.</p>
         </div>
         <div className='flex items-center gap-2 mb-6'>
           <div className='t-input-with-prepend flex-1'>
@@ -90,7 +90,7 @@ export const AutoImportFromGitModal: React.FC = () => {
               </div>
               {imp.opened && <Panel.Body className='p-0'>
                 <Alert type='info' className='m-3' title='Default syncs are enabled for repos that are imported.' />
-                <table className='t-table-default t-table-clickable'>
+                <table className='t-table-default t-table-hover'>
                   <tbody className='bg-white'>
                     {imp.defaultSyncs.map((syncType, index) => (
                       <tr key={index} onClick={() => handleCheckBox(imp.name, imp.defaultSyncs, syncType.type)}>
@@ -102,7 +102,7 @@ export const AutoImportFromGitModal: React.FC = () => {
                         </td>
                         <td className='py-3 pl-4 pr-8'>
                           <h4 className='font-medium mb-0.5'>{syncType.shortName}</h4>
-                          <p className='text-semantic-mutedText text-sm'>{syncType.description}</p>
+                          <p className='t-text-muted text-sm'>{syncType.description}</p>
                         </td>
                       </tr>
                     ))}

@@ -23,7 +23,7 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
       startIcon: <RepoImage repoType={repo.type} orgName={repoName} />,
       endIcon: (
         <a target='_blank' href={repo.type === 'github' ? GITHUB_URL + repoName : repoName} rel="noopener noreferrer">
-          <ExternalLinkIcon className='t-icon t-icon-small' />
+          <ExternalLinkIcon className='t-icon t-icon-muted t-icon-small' />
         </a>
       ),
       onClick: () => router.push(`/repos/${repo.id}`),
@@ -54,7 +54,7 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
           : (
             <Panel>
               <Panel.Body className="flex items-center justify-center py-8">
-                <span className='text-semantic-mutedText text-sm'>No log entries yet</span>
+                <span className='t-text-muted text-sm'>No log entries yet</span>
               </Panel.Body>
             </Panel>)}
       </div>

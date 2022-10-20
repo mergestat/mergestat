@@ -22,11 +22,11 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
       case 'gitlab':
       case 'bitbucket':
       case 'other':
-        return <RepositoryIcon className='t-icon text-semantic-mutedIcon w-4' />
+        return <RepositoryIcon className='t-icon t-icon-muted w-4' />
       default:
         return (
           <a target='_blank' href={GITHUB_URL + props.name} rel='noopener noreferrer'>
-            <GithubIcon className='t-icon text-semantic-mutedIcon w-4' />
+            <GithubIcon className='t-icon t-icon-muted w-4' />
           </a>
         )
     }
@@ -41,12 +41,12 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
       />
       <div>
         <Link href={`/repos/${props.id}`}>
-          <h4 data-testid={TEST_IDS.repoNameTable} className='font-medium mb-0.5 text-semantic-text cursor-pointer hover_text-blue-600'>
+          <h4 data-testid={TEST_IDS.repoNameTable} className='font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600'>
             {props.name}
           </h4>
         </Link>
         <div className='flex items-center'>
-          <span className='pr-2 text-sm text-semantic-mutedText'>
+          <span className='pr-2 text-sm t-text-muted'>
             <Tooltip
               content={`Added ${format(props.createdAt, 'PPp')}`}
               placement='bottom'
@@ -69,7 +69,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
                 placement='bottom'
               >
                 <Link href='/settings/repo-auto-imports' passHref>
-                  <AutoImportIcon className='t-icon text-semantic-mutedIcon w-4 cursor-pointer' />
+                  <AutoImportIcon className='t-icon t-icon-muted w-4 cursor-pointer' />
                 </Link>
               </Tooltip>
             </div>

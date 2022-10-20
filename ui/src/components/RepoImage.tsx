@@ -33,7 +33,7 @@ const RepoImage: React.FC<RepoImagePropsT> = ({
           className="rounded"
           alt=''
         />
-        : <RepositoryIcon className="t-icon text-semantic-icon" />
+        : <RepositoryIcon className="t-icon t-icon-default" />
       }
     </ColoredBox>
   )
