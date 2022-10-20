@@ -35,16 +35,18 @@ const Settings: NextPage = () => {
           </div>
           <div className='flex-1 p-8 overflow-auto'>
             <Panel className='shadow-sm'>
-              <Panel.Body className='py-8'>
-                <h3 className='t-h3'>GitHub Personal Access Token</h3>
-                <Alert type='info' theme='light' className='mb-5'>
+              <Panel.Header>
+                <h3 className='t-panel-title'>GitHub Personal Access Token</h3>
+              </Panel.Header>
+              <Panel.Body>
+                <Alert type='default' theme='light' className='mb-6'>
                   <span>
                     In order to access the GitHub API and any private GitHub
                     repositories, we need to authenticate with{' '}
                     <a
                       target='_blank'
                       href={LINKS_TO.createPAt}
-                      className='t-link font-bold'
+                      className='t-link font-semibold'
                       rel='noopener noreferrer'
                     >
                       a personal access token
@@ -53,7 +55,7 @@ const Settings: NextPage = () => {
                     flow) may become available in the future.
                   </span>
                 </Alert>
-                <form className='mb-6'>
+                <form className='mb-4'>
                   <div className='flex items-center space-x-3'>
                     <Input
                       className='max-w-lg'
