@@ -211,17 +211,8 @@
             border-gray-450;
 }
 
-.t-alert-full-width {
-  @apply border-0
-         border-b
-         text-sm
-         py-2.5
-         px-8
-         rounded-none;
-}
-
-.t-alert-warning {
-  background: #FEF7EB;
-  color: #705F43;
-  border-color: #FCE2B6;
+.t-alert-stack {
+  top: unset !important;
+  @apply bottom-6
+         right-6;
 }
