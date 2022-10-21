@@ -21,6 +21,7 @@ services:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
       GITHUB_RATE_LIMIT: 1/2
       ENCRYPTION_SECRET: password
+      DEBUG: 1
     ports:
       - 3301:8080
 
