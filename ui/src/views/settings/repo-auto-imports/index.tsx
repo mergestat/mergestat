@@ -33,7 +33,7 @@ const AutoImports: NextPage = () => {
             </div>
             {loading
               ? <Loading />
-              : <div className='flex-1 p-8'>
+              : <div className='flex-1 overflow-auto p-8'>
                 <Alert type="default" className="mb-10 bg-gray-100">
                   <strong className="font-semibold">Repo auto imports</strong> automatically import repositories from a GitHub org or user, allowing MergeStat to pickup new repositories (and remove deleted ones) as they are added in GitHub.
                 </Alert>
