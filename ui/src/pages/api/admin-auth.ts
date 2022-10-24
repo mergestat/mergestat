@@ -33,7 +33,8 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const client = new Client({
         // use the connection info supplied by the parsed POSTGRES_CONNECTION url
-        connectionString: url.toString(),
+        // encodeURI since the password (or user) may contain special characters
+        connectionString: encodeURI(url.toString()),
 
         // by default this is "no timeout"
         // so we set it here to have a hard limit
