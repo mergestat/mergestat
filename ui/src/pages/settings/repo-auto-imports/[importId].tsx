@@ -38,7 +38,7 @@ const AutoImportsDetail: NextPage = () => {
     const property = data?.repoImport?.type === SYNC_REPO_METHOD.GH_ORG ? 'org' : 'user'
     setName(data?.repoImport?.settings[property])
 
-    const defaultSyncs = data?.repoImport?.settings.defaultSyncTypes
+    const defaultSyncs = data?.repoImport?.settings.defaultSyncTypes || []
 
     const list = data?.repoSyncTypes?.nodes.map(st => ({ type: st.type, description: st.description, shortName: st.shortName, checked: defaultSyncs.includes(st.type) }))
     setSyncsTypesArray(list || [])
