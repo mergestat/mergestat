@@ -13,14 +13,18 @@ END IF;
 END
 $do$;
 
---ensure all tables have select privilege
+--ensure all tables and sequences have select privilege
 GRANT USAGE ON SCHEMA public TO readaccess;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO readaccess;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO readaccess;
 --ensure all tables created in the future have select privilege
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readaccess;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON SEQUENCES TO readaccess;
 
---ensure all tables have select privilege
+--ensure all tables and sequences have select privilege
 GRANT USAGE ON SCHEMA mergestat TO readaccess;
 GRANT SELECT ON ALL TABLES IN SCHEMA mergestat TO readaccess;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA mergestat TO readaccess;
 --ensure all tables created in the future have select privilege
 ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT SELECT ON TABLES TO readaccess;
+ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT SELECT ON SEQUENCES TO readaccess;
