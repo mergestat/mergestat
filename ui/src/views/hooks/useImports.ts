@@ -9,14 +9,14 @@ import useRepos from './useRepos'
 import useSyncTypes from './useSyncTypes'
 
 const useImports = () => {
-  const [{ imports, search }] = useRepositoriesContext()
+  const [{ imports }] = useRepositoriesContext()
   const { setImports, setShowAddRepositoryModal } = useRepositoriesSetState()
 
   const [importType, setImportType] = useState(SYNC_REPO_METHOD.GH_ORG)
   const [orgUserText, setOrgUserText] = useState('')
 
   const { syncsTypesArray } = useSyncTypes()
-  const { refetch } = useRepos(search)
+  const { refetch } = useRepos()
 
   const [autoImportRepos] = useMutation(AUTO_IMPORT_REPOS, {
     onCompleted: () => {

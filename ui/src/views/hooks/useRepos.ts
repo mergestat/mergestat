@@ -2,13 +2,17 @@ import { useQuery } from '@apollo/client'
 import { useCallback, useEffect, useState } from 'react'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
+import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 
-const useRepos = (search: string, poll = false) => {
+const useRepos = (poll = false) => {
   const [showTable, setShowTable] = useState(false)
   const [showBanner, setShowBanner] = useState(false)
 
+  const [{ search, rowsRepos, pageRepos }] = useRepositoriesContext()
+  const { setTotalRepos } = useRepositoriesSetState()
+
   const { loading, error, data, refetch } = useQuery<GetReposQuery>(GET_REPOS, {
-    variables: { search },
+    variables: { search, first: rowsRepos, offset: (pageRepos * rowsRepos) },
     fetchPolicy: 'no-cache',
     ...(poll && { pollInterval: 5000 }),
   })
@@ -18,6 +22,8 @@ const useRepos = (search: string, poll = false) => {
       setShowTable(true)
     }
     setShowBanner(data?.repoImports?.totalCount ? data?.repoImports?.totalCount > 0 : false)
+    setTotalRepos(data?.repos?.totalCount || 0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, showTable])
 
   useEffect(() => {
@@ -25,8 +31,8 @@ const useRepos = (search: string, poll = false) => {
   }, [loading, error, validateData])
 
   useEffect(() => {
-    refetch({ search })
-  }, [refetch, search])
+    refetch({ search, first: rowsRepos, offset: (pageRepos * rowsRepos) })
+  }, [refetch, search, rowsRepos, pageRepos])
 
   return { showTable, loading, data, showBanner, refetch }
 }

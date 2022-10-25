@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 const GET_REPOS = gql`
-  query getRepos($search: String!) {
+  query getRepos($search: String!, $first: Int, $offset: Int) {
     serviceAuthCredentials(filter: {type: {equalTo: "GITHUB_PAT"}}) {
       totalCount
     }
@@ -11,7 +11,12 @@ const GET_REPOS = gql`
     allRepos: repos {
       totalCount
     }
-    repos(orderBy: [CREATED_AT_DESC, REPO_DESC], filter: {repo: {includes: $search}}) {
+    repos(
+      orderBy: [CREATED_AT_DESC, REPO_DESC]
+      filter: {repo: {includes: $search}}
+      first: $first
+      offset: $offset
+    ) {
       totalCount
       nodes {
         id
