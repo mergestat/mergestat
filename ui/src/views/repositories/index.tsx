@@ -39,10 +39,10 @@ const RepositoriesView: React.FC = () => {
 
         {/* Metrics */}
         {showTable &&
-          <div className='md_grid md_grid-cols-3 gap-6 space-y-4 md_space-y-0 mb-6'>
+          <div className='md_grid md_grid-cols-3 gap-6 space-y-4 md_space-y-0 mb-8'>
             <Stat className='shadow-sm w-full'>
               <Stat.Left>
-                  <Stat.Label>Total number of repos</Stat.Label>
+                  <Stat.Label>Total repos</Stat.Label>
                   <Stat.Number>{data?.allRepos?.totalCount}</Stat.Number>
               </Stat.Left>
               <Stat.Right>
@@ -51,7 +51,7 @@ const RepositoriesView: React.FC = () => {
             </Stat>
             <Stat className='shadow-sm w-full'>
               <Stat.Left>
-                  <Stat.Label>Total number of repo syncs</Stat.Label>
+                  <Stat.Label>Total repo syncs</Stat.Label>
                   <Stat.Number>{repoSyncs}</Stat.Number>
               </Stat.Left>
               <Stat.Right>
@@ -60,7 +60,7 @@ const RepositoriesView: React.FC = () => {
             </Stat>
             <Stat className='shadow-sm w-full'>
               <Stat.Left>
-                  <Stat.Label>Total repo sync errors</Stat.Label>
+                  <Stat.Label>Latest syncs with errors</Stat.Label>
                   {/* TODO: convert static number to calculated */}
                   <Stat.Number>
                     <div className='flex items-center space-x-1.5'>
@@ -76,7 +76,7 @@ const RepositoriesView: React.FC = () => {
           </div>
         }
 
-        {showTable && <div className='mb-8'><FilterHeader /></div>}
+        {showTable && <div className='mb-6'><FilterHeader /></div>}
 
         {loading
           ? <Loading />
