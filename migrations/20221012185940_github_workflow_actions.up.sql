@@ -68,7 +68,6 @@ CREATE TABLE public.github_actions_workflow_run_jobs(
     log TEXT,
     run_url TEXT,
     job_node_id TEXT,
-    workflow_job_node_id TEXT,
     head_sha TEXT,
     url TEXT,
     html_url TEXT,

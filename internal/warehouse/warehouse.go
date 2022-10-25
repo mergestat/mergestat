@@ -130,7 +130,7 @@ func (w *warehouse) getPaginationOpt() (int, error) {
 	var paginationEnv string
 
 	if paginationEnv := os.Getenv("GIT_WORKFLOW_PAGINATION"); paginationEnv == "" {
-		return 30, nil
+		return 1, nil
 	}
 
 	paginationOpt, err := strconv.Atoi(paginationEnv)
@@ -166,7 +166,7 @@ func (w *warehouse) interfaceToSqlJSONB(value interface{}) (pgtype.JSONB, error)
 
 func (w *warehouse) stringToSqlnullString(v *string) sql.NullString {
 	sqlNullString := sql.NullString{}
-
+	sqlNullString.Valid = true
 	if v == nil {
 		v = new(string)
 		sqlNullString.Valid = false
@@ -179,6 +179,7 @@ func (w *warehouse) stringToSqlnullString(v *string) sql.NullString {
 
 func (w *warehouse) dateToSqlNullTime(v *time.Time) sql.NullTime {
 	sqlNullTime := sql.NullTime{}
+	sqlNullTime.Valid = true
 
 	if v.IsZero() {
 		v = &time.Time{}
@@ -191,6 +192,7 @@ func (w *warehouse) dateToSqlNullTime(v *time.Time) sql.NullTime {
 
 func (w *warehouse) int32ToSqlNullInt32(v *int32) sql.NullInt32 {
 	sqlNullInt32 := sql.NullInt32{}
+	sqlNullInt32.Valid = true
 
 	if v == nil {
 		v = new(int32)
@@ -204,6 +206,7 @@ func (w *warehouse) int32ToSqlNullInt32(v *int32) sql.NullInt32 {
 
 func (w *warehouse) int64ToSqlNullInt64(v *int64) sql.NullInt64 {
 	sqlNullInt64 := sql.NullInt64{}
+	sqlNullInt64.Valid = true
 
 	if v == nil {
 		v = new(int64)
