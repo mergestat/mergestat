@@ -64,13 +64,31 @@ func repoLocator() services.RepoLocator {
 // 	return http.DefaultTransport.RoundTrip(r)
 // }
 
-func main() {
-	debug := os.Getenv("DEBUG") == "1"
-	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
+// logLevelFromEnv retrieves the log level from the LOG_LEVEL environment variable
+// and returns the corresponding zerolog level.
+func logLevelFromEnv() zerolog.Level {
+	switch os.Getenv("LOG_LEVEL") {
+	case "debug":
+		return zerolog.DebugLevel
+	case "info":
+		return zerolog.InfoLevel
+	case "warn":
+		return zerolog.WarnLevel
+	case "error":
+		return zerolog.ErrorLevel
+	default:
+		return zerolog.InfoLevel
+	}
+}
 
-	if fileInfo, _ := os.Stdout.Stat(); (fileInfo.Mode()&os.ModeCharDevice) != 0 || debug {
-		l := logger.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.Stamp}).Level(zerolog.DebugLevel)
-		logger = l
+func main() {
+	logger := zerolog.New(os.Stderr).With().Timestamp().Logger().Level(logLevelFromEnv())
+	prettyLogs := os.Getenv("PRETTY_LOGS") == "1"
+
+	// if stdout is a terminal or if the PRETTY_LOGS environment variable is set
+	// to 1, use a human-friendly log formatter
+	if fileInfo, _ := os.Stdout.Stat(); (fileInfo.Mode()&os.ModeCharDevice) != 0 || prettyLogs {
+		logger = logger.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.Stamp})
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
