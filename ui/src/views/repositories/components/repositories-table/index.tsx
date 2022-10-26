@@ -2,15 +2,13 @@ import { Badge, Button, Panel } from '@mergestat/blocks'
 import { ChevronRightIcon, CircleInformationFilledIcon, TrashIcon } from '@mergestat/icons'
 import React, { PropsWithChildren } from 'react'
 import type { RepoDataPropsT } from 'src/@types'
-import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
-import { mapToRepoData } from 'src/api-logic/mappers/repos'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { useRepositoriesSetState } from 'src/state/contexts'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import { RepositoryName, RepositoryStatus } from './repositories-table-columns'
 
 type RepositoriesTableProps = PropsWithChildren<{
-  data?: GetReposQuery
+  repos: Array<RepoDataPropsT>
 }>
 
 export type RowLinkProps = {
@@ -18,8 +16,7 @@ export type RowLinkProps = {
   focusable?: boolean
 }
 
-export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ data }: RepositoriesTableProps) => {
-  const repos: Array<RepoDataPropsT> = mapToRepoData(data)
+export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: RepositoriesTableProps) => {
   const { setShowRemoveRepositoryModal, setRepoToRemove } = useRepositoriesSetState()
 
   const prepareToRemove = (id: string, name: string, autoImported: boolean) => {

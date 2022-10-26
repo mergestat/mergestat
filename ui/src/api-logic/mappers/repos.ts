@@ -1,4 +1,4 @@
-import { RepoDataPropsT, RepoDataStatusT, RepoSyncStateT } from 'src/@types'
+import { RepoDataMetrics, RepoDataPropsT, RepoDataStatusT, RepoMetrics, RepoSyncStateT } from 'src/@types'
 import { getStatus } from 'src/utils'
 import { GITHUB_URL, SYNC_REPO_METHOD } from 'src/utils/constants'
 import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
@@ -21,10 +21,14 @@ interface SyncCounter {
  * @param data Repo list that comes from data base in GetReposQuery format
  * @returns Repo list from data base mapped to RepoDataPropsT list
  */
-const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> => {
-  const mappedData: Array<RepoDataPropsT> = []
+const mapToRepoData = (data: GetReposQuery | undefined): RepoDataMetrics => {
+  const metrics: RepoMetrics = { totalRepoSyncs: 0, totalRepoSyncsError: 0 }
+  const repos: Array<RepoDataPropsT> = []
 
   data?.repos?.nodes.forEach((r) => {
+    // Increment repo with syncs
+    metrics.totalRepoSyncs += r.repoSyncs.totalCount > 0 ? 1 : 0
+
     // Consolidated Repo info
     const repoInfo: RepoDataPropsT = {
       id: r?.id,
@@ -42,10 +46,13 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
     }
 
     repoInfo.status = getSyncStatuses(r as Repo, repoInfo)
-    mappedData.push(repoInfo)
+    repos.push(repoInfo)
+
+    const errors = repoInfo.status.find(s => s.type === 'error')
+    metrics.totalRepoSyncsError += errors?.count ? errors.count : 0
   })
 
-  return mappedData
+  return { repos, metrics }
 }
 
 /**
