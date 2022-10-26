@@ -24,7 +24,7 @@ require (
 	github.com/mergestat/gitutils v0.0.0-20221018151031-9eedcfea6491
 	github.com/prometheus/client_golang v1.13.0
 	github.com/satori/go.uuid v1.2.0
-	github.com/shurcooL/githubv4 v0.0.0-20220922232305-70b4d362a8cb
+	github.com/shurcooL/githubv4 v0.0.0-20221021030919-a134b1472cc7
 	go.riyazali.net/sqlite v0.0.0-20221009071723-df6a26c107b6
 	golang.org/x/oauth2 v0.0.0-20221006150949-b44042a4b9c1
 )
