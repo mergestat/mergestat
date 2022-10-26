@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1-experimental
 
-FROM golang:1.18-buster AS builder
+FROM golang:1.19-buster AS builder
 RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates cmake libssl-dev
 COPY scripts/install_libgit2.sh install_libgit2.sh
 RUN ./install_libgit2.sh
