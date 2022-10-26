@@ -22,6 +22,9 @@ type RepositoriesContextT = {
   importToRemove: RepoInfoT | null
   csvText: string
   imports: ImportSync[]
+  totalRepos: number
+  rowsRepos: number
+  pageRepos: number
 }
 
 type UseRepositoriesContextT = [
@@ -40,7 +43,10 @@ const initialState: RepositoriesContextT = {
   repoToRemove: null,
   importToRemove: null,
   csvText: '',
-  imports: []
+  imports: [],
+  totalRepos: 0,
+  rowsRepos: 20,
+  pageRepos: 0
 }
 
 function useRepositories(): UseRepositoriesContextT {
@@ -142,6 +148,27 @@ function useRepositoriesSetState() {
     }))
   }
 
+  const setTotalRepos = (totalRepos: number) => {
+    setState(prev => ({
+      ...prev,
+      totalRepos
+    }))
+  }
+
+  const setRowsRepos = (rowsRepos: number) => {
+    setState(prev => ({
+      ...prev,
+      rowsRepos
+    }))
+  }
+
+  const setPageRepos = (pageRepos: number) => {
+    setState(prev => ({
+      ...prev,
+      pageRepos
+    }))
+  }
+
   const resetValues = () => {
     setState(prev => ({
       ...prev,
@@ -163,6 +190,9 @@ function useRepositoriesSetState() {
     setImportToRemove,
     setCSVText,
     setImports,
+    setTotalRepos,
+    setRowsRepos,
+    setPageRepos,
     resetValues
   }
 }

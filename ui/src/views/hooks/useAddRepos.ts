@@ -11,8 +11,8 @@ const useAddRepos = () => {
   const [addedWarning, setAddedWarning] = useState(0)
 
   const { setShowAddRepositoryModal, setReposToAdd } = useRepositoriesSetState()
-  const [{ search, reposToAdd, csvText }] = useRepositoriesContext()
-  const { refetch } = useRepos(search)
+  const [{ reposToAdd, csvText }] = useRepositoriesContext()
+  const { refetch } = useRepos()
 
   const [addRepo] = useMutation(ADD_REPO, {
     onError: (error: ApolloError) => {

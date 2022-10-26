@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/client'
 import { Alert, Button, Modal, Toolbar } from '@mergestat/blocks'
 import { TrashIcon, XIcon } from '@mergestat/icons'
-import cx from 'classnames'
 import { useRouter } from 'next/router'
 import React, { useCallback } from 'react'
 import { REMOVE_REPO } from 'src/api-logic/graphql/mutations/repos'
@@ -11,9 +10,9 @@ import { TEST_IDS } from 'src/utils/constants'
 import useRepos from 'src/views/hooks/useRepos'
 
 export const RemoveRepositoryModal: React.FC = () => {
-  const [{ repoToRemove, search }] = useRepositoriesContext()
+  const [{ repoToRemove }] = useRepositoriesContext()
   const { setShowRemoveRepositoryModal } = useRepositoriesSetState()
-  const { refetch } = useRepos(search)
+  const { refetch } = useRepos()
   const router = useRouter()
 
   const close = useCallback(() => {

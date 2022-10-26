@@ -10166,6 +10166,8 @@ export type GetSyncTypesQuery = { repoSyncTypes?: { nodes: Array<{ type: string,
 
 export type GetReposQueryVariables = Exact<{
   search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 

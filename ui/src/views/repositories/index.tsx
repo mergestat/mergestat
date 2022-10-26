@@ -9,8 +9,8 @@ import { EmptyRepository } from './components/empty-repository'
 import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
 const RepositoriesView: React.FC = () => {
-  const [{ showAddRepositoryModal, showRemoveRepositoryModal, search }] = useRepositoriesContext()
-  const { showTable, loading, data, showBanner } = useRepos(search, true)
+  const [{ showAddRepositoryModal, showRemoveRepositoryModal }] = useRepositoriesContext()
+  const { showTable, loading, data, showBanner } = useRepos(true)
 
   return (
     <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">

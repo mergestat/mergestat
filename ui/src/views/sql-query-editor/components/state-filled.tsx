@@ -3,7 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon, CircleCheckFilledIcon, ClipboardIcon
 import cx from 'classnames'
 import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
-import { copy, filterByAllFields, paginate } from 'src/utils'
+import { copy, filterByAllFields, getMaxPagination, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
 
 type QueryEditorFilledProps = {
@@ -33,11 +33,6 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
       }
     }
     return value.toString().replace(/,/g, '.').replace(/\n/g, ' ')
-  }
-
-  const getMax = () => {
-    const max = (page + 1) * rows
-    return max > total ? total : max
   }
 
   const isSpecial = (value: string | number | boolean) => {
@@ -210,7 +205,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             <Toolbar.Item className='pl-4'>
               <div className='flex items-center space-x-2'>
                 <p className='t-text-muted whitespace-nowrap text-sm'>
-                  {`${(page * rows) + 1}-${getMax()} of ${total}`}
+                  {`${(page * rows) + 1}-${getMaxPagination(page, rows, total)} of ${total}`}
                 </p>
                 <Button
                   isIconOnly
@@ -222,7 +217,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                 />
                 <Button
                   isIconOnly
-                  disabled={getMax() >= total}
+                  disabled={getMaxPagination(page, rows, total) >= total}
                   skin='borderless'
                   startIcon={<ChevronRightIcon className='t-icon' />}
                   onClick={() => setPage(page + 1)}

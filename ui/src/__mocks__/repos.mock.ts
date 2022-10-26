@@ -176,7 +176,7 @@ export const mockNoGitHubPat = (gitHubPat: boolean): GetReposQuery => ({
 export const apolloMockReposWithData = {
   request: {
     query: GET_REPOS,
-    variables: { search: '' }
+    variables: { search: '', first: 20, offset: 0 }
   },
   result: {
     data: mockRepoData
@@ -186,7 +186,7 @@ export const apolloMockReposWithData = {
 export const apolloMockJustAngularRepo = {
   request: {
     query: GET_REPOS,
-    variables: { search: DynamicValues.angular }
+    variables: { search: DynamicValues.angular, first: 20, offset: 0 }
   },
   result: {
     data: mockJustAngularRepo
@@ -196,7 +196,7 @@ export const apolloMockJustAngularRepo = {
 export const apolloMockWithoutResults = {
   request: {
     query: GET_REPOS,
-    variables: { search: DynamicValues.weirdSearch }
+    variables: { search: DynamicValues.weirdSearch, first: 20, offset: 0 }
   },
   result: {
     data: mockWithoutResult
@@ -206,7 +206,7 @@ export const apolloMockWithoutResults = {
 export const apolloMockReposEmpty = {
   request: {
     query: GET_REPOS,
-    variables: { search: '' }
+    variables: { search: '', first: 20, offset: 0 }
   },
   result: {
     data: undefined
@@ -216,7 +216,7 @@ export const apolloMockReposEmpty = {
 export const apolloMockReposEmptyNoGitHubPat = {
   request: {
     query: GET_REPOS,
-    variables: { search: '' }
+    variables: { search: '', first: 20, offset: 0 }
   },
   result: {
     data: mockNoGitHubPat(false)
@@ -226,7 +226,7 @@ export const apolloMockReposEmptyNoGitHubPat = {
 export const apolloMockReposEmptyGitHubPat = {
   request: {
     query: GET_REPOS,
-    variables: { search: '' }
+    variables: { search: '', first: 20, offset: 0 }
   },
   result: {
     data: mockNoGitHubPat(true)

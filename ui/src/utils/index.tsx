@@ -162,3 +162,15 @@ export const filterByAllFields = (array: Array<string | number | boolean>, searc
     }
   })
 }
+
+/**
+ * Method to get pagination last item
+ * @param page Current page
+ * @param rows Current rows per page
+ * @param total Total items
+ * @returns pagination last item
+ */
+export const getMaxPagination = (page: number, rows: number, total: number) => {
+  const max = (page + 1) * rows
+  return max > total ? total : max
+}
