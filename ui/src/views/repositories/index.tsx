@@ -88,7 +88,7 @@ const RepositoriesView: React.FC = () => {
                 <Stat.Label>Latest syncs with errors</Stat.Label>
                 <Stat.Number>
                   <div className='flex space-x-1.5 items-center'>
-                    {<CircleErrorFilledIcon className='t-icon t-icon-danger' />}
+                    {metrics && metrics?.totalRepoSyncsError > 0 && <CircleErrorFilledIcon className='t-icon t-icon-danger' />}
                     <MetricNumber loading={loading} metric={metrics?.totalRepoSyncsError || 0} />
                   </div>
                 </Stat.Number>
