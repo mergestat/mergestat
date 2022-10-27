@@ -1,6 +1,6 @@
 SET check_function_bodies = false;
-CREATE EXTENSION pgcrypto;
-CREATE SCHEMA mergestat;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE SCHEMA IF NOT EXISTS mergestat;
 CREATE FUNCTION mergestat.set_current_timestamp_updated_at() RETURNS trigger
 LANGUAGE plpgsql
 AS $$
