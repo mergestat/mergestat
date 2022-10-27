@@ -1,6 +1,6 @@
 BEGIN;
 INSERT INTO mergestat.repo_sync_types (type, description, short_name, priority, type_group)
-VALUES ('GITHUB_ACTIONS', 'Retrieves all the actions of a GitHub Repo', 'GitHub Actions', 2, 'GITHUB')
+VALUES ('GITHUB_ACTIONS', 'Retrieves all the Actions Workflows, Runs, Jobs, and Logs of a GitHub Repo', 'GitHub Actions', 2, 'GITHUB')
 ON CONFLICT DO NOTHING;
 
 CREATE TABLE public.github_actions_workflows(

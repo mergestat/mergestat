@@ -47,7 +47,7 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 	var err error
 	var resp *github.Response
 	var workflowsPage *github.Workflows
-	pagination, err := w.getPaginationOpt("WORKFLOWS_PAGINATION")
+	pagination, err := w.getPaginationOpt("GITHUB_WORKFLOW_PER_PAGE")
 
 	if err != nil {
 		return err
@@ -94,7 +94,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	var err error
 	var resp *github.Response
 	var workflowRunsPage *github.WorkflowRuns
-	pagination, err := w.getPaginationOpt("RUNS_PAGINATION")
+	pagination, err := w.getPaginationOpt("GITHUB_WORKFLOW_RUNS_PER_PAGE")
 
 	if err != nil {
 		return err
@@ -153,7 +153,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	var err error
 	var resp *github.Response
 	var workflowRunJobsPage *github.Jobs
-	pagination, err := w.getPaginationOpt("JOBS_PAGINATION")
+	pagination, err := w.getPaginationOpt("GITHUB_WORKFLOW_JOBS_PER_PAGE")
 	if err != nil {
 		return err
 	}
@@ -163,7 +163,6 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	}
 
 	for _, workflowRun := range workflowRunsPage {
-
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
 			w.logger.Debug().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Msg("getting jobs of")

@@ -126,10 +126,10 @@ func (w *warehouse) createTempDirForGitClone() (string, func(), error) {
 	}, nil
 }
 
-func (w *warehouse) getPaginationOpt(paginationType string) (int, error) {
+func (w *warehouse) getPaginationOpt(pagination string) (int, error) {
 	var paginationEnv string
 
-	if paginationEnv := os.Getenv(paginationType); paginationEnv == "" {
+	if paginationEnv = os.Getenv(pagination); len(paginationEnv) <= 0 {
 		return 30, nil
 	}
 
