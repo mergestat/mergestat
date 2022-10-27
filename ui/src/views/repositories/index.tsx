@@ -19,7 +19,7 @@ interface MetricNumberProp {
 
 const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric }: MetricNumberProp) => {
   return (
-    <div className='h-10'>
+    <div>
       {loading ? <Spinner size="sm" /> : metric}
     </div>
   )
@@ -87,8 +87,8 @@ const RepositoriesView: React.FC = () => {
               <Stat.Left>
                 <Stat.Label>Latest syncs with errors</Stat.Label>
                 <Stat.Number>
-                  <div className='flex space-x-1.5'>
-                    {metrics && metrics?.totalRepoSyncsError > 0 && <CircleErrorFilledIcon className='t-icon t-icon-danger mt-1' />}
+                  <div className='flex space-x-1.5 items-center'>
+                    {<CircleErrorFilledIcon className='t-icon t-icon-danger' />}
                     <MetricNumber loading={loading} metric={metrics?.totalRepoSyncsError || 0} />
                   </div>
                 </Stat.Number>
