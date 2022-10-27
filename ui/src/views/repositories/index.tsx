@@ -51,7 +51,7 @@ const RepositoriesView: React.FC = () => {
             <Stat className='shadow-sm w-full'>
               <Stat.Left>
                 <Stat.Label>Total repos</Stat.Label>
-                <Stat.Number>{data?.repos?.totalCount}</Stat.Number>
+                <Stat.Number>{data?.allRepos?.totalCount}</Stat.Number>
               </Stat.Left>
               <Stat.Right>
                 <ColoredBox size='12'><RepositoryIcon className='t-icon t-icon-default' /></ColoredBox>
