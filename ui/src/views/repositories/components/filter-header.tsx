@@ -13,11 +13,11 @@ export const FilterHeader: React.FC = () => {
   const onChange = debounce((e) => setSearch(e.target.value), 300)
 
   return (
-    <div className="flex h-14 bg-white items-center justify-between px-8">
+    <div className='mb-6 w-full flex'>
       <Input data-testid={TEST_IDS.inputRepoSearch}
         placeholder="Search..."
-        startIcon={<SearchIcon className="t-icon text-gray-400" />}
-        className="w-full lg_w-2/5"
+        startIcon={<SearchIcon className="t-icon t-icon-muted" />}
+        className="lg_w-2/5"
         onChange={onChange}
       />
 

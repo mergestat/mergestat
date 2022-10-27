@@ -11,6 +11,10 @@ const GET_REPOS = gql`
     allRepos: repos {
       totalCount
     }
+    allEnabledRepos: repoSyncs(condition: {scheduleEnabled: true}) {
+      totalCount
+    }
+    syncErrors: execSQL(query: "WITH ranked_completed_syncs AS ( SELECT rsq.id, rsq.repo_sync_id, rsq.done_at, RANK() OVER(PARTITION BY rsq.repo_sync_id ORDER BY rsq.done_at DESC) AS rank_num FROM mergestat.repo_sync_queue AS rsq WHERE rsq.repo_sync_id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status = 'RUNNING' OR status = 'QUEUED') ) SELECT COUNT(DISTINCT rcs.id) AS syncs_error_count FROM ranked_completed_syncs AS rcs INNER JOIN mergestat.repo_sync_logs AS rsl ON rcs.id = rsl.repo_sync_queue_id WHERE rank_num = 1 AND log_type = 'ERROR'")
     repos(
       orderBy: [CREATED_AT_DESC, REPO_DESC]
       filter: {repo: {includes: $search}}
