@@ -21,7 +21,7 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
   const [state, setState] = useState<States>(States.Empty)
   const [rowLimitReached, setRowLimitReached] = useState(true)
 
-  const [executeSQL, { error, loading, data }] = useLazyQuery<ExecuteSqlQuery>(EXECUTE_SQL, {
+  const [executeSQL, { loading, error, data }] = useLazyQuery<ExecuteSqlQuery>(EXECUTE_SQL, {
     fetchPolicy: 'no-cache'
   })
 
