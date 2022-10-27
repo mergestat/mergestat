@@ -12,6 +12,19 @@ import useRepos from 'src/views/hooks/useRepos'
 import { EmptyRepository } from './components/empty-repository'
 import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
+interface MetricNumberProp {
+  loading: boolean
+  metric: number
+}
+
+const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric }: MetricNumberProp) => {
+  return (
+    <div className='h-10'>
+      {loading ? <Spinner size="sm" /> : metric}
+    </div>
+  )
+}
+
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showRemoveRepositoryModal }] = useRepositoriesContext()
   const { showTable, loading, data, showBanner } = useRepos(true)
@@ -51,7 +64,9 @@ const RepositoriesView: React.FC = () => {
             <Stat className='shadow-sm w-full'>
               <Stat.Left>
                 <Stat.Label>Total repos</Stat.Label>
-                <Stat.Number>{data?.allRepos?.totalCount}</Stat.Number>
+                <Stat.Number>
+                  <MetricNumber loading={loading} metric={data?.allRepos?.totalCount || 0} />
+                </Stat.Number>
               </Stat.Left>
               <Stat.Right>
                 <ColoredBox size='12'><RepositoryIcon className='t-icon t-icon-default' /></ColoredBox>
@@ -60,7 +75,9 @@ const RepositoriesView: React.FC = () => {
             <Stat className='shadow-sm w-full'>
               <Stat.Left>
                 <Stat.Label>Total repo syncs</Stat.Label>
-                <Stat.Number>{metrics?.totalRepoSyncs}</Stat.Number>
+                <Stat.Number>
+                  <MetricNumber loading={loading} metric={metrics?.totalRepoSyncs || 0} />
+                </Stat.Number>
               </Stat.Left>
               <Stat.Right>
                 <ColoredBox size='12'><TableIcon className='t-icon t-icon-default' /></ColoredBox>
@@ -70,9 +87,9 @@ const RepositoriesView: React.FC = () => {
               <Stat.Left>
                 <Stat.Label>Latest syncs with errors</Stat.Label>
                 <Stat.Number>
-                  <div className='flex items-center space-x-1.5'>
-                    {metrics && metrics?.totalRepoSyncsError > 0 && <CircleErrorFilledIcon className='t-icon t-icon-danger' />}
-                    <span>{metrics?.totalRepoSyncsError}</span>
+                  <div className='flex space-x-1.5'>
+                    {metrics && metrics?.totalRepoSyncsError > 0 && <CircleErrorFilledIcon className='t-icon t-icon-danger mt-1' />}
+                    <MetricNumber loading={loading} metric={metrics?.totalRepoSyncsError || 0} />
                   </div>
                 </Stat.Number>
               </Stat.Left>
