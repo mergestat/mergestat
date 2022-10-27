@@ -47,7 +47,7 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 	var err error
 	var resp *github.Response
 	var workflowsPage *github.Workflows
-	pagination, err := w.getPaginationOpt()
+	pagination, err := w.getPaginationOpt("WORKFLOWS_PAGINATION")
 
 	if err != nil {
 		return err
@@ -90,7 +90,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	var err error
 	var resp *github.Response
 	var workflowRunsPage *github.WorkflowRuns
-	pagination, err := w.getPaginationOpt()
+	pagination, err := w.getPaginationOpt("RUNS_PAGINATION")
 
 	if err != nil {
 		return err
@@ -106,7 +106,13 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 
 			w.logger.Debug().Msgf("getting runs of workflow=%s with id=%d with owner=%s ,repo=%s in current page %d", *workflow.Name, *workflow.ID, owner, repo, opt.Page)
 			if workflowRunsPage, resp, err = w.githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, *workflow.ID, opt); err != nil {
-				return err
+				w.logger.Warn().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).Str("Owner", owner).Str("Repo", repo).AnErr("Error", err)
+				if resp != nil {
+					break
+				}
+
+				opt.Page = resp.NextPage
+				continue
 			}
 
 			if *workflowRunsPage.TotalCount > 0 && len(workflowRunsPage.WorkflowRuns) > 0 {
@@ -143,7 +149,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	var err error
 	var resp *github.Response
 	var workflowRunJobsPage *github.Jobs
-	pagination, err := w.getPaginationOpt()
+	pagination, err := w.getPaginationOpt("JOBS_PAGINATION")
 	if err != nil {
 		return err
 	}
@@ -158,7 +164,13 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 		for {
 			w.logger.Debug().Msgf("getting jobs of workflowRun=%s with id=%d with owner=%s ,repo=%s in current page %d", *workflowRun.Name, *workflowRun.ID, owner, repo, opt.Page)
 			if workflowRunJobsPage, resp, err = w.githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, *workflowRun.ID, opt); err != nil {
-				return err
+				w.logger.Warn().Str("workflowRun", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Str("Owner", owner).Str("Repo", repo).AnErr("Error", err)
+				if resp != nil {
+					break
+				}
+
+				opt.Page = resp.NextPage
+				continue
 			}
 
 			if *workflowRunJobsPage.TotalCount > 0 && len(workflowRunJobsPage.Jobs) > 0 {
@@ -202,9 +214,12 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
 		w.logger.Debug().Msgf("getting Log of workflowJob=%s with id=%d with owner=%s ,repo=%s", *workflowJob.Name, *workflowJob.ID, owner, repo)
-		//TODO  (Ramiro Castillo) this resp error should be handled in a  retry logic pattern
 		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil {
-			return err
+			w.logger.Warn().Str("workflowJob", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Str("Owner", owner).Str("Repo", repo).AnErr("Error", err)
+			if resp != nil {
+				break
+			}
+			continue
 		}
 
 		if workflowJobLog == nil {
