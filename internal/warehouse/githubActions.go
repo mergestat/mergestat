@@ -58,10 +58,14 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 	w.logger.Info().Msgf("getting workflows for repo %s", repo)
 	// we get a page of 30 workflows until next page is 0
 	for {
-
-		w.logger.Debug().Msgf("getting workflows with owner=%s ,repo=%s in current page %d", owner, repo, opt.Page)
 		if workflowsPage, resp, err = w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions); err != nil {
-			return err
+			w.logger.Warn().AnErr("Error", err).Msg("error occurred")
+			if resp != nil {
+				break
+			}
+
+			opt.Page = resp.NextPage
+			continue
 		}
 
 		w.restRatelimitHandler(ctx, resp)
@@ -104,9 +108,9 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		// we get a page of 30 workflow runs until next page is 0
 		for {
 
-			w.logger.Debug().Msgf("getting runs of workflow=%s with id=%d with owner=%s ,repo=%s in current page %d", *workflow.Name, *workflow.ID, owner, repo, opt.Page)
+			w.logger.Debug().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).Msg("getting runs of")
 			if workflowRunsPage, resp, err = w.githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, *workflow.ID, opt); err != nil {
-				w.logger.Warn().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).Str("Owner", owner).Str("Repo", repo).AnErr("Error", err)
+				w.logger.Warn().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).AnErr("Error", err).Msg("error occurred")
 				if resp != nil {
 					break
 				}
@@ -162,9 +166,9 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
-			w.logger.Debug().Msgf("getting jobs of workflowRun=%s with id=%d with owner=%s ,repo=%s in current page %d", *workflowRun.Name, *workflowRun.ID, owner, repo, opt.Page)
+			w.logger.Debug().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Msg("getting jobs of")
 			if workflowRunJobsPage, resp, err = w.githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, *workflowRun.ID, opt); err != nil {
-				w.logger.Warn().Str("workflowRun", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Str("Owner", owner).Str("Repo", repo).AnErr("Error", err)
+				w.logger.Warn().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).AnErr("Error", err).Msg("error occurred")
 				if resp != nil {
 					break
 				}
@@ -213,9 +217,9 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
-		w.logger.Debug().Msgf("getting Log of workflowJob=%s with id=%d with owner=%s ,repo=%s", *workflowJob.Name, *workflowJob.ID, owner, repo)
+		w.logger.Debug().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting log of")
 		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil {
-			w.logger.Warn().Str("workflowJob", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Str("Owner", owner).Str("Repo", repo).AnErr("Error", err)
+			w.logger.Warn().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).AnErr("Error", err).Msg("error occurred")
 			if resp != nil {
 				break
 			}
