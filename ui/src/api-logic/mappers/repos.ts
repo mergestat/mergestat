@@ -22,13 +22,9 @@ interface SyncCounter {
  * @returns Repo list from data base mapped to RepoDataPropsT list
  */
 const mapToRepoData = (data: GetReposQuery | undefined): RepoDataMetrics => {
-  const metrics: RepoMetrics = { totalRepoSyncs: 0, totalRepoSyncsError: 0 }
   const repos: Array<RepoDataPropsT> = []
 
   data?.repos?.nodes.forEach((r) => {
-    // Increment repo with syncs
-    metrics.totalRepoSyncs += r.repoSyncs.totalCount > 0 ? 1 : 0
-
     // Consolidated Repo info
     const repoInfo: RepoDataPropsT = {
       id: r?.id,
@@ -47,10 +43,12 @@ const mapToRepoData = (data: GetReposQuery | undefined): RepoDataMetrics => {
 
     repoInfo.status = getSyncStatuses(r as Repo, repoInfo)
     repos.push(repoInfo)
-
-    const errors = repoInfo.status.find(s => s.type === 'error')
-    metrics.totalRepoSyncsError += errors?.count ? errors.count : 0
   })
+
+  const metrics: RepoMetrics = {
+    totalRepoSyncs: data?.allEnabledRepos?.totalCount || 0,
+    totalRepoSyncsError: data?.syncErrors ? data?.syncErrors[0]?.syncs_error_count : 0
+  }
 
   return { repos, metrics }
 }
