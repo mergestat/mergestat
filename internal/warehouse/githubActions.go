@@ -60,7 +60,7 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 	for {
 		if workflowsPage, resp, err = w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions); err != nil {
 			w.logger.Warn().AnErr("Error", err).Msg("error occurred")
-			if resp != nil {
+			if resp == nil {
 				break
 			}
 
@@ -111,7 +111,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 			w.logger.Debug().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).Msg("getting runs of")
 			if workflowRunsPage, resp, err = w.githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, *workflow.ID, opt); err != nil {
 				w.logger.Warn().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).AnErr("Error", err).Msg("error occurred")
-				if resp != nil {
+				if resp == nil {
 					break
 				}
 
@@ -168,7 +168,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 			w.logger.Debug().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Msg("getting jobs of")
 			if workflowRunJobsPage, resp, err = w.githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, *workflowRun.ID, opt); err != nil {
 				w.logger.Warn().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).AnErr("Error", err).Msg("error occurred")
-				if resp != nil {
+				if resp == nil {
 					break
 				}
 
@@ -219,7 +219,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 		w.logger.Debug().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting log of")
 		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil {
 			w.logger.Warn().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).AnErr("Error", err).Msg("error occurred")
-			if resp != nil {
+			if resp == nil {
 				break
 			}
 			continue
