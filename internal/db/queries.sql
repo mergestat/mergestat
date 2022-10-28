@@ -301,7 +301,7 @@ WITH t AS(
   RETURNING xmax::text
 )
 SELECT
-	COUNT(*) AS all_rows,
+    COUNT(*) AS all_rows,
     SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
     SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
 FROM t;
@@ -379,7 +379,7 @@ WITH t AS (
 		RETURNING xmax::text
 )
 SELECT
-	COUNT(*) AS all_rows,
+    COUNT(*) AS all_rows,
     SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
     SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
 FROM t;
