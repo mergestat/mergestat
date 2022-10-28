@@ -156,3 +156,230 @@ SELECT @repoID::uuid, type, priority, true
 FROM mergestat.repo_sync_types
 WHERE type = @syncType::text
 ON CONFLICT DO NOTHING;
+
+-- name: UpsertWorkflowsInPublic :exec
+WITH t AS (
+  INSERT INTO public.github_actions_workflows(
+	repo_id, 
+	id,
+	workflow_node_id,
+	name,
+	path,
+	state,
+	created_at,
+	updated_at,
+	url,
+	html_url,
+	badge_url
+	) 
+  VALUES(
+    @repoID::uuid,
+	@id::BIGINT,
+	@workflowNodeID,
+	@name,
+	@path,
+	@state,
+	@createdAt,
+	@updatedAt,
+	@url,
+	@htmlUrl,
+	@badgeUrl) 
+  ON CONFLICT (id)
+  DO UPDATE
+  SET repo_id=EXCLUDED.repo_id,
+      id=EXCLUDED.id,
+      workflow_node_id=EXCLUDED.workflow_node_id,
+      name=EXCLUDED.name,
+      path=EXCLUDED.path,
+      state=EXCLUDED.state,
+      created_at=EXCLUDED.created_at,
+      updated_at=EXCLUDED.updated_at,
+      url=EXCLUDED.url,
+      html_url=EXCLUDED.html_url,
+      badge_url=EXCLUDED.badge_url
+  RETURNING xmax::text
+) 
+SELECT
+    COUNT(*) AS all_rows,
+    SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
+    SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
+FROM t;
+
+-- name: UpserWorkflowRuns :exec
+WITH t AS(
+	INSERT INTO public.github_actions_workflow_runs(
+	repo_id,
+	id,
+	workflow_run_node_id,
+	name,
+	head_branch,
+	run_number,
+	run_attempt,
+	event,
+	status,
+	conclusion,
+	workflow_id,
+	check_suite_id,
+	check_suite_node_id,
+	url,
+	html_url,
+	pull_requests,
+	created_at,
+	updated_at,
+	run_started_at,
+	jobs_url,
+	logs_url,
+	check_suite_url,
+	artifacts_url,
+	cancel_url,
+	rerun_url,
+	head_commit,
+	workflow_url,
+	repository_url,
+	head_repository_url)
+	VALUES(
+ 	@repo_id::UUID,
+	@id,
+	@workflowRunNodeId,
+    @name,
+	@headBranch,
+	@runNumber,
+	@runAttempt,
+	@event,
+	@status,
+	@conclusion,
+	@workflowId,
+	@checkSuiteId,
+	@checkSuiteNodeId,
+	@url,
+	@htmlUrl,
+	@pullRequest::JSONB,
+	@createdAt,
+	@updatedAt,
+	@runStartedAt,
+	@jobsUrl,
+	@logsUrl,
+	@checkSuiteUrl,
+	@artifactsUrl,
+	@cancelUrl,
+	@rerunUrl,
+	@headCommit::JSONB,
+	@workflowUrl,
+	@repositoryUrl,
+	@headRepositoryUrl)
+	ON CONFLICT (id)
+    DO UPDATE
+    SET repo_id=EXCLUDED.repo_id,
+        id=EXCLUDED.id,
+		workflow_run_node_id=EXCLUDED.workflow_run_node_id,
+		name=EXCLUDED.name,
+		head_branch=EXCLUDED.head_branch,
+		run_number=EXCLUDED.run_number,
+		run_attempt=EXCLUDED.run_attempt,
+		event=EXCLUDED.event,
+		status=EXCLUDED.status,
+		conclusion=EXCLUDED.conclusion,
+		workflow_id=EXCLUDED.workflow_id,
+		check_suite_id=EXCLUDED.check_suite_id,
+		check_suite_node_id=EXCLUDED.check_suite_node_id,
+		url=EXCLUDED.url,
+		html_url=EXCLUDED.html_url,
+		pull_requests=EXCLUDED.pull_requests,
+		created_at=EXCLUDED.created_at,
+		updated_at=EXCLUDED.updated_at,
+		run_started_at=EXCLUDED.run_started_at,
+		jobs_url=EXCLUDED.jobs_url,
+		logs_url=EXCLUDED.logs_url,
+		check_suite_url=EXCLUDED.check_suite_url,
+		artifacts_url=EXCLUDED.artifacts_url,
+		cancel_url=EXCLUDED.cancel_url,
+		rerun_url=EXCLUDED.rerun_url,
+		head_commit=EXCLUDED.head_commit,
+		workflow_url=EXCLUDED.workflow_url,
+		repository_url=EXCLUDED.repository_url,
+		head_repository_url=EXCLUDED.head_repository_url
+  RETURNING xmax::text
+)
+SELECT
+    COUNT(*) AS all_rows,
+    SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
+    SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
+FROM t;
+
+-- name: UpsertWorkflowRunJobs :exec
+WITH t AS (
+	INSERT INTO public.github_actions_workflow_run_jobs (
+		repo_id,
+		id,
+		run_id,
+		log,
+		run_url,
+		job_node_id,
+		head_sha,
+		url,
+		html_url,
+		status,
+		conclusion,
+		started_at,
+		completed_at,
+		workflow_name,
+		steps,
+		check_run_url,
+		labels,
+		runner_id,
+		runner_name,
+		runner_group_id,
+		runner_group_name
+	)
+	VALUES(
+		@repoid::uuid,
+		@id::BIGINT,
+		@runid,
+		@log,
+		@runurl,
+		@jobnodeid,
+		@headsha,
+		@url,
+		@htmlurl,
+		@status,
+		@conclusion,
+		@startedat,
+		@completedAt,
+		@workflowname,
+		@steps::JSONB,
+		@checkrunurl,
+		@labels::JSONB,
+		@runnerid,
+		@runnername,
+		@runnergroupid,
+		@runnergroupname)
+		ON CONFLICT (id)
+		DO UPDATE 
+		SET repo_id=EXCLUDED.repo_id,
+		    id=EXCLUDED.id,
+			run_id=EXCLUDED.run_id,
+			log=EXCLUDED.log,
+			run_url=EXCLUDED.run_url,
+			job_node_id=EXCLUDED.job_node_id,
+			head_sha=EXCLUDED.head_sha,
+			url=EXCLUDED.url,
+			html_url=EXCLUDED.html_url,
+			status=EXCLUDED.status,
+			conclusion=EXCLUDED.conclusion,
+			started_at=EXCLUDED.started_at,
+			completed_at=EXCLUDED.completed_at,
+			workflow_name=EXCLUDED.workflow_name,
+			steps=excluded.steps,
+			check_run_url=EXCLUDED.check_run_url,
+			labels=EXCLUDED.labels,
+			runner_id=EXCLUDED.runner_id,
+			runner_name=EXCLUDED.runner_name,
+			runner_group_id=EXCLUDED.runner_group_id,
+			runner_group_name=EXCLUDED.runner_group_name
+		RETURNING xmax::text
+)
+SELECT
+    COUNT(*) AS all_rows,
+    SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
+    SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
+FROM t;

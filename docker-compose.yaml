@@ -23,6 +23,9 @@ services:
       ENCRYPTION_SECRET: password
       LOG_LEVEL: debug
       PRETTY_LOGS: 1
+      GITHUB_WORKFLOW_PER_PAGE: 30
+      GITHUB_WORKFLOW_RUNS_PER_PAGE: 30
+      GITHUB_WORKFLOW_JOBS_PER_PAGE: 30
     ports:
       - 3301:8080
 
@@ -100,11 +103,9 @@ services:
       - ./scripts/grafana/provisioning:/etc/grafana/provisioning
       - ./examples:/var/lib/examples
       - /var/lib/grafana/dashboards/
-    entrypoint: ["bash"]
+    entrypoint: [ "bash" ]
     command: > # This is to set the datasource id in the examples to the datasource created for local grafana
-      -cx 'cp -r /var/lib/examples/* /var/lib/grafana/dashboards/
-      && find /var/lib/grafana/dashboards/ -name ''*.json'' | xargs grep -rnl "$${DS_POSTGRES}" | xargs -i@ sed -i "s/\$${DS_POSTGRES}/SXQZgpP7z/g" @
-      && exec grafana-server --config="/etc/grafana/grafana.ini"'
+      -cx 'cp -r /var/lib/examples/* /var/lib/grafana/dashboards/ && find /var/lib/grafana/dashboards/ -name ''*.json'' | xargs grep -rnl "$${DS_POSTGRES}" | xargs -i@ sed -i "s/\$${DS_POSTGRES}/SXQZgpP7z/g" @ && exec grafana-server --config="/etc/grafana/grafana.ini"'
 
 volumes:
   db_data:
