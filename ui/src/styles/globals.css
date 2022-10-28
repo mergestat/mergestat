@@ -49,6 +49,12 @@
            cursor-pointer;
 }
 
+.t-table-bordered tr:last-child td {
+  @apply  border-r
+          border-l
+          border-b;
+}
+
 /* TODO(emily) re-add missing resizer styles to blocks */
 .t-resizer {
   cursor: row-resize;

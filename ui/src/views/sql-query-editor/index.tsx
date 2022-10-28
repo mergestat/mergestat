@@ -20,6 +20,7 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
   const [query, setQuery] = useState<string>(initialSQL)
   const [state, setState] = useState<States>(States.Empty)
   const [rowLimitReached, setRowLimitReached] = useState(true)
+  const [executed, setExecuted] = useState(false)
 
   const [executeSQL, { loading, error, data }] = useLazyQuery<ExecuteSqlQuery>(EXECUTE_SQL, {
     fetchPolicy: 'no-cache'
@@ -34,6 +35,11 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
     }
   }, [data])
 
+  const executeSQLQuery = () => {
+    executeSQL({ variables: { sql: query } })
+    setExecuted(true)
+  }
+
   return (
     <main className='w-full flex flex-col h-full bg-gray-50 overflow-hidden'>
       {/* Header */}
@@ -46,7 +52,7 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
             <Button className='whitespace-nowrap' label='Execute (Shift + Enter)'
               endIcon={loading && <Spinner size='sm' className='ml-2' />}
               disabled={loading}
-              onClick={() => executeSQL({ variables: { sql: query } })}
+              onClick={() => executeSQLQuery()}
             />
           </Toolbar.Right>
         </Toolbar>
@@ -58,12 +64,12 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
           query={query}
           setQuery={(text) => setQuery(text || '')}
           onEnterKey={() => {
-            if (!loading && query) { executeSQL({ variables: { sql: query } }) }
+            if (!loading && query) { executeSQLQuery() }
           }}
         />
 
         {/* Empty state */}
-        {!error && !loading && state === States.Empty && <QueryEditorEmpty />}
+        {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} />}
 
         {/* Error state */}
         {!loading && state !== States.Empty && error && <QueryEditorError errors={error} />}
