@@ -244,7 +244,7 @@ WITH t AS(
     @name,
 	@headBranch,
 	@runNumber,
-	@runAttemp,
+	@runAttempt,
 	@event,
 	@status,
 	@conclusion,

@@ -569,7 +569,7 @@ type UpserWorkflowRunsParams struct {
 	Name              sql.NullString
 	Headbranch        sql.NullString
 	Runnumber         sql.NullInt32
-	Runattemp         sql.NullInt32
+	Runattempt        sql.NullInt32
 	Event             sql.NullString
 	Status            sql.NullString
 	Conclusion        sql.NullString
@@ -608,7 +608,7 @@ func (q *Queries) UpserWorkflowRuns(ctx context.Context, arg UpserWorkflowRunsPa
 		arg.Name,
 		arg.Headbranch,
 		arg.Runnumber,
-		arg.Runattemp,
+		arg.Runattempt,
 		arg.Event,
 		arg.Status,
 		arg.Conclusion,

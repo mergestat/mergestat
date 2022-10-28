@@ -449,3 +449,9 @@ $$ language 'plpgsql';
 -- TRIGGER
 DROP TRIGGER IF EXISTS track_applied_migrations ON public.schema_migrations;
 CREATE TRIGGER track_applied_migrations AFTER INSERT ON public.schema_migrations FOR EACH ROW EXECUTE PROCEDURE track_applied_migration();
+
+--SCHEMA MIGRATIONS
+CREATE TABLE schema_migrations (
+    version BIGINT NOT NULL PRIMARY KEY,
+    dirty BOOLEAN NOT NULL
+)

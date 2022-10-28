@@ -112,9 +112,8 @@ func (w *warehouse) parseJobLogs(logsUrl *url.URL, filepathDir string, n int) (s
 	return string(bytes), nil
 }
 
-func (w *warehouse) createTempDirForGitClone() (string, func(), error) {
+func (w *warehouse) createTempDirForJobLogs() (string, func(), error) {
 	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_WORKFLOW_LOGS_PATH"), "")
-
 	if err != nil {
 		return "", nil, fmt.Errorf("temp dir: %w", err)
 	}
@@ -126,6 +125,8 @@ func (w *warehouse) createTempDirForGitClone() (string, func(), error) {
 	}, nil
 }
 
+// getPaginationOpt get the pagination env values for each workflow,runs and jobs
+// if these are not provided  will default to 30
 func (w *warehouse) getPaginationOpt(pagination string) (int, error) {
 	var paginationEnv string
 
@@ -164,7 +165,7 @@ func (w *warehouse) interfaceToSqlJSONB(value interface{}) (pgtype.JSONB, error)
 
 }
 
-func (w *warehouse) stringToSqlnullString(v *string) sql.NullString {
+func (w *warehouse) stringToSqlNullString(v *string) sql.NullString {
 	sqlNullString := sql.NullString{}
 	sqlNullString.Valid = true
 	if v == nil {
