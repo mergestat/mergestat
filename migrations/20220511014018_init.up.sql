@@ -452,6 +452,6 @@ CREATE TRIGGER track_applied_migrations AFTER INSERT ON public.schema_migrations
 
 --SCHEMA MIGRATIONS
 CREATE TABLE schema_migrations (
-    version BIGINT NOT NULL PRIMARY KEY,
-    dirty BOOLEAN NOT NULL
+    version bigint NOT NULL PRIMARY KEY,
+    dirty boolean NOT NULL
 )
