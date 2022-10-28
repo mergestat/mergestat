@@ -63,10 +63,10 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
         />
 
         {/* Empty state */}
-        {!error && state === States.Empty && <QueryEditorEmpty />}
+        {!error && !loading && state === States.Empty && <QueryEditorEmpty />}
 
         {/* Error state */}
-        {error && <QueryEditorError errors={error} />}
+        {!loading && state !== States.Empty && error && <QueryEditorError errors={error} />}
 
         {/* Loading state */}
         {loading && <QueryEditorLoading />}
