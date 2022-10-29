@@ -7,6 +7,11 @@ services:
       - 5432:5432
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_PASSWORD: password
 
@@ -16,12 +21,20 @@ services:
     stop_grace_period: 10m
     restart: always
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/metrics"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
+      CONCURRENCY: 5
       GITHUB_RATE_LIMIT: 1/2
       ENCRYPTION_SECRET: password
       LOG_LEVEL: debug
+      DEBUG: 1
       PRETTY_LOGS: 1
       GITHUB_WORKFLOW_PER_PAGE: 30
       GITHUB_WORKFLOW_RUNS_PER_PAGE: 30
@@ -34,8 +47,12 @@ services:
     build:
       context: ./graphql
     depends_on:
-      - postgres
-      - worker # this is to ensure all migrations are run before the API starts up
+      postgres:
+        condition: service_healthy
+      worker: # this is to ensure all migrations are run before the API starts up
+        condition: service_healthy
+    links:
+      - worker
     ports:
       - 5433:5433
     command:
