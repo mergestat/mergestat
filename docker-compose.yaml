@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   postgres:
-    image: postgres:12
+    image: postgres:14
     restart: always
     ports:
       - 5432:5432
@@ -16,8 +16,7 @@ services:
       POSTGRES_PASSWORD: password
 
   worker:
-    build:
-      context: .
+    image: mergestat/worker:1.2.0-beta
     stop_grace_period: 10m
     restart: always
     depends_on:
@@ -43,9 +42,8 @@ services:
       - 3301:8080
 
   graphql:
+    image: mergestat/graphql:1.2.0-beta
     restart: always
-    build:
-      context: ./graphql
     depends_on:
       postgres:
         condition: service_healthy
@@ -85,6 +83,7 @@ services:
       DISPLAY_PG_USER: postgres
 
   ui:
+    image: mergestat/console:1.2.0-beta
     restart: always
     build:
       context: ./ui
