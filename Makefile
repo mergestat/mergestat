@@ -46,7 +46,7 @@ pkg/sqlite/sqlite3.c:
 	@mv $(SQLITE_DOWNLOAD_DIR)/sqlite-amalgamation-3370000/* pkg/sqlite
 
 ui-dev:
-	docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up
+	docker-compose -f docker-compose.yaml -f docker-compose.ui-dev.yaml up
 
 dev:
 	docker-compose -f docker-compose.dev.yaml -f docker-compose.yaml up
