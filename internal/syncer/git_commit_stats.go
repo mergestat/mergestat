@@ -9,6 +9,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -75,7 +76,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
+	tmpPath, cleanup, err := helper.CreateTempDir(l, "GIT_CLONE_PATH", "mergestat-repo-")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}

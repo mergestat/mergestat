@@ -11,6 +11,7 @@ import (
 	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 )
 
 func (w *warehouse) GitHubActions(ctx context.Context, j *db.DequeueSyncJobRow) error {
@@ -21,7 +22,7 @@ func (w *warehouse) GitHubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 		err      error
 	)
 
-	owner, repoName, err = w.getRepoOwnerAndRepoName(j.Repo)
+	owner, repoName, err = helper.GetRepoOwnerAndRepoName(j.Repo)
 	if err != nil {
 		return err
 	}
@@ -204,7 +205,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	var log string
 	var workflowJobLog *url.URL
 	// we create a  tmp dir to store all downloaded files into it
-	filepath, cleanup, err := w.createTempDirForJobLogs()
+	filepath, cleanup, err := helper.CreateTempDir(w.logger, "", "")
 	if err != nil {
 		return err
 	}
@@ -262,15 +263,15 @@ func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*gith
 		if err := w.db.WithTx(tx).UpsertWorkflowsInPublic(ctx, db.UpsertWorkflowsInPublicParams{
 			Repoid:         repoID,
 			ID:             *workflow.ID,
-			Workflownodeid: w.stringToSqlNullString(workflow.NodeID),
-			Name:           w.stringToSqlNullString(workflow.Name),
-			Path:           w.stringToSqlNullString(workflow.Path),
-			State:          w.stringToSqlNullString(workflow.State),
-			Createdat:      w.dateToSqlNullTime(&workflow.CreatedAt.Time),
-			Updatedat:      w.dateToSqlNullTime(&workflow.UpdatedAt.Time),
-			Url:            w.stringToSqlNullString(workflow.URL),
-			Htmlurl:        w.stringToSqlNullString(workflow.HTMLURL),
-			Badgeurl:       w.stringToSqlNullString(workflow.BadgeURL),
+			Workflownodeid: helper.StringToSqlNullString(workflow.NodeID),
+			Name:           helper.StringToSqlNullString(workflow.Name),
+			Path:           helper.StringToSqlNullString(workflow.Path),
+			State:          helper.StringToSqlNullString(workflow.State),
+			Createdat:      helper.DateToSqlNullTime(&workflow.CreatedAt.Time),
+			Updatedat:      helper.DateToSqlNullTime(&workflow.UpdatedAt.Time),
+			Url:            helper.StringToSqlNullString(workflow.URL),
+			Htmlurl:        helper.StringToSqlNullString(workflow.HTMLURL),
+			Badgeurl:       helper.StringToSqlNullString(workflow.BadgeURL),
 		}); err != nil {
 			return err
 		}
@@ -312,44 +313,44 @@ func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPag
 		runNumber := int32(*workflowRun.RunNumber)
 		runAttemp := int32(*workflowRun.RunAttempt)
 
-		if jsonbPullRequest, err = w.interfaceToSqlJSONB(workflowRun.PullRequests); err != nil {
+		if jsonbPullRequest, err = helper.InterfaceToSqlJSONB(workflowRun.PullRequests); err != nil {
 			return err
 		}
 
-		if jsonbHeadCommit, err = w.interfaceToSqlJSONB(workflowRun.HeadCommit); err != nil {
+		if jsonbHeadCommit, err = helper.InterfaceToSqlJSONB(workflowRun.HeadCommit); err != nil {
 			return err
 		}
 
 		if err := w.db.WithTx(tx).UpserWorkflowRuns(ctx, db.UpserWorkflowRunsParams{
 			RepoID:            repoID,
 			ID:                *workflowRun.ID,
-			Workflowrunnodeid: w.stringToSqlNullString(workflowRun.NodeID),
-			Name:              w.stringToSqlNullString(workflowRun.Name),
-			Headbranch:        w.stringToSqlNullString(workflowRun.HeadBranch),
-			Runnumber:         w.int32ToSqlNullInt32(&runNumber),
-			Runattempt:        w.int32ToSqlNullInt32(&runAttemp),
-			Event:             w.stringToSqlNullString(workflowRun.Event),
-			Status:            w.stringToSqlNullString(workflowRun.Status),
-			Conclusion:        w.stringToSqlNullString(workflowRun.Conclusion),
+			Workflowrunnodeid: helper.StringToSqlNullString(workflowRun.NodeID),
+			Name:              helper.StringToSqlNullString(workflowRun.Name),
+			Headbranch:        helper.StringToSqlNullString(workflowRun.HeadBranch),
+			Runnumber:         helper.Int32ToSqlNullInt32(&runNumber),
+			Runattempt:        helper.Int32ToSqlNullInt32(&runAttemp),
+			Event:             helper.StringToSqlNullString(workflowRun.Event),
+			Status:            helper.StringToSqlNullString(workflowRun.Status),
+			Conclusion:        helper.StringToSqlNullString(workflowRun.Conclusion),
 			Workflowid:        *workflowRun.WorkflowID,
-			Checksuiteid:      w.int64ToSqlNullInt64(workflowRun.CheckSuiteID),
-			Checksuitenodeid:  w.stringToSqlNullString(workflowRun.CheckSuiteNodeID),
-			Url:               w.stringToSqlNullString(workflowRun.URL),
-			Htmlurl:           w.stringToSqlNullString(workflowRun.HTMLURL),
+			Checksuiteid:      helper.Int64ToSqlNullInt64(workflowRun.CheckSuiteID),
+			Checksuitenodeid:  helper.StringToSqlNullString(workflowRun.CheckSuiteNodeID),
+			Url:               helper.StringToSqlNullString(workflowRun.URL),
+			Htmlurl:           helper.StringToSqlNullString(workflowRun.HTMLURL),
 			Pullrequest:       jsonbPullRequest,
-			Createdat:         w.dateToSqlNullTime(&workflowRun.CreatedAt.Time),
-			Updatedat:         w.dateToSqlNullTime(&workflowRun.UpdatedAt.Time),
-			Runstartedat:      w.dateToSqlNullTime(&workflowRun.RunStartedAt.Time),
-			Jobsurl:           w.stringToSqlNullString(workflowRun.JobsURL),
-			Logsurl:           w.stringToSqlNullString(workflowRun.LogsURL),
-			Checksuiteurl:     w.stringToSqlNullString(workflowRun.CheckSuiteURL),
-			Artifactsurl:      w.stringToSqlNullString(workflowRun.ArtifactsURL),
-			Cancelurl:         w.stringToSqlNullString(workflowRun.CancelURL),
-			Rerunurl:          w.stringToSqlNullString(workflowRun.RerunURL),
+			Createdat:         helper.DateToSqlNullTime(&workflowRun.CreatedAt.Time),
+			Updatedat:         helper.DateToSqlNullTime(&workflowRun.UpdatedAt.Time),
+			Runstartedat:      helper.DateToSqlNullTime(&workflowRun.RunStartedAt.Time),
+			Jobsurl:           helper.StringToSqlNullString(workflowRun.JobsURL),
+			Logsurl:           helper.StringToSqlNullString(workflowRun.LogsURL),
+			Checksuiteurl:     helper.StringToSqlNullString(workflowRun.CheckSuiteURL),
+			Artifactsurl:      helper.StringToSqlNullString(workflowRun.ArtifactsURL),
+			Cancelurl:         helper.StringToSqlNullString(workflowRun.CancelURL),
+			Rerunurl:          helper.StringToSqlNullString(workflowRun.RerunURL),
 			Headcommit:        jsonbHeadCommit,
-			Workflowurl:       w.stringToSqlNullString(workflowRun.WorkflowURL),
-			Repositoryurl:     w.stringToSqlNullString(workflowRunRepositoryUrl),
-			Headrepositoryurl: w.stringToSqlNullString(workflowRunHeadRepoUrl),
+			Workflowurl:       helper.StringToSqlNullString(workflowRun.WorkflowURL),
+			Repositoryurl:     helper.StringToSqlNullString(workflowRunRepositoryUrl),
+			Headrepositoryurl: helper.StringToSqlNullString(workflowRunHeadRepoUrl),
 		}); err != nil {
 			return err
 		}
@@ -378,11 +379,11 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 		}
 	}()
 
-	if jsonbSteps, err = w.interfaceToSqlJSONB(&workflowJob.Steps); err != nil {
+	if jsonbSteps, err = helper.InterfaceToSqlJSONB(&workflowJob.Steps); err != nil {
 		return err
 	}
 
-	if jsonbLabels, err = w.interfaceToSqlJSONB(&workflowJob.Labels); err != nil {
+	if jsonbLabels, err = helper.InterfaceToSqlJSONB(&workflowJob.Labels); err != nil {
 		return err
 	}
 
@@ -390,24 +391,24 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 		Repoid:          repoID,
 		ID:              *workflowJob.ID,
 		Runid:           *workflowJob.RunID,
-		Log:             w.stringToSqlNullString(&log),
-		Runurl:          w.stringToSqlNullString(workflowJob.RunURL),
-		Jobnodeid:       w.stringToSqlNullString(workflowJob.NodeID),
-		Headsha:         w.stringToSqlNullString(workflowJob.HeadSHA),
-		Url:             w.stringToSqlNullString(workflowJob.URL),
-		Htmlurl:         w.stringToSqlNullString(workflowJob.HTMLURL),
-		Status:          w.stringToSqlNullString(workflowJob.Status),
-		Conclusion:      w.stringToSqlNullString(workflowJob.Conclusion),
-		Startedat:       w.dateToSqlNullTime(&workflowJob.StartedAt.Time),
-		Completedat:     w.dateToSqlNullTime(&workflowJob.CompletedAt.Time),
-		Workflowname:    w.stringToSqlNullString(workflowJob.Name),
+		Log:             helper.StringToSqlNullString(&log),
+		Runurl:          helper.StringToSqlNullString(workflowJob.RunURL),
+		Jobnodeid:       helper.StringToSqlNullString(workflowJob.NodeID),
+		Headsha:         helper.StringToSqlNullString(workflowJob.HeadSHA),
+		Url:             helper.StringToSqlNullString(workflowJob.URL),
+		Htmlurl:         helper.StringToSqlNullString(workflowJob.HTMLURL),
+		Status:          helper.StringToSqlNullString(workflowJob.Status),
+		Conclusion:      helper.StringToSqlNullString(workflowJob.Conclusion),
+		Startedat:       helper.DateToSqlNullTime(&workflowJob.StartedAt.Time),
+		Completedat:     helper.DateToSqlNullTime(&workflowJob.CompletedAt.Time),
+		Workflowname:    helper.StringToSqlNullString(workflowJob.Name),
 		Steps:           jsonbSteps,
-		Checkrunurl:     w.stringToSqlNullString(workflowJob.CheckRunURL),
+		Checkrunurl:     helper.StringToSqlNullString(workflowJob.CheckRunURL),
 		Labels:          jsonbLabels,
-		Runnerid:        w.int64ToSqlNullInt64(workflowJob.RunnerID),
-		Runnername:      w.stringToSqlNullString(workflowJob.RunnerName),
-		Runnergroupid:   w.int64ToSqlNullInt64(workflowJob.RunnerGroupID),
-		Runnergroupname: w.stringToSqlNullString(workflowJob.RunnerGroupName),
+		Runnerid:        helper.Int64ToSqlNullInt64(workflowJob.RunnerID),
+		Runnername:      helper.StringToSqlNullString(workflowJob.RunnerName),
+		Runnergroupid:   helper.Int64ToSqlNullInt64(workflowJob.RunnerGroupID),
+		Runnergroupname: helper.StringToSqlNullString(workflowJob.RunnerGroupName),
 	}); err != nil {
 		return err
 	}

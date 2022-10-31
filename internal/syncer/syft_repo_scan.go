@@ -8,6 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 )
 
 // handleSyftRepoScan executes `syft {git-repo} -f json` for a repo
@@ -20,7 +21,7 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
+	tmpPath, cleanup, err := helper.CreateTempDir(l, "GIT_CLONE_PATH", "mergestat-repo-")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}

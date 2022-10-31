@@ -18,6 +18,7 @@ import (
 	"github.com/mergestat/gitutils/blame"
 	"github.com/mergestat/gitutils/lstree"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -66,7 +67,7 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
+	tmpPath, cleanup, err := helper.CreateTempDir(l, "GIT_CLONE_PATH", "mergestat-repo-")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
