@@ -14,6 +14,7 @@ import (
 // handleSyftRepoScan executes `syft {git-repo} -f json` for a repo
 // and inserts the output JSON into the DB
 func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow) error {
+	var err error
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
@@ -25,12 +26,10 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
-	defer func() error {
+	defer func() {
 		if err := cleanup(); err != nil {
 			l.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
-			return err
 		}
-		return nil
 	}()
 
 	var ghToken string
@@ -101,5 +100,7 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	return tx.Commit(ctx)
+	err = tx.Commit(ctx)
+
+	return err
 }

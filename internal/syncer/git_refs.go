@@ -76,6 +76,7 @@ type ref struct {
 const selectRefs = `SELECT *, (CASE type WHEN 'tag' THEN COALESCE(COMMIT_FROM_TAG(tag), hash) END) AS tag_commit_hash FROM refs(?);`
 
 func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) error {
+	var err error
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
@@ -87,12 +88,10 @@ func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) err
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
-	defer func() error {
-		if err := cleanup(); err != nil {
+	defer func() {
+		if err = cleanup(); err != nil {
 			l.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
-			return err
 		}
-		return nil
 	}()
 
 	var ghToken string
@@ -159,5 +158,7 @@ func (w *worker) handleGitRefs(ctx context.Context, j *db.DequeueSyncJobRow) err
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	return tx.Commit(ctx)
+	err = tx.Commit(ctx)
+
+	return err
 }

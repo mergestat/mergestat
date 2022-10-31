@@ -53,6 +53,7 @@ FROM files(?);
 `
 
 func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) error {
+	var err error
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
@@ -64,12 +65,10 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
-	defer func() error {
+	defer func() {
 		if err := cleanup(); err != nil {
 			l.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
-			return err
 		}
-		return nil
 	}()
 
 	var ghToken string
@@ -134,5 +133,7 @@ func (w *worker) handleGitFiles(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	return tx.Commit(ctx)
+	err = tx.Commit(ctx)
+
+	return err
 }

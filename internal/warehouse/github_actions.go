@@ -212,12 +212,10 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	}
 
 	// we this fn we clean all in that tmp dir
-	defer func() error {
-		if err := cleanup(); err != nil {
+	defer func() {
+		if err = cleanup(); err != nil {
 			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", filepath, err)
-			return err
 		}
-		return nil
 	}()
 
 	// we iterate over the workflowrunJobs page to get each log
@@ -246,7 +244,8 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 		}
 
 	}
-	return nil
+
+	return err
 }
 
 func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*github.Workflow, repoID uuid.UUID) error {
