@@ -5,12 +5,10 @@ import (
 	"net/url"
 	"os"
 	"strings"
-
-	"github.com/rs/zerolog"
 )
 
-// getRepoOwnerAndRepoName extracts the owner and repo name from the github repo url
-// and return the owner and repo respectively
+// GetRepoOwnerAndRepoName extracts the owner and repo name from a GitHub repo url
+// and returns the owner and repo respectively
 func GetRepoOwnerAndRepoName(repoUrl string) (string, string, error) {
 	var sr string
 	var s []string
@@ -34,18 +32,19 @@ func GetRepoOwnerAndRepoName(repoUrl string) (string, string, error) {
 	return s[0], s[1], nil
 }
 
-// createTempDir creates a temporary directory for any needed case with a specific path and pattern .
+// CreateTempDir creates a temporary directory for any needed case with a specific path and pattern .
 // returning the new directory path as string, a cleaup fn and err .
 // if not provided will default to /tmp/randomNumber
-func CreateTempDir(l *zerolog.Logger, envPath, pattern string) (string, func(), error) {
-	tmpPath, err := os.MkdirTemp(os.Getenv(envPath), pattern)
+func CreateTempDir(basePath, pattern string) (string, func() error, error) {
+	tmpPath, err := os.MkdirTemp(basePath, pattern)
 	if err != nil {
 		return "", nil, fmt.Errorf("temp dir: %w", err)
 	}
 
-	return tmpPath, func() {
+	return tmpPath, func() error {
 		if err := os.RemoveAll(tmpPath); err != nil {
-			l.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
+			return err
 		}
+		return nil
 	}, nil
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"os"
 
 	"github.com/google/go-github/v47/github"
 	"github.com/google/uuid"
@@ -205,13 +206,19 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	var log string
 	var workflowJobLog *url.URL
 	// we create a  tmp dir to store all downloaded files into it
-	filepath, cleanup, err := helper.CreateTempDir(w.logger, "", "")
+	filepath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_WORKFLOW_LOGS_PATH"), "mergestat-logs-")
 	if err != nil {
 		return err
 	}
 
 	// we this fn we clean all in that tmp dir
-	defer cleanup()
+	defer func() error {
+		if err := cleanup(); err != nil {
+			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", filepath, err)
+			return err
+		}
+		return nil
+	}()
 
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {

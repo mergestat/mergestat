@@ -21,11 +21,17 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	tmpPath, cleanup, err := helper.CreateTempDir(l, "GIT_CLONE_PATH", "mergestat-repo-")
+	tmpPath, cleanup, err := helper.CreateTempDir("GIT_CLONE_PATH", "mergestat-repo-")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
-	defer cleanup()
+	defer func() error {
+		if err := cleanup(); err != nil {
+			l.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
+			return err
+		}
+		return nil
+	}()
 
 	var ghToken string
 	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
