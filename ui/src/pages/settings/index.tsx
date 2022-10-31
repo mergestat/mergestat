@@ -49,7 +49,7 @@ const Settings: NextPage = () => {
                       className='t-link font-semibold'
                       rel='noopener noreferrer'
                     >
-                      a personal access token
+                      a (classic) personal access token
                     </a>{' '}
                     (PAT). Other authentication methods (such as an OAuth based
                     flow) may become available in the future.
