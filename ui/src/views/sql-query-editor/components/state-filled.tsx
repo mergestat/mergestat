@@ -2,6 +2,7 @@ import { Alert, Badge, Button, Input, Label, Select, Toolbar } from '@mergestat/
 import { ChevronLeftIcon, ChevronRightIcon, CircleCheckFilledIcon, ClipboardIcon, DownloadIcon, SearchIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import { debounce } from 'lodash'
+import Papa from 'papaparse'
 import { useEffect, useState } from 'react'
 import { copy, filterByAllFields, getMaxPagination, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
@@ -32,7 +33,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
         return JSON.stringify(value)
       }
     }
-    return value.toString().replace(/,/g, '.').replace(/\n/g, ' ')
+    return value.toString()
   }
 
   const isSpecial = (value: string | number | boolean) => {
@@ -44,10 +45,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
     if (exportFormat === EXPORT_FORMAT.JSON) {
       text = JSON.stringify(data)
     } else {
-      text = [
-        Object.keys(result[0]).join(','),
-        ...data.map(d => Object.values(d).map(getData).join(','))
-      ].join('\n')
+      text = Papa.unparse(data)
     }
     return text
   }
