@@ -1,0 +1,7 @@
+services:
+  worker:
+    build: .
+  graphql:
+    build: ./graphql
+  ui:
+    build: ./ui

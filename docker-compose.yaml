@@ -1,27 +1,42 @@
 version: "3.6"
 services:
   postgres:
-    image: postgres:12
+    image: postgres:14
     restart: always
     ports:
       - 5432:5432
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_PASSWORD: password
 
   worker:
-    build:
-      context: .
+    # NOTE: to opt out of basic image pull tracking, comment out the current image
+    # and uncomment the next line (which will pull from Docker Hub directly).
+    # image: mergestat/worker:1.2.0-beta
+    image: images.mergestat.com/mergestat/worker:1.2.0-beta
     stop_grace_period: 10m
     restart: always
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/metrics"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
+      CONCURRENCY: 5
       GITHUB_RATE_LIMIT: 1/2
       ENCRYPTION_SECRET: password
       LOG_LEVEL: debug
+      DEBUG: 1
       PRETTY_LOGS: 1
       GITHUB_WORKFLOW_PER_PAGE: 30
       GITHUB_WORKFLOW_RUNS_PER_PAGE: 30
@@ -30,12 +45,17 @@ services:
       - 3301:8080
 
   graphql:
+    # See NOTE above in worker service.
+    # image: mergestat/graphql:1.2.0-beta
+    image: images.mergestat.com/mergestat/graphql:1.2.0-beta
     restart: always
-    build:
-      context: ./graphql
     depends_on:
-      - postgres
-      - worker # this is to ensure all migrations are run before the API starts up
+      postgres:
+        condition: service_healthy
+      worker: # this is to ensure all migrations are run before the API starts up
+        condition: service_healthy
+    links:
+      - worker
     ports:
       - 5433:5433
     command:
@@ -68,6 +88,9 @@ services:
       DISPLAY_PG_USER: postgres
 
   ui:
+    # See NOTE above in worker service.
+    # image: mergestat/console:1.2.0-beta
+    image: images.mergestat.com/mergestat/console:1.2.0-beta
     restart: always
     build:
       context: ./ui
