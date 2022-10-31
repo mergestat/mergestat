@@ -16,7 +16,10 @@ services:
       POSTGRES_PASSWORD: password
 
   worker:
-    image: mergestat/worker:1.2.0-beta
+    # NOTE: to opt out of basic image pull tracking, comment out the current image
+    # and uncomment the next line (which will pull from Docker Hub directly).
+    # image: mergestat/worker:1.2.0-beta
+    image: images.mergestat.com/mergestat/worker:1.2.0-beta
     stop_grace_period: 10m
     restart: always
     depends_on:
@@ -42,7 +45,9 @@ services:
       - 3301:8080
 
   graphql:
-    image: mergestat/graphql:1.2.0-beta
+    # See NOTE above in worker service.
+    # image: mergestat/graphql:1.2.0-beta
+    image: images.mergestat.com/mergestat/graphql:1.2.0-beta
     restart: always
     depends_on:
       postgres:
@@ -83,7 +88,9 @@ services:
       DISPLAY_PG_USER: postgres
 
   ui:
-    image: mergestat/console:1.2.0-beta
+    # See NOTE above in worker service.
+    # image: mergestat/console:1.2.0-beta
+    image: images.mergestat.com/mergestat/console:1.2.0-beta
     restart: always
     build:
       context: ./ui
