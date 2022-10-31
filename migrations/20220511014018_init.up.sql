@@ -451,7 +451,7 @@ DROP TRIGGER IF EXISTS track_applied_migrations ON public.schema_migrations;
 CREATE TRIGGER track_applied_migrations AFTER INSERT ON public.schema_migrations FOR EACH ROW EXECUTE PROCEDURE track_applied_migration();
 
 -- SCHEMA MIGRATIONS
-CREATE TABLE schema_migrations (
+CREATE TABLE IF NOT EXISTS schema_migrations (
     version bigint NOT NULL PRIMARY KEY,
     dirty boolean NOT NULL
 )

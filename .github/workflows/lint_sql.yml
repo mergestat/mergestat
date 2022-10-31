@@ -11,6 +11,6 @@ jobs:
         with:
           python-version: "3.x"
       - name: Install SQLFluff
-        run: "pip install sqlfluff"
+        run: "pip install sqlfluff==1.3.2"
       - name: Reusable Lint SQL
         run: "sqlfluff lint"
