@@ -106,7 +106,8 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
   })
 
   // 4. Is setted up last sync regarding sync status
-  repoInfo.lastSync = syncTypes.length !== 0 ? syncTypes[0].lastSync : ''
+  const doneList = syncTypes.filter(s => s.lastSync !== '')
+  repoInfo.lastSync = doneList.length !== 0 ? doneList[0].lastSync : ''
 
   return mappedSyncs
 }
