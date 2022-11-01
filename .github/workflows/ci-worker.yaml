@@ -23,6 +23,9 @@ jobs:
       - name: Vet
         run: make vet
 
+      - name: Test
+        run: make test
+
       - name: Lint
         run: |
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.47.3

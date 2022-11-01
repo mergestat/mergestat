@@ -14,21 +14,25 @@ func TestInterfaceToSqlJSONB(t *testing.T) {
 		value       interface{}
 		description string
 		want        pgtype.JSONB
-		wantErr     bool
+		errCheck    func(*testing.T, error)
 	}
 
 	tests := []testArgs{{
 		description: "successful interface to JSONB",
 		value:       new(interface{}),
 		want:        pgtype.JSONB{},
-		wantErr:     false}}
+		errCheck:    nil,
+	}}
 
 	for _, test := range tests {
 		t.Run(test.description, func(t *testing.T) {
 			got, err := InterfaceToSqlJSONB(test.value)
-			if (err != nil) != test.wantErr {
-				t.Errorf("InterfaceToSqlJSONB error = %v, wantErr %v", err, test.wantErr)
-				return
+			if err != nil {
+				if test.errCheck != nil {
+					test.errCheck(t, err)
+				} else {
+					t.Errorf("InterfaceToSqlJSONB unexpected error = %v", err)
+				}
 			}
 
 			if reflect.TypeOf(got) != reflect.TypeOf(test.want) {
@@ -43,14 +47,14 @@ func TestStringToSqlNullString(t *testing.T) {
 		value       *string
 		description string
 		want        sql.NullString
-		wantErr     bool
+		errCheck    func(*testing.T, error)
 	}
 
 	tests := []testArgs{{
 		description: "successful string to sqlNullString",
 		value:       new(string),
 		want:        sql.NullString{},
-		wantErr:     false,
+		errCheck:    nil,
 	}}
 
 	for _, test := range tests {
@@ -67,13 +71,13 @@ func TestDateToSqlNullTime(t *testing.T) {
 		value       *time.Time
 		description string
 		want        sql.NullTime
-		wantErr     bool
+		errCheck    func(*testing.T, error)
 	}
 	tests := []testArgs{{
 		description: "successful date to sqlNullTime",
 		value:       new(time.Time),
 		want:        sql.NullTime{},
-		wantErr:     false,
+		errCheck:    nil,
 	}}
 
 	for _, test := range tests {
@@ -90,14 +94,14 @@ func TestInt32ToSqlNullInt32(t *testing.T) {
 		value       *int32
 		description string
 		want        sql.NullInt32
-		wantErr     bool
+		errCheck    func(*testing.T, error)
 	}
 
 	tests := []testArgs{{
 		description: "successful int32 to sqlNullInt32",
 		value:       new(int32),
 		want:        sql.NullInt32{},
-		wantErr:     false,
+		errCheck:    nil,
 	}}
 
 	for _, test := range tests {
@@ -114,14 +118,14 @@ func TestInt64ToSqlNullInt64(t *testing.T) {
 		value       *int64
 		description string
 		want        sql.NullInt64
-		wantErr     bool
+		errCheck    func(*testing.T, error)
 	}
 
 	tests := []testArgs{{
 		description: "successful int64 to sqlNullInt32",
 		value:       new(int64),
 		want:        sql.NullInt64{},
-		wantErr:     false,
+		errCheck:    nil,
 	}}
 
 	for _, test := range tests {
