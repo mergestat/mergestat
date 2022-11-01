@@ -54,6 +54,7 @@ export const AutoImportFromGitModal: React.FC = () => {
               value={orgUserText}
               onChange={(e) => setOrgUserText(e.target.value)}
               placeholder={importType === SYNC_REPO_METHOD.GH_ORG ? 'organization-name' : 'user-name'}
+              onKeyPress={(e) => (e.key === 'Enter' && addImport())}
             />
           </div>
           <Button

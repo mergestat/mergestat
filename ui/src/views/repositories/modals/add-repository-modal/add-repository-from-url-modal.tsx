@@ -46,6 +46,7 @@ export const AddRepositoryFromURLModal: React.FC = () => {
             data-testid={TEST_IDS.addRepoInputText}
             placeholder="https://github.com/owner/repo"
             onChange={(e) => setURL(e.currentTarget.value)}
+            onKeyPress={(e) => (e.key === 'Enter' && addURL(url))}
           />
           <Button
             skin="secondary"
