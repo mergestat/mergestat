@@ -30,7 +30,7 @@ const useImports = () => {
   const addImport = () => {
     const imp = imports.find((imp) => imp.name === orgUserText)
     if (!imp) {
-      setImports([...imports, { name: orgUserText, type: importType, opened: true, defaultSyncs: syncsTypesArray }])
+      setImports([{ name: orgUserText, type: importType, opened: true, defaultSyncs: syncsTypesArray }, ...imports])
       setImportType(SYNC_REPO_METHOD.GH_ORG)
       setOrgUserText('')
     }

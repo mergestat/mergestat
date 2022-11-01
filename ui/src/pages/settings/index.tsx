@@ -65,6 +65,12 @@ const Settings: NextPage = () => {
                       autoComplete='off'
                       value={pat}
                       onChange={changeToken}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          handleSavePAT()
+                        }
+                      }}
                     />
                     <Button
                       label='Validate'
