@@ -103,6 +103,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
             top: y ?? 0,
             left: x ?? 0,
           }}
+          onMouseLeave={() => setDisplayTooltip(false)}
         >
           <div className="flex items-center">
             {(tooltipData?.status) && (
@@ -169,7 +170,6 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
                     onClick={() => onBarClick(data[i])}
                     onMouseMove={() => {
                       setTooltipData(chartArray[i])
-
                       setActiveBar(i)
                     }}
                     onMouseLeave={() => setActiveBar(null)}
