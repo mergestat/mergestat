@@ -105,8 +105,9 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
     mappedSyncs.push({ type: key, count: value.count, syncs: value.syncs })
   })
 
-  // 4. Is setted up last sync regarding sync status
-  repoInfo.lastSync = syncTypes.length !== 0 ? syncTypes[0].lastSync : ''
+  // 4. Last sync for the repo. Filter sync types which have been completed and get last sync (latest done_at)
+  const doneList = syncTypes.filter(s => s.lastSync !== '').sort((a, b) => (new Date(b.lastSync).getTime() - new Date(a.lastSync).getTime()))
+  repoInfo.lastSync = doneList.length !== 0 ? doneList[0].lastSync : ''
 
   return mappedSyncs
 }
