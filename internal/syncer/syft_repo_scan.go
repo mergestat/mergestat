@@ -8,11 +8,13 @@ import (
 
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 )
 
 // handleSyftRepoScan executes `syft {git-repo} -f json` for a repo
 // and inserts the output JSON into the DB
 func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow) error {
+	var err error
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
@@ -20,11 +22,15 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
+	tmpPath, cleanup, err := helper.CreateTempDir("GIT_CLONE_PATH", "mergestat-repo-")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
-	defer cleanup()
+	defer func() {
+		if err := cleanup(); err != nil {
+			l.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
+		}
+	}()
 
 	var ghToken string
 	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
@@ -94,5 +100,7 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	return tx.Commit(ctx)
+	err = tx.Commit(ctx)
+
+	return err
 }

@@ -2,19 +2,15 @@ package warehouse
 
 import (
 	"context"
-	"database/sql"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/url"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/google/go-github/v47/github"
-	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/rs/zerolog"
@@ -70,31 +66,6 @@ func (w *warehouse) restRatelimitHandler(ctx context.Context, resp *github.Respo
 
 }
 
-// getRepoOwnerAndRepoName extracts the owner and repo name from the github repo url
-// and return the owner and repo respectively
-func (w *warehouse) getRepoOwnerAndRepoName(repoUrl string) (string, string, error) {
-	var sr string
-	var s []string
-	parsedURL, err := url.Parse(repoUrl)
-
-	if err != nil {
-		return "", "", err
-	}
-
-	if strings.Compare(parsedURL.Scheme, "http") == 0 {
-		sr = strings.Replace(repoUrl, "http://github.com/", "", -1)
-		s := strings.Split(sr, "/")
-
-		return s[0], s[1], nil
-
-	}
-
-	sr = strings.Replace(repoUrl, "https://github.com/", "", -1)
-	s = strings.Split(sr, "/")
-
-	return s[0], s[1], nil
-}
-
 func (w *warehouse) parseJobLogs(logsUrl *url.URL, filepathDir string, n int) (string, error) {
 
 	var bytes []byte
@@ -110,19 +81,6 @@ func (w *warehouse) parseJobLogs(logsUrl *url.URL, filepathDir string, n int) (s
 	}
 
 	return string(bytes), nil
-}
-
-func (w *warehouse) createTempDirForJobLogs() (string, func(), error) {
-	tmpPath, err := os.MkdirTemp(os.Getenv("GIT_WORKFLOW_LOGS_PATH"), "")
-	if err != nil {
-		return "", nil, fmt.Errorf("temp dir: %w", err)
-	}
-
-	return tmpPath, func() {
-		if err := os.RemoveAll(tmpPath); err != nil {
-			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
-		}
-	}, nil
 }
 
 // getPaginationOpt get the pagination env values for each workflow,runs and jobs
@@ -141,80 +99,4 @@ func (w *warehouse) getPaginationOpt(pagination string) (int, error) {
 	}
 
 	return paginationOpt, nil
-}
-
-func (w *warehouse) interfaceToSqlJSONB(value interface{}) (pgtype.JSONB, error) {
-	var bytes []byte
-	var err error
-
-	if value == nil {
-		return pgtype.JSONB{
-			Bytes:  []byte(""),
-			Status: pgtype.Present,
-		}, nil
-	}
-
-	if bytes, err = json.Marshal(&value); err != nil {
-		return pgtype.JSONB{}, err
-	}
-
-	return pgtype.JSONB{
-		Bytes:  bytes,
-		Status: pgtype.Present,
-	}, nil
-
-}
-
-func (w *warehouse) stringToSqlNullString(v *string) sql.NullString {
-	sqlNullString := sql.NullString{}
-	sqlNullString.Valid = true
-	if v == nil {
-		v = new(string)
-		sqlNullString.Valid = false
-	}
-
-	sqlNullString.String = *v
-
-	return sqlNullString
-}
-
-func (w *warehouse) dateToSqlNullTime(v *time.Time) sql.NullTime {
-	sqlNullTime := sql.NullTime{}
-	sqlNullTime.Valid = true
-
-	if v.IsZero() {
-		v = &time.Time{}
-		sqlNullTime.Valid = false
-	}
-
-	sqlNullTime.Time = *v
-	return sqlNullTime
-}
-
-func (w *warehouse) int32ToSqlNullInt32(v *int32) sql.NullInt32 {
-	sqlNullInt32 := sql.NullInt32{}
-	sqlNullInt32.Valid = true
-
-	if v == nil {
-		v = new(int32)
-		sqlNullInt32.Valid = false
-	}
-
-	sqlNullInt32.Int32 = *v
-
-	return sqlNullInt32
-}
-
-func (w *warehouse) int64ToSqlNullInt64(v *int64) sql.NullInt64 {
-	sqlNullInt64 := sql.NullInt64{}
-	sqlNullInt64.Valid = true
-
-	if v == nil {
-		v = new(int64)
-		sqlNullInt64.Valid = false
-	}
-
-	sqlNullInt64.Int64 = *v
-
-	return sqlNullInt64
 }

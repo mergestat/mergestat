@@ -5,10 +5,12 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"os"
 
 	"github.com/jackc/pgx/v4"
 	libgit2 "github.com/libgit2/git2go/v33"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -101,6 +103,7 @@ func (w *worker) collectCommits(ctx context.Context, repoPath string) ([]*commit
 }
 
 func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
+	var err error
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
@@ -108,11 +111,15 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	tmpPath, cleanup, err := w.createTempDirForGitClone(j)
+	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
-	defer cleanup()
+	defer func() {
+		if err = cleanup(); err != nil {
+			l.Err(err).Msgf("error cleaning up repo at: %s, %v", tmpPath, err)
+		}
+	}()
 
 	var ghToken string
 	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
@@ -176,5 +183,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return fmt.Errorf("log messages: %w", err)
 	}
 
-	return tx.Commit(ctx)
+	err = tx.Commit(ctx)
+
+	return err
 }
