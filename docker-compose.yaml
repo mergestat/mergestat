@@ -92,8 +92,6 @@ services:
     # image: mergestat/console:1.2.0-beta
     image: images.mergestat.com/mergestat/console:1.2.0-beta
     restart: always
-    build:
-      context: ./ui
     depends_on:
       - graphql
     ports:

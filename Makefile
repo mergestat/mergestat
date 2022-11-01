@@ -53,3 +53,12 @@ dev:
 
 dev-build:
 	docker-compose -f docker-compose.dev.yaml -f docker-compose.yaml build
+
+docker-build-worker:
+	docker-compose -f docker-compose.dev.yaml -f docker-compose.yaml build worker
+
+docker-build-ui:
+	docker-compose -f docker-compose.dev.yaml -f docker-compose.yaml build ui
+
+docker-build-graphql:
+	docker-compose -f docker-compose.dev.yaml -f docker-compose.yaml build graphql

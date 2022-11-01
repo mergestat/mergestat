@@ -2,6 +2,23 @@
 
 For usage instructions, visit: [`docs.mergestat.com`](https://docs.mergestat.com/).
 
+## Running Locally for Development
+
+Running
+
+```
+make dev
+```
+
+Will build docker images locally (based on the currently checked out source code) and start up the MergeStat stack.
+To build docker containers of specific services, run one of:
+
+```
+make docker-build-worker
+make docker-build-ui
+make docker-build-graphql
+```
+
 ## Database Migrations
 
 We use this tool https://github.com/golang-migrate/migrate/tree/master/cmd/migrate to handle migrations.
