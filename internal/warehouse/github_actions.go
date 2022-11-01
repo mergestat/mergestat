@@ -101,7 +101,6 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	}
 	opt := &github.ListWorkflowRunsOptions{
 		ListOptions: github.ListOptions{PerPage: pagination},
-		Created:     ">=2022-10-27",
 	}
 
 	for _, workflow := range workflowsPage {
