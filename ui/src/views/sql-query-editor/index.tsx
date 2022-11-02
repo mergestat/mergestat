@@ -31,9 +31,9 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
       setState(States.Filled)
       setRowLimitReached(data?.execSQL.length > ROWS_LIMIT)
     } else {
-      setState(States.Empty)
+      error ? setState(States.Error) : setState(States.Empty)
     }
-  }, [data])
+  }, [data, error])
 
   const executeSQLQuery = () => {
     executeSQL({ variables: { sql: query } })
@@ -72,13 +72,13 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
         {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} />}
 
         {/* Error state */}
-        {!loading && state !== States.Empty && error && <QueryEditorError errors={error} />}
+        {!loading && state === States.Error && error && <QueryEditorError errors={error} />}
 
         {/* Loading state */}
         {loading && <QueryEditorLoading />}
 
         {/* Filled state */}
-        {!error && data && state !== States.Empty && <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />}
+        {!error && data && state === States.Filled && <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />}
       </div>
     </main>
   )
