@@ -773,6 +773,8 @@ export type CreateRepoSyncQueuePayload = {
   repoSyncQueueEdge?: Maybe<RepoSyncQueuesEdge>;
   /** Reads a single `RepoSyncQueueStatusType` that is related to this `RepoSyncQueue`. */
   repoSyncQueueStatusTypeByStatus?: Maybe<RepoSyncQueueStatusType>;
+  /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncQueue`. */
+  repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
 };
 
 
@@ -813,6 +815,38 @@ export type CreateRepoSyncQueueStatusTypePayloadRepoSyncQueueStatusTypeEdgeArgs 
   orderBy?: InputMaybe<Array<RepoSyncQueueStatusTypesOrderBy>>;
 };
 
+/** All input for the create `RepoSyncTypeGroup` mutation. */
+export type CreateRepoSyncTypeGroupInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `RepoSyncTypeGroup` to be created by this mutation. */
+  repoSyncTypeGroup: RepoSyncTypeGroupInput;
+};
+
+/** The output of our create `RepoSyncTypeGroup` mutation. */
+export type CreateRepoSyncTypeGroupPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepoSyncTypeGroup` that was created by this mutation. */
+  repoSyncTypeGroup?: Maybe<RepoSyncTypeGroup>;
+  /** An edge for our `RepoSyncTypeGroup`. May be used by Relay 1. */
+  repoSyncTypeGroupEdge?: Maybe<RepoSyncTypeGroupsEdge>;
+};
+
+
+/** The output of our create `RepoSyncTypeGroup` mutation. */
+export type CreateRepoSyncTypeGroupPayloadRepoSyncTypeGroupEdgeArgs = {
+  orderBy?: InputMaybe<Array<RepoSyncTypeGroupsOrderBy>>;
+};
+
 /** All input for the create `RepoSyncType` mutation. */
 export type CreateRepoSyncTypeInput = {
   /**
@@ -837,6 +871,8 @@ export type CreateRepoSyncTypePayload = {
   repoSyncType?: Maybe<RepoSyncType>;
   /** An edge for our `RepoSyncType`. May be used by Relay 1. */
   repoSyncTypeEdge?: Maybe<RepoSyncTypesEdge>;
+  /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncType`. */
+  repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
 };
 
 
@@ -975,6 +1011,38 @@ export type CreateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeA
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
 };
 
+/** All input for the create `SyftRepoScan` mutation. */
+export type CreateSyftRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `SyftRepoScan` to be created by this mutation. */
+  syftRepoScan: SyftRepoScanInput;
+};
+
+/** The output of our create `SyftRepoScan` mutation. */
+export type CreateSyftRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SyftRepoScan` that was created by this mutation. */
+  syftRepoScan?: Maybe<SyftRepoScan>;
+  /** An edge for our `SyftRepoScan`. May be used by Relay 1. */
+  syftRepoScanEdge?: Maybe<SyftRepoScansEdge>;
+};
+
+
+/** The output of our create `SyftRepoScan` mutation. */
+export type CreateSyftRepoScanPayloadSyftRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<SyftRepoScansOrderBy>>;
+};
+
 /** All input for the create `TrivyRepoScan` mutation. */
 export type CreateTrivyRepoScanInput = {
   /**
@@ -1053,8 +1121,11 @@ export type DeleteGitBlameInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** line number of the modification */
   lineNo: Scalars['Int'];
+  /** path of the file the modification was made in */
   path: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1100,7 +1171,9 @@ export type DeleteGitCommitInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** hash of the commit */
   hash: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1146,9 +1219,13 @@ export type DeleteGitCommitStatInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** hash of the commit */
   commitHash: Scalars['String'];
+  /** path of the file the modification was made in */
   filePath: Scalars['String'];
+  /** new file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link) */
   newFileMode: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1194,7 +1271,9 @@ export type DeleteGitFileInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** path of the file */
   path: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1241,6 +1320,7 @@ export type DeleteGitRefInput = {
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
   fullName: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1286,7 +1366,9 @@ export type DeleteGithubIssueInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** GitHub database_id of the issue */
   databaseId: Scalars['Int'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1343,8 +1425,11 @@ export type DeleteGithubPullRequestCommitInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** hash of the commit */
   hash: Scalars['String'];
+  /** GitHub pull request number of the commit */
   prNumber: Scalars['Int'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1379,7 +1464,9 @@ export type DeleteGithubPullRequestInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** GitHub database_id of the pull request */
   databaseId: Scalars['Int'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1425,7 +1512,10 @@ export type DeleteGithubPullRequestReviewInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** GitHub id of the review */
   id: Scalars['String'];
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
 };
 
 /** The output of our delete `GithubPullRequestReview` mutation. */
@@ -1470,7 +1560,9 @@ export type DeleteGithubRepoInfoByOwnerAndNameInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** the name of the repo */
   name: Scalars['String'];
+  /** the user or organization that owns the repo */
   owner: Scalars['String'];
 };
 
@@ -1481,6 +1573,7 @@ export type DeleteGithubRepoInfoInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1526,7 +1619,9 @@ export type DeleteGithubStargazerInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** login of the user who starred the repo */
   login: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1660,6 +1755,7 @@ export type DeleteRepoInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** MergeStat identifier for the repo */
   id: Scalars['UUID'];
 };
 
@@ -1874,6 +1970,8 @@ export type DeleteRepoSyncQueuePayload = {
   repoSyncQueueEdge?: Maybe<RepoSyncQueuesEdge>;
   /** Reads a single `RepoSyncQueueStatusType` that is related to this `RepoSyncQueue`. */
   repoSyncQueueStatusTypeByStatus?: Maybe<RepoSyncQueueStatusType>;
+  /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncQueue`. */
+  repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
 };
 
 
@@ -1936,6 +2034,49 @@ export type DeleteRepoSyncTypeByNodeIdInput = {
   nodeId: Scalars['ID'];
 };
 
+/** All input for the `deleteRepoSyncTypeGroupByNodeId` mutation. */
+export type DeleteRepoSyncTypeGroupByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `RepoSyncTypeGroup` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteRepoSyncTypeGroup` mutation. */
+export type DeleteRepoSyncTypeGroupInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  group: Scalars['String'];
+};
+
+/** The output of our delete `RepoSyncTypeGroup` mutation. */
+export type DeleteRepoSyncTypeGroupPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedRepoSyncTypeGroupNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepoSyncTypeGroup` that was deleted by this mutation. */
+  repoSyncTypeGroup?: Maybe<RepoSyncTypeGroup>;
+  /** An edge for our `RepoSyncTypeGroup`. May be used by Relay 1. */
+  repoSyncTypeGroupEdge?: Maybe<RepoSyncTypeGroupsEdge>;
+};
+
+
+/** The output of our delete `RepoSyncTypeGroup` mutation. */
+export type DeleteRepoSyncTypeGroupPayloadRepoSyncTypeGroupEdgeArgs = {
+  orderBy?: InputMaybe<Array<RepoSyncTypeGroupsOrderBy>>;
+};
+
 /** All input for the `deleteRepoSyncType` mutation. */
 export type DeleteRepoSyncTypeInput = {
   /**
@@ -1960,6 +2101,8 @@ export type DeleteRepoSyncTypePayload = {
   repoSyncType?: Maybe<RepoSyncType>;
   /** An edge for our `RepoSyncType`. May be used by Relay 1. */
   repoSyncTypeEdge?: Maybe<RepoSyncTypesEdge>;
+  /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncType`. */
+  repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
 };
 
 
@@ -2142,6 +2285,50 @@ export type DeleteServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeA
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
 };
 
+/** All input for the `deleteSyftRepoScanByNodeId` mutation. */
+export type DeleteSyftRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SyftRepoScan` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteSyftRepoScan` mutation. */
+export type DeleteSyftRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `SyftRepoScan` mutation. */
+export type DeleteSyftRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedSyftRepoScanNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SyftRepoScan` that was deleted by this mutation. */
+  syftRepoScan?: Maybe<SyftRepoScan>;
+  /** An edge for our `SyftRepoScan`. May be used by Relay 1. */
+  syftRepoScanEdge?: Maybe<SyftRepoScansEdge>;
+};
+
+
+/** The output of our delete `SyftRepoScan` mutation. */
+export type DeleteSyftRepoScanPayloadSyftRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<SyftRepoScansOrderBy>>;
+};
+
 /** All input for the `deleteTrivyRepoScanByNodeId` mutation. */
 export type DeleteTrivyRepoScanByNodeIdInput = {
   /**
@@ -2160,6 +2347,7 @@ export type DeleteTrivyRepoScanInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -2194,19 +2382,27 @@ export type DisplayDatabaseConnection = {
   user?: Maybe<Scalars['String']>;
 };
 
+/** git blame of all lines in all files of a repo */
 export type GitBlame = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** email of the author who modified the line */
   authorEmail?: Maybe<Scalars['String']>;
+  /** name of the author who modified the line */
   authorName?: Maybe<Scalars['String']>;
   authorWhen?: Maybe<Scalars['Datetime']>;
+  /** hash of the commit the modification was made in */
   commitHash?: Maybe<Scalars['String']>;
   line?: Maybe<Scalars['String']>;
+  /** line number of the modification */
   lineNo: Scalars['Int'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** path of the file the modification was made in */
   path: Scalars['String'];
   /** Reads a single `Repo` that is related to this `GitBlame`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -2265,27 +2461,41 @@ export type GitBlameFilter = {
 
 /** An input for mutations affecting `GitBlame` */
 export type GitBlameInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author who modified the line */
   authorEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author who modified the line */
   authorName?: InputMaybe<Scalars['String']>;
   authorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** hash of the commit the modification was made in */
   commitHash?: InputMaybe<Scalars['String']>;
   line?: InputMaybe<Scalars['String']>;
+  /** line number of the modification */
   lineNo: Scalars['Int'];
+  /** path of the file the modification was made in */
   path: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
 /** Represents an update to a `GitBlame`. Fields that are set will be updated. */
 export type GitBlamePatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author who modified the line */
   authorEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author who modified the line */
   authorName?: InputMaybe<Scalars['String']>;
   authorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** hash of the commit the modification was made in */
   commitHash?: InputMaybe<Scalars['String']>;
   line?: InputMaybe<Scalars['String']>;
+  /** line number of the modification */
   lineNo?: InputMaybe<Scalars['Int']>;
+  /** path of the file the modification was made in */
   path?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -2334,15 +2544,24 @@ export enum GitBlamesOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
+/** view of git refs of type branch of a repo */
 export type GitBranch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: Maybe<Scalars['Datetime']>;
   fullName?: Maybe<Scalars['String']>;
+  /** hash of the commit for refs that are not of type tag */
   hash?: Maybe<Scalars['String']>;
+  /** name of the ref */
   name?: Maybe<Scalars['String']>;
+  /** remote of the ref */
   remote?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: Maybe<Scalars['UUID']>;
+  /** hash of the commit for refs that are of type tag */
   tagCommitHash?: Maybe<Scalars['String']>;
+  /** target of the ref */
   target?: Maybe<Scalars['String']>;
+  /** type of the ref */
   type?: Maybe<Scalars['String']>;
 };
 
@@ -2401,14 +2620,22 @@ export type GitBranchFilter = {
 
 /** An input for mutations affecting `GitBranch` */
 export type GitBranchInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   fullName?: InputMaybe<Scalars['String']>;
+  /** hash of the commit for refs that are not of type tag */
   hash?: InputMaybe<Scalars['String']>;
+  /** name of the ref */
   name?: InputMaybe<Scalars['String']>;
+  /** remote of the ref */
   remote?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** hash of the commit for refs that are of type tag */
   tagCommitHash?: InputMaybe<Scalars['String']>;
+  /** target of the ref */
   target?: InputMaybe<Scalars['String']>;
+  /** type of the ref */
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -2455,22 +2682,33 @@ export enum GitBranchesOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
-/** Git repository commits */
+/** git commit history of a repo */
 export type GitCommit = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** email of the author of the modification */
   authorEmail: Scalars['String'];
+  /** name of the author of the the modification */
   authorName: Scalars['String'];
+  /** timestamp of when the modifcation was authored */
   authorWhen: Scalars['Datetime'];
+  /** email of the author who committed the modification */
   committerEmail: Scalars['String'];
+  /** name of the author who committed the modification */
   committerName: Scalars['String'];
+  /** timestamp of when the commit was made */
   committerWhen: Scalars['Datetime'];
+  /** hash of the commit */
   hash: Scalars['String'];
+  /** message of the commit */
   message: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** the number of parents of the commit */
   parents: Scalars['Int'];
   /** Reads a single `Repo` that is related to this `GitCommit`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -2537,47 +2775,77 @@ export type GitCommitFilter = {
 
 /** An input for mutations affecting `GitCommit` */
 export type GitCommitInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author of the modification */
   authorEmail: Scalars['String'];
+  /** name of the author of the the modification */
   authorName: Scalars['String'];
+  /** timestamp of when the modifcation was authored */
   authorWhen: Scalars['Datetime'];
+  /** email of the author who committed the modification */
   committerEmail: Scalars['String'];
+  /** name of the author who committed the modification */
   committerName: Scalars['String'];
+  /** timestamp of when the commit was made */
   committerWhen: Scalars['Datetime'];
+  /** hash of the commit */
   hash: Scalars['String'];
+  /** message of the commit */
   message: Scalars['String'];
+  /** the number of parents of the commit */
   parents: Scalars['Int'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
 /** Represents an update to a `GitCommit`. Fields that are set will be updated. */
 export type GitCommitPatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author of the modification */
   authorEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author of the the modification */
   authorName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
   authorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author who committed the modification */
   committerEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author who committed the modification */
   committerName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
   committerWhen?: InputMaybe<Scalars['Datetime']>;
+  /** hash of the commit */
   hash?: InputMaybe<Scalars['String']>;
+  /** message of the commit */
   message?: InputMaybe<Scalars['String']>;
+  /** the number of parents of the commit */
   parents?: InputMaybe<Scalars['Int']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
 };
 
-/** Commit stats */
+/** git commit stats of a repo */
 export type GitCommitStat = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** the number of additions in this path of the commit */
   additions: Scalars['Int'];
+  /** hash of the commit */
   commitHash: Scalars['String'];
+  /** the number of deletions in this path of the commit */
   deletions: Scalars['Int'];
+  /** path of the file the modification was made in */
   filePath: Scalars['String'];
+  /** new file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link) */
   newFileMode: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** old file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link) */
   oldFileMode: Scalars['String'];
   /** Reads a single `Repo` that is related to this `GitCommitStat`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -2632,25 +2900,41 @@ export type GitCommitStatFilter = {
 
 /** An input for mutations affecting `GitCommitStat` */
 export type GitCommitStatInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the number of additions in this path of the commit */
   additions: Scalars['Int'];
+  /** hash of the commit */
   commitHash: Scalars['String'];
+  /** the number of deletions in this path of the commit */
   deletions: Scalars['Int'];
+  /** path of the file the modification was made in */
   filePath: Scalars['String'];
+  /** new file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link) */
   newFileMode?: InputMaybe<Scalars['String']>;
+  /** old file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link) */
   oldFileMode?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
 /** Represents an update to a `GitCommitStat`. Fields that are set will be updated. */
 export type GitCommitStatPatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the number of additions in this path of the commit */
   additions?: InputMaybe<Scalars['Int']>;
+  /** hash of the commit */
   commitHash?: InputMaybe<Scalars['String']>;
+  /** the number of deletions in this path of the commit */
   deletions?: InputMaybe<Scalars['Int']>;
+  /** path of the file the modification was made in */
   filePath?: InputMaybe<Scalars['String']>;
+  /** new file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link) */
   newFileMode?: InputMaybe<Scalars['String']>;
+  /** old file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link) */
   oldFileMode?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -2746,16 +3030,21 @@ export enum GitCommitsOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
-/** Git repository files */
+/** git files (content and paths) of a repo */
 export type GitFile = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** contents of the file */
   contents?: Maybe<Scalars['String']>;
+  /** boolean to determine if the file is an executable */
   executable: Scalars['Boolean'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** path of the file */
   path: Scalars['String'];
   /** Reads a single `Repo` that is related to this `GitFile`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -2795,19 +3084,29 @@ export type GitFileFilter = {
 
 /** An input for mutations affecting `GitFile` */
 export type GitFileInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** contents of the file */
   contents?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the file is an executable */
   executable: Scalars['Boolean'];
+  /** path of the file */
   path: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
 /** Represents an update to a `GitFile`. Fields that are set will be updated. */
 export type GitFilePatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** contents of the file */
   contents?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the file is an executable */
   executable?: InputMaybe<Scalars['Boolean']>;
+  /** path of the file */
   path?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -2848,20 +3147,28 @@ export enum GitFilesOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
-/** Refs for a Git repo */
+/** git refs of a repo */
 export type GitRef = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
   fullName: Scalars['String'];
+  /** hash of the commit for refs that are not of type tag */
   hash?: Maybe<Scalars['String']>;
+  /** name of the ref */
   name?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** remote of the ref */
   remote?: Maybe<Scalars['String']>;
   /** Reads a single `Repo` that is related to this `GitRef`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** hash of the commit for refs that are of type tag */
   tagCommitHash?: Maybe<Scalars['String']>;
+  /** target of the ref */
   target?: Maybe<Scalars['String']>;
+  /** type of the ref */
   type?: Maybe<Scalars['String']>;
 };
 
@@ -2917,27 +3224,43 @@ export type GitRefFilter = {
 
 /** An input for mutations affecting `GitRef` */
 export type GitRefInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   fullName: Scalars['String'];
+  /** hash of the commit for refs that are not of type tag */
   hash?: InputMaybe<Scalars['String']>;
+  /** name of the ref */
   name?: InputMaybe<Scalars['String']>;
+  /** remote of the ref */
   remote?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** hash of the commit for refs that are of type tag */
   tagCommitHash?: InputMaybe<Scalars['String']>;
+  /** target of the ref */
   target?: InputMaybe<Scalars['String']>;
+  /** type of the ref */
   type?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `GitRef`. Fields that are set will be updated. */
 export type GitRefPatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   fullName?: InputMaybe<Scalars['String']>;
+  /** hash of the commit for refs that are not of type tag */
   hash?: InputMaybe<Scalars['String']>;
+  /** name of the ref */
   name?: InputMaybe<Scalars['String']>;
+  /** remote of the ref */
   remote?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** hash of the commit for refs that are of type tag */
   tagCommitHash?: InputMaybe<Scalars['String']>;
+  /** target of the ref */
   target?: InputMaybe<Scalars['String']>;
+  /** type of the ref */
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -2986,15 +3309,24 @@ export enum GitRefsOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
+/** view of git refs of type tag of a repo */
 export type GitTag = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: Maybe<Scalars['Datetime']>;
   fullName?: Maybe<Scalars['String']>;
+  /** hash of the ref that are of type tag */
   hash?: Maybe<Scalars['String']>;
+  /** name of the ref */
   name?: Maybe<Scalars['String']>;
+  /** remote of the ref */
   remote?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: Maybe<Scalars['UUID']>;
+  /** hash of the commit for refs that are of type tag */
   tagCommitHash?: Maybe<Scalars['String']>;
+  /** target of the ref */
   target?: Maybe<Scalars['String']>;
+  /** type of the ref */
   type?: Maybe<Scalars['String']>;
 };
 
@@ -3050,14 +3382,22 @@ export type GitTagFilter = {
 
 /** An input for mutations affecting `GitTag` */
 export type GitTagInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   fullName?: InputMaybe<Scalars['String']>;
+  /** hash of the ref that are of type tag */
   hash?: InputMaybe<Scalars['String']>;
+  /** name of the ref */
   name?: InputMaybe<Scalars['String']>;
+  /** remote of the ref */
   remote?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** hash of the commit for refs that are of type tag */
   tagCommitHash?: InputMaybe<Scalars['String']>;
+  /** target of the ref */
   target?: InputMaybe<Scalars['String']>;
+  /** type of the ref */
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -3104,36 +3444,59 @@ export enum GitTagsOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
-/** GitHub issues */
+/** issues of a GitHub repo */
 export type GithubIssue = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** login of the author of the issue */
   authorLogin?: Maybe<Scalars['String']>;
+  /** body of the issue */
   body?: Maybe<Scalars['String']>;
+  /** boolean to determine if the issue is closed */
   closed?: Maybe<Scalars['Boolean']>;
+  /** timestamp of when the issue was closed */
   closedAt?: Maybe<Scalars['Datetime']>;
   commentCount?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['Datetime']>;
+  /** boolean to determine if the issue was created via email */
   createdViaEmail?: Maybe<Scalars['Boolean']>;
+  /** GitHub database_id of the issue */
   databaseId: Scalars['Int'];
+  /** login of the editor of the issue */
   editorLogin?: Maybe<Scalars['String']>;
+  /** boolean to determine if the issue was edited and includes an edit with the creation data */
   includesCreatedEdit?: Maybe<Scalars['Boolean']>;
+  /** number of labels associated to the issue */
   labelCount?: Maybe<Scalars['Int']>;
+  /** labels associated to the issue */
   labels: Scalars['JSON'];
+  /** timestamp when the issue was edited */
   lastEditedAt?: Maybe<Scalars['Datetime']>;
+  /** boolean to determine if the issue is locked */
   locked?: Maybe<Scalars['Boolean']>;
+  /** number of milestones associated to the issue */
   milestoneCount?: Maybe<Scalars['Int']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** GitHub number for the issue */
   number: Scalars['Int'];
+  /** number of participants associated to the issue */
   participantCount?: Maybe<Scalars['Int']>;
+  /** timestamp when the issue was published */
   publishedAt?: Maybe<Scalars['Datetime']>;
+  /** number of reactions associated to the issue */
   reactionCount?: Maybe<Scalars['Int']>;
   /** Reads a single `Repo` that is related to this `GithubIssue`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** state of the issue */
   state?: Maybe<Scalars['String']>;
+  /** title of the issue */
   title?: Maybe<Scalars['String']>;
+  /** timestamp when the issue was updated */
   updatedAt?: Maybe<Scalars['Datetime']>;
+  /** GitHub URL of the issue */
   url?: Maybe<Scalars['String']>;
 };
 
@@ -3256,59 +3619,105 @@ export type GithubIssueFilter = {
 
 /** An input for mutations affecting `GithubIssue` */
 export type GithubIssueInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** login of the author of the issue */
   authorLogin?: InputMaybe<Scalars['String']>;
+  /** body of the issue */
   body?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the issue is closed */
   closed?: InputMaybe<Scalars['Boolean']>;
+  /** timestamp of when the issue was closed */
   closedAt?: InputMaybe<Scalars['Datetime']>;
   commentCount?: InputMaybe<Scalars['Int']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the issue was created via email */
   createdViaEmail?: InputMaybe<Scalars['Boolean']>;
+  /** GitHub database_id of the issue */
   databaseId: Scalars['Int'];
+  /** login of the editor of the issue */
   editorLogin?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the issue was edited and includes an edit with the creation data */
   includesCreatedEdit?: InputMaybe<Scalars['Boolean']>;
+  /** number of labels associated to the issue */
   labelCount?: InputMaybe<Scalars['Int']>;
+  /** labels associated to the issue */
   labels?: InputMaybe<Scalars['JSON']>;
+  /** timestamp when the issue was edited */
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the issue is locked */
   locked?: InputMaybe<Scalars['Boolean']>;
+  /** number of milestones associated to the issue */
   milestoneCount?: InputMaybe<Scalars['Int']>;
+  /** GitHub number for the issue */
   number: Scalars['Int'];
+  /** number of participants associated to the issue */
   participantCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp when the issue was published */
   publishedAt?: InputMaybe<Scalars['Datetime']>;
+  /** number of reactions associated to the issue */
   reactionCount?: InputMaybe<Scalars['Int']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** state of the issue */
   state?: InputMaybe<Scalars['String']>;
+  /** title of the issue */
   title?: InputMaybe<Scalars['String']>;
+  /** timestamp when the issue was updated */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** GitHub URL of the issue */
   url?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `GithubIssue`. Fields that are set will be updated. */
 export type GithubIssuePatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** login of the author of the issue */
   authorLogin?: InputMaybe<Scalars['String']>;
+  /** body of the issue */
   body?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the issue is closed */
   closed?: InputMaybe<Scalars['Boolean']>;
+  /** timestamp of when the issue was closed */
   closedAt?: InputMaybe<Scalars['Datetime']>;
   commentCount?: InputMaybe<Scalars['Int']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the issue was created via email */
   createdViaEmail?: InputMaybe<Scalars['Boolean']>;
+  /** GitHub database_id of the issue */
   databaseId?: InputMaybe<Scalars['Int']>;
+  /** login of the editor of the issue */
   editorLogin?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the issue was edited and includes an edit with the creation data */
   includesCreatedEdit?: InputMaybe<Scalars['Boolean']>;
+  /** number of labels associated to the issue */
   labelCount?: InputMaybe<Scalars['Int']>;
+  /** labels associated to the issue */
   labels?: InputMaybe<Scalars['JSON']>;
+  /** timestamp when the issue was edited */
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the issue is locked */
   locked?: InputMaybe<Scalars['Boolean']>;
+  /** number of milestones associated to the issue */
   milestoneCount?: InputMaybe<Scalars['Int']>;
+  /** GitHub number for the issue */
   number?: InputMaybe<Scalars['Int']>;
+  /** number of participants associated to the issue */
   participantCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp when the issue was published */
   publishedAt?: InputMaybe<Scalars['Datetime']>;
+  /** number of reactions associated to the issue */
   reactionCount?: InputMaybe<Scalars['Int']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** state of the issue */
   state?: InputMaybe<Scalars['String']>;
+  /** title of the issue */
   title?: InputMaybe<Scalars['String']>;
+  /** timestamp when the issue was updated */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** GitHub URL of the issue */
   url?: InputMaybe<Scalars['String']>;
 };
 
@@ -3389,77 +3798,132 @@ export enum GithubIssuesOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
-/** GitHub pull requests */
+/** pull requests of a GitHub repo */
 export type GithubPullRequest = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** the number of additions in the pull request */
   additions?: Maybe<Scalars['Int']>;
+  /** author association to the repo */
   authorAssociation?: Maybe<Scalars['String']>;
+  /** URL to the avatar of the author of the pull request */
   authorAvatarUrl?: Maybe<Scalars['String']>;
+  /** login of the author of the pull request */
   authorLogin?: Maybe<Scalars['String']>;
+  /** name of the author of the pull request */
   authorName?: Maybe<Scalars['String']>;
+  /** the name of base ref associated with the pull request */
   baseRefName?: Maybe<Scalars['String']>;
+  /** the base ref object id associated with the pull request */
   baseRefOid?: Maybe<Scalars['String']>;
+  /** the name of the base repo for the pull request */
   baseRepositoryName?: Maybe<Scalars['String']>;
+  /** body of the pull request */
   body?: Maybe<Scalars['String']>;
+  /** the number of files changed/modified in the pull request */
   changedFiles?: Maybe<Scalars['Int']>;
+  /** boolean to determine if the pull request is closed */
   closed?: Maybe<Scalars['Boolean']>;
+  /** timestamp of when the pull request was closed */
   closedAt?: Maybe<Scalars['Datetime']>;
+  /** the number of comments in the pull request */
   commentCount?: Maybe<Scalars['Int']>;
   commitCount?: Maybe<Scalars['Int']>;
+  /** timestamp of when the pull request was created */
   createdAt?: Maybe<Scalars['Datetime']>;
+  /** boolean to determine if the pull request was created via email */
   createdViaEmail?: Maybe<Scalars['Boolean']>;
+  /** GitHub database_id of the pull request */
   databaseId: Scalars['Int'];
+  /** the number of deletions in the pull request */
   deletions?: Maybe<Scalars['Int']>;
+  /** login of the editor of the pull request */
   editorLogin?: Maybe<Scalars['String']>;
+  /** the name of head ref associated with the pull request */
   headRefName?: Maybe<Scalars['String']>;
+  /** the head ref object id associated with the pull request */
   headRefOid?: Maybe<Scalars['String']>;
+  /** the name of the head repo for the pull request */
   headRepositoryName?: Maybe<Scalars['String']>;
+  /** boolean to determine if the pull request is a draft */
   isDraft?: Maybe<Scalars['Boolean']>;
+  /** number of labels associated to the pull request */
   labelCount?: Maybe<Scalars['Int']>;
+  /** labels associated to the pull request */
   labels: Scalars['JSON'];
+  /** timestamp of when the pull request was last edited */
   lastEditedAt?: Maybe<Scalars['Datetime']>;
+  /** boolean to determine if the pull request is locked */
   locked?: Maybe<Scalars['Boolean']>;
+  /** boolean to determine if a maintainer can modify the pull request */
   maintainerCanModify?: Maybe<Scalars['Boolean']>;
-  mantainerCanModify?: Maybe<Scalars['Boolean']>;
+  /** mergeable state of the pull request */
   mergeable?: Maybe<Scalars['String']>;
+  /** boolean to determine if the pull request is merged */
   merged?: Maybe<Scalars['Boolean']>;
+  /** timestamp of when the pull request was merged */
   mergedAt?: Maybe<Scalars['Datetime']>;
+  /** actor who merged the pull request */
   mergedBy?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** GitHub number of the pull request */
   number?: Maybe<Scalars['Int']>;
+  /** number of participants associated to the pull request */
   participantCount?: Maybe<Scalars['Int']>;
+  /** timestamp of when the pull request was published */
   publishedAt?: Maybe<Scalars['Datetime']>;
   /** Reads a single `Repo` that is related to this `GithubPullRequest`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** review decision of the pull request */
   reviewDecision?: Maybe<Scalars['String']>;
+  /** state of the pull request */
   state?: Maybe<Scalars['String']>;
+  /** title of the pull request */
   title?: Maybe<Scalars['String']>;
+  /** timestamp of when the pull request was updated */
   updatedAt?: Maybe<Scalars['Datetime']>;
+  /** GitHub URL of the pull request */
   url?: Maybe<Scalars['String']>;
 };
 
-/** GitHub pull request commits */
+/** commits for all pull requests of a GitHub repo */
 export type GithubPullRequestCommit = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** the number of additions in the commit */
   additions?: Maybe<Scalars['Int']>;
+  /** email of the author of the modification */
   authorEmail?: Maybe<Scalars['String']>;
+  /** name of the author of the the modification */
   authorName?: Maybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
   authorWhen?: Maybe<Scalars['Datetime']>;
+  /** the number of files changed/modified in the commit */
   changedFiles?: Maybe<Scalars['Int']>;
+  /** email of the author who committed the modification */
   committerEmail?: Maybe<Scalars['String']>;
+  /** name of the author who committed the modification */
   committerName?: Maybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
   committerWhen?: Maybe<Scalars['Datetime']>;
+  /** the number of deletions in the commit */
   deletions?: Maybe<Scalars['Int']>;
+  /** hash of the commit */
   hash: Scalars['String'];
+  /** message of the commit */
   message?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** GitHub pull request number of the commit */
   prNumber: Scalars['Int'];
   /** Reads a single `Repo` that is related to this `GithubPullRequestCommit`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** GitHub URL of the commit */
   url?: Maybe<Scalars['String']>;
 };
 
@@ -3542,39 +4006,69 @@ export type GithubPullRequestCommitFilter = {
 
 /** An input for mutations affecting `GithubPullRequestCommit` */
 export type GithubPullRequestCommitInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the number of additions in the commit */
   additions?: InputMaybe<Scalars['Int']>;
+  /** email of the author of the modification */
   authorEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author of the the modification */
   authorName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
   authorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** the number of files changed/modified in the commit */
   changedFiles?: InputMaybe<Scalars['Int']>;
+  /** email of the author who committed the modification */
   committerEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author who committed the modification */
   committerName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
   committerWhen?: InputMaybe<Scalars['Datetime']>;
+  /** the number of deletions in the commit */
   deletions?: InputMaybe<Scalars['Int']>;
+  /** hash of the commit */
   hash: Scalars['String'];
+  /** message of the commit */
   message?: InputMaybe<Scalars['String']>;
+  /** GitHub pull request number of the commit */
   prNumber: Scalars['Int'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** GitHub URL of the commit */
   url?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `GithubPullRequestCommit`. Fields that are set will be updated. */
 export type GithubPullRequestCommitPatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the number of additions in the commit */
   additions?: InputMaybe<Scalars['Int']>;
+  /** email of the author of the modification */
   authorEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author of the the modification */
   authorName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
   authorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** the number of files changed/modified in the commit */
   changedFiles?: InputMaybe<Scalars['Int']>;
+  /** email of the author who committed the modification */
   committerEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author who committed the modification */
   committerName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
   committerWhen?: InputMaybe<Scalars['Datetime']>;
+  /** the number of deletions in the commit */
   deletions?: InputMaybe<Scalars['Int']>;
+  /** hash of the commit */
   hash?: InputMaybe<Scalars['String']>;
+  /** message of the commit */
   message?: InputMaybe<Scalars['String']>;
+  /** GitHub pull request number of the commit */
   prNumber?: InputMaybe<Scalars['Int']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** GitHub URL of the commit */
   url?: InputMaybe<Scalars['String']>;
 };
 
@@ -3698,8 +4192,6 @@ export type GithubPullRequestCondition = {
   locked?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `maintainerCanModify` field. */
   maintainerCanModify?: InputMaybe<Scalars['Boolean']>;
-  /** Checks for equality with the object’s `mantainerCanModify` field. */
-  mantainerCanModify?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `mergeable` field. */
   mergeable?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `merged` field. */
@@ -3790,8 +4282,6 @@ export type GithubPullRequestFilter = {
   locked?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `maintainerCanModify` field. */
   maintainerCanModify?: InputMaybe<BooleanFilter>;
-  /** Filter by the object’s `mantainerCanModify` field. */
-  mantainerCanModify?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `mergeable` field. */
   mergeable?: InputMaybe<StringFilter>;
   /** Filter by the object’s `merged` field. */
@@ -3826,121 +4316,219 @@ export type GithubPullRequestFilter = {
 
 /** An input for mutations affecting `GithubPullRequest` */
 export type GithubPullRequestInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the number of additions in the pull request */
   additions?: InputMaybe<Scalars['Int']>;
+  /** author association to the repo */
   authorAssociation?: InputMaybe<Scalars['String']>;
+  /** URL to the avatar of the author of the pull request */
   authorAvatarUrl?: InputMaybe<Scalars['String']>;
+  /** login of the author of the pull request */
   authorLogin?: InputMaybe<Scalars['String']>;
+  /** name of the author of the pull request */
   authorName?: InputMaybe<Scalars['String']>;
+  /** the name of base ref associated with the pull request */
   baseRefName?: InputMaybe<Scalars['String']>;
+  /** the base ref object id associated with the pull request */
   baseRefOid?: InputMaybe<Scalars['String']>;
+  /** the name of the base repo for the pull request */
   baseRepositoryName?: InputMaybe<Scalars['String']>;
+  /** body of the pull request */
   body?: InputMaybe<Scalars['String']>;
+  /** the number of files changed/modified in the pull request */
   changedFiles?: InputMaybe<Scalars['Int']>;
+  /** boolean to determine if the pull request is closed */
   closed?: InputMaybe<Scalars['Boolean']>;
+  /** timestamp of when the pull request was closed */
   closedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the number of comments in the pull request */
   commentCount?: InputMaybe<Scalars['Int']>;
   commitCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp of when the pull request was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the pull request was created via email */
   createdViaEmail?: InputMaybe<Scalars['Boolean']>;
+  /** GitHub database_id of the pull request */
   databaseId: Scalars['Int'];
+  /** the number of deletions in the pull request */
   deletions?: InputMaybe<Scalars['Int']>;
+  /** login of the editor of the pull request */
   editorLogin?: InputMaybe<Scalars['String']>;
+  /** the name of head ref associated with the pull request */
   headRefName?: InputMaybe<Scalars['String']>;
+  /** the head ref object id associated with the pull request */
   headRefOid?: InputMaybe<Scalars['String']>;
+  /** the name of the head repo for the pull request */
   headRepositoryName?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the pull request is a draft */
   isDraft?: InputMaybe<Scalars['Boolean']>;
+  /** number of labels associated to the pull request */
   labelCount?: InputMaybe<Scalars['Int']>;
+  /** labels associated to the pull request */
   labels?: InputMaybe<Scalars['JSON']>;
+  /** timestamp of when the pull request was last edited */
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the pull request is locked */
   locked?: InputMaybe<Scalars['Boolean']>;
+  /** boolean to determine if a maintainer can modify the pull request */
   maintainerCanModify?: InputMaybe<Scalars['Boolean']>;
-  mantainerCanModify?: InputMaybe<Scalars['Boolean']>;
+  /** mergeable state of the pull request */
   mergeable?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the pull request is merged */
   merged?: InputMaybe<Scalars['Boolean']>;
+  /** timestamp of when the pull request was merged */
   mergedAt?: InputMaybe<Scalars['Datetime']>;
+  /** actor who merged the pull request */
   mergedBy?: InputMaybe<Scalars['String']>;
+  /** GitHub number of the pull request */
   number?: InputMaybe<Scalars['Int']>;
+  /** number of participants associated to the pull request */
   participantCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp of when the pull request was published */
   publishedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** review decision of the pull request */
   reviewDecision?: InputMaybe<Scalars['String']>;
+  /** state of the pull request */
   state?: InputMaybe<Scalars['String']>;
+  /** title of the pull request */
   title?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the pull request was updated */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** GitHub URL of the pull request */
   url?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `GithubPullRequest`. Fields that are set will be updated. */
 export type GithubPullRequestPatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the number of additions in the pull request */
   additions?: InputMaybe<Scalars['Int']>;
+  /** author association to the repo */
   authorAssociation?: InputMaybe<Scalars['String']>;
+  /** URL to the avatar of the author of the pull request */
   authorAvatarUrl?: InputMaybe<Scalars['String']>;
+  /** login of the author of the pull request */
   authorLogin?: InputMaybe<Scalars['String']>;
+  /** name of the author of the pull request */
   authorName?: InputMaybe<Scalars['String']>;
+  /** the name of base ref associated with the pull request */
   baseRefName?: InputMaybe<Scalars['String']>;
+  /** the base ref object id associated with the pull request */
   baseRefOid?: InputMaybe<Scalars['String']>;
+  /** the name of the base repo for the pull request */
   baseRepositoryName?: InputMaybe<Scalars['String']>;
+  /** body of the pull request */
   body?: InputMaybe<Scalars['String']>;
+  /** the number of files changed/modified in the pull request */
   changedFiles?: InputMaybe<Scalars['Int']>;
+  /** boolean to determine if the pull request is closed */
   closed?: InputMaybe<Scalars['Boolean']>;
+  /** timestamp of when the pull request was closed */
   closedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the number of comments in the pull request */
   commentCount?: InputMaybe<Scalars['Int']>;
   commitCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp of when the pull request was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the pull request was created via email */
   createdViaEmail?: InputMaybe<Scalars['Boolean']>;
+  /** GitHub database_id of the pull request */
   databaseId?: InputMaybe<Scalars['Int']>;
+  /** the number of deletions in the pull request */
   deletions?: InputMaybe<Scalars['Int']>;
+  /** login of the editor of the pull request */
   editorLogin?: InputMaybe<Scalars['String']>;
+  /** the name of head ref associated with the pull request */
   headRefName?: InputMaybe<Scalars['String']>;
+  /** the head ref object id associated with the pull request */
   headRefOid?: InputMaybe<Scalars['String']>;
+  /** the name of the head repo for the pull request */
   headRepositoryName?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the pull request is a draft */
   isDraft?: InputMaybe<Scalars['Boolean']>;
+  /** number of labels associated to the pull request */
   labelCount?: InputMaybe<Scalars['Int']>;
+  /** labels associated to the pull request */
   labels?: InputMaybe<Scalars['JSON']>;
+  /** timestamp of when the pull request was last edited */
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the pull request is locked */
   locked?: InputMaybe<Scalars['Boolean']>;
+  /** boolean to determine if a maintainer can modify the pull request */
   maintainerCanModify?: InputMaybe<Scalars['Boolean']>;
-  mantainerCanModify?: InputMaybe<Scalars['Boolean']>;
+  /** mergeable state of the pull request */
   mergeable?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the pull request is merged */
   merged?: InputMaybe<Scalars['Boolean']>;
+  /** timestamp of when the pull request was merged */
   mergedAt?: InputMaybe<Scalars['Datetime']>;
+  /** actor who merged the pull request */
   mergedBy?: InputMaybe<Scalars['String']>;
+  /** GitHub number of the pull request */
   number?: InputMaybe<Scalars['Int']>;
+  /** number of participants associated to the pull request */
   participantCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp of when the pull request was published */
   publishedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** review decision of the pull request */
   reviewDecision?: InputMaybe<Scalars['String']>;
+  /** state of the pull request */
   state?: InputMaybe<Scalars['String']>;
+  /** title of the pull request */
   title?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the pull request was updated */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** GitHub URL of the pull request */
   url?: InputMaybe<Scalars['String']>;
 };
 
-/** GitHub pull request reviews */
+/** reviews for all pull requests of a GitHub repo */
 export type GithubPullRequestReview = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** author association to the repo */
   authorAssociation?: Maybe<Scalars['String']>;
+  /** boolean to determine if author can push to the repo */
   authorCanPushToRepository?: Maybe<Scalars['Boolean']>;
+  /** login of the author of the review */
   authorLogin?: Maybe<Scalars['String']>;
+  /** URL to the profile of the author of the review */
   authorUrl?: Maybe<Scalars['String']>;
+  /** body of the review */
   body?: Maybe<Scalars['String']>;
+  /** number of comments associated to the review */
   commentCount?: Maybe<Scalars['Int']>;
+  /** timestamp of when the review was created */
   createdAt?: Maybe<Scalars['Datetime']>;
+  /** boolean to determine if the review was created via email */
   createdViaEmail?: Maybe<Scalars['Boolean']>;
+  /** login of the editor of the review */
   editorLogin?: Maybe<Scalars['String']>;
+  /** GitHub id of the review */
   id: Scalars['String'];
+  /** timestamp of when the review was last edited */
   lastEditedAt?: Maybe<Scalars['Datetime']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** GitHub pull request number of the review */
   prNumber: Scalars['Int'];
+  /** timestamp of when the review was published */
   publishedAt?: Maybe<Scalars['Datetime']>;
   /** Reads a single `Repo` that is related to this `GithubPullRequestReview`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** state of the review */
   state?: Maybe<Scalars['String']>;
+  /** timestamp of when the review was submitted */
   submittedAt?: Maybe<Scalars['Datetime']>;
+  /** timestamp of when the review was updated */
   updatedAt?: Maybe<Scalars['Datetime']>;
 };
 
@@ -4035,45 +4623,81 @@ export type GithubPullRequestReviewFilter = {
 
 /** An input for mutations affecting `GithubPullRequestReview` */
 export type GithubPullRequestReviewInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** author association to the repo */
   authorAssociation?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if author can push to the repo */
   authorCanPushToRepository?: InputMaybe<Scalars['Boolean']>;
+  /** login of the author of the review */
   authorLogin?: InputMaybe<Scalars['String']>;
+  /** URL to the profile of the author of the review */
   authorUrl?: InputMaybe<Scalars['String']>;
+  /** body of the review */
   body?: InputMaybe<Scalars['String']>;
+  /** number of comments associated to the review */
   commentCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp of when the review was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the review was created via email */
   createdViaEmail?: InputMaybe<Scalars['Boolean']>;
+  /** login of the editor of the review */
   editorLogin?: InputMaybe<Scalars['String']>;
+  /** GitHub id of the review */
   id: Scalars['String'];
+  /** timestamp of when the review was last edited */
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
+  /** GitHub pull request number of the review */
   prNumber: Scalars['Int'];
+  /** timestamp of when the review was published */
   publishedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** state of the review */
   state?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the review was submitted */
   submittedAt?: InputMaybe<Scalars['Datetime']>;
+  /** timestamp of when the review was updated */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
 /** Represents an update to a `GithubPullRequestReview`. Fields that are set will be updated. */
 export type GithubPullRequestReviewPatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** author association to the repo */
   authorAssociation?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if author can push to the repo */
   authorCanPushToRepository?: InputMaybe<Scalars['Boolean']>;
+  /** login of the author of the review */
   authorLogin?: InputMaybe<Scalars['String']>;
+  /** URL to the profile of the author of the review */
   authorUrl?: InputMaybe<Scalars['String']>;
+  /** body of the review */
   body?: InputMaybe<Scalars['String']>;
+  /** number of comments associated to the review */
   commentCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp of when the review was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** boolean to determine if the review was created via email */
   createdViaEmail?: InputMaybe<Scalars['Boolean']>;
+  /** login of the editor of the review */
   editorLogin?: InputMaybe<Scalars['String']>;
+  /** GitHub id of the review */
   id?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the review was last edited */
   lastEditedAt?: InputMaybe<Scalars['Datetime']>;
+  /** GitHub pull request number of the review */
   prNumber?: InputMaybe<Scalars['Int']>;
+  /** timestamp of when the review was published */
   publishedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** state of the review */
   state?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the review was submitted */
   submittedAt?: InputMaybe<Scalars['Datetime']>;
+  /** timestamp of when the review was updated */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
@@ -4218,8 +4842,6 @@ export enum GithubPullRequestsOrderBy {
   LockedDesc = 'LOCKED_DESC',
   MaintainerCanModifyAsc = 'MAINTAINER_CAN_MODIFY_ASC',
   MaintainerCanModifyDesc = 'MAINTAINER_CAN_MODIFY_DESC',
-  MantainerCanModifyAsc = 'MANTAINER_CAN_MODIFY_ASC',
-  MantainerCanModifyDesc = 'MANTAINER_CAN_MODIFY_DESC',
   MergeableAsc = 'MERGEABLE_ASC',
   MergeableDesc = 'MERGEABLE_DESC',
   MergedAsc = 'MERGED_ASC',
@@ -4253,40 +4875,69 @@ export enum GithubPullRequestsOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
-/** GitHub metadata about a repo */
+/** info/metadata of a GitHub repo */
 export type GithubRepoInfo = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** timestamp of when the repo was created */
   createdAt?: Maybe<Scalars['Datetime']>;
+  /** the name of the default branch for the repo */
   defaultBranchName?: Maybe<Scalars['String']>;
+  /** the description for the repo */
   description?: Maybe<Scalars['String']>;
+  /** the number of kilobytes on disk for the repo */
   diskUsage?: Maybe<Scalars['Int']>;
+  /** number of forks associated to the repo */
   forkCount?: Maybe<Scalars['Int']>;
+  /** the GitHub homepage URL for the repo */
   homepageUrl?: Maybe<Scalars['String']>;
+  /** boolean to determine if the repo is archived */
   isArchived?: Maybe<Scalars['Boolean']>;
+  /** boolean to determine if the repo is disabled */
   isDisabled?: Maybe<Scalars['Boolean']>;
+  /** boolean to determine if the repo is a mirror */
   isMirror?: Maybe<Scalars['Boolean']>;
+  /** boolean to determine if the repo is private */
   isPrivate?: Maybe<Scalars['Boolean']>;
+  /** the author of the latest release in the repo */
   latestReleaseAuthor?: Maybe<Scalars['String']>;
+  /** timestamp of the creation of the latest release in the repo */
   latestReleaseCreatedAt?: Maybe<Scalars['Datetime']>;
+  /** the name of the latest release in the repo */
   latestReleaseName?: Maybe<Scalars['String']>;
+  /** timestamp of the publishing of the latest release in the repo */
   latestReleasePublishedAt?: Maybe<Scalars['Datetime']>;
+  /** the license key for the repo */
   licenseKey?: Maybe<Scalars['String']>;
+  /** the license name for the repo */
   licenseName?: Maybe<Scalars['String']>;
+  /** the license nickname for the repo */
   licenseNickname?: Maybe<Scalars['String']>;
+  /** the name of the repo */
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** the URL for the image used to represent this repository in Open Graph data */
   openGraphImageUrl?: Maybe<Scalars['String']>;
+  /** the user or organization that owns the repo */
   owner: Scalars['String'];
+  /** the primary language for the repo */
   primaryLanguage?: Maybe<Scalars['String']>;
+  /** timestamp of the latest push to the repo */
   pushedAt?: Maybe<Scalars['Datetime']>;
+  /** number of releases associated to the repo */
   releasesCount?: Maybe<Scalars['Int']>;
   /** Reads a single `Repo` that is related to this `GithubRepoInfo`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** number of stargazers associated to the repo */
   stargazersCount?: Maybe<Scalars['Int']>;
+  /** number of issues associated to the repo */
   totalIssuesCount?: Maybe<Scalars['Int']>;
+  /** timestamp of the latest update to the repo */
   updatedAt?: Maybe<Scalars['Datetime']>;
+  /** number of watchers associated to the repo */
   watchersCount?: Maybe<Scalars['Int']>;
 };
 
@@ -4425,67 +5076,125 @@ export type GithubRepoInfoFilter = {
 
 /** An input for mutations affecting `GithubRepoInfo` */
 export type GithubRepoInfoInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** timestamp of when the repo was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** the name of the default branch for the repo */
   defaultBranchName?: InputMaybe<Scalars['String']>;
+  /** the description for the repo */
   description?: InputMaybe<Scalars['String']>;
+  /** the number of kilobytes on disk for the repo */
   diskUsage?: InputMaybe<Scalars['Int']>;
+  /** number of forks associated to the repo */
   forkCount?: InputMaybe<Scalars['Int']>;
+  /** the GitHub homepage URL for the repo */
   homepageUrl?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the repo is archived */
   isArchived?: InputMaybe<Scalars['Boolean']>;
+  /** boolean to determine if the repo is disabled */
   isDisabled?: InputMaybe<Scalars['Boolean']>;
+  /** boolean to determine if the repo is a mirror */
   isMirror?: InputMaybe<Scalars['Boolean']>;
+  /** boolean to determine if the repo is private */
   isPrivate?: InputMaybe<Scalars['Boolean']>;
+  /** the author of the latest release in the repo */
   latestReleaseAuthor?: InputMaybe<Scalars['String']>;
+  /** timestamp of the creation of the latest release in the repo */
   latestReleaseCreatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the name of the latest release in the repo */
   latestReleaseName?: InputMaybe<Scalars['String']>;
+  /** timestamp of the publishing of the latest release in the repo */
   latestReleasePublishedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the license key for the repo */
   licenseKey?: InputMaybe<Scalars['String']>;
+  /** the license name for the repo */
   licenseName?: InputMaybe<Scalars['String']>;
+  /** the license nickname for the repo */
   licenseNickname?: InputMaybe<Scalars['String']>;
+  /** the name of the repo */
   name: Scalars['String'];
+  /** the URL for the image used to represent this repository in Open Graph data */
   openGraphImageUrl?: InputMaybe<Scalars['String']>;
+  /** the user or organization that owns the repo */
   owner: Scalars['String'];
+  /** the primary language for the repo */
   primaryLanguage?: InputMaybe<Scalars['String']>;
+  /** timestamp of the latest push to the repo */
   pushedAt?: InputMaybe<Scalars['Datetime']>;
+  /** number of releases associated to the repo */
   releasesCount?: InputMaybe<Scalars['Int']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** number of stargazers associated to the repo */
   stargazersCount?: InputMaybe<Scalars['Int']>;
+  /** number of issues associated to the repo */
   totalIssuesCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp of the latest update to the repo */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** number of watchers associated to the repo */
   watchersCount?: InputMaybe<Scalars['Int']>;
 };
 
 /** Represents an update to a `GithubRepoInfo`. Fields that are set will be updated. */
 export type GithubRepoInfoPatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** timestamp of when the repo was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** the name of the default branch for the repo */
   defaultBranchName?: InputMaybe<Scalars['String']>;
+  /** the description for the repo */
   description?: InputMaybe<Scalars['String']>;
+  /** the number of kilobytes on disk for the repo */
   diskUsage?: InputMaybe<Scalars['Int']>;
+  /** number of forks associated to the repo */
   forkCount?: InputMaybe<Scalars['Int']>;
+  /** the GitHub homepage URL for the repo */
   homepageUrl?: InputMaybe<Scalars['String']>;
+  /** boolean to determine if the repo is archived */
   isArchived?: InputMaybe<Scalars['Boolean']>;
+  /** boolean to determine if the repo is disabled */
   isDisabled?: InputMaybe<Scalars['Boolean']>;
+  /** boolean to determine if the repo is a mirror */
   isMirror?: InputMaybe<Scalars['Boolean']>;
+  /** boolean to determine if the repo is private */
   isPrivate?: InputMaybe<Scalars['Boolean']>;
+  /** the author of the latest release in the repo */
   latestReleaseAuthor?: InputMaybe<Scalars['String']>;
+  /** timestamp of the creation of the latest release in the repo */
   latestReleaseCreatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the name of the latest release in the repo */
   latestReleaseName?: InputMaybe<Scalars['String']>;
+  /** timestamp of the publishing of the latest release in the repo */
   latestReleasePublishedAt?: InputMaybe<Scalars['Datetime']>;
+  /** the license key for the repo */
   licenseKey?: InputMaybe<Scalars['String']>;
+  /** the license name for the repo */
   licenseName?: InputMaybe<Scalars['String']>;
+  /** the license nickname for the repo */
   licenseNickname?: InputMaybe<Scalars['String']>;
+  /** the name of the repo */
   name?: InputMaybe<Scalars['String']>;
+  /** the URL for the image used to represent this repository in Open Graph data */
   openGraphImageUrl?: InputMaybe<Scalars['String']>;
+  /** the user or organization that owns the repo */
   owner?: InputMaybe<Scalars['String']>;
+  /** the primary language for the repo */
   primaryLanguage?: InputMaybe<Scalars['String']>;
+  /** timestamp of the latest push to the repo */
   pushedAt?: InputMaybe<Scalars['Datetime']>;
+  /** number of releases associated to the repo */
   releasesCount?: InputMaybe<Scalars['Int']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** number of stargazers associated to the repo */
   stargazersCount?: InputMaybe<Scalars['Int']>;
+  /** number of issues associated to the repo */
   totalIssuesCount?: InputMaybe<Scalars['Int']>;
+  /** timestamp of the latest update to the repo */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** number of watchers associated to the repo */
   watchersCount?: InputMaybe<Scalars['Int']>;
 };
 
@@ -4574,25 +5283,39 @@ export enum GithubRepoInfosOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
-/** GitHub stargazers for a repo */
+/** stargazers of a GitHub repo */
 export type GithubStargazer = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** URL to the avatar of the user who starred the repo */
   avatarUrl?: Maybe<Scalars['String']>;
+  /** public profile bio of the user who starred the repo */
   bio?: Maybe<Scalars['String']>;
+  /** company of the user who starred the repo */
   company?: Maybe<Scalars['String']>;
+  /** timestamp of when the user was created who starred the repo */
   createdAt?: Maybe<Scalars['Datetime']>;
+  /** email of the user who starred the repo */
   email?: Maybe<Scalars['String']>;
+  /** location of the user who starred the repo */
   location?: Maybe<Scalars['String']>;
+  /** login of the user who starred the repo */
   login: Scalars['String'];
+  /** name of the user who starred the repo */
   name?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** Reads a single `Repo` that is related to this `GithubStargazer`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** timestamp the user starred the repo */
   starredAt?: Maybe<Scalars['Datetime']>;
+  /** twitter of the user who starred the repo */
   twitter?: Maybe<Scalars['String']>;
+  /** timestamp of the latest update to the user who starred the repo */
   updatedAt?: Maybe<Scalars['Datetime']>;
+  /** website of the user who starred the repo */
   website?: Maybe<Scalars['String']>;
 };
 
@@ -4671,37 +5394,65 @@ export type GithubStargazerFilter = {
 
 /** An input for mutations affecting `GithubStargazer` */
 export type GithubStargazerInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** URL to the avatar of the user who starred the repo */
   avatarUrl?: InputMaybe<Scalars['String']>;
+  /** public profile bio of the user who starred the repo */
   bio?: InputMaybe<Scalars['String']>;
+  /** company of the user who starred the repo */
   company?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the user was created who starred the repo */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the user who starred the repo */
   email?: InputMaybe<Scalars['String']>;
+  /** location of the user who starred the repo */
   location?: InputMaybe<Scalars['String']>;
+  /** login of the user who starred the repo */
   login: Scalars['String'];
+  /** name of the user who starred the repo */
   name?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** timestamp the user starred the repo */
   starredAt?: InputMaybe<Scalars['Datetime']>;
+  /** twitter of the user who starred the repo */
   twitter?: InputMaybe<Scalars['String']>;
+  /** timestamp of the latest update to the user who starred the repo */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** website of the user who starred the repo */
   website?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `GithubStargazer`. Fields that are set will be updated. */
 export type GithubStargazerPatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** URL to the avatar of the user who starred the repo */
   avatarUrl?: InputMaybe<Scalars['String']>;
+  /** public profile bio of the user who starred the repo */
   bio?: InputMaybe<Scalars['String']>;
+  /** company of the user who starred the repo */
   company?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the user was created who starred the repo */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the user who starred the repo */
   email?: InputMaybe<Scalars['String']>;
+  /** location of the user who starred the repo */
   location?: InputMaybe<Scalars['String']>;
+  /** login of the user who starred the repo */
   login?: InputMaybe<Scalars['String']>;
+  /** name of the user who starred the repo */
   name?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** timestamp the user starred the repo */
   starredAt?: InputMaybe<Scalars['Datetime']>;
+  /** twitter of the user who starred the repo */
   twitter?: InputMaybe<Scalars['String']>;
+  /** timestamp of the latest update to the user who starred the repo */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** website of the user who starred the repo */
   website?: InputMaybe<Scalars['String']>;
 };
 
@@ -5022,6 +5773,8 @@ export type Mutation = {
   createRepoSyncQueueStatusType?: Maybe<CreateRepoSyncQueueStatusTypePayload>;
   /** Creates a single `RepoSyncType`. */
   createRepoSyncType?: Maybe<CreateRepoSyncTypePayload>;
+  /** Creates a single `RepoSyncTypeGroup`. */
+  createRepoSyncTypeGroup?: Maybe<CreateRepoSyncTypeGroupPayload>;
   /** Creates a single `SchemaMigration`. */
   createSchemaMigration?: Maybe<CreateSchemaMigrationPayload>;
   /** Creates a single `SchemaMigrationsHistory`. */
@@ -5030,6 +5783,8 @@ export type Mutation = {
   createServiceAuthCredential?: Maybe<CreateServiceAuthCredentialPayload>;
   /** Creates a single `ServiceAuthCredentialType`. */
   createServiceAuthCredentialType?: Maybe<CreateServiceAuthCredentialTypePayload>;
+  /** Creates a single `SyftRepoScan`. */
+  createSyftRepoScan?: Maybe<CreateSyftRepoScanPayload>;
   /** Creates a single `TrivyRepoScan`. */
   createTrivyRepoScan?: Maybe<CreateTrivyRepoScanPayload>;
   /** Deletes a single `GitBlame` using a unique key. */
@@ -5116,6 +5871,10 @@ export type Mutation = {
   deleteRepoSyncType?: Maybe<DeleteRepoSyncTypePayload>;
   /** Deletes a single `RepoSyncType` using its globally unique id. */
   deleteRepoSyncTypeByNodeId?: Maybe<DeleteRepoSyncTypePayload>;
+  /** Deletes a single `RepoSyncTypeGroup` using a unique key. */
+  deleteRepoSyncTypeGroup?: Maybe<DeleteRepoSyncTypeGroupPayload>;
+  /** Deletes a single `RepoSyncTypeGroup` using its globally unique id. */
+  deleteRepoSyncTypeGroupByNodeId?: Maybe<DeleteRepoSyncTypeGroupPayload>;
   /** Deletes a single `SchemaMigration` using a unique key. */
   deleteSchemaMigration?: Maybe<DeleteSchemaMigrationPayload>;
   /** Deletes a single `SchemaMigration` using its globally unique id. */
@@ -5132,6 +5891,10 @@ export type Mutation = {
   deleteServiceAuthCredentialType?: Maybe<DeleteServiceAuthCredentialTypePayload>;
   /** Deletes a single `ServiceAuthCredentialType` using its globally unique id. */
   deleteServiceAuthCredentialTypeByNodeId?: Maybe<DeleteServiceAuthCredentialTypePayload>;
+  /** Deletes a single `SyftRepoScan` using a unique key. */
+  deleteSyftRepoScan?: Maybe<DeleteSyftRepoScanPayload>;
+  /** Deletes a single `SyftRepoScan` using its globally unique id. */
+  deleteSyftRepoScanByNodeId?: Maybe<DeleteSyftRepoScanPayload>;
   /** Deletes a single `TrivyRepoScan` using a unique key. */
   deleteTrivyRepoScan?: Maybe<DeleteTrivyRepoScanPayload>;
   /** Deletes a single `TrivyRepoScan` using its globally unique id. */
@@ -5222,6 +5985,10 @@ export type Mutation = {
   updateRepoSyncType?: Maybe<UpdateRepoSyncTypePayload>;
   /** Updates a single `RepoSyncType` using its globally unique id and a patch. */
   updateRepoSyncTypeByNodeId?: Maybe<UpdateRepoSyncTypePayload>;
+  /** Updates a single `RepoSyncTypeGroup` using a unique key and a patch. */
+  updateRepoSyncTypeGroup?: Maybe<UpdateRepoSyncTypeGroupPayload>;
+  /** Updates a single `RepoSyncTypeGroup` using its globally unique id and a patch. */
+  updateRepoSyncTypeGroupByNodeId?: Maybe<UpdateRepoSyncTypeGroupPayload>;
   /** Updates a single `SchemaMigration` using a unique key and a patch. */
   updateSchemaMigration?: Maybe<UpdateSchemaMigrationPayload>;
   /** Updates a single `SchemaMigration` using its globally unique id and a patch. */
@@ -5238,6 +6005,10 @@ export type Mutation = {
   updateServiceAuthCredentialType?: Maybe<UpdateServiceAuthCredentialTypePayload>;
   /** Updates a single `ServiceAuthCredentialType` using its globally unique id and a patch. */
   updateServiceAuthCredentialTypeByNodeId?: Maybe<UpdateServiceAuthCredentialTypePayload>;
+  /** Updates a single `SyftRepoScan` using a unique key and a patch. */
+  updateSyftRepoScan?: Maybe<UpdateSyftRepoScanPayload>;
+  /** Updates a single `SyftRepoScan` using its globally unique id and a patch. */
+  updateSyftRepoScanByNodeId?: Maybe<UpdateSyftRepoScanPayload>;
   /** Updates a single `TrivyRepoScan` using a unique key and a patch. */
   updateTrivyRepoScan?: Maybe<UpdateTrivyRepoScanPayload>;
   /** Updates a single `TrivyRepoScan` using its globally unique id and a patch. */
@@ -5384,6 +6155,12 @@ export type MutationCreateRepoSyncTypeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateRepoSyncTypeGroupArgs = {
+  input: CreateRepoSyncTypeGroupInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateSchemaMigrationArgs = {
   input: CreateSchemaMigrationInput;
 };
@@ -5404,6 +6181,12 @@ export type MutationCreateServiceAuthCredentialArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateServiceAuthCredentialTypeArgs = {
   input: CreateServiceAuthCredentialTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateSyftRepoScanArgs = {
+  input: CreateSyftRepoScanInput;
 };
 
 
@@ -5666,6 +6449,18 @@ export type MutationDeleteRepoSyncTypeByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRepoSyncTypeGroupArgs = {
+  input: DeleteRepoSyncTypeGroupInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRepoSyncTypeGroupByNodeIdArgs = {
+  input: DeleteRepoSyncTypeGroupByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteSchemaMigrationArgs = {
   input: DeleteSchemaMigrationInput;
 };
@@ -5710,6 +6505,18 @@ export type MutationDeleteServiceAuthCredentialTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteServiceAuthCredentialTypeByNodeIdArgs = {
   input: DeleteServiceAuthCredentialTypeByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSyftRepoScanArgs = {
+  input: DeleteSyftRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSyftRepoScanByNodeIdArgs = {
+  input: DeleteSyftRepoScanByNodeIdInput;
 };
 
 
@@ -5990,6 +6797,18 @@ export type MutationUpdateRepoSyncTypeByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepoSyncTypeGroupArgs = {
+  input: UpdateRepoSyncTypeGroupInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepoSyncTypeGroupByNodeIdArgs = {
+  input: UpdateRepoSyncTypeGroupByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateSchemaMigrationArgs = {
   input: UpdateSchemaMigrationInput;
 };
@@ -6034,6 +6853,18 @@ export type MutationUpdateServiceAuthCredentialTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateServiceAuthCredentialTypeByNodeIdArgs = {
   input: UpdateServiceAuthCredentialTypeByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSyftRepoScanArgs = {
+  input: UpdateSyftRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSyftRepoScanByNodeIdArgs = {
+  input: UpdateSyftRepoScanByNodeIdInput;
 };
 
 
@@ -6134,7 +6965,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | TrivyRepoScan>;
+  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /**
@@ -6182,6 +7013,11 @@ export type Query = Node & {
   repoSyncType?: Maybe<RepoSyncType>;
   /** Reads a single `RepoSyncType` using its globally unique `ID`. */
   repoSyncTypeByNodeId?: Maybe<RepoSyncType>;
+  repoSyncTypeGroup?: Maybe<RepoSyncTypeGroup>;
+  /** Reads a single `RepoSyncTypeGroup` using its globally unique `ID`. */
+  repoSyncTypeGroupByNodeId?: Maybe<RepoSyncTypeGroup>;
+  /** Reads and enables pagination through a set of `RepoSyncTypeGroup`. */
+  repoSyncTypeGroups?: Maybe<RepoSyncTypeGroupsConnection>;
   /** Reads and enables pagination through a set of `RepoSyncType`. */
   repoSyncTypes?: Maybe<RepoSyncTypesConnection>;
   /** Reads and enables pagination through a set of `RepoSync`. */
@@ -6208,6 +7044,13 @@ export type Query = Node & {
   serviceAuthCredentialTypes?: Maybe<ServiceAuthCredentialTypesConnection>;
   /** Reads and enables pagination through a set of `ServiceAuthCredential`. */
   serviceAuthCredentials?: Maybe<ServiceAuthCredentialsConnection>;
+  /** Reads and enables pagination through a set of `SyftRepoArtifact`. */
+  syftRepoArtifacts?: Maybe<SyftRepoArtifactsConnection>;
+  syftRepoScan?: Maybe<SyftRepoScan>;
+  /** Reads a single `SyftRepoScan` using its globally unique `ID`. */
+  syftRepoScanByNodeId?: Maybe<SyftRepoScan>;
+  /** Reads and enables pagination through a set of `SyftRepoScan`. */
+  syftRepoScans?: Maybe<SyftRepoScansConnection>;
   trivyRepoScan?: Maybe<TrivyRepoScan>;
   /** Reads a single `TrivyRepoScan` using its globally unique `ID`. */
   trivyRepoScanByNodeId?: Maybe<TrivyRepoScan>;
@@ -6454,6 +7297,7 @@ export type QueryGithubPullRequestCommitsArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryGithubPullRequestReviewArgs = {
   id: Scalars['String'];
+  repoId: Scalars['UUID'];
 };
 
 
@@ -6760,6 +7604,31 @@ export type QueryRepoSyncTypeByNodeIdArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryRepoSyncTypeGroupArgs = {
+  group: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepoSyncTypeGroupByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepoSyncTypeGroupsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncTypeGroupCondition>;
+  filter?: InputMaybe<RepoSyncTypeGroupFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncTypeGroupsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryRepoSyncTypesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -6899,6 +7768,44 @@ export type QueryServiceAuthCredentialsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QuerySyftRepoArtifactsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SyftRepoArtifactCondition>;
+  filter?: InputMaybe<SyftRepoArtifactFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SyftRepoArtifactsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySyftRepoScanArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySyftRepoScanByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySyftRepoScansArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SyftRepoScanCondition>;
+  filter?: InputMaybe<SyftRepoScanFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SyftRepoScansOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryTrivyRepoScanArgs = {
   repoId: Scalars['UUID'];
 };
@@ -6935,9 +7842,9 @@ export type QueryTrivyRepoVulnerabilitiesArgs = {
   orderBy?: InputMaybe<Array<TrivyRepoVulnerabilitiesOrderBy>>;
 };
 
-/** Git repositories to track */
+/** git repositories to track */
 export type Repo = Node & {
-  _mergestatSyncedAt: Scalars['Datetime'];
+  /** timestamp of when the MergeStat repo entry was created */
   createdAt: Scalars['Datetime'];
   /** Reads and enables pagination through a set of `GitBlame`. */
   gitBlames: GitBlamesConnection;
@@ -6961,25 +7868,32 @@ export type Repo = Node & {
   githubRepoInfo?: Maybe<GithubRepoInfo>;
   /** Reads and enables pagination through a set of `GithubStargazer`. */
   githubStargazers: GithubStargazersConnection;
+  /** MergeStat identifier for the repo */
   id: Scalars['UUID'];
+  /** boolean to determine if the repo is in GitHub */
   isGithub?: Maybe<Scalars['Boolean']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** ref for the repo */
   ref?: Maybe<Scalars['String']>;
+  /** URL for the repo */
   repo: Scalars['String'];
   /** Reads a single `RepoImport` that is related to this `Repo`. */
   repoImport?: Maybe<RepoImport>;
+  /** foreign key for mergestat.repo_imports.id */
   repoImportId?: Maybe<Scalars['UUID']>;
   /** Reads and enables pagination through a set of `RepoSync`. */
   repoSyncs: RepoSyncsConnection;
+  /** JSON settings for the repo */
   settings: Scalars['JSON'];
+  /** array of tags for the repo for topics in GitHub as well as tags added in MergeStat */
   tags: Scalars['JSON'];
   /** Reads a single `TrivyRepoScan` that is related to this `Repo`. */
   trivyRepoScan?: Maybe<TrivyRepoScan>;
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGitBlamesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -6992,7 +7906,7 @@ export type RepoGitBlamesArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGitCommitStatsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7005,7 +7919,7 @@ export type RepoGitCommitStatsArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGitCommitsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7018,7 +7932,7 @@ export type RepoGitCommitsArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGitFilesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7031,7 +7945,7 @@ export type RepoGitFilesArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGitRefsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7044,7 +7958,7 @@ export type RepoGitRefsArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGithubIssuesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7057,7 +7971,7 @@ export type RepoGithubIssuesArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGithubPullRequestCommitsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7070,7 +7984,7 @@ export type RepoGithubPullRequestCommitsArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGithubPullRequestReviewsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7083,7 +7997,7 @@ export type RepoGithubPullRequestReviewsArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGithubPullRequestsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7096,7 +8010,7 @@ export type RepoGithubPullRequestsArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoGithubStargazersArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7109,7 +8023,7 @@ export type RepoGithubStargazersArgs = {
 };
 
 
-/** Git repositories to track */
+/** git repositories to track */
 export type RepoRepoSyncsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7123,8 +8037,6 @@ export type RepoRepoSyncsArgs = {
 
 /** A condition to be used against `Repo` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type RepoCondition = {
-  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
-  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `id` field. */
@@ -7145,8 +8057,6 @@ export type RepoCondition = {
 
 /** A filter to be used against `Repo` object types. All fields are combined with a logical ‘and.’ */
 export type RepoFilter = {
-  /** Filter by the object’s `_mergestatSyncedAt` field. */
-  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<RepoFilter>>;
   /** Filter by the object’s `createdAt` field. */
@@ -7411,27 +8321,41 @@ export enum RepoImportsOrderBy {
 
 /** An input for mutations affecting `Repo` */
 export type RepoInput = {
-  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** timestamp of when the MergeStat repo entry was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** MergeStat identifier for the repo */
   id?: InputMaybe<Scalars['UUID']>;
+  /** boolean to determine if the repo is in GitHub */
   isGithub?: InputMaybe<Scalars['Boolean']>;
+  /** ref for the repo */
   ref?: InputMaybe<Scalars['String']>;
+  /** URL for the repo */
   repo: Scalars['String'];
+  /** foreign key for mergestat.repo_imports.id */
   repoImportId?: InputMaybe<Scalars['UUID']>;
+  /** JSON settings for the repo */
   settings?: InputMaybe<Scalars['JSON']>;
+  /** array of tags for the repo for topics in GitHub as well as tags added in MergeStat */
   tags?: InputMaybe<Scalars['JSON']>;
 };
 
 /** Represents an update to a `Repo`. Fields that are set will be updated. */
 export type RepoPatch = {
-  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** timestamp of when the MergeStat repo entry was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** MergeStat identifier for the repo */
   id?: InputMaybe<Scalars['UUID']>;
+  /** boolean to determine if the repo is in GitHub */
   isGithub?: InputMaybe<Scalars['Boolean']>;
+  /** ref for the repo */
   ref?: InputMaybe<Scalars['String']>;
+  /** URL for the repo */
   repo?: InputMaybe<Scalars['String']>;
+  /** foreign key for mergestat.repo_imports.id */
   repoImportId?: InputMaybe<Scalars['UUID']>;
+  /** JSON settings for the repo */
   settings?: InputMaybe<Scalars['JSON']>;
+  /** array of tags for the repo for topics in GitHub as well as tags added in MergeStat */
   tags?: InputMaybe<Scalars['JSON']>;
 };
 
@@ -7439,6 +8363,7 @@ export type RepoSync = Node & {
   id: Scalars['UUID'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  priority: Scalars['Int'];
   /** Reads a single `Repo` that is related to this `RepoSync`. */
   repo?: Maybe<Repo>;
   repoId: Scalars['UUID'];
@@ -7470,6 +8395,8 @@ export type RepoSyncRepoSyncQueuesArgs = {
 export type RepoSyncCondition = {
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `priority` field. */
+  priority?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `repoId` field. */
   repoId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `scheduleEnabled` field. */
@@ -7490,6 +8417,8 @@ export type RepoSyncFilter = {
   not?: InputMaybe<RepoSyncFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<RepoSyncFilter>>;
+  /** Filter by the object’s `priority` field. */
+  priority?: InputMaybe<IntFilter>;
   /** Filter by the object’s `repoId` field. */
   repoId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `scheduleEnabled` field. */
@@ -7503,6 +8432,7 @@ export type RepoSyncFilter = {
 /** An input for mutations affecting `RepoSync` */
 export type RepoSyncInput = {
   id?: InputMaybe<Scalars['UUID']>;
+  priority?: InputMaybe<Scalars['Int']>;
   repoId: Scalars['UUID'];
   scheduleEnabled?: InputMaybe<Scalars['Boolean']>;
   settings?: InputMaybe<Scalars['JSON']>;
@@ -7707,6 +8637,7 @@ export enum RepoSyncLogsOrderBy {
 /** Represents an update to a `RepoSync`. Fields that are set will be updated. */
 export type RepoSyncPatch = {
   id?: InputMaybe<Scalars['UUID']>;
+  priority?: InputMaybe<Scalars['Int']>;
   repoId?: InputMaybe<Scalars['UUID']>;
   scheduleEnabled?: InputMaybe<Scalars['Boolean']>;
   settings?: InputMaybe<Scalars['JSON']>;
@@ -7729,8 +8660,11 @@ export type RepoSyncQueue = Node & {
   repoSyncLogs: RepoSyncLogsConnection;
   /** Reads a single `RepoSyncQueueStatusType` that is related to this `RepoSyncQueue`. */
   repoSyncQueueStatusTypeByStatus?: Maybe<RepoSyncQueueStatusType>;
+  /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncQueue`. */
+  repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
   startedAt?: Maybe<Scalars['Datetime']>;
   status: Scalars['String'];
+  typeGroup: Scalars['String'];
 };
 
 
@@ -7766,6 +8700,8 @@ export type RepoSyncQueueCondition = {
   startedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `typeGroup` field. */
+  typeGroup?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `RepoSyncQueue` object types. All fields are combined with a logical ‘and.’ */
@@ -7794,6 +8730,8 @@ export type RepoSyncQueueFilter = {
   startedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `status` field. */
   status?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `typeGroup` field. */
+  typeGroup?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `RepoSyncQueue` */
@@ -7806,6 +8744,7 @@ export type RepoSyncQueueInput = {
   repoSyncId: Scalars['UUID'];
   startedAt?: InputMaybe<Scalars['Datetime']>;
   status: Scalars['String'];
+  typeGroup?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `RepoSyncQueue`. Fields that are set will be updated. */
@@ -7818,6 +8757,7 @@ export type RepoSyncQueuePatch = {
   repoSyncId?: InputMaybe<Scalars['UUID']>;
   startedAt?: InputMaybe<Scalars['Datetime']>;
   status?: InputMaybe<Scalars['String']>;
+  typeGroup?: InputMaybe<Scalars['String']>;
 };
 
 export type RepoSyncQueueStatusType = Node & {
@@ -7949,17 +8889,23 @@ export enum RepoSyncQueuesOrderBy {
   StartedAtAsc = 'STARTED_AT_ASC',
   StartedAtDesc = 'STARTED_AT_DESC',
   StatusAsc = 'STATUS_ASC',
-  StatusDesc = 'STATUS_DESC'
+  StatusDesc = 'STATUS_DESC',
+  TypeGroupAsc = 'TYPE_GROUP_ASC',
+  TypeGroupDesc = 'TYPE_GROUP_DESC'
 }
 
 export type RepoSyncType = Node & {
   description?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  priority: Scalars['Int'];
+  /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncType`. */
+  repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
   /** Reads and enables pagination through a set of `RepoSync`. */
   repoSyncsBySyncType: RepoSyncsConnection;
   shortName: Scalars['String'];
   type: Scalars['String'];
+  typeGroup: Scalars['String'];
 };
 
 
@@ -7981,10 +8927,14 @@ export type RepoSyncTypeRepoSyncsBySyncTypeArgs = {
 export type RepoSyncTypeCondition = {
   /** Checks for equality with the object’s `description` field. */
   description?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `priority` field. */
+  priority?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `shortName` field. */
   shortName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `typeGroup` field. */
+  typeGroup?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `RepoSyncType` object types. All fields are combined with a logical ‘and.’ */
@@ -7997,24 +8947,135 @@ export type RepoSyncTypeFilter = {
   not?: InputMaybe<RepoSyncTypeFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<RepoSyncTypeFilter>>;
+  /** Filter by the object’s `priority` field. */
+  priority?: InputMaybe<IntFilter>;
   /** Filter by the object’s `shortName` field. */
   shortName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `type` field. */
   type?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `typeGroup` field. */
+  typeGroup?: InputMaybe<StringFilter>;
 };
+
+export type RepoSyncTypeGroup = Node & {
+  concurrentSyncs?: Maybe<Scalars['Int']>;
+  group: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads and enables pagination through a set of `RepoSyncQueue`. */
+  repoSyncQueuesByTypeGroup: RepoSyncQueuesConnection;
+  /** Reads and enables pagination through a set of `RepoSyncType`. */
+  repoSyncTypesByTypeGroup: RepoSyncTypesConnection;
+};
+
+
+export type RepoSyncTypeGroupRepoSyncQueuesByTypeGroupArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncQueueCondition>;
+  filter?: InputMaybe<RepoSyncQueueFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncQueuesOrderBy>>;
+};
+
+
+export type RepoSyncTypeGroupRepoSyncTypesByTypeGroupArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncTypeCondition>;
+  filter?: InputMaybe<RepoSyncTypeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncTypesOrderBy>>;
+};
+
+/**
+ * A condition to be used against `RepoSyncTypeGroup` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type RepoSyncTypeGroupCondition = {
+  /** Checks for equality with the object’s `concurrentSyncs` field. */
+  concurrentSyncs?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `group` field. */
+  group?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `RepoSyncTypeGroup` object types. All fields are combined with a logical ‘and.’ */
+export type RepoSyncTypeGroupFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepoSyncTypeGroupFilter>>;
+  /** Filter by the object’s `concurrentSyncs` field. */
+  concurrentSyncs?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `group` field. */
+  group?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepoSyncTypeGroupFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepoSyncTypeGroupFilter>>;
+};
+
+/** An input for mutations affecting `RepoSyncTypeGroup` */
+export type RepoSyncTypeGroupInput = {
+  concurrentSyncs?: InputMaybe<Scalars['Int']>;
+  group: Scalars['String'];
+};
+
+/** Represents an update to a `RepoSyncTypeGroup`. Fields that are set will be updated. */
+export type RepoSyncTypeGroupPatch = {
+  concurrentSyncs?: InputMaybe<Scalars['Int']>;
+  group?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `RepoSyncTypeGroup` values. */
+export type RepoSyncTypeGroupsConnection = {
+  /** A list of edges which contains the `RepoSyncTypeGroup` and cursor to aid in pagination. */
+  edges: Array<RepoSyncTypeGroupsEdge>;
+  /** A list of `RepoSyncTypeGroup` objects. */
+  nodes: Array<RepoSyncTypeGroup>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `RepoSyncTypeGroup` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `RepoSyncTypeGroup` edge in the connection. */
+export type RepoSyncTypeGroupsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `RepoSyncTypeGroup` at the end of the edge. */
+  node: RepoSyncTypeGroup;
+};
+
+/** Methods to use when ordering `RepoSyncTypeGroup`. */
+export enum RepoSyncTypeGroupsOrderBy {
+  ConcurrentSyncsAsc = 'CONCURRENT_SYNCS_ASC',
+  ConcurrentSyncsDesc = 'CONCURRENT_SYNCS_DESC',
+  GroupAsc = 'GROUP_ASC',
+  GroupDesc = 'GROUP_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
 
 /** An input for mutations affecting `RepoSyncType` */
 export type RepoSyncTypeInput = {
   description?: InputMaybe<Scalars['String']>;
+  priority?: InputMaybe<Scalars['Int']>;
   shortName?: InputMaybe<Scalars['String']>;
   type: Scalars['String'];
+  typeGroup?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `RepoSyncType`. Fields that are set will be updated. */
 export type RepoSyncTypePatch = {
   description?: InputMaybe<Scalars['String']>;
+  priority?: InputMaybe<Scalars['Int']>;
   shortName?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
+  typeGroup?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `RepoSyncType` values. */
@@ -8044,10 +9105,14 @@ export enum RepoSyncTypesOrderBy {
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PriorityAsc = 'PRIORITY_ASC',
+  PriorityDesc = 'PRIORITY_DESC',
   ShortNameAsc = 'SHORT_NAME_ASC',
   ShortNameDesc = 'SHORT_NAME_DESC',
   TypeAsc = 'TYPE_ASC',
-  TypeDesc = 'TYPE_DESC'
+  TypeDesc = 'TYPE_DESC',
+  TypeGroupAsc = 'TYPE_GROUP_ASC',
+  TypeGroupDesc = 'TYPE_GROUP_DESC'
 }
 
 /** A connection to a list of `RepoSync` values. */
@@ -8077,6 +9142,8 @@ export enum RepoSyncsOrderBy {
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PriorityAsc = 'PRIORITY_ASC',
+  PriorityDesc = 'PRIORITY_DESC',
   RepoIdAsc = 'REPO_ID_ASC',
   RepoIdDesc = 'REPO_ID_DESC',
   ScheduleEnabledAsc = 'SCHEDULE_ENABLED_ASC',
@@ -8127,11 +9194,10 @@ export enum ReposOrderBy {
   SettingsAsc = 'SETTINGS_ASC',
   SettingsDesc = 'SETTINGS_DESC',
   TagsAsc = 'TAGS_ASC',
-  TagsDesc = 'TAGS_DESC',
-  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
-  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+  TagsDesc = 'TAGS_DESC'
 }
 
+/** MergeStat internal table to track schema migrations */
 export type SchemaMigration = Node & {
   dirty: Scalars['Boolean'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -8229,6 +9295,7 @@ export enum SchemaMigrationsHistoriesOrderBy {
   VersionDesc = 'VERSION_DESC'
 }
 
+/** MergeStat internal table to track schema migrations history */
 export type SchemaMigrationsHistory = Node & {
   appliedAt: Scalars['Datetime'];
   id: Scalars['Int'];
@@ -8582,13 +9649,253 @@ export type StringFilter = {
   startsWithInsensitive?: InputMaybe<Scalars['String']>;
 };
 
+/** view of Syft repo scans artifacts */
+export type SyftRepoArtifact = {
+  /** artifact JSON results from Syft repo scan */
+  artifact?: Maybe<Scalars['JSON']>;
+  /** artifact cpes */
+  cpes?: Maybe<Scalars['String']>;
+  /** artifact found_by */
+  foundBy?: Maybe<Scalars['String']>;
+  /** artifact id */
+  id?: Maybe<Scalars['String']>;
+  /** artifact language */
+  language?: Maybe<Scalars['String']>;
+  /** artifact licenses */
+  licenses?: Maybe<Scalars['String']>;
+  /** artifact locations */
+  locations?: Maybe<Scalars['String']>;
+  /** artifact name */
+  name?: Maybe<Scalars['String']>;
+  /** artifact purl */
+  purl?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId?: Maybe<Scalars['UUID']>;
+  /** artifact type */
+  type?: Maybe<Scalars['String']>;
+  /** artifact version */
+  version?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `SyftRepoArtifact` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type SyftRepoArtifactCondition = {
+  /** Checks for equality with the object’s `artifact` field. */
+  artifact?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `cpes` field. */
+  cpes?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `foundBy` field. */
+  foundBy?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `language` field. */
+  language?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `licenses` field. */
+  licenses?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `locations` field. */
+  locations?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `purl` field. */
+  purl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `version` field. */
+  version?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `SyftRepoArtifact` object types. All fields are combined with a logical ‘and.’ */
+export type SyftRepoArtifactFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SyftRepoArtifactFilter>>;
+  /** Filter by the object’s `artifact` field. */
+  artifact?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `cpes` field. */
+  cpes?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `foundBy` field. */
+  foundBy?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `language` field. */
+  language?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `licenses` field. */
+  licenses?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `locations` field. */
+  locations?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SyftRepoArtifactFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SyftRepoArtifactFilter>>;
+  /** Filter by the object’s `purl` field. */
+  purl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `version` field. */
+  version?: InputMaybe<StringFilter>;
+};
+
+/** A connection to a list of `SyftRepoArtifact` values. */
+export type SyftRepoArtifactsConnection = {
+  /** A list of edges which contains the `SyftRepoArtifact` and cursor to aid in pagination. */
+  edges: Array<SyftRepoArtifactsEdge>;
+  /** A list of `SyftRepoArtifact` objects. */
+  nodes: Array<SyftRepoArtifact>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SyftRepoArtifact` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `SyftRepoArtifact` edge in the connection. */
+export type SyftRepoArtifactsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SyftRepoArtifact` at the end of the edge. */
+  node: SyftRepoArtifact;
+};
+
+/** Methods to use when ordering `SyftRepoArtifact`. */
+export enum SyftRepoArtifactsOrderBy {
+  ArtifactAsc = 'ARTIFACT_ASC',
+  ArtifactDesc = 'ARTIFACT_DESC',
+  CpesAsc = 'CPES_ASC',
+  CpesDesc = 'CPES_DESC',
+  FoundByAsc = 'FOUND_BY_ASC',
+  FoundByDesc = 'FOUND_BY_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  LanguageAsc = 'LANGUAGE_ASC',
+  LanguageDesc = 'LANGUAGE_DESC',
+  LicensesAsc = 'LICENSES_ASC',
+  LicensesDesc = 'LICENSES_DESC',
+  LocationsAsc = 'LOCATIONS_ASC',
+  LocationsDesc = 'LOCATIONS_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PurlAsc = 'PURL_ASC',
+  PurlDesc = 'PURL_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  VersionAsc = 'VERSION_ASC',
+  VersionDesc = 'VERSION_DESC'
+}
+
+/** Syft repo scans */
+export type SyftRepoScan = Node & {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt: Scalars['Datetime'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON results from Syft repo scan */
+  results: Scalars['JSON'];
+};
+
+/**
+ * A condition to be used against `SyftRepoScan` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type SyftRepoScanCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `results` field. */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `SyftRepoScan` object types. All fields are combined with a logical ‘and.’ */
+export type SyftRepoScanFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SyftRepoScanFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<SyftRepoScanFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SyftRepoScanFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `results` field. */
+  results?: InputMaybe<JsonFilter>;
+};
+
+/** An input for mutations affecting `SyftRepoScan` */
+export type SyftRepoScanInput = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON results from Syft repo scan */
+  results: Scalars['JSON'];
+};
+
+/** Represents an update to a `SyftRepoScan`. Fields that are set will be updated. */
+export type SyftRepoScanPatch = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** JSON results from Syft repo scan */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A connection to a list of `SyftRepoScan` values. */
+export type SyftRepoScansConnection = {
+  /** A list of edges which contains the `SyftRepoScan` and cursor to aid in pagination. */
+  edges: Array<SyftRepoScansEdge>;
+  /** A list of `SyftRepoScan` objects. */
+  nodes: Array<SyftRepoScan>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SyftRepoScan` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `SyftRepoScan` edge in the connection. */
+export type SyftRepoScansEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SyftRepoScan` at the end of the edge. */
+  node: SyftRepoScan;
+};
+
+/** Methods to use when ordering `SyftRepoScan`. */
+export enum SyftRepoScansOrderBy {
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  ResultsAsc = 'RESULTS_ASC',
+  ResultsDesc = 'RESULTS_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+/** Trivy repo scans */
 export type TrivyRepoScan = Node & {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** Reads a single `Repo` that is related to this `TrivyRepoScan`. */
   repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** JSON results from Trivy repo scan */
   results: Scalars['JSON'];
 };
 
@@ -8623,15 +9930,21 @@ export type TrivyRepoScanFilter = {
 
 /** An input for mutations affecting `TrivyRepoScan` */
 export type TrivyRepoScanInput = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** JSON results from Trivy repo scan */
   results: Scalars['JSON'];
 };
 
 /** Represents an update to a `TrivyRepoScan`. Fields that are set will be updated. */
 export type TrivyRepoScanPatch = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** JSON results from Trivy repo scan */
   results?: InputMaybe<Scalars['JSON']>;
 };
 
@@ -8717,18 +10030,31 @@ export enum TrivyRepoVulnerabilitiesOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
+/** view of Trivy repo scans vulnerabilities */
 export type TrivyRepoVulnerability = {
+  /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: Maybe<Scalars['Datetime']>;
+  /** vulnerability class */
   class?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: Maybe<Scalars['UUID']>;
+  /** vulnerability target */
   target?: Maybe<Scalars['String']>;
+  /** vulnerability type */
   type?: Maybe<Scalars['String']>;
+  /** vulnerability JSON results of Trivy scan */
   vulnerability?: Maybe<Scalars['JSON']>;
+  /** vulnerability description */
   vulnerabilityDescription?: Maybe<Scalars['String']>;
+  /** vulnerability id */
   vulnerabilityId?: Maybe<Scalars['String']>;
+  /** vulnerability installed version */
   vulnerabilityInstalledVersion?: Maybe<Scalars['String']>;
+  /** vulnerability package name */
   vulnerabilityPkgName?: Maybe<Scalars['String']>;
+  /** vulnerability severity */
   vulnerabilitySeverity?: Maybe<Scalars['String']>;
+  /** vulnerability title */
   vulnerabilityTitle?: Maybe<Scalars['String']>;
 };
 
@@ -8843,10 +10169,13 @@ export type UpdateGitBlameInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** line number of the modification */
   lineNo: Scalars['Int'];
   /** An object where the defined keys will be set on the `GitBlame` being updated. */
   patch: GitBlamePatch;
+  /** path of the file the modification was made in */
   path: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -8893,9 +10222,11 @@ export type UpdateGitCommitInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** hash of the commit */
   hash: Scalars['String'];
   /** An object where the defined keys will be set on the `GitCommit` being updated. */
   patch: GitCommitPatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -8942,11 +10273,15 @@ export type UpdateGitCommitStatInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** hash of the commit */
   commitHash: Scalars['String'];
+  /** path of the file the modification was made in */
   filePath: Scalars['String'];
+  /** new file mode derived from git mode. possible values (unknown, none, regular_file, symbolic_link, git_link) */
   newFileMode: Scalars['String'];
   /** An object where the defined keys will be set on the `GitCommitStat` being updated. */
   patch: GitCommitStatPatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -8995,7 +10330,9 @@ export type UpdateGitFileInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `GitFile` being updated. */
   patch: GitFilePatch;
+  /** path of the file */
   path: Scalars['String'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -9045,6 +10382,7 @@ export type UpdateGitRefInput = {
   fullName: Scalars['String'];
   /** An object where the defined keys will be set on the `GitRef` being updated. */
   patch: GitRefPatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -9091,9 +10429,11 @@ export type UpdateGithubIssueInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** GitHub database_id of the issue */
   databaseId: Scalars['Int'];
   /** An object where the defined keys will be set on the `GithubIssue` being updated. */
   patch: GithubIssuePatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -9153,10 +10493,13 @@ export type UpdateGithubPullRequestCommitInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** hash of the commit */
   hash: Scalars['String'];
   /** An object where the defined keys will be set on the `GithubPullRequestCommit` being updated. */
   patch: GithubPullRequestCommitPatch;
+  /** GitHub pull request number of the commit */
   prNumber: Scalars['Int'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -9190,9 +10533,11 @@ export type UpdateGithubPullRequestInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** GitHub database_id of the pull request */
   databaseId: Scalars['Int'];
   /** An object where the defined keys will be set on the `GithubPullRequest` being updated. */
   patch: GithubPullRequestPatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -9239,9 +10584,12 @@ export type UpdateGithubPullRequestReviewInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** GitHub id of the review */
   id: Scalars['String'];
   /** An object where the defined keys will be set on the `GithubPullRequestReview` being updated. */
   patch: GithubPullRequestReviewPatch;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
 };
 
 /** The output of our update `GithubPullRequestReview` mutation. */
@@ -9287,7 +10635,9 @@ export type UpdateGithubRepoInfoByOwnerAndNameInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** the name of the repo */
   name: Scalars['String'];
+  /** the user or organization that owns the repo */
   owner: Scalars['String'];
   /** An object where the defined keys will be set on the `GithubRepoInfo` being updated. */
   patch: GithubRepoInfoPatch;
@@ -9302,6 +10652,7 @@ export type UpdateGithubRepoInfoInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `GithubRepoInfo` being updated. */
   patch: GithubRepoInfoPatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -9348,9 +10699,11 @@ export type UpdateGithubStargazerInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** login of the user who starred the repo */
   login: Scalars['String'];
   /** An object where the defined keys will be set on the `GithubStargazer` being updated. */
   patch: GithubStargazerPatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -9491,6 +10844,7 @@ export type UpdateRepoInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** MergeStat identifier for the repo */
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Repo` being updated. */
   patch: RepoPatch;
@@ -9720,6 +11074,8 @@ export type UpdateRepoSyncQueuePayload = {
   repoSyncQueueEdge?: Maybe<RepoSyncQueuesEdge>;
   /** Reads a single `RepoSyncQueueStatusType` that is related to this `RepoSyncQueue`. */
   repoSyncQueueStatusTypeByStatus?: Maybe<RepoSyncQueueStatusType>;
+  /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncQueue`. */
+  repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
 };
 
 
@@ -9787,6 +11143,52 @@ export type UpdateRepoSyncTypeByNodeIdInput = {
   patch: RepoSyncTypePatch;
 };
 
+/** All input for the `updateRepoSyncTypeGroupByNodeId` mutation. */
+export type UpdateRepoSyncTypeGroupByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `RepoSyncTypeGroup` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `RepoSyncTypeGroup` being updated. */
+  patch: RepoSyncTypeGroupPatch;
+};
+
+/** All input for the `updateRepoSyncTypeGroup` mutation. */
+export type UpdateRepoSyncTypeGroupInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  group: Scalars['String'];
+  /** An object where the defined keys will be set on the `RepoSyncTypeGroup` being updated. */
+  patch: RepoSyncTypeGroupPatch;
+};
+
+/** The output of our update `RepoSyncTypeGroup` mutation. */
+export type UpdateRepoSyncTypeGroupPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepoSyncTypeGroup` that was updated by this mutation. */
+  repoSyncTypeGroup?: Maybe<RepoSyncTypeGroup>;
+  /** An edge for our `RepoSyncTypeGroup`. May be used by Relay 1. */
+  repoSyncTypeGroupEdge?: Maybe<RepoSyncTypeGroupsEdge>;
+};
+
+
+/** The output of our update `RepoSyncTypeGroup` mutation. */
+export type UpdateRepoSyncTypeGroupPayloadRepoSyncTypeGroupEdgeArgs = {
+  orderBy?: InputMaybe<Array<RepoSyncTypeGroupsOrderBy>>;
+};
+
 /** All input for the `updateRepoSyncType` mutation. */
 export type UpdateRepoSyncTypeInput = {
   /**
@@ -9812,6 +11214,8 @@ export type UpdateRepoSyncTypePayload = {
   repoSyncType?: Maybe<RepoSyncType>;
   /** An edge for our `RepoSyncType`. May be used by Relay 1. */
   repoSyncTypeEdge?: Maybe<RepoSyncTypesEdge>;
+  /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncType`. */
+  repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
 };
 
 
@@ -10006,6 +11410,53 @@ export type UpdateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeA
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
 };
 
+/** All input for the `updateSyftRepoScanByNodeId` mutation. */
+export type UpdateSyftRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SyftRepoScan` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `SyftRepoScan` being updated. */
+  patch: SyftRepoScanPatch;
+};
+
+/** All input for the `updateSyftRepoScan` mutation. */
+export type UpdateSyftRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `SyftRepoScan` being updated. */
+  patch: SyftRepoScanPatch;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `SyftRepoScan` mutation. */
+export type UpdateSyftRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SyftRepoScan` that was updated by this mutation. */
+  syftRepoScan?: Maybe<SyftRepoScan>;
+  /** An edge for our `SyftRepoScan`. May be used by Relay 1. */
+  syftRepoScanEdge?: Maybe<SyftRepoScansEdge>;
+};
+
+
+/** The output of our update `SyftRepoScan` mutation. */
+export type UpdateSyftRepoScanPayloadSyftRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<SyftRepoScansOrderBy>>;
+};
+
 /** All input for the `updateTrivyRepoScanByNodeId` mutation. */
 export type UpdateTrivyRepoScanByNodeIdInput = {
   /**
@@ -10028,6 +11479,7 @@ export type UpdateTrivyRepoScanInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `TrivyRepoScan` being updated. */
   patch: TrivyRepoScanPatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -10164,6 +11616,21 @@ export type GetSyncTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetSyncTypesQuery = { repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
 
+export type GetAllReposQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllReposQuery = { allRepos?: { totalCount: number } | null };
+
+export type GetAllEnabledReposQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllEnabledReposQuery = { allEnabledRepos?: { totalCount: number } | null };
+
+export type GetSyncErrorsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSyncErrorsQuery = { syncErrors?: any | null };
+
 export type GetReposQueryVariables = Exact<{
   search: Scalars['String'];
   first?: InputMaybe<Scalars['Int']>;
@@ -10171,7 +11638,7 @@ export type GetReposQueryVariables = Exact<{
 }>;
 
 
-export type GetReposQuery = { syncErrors?: any | null, serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, allRepos?: { totalCount: number } | null, allEnabledRepos?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null }> } }> } }> } | null };
+export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null }> } }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];

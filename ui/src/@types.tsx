@@ -38,16 +38,6 @@ export type RepoDataPropsT = {
   status: Array<RepoDataStatusT>
 }
 
-export type RepoMetrics = {
-  totalRepoSyncs: number
-  totalRepoSyncsError: number
-}
-
-export interface RepoDataMetrics {
-  repos: Array<RepoDataPropsT>
-  metrics: RepoMetrics
-}
-
 /** Repository Data Props Type */
 
 export type SyncStatusDataT = {

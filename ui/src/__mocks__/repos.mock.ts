@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
-import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
+import { GET_REPOS } from 'src/api-logic/graphql/queries/get-repos.query'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
 import { DynamicValues } from './constants.mock'
 
@@ -10,9 +10,6 @@ export const mockRepoData: GetReposQuery = {
   },
   repoImports: {
     totalCount: 1
-  },
-  allRepos: {
-    totalCount: 2
   },
   repos: {
     totalCount: 2,
@@ -121,9 +118,6 @@ export const mockJustAngularRepo: GetReposQuery = {
     totalCount: 1,
   },
   repoImports: null,
-  allRepos: {
-    totalCount: 2
-  },
   repos: {
     totalCount: 2,
     nodes: [
@@ -150,9 +144,6 @@ export const mockWithoutResult: GetReposQuery = {
     totalCount: 1,
   },
   repoImports: null,
-  allRepos: {
-    totalCount: 2
-  },
   repos: {
     totalCount: 0,
     nodes: []
@@ -164,9 +155,6 @@ export const mockNoGitHubPat = (gitHubPat: boolean): GetReposQuery => ({
     totalCount: gitHubPat ? 1 : 0,
   },
   repoImports: null,
-  allRepos: {
-    totalCount: 0
-  },
   repos: {
     totalCount: 0,
     nodes: []

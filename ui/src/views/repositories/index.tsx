@@ -5,10 +5,11 @@ import { AddRepositoryModal } from './modals/add-repository-modal'
 import { Alert, ColoredBox, Spinner, Stat } from '@mergestat/blocks'
 import { CircleErrorFilledIcon, CircleErrorIcon, RepositoryIcon, TableIcon } from '@mergestat/icons'
 import { useEffect, useState } from 'react'
-import { RepoDataPropsT, RepoMetrics } from 'src/@types'
+import { RepoDataPropsT } from 'src/@types'
 import { mapToRepoData } from 'src/api-logic/mappers/repos'
 import Loading from 'src/components/Loading'
 import useRepos from 'src/views/hooks/useRepos'
+import useMetrics from '../hooks/useMetrics'
 import { EmptyRepository } from './components/empty-repository'
 import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
@@ -28,14 +29,12 @@ const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric }: MetricNum
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showRemoveRepositoryModal }] = useRepositoriesContext()
   const { showTable, loading, data, showBanner } = useRepos(true)
+  const { loadingAllRepos, allRepos, loadingAllEnabledRepos, enabledRepos, loadingSyncErrors, syncErrors } = useMetrics()
 
   const [repos, setRepos] = useState<Array<RepoDataPropsT>>()
-  const [metrics, setMetrics] = useState<RepoMetrics>()
 
   useEffect(() => {
-    const { repos, metrics } = mapToRepoData(data)
-    setRepos(repos)
-    setMetrics(metrics)
+    setRepos(mapToRepoData(data))
   }, [data])
 
   return (
@@ -65,7 +64,7 @@ const RepositoriesView: React.FC = () => {
               <Stat.Left>
                 <Stat.Label>Total repos</Stat.Label>
                 <Stat.Number>
-                  <MetricNumber loading={loading} metric={data?.allRepos?.totalCount || 0} />
+                  <MetricNumber loading={loadingAllRepos} metric={allRepos || 0} />
                 </Stat.Number>
               </Stat.Left>
               <Stat.Right>
@@ -76,7 +75,7 @@ const RepositoriesView: React.FC = () => {
               <Stat.Left>
                 <Stat.Label>Total repo syncs</Stat.Label>
                 <Stat.Number>
-                  <MetricNumber loading={loading} metric={metrics?.totalRepoSyncs || 0} />
+                  <MetricNumber loading={loadingAllEnabledRepos} metric={enabledRepos || 0} />
                 </Stat.Number>
               </Stat.Left>
               <Stat.Right>
@@ -88,8 +87,8 @@ const RepositoriesView: React.FC = () => {
                 <Stat.Label>Total syncs with errors</Stat.Label>
                 <Stat.Number>
                   <div className='flex space-x-1.5 items-center'>
-                    {metrics && metrics?.totalRepoSyncsError > 0 && <CircleErrorFilledIcon className='t-icon t-icon-danger' />}
-                    <MetricNumber loading={loading} metric={metrics?.totalRepoSyncsError || 0} />
+                    {syncErrors > 0 && <CircleErrorFilledIcon className='t-icon t-icon-danger' />}
+                    <MetricNumber loading={loadingSyncErrors} metric={syncErrors || 0} />
                   </div>
                 </Stat.Number>
               </Stat.Left>

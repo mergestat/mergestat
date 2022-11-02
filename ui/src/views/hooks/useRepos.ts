@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { useCallback, useEffect, useState } from 'react'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
-import GET_REPOS from 'src/api-logic/graphql/queries/get-repos.query'
+import { GET_REPOS } from 'src/api-logic/graphql/queries/get-repos.query'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 
 const useRepos = (poll = false) => {
