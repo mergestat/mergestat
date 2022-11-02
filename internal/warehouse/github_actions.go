@@ -61,7 +61,9 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job
 	for {
 		if opt.Page == 0 {
 			operation := fmt.Sprintf("to get all GitHub Actions workflows for repo %s", repo)
-			w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, startingProccess, operation)
+			if err := w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, startingProccess, operation); err != nil {
+				return err
+			}
 		}
 		if workflowsPage, resp, err = w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions); err != nil {
 			w.logger.Warn().AnErr("Error", err).Msg("error occurred")
@@ -114,10 +116,15 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 
 		if opt.Page == 0 {
 			operation := fmt.Sprintf("to get all GitHub Actions runs for workflow %s", *workflow.Name)
-			w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, startingProccess, operation)
+
+			if err := w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, startingProccess, operation); err != nil {
+				return err
+			}
 
 			operation = fmt.Sprintf("to get all GitHub Actions jobs for workflow %s", *workflow.Name)
-			w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, startingProccess, operation)
+			if err := w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, startingProccess, operation); err != nil {
+				return err
+			}
 		}
 
 		w.logger.Info().Msgf("getting workflow runs for workflow %s", *workflow.Name)
@@ -158,7 +165,10 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		}
 
 		operation := fmt.Sprintf("%d runs and %d jobs of workflow %s", runsCount, jobsCount, *workflow.Name)
-		w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, insertedProccess, operation)
+		if err := w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, insertedProccess, operation); err != nil {
+			return err
+		}
+
 		opt.Page = 0
 		runsCount = 0
 		jobsCount = 0
