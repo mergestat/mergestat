@@ -1,6 +1,6 @@
 TAGS = "static,system_libgit2"
 
-.PHONY: all vendor test vet lint lint-ci update ui-dev
+.PHONY: all vendor test vet lint lint-ci update ui-dev dev dev-build docker-build-worker docker-build-ui docker-build-graphql
 
 all: clean worker
 
