@@ -76,3 +76,5 @@ export enum EXPORT_FORMAT {
   JSON = 'JSON',
   CSV = 'CSV',
 }
+
+export const REPOS_REFETCHES = ['getRepos', 'getRepoTotalCount', 'getAllEnabledRepos', 'getSyncErrors']

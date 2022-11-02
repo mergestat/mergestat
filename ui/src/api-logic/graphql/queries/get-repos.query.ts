@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
-const GET_ALL_REPOS = gql`
-  query getAllRepos {
+const GET_REPO_TOTAL_COUNT = gql`
+  query getRepoTotalCount {
     allRepos: repos {
       totalCount
     }
@@ -70,4 +70,4 @@ const GET_REPOS = gql`
     }
   }
 `
-export { GET_ALL_REPOS, GET_ALL_ENABLED_REPOS, GET_SYNC_ERRORS, GET_REPOS }
+export { GET_REPO_TOTAL_COUNT, GET_ALL_ENABLED_REPOS, GET_SYNC_ERRORS, GET_REPOS }

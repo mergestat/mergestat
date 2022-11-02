@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { ADD_REPO } from 'src/api-logic/graphql/mutations/add-repo'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { showErrorAlert, showSuccessAlert, showWarningAlert } from 'src/utils/alerts'
-import useRepos from './useRepos'
+import { REPOS_REFETCHES } from 'src/utils/constants'
 
 const useAddRepos = () => {
   const [addedSuccess, setAddedSuccess] = useState(0)
@@ -12,7 +12,6 @@ const useAddRepos = () => {
 
   const { setShowAddRepositoryModal, setReposToAdd } = useRepositoriesSetState()
   const [{ reposToAdd, csvText }] = useRepositoriesContext()
-  const { refetch } = useRepos()
 
   const [addRepo] = useMutation(ADD_REPO, {
     onError: (error: ApolloError) => {
@@ -21,7 +20,9 @@ const useAddRepos = () => {
     },
     onCompleted: () => {
       setAddedSuccess(addedSuccess + 1)
-    }
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => REPOS_REFETCHES
   })
 
   /**
@@ -38,7 +39,6 @@ const useAddRepos = () => {
       addedWarning > 0 && showWarningAlert(`${addedWarning} repo${addedWarning > 1 ? 's' : ''} already exist${addedWarning === 1 ? 's' : ''}`)
 
       setReposToAdd([])
-      refetch()
       closeModal()
     }
   }, [addedSuccess, addedWarning])

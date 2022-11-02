@@ -11616,10 +11616,10 @@ export type GetSyncTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetSyncTypesQuery = { repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
 
-export type GetAllReposQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetRepoTotalCountQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllReposQuery = { allRepos?: { totalCount: number } | null };
+export type GetRepoTotalCountQuery = { allRepos?: { totalCount: number } | null };
 
 export type GetAllEnabledReposQueryVariables = Exact<{ [key: string]: never; }>;
 

@@ -6,14 +6,15 @@ import { GET_REPO_IMPORTS } from 'src/api-logic/graphql/queries/get-repo-imports
 import { mapToImportsData } from 'src/api-logic/mappers/imports'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 
-const useRepoImports = (poll = false) => {
+const useRepoImports = () => {
   const { setShowRemoveImportModal, setImportToRemove } = useRepositoriesSetState()
   const [{ showRemoveImportModal }] = useRepositoriesContext()
 
   const [imports, setImports] = useState<RepoImportData[]>([])
 
-  const { loading, data, refetch } = useQuery<GetRepoImportsQuery>(GET_REPO_IMPORTS, {
-    ...(poll && { pollInterval: 5000 }),
+  const { loading, data } = useQuery<GetRepoImportsQuery>(GET_REPO_IMPORTS, {
+    fetchPolicy: 'no-cache',
+    pollInterval: 5000,
   })
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const useRepoImports = (poll = false) => {
     setShowRemoveImportModal(true)
   }
 
-  return { loading, imports, showRemoveImportModal, refetch, prepareToRemove }
+  return { loading, imports, showRemoveImportModal, prepareToRemove }
 }
 
 export default useRepoImports

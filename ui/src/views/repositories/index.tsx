@@ -28,7 +28,7 @@ const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric }: MetricNum
 
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showRemoveRepositoryModal }] = useRepositoriesContext()
-  const { showTable, loading, data, showBanner } = useRepos(true)
+  const { showTable, loading, data, showBanner } = useRepos()
   const { loadingAllRepos, allRepos, loadingAllEnabledRepos, enabledRepos, loadingSyncErrors, syncErrors } = useMetrics()
 
   const [repos, setRepos] = useState<Array<RepoDataPropsT>>()

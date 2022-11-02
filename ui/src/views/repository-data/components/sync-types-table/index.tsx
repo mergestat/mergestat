@@ -6,7 +6,6 @@ import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useSyncNow from 'src/views/hooks/useSyncNow'
-import useSyncs from 'src/views/hooks/useSyncs'
 import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
 
 type SycnTypesTableProps = PropsWithChildren<{
@@ -16,8 +15,7 @@ type SycnTypesTableProps = PropsWithChildren<{
 
 export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: SycnTypesTableProps) => {
   const id = useId()
-  const { refetch } = useSyncs()
-  const { updateSchedule, addSyncType } = useSyncNow(refetch, true)
+  const { updateSchedule, addSyncType } = useSyncNow('getRepoSyncs', true)
 
   return (
     <Panel className='rounded-md w-full shadow-sm block'>

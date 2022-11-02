@@ -4,7 +4,7 @@ import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_REPOS } from 'src/api-logic/graphql/queries/get-repos.query'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 
-const useRepos = (poll = false) => {
+const useRepos = () => {
   const [showTable, setShowTable] = useState(false)
   const [showBanner, setShowBanner] = useState(false)
 
@@ -14,7 +14,7 @@ const useRepos = (poll = false) => {
   const { loading, error, data, refetch } = useQuery<GetReposQuery>(GET_REPOS, {
     variables: { search, first: rowsRepos, offset: (pageRepos * rowsRepos) },
     fetchPolicy: 'no-cache',
-    ...(poll && { pollInterval: 5000 }),
+    pollInterval: 5000,
   })
 
   const validateData = useCallback(() => {

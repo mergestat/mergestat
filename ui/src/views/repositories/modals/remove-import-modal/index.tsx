@@ -6,12 +6,10 @@ import { REMOVE_IMPORT } from 'src/api-logic/graphql/mutations/repos'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { showSuccessAlert } from 'src/utils/alerts'
 import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
-import useRepoImports from 'src/views/hooks/useRepoImports'
 
 export const RemoveImportModal: React.FC = () => {
   const [{ importToRemove }] = useRepositoriesContext()
   const { setShowRemoveImportModal } = useRepositoriesSetState()
-  const { refetch } = useRepoImports()
 
   const close = useCallback(() => {
     setShowRemoveImportModal(false)
@@ -20,9 +18,10 @@ export const RemoveImportModal: React.FC = () => {
   const [removeImport] = useMutation(REMOVE_IMPORT, {
     onCompleted: () => {
       showSuccessAlert('Repo auto import removed')
-      refetch()
       close()
-    }
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => ['getRepoImports']
   })
 
   return (

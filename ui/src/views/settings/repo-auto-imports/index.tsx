@@ -4,16 +4,16 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { Fragment } from 'react'
-import { SYNC_REPO_METHOD } from 'src/utils/constants'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import Loading from 'src/components/Loading'
 import RepoImage from 'src/components/RepoImage'
+import { SYNC_REPO_METHOD } from 'src/utils/constants'
 import useRepoImports from 'src/views/hooks/useRepoImports'
 import { RemoveImportModal } from 'src/views/repositories/modals/remove-import-modal'
 import SettingsView from 'src/views/settings'
 
 const AutoImports: NextPage = () => {
-  const { loading, imports, showRemoveImportModal, prepareToRemove } = useRepoImports(true)
+  const { loading, imports, showRemoveImportModal, prepareToRemove } = useRepoImports()
 
   return (
     <>

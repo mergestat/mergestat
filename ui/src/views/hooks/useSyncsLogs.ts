@@ -10,18 +10,18 @@ const useSyncsLogs = (poll = false) => {
   const router = useRouter()
   const { repository, syncTypeId } = router.query
 
-  const { loading, data, refetch } = useQuery(GET_SYNC_HISTORY_LOGS, {
+  const { loading, data } = useQuery(GET_SYNC_HISTORY_LOGS, {
     variables: { repoId: repository, syncId: syncTypeId },
     fetchPolicy: 'no-cache',
     ...(poll && { pollInterval: 5000 }),
   })
 
-  const { updateSchedule, syncNow } = useSyncNow(refetch)
+  const { updateSchedule, syncNow } = useSyncNow('getSyncHistoryLogs')
 
   const repoData: SyncTypeData = mapToSyncLogsData(data)
   const title = `${MERGESTAT_TITLE} ${repoData.repo.name}`
 
-  return { loading, repoData, title, syncTypeId, updateSchedule, syncNow, refetch }
+  return { loading, repoData, title, syncTypeId, updateSchedule, syncNow }
 }
 
 export default useSyncsLogs

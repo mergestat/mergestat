@@ -1,14 +1,15 @@
 import { useQuery } from '@apollo/client'
-import { GetAllEnabledReposQuery, GetAllReposQuery, GetSyncErrorsQuery } from 'src/api-logic/graphql/generated/schema'
-import { GET_ALL_ENABLED_REPOS, GET_ALL_REPOS, GET_SYNC_ERRORS } from 'src/api-logic/graphql/queries/get-repos.query'
+import { GetAllEnabledReposQuery, GetRepoTotalCountQuery, GetSyncErrorsQuery } from 'src/api-logic/graphql/generated/schema'
+import { GET_ALL_ENABLED_REPOS, GET_REPO_TOTAL_COUNT, GET_SYNC_ERRORS } from 'src/api-logic/graphql/queries/get-repos.query'
 
 const useMetrics = () => {
   const {
     loading: loadingAllRepos,
     error: errorAllRepos,
     data: dataAllRepos
-  } = useQuery<GetAllReposQuery>(GET_ALL_REPOS, {
+  } = useQuery<GetRepoTotalCountQuery>(GET_REPO_TOTAL_COUNT, {
     fetchPolicy: 'no-cache',
+    pollInterval: 5000,
   })
 
   const {
@@ -17,6 +18,7 @@ const useMetrics = () => {
     data: dataAllEnabledRepos
   } = useQuery<GetAllEnabledReposQuery>(GET_ALL_ENABLED_REPOS, {
     fetchPolicy: 'no-cache',
+    pollInterval: 5000,
   })
 
   const {
@@ -25,6 +27,7 @@ const useMetrics = () => {
     data: dataSyncErrors
   } = useQuery<GetSyncErrorsQuery>(GET_SYNC_ERRORS, {
     fetchPolicy: 'no-cache',
+    pollInterval: 5000,
   })
 
   return {
