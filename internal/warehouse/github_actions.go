@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/url"
 	"os"
 
 	"github.com/google/go-github/v47/github"
@@ -201,9 +200,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 
 func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunJobsPage []*github.WorkflowJob) error {
 	var err error
-	var resp *github.Response
 	var log string
-	var workflowJobLog *url.URL
 	// we create a  tmp dir to store all downloaded files into it
 	filepath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_WORKFLOW_LOGS_PATH"), "mergestat-logs-")
 	if err != nil {
@@ -220,7 +217,8 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
 		w.logger.Debug().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting log of")
-		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil {
+		workflowJobLog, resp, err := w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true)
+		if err != nil {
 			w.logger.Warn().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).AnErr("Error", err).Msg("error occurred")
 			if resp == nil {
 				break
@@ -244,7 +242,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 
 	}
 
-	return nil
+	return err
 }
 
 func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*github.Workflow, repoID uuid.UUID) error {
