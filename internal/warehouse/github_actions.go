@@ -103,6 +103,9 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	}
 
 	for _, workflow := range workflowsPage {
+		if opt.Page == 0 {
+
+		}
 		w.logger.Info().Msgf("getting workflow runs for workflow %s", *workflow.Name)
 		// we get a page of 30 workflow runs until next page is 0
 		for {
@@ -223,6 +226,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 			if resp == nil {
 				break
 			}
+
 			continue
 		}
 
@@ -242,7 +246,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 
 	}
 
-	return err
+	return nil
 }
 
 func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*github.Workflow, repoID uuid.UUID) error {
