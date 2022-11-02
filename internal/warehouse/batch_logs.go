@@ -1,15 +1,23 @@
 package warehouse
 
+import (
+	"context"
+	"fmt"
+
+	"github.com/jackc/pgx/v4"
+	"github.com/mergestat/mergestat/internal/db"
+)
+
 type syncLogType string
 type jobStatus string
 
 const (
-	SyncLogTypeInfo  syncLogType = "INFO"
-	SyncLogTypeError syncLogType = "ERROR"
+	SyncLogTypeInfo syncLogType = "INFO"
 )
 
 const (
-	JobStatus jobStatus = "processing"
+	startingProccess jobStatus = "starting"
+	insertedProccess jobStatus = "inserted"
 )
 
 type syncLog struct {
@@ -18,13 +26,12 @@ type syncLog struct {
 	RepoSyncQueueID int64
 }
 
-/*
-// formartBatchLogMessages generates a standardize message for sync logs
-func (w *warehouse) formatBatchInfoLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus) error {
+// batchProccessLogMessages generates a standardize message for sync logs
+func (w *warehouse) batchProccessLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus, operation string) error {
 	return w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            syncLogTypeOption,
 		RepoSyncQueueID: j.ID,
-		Message:         fmt.Sprintf("%s %s sync for %s", status, j.SyncType, j.Repo),
+		Message:         fmt.Sprintf("%s %s", status, operation),
 	}})
 }
 
@@ -40,4 +47,4 @@ func (w *warehouse) sendBatchLogMessages(ctx context.Context, batch []*syncLog) 
 		return err
 	}
 	return nil
-}*/
+}
