@@ -1,6 +1,6 @@
 TAGS = "static,system_libgit2"
 
-.PHONY: all vendor test vet lint lint-ci update ui-dev dev dev-build docker-build-worker docker-build-ui docker-build-graphql
+.PHONY: all vendor test vet lint lint-ci update ui-dev dev docker-build docker-build-worker docker-build-ui docker-build-graphql docker-down docker-clean
 
 all: clean worker
 
@@ -51,7 +51,7 @@ ui-dev:
 dev:
 	docker-compose -f docker-compose.dev.yaml -f docker-compose.yaml up
 
-dev-build:
+docker-build:
 	docker-compose -f docker-compose.dev.yaml -f docker-compose.yaml build
 
 docker-build-worker:
@@ -62,3 +62,9 @@ docker-build-ui:
 
 docker-build-graphql:
 	docker-compose -f docker-compose.dev.yaml -f docker-compose.yaml build graphql
+
+docker-down:
+	docker-compose down
+
+docker-clean:
+	docker-compose down -v
