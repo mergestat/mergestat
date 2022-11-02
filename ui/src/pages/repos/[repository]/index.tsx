@@ -6,7 +6,7 @@ import useSyncs from 'src/views/hooks/useSyncs'
 import RepoDataView from 'src/views/repository-data'
 
 const RepoDetailsPage = () => {
-  const { loading, repo, title } = useSyncs(true)
+  const { loading, repo, title } = useSyncs()
 
   return (
     <Fragment>

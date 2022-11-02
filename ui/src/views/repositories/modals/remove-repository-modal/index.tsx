@@ -6,13 +6,11 @@ import React, { useCallback } from 'react'
 import { REMOVE_REPO } from 'src/api-logic/graphql/mutations/repos'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { showSuccessAlert } from 'src/utils/alerts'
-import { TEST_IDS } from 'src/utils/constants'
-import useRepos from 'src/views/hooks/useRepos'
+import { REPOS_REFETCHES, TEST_IDS } from 'src/utils/constants'
 
 export const RemoveRepositoryModal: React.FC = () => {
   const [{ repoToRemove }] = useRepositoriesContext()
   const { setShowRemoveRepositoryModal } = useRepositoriesSetState()
-  const { refetch } = useRepos()
   const router = useRouter()
 
   const close = useCallback(() => {
@@ -23,9 +21,10 @@ export const RemoveRepositoryModal: React.FC = () => {
     onCompleted: () => {
       repoToRemove?.redirect && router.push('/repos')
       showSuccessAlert('Repository removed successfully')
-      refetch()
       close()
-    }
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => REPOS_REFETCHES
   })
 
   return (

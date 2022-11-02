@@ -4,8 +4,7 @@ import { SyncType } from 'src/@types'
 import { AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { showSuccessAlert } from 'src/utils/alerts'
-import { SYNC_REPO_METHOD } from 'src/utils/constants'
-import useRepos from './useRepos'
+import { REPOS_REFETCHES, SYNC_REPO_METHOD } from 'src/utils/constants'
 import useSyncTypes from './useSyncTypes'
 
 const useImports = () => {
@@ -16,15 +15,15 @@ const useImports = () => {
   const [orgUserText, setOrgUserText] = useState('')
 
   const { syncsTypesArray } = useSyncTypes()
-  const { refetch } = useRepos()
 
   const [autoImportRepos] = useMutation(AUTO_IMPORT_REPOS, {
     onCompleted: () => {
       showSuccessAlert('Repo auto import added')
-      refetch()
       setImports([])
       closeModal()
-    }
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => REPOS_REFETCHES
   })
 
   const addImport = () => {

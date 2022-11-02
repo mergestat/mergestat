@@ -1,4 +1,4 @@
-import { RepoDataMetrics, RepoDataPropsT, RepoDataStatusT, RepoMetrics, RepoSyncStateT } from 'src/@types'
+import { RepoDataPropsT, RepoDataStatusT, RepoSyncStateT } from 'src/@types'
 import { getStatus } from 'src/utils'
 import { GITHUB_URL, SYNC_REPO_METHOD } from 'src/utils/constants'
 import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
@@ -21,7 +21,7 @@ interface SyncCounter {
  * @param data Repo list that comes from data base in GetReposQuery format
  * @returns Repo list from data base mapped to RepoDataPropsT list
  */
-const mapToRepoData = (data: GetReposQuery | undefined): RepoDataMetrics => {
+const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> => {
   const repos: Array<RepoDataPropsT> = []
 
   data?.repos?.nodes.forEach((r) => {
@@ -45,12 +45,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): RepoDataMetrics => {
     repos.push(repoInfo)
   })
 
-  const metrics: RepoMetrics = {
-    totalRepoSyncs: data?.allEnabledRepos?.totalCount || 0,
-    totalRepoSyncsError: data?.syncErrors ? data?.syncErrors[0]?.syncs_error_count : 0
-  }
-
-  return { repos, metrics }
+  return repos
 }
 
 /**

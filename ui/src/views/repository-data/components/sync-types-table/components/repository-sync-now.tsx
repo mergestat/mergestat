@@ -4,7 +4,6 @@ import React from 'react'
 import { RepoSyncStateT } from 'src/@types'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useSyncNow from 'src/views/hooks/useSyncNow'
-import useSyncs from 'src/views/hooks/useSyncs'
 
 export type RepositorySyncNowProps = {
   repoId: string
@@ -14,8 +13,7 @@ export type RepositorySyncNowProps = {
 }
 
 export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, syncType, syncTypeId, syncStatus }) => {
-  const { refetch } = useSyncs()
-  const { syncNow, addSyncType } = useSyncNow(refetch)
+  const { syncNow, addSyncType } = useSyncNow('getRepoSyncs')
 
   if (syncStatus === SYNC_STATUS.disabled) return <div className='h-full bg-gray-50' />
 
