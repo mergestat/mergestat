@@ -61,7 +61,7 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job
 	for {
 		if opt.Page == 0 {
 			operation := fmt.Sprintf("to get all GitHub Actions workflows for repo %s", repo)
-			if err := w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, startingProccess, operation); err != nil {
+			if err := w.batchProcessLogMessages(ctx, SyncLogTypeInfo, job, startingProcess, operation); err != nil {
 				return err
 			}
 		}
@@ -117,12 +117,12 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		if opt.Page == 0 {
 			operation := fmt.Sprintf("to get all GitHub Actions runs for workflow %s", *workflow.Name)
 
-			if err := w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, startingProccess, operation); err != nil {
+			if err := w.batchProcessLogMessages(ctx, SyncLogTypeInfo, job, startingProcess, operation); err != nil {
 				return err
 			}
 
 			operation = fmt.Sprintf("to get all GitHub Actions jobs for workflow %s", *workflow.Name)
-			if err := w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, startingProccess, operation); err != nil {
+			if err := w.batchProcessLogMessages(ctx, SyncLogTypeInfo, job, startingProcess, operation); err != nil {
 				return err
 			}
 		}
@@ -165,7 +165,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		}
 
 		operation := fmt.Sprintf("%d runs and %d jobs of workflow %s", runsCount, jobsCount, *workflow.Name)
-		if err := w.batchProccessLogMessages(ctx, SyncLogTypeInfo, job, insertedProccess, operation); err != nil {
+		if err := w.batchProcessLogMessages(ctx, SyncLogTypeInfo, job, insertedProcess, operation); err != nil {
 			return err
 		}
 
@@ -173,7 +173,6 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		runsCount = 0
 		jobsCount = 0
 		w.logger.Info().Msgf("finished getting all github actions from workflow %s", *workflow.Name)
-
 	}
 
 	return nil
@@ -273,7 +272,6 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 		}
 
 		*jobsCount++
-
 	}
 
 	return err

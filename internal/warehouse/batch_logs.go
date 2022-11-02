@@ -16,8 +16,8 @@ const (
 )
 
 const (
-	startingProccess jobStatus = "starting"
-	insertedProccess jobStatus = "inserted"
+	startingProcess jobStatus = "starting"
+	insertedProcess jobStatus = "inserted"
 )
 
 type syncLog struct {
@@ -26,8 +26,8 @@ type syncLog struct {
 	RepoSyncQueueID int64
 }
 
-// batchProccessLogMessages generates a standardize message for sync logs
-func (w *warehouse) batchProccessLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus, operation string) error {
+// batchProcessLogMessages generates a standardize message for sync logs
+func (w *warehouse) batchProcessLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus, operation string) error {
 	return w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            syncLogTypeOption,
 		RepoSyncQueueID: j.ID,
