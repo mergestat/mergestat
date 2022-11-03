@@ -11595,7 +11595,7 @@ export type GetDatabaseConnectionQuery = { databaseConnection?: { database?: str
 export type GetPatQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPatQuery = { serviceAuthCredentials?: { totalCount: number } | null };
+export type GetPatQuery = { serviceAuthCredentials?: { totalCount: number } | null, repos?: { totalCount: number } | null };
 
 export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 
