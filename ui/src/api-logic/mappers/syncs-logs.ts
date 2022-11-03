@@ -40,7 +40,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
         records: q.repoSyncLogs.totalCount,
         duration: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : '-',
         syncStart: q?.startedAt,
-        syncStartText: `Sync ${format(new Date(q?.startedAt), DATE_FORMAT.B)}`
+        syncStartText: q?.startedAt ? `Sync ${format(new Date(q?.startedAt), DATE_FORMAT.B)}` : '-'
       }
 
       // 3. Get list logs info. (e.g.: '2021/06/09 02:21 INFO: This is a log line')
