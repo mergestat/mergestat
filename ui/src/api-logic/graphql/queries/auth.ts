@@ -22,6 +22,9 @@ const GET_PAT = gql`
     serviceAuthCredentials {
       totalCount
     }
+    repos {
+      totalCount
+    }
   }
 `
 

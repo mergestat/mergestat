@@ -11,6 +11,7 @@ const useSetPat = () => {
   const [showValidation, setShowValidation] = useState(false)
   const [isTokenValid, setIsTokenValid] = useState(false)
   const [isTokenSet, setIsTokenSet] = useState(false)
+  const [anyRepo, setAnyRepo] = useState(false)
   const [pat, setPAT] = useState('')
 
   const [savePAT] = useMutation(SET_PAT, {
@@ -28,6 +29,7 @@ const useSetPat = () => {
 
   useEffect(() => {
     setIsTokenSet(data?.serviceAuthCredentials ? data?.serviceAuthCredentials?.totalCount > 0 : false)
+    setAnyRepo(data?.repos ? data?.repos?.totalCount > 0 : false)
   }, [data])
 
   const changeToken = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +73,7 @@ const useSetPat = () => {
     showValidation,
     isTokenValid,
     isTokenSet,
+    anyRepo,
     validatePAT,
     changeToken,
     handleSavePAT
