@@ -40,7 +40,7 @@ const Settings: NextPage = () => {
           <div className='flex-1 p-8 overflow-auto'>
             {isTokenSet && !anyRepo && <Alert type='info' theme='light' className='mb-6' icon={<span>🎉</span>}>
               <span>
-                Your token is set now, go to <Link href="/repos"><span className='font-medium mb-0.5 t-text-default cursor-pointer text-blue-600'>/repos</span></Link> to sync your repositories
+                Your token is now set. Visit <Link href="/repos"><span className='font-medium mb-0.5 t-text-default cursor-pointer text-blue-600'>/repos</span></Link> to add some repositories
               </span>
             </Alert>}
 
