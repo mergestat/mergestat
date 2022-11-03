@@ -1,5 +1,5 @@
-import { Alert, Button, Input, Panel, Toolbar } from '@mergestat/blocks'
-import { CircleCheckFilledIcon, CircleWarningFilledIcon } from '@mergestat/icons'
+import { Alert, Badge, Button, Input, Panel, Toolbar } from '@mergestat/blocks'
+import { CheckIcon, CircleCheckFilledIcon, CircleWarningFilledIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Fragment } from 'react'
@@ -13,6 +13,7 @@ const Settings: NextPage = () => {
     pat,
     showValidation,
     isTokenValid,
+    isTokenSet,
     validatePAT,
     changeToken,
     handleSavePAT,
@@ -36,7 +37,15 @@ const Settings: NextPage = () => {
           <div className='flex-1 p-8 overflow-auto'>
             <Panel className='shadow-sm'>
               <Panel.Header>
-                <h3 className='t-panel-title'>GitHub Personal Access Token</h3>
+                <div className='w-full flex justify-between'>
+                  <h3 className='t-panel-title'>GitHub Personal Access Token</h3>
+                  {isTokenSet &&
+                    <Badge
+                      label='Token is set'
+                      endIcon={<CheckIcon className="t-icon" />}
+                      variant="success"
+                    />}
+                </div>
               </Panel.Header>
               <Panel.Body>
                 <Alert type='default' theme='light' className='mb-6'>
