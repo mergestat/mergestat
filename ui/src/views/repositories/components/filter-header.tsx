@@ -45,8 +45,8 @@ export const FilterHeader: React.FC = () => {
                 </Select>
               </div>
             </Toolbar.Item>
-            <Toolbar.Item className='pl-4'>
-              <div className='flex items-center space-x-2'>
+            <Toolbar.Item className='pl-4 pr-1'>
+              <div className='flex items-center space-x-2 py-1'>
                 <p className='t-text-muted whitespace-nowrap text-sm'>
                   {`${(pageRepos * rowsRepos) + 1}-${getMaxPagination(pageRepos, rowsRepos, totalRepos)} of ${totalRepos}`}
                 </p>
@@ -62,6 +62,7 @@ export const FilterHeader: React.FC = () => {
                   isIconOnly
                   disabled={getMaxPagination(pageRepos, rowsRepos, totalRepos) >= totalRepos}
                   skin='borderless'
+                  className='border-0'
                   startIcon={<ChevronRightIcon className='t-icon' />}
                   onClick={() => setPageRepos(pageRepos + 1)}
                 />
