@@ -79,7 +79,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                             onChange={() => {
                               sync.data.id
                                 ? updateSchedule({ variables: { syncId: sync.data.id, schedule: !sync.data.scheduleEnabled } })
-                                : addSyncType({ variables: { repoId, syncType: sync.data.type } })
+                                : addSyncType({ variables: { repoId, syncType: sync.data.type, schedule: true } })
                             }}
                           />
                         </div>

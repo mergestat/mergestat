@@ -15,8 +15,10 @@ const SYNC_NOW = gql`
 `
 
 const ADD_SYNC_TYPE = gql`
-  mutation addSyncType($repoId: UUID!, $syncType: String!) {
-    createRepoSync(input: {repoSync: {repoId: $repoId, syncType: $syncType}}) {
+  mutation addSyncType($repoId: UUID!, $syncType: String!, $schedule: Boolean) {
+    createRepoSync(
+      input: {repoSync: {repoId: $repoId, syncType: $syncType, scheduleEnabled: $schedule}}
+    ) {
       repoSync {
         id
         syncType

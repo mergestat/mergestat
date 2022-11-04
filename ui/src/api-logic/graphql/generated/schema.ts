@@ -11569,6 +11569,7 @@ export type SyncMutation = { createRepoSyncQueue?: { repoSyncQueue?: { id: any, 
 export type AddSyncTypeMutationVariables = Exact<{
   repoId: Scalars['UUID'];
   syncType: Scalars['String'];
+  schedule?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
