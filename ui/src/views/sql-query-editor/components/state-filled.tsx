@@ -209,7 +209,6 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                   isIconOnly
                   disabled={page === 0}
                   skin='borderless'
-                  className='border-0'
                   startIcon={<ChevronLeftIcon className='t-icon' />}
                   onClick={() => setPage(page - 1)}
                 />
