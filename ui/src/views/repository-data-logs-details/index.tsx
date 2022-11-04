@@ -5,6 +5,7 @@ import React from 'react'
 import { SyncLogsType, SyncTypeData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
+import { copyArrayToClipboard } from 'src/utils'
 import { GITHUB_URL, SYNC_STATUS } from 'src/utils/constants'
 import { LogsInfo } from './components'
 
@@ -50,7 +51,7 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
       <div className="flex-1 overflow-auto p-8 space-y-8">
         <LogsInfo id={logInfo?.id || ''} syncStart={logInfo?.syncStart || ''} duration={logInfo?.duration || ''} />
         {logInfo?.logs?.length
-          ? <LogBox logs={logInfo?.logs || []} onCopy={() => null} />
+          ? <LogBox logs={logInfo?.logs || []} onCopy={() => copyArrayToClipboard(logInfo?.logs)} />
           : (
             <Panel>
               <Panel.Body className="flex items-center justify-center py-8">
