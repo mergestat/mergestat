@@ -54,7 +54,6 @@ export const FilterHeader: React.FC = () => {
                   isIconOnly
                   disabled={pageRepos === 0}
                   skin='borderless'
-                  className='border-0'
                   startIcon={<ChevronLeftIcon className='t-icon' />}
                   onClick={() => setPageRepos(pageRepos - 1)}
                 />
@@ -62,7 +61,6 @@ export const FilterHeader: React.FC = () => {
                   isIconOnly
                   disabled={getMaxPagination(pageRepos, rowsRepos, totalRepos) >= totalRepos}
                   skin='borderless'
-                  className='border-0'
                   startIcon={<ChevronRightIcon className='t-icon' />}
                   onClick={() => setPageRepos(pageRepos + 1)}
                 />

@@ -17,7 +17,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.0",
     "@apollo/react-testing": "^4.0.0",
-    "@mergestat/blocks": "^1.4.3",
+    "@mergestat/blocks": "^1.4.4",
     "@mergestat/icons": "^1.2.2",
     "@monaco-editor/react": "^4.4.6",
     "@next/bundle-analyzer": "^12.1.4",
