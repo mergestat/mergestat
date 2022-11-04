@@ -141,6 +141,14 @@ export const copy = (text: string | null | undefined) => {
 }
 
 /**
+ * Method to copy to clipboard a given strings array
+ * @param array Strings array to process
+ */
+export const copyArrayToClipboard = (array: string[] = []) => {
+  copy(array.join('\n'))
+}
+
+/**
  * Method to filter an array (comparing all properties) by given search text
  * @param array list to evaluate
  * @param searchText text to filter for
