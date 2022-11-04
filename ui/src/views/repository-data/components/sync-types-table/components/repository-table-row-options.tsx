@@ -1,4 +1,4 @@
-import { Button, Dropdown, Menu } from '@mergestat/blocks'
+import { Button, Dropdown, Menu, Tooltip } from '@mergestat/blocks'
 import { DotsHorizontalIcon } from '@mergestat/icons'
 import React from 'react'
 import { RepoSyncStateT } from 'src/@types'
@@ -20,7 +20,9 @@ export const RepositoryTableRowOptions: React.FC<RepositoryDetailsRowOptionsProp
             {(state === SYNC_STATUS.disabled)
               ? <Menu.Item text="Enable Data Sync" />
               : <React.Fragment>
-                <Menu.Item text="Cancel Sync" disabled={state !== SYNC_STATUS.running} />
+                <Tooltip content='Coming soon!' placement='left' offset={[0, 10]}>
+                  <Menu.Item text="Cancel Sync" disabled={state !== SYNC_STATUS.running} />
+                </Tooltip>
               </React.Fragment>
             }
           </Menu>
