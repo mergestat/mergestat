@@ -1,7 +1,10 @@
 services:
   worker:
+    image: ""
     build: .
   graphql:
+    image: ""
     build: ./graphql
   ui:
+    image: ""
     build: ./ui
