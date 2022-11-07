@@ -5,7 +5,7 @@ import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
 import { States } from 'src/utils/constants'
 import SQLEditorSection from './components/sql-editor-section'
-import QueryEditorCancelled from './components/state-cancelled'
+import QueryEditorCanceled from './components/state-canceled'
 import QueryEditorEmpty from './components/state-empty'
 import QueryEditorError from './components/state-error'
 import QueryEditorFilled from './components/state-filled'
@@ -55,7 +55,7 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
   }
 
   const cancelSQLQuery = () => {
-    setState(States.Cancelled)
+    setState(States.Canceled)
     aborterRef.abort()
     setLoading(false)
   }
@@ -94,8 +94,8 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
         {/* Empty state */}
         {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} />}
 
-        {/* Cancelled state */}
-        {!error && !loading && state === States.Cancelled && <QueryEditorCancelled />}
+        {/* Canceled state */}
+        {!error && !loading && state === States.Canceled && <QueryEditorCanceled />}
 
         {/* Error state */}
         {!loading && state === States.Error && error && <QueryEditorError errors={error} />}

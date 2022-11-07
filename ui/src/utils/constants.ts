@@ -69,7 +69,7 @@ export enum States {
   Empty = 'Empty',
   Loading = 'Loading',
   Filled = 'Filled',
-  Cancelled = 'Cancelled',
+  Canceled = 'Canceled',
   Error = 'Error'
 }
 

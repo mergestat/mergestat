@@ -1,7 +1,7 @@
 import { Avatar, Badge, Toolbar } from '@mergestat/blocks'
 import { WarningFilledIcon, WarningIcon } from '@mergestat/icons'
 
-const QueryEditorCancelled: React.FC = () => {
+const QueryEditorCanceled: React.FC = () => {
   return (
     <>
       <div className='bg-white overflow-auto flex -mt-2 h-16 w-full border-b px-8'>
@@ -12,7 +12,7 @@ const QueryEditorCancelled: React.FC = () => {
             </Toolbar.Item>
             <Toolbar.Item>
               <Badge
-                label='Cancelled'
+                label='Canceled'
                 variant='default'
                 className='bg-gray-50 rounded-full'
                 startIcon={
@@ -29,11 +29,11 @@ const QueryEditorCancelled: React.FC = () => {
           icon={<WarningIcon className='t-icon' />}
         />
         <div className='text-center mt-6'>
-          <h4 className='t-h4'>Query Cancelled</h4>
+          <h4 className='t-h4'>Query Canceled</h4>
         </div>
       </div>
     </>
   )
 }
 
-export default QueryEditorCancelled
+export default QueryEditorCanceled
