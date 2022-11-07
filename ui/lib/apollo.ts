@@ -41,7 +41,6 @@ function createApolloClient(router: NextRouter) {
         },
       },
     }),
-    queryDeduplication: false
   })
 }
 

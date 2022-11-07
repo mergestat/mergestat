@@ -30,7 +30,8 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
     context: {
       fetchOptions: {
         signal: aborterRef.signal
-      }
+      },
+      queryDeduplication: false
     }
   })
 
