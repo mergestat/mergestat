@@ -34,6 +34,12 @@ const SettingsView = ({ children }: Props) => {
               <Link href='/settings/repo-auto-imports'>
                 <VerticalNav.Item href='/settings/repo-auto-imports' text='Repo Auto Imports' active={active('/settings/repo-auto-imports') || active('/settings/repo-auto-imports/[importId]')} />
               </Link>
+              <Link href='/settings/user-management'>
+                <VerticalNav.Item href='/settings/user-management' text='User Management' active={active('/settings/user-management')} />
+              </Link>
+              <Link href='/settings/user-settings'>
+                <VerticalNav.Item href='/settings/user-settings' text='User Settings' active={active('/settings/user-settings')} />
+              </Link>
             </VerticalNav>
           </div>
         </div>
