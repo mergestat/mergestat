@@ -1,7 +1,7 @@
 import { Button, Input, Label, Modal, Toolbar } from '@mergestat/blocks'
 import { XIcon } from '@mergestat/icons'
-import React, { useCallback, useState } from 'react'
 import cx from 'classnames'
+import React, { ChangeEvent, useCallback, useState } from 'react'
 import { useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
 
 const roles = [
@@ -28,7 +28,7 @@ export const AddUserModal: React.FC = () => {
 
   const [Role, setRole] = useState('')
 
-  function onChangeValue(event: any) {
+  function onChangeValue(event: ChangeEvent<HTMLInputElement>) {
     setRole(event.target.value)
   }
 
@@ -69,13 +69,13 @@ export const AddUserModal: React.FC = () => {
             </div>
             <div>
               <Label>Role</Label>
-                <div className='space-y-3'>
-                  {roles.map((role, index) => (
-                    <div key={index} onChange={onChangeValue}>
-                    <label className='t-radio space-x-4'>
+              <div className='space-y-3'>
+                {roles.map((role, index) => (
+                  <div key={index} onChange={onChangeValue}>
+                    <label htmlFor={`radio-role-${index}`} className='t-radio space-x-4'>
                       <div className={cx('t-radio-card w-full', { 't-radio-card-selected': Role === role.name })}>
                         <div className='self-start'>
-                          <input type='radio' name='role' value={role.name} checked={ role ? Role === role.name : undefined } />
+                          <input id={`radio-role-${index}`} type='radio' name='role' value={role.name} checked={role ? Role === role.name : undefined} />
                         </div>
                         <div>
                           <h4 className='font-medium mb-0.5'>{role.name}</h4>
@@ -84,8 +84,8 @@ export const AddUserModal: React.FC = () => {
                       </div>
                     </label>
                   </div>
-                  ))}
-                </div>
+                ))}
+              </div>
             </div>
           </form>
         </div>
