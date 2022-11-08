@@ -105,3 +105,8 @@
     @apply w-6
            h-6;
 }
+
+/* TODO(emily) fix modal position jump on smaller screens */
+.t-modal {
+  @apply align-middle;
+}

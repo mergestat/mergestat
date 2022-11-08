@@ -26,7 +26,7 @@ export const AddUserModal: React.FC = () => {
     setShowAddUserModal(false)
   }, [setShowAddUserModal])
 
-  const [Role, setRole] = useState('Admin')
+  const [Role, setRole] = useState('')
 
   function onChangeValue(event: any) {
     setRole(event.target.value)
