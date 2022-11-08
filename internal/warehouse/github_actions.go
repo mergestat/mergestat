@@ -250,9 +250,14 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 		workflowJobLog, resp, err := w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true)
 		if err != nil {
 			w.logger.Warn().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).AnErr("Error", err).Msg("error occurred")
-			if resp == nil {
-				break
+			// now that we know that the log is missing regularly , we need to also handle to upsert of the rest of the information
+			// when we get an error from the call
+			log = ""
+			if err := w.handleWorkflowJobUpsert(ctx, workflowJob, log, repoID); err != nil {
+				return err
 			}
+
+			*jobsCount++
 
 			continue
 		}
