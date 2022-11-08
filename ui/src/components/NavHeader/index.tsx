@@ -48,7 +48,7 @@ const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: Current
               <Dropdown
                 alignEnd={false}
                 overlay={() => (
-                  <Menu data-popper-placement="bottom-end">
+                  <Menu data-popper-placement="bottom-end" className='-mt-1'>
                     <Menu.Item text="User settings" onClick={() => router.push('/settings/user-settings')} icon={<CogIcon className="t-icon" />} />
                     <Menu.Item text="Log out" onClick={handleLogout} icon={<LogoutIcon className="t-icon" />} />
                   </Menu>
