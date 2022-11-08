@@ -19,7 +19,7 @@ const UserSettings: NextPage = () => {
         </Head>
         <SettingsView>
           {/* Main content */}
-          <div className='flex flex-col flex-1'>
+          <div className='flex flex-col flex-1 overflow-hidden'>
             <div className='bg-white h-16 w-full border-b px-8'>
               <Toolbar className='h-full'>
                 <Toolbar.Left>
@@ -33,8 +33,8 @@ const UserSettings: NextPage = () => {
                   <h3 className='t-panel-title'>Settings</h3>
                 </Panel.Header>
                 <Panel.Body className='py-8'>
-                  <div className='flex items-start space-x-8'>
-                    <div className='flex-none'>
+                  <div className='lg_flex items-start lg_space-x-8'>
+                    <div className='flex-none mb-6 lg_mb-0'>
                       <Avatar icon={<UserIcon className='t-icon' />} size='xl' />
                     </div>
                     <div className='space-y-6'>

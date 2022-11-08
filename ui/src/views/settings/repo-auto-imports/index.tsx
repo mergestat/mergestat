@@ -23,7 +23,7 @@ const AutoImports: NextPage = () => {
         </Head>
         <SettingsView>
           {/* Main content */}
-          <div className='flex flex-col flex-1'>
+          <div className='flex flex-col flex-1 overflow-hidden'>
             <div className='bg-white h-16 w-full border-b px-8'>
               <Toolbar className='h-full'>
                 <Toolbar.Left>
