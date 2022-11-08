@@ -31,10 +31,23 @@
 }
 
 /* TODO(emily): add button styles to blocks */
+.t-nav {
+  @apply h-auto;
+}
+
+.t-nav-item {
+  @apply h-11;
+}
+
+.t-nav > * + * {
+  @apply ml-3
+}
+
 .t-nav-item > a,
 .t-nav-item > button {
-    @apply px-5
+    @apply px-3
            border-0
+           rounded-md
            bg-transparent
            gap-3
            font-medium
