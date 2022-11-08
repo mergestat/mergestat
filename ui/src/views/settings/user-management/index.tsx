@@ -39,14 +39,14 @@ const UserManagement: NextPage = () => {
         </Head>
         <SettingsView>
           {/* Main content */}
-          <div className='flex flex-col flex-1'>
+          <div className='flex flex-col flex-1 overflow-hidden'>
             <div className='bg-white h-16 w-full border-b px-8'>
               <Toolbar className='h-full'>
                 <Toolbar.Left>
                   <h2 className='t-h2 mb-0'>User Management</h2>
                 </Toolbar.Left>
                 <Toolbar.Right>
-                  <Button label='Add User' startIcon={<PlusIcon className='t-icon' />} onClick={() => setShowAddUserModal(true)} />
+                  <Button className='whitespace-nowrap' label='Add User' startIcon={<PlusIcon className='t-icon' />} onClick={() => setShowAddUserModal(true)} />
                 </Toolbar.Right>
               </Toolbar>
             </div>
@@ -59,52 +59,54 @@ const UserManagement: NextPage = () => {
                 />
               </div>
               <Panel className='rounded-md w-full shadow-sm'>
-                <Panel.Body className='p-0'>
-                    <table className='t-table-default'>
-                      <thead>
-                        <tr className='bg-white'>
-                          <th scope='col' key='status' className='whitespace-nowrap'>Name</th>
-                          <th scope='col' key='name' className='whitespace-nowrap'>Role</th>
-                          <th scope='col' key='lastImport' className='whitespace-nowrap'>Created</th>
-                          <th scope='col' key='actions' className='whitespace-nowrap'></th>
-                        </tr>
-                      </thead>
-
-                      <tbody className='bg-white'>
-                        {users.map((user, index) => (
-                          <tr key={index}>
-                            <td>
-                              <div className='flex items-center gap-4'>
-                                <Avatar icon={<UserIcon className='t-icon' />} />
-                                <span className='whitespace-nowrap font-medium'>{user.name}</span>
-                              </div>
-                            </td>
-                            <td className='whitespace-nowrap'>
-                              {user.role}
-                            </td>
-                            <td className='t-text-muted whitespace-nowrap'>
-                              {user.created}
-                            </td>
-                            <td className='text-gray-500 py-4'>
-                              <div className='t-button-toolbar'>
-                                <Button
-                                  skin='borderless-muted'
-                                  className='mr-5'
-                                  startIcon={<PencilIcon className='t-icon'
-                                  onClick={() => setShowEditUserModal(true)} />}
-                                  isIconOnly
-                                />
-                                <Button
-                                  skin='borderless-muted'
-                                  startIcon={<TrashIcon className='t-icon' />}
-                                  isIconOnly
-                                  onClick={() => setShowRemoveUserModal(true)} />
-                              </div>
-                            </td>
+                <Panel.Body className='p-0 overflow-hidden'>
+                    <div className='flex-1 overflow-x-auto overflow-y-hidden'>
+                      <table className='t-table-default'>
+                        <thead>
+                          <tr className='bg-white'>
+                            <th scope='col' key='status' className='whitespace-nowrap'>Name</th>
+                            <th scope='col' key='name' className='whitespace-nowrap'>Role</th>
+                            <th scope='col' key='lastImport' className='whitespace-nowrap'>Created</th>
+                            <th scope='col' key='actions' className='whitespace-nowrap'></th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+
+                        <tbody className='bg-white'>
+                          {users.map((user, index) => (
+                            <tr key={index}>
+                              <td>
+                                <div className='flex items-center gap-4'>
+                                  <Avatar icon={<UserIcon className='t-icon' />} />
+                                  <span className='whitespace-nowrap font-medium'>{user.name}</span>
+                                </div>
+                              </td>
+                              <td className='whitespace-nowrap'>
+                                {user.role}
+                              </td>
+                              <td className='t-text-muted whitespace-nowrap'>
+                                {user.created}
+                              </td>
+                              <td className='text-gray-500 py-4'>
+                                <div className='t-button-toolbar'>
+                                  <Button
+                                    skin='borderless-muted'
+                                    className='mr-5'
+                                    startIcon={<PencilIcon className='t-icon'
+                                    onClick={() => setShowEditUserModal(true)} />}
+                                    isIconOnly
+                                  />
+                                  <Button
+                                    skin='borderless-muted'
+                                    startIcon={<TrashIcon className='t-icon' />}
+                                    isIconOnly
+                                    onClick={() => setShowRemoveUserModal(true)} />
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                 </Panel.Body>
               </Panel>
             </div>
