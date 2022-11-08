@@ -33,6 +33,20 @@ BEGIN
     CASE
         WHEN role = 'ADMIN' THEN
             -- Grant the user access to the public schema
+            EXECUTE FORMAT('GRANT USAGE ON SCHEMA public TO %I WITH GRANT OPTION', username);
+            EXECUTE FORMAT('GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO %I WITH GRANT OPTION', username);
+            EXECUTE FORMAT('GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO %I WITH GRANT OPTION', username);
+            EXECUTE FORMAT('ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO %I WITH GRANT OPTION', username); -- Ensure all tables and sequences created in the future have all privileges
+            EXECUTE FORMAT('ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO %I WITH GRANT OPTION', username);
+
+            -- Grant the user access to the mergestat schema
+            EXECUTE FORMAT('GRANT USAGE ON SCHEMA mergestat TO %I WITH GRANT OPTION', username);
+            EXECUTE FORMAT('GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA mergestat TO %I WITH GRANT OPTION', username);
+            EXECUTE FORMAT('GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA mergestat TO %I WITH GRANT OPTION', username);
+            EXECUTE FORMAT('ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT ALL PRIVILEGES ON TABLES TO %I WITH GRANT OPTION', username);
+            EXECUTE FORMAT('ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT ALL PRIVILEGES ON SEQUENCES TO %I WITH GRANT OPTION', username);
+        WHEN role = 'USER' THEN
+            -- Grant the user access to the public schema
             EXECUTE FORMAT('GRANT USAGE ON SCHEMA public TO %I', username);
             EXECUTE FORMAT('GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO %I', username);
             EXECUTE FORMAT('GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO %I', username);
@@ -45,8 +59,6 @@ BEGIN
             EXECUTE FORMAT('GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA mergestat TO %I', username);
             EXECUTE FORMAT('ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT ALL PRIVILEGES ON TABLES TO %I', username);
             EXECUTE FORMAT('ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT ALL PRIVILEGES ON SEQUENCES TO %I', username);
-        WHEN role = 'USER' THEN
-            -- TODO(patrickdevivo) implement authz for USER role
         WHEN role = 'READ_ONLY' THEN
             -- TODO(patrickdevivo) implement authz for READ_ONLY role
         ELSE
