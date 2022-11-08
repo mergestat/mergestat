@@ -69,7 +69,7 @@ dequeued AS (
 )
 SELECT
     dequeued.id, dequeued.created_at, dequeued.status, dequeued.repo_sync_id,
-    repo_syncs.repo_id, repo_syncs.sync_type, repo_syncs.settings, repo_syncs.id, repo_syncs.schedule_enabled, repo_syncs.priority,
+    repo_syncs.repo_id, repo_syncs.sync_type, repo_syncs.settings, repo_syncs.id, repo_syncs.schedule_enabled, repo_syncs.priority, repo_syncs.last_completed_repo_sync_queue_id,
     repos.repo,
     repos.ref,
     repos.is_github,
@@ -80,20 +80,21 @@ JOIN repos ON repos.id = mergestat.repo_syncs.repo_id
 `
 
 type DequeueSyncJobRow struct {
-	ID              int64
-	CreatedAt       time.Time
-	Status          string
-	RepoSyncID      uuid.UUID
-	RepoID          uuid.UUID
-	SyncType        string
-	Settings        pgtype.JSONB
-	ID_2            uuid.UUID
-	ScheduleEnabled bool
-	Priority        int32
-	Repo            string
-	Ref             sql.NullString
-	IsGithub        sql.NullBool
-	RepoSettings    pgtype.JSONB
+	ID                           int64
+	CreatedAt                    time.Time
+	Status                       string
+	RepoSyncID                   uuid.UUID
+	RepoID                       uuid.UUID
+	SyncType                     string
+	Settings                     pgtype.JSONB
+	ID_2                         uuid.UUID
+	ScheduleEnabled              bool
+	Priority                     int32
+	LastCompletedRepoSyncQueueID sql.NullInt64
+	Repo                         string
+	Ref                          sql.NullString
+	IsGithub                     sql.NullBool
+	RepoSettings                 pgtype.JSONB
 }
 
 func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error) {
@@ -110,6 +111,7 @@ func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
 		&i.ID_2,
 		&i.ScheduleEnabled,
 		&i.Priority,
+		&i.LastCompletedRepoSyncQueueID,
 		&i.Repo,
 		&i.Ref,
 		&i.IsGithub,
@@ -446,8 +448,7 @@ func (q *Queries) SetLatestKeepAliveForJob(ctx context.Context, id int64) error 
 }
 
 const setSyncJobStatus = `-- name: SetSyncJobStatus :exec
-UPDATE mergestat.repo_sync_queue SET status = $1 
-WHERE id = (SELECT id FROM mergestat.repo_sync_queue WHERE repo_sync_queue.id = $2 LIMIT 1)
+SELECT mergestat.set_sync_job_status($1::TEXT, $2::BIGINT)
 `
 
 type SetSyncJobStatusParams struct {
@@ -556,7 +557,7 @@ WITH t AS(
   RETURNING xmax::text
 )
 SELECT
-	COUNT(*) AS all_rows,
+    COUNT(*) AS all_rows,
     SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
     SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
 FROM t
@@ -733,7 +734,7 @@ WITH t AS (
 		RETURNING xmax::text
 )
 SELECT
-	COUNT(*) AS all_rows,
+    COUNT(*) AS all_rows,
     SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
     SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
 FROM t
@@ -839,7 +840,7 @@ WITH t AS (
   RETURNING xmax::text
 ) 
 SELECT
-	COUNT(*) AS all_rows,
+    COUNT(*) AS all_rows,
     SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
     SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
 FROM t
