@@ -3,29 +3,30 @@ BEGIN;
 ALTER TABLE mergestat.repo_syncs
 ADD COLUMN IF NOT EXISTS last_completed_repo_sync_queue_id BIGINT;
 
+--prime the new column
 WITH
-  ranked_completed_syncs AS (
-  SELECT
-    rsq.id,
-    rsq.repo_sync_id,
-    rsq.done_at,
-    RANK() OVER(PARTITION BY rsq.repo_sync_id ORDER BY rsq.done_at DESC) AS rank_num
-  FROM
-    mergestat.repo_sync_queue AS rsq
-  WHERE
-    rsq.repo_sync_id NOT IN (
+ranked_completed_syncs AS (
     SELECT
-      repo_sync_id
+        mergestat.repo_sync_queue.id,
+        mergestat.repo_sync_queue.repo_sync_id,
+        mergestat.repo_sync_queue.done_at,
+        RANK() OVER(PARTITION BY mergestat.repo_sync_queue.repo_sync_id ORDER BY mergestat.repo_sync_queue.done_at DESC) AS rank_num
     FROM
-      mergestat.repo_sync_queue
+        mergestat.repo_sync_queue
     WHERE
-      status = 'QUEUED'
-      OR status = 'RUNNING') )
+        mergestat.repo_sync_queue.repo_sync_id NOT IN (
+            SELECT repo_sync_id
+            FROM
+                mergestat.repo_sync_queue
+            WHERE
+                status = 'QUEUED'
+                OR status = 'RUNNING')
+)
 UPDATE mergestat.repo_syncs
 SET last_completed_repo_sync_queue_id = rcs.id
-FROM ranked_completed_syncs rcs
+FROM ranked_completed_syncs AS rcs
 WHERE rcs.rank_num = 1
-AND rcs.repo_sync_id = mergestat.repo_syncs.id;
+    AND rcs.repo_sync_id = mergestat.repo_syncs.id;
 
 CREATE OR REPLACE FUNCTION mergestat.set_sync_job_status(new_status TEXT, repo_sync_queue_id BIGINT)
 RETURNS UUID
