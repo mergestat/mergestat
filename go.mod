@@ -21,7 +21,7 @@ require (
 	github.com/jackc/pgconn v1.13.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/libgit2/git2go/v33 v33.0.9
-	github.com/mergestat/gitutils v0.0.0-20221018151031-9eedcfea6491
+	github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b
 	github.com/prometheus/client_golang v1.13.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20221021030919-a134b1472cc7
