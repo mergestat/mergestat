@@ -1,6 +1,6 @@
 module github.com/mergestat/mergestat
 
-go 1.18
+go 1.19
 
 require (
 	github.com/jackc/pgtype v1.12.0
