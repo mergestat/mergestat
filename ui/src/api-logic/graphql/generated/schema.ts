@@ -11569,6 +11569,7 @@ export type SyncMutation = { createRepoSyncQueue?: { repoSyncQueue?: { id: any, 
 export type AddSyncTypeMutationVariables = Exact<{
   repoId: Scalars['UUID'];
   syncType: Scalars['String'];
+  schedule?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -11591,6 +11592,11 @@ export type GetDatabaseConnectionQueryVariables = Exact<{ [key: string]: never; 
 
 
 export type GetDatabaseConnectionQuery = { databaseConnection?: { database?: string | null, host?: string | null, port?: number | null, user?: string | null } | null };
+
+export type GetPatQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPatQuery = { serviceAuthCredentials?: { totalCount: number } | null, repos?: { totalCount: number } | null };
 
 export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 

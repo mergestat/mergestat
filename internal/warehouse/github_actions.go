@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/url"
 	"os"
 
 	"github.com/google/go-github/v47/github"
@@ -37,7 +36,7 @@ func (w *warehouse) GitHubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 
 	w.logger.Info().Msgf("starting to retrieve all github actions from repo %s", repoName)
 
-	if err = w.handleWorkflows(ctx, owner, repoName, j.RepoID); err != nil {
+	if err = w.handleWorkflows(ctx, owner, repoName, j); err != nil {
 		return err
 	}
 
@@ -45,10 +44,11 @@ func (w *warehouse) GitHubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 	return nil
 }
 
-func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, repoID uuid.UUID) error {
+func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job *db.DequeueSyncJobRow) error {
 	var err error
 	var resp *github.Response
 	var workflowsPage *github.Workflows
+	repoID := job.RepoID
 	pagination, err := w.getPaginationOpt("GITHUB_WORKFLOW_PER_PAGE")
 	if err != nil {
 		return err
@@ -59,6 +59,12 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 	w.logger.Info().Msgf("getting workflows for repo %s", repo)
 	// we get a page of 30 workflows until next page is 0
 	for {
+		if opt.Page == 0 {
+			operation := fmt.Sprintf("to get all GitHub Actions workflows for repo %s", repo)
+			if err := w.batchProcessLogMessages(ctx, SyncLogTypeInfo, job, startingProcess, operation); err != nil {
+				return err
+			}
+		}
 		if workflowsPage, resp, err = w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions); err != nil {
 			w.logger.Warn().AnErr("Error", err).Msg("error occurred")
 			if resp == nil {
@@ -76,7 +82,7 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 				return err
 			}
 
-			if err = w.handleWorkflowRuns(ctx, owner, repo, repoID, workflowsPage.Workflows); err != nil {
+			if err = w.handleWorkflowRuns(ctx, owner, repo, job, workflowsPage.Workflows); err != nil {
 				return err
 			}
 		}
@@ -91,10 +97,13 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, rep
 	return nil
 }
 
-func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowsPage []*github.Workflow) error {
+func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, job *db.DequeueSyncJobRow, workflowsPage []*github.Workflow) error {
 	var err error
 	var resp *github.Response
 	var workflowRunsPage *github.WorkflowRuns
+	repoID := job.RepoID
+	runsCount := 0
+	jobsCount := 0
 	pagination, err := w.getPaginationOpt("GITHUB_WORKFLOW_RUNS_PER_PAGE")
 	if err != nil {
 		return err
@@ -104,6 +113,20 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	}
 
 	for _, workflow := range workflowsPage {
+
+		if opt.Page == 0 {
+			operation := fmt.Sprintf("to get all GitHub Actions runs for workflow %s", *workflow.Name)
+
+			if err := w.batchProcessLogMessages(ctx, SyncLogTypeInfo, job, startingProcess, operation); err != nil {
+				return err
+			}
+
+			operation = fmt.Sprintf("to get all GitHub Actions jobs for workflow %s", *workflow.Name)
+			if err := w.batchProcessLogMessages(ctx, SyncLogTypeInfo, job, startingProcess, operation); err != nil {
+				return err
+			}
+		}
+
 		w.logger.Info().Msgf("getting workflow runs for workflow %s", *workflow.Name)
 		// we get a page of 30 workflow runs until next page is 0
 		for {
@@ -124,8 +147,9 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 				if err := w.handleWorkflowRunsUpsert(ctx, workflowRunsPage.WorkflowRuns, repoID); err != nil {
 					return err
 				}
+				runsCount += len(workflowRunsPage.WorkflowRuns)
 
-				if err := w.handleWorkflowRunsJobs(ctx, owner, repo, repoID, workflowRunsPage.WorkflowRuns); err != nil {
+				if err := w.handleWorkflowRunsJobs(ctx, owner, repo, repoID, workflowRunsPage.WorkflowRuns, &jobsCount); err != nil {
 					return err
 				}
 			}
@@ -140,16 +164,21 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 
 		}
 
+		operation := fmt.Sprintf("%d runs and %d jobs of workflow %s", runsCount, jobsCount, *workflow.Name)
+		if err := w.batchProcessLogMessages(ctx, SyncLogTypeInfo, job, insertedProcess, operation); err != nil {
+			return err
+		}
+
 		opt.Page = 0
-
+		runsCount = 0
+		jobsCount = 0
 		w.logger.Info().Msgf("finished getting all github actions from workflow %s", *workflow.Name)
-
 	}
 
 	return nil
 }
 
-func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunsPage []*github.WorkflowRun) error {
+func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunsPage []*github.WorkflowRun, jobsCount *int) error {
 	var err error
 	var resp *github.Response
 	var workflowRunJobsPage *github.Jobs
@@ -177,7 +206,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 			}
 
 			if *workflowRunJobsPage.TotalCount > 0 && len(workflowRunJobsPage.Jobs) > 0 {
-				if err := w.handleWorkflowJobLogs(ctx, owner, repo, repoID, workflowRunJobsPage.Jobs); err != nil {
+				if err := w.handleWorkflowJobLogs(ctx, owner, repo, repoID, workflowRunJobsPage.Jobs, jobsCount); err != nil {
 					return err
 				}
 			}
@@ -199,11 +228,9 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	return nil
 }
 
-func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunJobsPage []*github.WorkflowJob) error {
+func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunJobsPage []*github.WorkflowJob, jobsCount *int) error {
 	var err error
-	var resp *github.Response
 	var log string
-	var workflowJobLog *url.URL
 	// we create a  tmp dir to store all downloaded files into it
 	filepath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_WORKFLOW_LOGS_PATH"), "mergestat-logs-")
 	if err != nil {
@@ -220,11 +247,18 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
 		w.logger.Debug().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting log of")
-		if workflowJobLog, resp, err = w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true); err != nil {
+		workflowJobLog, resp, err := w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true)
+		if err != nil {
 			w.logger.Warn().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).AnErr("Error", err).Msg("error occurred")
-			if resp == nil {
-				break
+			// now that we know that the log is missing regularly , we need to also handle to upsert of the rest of the information
+			// when we get an error from the call
+			log = ""
+			if err := w.handleWorkflowJobUpsert(ctx, workflowJob, log, repoID); err != nil {
+				return err
 			}
+
+			*jobsCount++
+
 			continue
 		}
 
@@ -242,6 +276,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 			return err
 		}
 
+		*jobsCount++
 	}
 
 	return err

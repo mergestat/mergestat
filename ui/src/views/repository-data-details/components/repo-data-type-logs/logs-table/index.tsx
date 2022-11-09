@@ -3,6 +3,7 @@ import { CaretDownIcon, CaretRightIcon } from '@mergestat/icons'
 import React, { Fragment, useEffect, useState } from 'react'
 import { SyncLogsType } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
+import { copyArrayToClipboard } from 'src/utils'
 import { SyncType } from './components'
 
 interface LogsTableProps {
@@ -31,83 +32,83 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
   }
 
   return (<>
-      <Panel className='rounded-md w-full shadow-sm block'>
-        <Panel.Body className='p-0'>
-          {data.length < 1
-            ? <div className='flex justify-center items-center bg-white py-5'>
-              No data available!
-            </div>
-            : <div className='flex flex-col min-w-0 bg-white h-full'>
-                <div className='flex-1 overflow-x-auto overflow-y-hidden'>
-                <table className='t-table-default t-table-hover'>
-                  <thead>
-                    <tr className='bg-white'>
-                      <th className='w-0'></th>
+    <Panel className='rounded-md w-full shadow-sm block'>
+      <Panel.Body className='p-0'>
+        {data.length < 1
+          ? <div className='flex justify-center items-center bg-white py-5'>
+            No data available!
+          </div>
+          : <div className='flex flex-col min-w-0 bg-white h-full'>
+            <div className='flex-1 overflow-x-auto overflow-y-hidden'>
+              <table className='t-table-default t-table-hover'>
+                <thead>
+                  <tr className='bg-white'>
+                    <th className='w-0'></th>
 
-                      <th scope='col' key='syncType' className='whitespace-nowrap'>
-                        <span className='select-none'>Sync Type</span>
-                      </th>
+                    <th scope='col' key='syncType' className='whitespace-nowrap'>
+                      <span className='select-none'>Sync Type</span>
+                    </th>
 
-                      <th scope='col' key='entries' className='whitespace-nowrap'>
-                        <span className='select-none'>Log Entries</span>
-                      </th>
+                    <th scope='col' key='entries' className='whitespace-nowrap'>
+                      <span className='select-none'>Log Entries</span>
+                    </th>
 
-                      <th scope='col' key='duration' className='whitespace-nowrap'>
-                        <span className='select-none'>Duration</span>
-                      </th>
+                    <th scope='col' key='duration' className='whitespace-nowrap'>
+                      <span className='select-none'>Duration</span>
+                    </th>
 
-                      <th scope='col' key='syncStart' className='whitespace-nowrap'>
-                        <span className='select-none'>Sync Start</span>
-                      </th>
-                    </tr>
-                  </thead>
+                    <th scope='col' key='syncStart' className='whitespace-nowrap'>
+                      <span className='select-none'>Sync Start</span>
+                    </th>
+                  </tr>
+                </thead>
 
-                  <tbody className='bg-white'>
-                    {data.map((log, index) => (
-                      <Fragment key={log.id} >
+                <tbody className='bg-white'>
+                  {data.map((log, index) => (
+                    <Fragment key={log.id} >
+                      <tr>
+                        <td className='w-0'>
+                          <div className='-mx-3'>
+                            <button className='t-button-icon focus:!outline-none'
+                              onClick={() => onRowClick(index)}>
+                              {log.collapsed
+                                ? <CaretDownIcon className='text-gray-500 t-icon' />
+                                : <CaretRightIcon className='text-gray-500 t-icon' />}
+                            </button>
+                          </div>
+                        </td>
+
+                        <td className='py-3'>
+                          <SyncType id={log.id} syncType={log.syncType} />
+                        </td>
+
+                        <td className='text-gray-500'>
+                          {log.records ? <span className='t-text-muted'>{log.records}</span> : '-'}
+                        </td>
+
+                        <td className='text-gray-500'>
+                          <span className='t-text-muted'>{log.duration}</span>
+                        </td>
+
+                        <td className='text-gray-500'>
+                          <RelativeTimeField date={log.syncStart} styles={'t-text-muted whitespace-nowrap'} />
+                        </td>
+                      </tr>
+                      {log.collapsed && (
                         <tr>
-                          <td className='w-0'>
-                            <div className='-mx-3'>
-                              <button className='t-button-icon focus:!outline-none'
-                                onClick={() => onRowClick(index)}>
-                                {log.collapsed
-                                  ? <CaretDownIcon className='text-gray-500 t-icon' />
-                                  : <CaretRightIcon className='text-gray-500 t-icon' />}
-                              </button>
-                            </div>
-                          </td>
-
-                          <td className='py-3'>
-                            <SyncType id={log.id} syncType={log.syncType} />
-                          </td>
-
-                          <td className='text-gray-500'>
-                            {log.records ? <span className='t-text-muted'>{log.records}</span> : '-'}
-                          </td>
-
-                          <td className='text-gray-500'>
-                            <span className='t-text-muted'>{log.duration}</span>
-                          </td>
-
-                          <td className='text-gray-500'>
-                            <RelativeTimeField date={log.syncStart} styles={'t-text-muted whitespace-nowrap'} />
+                          <td colSpan={6} className='p-6 bg-gray-50'>
+                            {log.logs?.length ? <LogBox logs={log.logs || []} onCopy={() => copyArrayToClipboard(log.logs)} /> : <span className='t-text-muted text-sm'>No log entries yet</span>}
                           </td>
                         </tr>
-                        {log.collapsed && (
-                          <tr>
-                            <td colSpan={6} className='p-6 bg-gray-50'>
-                              {log.logs?.length ? <LogBox logs={log.logs || []} onCopy={() => null} /> : <span className='t-text-muted text-sm'>No log entries yet</span>}
-                            </td>
-                          </tr>
-                        )}
-                      </Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>}
-        </Panel.Body>
-      </Panel>
+                      )}
+                    </Fragment>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>}
+      </Panel.Body>
+    </Panel>
   </>
   )
 }

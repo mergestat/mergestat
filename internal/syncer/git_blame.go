@@ -1,6 +1,7 @@
 package syncer
 
 import (
+	"bufio"
 	"context"
 	"errors"
 	"fmt"
@@ -137,12 +138,15 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 			}
 		}
 
-		res, err := blame.Exec(ctx, tmpPath, o.Path)
+		// adjustedBufferSize is larger than the default to support longer lines without error
+		// TODO(patrickdevivo) maybe eventually we can make this configurable? Either via an EnVar or a DB setting
+		adjustedBufferSize := bufio.MaxScanTokenSize * 10
+		res, err := blame.Exec(ctx, tmpPath, o.Path, blame.WithScannerBuffer(make([]byte, adjustedBufferSize), adjustedBufferSize))
 		if err != nil {
 			if exitErr, ok := err.(*exec.ExitError); ok {
 				w.logger.Err(err).Str("repoPath", tmpPath).Str("filePath", o.Path).Msgf("error blaming file in repo: %s, %v: %s", tmpPath, err, exitErr.Stderr)
 			} else {
-				w.logger.Err(err).Msgf("error blaming file in repo: %s, %v", tmpPath, err)
+				w.logger.Err(err).Msgf("error blaming file: %s in repo: %s, %v", o.Path, tmpPath, err)
 			}
 			continue
 		}

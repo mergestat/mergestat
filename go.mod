@@ -1,6 +1,6 @@
 module github.com/mergestat/mergestat
 
-go 1.18
+go 1.19
 
 require (
 	github.com/jackc/pgtype v1.12.0
@@ -21,11 +21,11 @@ require (
 	github.com/jackc/pgconn v1.13.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/libgit2/git2go/v33 v33.0.9
-	github.com/mergestat/gitutils v0.0.0-20221018151031-9eedcfea6491
+	github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b
 	github.com/prometheus/client_golang v1.13.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20221021030919-a134b1472cc7
-	go.riyazali.net/sqlite v0.0.0-20221017074244-77a6464e0c2a
+	go.riyazali.net/sqlite v0.0.0-20221028101729-bd9e30b2936b
 	golang.org/x/oauth2 v0.0.0-20221006150949-b44042a4b9c1
 )
 

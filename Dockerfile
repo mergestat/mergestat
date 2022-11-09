@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1-experimental
 
-FROM golang:1.18-alpine AS builder
+FROM golang:1.19-alpine AS builder
 RUN set -x && apk add --no-cache cmake git make gcc libtool g++ openssl-dev
 COPY scripts/install_libgit2.sh install_libgit2.sh
 RUN ./install_libgit2.sh
