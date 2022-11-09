@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ make
 
 FROM alpine
-RUN set -x && apk add --no-cache curl postgresql-client ca-certificates
+RUN set -x && apk add --no-cache curl postgresql-client ca-certificates git
 
 # copy over migrations
 RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.1/migrate.linux-amd64.tar.gz | tar xvz
