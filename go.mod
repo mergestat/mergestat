@@ -25,7 +25,7 @@ require (
 	github.com/prometheus/client_golang v1.13.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20221021030919-a134b1472cc7
-	go.riyazali.net/sqlite v0.0.0-20221028101729-bd9e30b2936b
+	go.riyazali.net/sqlite v0.0.0-20221017074244-77a6464e0c2a
 	golang.org/x/oauth2 v0.0.0-20221006150949-b44042a4b9c1
 )
 
