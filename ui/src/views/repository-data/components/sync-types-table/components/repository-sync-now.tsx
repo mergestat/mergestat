@@ -1,6 +1,6 @@
 import { Button, Spinner } from '@mergestat/blocks'
 import { ClockIcon, RefreshIcon } from '@mergestat/icons'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { RepoSyncStateT } from 'src/@types'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useSyncNow from 'src/views/hooks/useSyncNow'
@@ -14,29 +14,35 @@ export type RepositorySyncNowProps = {
 
 export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, syncType, syncTypeId, syncStatus }) => {
   const { syncNow, addSyncType } = useSyncNow('getRepoSyncs')
+  const [status, setStatus] = useState(syncStatus)
 
-  if (syncStatus === SYNC_STATUS.disabled) return <div className='h-full bg-gray-50' />
+  const syncNowHandler = () => {
+    setStatus(SYNC_STATUS.queued)
+    syncTypeId ? syncNow({ variables: { syncId: syncTypeId } }) : addSyncType({ variables: { repoId, syncType } })
+  }
+
+  useEffect(() => {
+    setStatus(syncStatus)
+  }, [syncStatus])
+
+  if (status === SYNC_STATUS.disabled) return <div className='h-full bg-gray-50' />
 
   return (
     <Button
       className="flex items-center float-right whitespace-nowrap"
-      disabled={syncStatus === SYNC_STATUS.queued || syncStatus === SYNC_STATUS.running}
+      disabled={status === SYNC_STATUS.queued || status === SYNC_STATUS.running}
       skin="secondary"
       data-testid={TEST_IDS.syncsTypesSyncNowButton}
-      startIcon={syncStatus === SYNC_STATUS.queued
+      startIcon={status === SYNC_STATUS.queued
         ? <ClockIcon className='t-icon t-icon-muted' />
-        : syncStatus === SYNC_STATUS.running
+        : status === SYNC_STATUS.running
           ? <Spinner size='sm' className='mr-2' />
           : <RefreshIcon className="t-icon t-icon-default" />
       }
       size="small"
-      onClick={() => {
-        syncTypeId
-          ? syncNow({ variables: { syncId: syncTypeId } })
-          : addSyncType({ variables: { repoId, syncType } })
-      }}
+      onClick={syncNowHandler}
     >
-      {syncStatus === SYNC_STATUS.running ? 'Syncing...' : 'Sync Now'}
+      {status === SYNC_STATUS.running ? 'Syncing...' : 'Sync Now'}
     </Button>
   )
 }
