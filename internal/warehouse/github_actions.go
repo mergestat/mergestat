@@ -65,9 +65,10 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job
 				return err
 			}
 		}
-		if workflowsPage, resp, err = w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions); err != nil {
-			w.logger.Warn().AnErr("Error", err).Msg("error occurred")
-			if resp == nil {
+
+		if workflowsPage, resp, err = getWorkflows(ctx, w.githubClient, owner, repo, opt); err != nil {
+			//w.logger.Warn().AnErr("Error", err).Msg("error occurred")
+			if resp == nil || resp.NextPage == 0 {
 				break
 			}
 
@@ -454,4 +455,8 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 	}
 
 	return tx.Commit(ctx)
+}
+
+var getWorkflows = func(ctx context.Context, githubClient *github.Client, owner, repo string, opt *github.ListWorkflowRunsOptions) (*github.Workflows, *github.Response, error) {
+	return githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions)
 }
