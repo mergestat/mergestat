@@ -905,8 +905,8 @@ github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182aff
 github.com/matttproud/golang_protobuf_extensions v1.0.2 h1:hAHbPm5IJGijwng3PWk09JkG9WeqChjprR5s9bBZ+OM=
 github.com/matttproud/golang_protobuf_extensions v1.0.2/go.mod h1:BSXmuO+STAnVfrANrmjBb36TMTDstsz7MSK+HVaYKv4=
 github.com/maxbrunsfeld/counterfeiter/v6 v6.2.2/go.mod h1:eD9eIE7cdwcMi9rYluz88Jz2VyhSmden33/aXg4oVIY=
-github.com/mergestat/gitutils v0.0.0-20221018151031-9eedcfea6491 h1:xH5YVnh/c48G5pXpB5zvUIrAK3UlQIDGqWOmLghMPFE=
-github.com/mergestat/gitutils v0.0.0-20221018151031-9eedcfea6491/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
+github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b h1:iKHgNnVLgSzw6eGa/mWd1SDeYuTV1aMyTTbA63PID4U=
+github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
 github.com/mergestat/mergestat-lite v0.5.10 h1:3KBUQoRwC27bLHLXUWU7UDjP9IBtumb4vE44bZ3H9Ls=
 github.com/mergestat/mergestat-lite v0.5.10/go.mod h1:tQYFBsEpWDfJ37DQIh3I9ZC2qmVpES9mtJPMDUG64zM=
 github.com/mergestat/timediff v0.0.3 h1:ucCNh4/ZrTPjFZ081PccNbhx9spymCJkFxSzgVuPU+Y=
