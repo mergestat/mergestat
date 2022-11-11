@@ -18,7 +18,7 @@ See our [**documentation**](https://docs.mergestat.com/) for additional context.
 
 Try MergeStat locally with `docker-compose` by cloning this repository and running
 
-```sh
+```
 make dev
 ```
 
