@@ -131,4 +131,7 @@ END;
 $BODY$
 LANGUAGE plpgsql STRICT VOLATILE SECURITY DEFINER;
 
+
+SELECT mergestat.set_user_role('mergestat_admin', 'ADMIN');
+
 COMMIT;
