@@ -68,7 +68,7 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job
 
 		if workflowsPage, resp, err = getWorkflows(ctx, w.githubClient, owner, repo, opt); err != nil {
 			//w.logger.Warn().AnErr("Error", err).Msg("error occurred")
-			if resp == nil || resp.NextPage == 0 {
+			if resp == nil {
 				break
 			}
 
