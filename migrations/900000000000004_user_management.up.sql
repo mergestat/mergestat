@@ -56,17 +56,22 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT ALL PRIVILEGES ON SEQUENCES T
 -- Adapted from https://www.folkstalk.com/2022/09/postgres-list-users-and-roles-with-code-examples.html
 CREATE OR REPLACE VIEW mergestat.pg_users AS (
     SELECT
-        r.rolname, r.rolsuper, r.rolinherit,
-        r.rolcreaterole, r.rolcreatedb, r.rolcanlogin,
-        r.rolconnlimit, r.rolvaliduntil,
-        ARRAY(SELECT b.rolname
-                FROM pg_catalog.pg_auth_members m
-                JOIN pg_catalog.pg_roles b ON (m.roleid = b.oid)
-                WHERE m.member = r.oid) as memberof
-        , r.rolreplication
-        , r.rolbypassrls
-    FROM pg_catalog.pg_roles r
-    WHERE r.rolname !~ '^pg_' AND rolcanlogin
+        pg_catalog.pg_roles.rolname,
+        pg_catalog.pg_roles.rolsuper,
+        pg_catalog.pg_roles.rolinherit,
+        pg_catalog.pg_roles.rolcreaterole,
+        pg_catalog.pg_roles.rolcreatedb,
+        pg_catalog.pg_roles.rolcanlogin,
+        pg_catalog.pg_roles.rolconnlimit,
+        pg_catalog.pg_roles.rolvaliduntil,
+        ARRAY(SELECT pg_catalog.pg_roles.rolname
+            FROM pg_catalog.pg_auth_members
+            INNER JOIN pg_catalog.pg_roles ON (pg_catalog.pg_auth_members.roleid = pg_catalog.pg_roles.oid)
+            WHERE pg_catalog.pg_auth_members.member = pg_catalog.pg_roles.oid) as memberof,
+        pg_catalog.pg_roles.rolreplication,
+        pg_catalog.pg_roles.rolbypassrls
+    FROM pg_catalog.pg_roles
+    WHERE pg_catalog.pg_roles.rolname !~ '^pg_' AND rolcanlogin
     ORDER BY 1
 );
 
