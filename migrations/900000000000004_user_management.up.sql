@@ -52,12 +52,22 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT ALL PRIVILEGES ON TABLES TO m
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA mergestat TO mergestat_role_admin WITH GRANT OPTION;
 ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT ALL PRIVILEGES ON SEQUENCES TO mergestat_role_admin WITH GRANT OPTION;
 
--- View to list all users in the database
+-- View to list all users in the database and their roles
+-- Adapted from https://www.folkstalk.com/2022/09/postgres-list-users-and-roles-with-code-examples.html
 CREATE OR REPLACE VIEW mergestat.pg_users AS (
     SELECT
-        usesysid AS id,
-        usename AS username
-    FROM pg_catalog.pg_user
+        r.rolname, r.rolsuper, r.rolinherit,
+        r.rolcreaterole, r.rolcreatedb, r.rolcanlogin,
+        r.rolconnlimit, r.rolvaliduntil,
+        ARRAY(SELECT b.rolname
+                FROM pg_catalog.pg_auth_members m
+                JOIN pg_catalog.pg_roles b ON (m.roleid = b.oid)
+                WHERE m.member = r.oid) as memberof
+        , r.rolreplication
+        , r.rolbypassrls
+    FROM pg_catalog.pg_roles r
+    WHERE r.rolname !~ '^pg_' AND rolcanlogin
+    ORDER BY 1
 );
 
 -- Function to create new users, adopted from https://stackoverflow.com/questions/47934646/postgresql-creating-users-with-a-function
