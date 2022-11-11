@@ -19,7 +19,7 @@ See our [**documentation**](https://docs.mergestat.com/) for additional context.
 Try MergeStat locally with `docker-compose` by cloning this repository and running
 
 ```sh
-docker-compose up
+make dev
 ```
 
 Now if you visit `http://localhost:3300/` you should be able to access our management UI where you can begin adding repositories and syncing data.
@@ -44,9 +44,5 @@ You can also visit `http://localhost:3000/` to access a local [Grafana](https://
 If you'd like to "start from scratch" (i.e. reset the DB and start with a fresh deployment), run the following:
 
 ```
-docker-compose down
-```
-
-```
-docker volume rm mergestat_db_data
+make docker-clean
 ```
