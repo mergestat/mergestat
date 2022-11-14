@@ -64,12 +64,12 @@ CREATE OR REPLACE VIEW mergestat.pg_users AS (
         pg_catalog.pg_roles.rolcanlogin,
         pg_catalog.pg_roles.rolconnlimit,
         pg_catalog.pg_roles.rolvaliduntil,
+        pg_catalog.pg_roles.rolreplication,
+        pg_catalog.pg_roles.rolbypassrls,
         ARRAY(SELECT pg_catalog.pg_roles.rolname
             FROM pg_catalog.pg_auth_members
             INNER JOIN pg_catalog.pg_roles ON (pg_catalog.pg_auth_members.roleid = pg_catalog.pg_roles.oid)
-            WHERE pg_catalog.pg_auth_members.member = pg_catalog.pg_roles.oid) as memberof,
-        pg_catalog.pg_roles.rolreplication,
-        pg_catalog.pg_roles.rolbypassrls
+            WHERE pg_catalog.pg_auth_members.member = pg_catalog.pg_roles.oid) AS memberof
     FROM pg_catalog.pg_roles
     WHERE pg_catalog.pg_roles.rolname !~ '^pg_' AND rolcanlogin
     ORDER BY 1
