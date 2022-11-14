@@ -71,7 +71,7 @@ CREATE OR REPLACE VIEW mergestat.pg_users AS (
             JOIN pg_catalog.pg_roles b ON (m.roleid = b.oid)
             WHERE m.member = r.oid) AS memberof
     FROM pg_catalog.pg_roles r
-    WHERE r.rolname !~ '^pg_'
+    WHERE r.rolname !~ '^pg_' AND r.rolcanlogin
     ORDER BY 1
 );
 -- noqa: enable=L011,L031,L051
