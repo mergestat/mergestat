@@ -35,7 +35,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT SELECT ON TABLES TO mergestat
 GRANT USAGE ON SCHEMA public TO mergestat_role_user;
 GRANT USAGE ON SCHEMA mergestat TO mergestat_role_user;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO mergestat_role_user;
-GRANT INSERT ON TABLE public.repos TO mergestat_role_user;
+GRANT INSERT, UPDATE, DELETE ON TABLE public.repos TO mergestat_role_user;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA mergestat TO mergestat_role_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO mergestat_role_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO mergestat_role_user;
