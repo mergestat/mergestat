@@ -118,7 +118,7 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		// first detect if a file is binary or not
 		fullPath := filepath.Join(tmpPath, o.Path)
 		if f, err := os.Open(fullPath); err != nil {
-			w.logger.Err(err).Msgf("error opening file in repo: %s, %v", fullPath, err)
+			w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Msgf("error opening file in repo: %s, %v", fullPath, err)
 			continue
 		} else {
 			defer f.Close()
@@ -127,7 +127,7 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 			buffer := make([]byte, 8000)
 			var bytesRead int
 			if bytesRead, err = f.Read(buffer); err != nil && !errors.Is(err, io.EOF) {
-				w.logger.Err(err).Msgf("error reading file in repo: %s, %v", fullPath, err)
+				w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Msgf("error reading file in repo: %s, %v", fullPath, err)
 			}
 
 			// See here: https://github.com/go-enry/go-enry/blob/v2.8.2/utils.go#L80 for the implementation of IsBinary
@@ -140,13 +140,14 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 
 		// adjustedBufferSize is larger than the default to support longer lines without error
 		// TODO(patrickdevivo) maybe eventually we can make this configurable? Either via an EnVar or a DB setting
-		adjustedBufferSize := bufio.MaxScanTokenSize * 10
+		adjustedBufferSize := bufio.MaxScanTokenSize * 30
 		res, err := blame.Exec(ctx, tmpPath, o.Path, blame.WithScannerBuffer(make([]byte, adjustedBufferSize), adjustedBufferSize))
 		if err != nil {
+			l := w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Str("filePath", o.Path)
 			if exitErr, ok := err.(*exec.ExitError); ok {
-				w.logger.Err(err).Str("repoPath", tmpPath).Str("filePath", o.Path).Msgf("error blaming file in repo: %s, %v: %s", tmpPath, err, exitErr.Stderr)
+				l.Msgf("error blaming file: %s in repo: %s, %v: %s", o.Path, tmpPath, err, exitErr.Stderr)
 			} else {
-				w.logger.Err(err).Msgf("error blaming file: %s in repo: %s, %v", o.Path, tmpPath, err)
+				l.Msgf("error blaming file: %s in repo: %s, %v", o.Path, tmpPath, err)
 			}
 			continue
 		}
