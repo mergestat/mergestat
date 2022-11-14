@@ -38,7 +38,7 @@ fix_even_unparsable = False
 # This limit skips files over a certain character length
 # and warns the user what has happened.
 # Set this to 0 to disable.
-large_file_skip_byte_limit = 20000
+large_file_skip_byte_limit = 30000
 
 [sqlfluff:indentation]
 # See https://docs.sqlfluff.com/en/stable/indentation.html

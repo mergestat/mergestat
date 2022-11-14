@@ -54,26 +54,27 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT ALL PRIVILEGES ON SEQUENCES T
 
 -- View to list all users in the database and their roles
 -- Adapted from https://www.folkstalk.com/2022/09/postgres-list-users-and-roles-with-code-examples.html
+-- noqa: disable=L011,L031,L051
 CREATE OR REPLACE VIEW mergestat.pg_users AS (
     SELECT
-        pg_catalog.pg_roles.rolname,
-        pg_catalog.pg_roles.rolsuper,
-        pg_catalog.pg_roles.rolinherit,
-        pg_catalog.pg_roles.rolcreaterole,
-        pg_catalog.pg_roles.rolcreatedb,
-        pg_catalog.pg_roles.rolcanlogin,
-        pg_catalog.pg_roles.rolconnlimit,
-        pg_catalog.pg_roles.rolvaliduntil,
-        pg_catalog.pg_roles.rolreplication,
-        pg_catalog.pg_roles.rolbypassrls,
-        ARRAY(SELECT pg_catalog.pg_roles.rolname
-            FROM pg_catalog.pg_auth_members
-            INNER JOIN pg_catalog.pg_roles ON (pg_catalog.pg_auth_members.roleid = pg_catalog.pg_roles.oid)
-            WHERE pg_catalog.pg_auth_members.member = pg_catalog.pg_roles.oid) AS memberof
-    FROM pg_catalog.pg_roles
-    WHERE pg_catalog.pg_roles.rolname !~ '^pg_' AND rolcanlogin
+        r.rolname,
+        r.rolsuper,
+        r.rolinherit,
+        r.rolcreaterole,
+        r.rolcreatedb,
+        r.rolcanlogin,
+        r.rolconnlimit,
+        r.rolvaliduntil,
+        r.rolreplication,
+        r.rolbypassrls,
+        ARRAY(SELECT b.rolname FROM pg_catalog.pg_auth_members m
+            JOIN pg_catalog.pg_roles b ON (m.roleid = b.oid)
+            WHERE m.member = r.oid) AS memberof
+    FROM pg_catalog.pg_roles r
+    WHERE r.rolname !~ '^pg_'
     ORDER BY 1
 );
+-- noqa: enable=L011,L031,L051
 
 -- Function to create new users, adopted from https://stackoverflow.com/questions/47934646/postgresql-creating-users-with-a-function
 DROP FUNCTION IF EXISTS mergestat.add_user(NAME, TEXT);
