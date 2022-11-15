@@ -86,10 +86,12 @@ DECLARE
 BEGIN
     -- Create the user with the given password
     EXECUTE FORMAT('CREATE USER %I WITH PASSWORD %L', username, password);
+    EXECUTE FORMAT('GRANT %I TO mergestat_admin', username);
+    EXECUTE FORMAT('GRANT %I TO readaccess', username);
     RETURN 1;
 END;
 $BODY$
-LANGUAGE plpgsql STRICT VOLATILE SECURITY DEFINER;
+LANGUAGE plpgsql STRICT VOLATILE;
 
 -- Function to set the role of a user
 DROP FUNCTION IF EXISTS mergestat.set_user_role(NAME, TEXT);
@@ -106,6 +108,7 @@ BEGIN
     CASE
         WHEN role = 'ADMIN' THEN
             EXECUTE FORMAT('GRANT mergestat_role_admin TO %I', username);
+            EXECUTE FORMAT('ALTER USER %I WITH CREATEROLE', username);
         WHEN role = 'USER' THEN
             EXECUTE FORMAT('GRANT mergestat_role_user TO %I', username);
         WHEN role = 'READ_ONLY' THEN
@@ -116,7 +119,7 @@ BEGIN
     RETURN 1;
 END;
 $BODY$
-LANGUAGE plpgsql STRICT VOLATILE SECURITY DEFINER;
+LANGUAGE plpgsql STRICT VOLATILE;
 
 -- Function to drop users
 DROP FUNCTION IF EXISTS mergestat.remove_user(NAME);
@@ -131,7 +134,7 @@ BEGIN
     RETURN 1;
 END;
 $BODY$
-LANGUAGE plpgsql STRICT VOLATILE SECURITY DEFINER;
+LANGUAGE plpgsql STRICT VOLATILE;
 
 -- Function to change user passwords
 DROP FUNCTION IF EXISTS mergestat.update_user_password(NAME, TEXT);
@@ -145,7 +148,7 @@ BEGIN
     RETURN 1;
 END;
 $BODY$
-LANGUAGE plpgsql STRICT VOLATILE SECURITY DEFINER;
+LANGUAGE plpgsql STRICT VOLATILE;
 
 
 SELECT mergestat.set_user_role('mergestat_admin', 'ADMIN');
