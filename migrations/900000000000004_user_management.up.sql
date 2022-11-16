@@ -55,7 +55,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA mergestat GRANT ALL PRIVILEGES ON SEQUENCES T
 -- View to list all users in the database and their roles
 -- Adapted from https://www.folkstalk.com/2022/09/postgres-list-users-and-roles-with-code-examples.html
 -- noqa: disable=L011,L031,L051
-CREATE OR REPLACE VIEW mergestat.pg_users AS (
+CREATE OR REPLACE VIEW mergestat.user_mgmt_pg_users AS (
     SELECT
         r.rolname,
         r.rolsuper,
@@ -79,7 +79,7 @@ CREATE OR REPLACE VIEW mergestat.pg_users AS (
 -- Function to create new users, adopted from https://stackoverflow.com/questions/47934646/postgresql-creating-users-with-a-function
 DROP FUNCTION IF EXISTS mergestat.add_user(NAME, TEXT);
 
-CREATE OR REPLACE FUNCTION mergestat.add_user(username NAME, password TEXT)
+CREATE OR REPLACE FUNCTION mergestat.user_mgmt_add_user(username NAME, password TEXT, role TEXT)
 RETURNS SMALLINT AS
 $BODY$
 DECLARE
@@ -88,15 +88,16 @@ BEGIN
     EXECUTE FORMAT('CREATE USER %I WITH PASSWORD %L', username, password);
     EXECUTE FORMAT('GRANT %I TO mergestat_admin', username);
     EXECUTE FORMAT('GRANT %I TO readaccess', username);
+    EXECUTE FORMAT('SELECT mergestat.user_mgmt_set_user_role(%L, %L)', username, role);
     RETURN 1;
 END;
 $BODY$
 LANGUAGE plpgsql STRICT VOLATILE;
 
 -- Function to set the role of a user
-DROP FUNCTION IF EXISTS mergestat.set_user_role(NAME, TEXT);
+DROP FUNCTION IF EXISTS mergestat.user_mgmt_set_user_role(NAME, TEXT);
 
-CREATE OR REPLACE FUNCTION mergestat.set_user_role(username NAME, role TEXT)
+CREATE OR REPLACE FUNCTION mergestat.user_mgmt_set_user_role(username NAME, role TEXT)
 RETURNS SMALLINT AS
 $BODY$
 DECLARE
@@ -122,9 +123,9 @@ $BODY$
 LANGUAGE plpgsql STRICT VOLATILE;
 
 -- Function to drop users
-DROP FUNCTION IF EXISTS mergestat.remove_user(NAME);
+DROP FUNCTION IF EXISTS mergestat.user_mgmt_remove_user(NAME);
 
-CREATE OR REPLACE FUNCTION mergestat.remove_user(username NAME)
+CREATE OR REPLACE FUNCTION mergestat.user_mgmt_remove_user(username NAME)
 RETURNS SMALLINT AS
 $BODY$
 DECLARE
@@ -137,9 +138,9 @@ $BODY$
 LANGUAGE plpgsql STRICT VOLATILE;
 
 -- Function to change user passwords
-DROP FUNCTION IF EXISTS mergestat.update_user_password(NAME, TEXT);
+DROP FUNCTION IF EXISTS mergestat.user_mgmt_update_user_password(NAME, TEXT);
 
-CREATE OR REPLACE FUNCTION mergestat.update_user_password(username NAME, password TEXT)
+CREATE OR REPLACE FUNCTION mergestat.user_mgmt_update_user_password(username NAME, password TEXT)
 RETURNS SMALLINT AS
 $BODY$
 DECLARE
@@ -151,6 +152,6 @@ $BODY$
 LANGUAGE plpgsql STRICT VOLATILE;
 
 
-SELECT mergestat.set_user_role('mergestat_admin', 'ADMIN');
+SELECT mergestat.user_mgmt_set_user_role('mergestat_admin', 'ADMIN');
 
 COMMIT;
