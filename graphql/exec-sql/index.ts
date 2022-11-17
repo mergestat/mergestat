@@ -35,9 +35,9 @@ module.exports = makeExtendSchemaPlugin({
     Query: {
       async execSQL(_parent: any, args: { input: ExecSQLInput }, context: { pgClient: Client }, _info: any) {
         const { input } = args
-        // first set the pg session to use a read-only role, if readonly is true
+        // first set the pg session to be read only, if disableReadOnly is false
         if (!input.disableReadOnly) {
-          await context.pgClient.query("SET ROLE readaccess;")
+          await context.pgClient.query("SET TRANSACTION READ ONLY;")
         }
 
         // then create a cursor https://node-postgres.com/api/cursor for the user supplied query
@@ -72,12 +72,6 @@ module.exports = makeExtendSchemaPlugin({
             })
           })
         })()
-
-        // reset the role to the one established in the initial connection
-        // https://www.postgresql.org/docs/current/sql-set-role.html
-        if (!input.disableReadOnly) {
-          await context.pgClient.query("RESET ROLE;")
-        }
 
         return {
           rows: rowsToReturn,
