@@ -19,15 +19,17 @@ const MAX_ROWS = 500;
 module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
     typeDefs: (0, graphile_utils_1.gql) `
     extend type Query {
-      execSQL(query: String!, variables: [String!], rowLimit: Int): JSON
+      execSQL(query: String!, variables: [String!], rowLimit: Int, readonly: Boolean): JSON
     }
   `,
     resolvers: {
         Query: {
             execSQL(_parent, args, context, _info) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    // first set the pg session to use a read-only role
-                    yield context.pgClient.query("SET ROLE readaccess;");
+                    // first set the pg session to use a read-only role, if readonly is true
+                    if (!args.disableReadOnly) {
+                        yield context.pgClient.query("SET ROLE readaccess;");
+                    }
                     // then create a cursor https://node-postgres.com/api/cursor for the user supplied query
                     const cursor = context.pgClient.query(new pg_cursor_1.default(args.query, args.variables));
                     // use the default row limit if none is provided
