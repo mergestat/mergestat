@@ -18,33 +18,75 @@ const DEFAULT_ROWS = 100;
 const MAX_ROWS = 500;
 module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
     typeDefs: (0, graphile_utils_1.gql) `
+    input ExecSQLInput {
+      query: String
+      variables: [String!]
+      rowLimit: Int
+      disableReadOnly: Boolean
+    }
+
+    type ExecSQLResult {
+      rowCount: Int
+      rows: [JSON!]
+      columns: [JSON!]
+    }
+
     extend type Query {
-      execSQL(query: String!, variables: [String!], rowLimit: Int, readonly: Boolean): JSON
+      execSQL(input: ExecSQLInput!): ExecSQLResult!
     }
   `,
     resolvers: {
         Query: {
             execSQL(_parent, args, context, _info) {
                 return __awaiter(this, void 0, void 0, function* () {
+                    const { input } = args;
                     // first set the pg session to use a read-only role, if readonly is true
-                    if (!args.disableReadOnly) {
+                    if (!input.disableReadOnly) {
                         yield context.pgClient.query("SET ROLE readaccess;");
                     }
                     // then create a cursor https://node-postgres.com/api/cursor for the user supplied query
-                    const cursor = context.pgClient.query(new pg_cursor_1.default(args.query, args.variables));
+                    const cursor = context.pgClient.query(new pg_cursor_1.default(input.query, input.variables, { rowMode: 'array' }));
                     // use the default row limit if none is provided
                     // cap the number of rows at MAX_ROWS
-                    let rowLimit = args.rowLimit || DEFAULT_ROWS;
+                    let rowLimit = input.rowLimit || DEFAULT_ROWS;
                     if (rowLimit > MAX_ROWS) {
                         rowLimit = MAX_ROWS;
                     }
+                    let rowsToReturn = [];
+                    let queryResult;
                     // execute query, close cursor, and store results
-                    const results = yield cursor.read(rowLimit);
-                    cursor.close();
+                    // done in this way because it seems like the only way we can access the column names
+                    // (via the QuerResult object) is using the callback approach
+                    yield (() => {
+                        return new Promise((resolve, reject) => {
+                            cursor.read(rowLimit, (err, rows, result) => {
+                                if (err) {
+                                    reject(err);
+                                }
+                                rowsToReturn = rows;
+                                queryResult = result;
+                                cursor.close((err) => {
+                                    if (err) {
+                                        reject(err);
+                                    }
+                                    resolve();
+                                });
+                            });
+                        });
+                    })();
                     // reset the role to the one established in the initial connection
                     // https://www.postgresql.org/docs/current/sql-set-role.html
-                    yield context.pgClient.query("RESET ROLE;");
-                    return results;
+                    if (!input.disableReadOnly) {
+                        yield context.pgClient.query("RESET ROLE;");
+                    }
+                    return {
+                        rows: rowsToReturn,
+                        columns: queryResult.fields.map((f) => ({
+                            name: f.name,
+                            format: f.format
+                        })),
+                        rowCount: queryResult.rowCount,
+                    };
                 });
             },
         },
