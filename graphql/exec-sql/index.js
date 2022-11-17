@@ -40,9 +40,9 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
             execSQL(_parent, args, context, _info) {
                 return __awaiter(this, void 0, void 0, function* () {
                     const { input } = args;
-                    // first set the pg session to use a read-only role, if readonly is true
+                    // first set the pg session to be read only, if disableReadOnly is false
                     if (!input.disableReadOnly) {
-                        yield context.pgClient.query("SET ROLE readaccess;");
+                        yield context.pgClient.query("SET TRANSACTION READ ONLY;");
                     }
                     // then create a cursor https://node-postgres.com/api/cursor for the user supplied query
                     const cursor = context.pgClient.query(new pg_cursor_1.default(input.query, input.variables, { rowMode: 'array' }));
@@ -74,11 +74,6 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                             });
                         });
                     })();
-                    // reset the role to the one established in the initial connection
-                    // https://www.postgresql.org/docs/current/sql-set-role.html
-                    if (!input.disableReadOnly) {
-                        yield context.pgClient.query("RESET ROLE;");
-                    }
                     return {
                         rows: rowsToReturn,
                         columns: queryResult.fields.map((f) => ({
