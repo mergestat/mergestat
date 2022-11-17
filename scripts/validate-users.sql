@@ -63,7 +63,7 @@ SELECT mergestat.user_mgmt_set_user_role('username', 'ADMIN');
 -- OK reset role
 RESET ROLE;
 
--- ERR try to set current user as an admin
+-- OK try to set current user as an admin
 SELECT mergestat.user_mgmt_set_user_role('username', 'ADMIN');
 
 -- OK set role to back to the user
