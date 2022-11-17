@@ -356,11 +356,11 @@ func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPag
 		workflowRunRepositoryUrl := getRepositoryURL(workflowRun.Repository)
 		workflowRunHeadRepoUrl := getRepositoryURL(workflowRun.HeadRepository)
 
-		if jsonbPullRequest, err = getJSONBfromInterface(workflowRun.PullRequests); err != nil {
+		if jsonbPullRequest, err = getJSONBFromInterface(workflowRun.PullRequests); err != nil {
 			return err
 		}
 
-		if jsonbHeadCommit, err = getJSONBfromInterface(workflowRun.HeadCommit); err != nil {
+		if jsonbHeadCommit, err = getJSONBFromInterface(workflowRun.HeadCommit); err != nil {
 			return err
 		}
 
@@ -421,11 +421,11 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 		}
 	}()
 
-	if jsonbSteps, err = getJSONBfromInterface(&workflowJob.Steps); err != nil {
+	if jsonbSteps, err = getJSONBFromInterface(&workflowJob.Steps); err != nil {
 		return err
 	}
 
-	if jsonbLabels, err = getJSONBfromInterface(&workflowJob.Labels); err != nil {
+	if jsonbLabels, err = getJSONBFromInterface(&workflowJob.Labels); err != nil {
 		return err
 	}
 
@@ -474,7 +474,7 @@ var getWorkflowJobLog = func(ctx context.Context, githubClient *github.Client, o
 	return githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, workflowJobID, true)
 }
 
-var getJSONBfromInterface = func(i interface{}) (pgtype.JSONB, error) {
+var getJSONBFromInterface = func(i interface{}) (pgtype.JSONB, error) {
 	var jsonb pgtype.JSONB
 	var err error
 	if jsonb, err = helper.InterfaceToSqlJSONB(i); err != nil {

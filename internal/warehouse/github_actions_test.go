@@ -199,8 +199,8 @@ func Test_warehouse_WorkflowRuns(t *testing.T) {
 	}(getInputBatches)
 
 	defer func(f func(i interface{}) (pgtype.JSONB, error)) {
-		getJSONBfromInterface = f
-	}(getJSONBfromInterface)
+		getJSONBFromInterface = f
+	}(getJSONBFromInterface)
 
 	defer func(f func(i *int) *int32) {
 		getInt32FromInt = f
@@ -271,7 +271,7 @@ func Test_warehouse_WorkflowRuns(t *testing.T) {
 				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputJobs)).Return(int64(0), nil).MaxTimes(4))
 
 			// mocking values mutations
-			getJSONBfromInterface = func(interface{}) (pgtype.JSONB, error) {
+			getJSONBFromInterface = func(interface{}) (pgtype.JSONB, error) {
 				return jsonbValue, nil
 			}
 
@@ -375,8 +375,8 @@ func Test_warehouse_WorkflowJobs(t *testing.T) {
 	)
 
 	defer func(f func(i interface{}) (pgtype.JSONB, error)) {
-		getJSONBfromInterface = f
-	}(getJSONBfromInterface)
+		getJSONBFromInterface = f
+	}(getJSONBFromInterface)
 
 	c := github.NewClient(mockedHTTPClient)
 
@@ -413,7 +413,7 @@ func Test_warehouse_WorkflowJobs(t *testing.T) {
 			log := mockLog.String()
 
 			// mocking values mutations
-			getJSONBfromInterface = func(interface{}) (pgtype.JSONB, error) {
+			getJSONBFromInterface = func(interface{}) (pgtype.JSONB, error) {
 				return jsonbValue, nil
 			}
 
