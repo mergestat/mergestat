@@ -268,20 +268,6 @@ func (mr *MockQuerierMockRecorder) SetSyncJobStatus(ctx, arg interface{}) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetSyncJobStatus", reflect.TypeOf((*MockQuerier)(nil).SetSyncJobStatus), ctx, arg)
 }
 
-// UpserWorkflowRuns mocks base method.
-func (m *MockQuerier) UpserWorkflowRuns(ctx context.Context, arg db.UpserWorkflowRunsParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpserWorkflowRuns", ctx, arg)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpserWorkflowRuns indicates an expected call of UpserWorkflowRuns.
-func (mr *MockQuerierMockRecorder) UpserWorkflowRuns(ctx, arg interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpserWorkflowRuns", reflect.TypeOf((*MockQuerier)(nil).UpserWorkflowRuns), ctx, arg)
-}
-
 // UpsertRepo mocks base method.
 func (m *MockQuerier) UpsertRepo(ctx context.Context, arg db.UpsertRepoParams) error {
 	m.ctrl.T.Helper()
@@ -308,6 +294,20 @@ func (m *MockQuerier) UpsertWorkflowRunJobs(ctx context.Context, arg db.UpsertWo
 func (mr *MockQuerierMockRecorder) UpsertWorkflowRunJobs(ctx, arg interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertWorkflowRunJobs", reflect.TypeOf((*MockQuerier)(nil).UpsertWorkflowRunJobs), ctx, arg)
+}
+
+// UpsertWorkflowRuns mocks base method.
+func (m *MockQuerier) UpsertWorkflowRuns(ctx context.Context, arg db.UpsertWorkflowRunsParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertWorkflowRuns", ctx, arg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertWorkflowRuns indicates an expected call of UpsertWorkflowRuns.
+func (mr *MockQuerierMockRecorder) UpsertWorkflowRuns(ctx, arg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertWorkflowRuns", reflect.TypeOf((*MockQuerier)(nil).UpsertWorkflowRuns), ctx, arg)
 }
 
 // UpsertWorkflowsInPublic mocks base method.
