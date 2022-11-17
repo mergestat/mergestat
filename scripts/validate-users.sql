@@ -31,7 +31,7 @@ UPDATE "public"."repos" SET "tags" = '["test"]' WHERE "repo" = 'https://github.c
 SELECT * FROM repos;
 
 -- OK remove the repo
-DELETE FROM "public"."repos" WHERE "repo"='https://github.com/mergestat/mergestat';
+DELETE FROM "public"."repos" WHERE "repo" = 'https://github.com/mergestat/mergestat';
 
 -- ERR try to create a new user, as a user
 SELECT mergestat.user_mgmt_add_user('username10', 'pass', 'USER');
