@@ -30,9 +30,9 @@ type Querier interface {
 	MarkSyncsAsTimedOut(ctx context.Context) ([]int64, error)
 	SetLatestKeepAliveForJob(ctx context.Context, id int64) error
 	SetSyncJobStatus(ctx context.Context, arg SetSyncJobStatusParams) error
-	UpserWorkflowRuns(ctx context.Context, arg UpserWorkflowRunsParams) error
 	UpsertRepo(ctx context.Context, arg UpsertRepoParams) error
 	UpsertWorkflowRunJobs(ctx context.Context, arg UpsertWorkflowRunJobsParams) error
+	UpsertWorkflowRuns(ctx context.Context, arg UpsertWorkflowRunsParams) error
 	UpsertWorkflowsInPublic(ctx context.Context, arg UpsertWorkflowsInPublicParams) error
 }
 

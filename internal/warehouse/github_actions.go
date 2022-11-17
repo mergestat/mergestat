@@ -118,7 +118,6 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	}
 
 	for _, workflow := range workflowsPage {
-
 		if opt.Page == 0 {
 			operation := fmt.Sprintf("to get all GitHub Actions runs for workflow %s", *workflow.Name)
 
@@ -295,7 +294,6 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 }
 
 func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*github.Workflow, repoID uuid.UUID) error {
-
 	var tx pgx.Tx
 	var err error
 
@@ -364,7 +362,7 @@ func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPag
 			return err
 		}
 
-		if err := w.db.WithTx(tx).UpserWorkflowRuns(ctx, db.UpserWorkflowRunsParams{RepoID: repoID,
+		if err := w.db.WithTx(tx).UpsertWorkflowRuns(ctx, db.UpsertWorkflowRunsParams{RepoID: repoID,
 			ID:                *workflowRun.ID,
 			Workflowrunnodeid: helper.StringToSqlNullString(workflowRun.NodeID),
 			Name:              helper.StringToSqlNullString(workflowRun.Name),
@@ -403,7 +401,6 @@ func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPag
 }
 
 func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *github.WorkflowJob, log string, repoID uuid.UUID) error {
-
 	var tx pgx.Tx
 	var err error
 	var jsonbSteps pgtype.JSONB

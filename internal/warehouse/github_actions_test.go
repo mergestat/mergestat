@@ -39,8 +39,8 @@ func Test_warehouse_handleWorkflows(t *testing.T) {
 			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				mock.WriteError(
 					w,
-					http.StatusInternalServerError,
-					"github went belly up or something",
+					http.StatusNotFound,
+					"Not Found",
 				)
 			}),
 		),
@@ -187,8 +187,8 @@ func Test_warehouse_WorkflowRuns(t *testing.T) {
 			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				mock.WriteError(
 					w,
-					http.StatusInternalServerError,
-					"github went belly up or something",
+					http.StatusNotFound,
+					"Not Found",
 				)
 			}),
 		),
@@ -286,7 +286,7 @@ func Test_warehouse_WorkflowRuns(t *testing.T) {
 			gomock.InOrder(
 				mockedPool.EXPECT().BeginTx(ctx, pgx.TxOptions{}).Return(mockedTx, nil),
 				mockedDb.EXPECT().WithTx(mockedTx).Return(mockedDb),
-				mockedDb.EXPECT().UpserWorkflowRuns(ctx, db.UpserWorkflowRunsParams{
+				mockedDb.EXPECT().UpsertWorkflowRuns(ctx, db.UpsertWorkflowRunsParams{
 					RepoID:            repoID,
 					ID:                *testRuns.ID,
 					Workflowrunnodeid: helper.StringToSqlNullString(testRuns.NodeID),

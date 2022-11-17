@@ -17,6 +17,7 @@ require (
 	github.com/go-enry/go-enry/v2 v2.8.3
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/golang-migrate/migrate/v4 v4.15.2
+	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgconn v1.13.0
 	github.com/jmoiron/sqlx v1.3.5
@@ -30,12 +31,10 @@ require (
 )
 
 require (
-	github.com/golang/mock v1.6.0 // indirect
 	github.com/google/go-github/v41 v41.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
-	github.com/jackc/pgx/v5 v5.0.4 // indirect
-	github.com/jackc/puddle/v2 v2.0.0 // indirect
+	github.com/kr/pretty v0.3.0 // indirect
 )
 
 require (
@@ -50,7 +49,6 @@ require (
 	github.com/clbanning/mxj/v2 v2.5.6 // indirect
 	github.com/cloudflare/circl v1.2.0 // indirect
 	github.com/containerd/containerd v1.6.8 // indirect
-	github.com/driftprogramming/pgxpoolmock v1.1.0
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-enry/go-oniguruma v1.2.1 // indirect
@@ -78,7 +76,6 @@ require (
 	github.com/migueleliasweb/go-github-mock v0.0.13
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/opencontainers/image-spec v1.1.0-rc2 // indirect
-	github.com/pashagolub/pgxmock/v2 v2.2.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/common v0.37.0 // indirect
