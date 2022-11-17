@@ -130,7 +130,6 @@ RETURNS SMALLINT AS
 $BODY$
 DECLARE
 BEGIN
-    EXECUTE FORMAT('DROP OWNED BY %I', username); -- first drop all objects owned by the user
     EXECUTE FORMAT('DROP USER IF EXISTS %I', username);
     RETURN 1;
 END;

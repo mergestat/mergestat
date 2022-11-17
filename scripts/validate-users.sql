@@ -76,7 +76,4 @@ SELECT mergestat.user_mgmt_add_user('username20', 'pass', 'USER');
 SELECT * FROM mergestat.user_mgmt_pg_users;
 
 -- OK Remove a user
--- TODO(patrickdevivo) this is failing, even for admin users
--- See here: https://stackoverflow.com/questions/56310870/permission-denied-to-drop-objects
--- We might need a different approach when removing a user - maybe ADMINs won't be allowed, but super users can?
 SELECT mergestat.user_mgmt_remove_user('username20');
