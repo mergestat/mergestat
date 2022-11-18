@@ -457,18 +457,18 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 	return tx.Commit(ctx)
 }
 
-var getWorkflows = func(ctx context.Context, githubClient *github.Client, owner, repo string, opt *github.ListWorkflowRunsOptions) (*github.Workflows, *github.Response, error) {
+func getWorkflows(ctx context.Context, githubClient *github.Client, owner, repo string, opt *github.ListWorkflowRunsOptions) (*github.Workflows, *github.Response, error) {
 	return githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions)
 }
 
-var getWorkflowsRuns = func(ctx context.Context, githubClient *github.Client, owner, repo string, workflowID int64, opt *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error) {
+func getWorkflowsRuns(ctx context.Context, githubClient *github.Client, owner, repo string, workflowID int64, opt *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error) {
 	return githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, workflowID, opt)
 }
 
-var getWorkflowJobs = func(ctx context.Context, githubClient *github.Client, owner, repo string, workflowRunID int64, opt *github.ListWorkflowJobsOptions) (*github.Jobs, *github.Response, error) {
+func getWorkflowJobs(ctx context.Context, githubClient *github.Client, owner, repo string, workflowRunID int64, opt *github.ListWorkflowJobsOptions) (*github.Jobs, *github.Response, error) {
 	return githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, workflowRunID, opt)
 }
 
-var getWorkflowJobLog = func(ctx context.Context, githubClient *github.Client, owner, repo string, workflowJobID int64) (*url.URL, *github.Response, error) {
+func getWorkflowJobLog(ctx context.Context, githubClient *github.Client, owner, repo string, workflowJobID int64) (*url.URL, *github.Response, error) {
 	return githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, workflowJobID, true)
 }
