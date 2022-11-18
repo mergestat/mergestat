@@ -18,7 +18,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func Test_warehouse_handleWorkflows(t *testing.T) {
+func TestWarehouseHandleWorkflows(t *testing.T) {
 	type testArgs struct {
 		description string
 		owner       string
@@ -167,7 +167,7 @@ func Test_warehouse_handleWorkflows(t *testing.T) {
 	}
 }
 
-func Test_warehouse_WorkflowRuns(t *testing.T) {
+func TestWarehouseWorkflowRuns(t *testing.T) {
 	type testArgs struct {
 		description string
 		owner       string
@@ -324,7 +324,7 @@ func Test_warehouse_WorkflowRuns(t *testing.T) {
 	}
 }
 
-func Test_warehouse_WorkflowJobs(t *testing.T) {
+func TestWarehouseWorkflowJobs(t *testing.T) {
 	type testArgs struct {
 		description string
 		owner       string
