@@ -5,6 +5,8 @@ import (
 	"net/url"
 	"os"
 	"strings"
+
+	"github.com/google/go-github/v47/github"
 )
 
 // GetRepoOwnerAndRepoName extracts the owner and repo name from a GitHub repo url
@@ -47,4 +49,27 @@ func CreateTempDir(basePath, pattern string) (string, func() error, error) {
 		}
 		return nil
 	}, nil
+}
+
+// GetInt32FromInt is a helper function created to handle mutations of a *int value
+// to *int32 value,every nil value should be ignored to return a new *int32 value
+func GetInt32FromInt(i *int) *int32 {
+	var i32 int32
+	if i == nil {
+		return new(int32)
+	}
+
+	i32 = int32(*i)
+
+	return &i32
+}
+
+// GetRepositoryURL is a helper function to get the url value of the
+// repository type ,if a repo is nil we return a new *string value instead
+func GetRepositoryURL(r *github.Repository) *string {
+	if r == nil {
+		return new(string)
+	}
+
+	return r.URL
 }

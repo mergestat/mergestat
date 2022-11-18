@@ -28,6 +28,8 @@ func GetWorkflowRunEmptyData() *github.WorkflowRun {
 	var runAttempt *int
 	var workflowID = new(int64)
 	var checkSuiteID *int64
+	var headCommit *github.HeadCommit
+	var pullRequest []*github.PullRequest
 	id := new(int64)
 
 	return &github.WorkflowRun{
@@ -47,7 +49,7 @@ func GetWorkflowRunEmptyData() *github.WorkflowRun {
 		CheckSuiteID:       checkSuiteID,
 		CheckSuiteNodeID:   checkSuiteNodeID,
 		HTMLURL:            HTMLURL,
-		PullRequests:       []*github.PullRequest{},
+		PullRequests:       pullRequest,
 		RunStartedAt:       &github.Timestamp{Time: time.Time{}},
 		JobsURL:            jobsURL,
 		LogsURL:            logsURL,
@@ -56,7 +58,7 @@ func GetWorkflowRunEmptyData() *github.WorkflowRun {
 		CancelURL:          cancelURL,
 		RerunURL:           rerunURL,
 		PreviousAttemptURL: previousAttemptURL,
-		HeadCommit:         &github.HeadCommit{},
+		HeadCommit:         headCommit,
 		WorkflowURL:        workflowURL,
 		Repository:         &github.Repository{},
 		HeadRepository:     &github.Repository{},
@@ -99,6 +101,7 @@ func GetWorkflowEmptyJob() *github.WorkflowJob {
 	var runnerGroupID *int64
 	var runnerName *string
 	var runnerGroupName *string
+	var steps []*github.TaskStep
 	id := new(int64)
 
 	return &github.WorkflowJob{ID: id,
@@ -113,7 +116,7 @@ func GetWorkflowEmptyJob() *github.WorkflowJob {
 		StartedAt:       &github.Timestamp{Time: time.Time{}},
 		CompletedAt:     &github.Timestamp{Time: time.Time{}},
 		Name:            name,
-		Steps:           []*github.TaskStep{},
+		Steps:           steps,
 		CheckRunURL:     checkRunURL,
 		Labels:          labels,
 		RunnerID:        runnedID,

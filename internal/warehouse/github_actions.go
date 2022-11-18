@@ -333,8 +333,8 @@ func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*gith
 func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPage []*github.WorkflowRun, repoID uuid.UUID) error {
 	var tx pgx.Tx
 	var err error
-	var jsonbPullRequest pgtype.JSONB
-	var jsonbHeadCommit pgtype.JSONB
+	//var jsonbPullRequest pgtype.JSONB
+	//var jsonbHeadCommit pgtype.JSONB
 
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -349,16 +349,18 @@ func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPag
 	}()
 
 	for _, workflowRun := range workflowRunPage {
-		runNumber := getInt32FromInt(workflowRun.RunNumber)
-		runAttemp := getInt32FromInt(workflowRun.RunAttempt)
-		workflowRunRepositoryUrl := getRepositoryURL(workflowRun.Repository)
-		workflowRunHeadRepoUrl := getRepositoryURL(workflowRun.HeadRepository)
+		runNumber := helper.GetInt32FromInt(workflowRun.RunNumber)
+		runAttemp := helper.GetInt32FromInt(workflowRun.RunAttempt)
+		workflowRunRepositoryUrl := helper.GetRepositoryURL(workflowRun.Repository)
+		workflowRunHeadRepoUrl := helper.GetRepositoryURL(workflowRun.HeadRepository)
 
-		if jsonbPullRequest, err = getJSONBFromInterface(workflowRun.PullRequests); err != nil {
+		jsonbPullRequest, err := helper.InterfaceToSqlJSONB(workflowRun.PullRequests)
+		if err != nil {
 			return err
 		}
 
-		if jsonbHeadCommit, err = getJSONBFromInterface(workflowRun.HeadCommit); err != nil {
+		jsonbHeadCommit, err := helper.InterfaceToSqlJSONB(workflowRun.HeadCommit)
+		if err != nil {
 			return err
 		}
 
@@ -418,11 +420,11 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 		}
 	}()
 
-	if jsonbSteps, err = getJSONBFromInterface(&workflowJob.Steps); err != nil {
+	if jsonbSteps, err = helper.InterfaceToSqlJSONB(&workflowJob.Steps); err != nil {
 		return err
 	}
 
-	if jsonbLabels, err = getJSONBFromInterface(&workflowJob.Labels); err != nil {
+	if jsonbLabels, err = helper.InterfaceToSqlJSONB(&workflowJob.Labels); err != nil {
 		return err
 	}
 
@@ -469,32 +471,4 @@ var getWorkflowJobs = func(ctx context.Context, githubClient *github.Client, own
 
 var getWorkflowJobLog = func(ctx context.Context, githubClient *github.Client, owner, repo string, workflowJobID int64) (*url.URL, *github.Response, error) {
 	return githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, workflowJobID, true)
-}
-
-var getJSONBFromInterface = func(i interface{}) (pgtype.JSONB, error) {
-	var jsonb pgtype.JSONB
-	var err error
-	if jsonb, err = helper.InterfaceToSqlJSONB(i); err != nil {
-		return jsonb, err
-	}
-	return jsonb, nil
-}
-
-var getInt32FromInt = func(i *int) *int32 {
-	var i32 int32
-	if i == nil {
-		return new(int32)
-	}
-
-	i32 = int32(*i)
-
-	return &i32
-}
-
-var getRepositoryURL = func(r *github.Repository) *string {
-	if r == nil {
-		return new(string)
-	}
-
-	return r.URL
 }

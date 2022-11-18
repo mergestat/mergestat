@@ -10,7 +10,6 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v47/github"
 	"github.com/google/uuid"
-	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/mergestat/internal/helper"
@@ -75,10 +74,11 @@ func Test_warehouse_handleWorkflows(t *testing.T) {
 	mockedTx := mocks.NewMockTx(ct)
 
 	tests := []testArgs{{
-		description: "successful workflows",
+		description: "test nil handling of workflows",
 		owner:       "mergestat",
 		repo:        "mergestat",
 		mockFuncs: func() {
+			// formatting test values to required types
 			var inputs [][]interface{}
 			var inputRuns [][]interface{}
 			var inputJobs [][]interface{}
@@ -143,7 +143,6 @@ func Test_warehouse_handleWorkflows(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.description, func(t *testing.T) {
-			test.mockFuncs()
 			testJob := db.DequeueSyncJobRow{}
 
 			//creating test warehouse
@@ -153,6 +152,8 @@ func Test_warehouse_handleWorkflows(t *testing.T) {
 				pool:         mockedPool,
 				db:           mockedDb,
 			}
+
+			test.mockFuncs()
 
 			//we discard loggin messages from the bebug console
 			testW.logger.Debug().Discard()
@@ -198,18 +199,6 @@ func Test_warehouse_WorkflowRuns(t *testing.T) {
 		getInputBatches = f
 	}(getInputBatches)
 
-	defer func(f func(i interface{}) (pgtype.JSONB, error)) {
-		getJSONBFromInterface = f
-	}(getJSONBFromInterface)
-
-	defer func(f func(i *int) *int32) {
-		getInt32FromInt = f
-	}(getInt32FromInt)
-
-	defer func(f func(r *github.Repository) *string) {
-		getRepositoryURL = f
-	}(getRepositoryURL)
-
 	c := github.NewClient(mockedHTTPClient)
 
 	ctx := context.Background()
@@ -235,21 +224,19 @@ func Test_warehouse_WorkflowRuns(t *testing.T) {
 	mockedTx := mocks.NewMockTx(ct)
 
 	tests := []testArgs{{
-		description: "successful workflows",
+		description: "test nil handling of workflow runs",
 		owner:       "mergestat",
 		repo:        "mergestat",
 		mockFuncs: func() {
+			// formatting test values to required types
 			var inputRuns [][]interface{}
 			var inputJobs [][]interface{}
-			runsInt := new(int32)
-			jsonbValue := pgtype.JSONB{}
-			repoUrlValue := new(string)
-			jsonbPullRequest := jsonbValue
-			jsonbHeadCommit := jsonbValue
-			runNumber := runsInt
-			runAttemp := runsInt
-			workflowRunRepositoryUrl := repoUrlValue
-			workflowRunHeadRepoUrl := repoUrlValue
+			jsonbPullRequest, _ := helper.InterfaceToSqlJSONB(testRuns.PullRequests)
+			jsonbHeadCommit, _ := helper.InterfaceToSqlJSONB(testRuns.HeadCommit)
+			runNumber := helper.GetInt32FromInt(testRuns.RunNumber)
+			runAttempt := helper.GetInt32FromInt(testRuns.RunAttempt)
+			workflowRunRepositoryUrl := helper.GetRepositoryURL(testRuns.Repository)
+			workflowRunHeadRepoUrl := helper.GetRepositoryURL(testRuns.HeadRepository)
 			testRunBatchValues := []interface{}{&syncLog{Type: SyncLogTypeInfo, Message: "starting to get all GitHub Actions runs for workflow ", RepoSyncQueueID: 0}}
 			testJobBatchValue := []interface{}{&syncLog{Type: SyncLogTypeInfo, Message: "starting to get all GitHub Actions jobs for workflow ", RepoSyncQueueID: 0}}
 
@@ -270,19 +257,6 @@ func Test_warehouse_WorkflowRuns(t *testing.T) {
 			gomock.InOrder(
 				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputJobs)).Return(int64(0), nil).MaxTimes(4))
 
-			// mocking values mutations
-			getJSONBFromInterface = func(interface{}) (pgtype.JSONB, error) {
-				return jsonbValue, nil
-			}
-
-			getInt32FromInt = func(i *int) *int32 {
-				return runsInt
-			}
-
-			getRepositoryURL = func(r *github.Repository) *string {
-				return repoUrlValue
-			}
-
 			gomock.InOrder(
 				mockedPool.EXPECT().BeginTx(ctx, pgx.TxOptions{}).Return(mockedTx, nil),
 				mockedDb.EXPECT().WithTx(mockedTx).Return(mockedDb),
@@ -293,7 +267,7 @@ func Test_warehouse_WorkflowRuns(t *testing.T) {
 					Name:              helper.StringToSqlNullString(testRuns.Name),
 					Headbranch:        helper.StringToSqlNullString(testRuns.HeadBranch),
 					Runnumber:         helper.Int32ToSqlNullInt32(runNumber),
-					Runattempt:        helper.Int32ToSqlNullInt32(runAttemp),
+					Runattempt:        helper.Int32ToSqlNullInt32(runAttempt),
 					Event:             helper.StringToSqlNullString(testRuns.Event),
 					Status:            helper.StringToSqlNullString(testRuns.Status),
 					Conclusion:        helper.StringToSqlNullString(testRuns.Conclusion),
@@ -374,10 +348,6 @@ func Test_warehouse_WorkflowJobs(t *testing.T) {
 		),
 	)
 
-	defer func(f func(i interface{}) (pgtype.JSONB, error)) {
-		getJSONBFromInterface = f
-	}(getJSONBFromInterface)
-
 	c := github.NewClient(mockedHTTPClient)
 
 	ctx := context.Background()
@@ -403,19 +373,14 @@ func Test_warehouse_WorkflowJobs(t *testing.T) {
 	mockedTx := mocks.NewMockTx(ct)
 
 	tests := []testArgs{{
-		description: "successful workflows",
+		description: "test nil handling of workflow run jobs",
 		owner:       "mergestat",
 		repo:        "mergestat",
 		mockFuncs: func() {
-			jsonbValue := pgtype.JSONB{}
-			jsonbSteps := jsonbValue
-			jsonbLabels := jsonbValue
+			// formatting test values to required types
+			jsonbSteps, _ := helper.InterfaceToSqlJSONB(testJobs.Steps)
+			jsonbLabels, _ := helper.InterfaceToSqlJSONB(testJobs.Labels)
 			log := mockLog.String()
-
-			// mocking values mutations
-			getJSONBFromInterface = func(interface{}) (pgtype.JSONB, error) {
-				return jsonbValue, nil
-			}
 
 			gomock.InOrder(
 				mockedPool.EXPECT().BeginTx(ctx, pgx.TxOptions{}).Return(mockedTx, nil),
