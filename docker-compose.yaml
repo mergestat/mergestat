@@ -26,7 +26,7 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/metrics" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/metrics"]
       interval: 5s
       timeout: 5s
       retries: 5
