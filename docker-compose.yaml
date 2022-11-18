@@ -8,7 +8,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -18,15 +18,15 @@ services:
   worker:
     # NOTE: to opt out of basic image pull tracking, comment out the current image
     # and uncomment the next line (which will pull from Docker Hub directly).
-    # image: mergestat/worker:1.3.0-beta
-    image: images.mergestat.com/mergestat/worker:1.3.0-beta
+    # image: mergestat/worker:1.3.1-beta
+    image: images.mergestat.com/mergestat/worker:1.3.1-beta
     stop_grace_period: 10m
     restart: always
     depends_on:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/metrics"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/metrics" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -46,13 +46,14 @@ services:
 
   graphql:
     # See NOTE above in worker service.
-    # image: mergestat/graphql:1.3.0-beta
-    image: images.mergestat.com/mergestat/graphql:1.3.0-beta
+    # image: mergestat/graphql:1.3.1-beta
+    image: images.mergestat.com/mergestat/graphql:1.3.1-beta
     restart: always
     depends_on:
       postgres:
         condition: service_healthy
-      worker: # this is to ensure all migrations are run before the API starts up
+      worker:
+        # this is to ensure all migrations are run before the API starts up
         condition: service_healthy
     links:
       - worker
@@ -89,8 +90,8 @@ services:
 
   ui:
     # See NOTE above in worker service.
-    # image: mergestat/console:1.3.0-beta
-    image: images.mergestat.com/mergestat/console:1.3.0-beta
+    # image: mergestat/console:1.3.1-beta
+    image: images.mergestat.com/mergestat/console:1.3.1-beta
     restart: always
     depends_on:
       - graphql
