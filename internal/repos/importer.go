@@ -79,6 +79,8 @@ func (i *importer) exec(ctx context.Context) error {
 
 	for _, imp := range imports {
 
+		// we dont fail on import errors, instead we log them
+		// and insert them in the database
 		impErr := i.handleGitHubImport(ctx, imp)
 
 		if err = i.handleImportStatus(ctx, imp.ID, impErr); err != nil {
