@@ -70,7 +70,6 @@ func (i *importer) exec(ctx context.Context) error {
 	var imports []db.ListRepoImportsDueForImportRow
 	var err error
 	if imports, err = i.db.ListRepoImportsDueForImport(ctx); err != nil {
-		i.logger.Debug().Msgf("repo import error %v", err.Error())
 		return err
 	}
 
