@@ -9,19 +9,22 @@ type ExecSQLInput = {
   query: string
   variables: [any]
   rowLimit: number
+  disableReadOnly: boolean
 }
 
 module.exports = makeExtendSchemaPlugin({
   typeDefs: gql`
     extend type Query {
-      execSQL(query: String!, variables: [String!], rowLimit: Int): JSON
+      execSQL(query: String!, variables: [String!], rowLimit: Int, disableReadOnly: Boolean): JSON
     }
   `,
   resolvers: {
     Query: {
       async execSQL(_parent: any, args: ExecSQLInput, context: { pgClient: Client }, _info: any) {
-        // first set the pg session to use a read-only role
-        await context.pgClient.query("SET ROLE readaccess;")
+        // first set the pg session to use a read-only role, if readonly is true
+        if (!args.disableReadOnly) {
+          await context.pgClient.query("SET ROLE readaccess;")
+        }
 
         // then create a cursor https://node-postgres.com/api/cursor for the user supplied query
         const cursor = context.pgClient.query(new Cursor(args.query, args.variables))

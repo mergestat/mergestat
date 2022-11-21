@@ -4,6 +4,7 @@ import React, { PropsWithChildren, useId } from 'react'
 import { RepoSyncDataType } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
+import { showSuccessAlert } from 'src/utils/alerts'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useSyncNow from 'src/views/hooks/useSyncNow'
 import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
@@ -77,6 +78,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                           <Toggle
                             isChecked={sync.data.scheduleEnabled}
                             onChange={() => {
+                              showSuccessAlert(`Sync schedule turned ${sync.data.scheduleEnabled ? 'off' : 'on'}`)
                               sync.data.id
                                 ? updateSchedule({ variables: { syncId: sync.data.id, schedule: !sync.data.scheduleEnabled } })
                                 : addSyncType({ variables: { repoId, syncType: sync.data.type, schedule: true } })

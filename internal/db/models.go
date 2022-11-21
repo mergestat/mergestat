@@ -561,12 +561,13 @@ type MergestatRepoImportType struct {
 }
 
 type MergestatRepoSync struct {
-	RepoID          uuid.UUID
-	SyncType        string
-	Settings        pgtype.JSONB
-	ID              uuid.UUID
-	ScheduleEnabled bool
-	Priority        int32
+	RepoID                       uuid.UUID
+	SyncType                     string
+	Settings                     pgtype.JSONB
+	ID                           uuid.UUID
+	ScheduleEnabled              bool
+	Priority                     int32
+	LastCompletedRepoSyncQueueID sql.NullInt64
 }
 
 type MergestatRepoSyncLog struct {

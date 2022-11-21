@@ -5,6 +5,7 @@ import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
 import { States } from 'src/utils/constants'
 import SQLEditorSection from './components/sql-editor-section'
+import QueryEditorCanceled from './components/state-canceled'
 import QueryEditorEmpty from './components/state-empty'
 import QueryEditorError from './components/state-error'
 import QueryEditorFilled from './components/state-filled'
@@ -21,10 +22,22 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
   const [state, setState] = useState<States>(States.Empty)
   const [rowLimitReached, setRowLimitReached] = useState(true)
   const [executed, setExecuted] = useState(false)
+  const [aborterRef, setAbortRef] = useState(new AbortController())
+  const [loading, setLoading] = useState(false)
 
-  const [executeSQL, { loading, error, data }] = useLazyQuery<ExecuteSqlQuery>(EXECUTE_SQL, {
-    fetchPolicy: 'no-cache'
+  const [executeSQL, { loading: loadingQuery, error, data }] = useLazyQuery<ExecuteSqlQuery>(EXECUTE_SQL, {
+    fetchPolicy: 'no-cache',
+    context: {
+      fetchOptions: {
+        signal: aborterRef.signal
+      },
+      queryDeduplication: false
+    }
   })
+
+  useEffect(() => {
+    setLoading(loadingQuery)
+  }, [loadingQuery])
 
   useEffect(() => {
     if (data?.execSQL.length > 0) {
@@ -36,8 +49,16 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
   }, [data, error])
 
   const executeSQLQuery = () => {
+    setLoading(true)
+    setAbortRef(new AbortController())
     executeSQL({ variables: { sql: query } })
     setExecuted(true)
+  }
+
+  const cancelSQLQuery = () => {
+    setState(States.Canceled)
+    aborterRef.abort()
+    setLoading(false)
   }
 
   return (
@@ -49,6 +70,9 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
             <h2 className='t-h2 mb-0'>Queries</h2>
           </Toolbar.Left>
           <Toolbar.Right>
+            <Button skin="secondary" onClick={cancelSQLQuery} disabled={!loading}>
+              Cancel
+            </Button>
             <Button className='whitespace-nowrap' label='Execute (Shift + Enter)'
               endIcon={loading && <Spinner size='sm' className='ml-2' />}
               disabled={loading}
@@ -71,6 +95,9 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
         {/* Empty state */}
         {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} />}
 
+        {/* Canceled state */}
+        {!error && !loading && state === States.Canceled && <QueryEditorCanceled />}
+
         {/* Error state */}
         {!loading && state === States.Error && error && <QueryEditorError errors={error} />}
 
@@ -78,7 +105,7 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
         {loading && <QueryEditorLoading />}
 
         {/* Filled state */}
-        {!error && data && state === States.Filled && <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />}
+        {!error && !loading && data && state === States.Filled && <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />}
       </div>
     </main>
   )
