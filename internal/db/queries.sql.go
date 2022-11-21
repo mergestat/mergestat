@@ -464,7 +464,7 @@ func (q *Queries) SetSyncJobStatus(ctx context.Context, arg SetSyncJobStatusPara
 }
 
 const updateImportStatus = `-- name: UpdateImportStatus :exec
-UPDATE mergestat.repo_imports SET import_status= $1::TEXT,import_error = $2::TEXT WHERE id = $3
+UPDATE mergestat.repo_imports SET import_status = $1::TEXT, import_error = $2::TEXT WHERE id = $3
 `
 
 type UpdateImportStatusParams struct {
