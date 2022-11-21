@@ -25,6 +25,12 @@ type importer struct {
 	db        *db.Queries
 	mergestat *sqlx.DB
 }
+type importStatus string
+
+const (
+	ImportStatusSuccess importStatus = "SUCCESS"
+	ImportStatusFailure importStatus = "FAILURE"
+)
 
 func NewImporter(logger *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) *importer {
 	return &importer{
@@ -72,7 +78,12 @@ func (i *importer) exec(ctx context.Context) error {
 	}
 
 	for _, imp := range imports {
-		if err := i.handleGitHubImport(ctx, imp); err != nil {
+
+		// we dont fail on import errors, instead we log them
+		// and insert them in the database
+		impErr := i.handleGitHubImport(ctx, imp)
+
+		if err = i.handleImportStatus(ctx, imp.ID, impErr); err != nil {
 			return err
 		}
 	}
@@ -311,4 +322,38 @@ func (i *importer) formatReposUrl(repos []*githubRepo, repoOwner string) []strin
 		repoUrls = append(repoUrls, fmt.Sprintf("https://github.com/%s/%s", repoOwner, repo.Name))
 	}
 	return repoUrls
+}
+
+// handleImportStatus  handles the status of an import to a success/failure status
+// we check for import errors to declare a failure status to log and insert the error information
+// into the database
+func (i *importer) handleImportStatus(ctx context.Context, impID uuid.UUID, impErr error) error {
+	var importErr string
+	var tx pgx.Tx
+	var err error
+	status := ImportStatusSuccess
+
+	if tx, err = i.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
+		return err
+	}
+
+	defer func() {
+		if err = tx.Rollback(ctx); err != nil {
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				i.logger.Err(err).Msg("could not rollback transaction")
+			}
+		}
+	}()
+
+	if impErr != nil {
+		status = ImportStatusFailure
+		importErr = impErr.Error()
+		i.logger.Warn().Str("ID", impID.String()).AnErr("Error", impErr).Msg("Repo Import error occurred")
+	}
+
+	if err := i.db.WithTx(tx).UpdateImportStatus(ctx, db.UpdateImportStatusParams{Status: string(status), ID: impID, Error: importErr}); err != nil {
+		return err
+	}
+
+	return tx.Commit(ctx)
 }
