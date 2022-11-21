@@ -69,6 +69,8 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job
 
 		if workflowsPage, resp, err = getWorkflows(ctx, w.githubClient, owner, repo, opt); err != nil {
 			w.logger.Warn().AnErr("Error", err).Msg("error occurred")
+			//operation := fmt.Sprintf("")
+			//w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, operation)
 			if resp == nil {
 				break
 			}

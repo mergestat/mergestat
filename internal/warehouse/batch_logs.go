@@ -12,7 +12,8 @@ type syncLogType string
 type jobStatus string
 
 const (
-	SyncLogTypeInfo syncLogType = "INFO"
+	SyncLogTypeInfo    syncLogType = "INFO"
+	SyncLogTypeWarning syncLogType = "WARNING"
 )
 
 const (
