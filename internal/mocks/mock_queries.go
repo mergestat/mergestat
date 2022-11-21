@@ -268,6 +268,20 @@ func (mr *MockQuerierMockRecorder) SetSyncJobStatus(ctx, arg interface{}) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetSyncJobStatus", reflect.TypeOf((*MockQuerier)(nil).SetSyncJobStatus), ctx, arg)
 }
 
+// UpdateImportStatus mocks base method.
+func (m *MockQuerier) UpdateImportStatus(ctx context.Context, arg db.UpdateImportStatusParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateImportStatus", ctx, arg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateImportStatus indicates an expected call of UpdateImportStatus.
+func (mr *MockQuerierMockRecorder) UpdateImportStatus(ctx, arg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateImportStatus", reflect.TypeOf((*MockQuerier)(nil).UpdateImportStatus), ctx, arg)
+}
+
 // UpsertRepo mocks base method.
 func (m *MockQuerier) UpsertRepo(ctx context.Context, arg db.UpsertRepoParams) error {
 	m.ctrl.T.Helper()
