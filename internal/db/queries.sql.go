@@ -478,7 +478,168 @@ func (q *Queries) UpdateImportStatus(ctx context.Context, arg UpdateImportStatus
 	return err
 }
 
-const upserWorkflowRuns = `-- name: UpserWorkflowRuns :exec
+const upsertRepo = `-- name: UpsertRepo :exec
+INSERT INTO public.repos (repo, is_github, repo_import_id) VALUES($1, $2, $3)
+ON CONFLICT (repo, (ref IS NULL)) WHERE ref IS NULL
+DO UPDATE SET tags = (
+    SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $4) x LIMIT 1
+)
+`
+
+type UpsertRepoParams struct {
+	Repo         string
+	IsGithub     sql.NullBool
+	RepoImportID uuid.NullUUID
+	Tags         pgtype.JSONB
+}
+
+func (q *Queries) UpsertRepo(ctx context.Context, arg UpsertRepoParams) error {
+	_, err := q.db.Exec(ctx, upsertRepo,
+		arg.Repo,
+		arg.IsGithub,
+		arg.RepoImportID,
+		arg.Tags,
+	)
+	return err
+}
+
+const upsertWorkflowRunJobs = `-- name: UpsertWorkflowRunJobs :exec
+WITH t AS (
+	INSERT INTO public.github_actions_workflow_run_jobs (
+		repo_id,
+		id,
+		run_id,
+		log,
+		run_url,
+		job_node_id,
+		head_sha,
+		url,
+		html_url,
+		status,
+		conclusion,
+		started_at,
+		completed_at,
+		workflow_name,
+		steps,
+		check_run_url,
+		labels,
+		runner_id,
+		runner_name,
+		runner_group_id,
+		runner_group_name
+	)
+	VALUES(
+		$1::uuid,
+		$2::BIGINT,
+		$3,
+		$4,
+		$5,
+		$6,
+		$7,
+		$8,
+		$9,
+		$10,
+		$11,
+		$12,
+		$13,
+		$14,
+		$15::JSONB,
+		$16,
+		$17::JSONB,
+		$18,
+		$19,
+		$20,
+		$21)
+		ON CONFLICT (id)
+		DO UPDATE 
+		SET repo_id=EXCLUDED.repo_id,
+		    id=EXCLUDED.id,
+			run_id=EXCLUDED.run_id,
+			log=EXCLUDED.log,
+			run_url=EXCLUDED.run_url,
+			job_node_id=EXCLUDED.job_node_id,
+			head_sha=EXCLUDED.head_sha,
+			url=EXCLUDED.url,
+			html_url=EXCLUDED.html_url,
+			status=EXCLUDED.status,
+			conclusion=EXCLUDED.conclusion,
+			started_at=EXCLUDED.started_at,
+			completed_at=EXCLUDED.completed_at,
+			workflow_name=EXCLUDED.workflow_name,
+			steps=excluded.steps,
+			check_run_url=EXCLUDED.check_run_url,
+			labels=EXCLUDED.labels,
+			runner_id=EXCLUDED.runner_id,
+			runner_name=EXCLUDED.runner_name,
+			runner_group_id=EXCLUDED.runner_group_id,
+			runner_group_name=EXCLUDED.runner_group_name
+		RETURNING xmax::text
+)
+SELECT
+    COUNT(*) AS all_rows,
+    SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
+    SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
+FROM t
+`
+
+type UpsertWorkflowRunJobsParams struct {
+	Repoid          uuid.UUID
+	ID              int64
+	Runid           int64
+	Log             sql.NullString
+	Runurl          sql.NullString
+	Jobnodeid       sql.NullString
+	Headsha         sql.NullString
+	Url             sql.NullString
+	Htmlurl         sql.NullString
+	Status          sql.NullString
+	Conclusion      sql.NullString
+	Startedat       sql.NullTime
+	Completedat     sql.NullTime
+	Workflowname    sql.NullString
+	Steps           pgtype.JSONB
+	Checkrunurl     sql.NullString
+	Labels          pgtype.JSONB
+	Runnerid        sql.NullInt64
+	Runnername      sql.NullString
+	Runnergroupid   sql.NullInt64
+	Runnergroupname sql.NullString
+}
+
+type UpsertWorkflowRunJobsRow struct {
+	AllRows int64
+	Ins     int64
+	Upd     int64
+}
+
+func (q *Queries) UpsertWorkflowRunJobs(ctx context.Context, arg UpsertWorkflowRunJobsParams) error {
+	_, err := q.db.Exec(ctx, upsertWorkflowRunJobs,
+		arg.Repoid,
+		arg.ID,
+		arg.Runid,
+		arg.Log,
+		arg.Runurl,
+		arg.Jobnodeid,
+		arg.Headsha,
+		arg.Url,
+		arg.Htmlurl,
+		arg.Status,
+		arg.Conclusion,
+		arg.Startedat,
+		arg.Completedat,
+		arg.Workflowname,
+		arg.Steps,
+		arg.Checkrunurl,
+		arg.Labels,
+		arg.Runnerid,
+		arg.Runnername,
+		arg.Runnergroupid,
+		arg.Runnergroupname,
+	)
+	return err
+}
+
+const upsertWorkflowRuns = `-- name: UpsertWorkflowRuns :exec
 WITH t AS(
 	INSERT INTO public.github_actions_workflow_runs(
 	repo_id,
