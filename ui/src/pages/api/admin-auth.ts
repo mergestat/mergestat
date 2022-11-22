@@ -28,13 +28,12 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // override the user and password in the connection string with the ones provided by the client
     url.username = user
-    url.password = password
+    url.password = encodeURIComponent(password) // password may contain special characters
 
     try {
       const client = new Client({
         // use the connection info supplied by the parsed POSTGRES_CONNECTION url
-        // encodeURI since the password (or user) may contain special characters
-        connectionString: encodeURI(url.toString()),
+        connectionString: url.toString(),
 
         // by default this is "no timeout"
         // so we set it here to have a hard limit
