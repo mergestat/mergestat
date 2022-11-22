@@ -15,7 +15,7 @@ const mapToUserData = (data: UsersQuery | undefined): Array<UserData> => {
       // Consolidated User info
       const userInfo: UserData = {
         name: usr.rolname || '',
-        role: getRol(usr.memberof)
+        roles: usr.memberof.map(getRole)
       }
       mappedData.push(userInfo)
     }
@@ -24,8 +24,8 @@ const mapToUserData = (data: UsersQuery | undefined): Array<UserData> => {
   return mappedData
 }
 
-const getRol = (rol: Array<string | null>) => {
-  switch (rol[0]) {
+const getRole = (role: string | null) => {
+  switch (role) {
     case 'mergestat_role_admin':
       return USER_TYPE.ADMIN
     case 'mergestat_role_user':
