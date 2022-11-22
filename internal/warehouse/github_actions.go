@@ -71,7 +71,9 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job
 			w.logger.Warn().AnErr("Error", err).Msg("error occurred")
 
 			operation := fmt.Sprintf("during the fetching of workflow page with owner %s and repo %s", owner, repo)
-			w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation)
+			if batchErr := w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation); batchErr != nil {
+				return batchErr
+			}
 
 			if resp == nil {
 				break
@@ -144,7 +146,9 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 				w.logger.Warn().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).AnErr("Error", err).Msg("error occurred")
 
 				operation := fmt.Sprintf("during the fetching of workflow run page with owner %s, repo %s and workflowID %d, Error: %v", owner, repo, *workflow.ID, err)
-				w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation)
+				if batchErr := w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation); batchErr != nil {
+					return batchErr
+				}
 
 				if resp == nil {
 					break
@@ -216,7 +220,9 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 				w.logger.Warn().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).AnErr("Error", err).Msg("error occurred")
 
 				operation := fmt.Sprintf("during the fetching of workflow jobs page with owner %s,repo %s and runID %d Error: %v", owner, repo, *workflowRun.ID, err)
-				w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation)
+				if batchErr := w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation); batchErr != nil {
+					return batchErr
+				}
 				if resp == nil {
 					break
 				}
