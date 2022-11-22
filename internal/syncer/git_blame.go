@@ -134,12 +134,13 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 			// basically just looking for a byte(0) in the first portion of the file
 			if enry.IsBinary(buffer[:bytesRead]) {
 				w.logger.Info().Msgf("skipping binary file: %s", fullPath)
+				// TODO(patrickdevivo) maybe we should also log to the DB so the user can see this?
 				continue
 			}
 		}
 
 		// adjustedBufferSize is larger than the default to support longer lines without error
-		// TODO(patrickdevivo) maybe eventually we can make this configurable? Either via an EnVar or a DB setting
+		// TODO(patrickdevivo) maybe eventually we can make this configurable? Either via an ENV var or a DB setting
 		adjustedBufferSize := bufio.MaxScanTokenSize * 30
 		res, err := blame.Exec(ctx, tmpPath, o.Path, blame.WithScannerBuffer(make([]byte, adjustedBufferSize), adjustedBufferSize))
 		if err != nil {
