@@ -53,7 +53,8 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+	operation := fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit, operation); err != nil {
 		return fmt.Errorf("log messages: %w", err)
 	}
 
@@ -214,7 +215,8 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	}
 
 	// indicate that we're finishing query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
+	operation = fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish, operation); err != nil {
 		return fmt.Errorf("log messages: %w", err)
 	}
 

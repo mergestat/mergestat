@@ -16,12 +16,14 @@ type jobStatus string
 
 const (
 	SyncLogTypeInfo  syncLogType = "INFO"
+	SyncLogTypeWarn  syncLogType = "WARNING"
 	SyncLogTypeError syncLogType = "ERROR"
 )
 
 const (
 	jobStatusTypeInit   jobStatus = "starting"
 	jobStatusTypeFinish jobStatus = "finishing"
+	unexpectedBehavior  jobStatus = "unexpected behavior"
 )
 
 type syncLog struct {
@@ -31,11 +33,11 @@ type syncLog struct {
 }
 
 // formartBatchLogMessages generates a standardize message for sync logs
-func (w *worker) formatBatchLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus) error {
+func (w *worker) formatBatchLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus, operation string) error {
 	return w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            syncLogTypeOption,
 		RepoSyncQueueID: j.ID,
-		Message:         fmt.Sprintf("%s %s sync for %s", status, j.SyncType, j.Repo),
+		Message:         fmt.Sprintf("%s %s", status, operation),
 	}})
 }
 

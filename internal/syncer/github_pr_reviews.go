@@ -92,7 +92,8 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+	operation := fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit, operation); err != nil {
 		return fmt.Errorf("log messages: %w", err)
 	}
 
@@ -159,7 +160,8 @@ func (w *worker) handleGitHubPRReviews(ctx context.Context, j *db.DequeueSyncJob
 	}
 
 	// indicate that we're finishing query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
+	operation = fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish, operation); err != nil {
 		return fmt.Errorf("log messages: %w", err)
 	}
 

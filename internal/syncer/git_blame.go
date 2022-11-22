@@ -65,7 +65,8 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
+	operation := fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit, operation); err != nil {
 		return fmt.Errorf("log messages: %w", err)
 	}
 
@@ -119,6 +120,13 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		fullPath := filepath.Join(tmpPath, o.Path)
 		if f, err := os.Open(fullPath); err != nil {
 			w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Msgf("error opening file in repo: %s, %v", fullPath, err)
+
+			// indicate that we're detecting unexpected behavior
+			operation := fmt.Sprintf("of sync %s for repo %s, Error:%v", j.SyncType, j.Repo, err)
+			if err := w.formatBatchLogMessages(ctx, SyncLogTypeWarn, j, unexpectedBehavior, operation); err != nil {
+				return fmt.Errorf("log messages: %w", err)
+			}
+
 			continue
 		} else {
 			defer f.Close()
@@ -128,6 +136,12 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 			var bytesRead int
 			if bytesRead, err = f.Read(buffer); err != nil && !errors.Is(err, io.EOF) {
 				w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Msgf("error reading file in repo: %s, %v", fullPath, err)
+
+				// indicate that we're detecting unexpected behavior
+				operation := fmt.Sprintf("of sync %s for repo %s, Error:%v", j.SyncType, j.Repo, err)
+				if err := w.formatBatchLogMessages(ctx, SyncLogTypeWarn, j, unexpectedBehavior, operation); err != nil {
+					return fmt.Errorf("log messages: %w", err)
+				}
 			}
 
 			// See here: https://github.com/go-enry/go-enry/blob/v2.8.2/utils.go#L80 for the implementation of IsBinary
@@ -150,6 +164,13 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 			} else {
 				l.Msgf("error blaming file: %s in repo: %s, %v", o.Path, tmpPath, err)
 			}
+
+			// indicate that we're detecting unexpected behavior
+			operation := fmt.Sprintf("of sync %s for repo %s, Error:%v", j.SyncType, j.Repo, err)
+			if err := w.formatBatchLogMessages(ctx, SyncLogTypeWarn, j, unexpectedBehavior, operation); err != nil {
+				return fmt.Errorf("log messages: %w", err)
+			}
+
 			continue
 		}
 
@@ -212,7 +233,8 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	// indicate that we're finishing query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
+	operation = fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
+	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish, operation); err != nil {
 		return fmt.Errorf("log messages: %w", err)
 	}
 
