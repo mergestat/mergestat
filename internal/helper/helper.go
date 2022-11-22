@@ -52,7 +52,7 @@ func CreateTempDir(basePath, pattern string) (string, func() error, error) {
 }
 
 // GetInt32FromInt is a helper function created to handle mutations of a *int value
-// to *int32 value,every nil value should be ignored to return a new *int32 value
+// to *int32 value, every nil value should be ignored to return a new *int32 value
 func GetInt32FromInt(i *int) *int32 {
 	var i32 int32
 	if i == nil {

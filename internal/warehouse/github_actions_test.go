@@ -2,6 +2,7 @@ package warehouse
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/url"
 	"os"
@@ -18,13 +19,13 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func TestWarehouseHandleWorkflows(t *testing.T) {
+func TestWarehouseHandleWorkflowsOK(t *testing.T) {
 	type testArgs struct {
 		description string
 		owner       string
 		repo        string
-		mockFuncs   func()
-		wantErr     bool
+		setup       func()
+		expectedErr error
 	}
 	totalCount := 1
 	testWorkflow := mocks.GetWorkflowEmptyData()
@@ -77,7 +78,7 @@ func TestWarehouseHandleWorkflows(t *testing.T) {
 		description: "test nil handling of workflows",
 		owner:       "mergestat",
 		repo:        "mergestat",
-		mockFuncs: func() {
+		setup: func() {
 			// formatting test values to required types
 			var inputs [][]interface{}
 			var inputRuns [][]interface{}
@@ -138,7 +139,7 @@ func TestWarehouseHandleWorkflows(t *testing.T) {
 				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputInsertedRows)).Return(int64(0), nil).MaxTimes(4))
 
 		},
-		wantErr: false,
+		expectedErr: nil,
 	}}
 
 	for _, test := range tests {
@@ -153,27 +154,27 @@ func TestWarehouseHandleWorkflows(t *testing.T) {
 				db:           mockedDb,
 			}
 
-			test.mockFuncs()
+			test.setup()
 
 			//we discard loggin messages from the bebug console
 			testW.logger.Debug().Discard()
 			testW.logger.Info().Discard()
 			testW.logger.Warn().Discard()
 
-			if err := testW.handleWorkflows(ctx, test.owner, test.repo, &testJob); (err != nil) != test.wantErr {
-				t.Errorf("warehouse.handleWorkflows() error = %v, wantErr %v", err, test.wantErr)
+			if err := testW.handleWorkflows(ctx, test.owner, test.repo, &testJob); test.expectedErr != nil && !errors.Is(err, test.expectedErr) {
+				t.Errorf("warehouse.handleWorkflows() error = %v, wantErr %v", err, test.expectedErr)
 			}
 		})
 	}
 }
 
-func TestWarehouseWorkflowRuns(t *testing.T) {
+func TestWarehouseWorkflowRunsOK(t *testing.T) {
 	type testArgs struct {
 		description string
 		owner       string
 		repo        string
-		mockFuncs   func()
-		wantErr     bool
+		setup       func()
+		expectedErr error
 	}
 	totalCount := 1
 	repoID := uuid.New()
@@ -227,7 +228,7 @@ func TestWarehouseWorkflowRuns(t *testing.T) {
 		description: "test nil handling of workflow runs",
 		owner:       "mergestat",
 		repo:        "mergestat",
-		mockFuncs: func() {
+		setup: func() {
 			// formatting test values to required types
 			var inputRuns [][]interface{}
 			var inputJobs [][]interface{}
@@ -310,27 +311,27 @@ func TestWarehouseWorkflowRuns(t *testing.T) {
 				db:           mockedDb,
 			}
 
-			test.mockFuncs()
+			test.setup()
 
 			//we discard loggin messages from the bebug console
 			testW.logger.Debug().Discard()
 			testW.logger.Info().Discard()
 			testW.logger.Warn().Discard()
 
-			if err := testW.handleWorkflowRuns(ctx, test.owner, test.repo, &testJob, testWorkflows); (err != nil) != test.wantErr {
-				t.Errorf("warehouse.handleWorkflows() error = %v, wantErr %v", err, test.wantErr)
+			if err := testW.handleWorkflowRuns(ctx, test.owner, test.repo, &testJob, testWorkflows); test.expectedErr != nil && !errors.Is(err, test.expectedErr) {
+				t.Errorf("warehouse.handleWorkflows() error = %v, wantErr %v", err, test.expectedErr)
 			}
 		})
 	}
 }
 
-func TestWarehouseWorkflowJobs(t *testing.T) {
+func TestWarehouseWorkflowJobsOK(t *testing.T) {
 	type testArgs struct {
 		description string
 		owner       string
 		repo        string
-		mockFuncs   func()
-		wantErr     bool
+		setup       func()
+		expectedErr error
 	}
 
 	var mockLog = new(url.URL)
@@ -376,7 +377,7 @@ func TestWarehouseWorkflowJobs(t *testing.T) {
 		description: "test nil handling of workflow run jobs",
 		owner:       "mergestat",
 		repo:        "mergestat",
-		mockFuncs: func() {
+		setup: func() {
 			// formatting test values to required types
 			jsonbSteps, _ := helper.InterfaceToSqlJSONB(testJobs.Steps)
 			jsonbLabels, _ := helper.InterfaceToSqlJSONB(testJobs.Labels)
@@ -411,7 +412,7 @@ func TestWarehouseWorkflowJobs(t *testing.T) {
 				mockedTx.EXPECT().Commit(ctx).Return(nil),
 				mockedTx.EXPECT().Rollback(ctx).Return(nil))
 		},
-		wantErr: false},
+		expectedErr: nil},
 	}
 
 	for _, test := range tests {
@@ -428,15 +429,15 @@ func TestWarehouseWorkflowJobs(t *testing.T) {
 				db:           mockedDb,
 			}
 
-			test.mockFuncs()
+			test.setup()
 
 			//we discard loggin messages from the bebug console
 			testW.logger.Debug().Discard()
 			testW.logger.Info().Discard()
 			testW.logger.Warn().Discard()
 
-			if err := testW.handleWorkflowRunsJobs(ctx, test.owner, test.repo, testJob.RepoID, testWorkflowRuns, testJobsCount); (err != nil) != test.wantErr {
-				t.Errorf("warehouse.handleWorkflows() error = %v, wantErr %v", err, test.wantErr)
+			if err := testW.handleWorkflowRunsJobs(ctx, test.owner, test.repo, testJob.RepoID, testWorkflowRuns, testJobsCount); test.expectedErr != nil && !errors.Is(err, test.expectedErr) {
+				t.Errorf("warehouse.handleWorkflows() error = %v, wantErr %v", err, test.expectedErr)
 			}
 		})
 	}
