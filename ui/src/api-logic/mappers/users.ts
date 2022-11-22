@@ -30,8 +30,10 @@ const getRole = (role: string | null) => {
       return USER_TYPE.ADMIN
     case 'mergestat_role_user':
       return USER_TYPE.USER
-    default:
+    case 'mergestat_role_readonly':
       return USER_TYPE.READ_ONLY
+    default:
+      return USER_TYPE.UNKNOWN
   }
 }
 
