@@ -69,8 +69,10 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job
 
 		if workflowsPage, resp, err = getWorkflows(ctx, w.githubClient, owner, repo, opt); err != nil {
 			w.logger.Warn().AnErr("Error", err).Msg("error occurred")
-			//operation := fmt.Sprintf("")
-			//w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, operation)
+
+			operation := fmt.Sprintf("during the fetching of workflow page with owner %s and repo %s", owner, repo)
+			w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation)
+
 			if resp == nil {
 				break
 			}
@@ -140,6 +142,10 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 			w.logger.Debug().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).Msg("getting runs of")
 			if workflowRunsPage, resp, err = getWorkflowsRuns(ctx, w.githubClient, owner, repo, *workflow.ID, opt); err != nil {
 				w.logger.Warn().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).AnErr("Error", err).Msg("error occurred")
+
+				operation := fmt.Sprintf("during the fetching of workflow run page with owner %s, repo %s and workflowID %d, Error: %v", owner, repo, *workflow.ID, err)
+				w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation)
+
 				if resp == nil {
 					break
 				}
@@ -159,7 +165,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 				}
 				runsCount += len(workflowRunsPage.WorkflowRuns)
 
-				if err := w.handleWorkflowRunsJobs(ctx, owner, repo, repoID, workflowRunsPage.WorkflowRuns, &jobsCount); err != nil {
+				if err := w.handleWorkflowRunsJobs(ctx, owner, repo, job, workflowRunsPage.WorkflowRuns, &jobsCount); err != nil {
 					return err
 				}
 			}
@@ -188,10 +194,11 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	return nil
 }
 
-func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunsPage []*github.WorkflowRun, jobsCount *int) error {
+func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo string, job *db.DequeueSyncJobRow, workflowRunsPage []*github.WorkflowRun, jobsCount *int) error {
 	var err error
 	var resp *github.Response
 	var workflowRunJobsPage *github.Jobs
+	repoID := job.RepoID
 	pagination, err := w.getPaginationOpt("GITHUB_WORKFLOW_JOBS_PER_PAGE")
 	if err != nil {
 		return err
@@ -207,6 +214,9 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 			w.logger.Debug().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Msg("getting jobs of")
 			if workflowRunJobsPage, resp, err = getWorkflowJobs(ctx, w.githubClient, owner, repo, *workflowRun.ID, opt); err != nil {
 				w.logger.Warn().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).AnErr("Error", err).Msg("error occurred")
+
+				operation := fmt.Sprintf("during the fetching of workflow jobs page with owner %s,repo %s and runID %d Error: %v", owner, repo, *workflowRun.ID, err)
+				w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation)
 				if resp == nil {
 					break
 				}

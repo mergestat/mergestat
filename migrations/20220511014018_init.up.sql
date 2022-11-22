@@ -410,8 +410,7 @@ ADD CONSTRAINT files_repo_id_fkey FOREIGN KEY (repo_id) REFERENCES public.repos(
 
 INSERT INTO mergestat.repo_import_types (type, description) VALUES ('GITHUB_ORG', 'Import all repos in a GitHub org') ON CONFLICT DO NOTHING;
 INSERT INTO mergestat.repo_import_types (type, description) VALUES ('GITHUB_USER', 'Import all repos belonging to a GitHub user') ON CONFLICT DO NOTHING;
-INSERT INTO mergestat.repo_sync_log_types (type, description) VALUES ('INFO', 'Information from a sync run') ON CONFLICT DO NOTHING;
-INSERT INTO mergestat.repo_sync_log_types (type, description) VALUES ('WARNING', 'Unexpected behavior from a sync run') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_log_types (type, description) VALUES ('INFO', 'Log line from a sync run') ON CONFLICT DO NOTHING;
 INSERT INTO mergestat.repo_sync_log_types (type, description) VALUES ('ERROR', 'Error from a sync run') ON CONFLICT DO NOTHING;
 INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('QUEUED', 'Sync job is queued') ON CONFLICT DO NOTHING;
 INSERT INTO mergestat.repo_sync_queue_status_types (type, description) VALUES ('RUNNING', 'Syng job is running') ON CONFLICT DO NOTHING;

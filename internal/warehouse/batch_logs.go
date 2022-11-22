@@ -17,8 +17,9 @@ const (
 )
 
 const (
-	startingProcess jobStatus = "starting"
-	insertedProcess jobStatus = "inserted"
+	startingProcess    jobStatus = "starting"
+	insertedProcess    jobStatus = "inserted"
+	unexpectedBehavior jobStatus = "unexpected behavior"
 )
 
 type syncLog struct {
