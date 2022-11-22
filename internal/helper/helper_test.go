@@ -3,7 +3,10 @@ package helper
 import (
 	"errors"
 	"os"
+	"reflect"
 	"testing"
+
+	"github.com/google/go-github/v47/github"
 )
 
 func TestGetRepoOwnerAndRepoName(t *testing.T) {
@@ -108,6 +111,55 @@ func TestCreateTempDir(t *testing.T) {
 				}
 			}()
 
+		})
+	}
+}
+
+func TestGetInt32FromInt(t *testing.T) {
+	type testArgs struct {
+		description string
+		testValue   *int
+	}
+
+	var testValue *int
+
+	tests := []testArgs{{
+		description: "nil management",
+		testValue:   testValue,
+	}}
+
+	for _, test := range tests {
+		t.Run(test.description, func(t *testing.T) {
+			got := GetInt32FromInt(test.testValue)
+
+			if reflect.TypeOf(got) != reflect.TypeOf(new(int32)) {
+				t.Fatal("value should be *int32")
+			}
+
+		})
+	}
+}
+
+func TestGetRepositoryURL(t *testing.T) {
+	type testArgs struct {
+		description string
+		testValue   *github.Repository
+	}
+
+	var testValue *github.Repository
+
+	tests := []testArgs{{
+		description: "nil management",
+		testValue:   testValue,
+	}}
+
+	for _, test := range tests {
+		t.Run(test.description, func(t *testing.T) {
+			got := GetRepositoryURL(test.testValue)
+
+			if reflect.TypeOf(got) != reflect.TypeOf(new(string)) {
+				t.Fatal("value should be of type *string")
+			}
 		})
 	}
 }

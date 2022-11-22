@@ -17,6 +17,7 @@ require (
 	github.com/go-enry/go-enry/v2 v2.8.3
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/golang-migrate/migrate/v4 v4.15.2
+	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgconn v1.13.0
 	github.com/jmoiron/sqlx v1.3.5
@@ -29,7 +30,12 @@ require (
 	golang.org/x/oauth2 v0.2.0
 )
 
-require github.com/google/go-querystring v1.1.0 // indirect
+require (
+	github.com/google/go-github/v41 v41.0.0 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/gorilla/mux v1.8.0 // indirect
+	github.com/kr/pretty v0.3.0 // indirect
+)
 
 require (
 	github.com/BurntSushi/toml v1.2.0 // indirect
@@ -67,6 +73,7 @@ require (
 	github.com/mattn/go-pointer v0.0.1 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2 // indirect
 	github.com/mergestat/timediff v0.0.3 // indirect
+	github.com/migueleliasweb/go-github-mock v0.0.13
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/opencontainers/image-spec v1.1.0-rc2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

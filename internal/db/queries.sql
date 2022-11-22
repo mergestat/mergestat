@@ -207,7 +207,7 @@ SELECT
     SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
 FROM t;
 
--- name: UpserWorkflowRuns :exec
+-- name: UpsertWorkflowRuns :exec
 WITH t AS(
 	INSERT INTO public.github_actions_workflow_runs(
 	repo_id,

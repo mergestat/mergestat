@@ -478,181 +478,6 @@ func (q *Queries) UpdateImportStatus(ctx context.Context, arg UpdateImportStatus
 	return err
 }
 
-const upserWorkflowRuns = `-- name: UpserWorkflowRuns :exec
-WITH t AS(
-	INSERT INTO public.github_actions_workflow_runs(
-	repo_id,
-	id,
-	workflow_run_node_id,
-	name,
-	head_branch,
-	run_number,
-	run_attempt,
-	event,
-	status,
-	conclusion,
-	workflow_id,
-	check_suite_id,
-	check_suite_node_id,
-	url,
-	html_url,
-	pull_requests,
-	created_at,
-	updated_at,
-	run_started_at,
-	jobs_url,
-	logs_url,
-	check_suite_url,
-	artifacts_url,
-	cancel_url,
-	rerun_url,
-	head_commit,
-	workflow_url,
-	repository_url,
-	head_repository_url)
-	VALUES(
- 	$1::UUID,
-	$2,
-	$3,
-    $4,
-	$5,
-	$6,
-	$7,
-	$8,
-	$9,
-	$10,
-	$11,
-	$12,
-	$13,
-	$14,
-	$15,
-	$16::JSONB,
-	$17,
-	$18,
-	$19,
-	$20,
-	$21,
-	$22,
-	$23,
-	$24,
-	$25,
-	$26::JSONB,
-	$27,
-	$28,
-	$29)
-	ON CONFLICT (id)
-    DO UPDATE
-    SET repo_id=EXCLUDED.repo_id,
-        id=EXCLUDED.id,
-		workflow_run_node_id=EXCLUDED.workflow_run_node_id,
-		name=EXCLUDED.name,
-		head_branch=EXCLUDED.head_branch,
-		run_number=EXCLUDED.run_number,
-		run_attempt=EXCLUDED.run_attempt,
-		event=EXCLUDED.event,
-		status=EXCLUDED.status,
-		conclusion=EXCLUDED.conclusion,
-		workflow_id=EXCLUDED.workflow_id,
-		check_suite_id=EXCLUDED.check_suite_id,
-		check_suite_node_id=EXCLUDED.check_suite_node_id,
-		url=EXCLUDED.url,
-		html_url=EXCLUDED.html_url,
-		pull_requests=EXCLUDED.pull_requests,
-		created_at=EXCLUDED.created_at,
-		updated_at=EXCLUDED.updated_at,
-		run_started_at=EXCLUDED.run_started_at,
-		jobs_url=EXCLUDED.jobs_url,
-		logs_url=EXCLUDED.logs_url,
-		check_suite_url=EXCLUDED.check_suite_url,
-		artifacts_url=EXCLUDED.artifacts_url,
-		cancel_url=EXCLUDED.cancel_url,
-		rerun_url=EXCLUDED.rerun_url,
-		head_commit=EXCLUDED.head_commit,
-		workflow_url=EXCLUDED.workflow_url,
-		repository_url=EXCLUDED.repository_url,
-		head_repository_url=EXCLUDED.head_repository_url
-  RETURNING xmax::text
-)
-SELECT
-    COUNT(*) AS all_rows,
-    SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
-    SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
-FROM t
-`
-
-type UpserWorkflowRunsParams struct {
-	RepoID            uuid.UUID
-	ID                int64
-	Workflowrunnodeid sql.NullString
-	Name              sql.NullString
-	Headbranch        sql.NullString
-	Runnumber         sql.NullInt32
-	Runattempt        sql.NullInt32
-	Event             sql.NullString
-	Status            sql.NullString
-	Conclusion        sql.NullString
-	Workflowid        int64
-	Checksuiteid      sql.NullInt64
-	Checksuitenodeid  sql.NullString
-	Url               sql.NullString
-	Htmlurl           sql.NullString
-	Pullrequest       pgtype.JSONB
-	Createdat         sql.NullTime
-	Updatedat         sql.NullTime
-	Runstartedat      sql.NullTime
-	Jobsurl           sql.NullString
-	Logsurl           sql.NullString
-	Checksuiteurl     sql.NullString
-	Artifactsurl      sql.NullString
-	Cancelurl         sql.NullString
-	Rerunurl          sql.NullString
-	Headcommit        pgtype.JSONB
-	Workflowurl       sql.NullString
-	Repositoryurl     sql.NullString
-	Headrepositoryurl sql.NullString
-}
-
-type UpserWorkflowRunsRow struct {
-	AllRows int64
-	Ins     int64
-	Upd     int64
-}
-
-func (q *Queries) UpserWorkflowRuns(ctx context.Context, arg UpserWorkflowRunsParams) error {
-	_, err := q.db.Exec(ctx, upserWorkflowRuns,
-		arg.RepoID,
-		arg.ID,
-		arg.Workflowrunnodeid,
-		arg.Name,
-		arg.Headbranch,
-		arg.Runnumber,
-		arg.Runattempt,
-		arg.Event,
-		arg.Status,
-		arg.Conclusion,
-		arg.Workflowid,
-		arg.Checksuiteid,
-		arg.Checksuitenodeid,
-		arg.Url,
-		arg.Htmlurl,
-		arg.Pullrequest,
-		arg.Createdat,
-		arg.Updatedat,
-		arg.Runstartedat,
-		arg.Jobsurl,
-		arg.Logsurl,
-		arg.Checksuiteurl,
-		arg.Artifactsurl,
-		arg.Cancelurl,
-		arg.Rerunurl,
-		arg.Headcommit,
-		arg.Workflowurl,
-		arg.Repositoryurl,
-		arg.Headrepositoryurl,
-	)
-	return err
-}
-
 const upsertRepo = `-- name: UpsertRepo :exec
 INSERT INTO public.repos (repo, is_github, repo_import_id) VALUES($1, $2, $3)
 ON CONFLICT (repo, (ref IS NULL)) WHERE ref IS NULL
@@ -810,6 +635,181 @@ func (q *Queries) UpsertWorkflowRunJobs(ctx context.Context, arg UpsertWorkflowR
 		arg.Runnername,
 		arg.Runnergroupid,
 		arg.Runnergroupname,
+	)
+	return err
+}
+
+const upsertWorkflowRuns = `-- name: UpsertWorkflowRuns :exec
+WITH t AS(
+	INSERT INTO public.github_actions_workflow_runs(
+	repo_id,
+	id,
+	workflow_run_node_id,
+	name,
+	head_branch,
+	run_number,
+	run_attempt,
+	event,
+	status,
+	conclusion,
+	workflow_id,
+	check_suite_id,
+	check_suite_node_id,
+	url,
+	html_url,
+	pull_requests,
+	created_at,
+	updated_at,
+	run_started_at,
+	jobs_url,
+	logs_url,
+	check_suite_url,
+	artifacts_url,
+	cancel_url,
+	rerun_url,
+	head_commit,
+	workflow_url,
+	repository_url,
+	head_repository_url)
+	VALUES(
+ 	$1::UUID,
+	$2,
+	$3,
+    $4,
+	$5,
+	$6,
+	$7,
+	$8,
+	$9,
+	$10,
+	$11,
+	$12,
+	$13,
+	$14,
+	$15,
+	$16::JSONB,
+	$17,
+	$18,
+	$19,
+	$20,
+	$21,
+	$22,
+	$23,
+	$24,
+	$25,
+	$26::JSONB,
+	$27,
+	$28,
+	$29)
+	ON CONFLICT (id)
+    DO UPDATE
+    SET repo_id=EXCLUDED.repo_id,
+        id=EXCLUDED.id,
+		workflow_run_node_id=EXCLUDED.workflow_run_node_id,
+		name=EXCLUDED.name,
+		head_branch=EXCLUDED.head_branch,
+		run_number=EXCLUDED.run_number,
+		run_attempt=EXCLUDED.run_attempt,
+		event=EXCLUDED.event,
+		status=EXCLUDED.status,
+		conclusion=EXCLUDED.conclusion,
+		workflow_id=EXCLUDED.workflow_id,
+		check_suite_id=EXCLUDED.check_suite_id,
+		check_suite_node_id=EXCLUDED.check_suite_node_id,
+		url=EXCLUDED.url,
+		html_url=EXCLUDED.html_url,
+		pull_requests=EXCLUDED.pull_requests,
+		created_at=EXCLUDED.created_at,
+		updated_at=EXCLUDED.updated_at,
+		run_started_at=EXCLUDED.run_started_at,
+		jobs_url=EXCLUDED.jobs_url,
+		logs_url=EXCLUDED.logs_url,
+		check_suite_url=EXCLUDED.check_suite_url,
+		artifacts_url=EXCLUDED.artifacts_url,
+		cancel_url=EXCLUDED.cancel_url,
+		rerun_url=EXCLUDED.rerun_url,
+		head_commit=EXCLUDED.head_commit,
+		workflow_url=EXCLUDED.workflow_url,
+		repository_url=EXCLUDED.repository_url,
+		head_repository_url=EXCLUDED.head_repository_url
+  RETURNING xmax::text
+)
+SELECT
+    COUNT(*) AS all_rows,
+    SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
+    SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
+FROM t
+`
+
+type UpsertWorkflowRunsParams struct {
+	RepoID            uuid.UUID
+	ID                int64
+	Workflowrunnodeid sql.NullString
+	Name              sql.NullString
+	Headbranch        sql.NullString
+	Runnumber         sql.NullInt32
+	Runattempt        sql.NullInt32
+	Event             sql.NullString
+	Status            sql.NullString
+	Conclusion        sql.NullString
+	Workflowid        int64
+	Checksuiteid      sql.NullInt64
+	Checksuitenodeid  sql.NullString
+	Url               sql.NullString
+	Htmlurl           sql.NullString
+	Pullrequest       pgtype.JSONB
+	Createdat         sql.NullTime
+	Updatedat         sql.NullTime
+	Runstartedat      sql.NullTime
+	Jobsurl           sql.NullString
+	Logsurl           sql.NullString
+	Checksuiteurl     sql.NullString
+	Artifactsurl      sql.NullString
+	Cancelurl         sql.NullString
+	Rerunurl          sql.NullString
+	Headcommit        pgtype.JSONB
+	Workflowurl       sql.NullString
+	Repositoryurl     sql.NullString
+	Headrepositoryurl sql.NullString
+}
+
+type UpsertWorkflowRunsRow struct {
+	AllRows int64
+	Ins     int64
+	Upd     int64
+}
+
+func (q *Queries) UpsertWorkflowRuns(ctx context.Context, arg UpsertWorkflowRunsParams) error {
+	_, err := q.db.Exec(ctx, upsertWorkflowRuns,
+		arg.RepoID,
+		arg.ID,
+		arg.Workflowrunnodeid,
+		arg.Name,
+		arg.Headbranch,
+		arg.Runnumber,
+		arg.Runattempt,
+		arg.Event,
+		arg.Status,
+		arg.Conclusion,
+		arg.Workflowid,
+		arg.Checksuiteid,
+		arg.Checksuitenodeid,
+		arg.Url,
+		arg.Htmlurl,
+		arg.Pullrequest,
+		arg.Createdat,
+		arg.Updatedat,
+		arg.Runstartedat,
+		arg.Jobsurl,
+		arg.Logsurl,
+		arg.Checksuiteurl,
+		arg.Artifactsurl,
+		arg.Cancelurl,
+		arg.Rerunurl,
+		arg.Headcommit,
+		arg.Workflowurl,
+		arg.Repositoryurl,
+		arg.Headrepositoryurl,
 	)
 	return err
 }
