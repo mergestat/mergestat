@@ -107,5 +107,20 @@ SELECT mergestat.user_mgmt_set_user_role('username30', 'ADMIN');
 -- OK Remove an admin user
 SELECT mergestat.user_mgmt_remove_user('username30');
 
--- ERR remove self
+-- OK remove self
 SELECT mergestat.user_mgmt_remove_user('username');
+
+-- OK reset role
+RESET ROLE;
+
+-- OK Create a new user with no existing role
+SELECT mergestat.user_mgmt_add_user('username', 'pass', 'ADMIN');
+
+-- OK change admin to user role
+SELECT mergestat.user_mgmt_set_user_role('username', 'USER');
+
+-- OK set role back to the user
+SET ROLE username;
+
+-- ERR Create a new user as user role
+SELECT mergestat.user_mgmt_add_user('username40', 'pass', 'USER');
