@@ -6,6 +6,8 @@ export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
 export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
+export type UserType = 'Admin' | 'User' | 'Read-Only'
+
 export type TagType = {
   title: string
   checked: boolean
@@ -136,4 +138,12 @@ export type ImportSync = {
   type: string
   opened: boolean
   defaultSyncs: Array<SyncType>
+}
+
+/** Users Props Type */
+
+export type UserData = {
+  name: string
+  role: UserType
+  createdAt?: string
 }
