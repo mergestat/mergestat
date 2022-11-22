@@ -6,7 +6,7 @@ export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
 export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
-export type UserType = 'Admin' | 'User' | 'Read-Only'
+export type UserType = 'Admin' | 'User' | 'Read-Only' | 'Unknown'
 
 export type TagType = {
   title: string

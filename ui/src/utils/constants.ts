@@ -87,5 +87,6 @@ export const REPOS_REFETCHES = ['getRepos', 'getRepoTotalCount', 'getAllEnabledR
 export enum USER_TYPE {
   ADMIN = 'Admin',
   USER = 'User',
-  READ_ONLY = 'Read-Only'
+  READ_ONLY = 'Read-Only',
+  UNKNOWN = 'Unknown'
 }
