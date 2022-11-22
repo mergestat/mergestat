@@ -9,27 +9,17 @@ import (
 	"github.com/google/go-github/v47/github"
 )
 
-// GetRepoOwnerAndRepoName extracts the owner and repo name from a GitHub repo url
+// GetRepoOwnerAndRepoName extracts the owner and repo name from a GitHub-like repo url
 // and returns the owner and repo respectively
 func GetRepoOwnerAndRepoName(repoUrl string) (string, string, error) {
-	var sr string
-	var s []string
 	parsedURL, err := url.Parse(repoUrl)
 
 	if err != nil {
 		return "", "", err
 	}
 
-	if strings.Compare(parsedURL.Scheme, "http") == 0 {
-		sr = strings.Replace(repoUrl, "http://github.com/", "", -1)
-		s := strings.Split(sr, "/")
-
-		return s[0], s[1], nil
-
-	}
-
-	sr = strings.Replace(repoUrl, "https://github.com/", "", -1)
-	s = strings.Split(sr, "/")
+	t := strings.TrimPrefix(parsedURL.EscapedPath(), "/")
+	s := strings.Split(t, "/")
 
 	return s[0], s[1], nil
 }
