@@ -97,7 +97,7 @@ const UserManagement: NextPage = () => {
                                   </div>
                                 </td>
                                 <td className='whitespace-nowrap'>
-                                  {user.roles.join(', ')}
+                                  {user.role}
                                 </td>
                                 <td className='text-gray-500 py-4'>
                                   <div className='t-button-toolbar'>
