@@ -81,7 +81,6 @@ const UserManagement: NextPage = () => {
                             <tr className='bg-white'>
                               <th scope='col' key='status' className='whitespace-nowrap'>Name</th>
                               <th scope='col' key='name' className='whitespace-nowrap'>Role</th>
-                              <th scope='col' key='lastImport' className='whitespace-nowrap'>Created</th>
                               <th scope='col' key='actions' className='whitespace-nowrap'></th>
                             </tr>
                           </thead>
@@ -99,9 +98,6 @@ const UserManagement: NextPage = () => {
                                 </td>
                                 <td className='whitespace-nowrap'>
                                   {user.role}
-                                </td>
-                                <td className='t-text-muted whitespace-nowrap'>
-                                  {user.createdAt}
                                 </td>
                                 <td className='text-gray-500 py-4'>
                                   <div className='t-button-toolbar'>
