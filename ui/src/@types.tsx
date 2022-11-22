@@ -144,6 +144,6 @@ export type ImportSync = {
 
 export type UserData = {
   name: string
-  role: UserType
+  roles: UserType[]
   createdAt?: string
 }
