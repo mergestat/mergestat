@@ -34,7 +34,11 @@ export enum TEST_IDS {
   syncsTypesSyncNowButton = 'syncs-types-sync-now-button',
   removeRepoSettingsTab = 'remove-repo-settings-tab',
   removeRepoButton = 'remove-repo-button',
-  removeRepoButtonModal = 'remove-repo-button-modal'
+  removeRepoButtonModal = 'remove-repo-button-modal',
+  inputUserSearch = 'input-user-search',
+  usersTableList = 'users-table-list',
+  usersListEmpty = 'users-list-empty',
+  usersNameTable = 'users-name-table',
 }
 
 export enum ADD_REPO {
@@ -79,3 +83,9 @@ export enum EXPORT_FORMAT {
 }
 
 export const REPOS_REFETCHES = ['getRepos', 'getRepoTotalCount', 'getAllEnabledRepos', 'getSyncErrors']
+
+export enum USER_TYPE {
+  ADMIN = 'Admin',
+  USER = 'User',
+  READ_ONLY = 'Read-Only'
+}
