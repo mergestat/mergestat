@@ -45,8 +45,3 @@ You can either run your test via your visual studio code or running this command
 ```
 go test ./...
 ```
-
-
-
-
-
