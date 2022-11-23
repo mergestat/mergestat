@@ -26,7 +26,7 @@ func GetWorkflowRunEmptyData() *github.WorkflowRun {
 	var workflowURL *string
 	var runNumber *int
 	var runAttempt *int
-	var workflowID = new(int64)
+	var workflowID *int64
 	var checkSuiteID *int64
 	var headCommit *github.HeadCommit
 	var pullRequest []*github.PullRequest
@@ -96,7 +96,7 @@ func GetWorkflowEmptyJob() *github.WorkflowJob {
 	var runURL *string
 	var checkRunURL *string
 	var labels []string
-	var runID = new(int64)
+	var runID *int64
 	var runnedID *int64
 	var runnerGroupID *int64
 	var runnerName *string

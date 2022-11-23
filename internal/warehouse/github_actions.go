@@ -374,7 +374,7 @@ func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPag
 			Event:             helper.StringToSqlNullString(workflowRun.Event),
 			Status:            helper.StringToSqlNullString(workflowRun.Status),
 			Conclusion:        helper.StringToSqlNullString(workflowRun.Conclusion),
-			Workflowid:        *workflowRun.WorkflowID,
+			Workflowid:        helper.Int64ToSqlNullInt64(workflowRun.WorkflowID),
 			Checksuiteid:      helper.Int64ToSqlNullInt64(workflowRun.CheckSuiteID),
 			Checksuitenodeid:  helper.StringToSqlNullString(workflowRun.CheckSuiteNodeID),
 			Url:               helper.StringToSqlNullString(workflowRun.URL),
@@ -431,7 +431,7 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 	if err := w.db.WithTx(tx).UpsertWorkflowRunJobs(ctx, db.UpsertWorkflowRunJobsParams{
 		Repoid:          repoID,
 		ID:              *workflowJob.ID,
-		Runid:           *workflowJob.RunID,
+		Runid:           helper.Int64ToSqlNullInt64(workflowJob.RunID),
 		Log:             helper.StringToSqlNullString(&log),
 		Runurl:          helper.StringToSqlNullString(workflowJob.RunURL),
 		Jobnodeid:       helper.StringToSqlNullString(workflowJob.NodeID),

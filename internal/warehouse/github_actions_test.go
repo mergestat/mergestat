@@ -272,7 +272,7 @@ func TestWarehouseWorkflowRunsOK(t *testing.T) {
 					Event:             helper.StringToSqlNullString(testRuns.Event),
 					Status:            helper.StringToSqlNullString(testRuns.Status),
 					Conclusion:        helper.StringToSqlNullString(testRuns.Conclusion),
-					Workflowid:        *testRuns.WorkflowID,
+					Workflowid:        helper.Int64ToSqlNullInt64(testRuns.WorkflowID),
 					Checksuiteid:      helper.Int64ToSqlNullInt64(testRuns.CheckSuiteID),
 					Checksuitenodeid:  helper.StringToSqlNullString(testRuns.CheckSuiteNodeID),
 					Url:               helper.StringToSqlNullString(testRuns.URL),
@@ -389,7 +389,7 @@ func TestWarehouseWorkflowJobsOK(t *testing.T) {
 				mockedDb.EXPECT().UpsertWorkflowRunJobs(ctx, db.UpsertWorkflowRunJobsParams{
 					Repoid:          repoID,
 					ID:              *testJobs.ID,
-					Runid:           *testJobs.RunID,
+					Runid:           helper.Int64ToSqlNullInt64(testJobs.RunID),
 					Log:             helper.StringToSqlNullString(&log),
 					Runurl:          helper.StringToSqlNullString(testJobs.RunURL),
 					Jobnodeid:       helper.StringToSqlNullString(testJobs.NodeID),

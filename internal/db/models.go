@@ -179,7 +179,7 @@ type GithubActionsWorkflowRun struct {
 	Event             sql.NullString
 	Status            sql.NullString
 	Conclusion        sql.NullString
-	WorkflowID        int64
+	WorkflowID        sql.NullInt64
 	CheckSuiteID      sql.NullInt64
 	CheckSuiteNodeID  sql.NullString
 	Url               sql.NullString
@@ -204,7 +204,7 @@ type GithubActionsWorkflowRun struct {
 type GithubActionsWorkflowRunJob struct {
 	RepoID            uuid.UUID
 	ID                int64
-	RunID             int64
+	RunID             sql.NullInt64
 	Log               sql.NullString
 	RunUrl            sql.NullString
 	JobNodeID         sql.NullString
