@@ -585,7 +585,7 @@ FROM t
 type UpsertWorkflowRunJobsParams struct {
 	Repoid          uuid.UUID
 	ID              int64
-	Runid           int64
+	Runid           sql.NullInt64
 	Log             sql.NullString
 	Runurl          sql.NullString
 	Jobnodeid       sql.NullString
@@ -752,7 +752,7 @@ type UpsertWorkflowRunsParams struct {
 	Event             sql.NullString
 	Status            sql.NullString
 	Conclusion        sql.NullString
-	Workflowid        int64
+	Workflowid        sql.NullInt64
 	Checksuiteid      sql.NullInt64
 	Checksuitenodeid  sql.NullString
 	Url               sql.NullString
