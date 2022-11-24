@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1-experimental
 
-FROM golang:1.19-alpine AS builder
-RUN set -x && apk add --no-cache cmake git make gcc libtool g++ openssl-dev
+FROM golang:1.19-alpine3.16 AS builder
+RUN set -x && apk add --no-cache cmake git make gcc libtool g++ openssl1.1-compat-dev
 COPY scripts/install_libgit2.sh install_libgit2.sh
 RUN ./install_libgit2.sh
 WORKDIR /src
@@ -9,9 +9,9 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 COPY . .
 RUN --mount=type=cache,target=/root/.cache/go-build \
-PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ make
+    PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ make
 
-FROM alpine
+FROM alpine:3.16
 RUN set -x && apk add --no-cache curl postgresql-client ca-certificates git
 
 # copy over migrations
