@@ -3,7 +3,8 @@ import { Avatar, Button, HelpText, Input, Label, Modal, Panel, Toolbar } from '@
 import { UserIcon, XIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import React, { ChangeEvent, useCallback, useState } from 'react'
-import { UPDATE_USER_PASSWORD, UPDATE_USER_ROLE } from 'src/api-logic/graphql/mutations/add-users'
+import { UpdateUserRoleMutation } from 'src/api-logic/graphql/generated/schema'
+import { UPDATE_USER_PASSWORD, UPDATE_USER_ROLE } from 'src/api-logic/graphql/mutations/manage-users'
 import { useUserSettingsContext, useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
 import { showSuccessAlert } from 'src/utils/alerts'
 import { TEST_IDS, USER_ROLES } from 'src/utils/constants'
@@ -12,11 +13,12 @@ export const EditUserModal: React.FC = () => {
   const [{ usernameEdit, roleEdit }] = useUserSettingsContext()
   const { setShowEditUserModal } = useUserSettingsSetState()
 
-  const [updatePassword] = useMutation(UPDATE_USER_PASSWORD)
+  const [updatePassword] = useMutation(UPDATE_USER_PASSWORD, { errorPolicy: 'all' })
 
   const [updateRole] = useMutation(UPDATE_USER_ROLE, {
-    onCompleted: () => {
-      showSuccessAlert('User updated')
+    errorPolicy: 'all',
+    onCompleted: (data: UpdateUserRoleMutation) => {
+      data.userMgmtSetUserRole && showSuccessAlert('User updated')
     },
     awaitRefetchQueries: true,
     refetchQueries: () => ['getUsers']
