@@ -1,13 +1,13 @@
 import { UserData } from 'src/@types'
 import { USER_TYPE_UI } from 'src/utils/constants'
-import { UsersQuery } from '../graphql/generated/schema'
+import { GetUsersQuery } from '../graphql/generated/schema'
 
 /**
  * Method which iterate each user and map it to UserData to be shown in table
  * @param data User list that comes from data base in UserData format
  * @returns User list from data base mapped to RepoImportData list
  */
-const mapToUserData = (data: UsersQuery | undefined): Array<UserData> => {
+const mapToUserData = (data: GetUsersQuery | undefined): Array<UserData> => {
   const mappedData: Array<UserData> = []
 
   data?.userMgmtPgUsers?.nodes.forEach((usr) => {
