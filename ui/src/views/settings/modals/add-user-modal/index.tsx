@@ -3,7 +3,8 @@ import { Button, HelpText, Input, Label, Modal, Toolbar } from '@mergestat/block
 import { XIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import React, { ChangeEvent, useCallback, useState } from 'react'
-import { ADD_USER } from 'src/api-logic/graphql/mutations/add-users'
+import { AddUserMutation } from 'src/api-logic/graphql/generated/schema'
+import { ADD_USER } from 'src/api-logic/graphql/mutations/manage-users'
 import { useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
 import { showSuccessAlert } from 'src/utils/alerts'
 import { TEST_IDS, USER_ROLES } from 'src/utils/constants'
@@ -12,8 +13,9 @@ export const AddUserModal: React.FC = () => {
   const { setShowAddUserModal } = useUserSettingsSetState()
 
   const [addUser] = useMutation(ADD_USER, {
-    onCompleted: () => {
-      showSuccessAlert('User added')
+    errorPolicy: 'all',
+    onCompleted: (data: AddUserMutation) => {
+      data.userMgmtAddUser && showSuccessAlert('User added')
     },
     awaitRefetchQueries: true,
     refetchQueries: () => ['getUsers']

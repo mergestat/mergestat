@@ -1,5 +1,5 @@
 import { AddUserMutation, GetUsersQuery, RemoveUserMutation, UpdateUserPasswordMutation, UpdateUserRoleMutation } from 'src/api-logic/graphql/generated/schema'
-import { ADD_USER, REMOVE_USER, UPDATE_USER_PASSWORD, UPDATE_USER_ROLE } from 'src/api-logic/graphql/mutations/add-users'
+import { ADD_USER, REMOVE_USER, UPDATE_USER_PASSWORD, UPDATE_USER_ROLE } from 'src/api-logic/graphql/mutations/manage-users'
 import { LIST_USERS } from 'src/api-logic/graphql/queries/get-users'
 import { DynamicValues } from './constants.mock'
 
