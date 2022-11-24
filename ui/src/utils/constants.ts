@@ -37,8 +37,21 @@ export enum TEST_IDS {
   removeRepoButtonModal = 'remove-repo-button-modal',
   inputUserSearch = 'input-user-search',
   usersTableList = 'users-table-list',
+  usersTableListAddUser = 'users-table-list-add-user',
   usersListEmpty = 'users-list-empty',
   usersNameTable = 'users-name-table',
+  usersAddUsername = 'users-add-username',
+  usersAddPassword = 'users-add-password',
+  usersAddPasswordConfirm = 'users-add-password-confirm',
+  usersAddRole = 'users-add-role',
+  usersAddButton = 'users-add-button',
+  usersEditUser = 'users-edit-user',
+  usersEditPassword = 'users-edit-password',
+  usersEditPasswordConfirm = 'users-edit-password-confirm',
+  usersEditRole = 'users-edit-role',
+  usersEditButton = 'users-edit-button',
+  usersRemoveUser = 'users-remove-user',
+  usersRemoveUserButton = 'users-remove-user-button',
 }
 
 export enum ADD_REPO {
@@ -84,9 +97,33 @@ export enum EXPORT_FORMAT {
 
 export const REPOS_REFETCHES = ['getRepos', 'getRepoTotalCount', 'getAllEnabledRepos', 'getSyncErrors']
 
-export enum USER_TYPE {
+export enum USER_TYPE_UI {
   ADMIN = 'Admin',
   USER = 'User',
   READ_ONLY = 'Read-Only',
   UNKNOWN = 'Unknown'
 }
+
+export enum USER_TYPE {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+  READ_ONLY = 'READ_ONLY'
+}
+
+export const USER_ROLES = [
+  {
+    key: 'ADMIN',
+    name: 'Admin',
+    desc: 'Admins have access to everything'
+  },
+  {
+    key: 'USER',
+    name: 'User',
+    desc: 'Users can create, read and update data, but can’t delete any data '
+  },
+  {
+    key: 'READ_ONLY',
+    name: 'Read-Only',
+    desc: 'Read-Only users can only read data'
+  },
+]

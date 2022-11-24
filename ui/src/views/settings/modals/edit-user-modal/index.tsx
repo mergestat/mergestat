@@ -1,35 +1,56 @@
-import { Avatar, Button, Input, Label, Modal, Panel, Toolbar } from '@mergestat/blocks'
+import { useMutation } from '@apollo/client'
+import { Avatar, Button, HelpText, Input, Label, Modal, Panel, Toolbar } from '@mergestat/blocks'
 import { UserIcon, XIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import React, { ChangeEvent, useCallback, useState } from 'react'
-import { useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
-
-const roles = [
-  {
-    name: 'Admin',
-    desc: 'Admins have access to everything',
-  },
-  {
-    name: 'User',
-    desc: 'Users can create, read and update data, but can’t delete any data ',
-  },
-  {
-    name: 'Read-Only',
-    desc: 'Read-Only users can only read data',
-  },
-]
+import { UPDATE_USER_PASSWORD, UPDATE_USER_ROLE } from 'src/api-logic/graphql/mutations/add-users'
+import { useUserSettingsContext, useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
+import { showSuccessAlert } from 'src/utils/alerts'
+import { TEST_IDS, USER_ROLES } from 'src/utils/constants'
 
 export const EditUserModal: React.FC = () => {
+  const [{ usernameEdit, roleEdit }] = useUserSettingsContext()
   const { setShowEditUserModal } = useUserSettingsSetState()
+
+  const [updatePassword] = useMutation(UPDATE_USER_PASSWORD)
+
+  const [updateRole] = useMutation(UPDATE_USER_ROLE, {
+    onCompleted: () => {
+      showSuccessAlert('User updated')
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => ['getUsers']
+  })
 
   const close = useCallback(() => {
     setShowEditUserModal(false)
   }, [setShowEditUserModal])
 
-  const [Role, setRole] = useState('Admin')
+  const [role, setRole] = useState<string | null>(roleEdit)
+  const [password, setPassword] = useState<string>()
+  const [passwordConfirm, setPasswordConfirm] = useState<string>()
+  const [error, setError] = useState<boolean>(false)
 
   function onChangeValue(event: ChangeEvent<HTMLInputElement>) {
     setRole(event.target.value)
+  }
+
+  const handleUpdateUser = () => {
+    setError(false)
+
+    // If password or confirm password are typed
+    if (password || passwordConfirm) {
+      if (password !== passwordConfirm) {
+        setError(true)
+      } else { // Update password and role as well
+        updatePassword({ variables: { username: usernameEdit, password } })
+        updateRole({ variables: { username: usernameEdit, role } })
+        close()
+      }
+    } else { // Just update the role
+      updateRole({ variables: { username: usernameEdit, role } })
+      close()
+    }
   }
 
   return (
@@ -59,8 +80,8 @@ export const EditUserModal: React.FC = () => {
               <div className='flex items-center space-x-4'>
                 <Avatar size='lg' icon={<UserIcon className='t-icon' />} />
                 <div>
-                  <h4 className='font-medium mb-0.5'>johndoe</h4>
-                  <p className='t-text-muted text-sm'>Created 4 days ago</p>
+                  <h4 className='font-medium mb-0.5'>{usernameEdit}</h4>
+                  {/* <p className='t-text-muted text-sm'>Created 4 days ago</p> */}
                 </div>
               </div>
             </Panel.Body>
@@ -68,25 +89,45 @@ export const EditUserModal: React.FC = () => {
           <form className='space-y-6'>
             <div>
               <Label>Password</Label>
-              <Input type='password' />
+              <Input type='password' value={password} placeholder="username"
+                data-testid={TEST_IDS.usersEditPassword}
+                variant={error ? 'error' : 'default'}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                onKeyPress={(e) => (e.key === 'Enter' && handleUpdateUser())}
+              />
             </div>
             <div>
               <Label>Confirm password</Label>
-              <Input type='password' />
+              <Input type='password' value={passwordConfirm} placeholder="username"
+                data-testid={TEST_IDS.usersEditPasswordConfirm}
+                variant={error ? 'error' : 'default'}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPasswordConfirm(e.target.value)}
+                onKeyPress={(e) => (e.key === 'Enter' && handleUpdateUser())}
+              />
+              {error && (
+                <HelpText variant="error">{'Passwords don\'t match'}</HelpText>
+              )}
             </div>
             <div>
               <Label>Role</Label>
               <div className='space-y-3'>
-                {roles.map((role, index) => (
+                {USER_ROLES.map((r, index) => (
                   <div key={index} onChange={onChangeValue}>
                     <label htmlFor={`radio-role-${index}`} className='t-radio space-x-4'>
-                      <div className={cx('t-radio-card w-full', { 't-radio-card-selected': Role === role.name })}>
+                      <div className={cx('t-radio-card w-full', { 't-radio-card-selected': role === r.key })}>
                         <div className='self-start'>
-                          <input id={`radio-role-${index}`} type='radio' name='role' value={role.name} checked={role ? Role === role.name : undefined} />
+                          <input id={`radio-role-${index}`}
+                            readOnly
+                            type='radio'
+                            name='role'
+                            value={r.key}
+                            checked={r ? role === r.key : undefined}
+                            data-testid={`${TEST_IDS.usersEditRole}-${index}`}
+                          />
                         </div>
                         <div>
-                          <h4 className='font-medium mb-0.5'>{role.name}</h4>
-                          <p className='font-normal text-sm t-text-muted'>{role.desc}</p>
+                          <h4 className='font-medium mb-0.5'>{r.name}</h4>
+                          <p className='font-normal text-sm t-text-muted'>{r.desc}</p>
                         </div>
                       </div>
                     </label>
@@ -102,7 +143,10 @@ export const EditUserModal: React.FC = () => {
           <Toolbar.Right>
             <div className='t-button-toolbar'>
               <Button skin='secondary' label='Cancel' onClick={close} />
-              <Button label='Save' />
+              <Button label='Save'
+                data-testid={TEST_IDS.usersEditButton}
+                onClick={handleUpdateUser}
+              />
             </div>
           </Toolbar.Right>
         </Toolbar>

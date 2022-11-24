@@ -1,5 +1,5 @@
 import { UserData } from 'src/@types'
-import { USER_TYPE } from 'src/utils/constants'
+import { USER_TYPE_UI } from 'src/utils/constants'
 import { UsersQuery } from '../graphql/generated/schema'
 
 /**
@@ -26,13 +26,13 @@ const mapToUserData = (data: UsersQuery | undefined): Array<UserData> => {
 
 const getRole = (roles: Array<string | null>) => {
   if (roles.includes('mergestat_role_admin')) {
-    return USER_TYPE.ADMIN
+    return USER_TYPE_UI.ADMIN
   } else if (roles.includes('mergestat_role_user')) {
-    return USER_TYPE.USER
+    return USER_TYPE_UI.USER
   } else if (roles.includes('mergestat_role_readonly')) {
-    return USER_TYPE.READ_ONLY
+    return USER_TYPE_UI.READ_ONLY
   } else {
-    return USER_TYPE.UNKNOWN
+    return USER_TYPE_UI.UNKNOWN
   }
 }
 
