@@ -6,7 +6,9 @@ export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
 export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
-export type UserType = 'Admin' | 'User' | 'Read-Only' | 'Unknown'
+export type UserTypeUI = 'Admin' | 'User' | 'Read-Only' | 'Unknown'
+
+export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
 
 export type TagType = {
   title: string
@@ -144,6 +146,6 @@ export type ImportSync = {
 
 export type UserData = {
   name: string
-  role: UserType
+  role: UserTypeUI
   createdAt?: string
 }

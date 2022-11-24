@@ -1,11 +1,14 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
+import { UserType } from 'src/@types'
 
 type UserSettingsContextT = {
   showChangePasswordModal: boolean
   showAddUserModal: boolean
   showEditUserModal: boolean
   showRemoveUserModal: boolean
+  usernameEdit: string | null
+  roleEdit: UserType | null
 }
 
 type UseUserSettingsContextT = [
@@ -17,7 +20,9 @@ const initialState: UserSettingsContextT = {
   showChangePasswordModal: false,
   showAddUserModal: false,
   showEditUserModal: false,
-  showRemoveUserModal: false
+  showRemoveUserModal: false,
+  usernameEdit: null,
+  roleEdit: null
 }
 
 function useUserSettings(): UseUserSettingsContextT {
@@ -70,12 +75,28 @@ function useUserSettingsSetState() {
     }))
   }
 
+  const setUsernameEdit = (usernameEdit: string | null) => {
+    setState(prev => ({
+      ...prev,
+      usernameEdit
+    }))
+  }
+
+  const setRolEdit = (roleEdit: UserType | null) => {
+    setState(prev => ({
+      ...prev,
+      roleEdit
+    }))
+  }
+
   return {
     _,
     setShowChangePasswordModal,
     setShowAddUserModal,
     setShowEditUserModal,
-    setShowRemoveUserModal
+    setShowRemoveUserModal,
+    setUsernameEdit,
+    setRolEdit
   }
 }
 

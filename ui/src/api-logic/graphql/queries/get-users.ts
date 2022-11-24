@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 const LIST_USERS = gql`
-  query Users($search: String) {
+  query getUsers($search: String) {
     userMgmtPgUsers(
       filter: {rolname: {includes: $search}}
     ) {

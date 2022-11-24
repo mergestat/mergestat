@@ -13400,6 +13400,38 @@ export type UpdateRepoImportMutationVariables = Exact<{
 
 export type UpdateRepoImportMutation = { updateRepoImport?: { repoImport?: { id: any, settings: any } | null } | null };
 
+export type AddUserMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+  role: Scalars['String'];
+}>;
+
+
+export type AddUserMutation = { userMgmtAddUser?: { clientMutationId?: string | null, integer?: number | null } | null };
+
+export type UpdateUserRoleMutationVariables = Exact<{
+  username: Scalars['String'];
+  role: Scalars['String'];
+}>;
+
+
+export type UpdateUserRoleMutation = { userMgmtSetUserRole?: { clientMutationId?: string | null, integer?: number | null } | null };
+
+export type UpdateUserPasswordMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type UpdateUserPasswordMutation = { userMgmtUpdateUserPassword?: { clientMutationId?: string | null, integer?: number | null } | null };
+
+export type RemoveUserMutationVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type RemoveUserMutation = { userMgmtRemoveUser?: { clientMutationId?: string | null, integer?: number | null } | null };
+
 export type RemoveRepoMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -13533,16 +13565,16 @@ export type GetLogsOfSyncQueryVariables = Exact<{
 
 export type GetLogsOfSyncQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string, description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
 
+export type GetUsersQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetUsersQuery = { userMgmtPgUsers?: { nodes: Array<{ memberof?: Array<string | null> | null, rolname?: string | null }> } | null };
+
 export type ExecuteSqlQueryVariables = Exact<{
   sql: Scalars['String'];
 }>;
 
 
 export type ExecuteSqlQuery = { execSQL?: any | null };
-
-export type UsersQueryVariables = Exact<{
-  search?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type UsersQuery = { userMgmtPgUsers?: { nodes: Array<{ memberof?: Array<string | null> | null, rolname?: string | null }> } | null };

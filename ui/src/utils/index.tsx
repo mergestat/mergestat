@@ -1,9 +1,9 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
-import { RepoSyncStateT } from 'src/@types'
+import { RepoSyncStateT, UserTypeUI } from 'src/@types'
 import { RepoSyncQueue } from 'src/api-logic/graphql/generated/schema'
 import { showSuccessAlert } from './alerts'
-import { SYNC_STATUS } from './constants'
+import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI } from './constants'
 
 export function checkRepoValidate(repo: string, checkDomain = true) {
   return checkDomain
@@ -181,4 +181,22 @@ export const filterByAllFields = (array: Array<string | number | boolean>, searc
 export const getMaxPagination = (page: number, rows: number, total: number) => {
   const max = (page + 1) * rows
   return max > total ? total : max
+}
+
+/**
+ * Method to map to a USER_TYPE
+ * @param role Role to map
+ * @returns UserType corresponding value
+ */
+export const mapToUserType = (role: UserTypeUI) => {
+  switch (role) {
+    case USER_TYPE_UI.ADMIN:
+      return USER_TYPE.ADMIN
+    case USER_TYPE_UI.USER:
+      return USER_TYPE.USER
+    case USER_TYPE_UI.READ_ONLY:
+      return USER_TYPE.READ_ONLY
+    default:
+      return null
+  }
 }
