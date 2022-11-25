@@ -164,7 +164,7 @@ describe('GraphQL queries: (Users)', () => {
         expect((passwordConfirmInput as HTMLInputElement).value).toBe(DynamicValues.newUser)
       }
 
-      // Change role to 'Read-Only'
+      // Change role to 'Read Only'
       const roleRadioInput = screen.getByTestId(`${TEST_IDS.usersEditRole}-2`)
       if (roleRadioInput) {
         fireEvent.click(roleRadioInput)
