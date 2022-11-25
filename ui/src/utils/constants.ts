@@ -100,7 +100,7 @@ export const REPOS_REFETCHES = ['getRepos', 'getRepoTotalCount', 'getAllEnabledR
 export enum USER_TYPE_UI {
   ADMIN = 'Admin',
   USER = 'User',
-  READ_ONLY = 'Read-Only',
+  READ_ONLY = 'Read Only',
   UNKNOWN = 'Unknown'
 }
 
@@ -114,16 +114,16 @@ export const USER_ROLES = [
   {
     key: 'ADMIN',
     name: 'Admin',
-    desc: 'Admins have access to everything'
+    desc: 'Admins can take any action'
   },
   {
     key: 'USER',
     name: 'User',
-    desc: 'Users can create, read and update data, but can’t delete any data '
+    desc: 'Users can take most actions, but cannot create new users'
   },
   {
     key: 'READ_ONLY',
-    name: 'Read-Only',
-    desc: 'Read-Only users can only read data'
+    name: 'Read Only',
+    desc: 'Read Only users can only read data'
   },
 ]

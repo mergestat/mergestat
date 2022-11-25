@@ -6,7 +6,7 @@ export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
 export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
 
-export type UserTypeUI = 'Admin' | 'User' | 'Read-Only' | 'Unknown'
+export type UserTypeUI = 'Admin' | 'User' | 'Read Only' | 'Unknown'
 
 export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
 

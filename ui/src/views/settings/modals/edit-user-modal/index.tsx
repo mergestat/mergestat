@@ -3,7 +3,7 @@ import { Avatar, Button, HelpText, Input, Label, Modal, Panel, Toolbar } from '@
 import { UserIcon, XIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import React, { ChangeEvent, useCallback, useState } from 'react'
-import { UpdateUserRoleMutation } from 'src/api-logic/graphql/generated/schema'
+import { UpdateUserPasswordMutation, UpdateUserRoleMutation } from 'src/api-logic/graphql/generated/schema'
 import { UPDATE_USER_PASSWORD, UPDATE_USER_ROLE } from 'src/api-logic/graphql/mutations/manage-users'
 import { useUserSettingsContext, useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
 import { showSuccessAlert } from 'src/utils/alerts'
@@ -13,7 +13,16 @@ export const EditUserModal: React.FC = () => {
   const [{ usernameEdit, roleEdit }] = useUserSettingsContext()
   const { setShowEditUserModal } = useUserSettingsSetState()
 
-  const [updatePassword] = useMutation(UPDATE_USER_PASSWORD, { errorPolicy: 'all' })
+  const [updatePassword] = useMutation(UPDATE_USER_PASSWORD, {
+    errorPolicy: 'all',
+    onCompleted: (data: UpdateUserPasswordMutation) => {
+      role === roleEdit && data.userMgmtUpdateUserPassword && showSuccessAlert('User updated')
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => {
+      return role === roleEdit ? (['getUsers']) : ([])
+    }
+  })
 
   const [updateRole] = useMutation(UPDATE_USER_ROLE, {
     errorPolicy: 'all',
@@ -44,9 +53,9 @@ export const EditUserModal: React.FC = () => {
     if (password || passwordConfirm) {
       if (password !== passwordConfirm) {
         setError(true)
-      } else { // Update password and role as well
+      } else { // Update password and/or role
         updatePassword({ variables: { username: usernameEdit, password } })
-        updateRole({ variables: { username: usernameEdit, role } })
+        role !== roleEdit && updateRole({ variables: { username: usernameEdit, role } })
         close()
       }
     } else { // Just update the role
@@ -91,7 +100,7 @@ export const EditUserModal: React.FC = () => {
           <form className='space-y-6'>
             <div>
               <Label>Password</Label>
-              <Input type='password' value={password} placeholder="username"
+              <Input type='password' value={password} placeholder="password"
                 data-testid={TEST_IDS.usersEditPassword}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
@@ -100,7 +109,7 @@ export const EditUserModal: React.FC = () => {
             </div>
             <div>
               <Label>Confirm password</Label>
-              <Input type='password' value={passwordConfirm} placeholder="username"
+              <Input type='password' value={passwordConfirm} placeholder="confirm password"
                 data-testid={TEST_IDS.usersEditPasswordConfirm}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPasswordConfirm(e.target.value)}
