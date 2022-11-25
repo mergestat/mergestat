@@ -119,7 +119,7 @@ const UserManagement: NextPage = () => {
                                 <td className='whitespace-nowrap'>
                                   {user.role}
                                 </td>
-                                <td className='text-gray-500 py-4'>
+                                <td className='text-gray-500 text-right py-4'>
                                   <Button
                                     skin='borderless-muted'
                                     className='mr-5'
@@ -133,7 +133,7 @@ const UserManagement: NextPage = () => {
                                     startIcon={<TrashIcon className='t-icon' />}
                                     onClick={() => handleUserDeletion(user.name)}
                                     data-testid={`${TEST_IDS.usersRemoveUser}-${index}`}
-                                    hidden={currentUserData?.currentMergeStatUser === user.name}
+                                    style={{ visibility: currentUserData?.currentMergeStatUser === user.name ? 'hidden' : 'unset' }}
                                     isIconOnly
                                   />
                                 </td>
