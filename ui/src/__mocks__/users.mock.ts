@@ -1,5 +1,6 @@
-import { AddUserMutation, GetUsersQuery, RemoveUserMutation, UpdateUserPasswordMutation, UpdateUserRoleMutation } from 'src/api-logic/graphql/generated/schema'
+import { AddUserMutation, CurrentUserQuery, GetUsersQuery, RemoveUserMutation, UpdateUserPasswordMutation, UpdateUserRoleMutation } from 'src/api-logic/graphql/generated/schema'
 import { ADD_USER, REMOVE_USER, UPDATE_USER_PASSWORD, UPDATE_USER_ROLE } from 'src/api-logic/graphql/mutations/manage-users'
+import { CURRENT_USER } from 'src/api-logic/graphql/queries/auth'
 import { LIST_USERS } from 'src/api-logic/graphql/queries/get-users'
 import { DynamicValues } from './constants.mock'
 
@@ -203,5 +204,40 @@ export const apolloMockRemoveUser = {
   },
   result: {
     data: mockRemoveUser
+  }
+}
+
+// Apollo Mock: Settings change Password
+export const mockUserChangePassword: UpdateUserPasswordMutation = {
+  userMgmtUpdateUserPassword: {
+    clientMutationId: null,
+    integer: 1
+  }
+}
+
+export const apolloMockUserChangePassword = {
+  request: {
+    query: UPDATE_USER_PASSWORD,
+    variables: {
+      username: DynamicValues.mergestatUser,
+      password: DynamicValues.passwordTenCharacters,
+    }
+  },
+  result: {
+    data: mockUserChangePassword
+  }
+}
+
+// Apollo Mock: Current user
+export const mockCurrentUser: CurrentUserQuery = {
+  currentMergeStatUser: DynamicValues.mergestatUser
+}
+
+export const apolloMockCurrentUser = {
+  request: {
+    query: CURRENT_USER
+  },
+  result: {
+    data: mockCurrentUser
   }
 }

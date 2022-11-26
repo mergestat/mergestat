@@ -5,9 +5,10 @@ import 'intersection-observer'
 import { UserSettingsProvider } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import UserManagement from 'src/views/settings/user-management'
+import UserSettings from 'src/views/settings/user-settings'
 import { DynamicValues } from 'src/__mocks__/constants.mock'
 import {
-  apolloMockAddUser, apolloMockEditUserPassword, apolloMockEditUserRole, apolloMockRemoveUser, apolloMockUserSearch,
+  apolloMockAddUser, apolloMockCurrentUser, apolloMockEditUserPassword, apolloMockEditUserRole, apolloMockRemoveUser, apolloMockUserChangePassword, apolloMockUserSearch,
   apolloMockUsersNoData, apolloMockUsersWithData, apolloMockWithEditedUser, apolloMockWithNewUser
 } from 'src/__mocks__/users.mock'
 
@@ -222,6 +223,65 @@ describe('GraphQL queries: (Users)', () => {
     // Check success alert
     await waitFor(() => {
       const successAlert = screen.getByText('User removed')
+      expect(successAlert).toBeInTheDocument()
+    })
+  })
+
+  it('calling useMutation(): change user password', async () => {
+    render(
+      <MockedProvider mocks={[apolloMockCurrentUser, apolloMockUserChangePassword]} addTypename={false}>
+        <UserSettingsProvider>
+          <UserSettings />
+        </UserSettingsProvider>
+      </MockedProvider>
+    )
+
+    let changeModalButton
+    await waitFor(() => {
+      // Check username is load
+      const elements = screen.getByText(DynamicValues.mergestatUser)
+      expect(elements).toBeInTheDocument()
+
+      changeModalButton = screen.getByTestId(TEST_IDS.usersSettingsChangeModal)
+    })
+
+    // Click on 'Change Password' to open modal
+    changeModalButton && fireEvent.click(changeModalButton)
+
+    await waitFor(() => {
+      // Check modal title is load
+      const elements = screen.getAllByText(/Change password/i)
+      const headElement = elements.find(ele => ele instanceof HTMLHeadingElement)
+      expect(headElement).toBeInTheDocument()
+
+      // Set new password
+      const passwordInput = screen.getByTestId(TEST_IDS.usersSettingsPassword)
+      if (passwordInput) {
+        // Typing 'newuser'
+        fireEvent.change(passwordInput, { target: { value: DynamicValues.passwordTenCharacters } })
+        expect((passwordInput as HTMLInputElement).value).toBe(DynamicValues.passwordTenCharacters)
+      }
+
+      // Set password confirm
+      const passwordConfirmInput = screen.getByTestId(TEST_IDS.usersSettingsPasswordConfirm)
+      if (passwordConfirmInput) {
+        // Typing 'newuser'
+        fireEvent.change(passwordConfirmInput, { target: { value: DynamicValues.passwordTenCharacters } })
+        expect((passwordConfirmInput as HTMLInputElement).value).toBe(DynamicValues.passwordTenCharacters)
+      }
+    })
+
+    let changePasswordButton
+    await waitFor(() => {
+      changePasswordButton = screen.getByTestId(TEST_IDS.usersSettingsChangeButton)
+    })
+
+    // Click on 'Change Password' button
+    changePasswordButton && fireEvent.click(changePasswordButton)
+
+    // Check success alert
+    await waitFor(() => {
+      const successAlert = screen.getByText('Password changed')
       expect(successAlert).toBeInTheDocument()
     })
   })

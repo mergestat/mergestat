@@ -1,15 +1,21 @@
+import { useQuery } from '@apollo/client'
 import { Avatar, Button, Label, Panel, Toolbar } from '@mergestat/blocks'
 import { UserIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Fragment } from 'react'
-import SettingsView from 'src/views/settings'
+import { CurrentUserQuery } from 'src/api-logic/graphql/generated/schema'
+import { CURRENT_USER } from 'src/api-logic/graphql/queries/auth'
 import { useUserSettingsContext, useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
+import { TEST_IDS } from 'src/utils/constants'
+import SettingsView from 'src/views/settings'
 import { ChangePasswordModal } from 'src/views/settings/modals/change-password-modal'
 
 const UserSettings: NextPage = () => {
   const [{ showChangePasswordModal }] = useUserSettingsContext()
-  const { setShowChangePasswordModal } = useUserSettingsSetState()
+  const { setShowChangePasswordModal, setUsernameEdit } = useUserSettingsSetState()
+
+  const { data } = useQuery<CurrentUserQuery>(CURRENT_USER, { fetchPolicy: 'no-cache' })
 
   return (
     <>
@@ -40,22 +46,27 @@ const UserSettings: NextPage = () => {
                     <div className='space-y-6'>
                       <div className='space-y-0.5'>
                         <Label>Username</Label>
-                        <p>johndoe</p>
+                        <p>{data?.currentMergeStatUser}</p>
                       </div>
                       <div className='space-y-0.5'>
                         <Label>Password</Label>
-                        <Button skin='secondary' label='Change Password' onClick={() => setShowChangePasswordModal(true)} />
+                        <Button skin='secondary' label='Change Password'
+                          onClick={() => {
+                            setUsernameEdit(data?.currentMergeStatUser || null)
+                            setShowChangePasswordModal(true)
+                          }}
+                          data-testid={TEST_IDS.usersSettingsChangeModal}
+                        />
                       </div>
-                      <div className='space-y-0.5'>
+                      {/* <div className='space-y-0.5'>
                         <Label>Role</Label>
                         <p className='mb-0.5'>User</p>
                         <p className='text-sm t-text-muted'>
                           Your role is set to user which means you can create, read and update data inside MergeStat.
                           <br /> Please contact the administrator in case you need additional rights.
                         </p>
-                      </div>
+                      </div> */}
                     </div>
-
                   </div>
                 </Panel.Body>
               </Panel>

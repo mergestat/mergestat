@@ -52,6 +52,10 @@ export enum TEST_IDS {
   usersEditButton = 'users-edit-button',
   usersRemoveUser = 'users-remove-user',
   usersRemoveUserButton = 'users-remove-user-button',
+  usersSettingsPassword = 'users-settings-password',
+  usersSettingsPasswordConfirm = 'users-settings-password-confirm',
+  usersSettingsChangeModal = 'users-settings-change-modal',
+  usersSettingsChangeButton = 'users-settings-change-button',
 }
 
 export enum ADD_REPO {
