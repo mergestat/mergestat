@@ -13,4 +13,5 @@ export enum DynamicValues {
   syncTypeGitFilesId = '101890be-162a-4cb8-b103-22ea924cbdca',
   mergestatUser = 'mergestat_admin',
   newUser = 'newuser',
+  passwordTenCharacters = 'newuseradmin',
 }
