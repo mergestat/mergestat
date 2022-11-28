@@ -2,7 +2,6 @@ package syncer
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v4"
@@ -12,8 +11,6 @@ import (
 
 type syncLogType string
 
-type jobStatus string
-
 const (
 	SyncLogTypeInfo  syncLogType = "INFO"
 	SyncLogTypeWarn  syncLogType = "WARNING"
@@ -21,24 +18,20 @@ const (
 )
 
 const (
-	jobStatusTypeInit   jobStatus = "starting"
-	jobStatusTypeFinish jobStatus = "finishing"
-	unexpectedBehavior  jobStatus = "unexpected behavior"
+	// LogFormatStartingSync is the message for the start of a sync job
+	LogFormatStartingSync = "starting repo sync: %s for repo: %s"
+
+	// LogFormatFinishingSync is the message for the end of a sync job
+	LogFormatFinishingSync = "finishing repo sync: %s for repo: %s"
+
+	// LogFormatErrorWarningMessage is for formatting a warning message when an error was encountered during a repo sync
+	LogFormatErrorWarningMessage = "warning: %s (%v)"
 )
 
 type syncLog struct {
 	Type            syncLogType
 	Message         string
 	RepoSyncQueueID int64
-}
-
-// formartBatchLogMessages generates a standardize message for sync logs
-func (w *worker) formatBatchLogMessages(ctx context.Context, syncLogTypeOption syncLogType, j *db.DequeueSyncJobRow, status jobStatus, operation string) error {
-	return w.sendBatchLogMessages(ctx, []*syncLog{{
-		Type:            syncLogTypeOption,
-		RepoSyncQueueID: j.ID,
-		Message:         fmt.Sprintf("%s %s", status, operation),
-	}})
 }
 
 // sendBatchLogMessages uses the pg COPY protocol to send a batch of sync logs

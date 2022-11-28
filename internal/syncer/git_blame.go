@@ -64,10 +64,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	var err error
 	l := w.loggerForJob(j)
 
-	// indicate that we're starting query execution
-	operation := fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit, operation); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatStartingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
@@ -122,9 +122,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 			w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Msgf("error opening file in repo: %s, %v", fullPath, err)
 
 			// indicate that we're detecting unexpected behavior
-			operation := fmt.Sprintf("of sync %s for repo %s, Error:%v", j.SyncType, j.Repo, err)
-			if err := w.formatBatchLogMessages(ctx, SyncLogTypeWarn, j, unexpectedBehavior, operation); err != nil {
-				return fmt.Errorf("log messages: %w", err)
+			if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeWarn, RepoSyncQueueID: j.ID,
+				Message: fmt.Sprintf(LogFormatErrorWarningMessage, "error opening file in repo", err),
+			}}); err != nil {
+				return fmt.Errorf("send batch log messages: %w", err)
 			}
 
 			continue
@@ -138,9 +139,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 				w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Msgf("error reading file in repo: %s, %v", fullPath, err)
 
 				// indicate that we're detecting unexpected behavior
-				operation := fmt.Sprintf("of sync %s for repo %s, Error:%v", j.SyncType, j.Repo, err)
-				if err := w.formatBatchLogMessages(ctx, SyncLogTypeWarn, j, unexpectedBehavior, operation); err != nil {
-					return fmt.Errorf("log messages: %w", err)
+				if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeWarn, RepoSyncQueueID: j.ID,
+					Message: fmt.Sprintf(LogFormatErrorWarningMessage, "error reading file in repo", err),
+				}}); err != nil {
+					return fmt.Errorf("send batch log messages: %w", err)
 				}
 			}
 
@@ -166,9 +168,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 			}
 
 			// indicate that we're detecting unexpected behavior
-			operation := fmt.Sprintf("of sync %s for repo %s, Error:%v", j.SyncType, j.Repo, err)
-			if err := w.formatBatchLogMessages(ctx, SyncLogTypeWarn, j, unexpectedBehavior, operation); err != nil {
-				return fmt.Errorf("log messages: %w", err)
+			if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeWarn, RepoSyncQueueID: j.ID,
+				Message: fmt.Sprintf(LogFormatErrorWarningMessage, "error blaming file in repo", err),
+			}}); err != nil {
+				return fmt.Errorf("send batch log messages: %w", err)
 			}
 
 			continue
@@ -233,9 +236,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	// indicate that we're finishing query execution
-	operation = fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish, operation); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatFinishingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	err = tx.Commit(ctx)
