@@ -23,7 +23,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/libgit2/git2go/v33 v33.0.9
 	github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b
-	github.com/prometheus/client_golang v1.13.0
+	github.com/prometheus/client_golang v1.14.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20221021030919-a134b1472cc7
 	go.riyazali.net/sqlite v0.0.0-20221017074244-77a6464e0c2a
@@ -77,7 +77,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/opencontainers/image-spec v1.1.0-rc2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/prometheus/client_model v0.2.0 // indirect
+	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
