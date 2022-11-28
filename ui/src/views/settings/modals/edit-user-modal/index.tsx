@@ -47,6 +47,8 @@ export const EditUserModal: React.FC = () => {
   }
 
   const handleUpdateUser = () => {
+    if (!password || !passwordConfirm || !role) return
+
     setError(false)
 
     // If password or confirm password are typed

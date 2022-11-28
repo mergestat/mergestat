@@ -28,6 +28,8 @@ export const ChangePasswordModal: React.FC = () => {
   }, [setShowChangePasswordModal])
 
   const handleChangePassword = () => {
+    if (!password || !passwordConfirm) return
+
     setError('')
 
     if (password !== passwordConfirm) {

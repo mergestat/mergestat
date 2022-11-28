@@ -36,6 +36,8 @@ export const AddUserModal: React.FC = () => {
   }
 
   const handleAddUser = () => {
+    if (!username || !password || !passwordConfirm || !role) return
+
     if (password !== passwordConfirm) {
       setError(true)
     } else {
