@@ -8,6 +8,7 @@ import (
 	"github.com/mergestat/mergestat/internal/db"
 )
 
+// TODO(Ramiro)consider moving this functionality into the helper package
 type syncLogType string
 type jobStatus string
 
