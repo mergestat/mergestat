@@ -8,16 +8,19 @@ import (
 	"github.com/mergestat/mergestat/internal/db"
 )
 
+// TODO(Ramiro)consider moving this functionality into the helper package
 type syncLogType string
 type jobStatus string
 
 const (
-	SyncLogTypeInfo syncLogType = "INFO"
+	SyncLogTypeInfo    syncLogType = "INFO"
+	SyncLogTypeWarning syncLogType = "WARNING"
 )
 
 const (
-	startingProcess jobStatus = "starting"
-	insertedProcess jobStatus = "inserted"
+	startingProcess    jobStatus = "starting"
+	insertedProcess    jobStatus = "inserted"
+	unexpectedBehavior jobStatus = "unexpected behavior"
 )
 
 type syncLog struct {

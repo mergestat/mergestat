@@ -83,18 +83,21 @@ func TestWarehouseHandleWorkflowsOK(t *testing.T) {
 			var inputs [][]interface{}
 			var inputRuns [][]interface{}
 			var inputJobs [][]interface{}
+			var inputRunError [][]interface{}
 			var inputInsertedRows [][]interface{}
 			testWorkflowBatchValue := []interface{}{&syncLog{Type: SyncLogTypeInfo, Message: "starting to get all GitHub Actions workflows for repo mergestat", RepoSyncQueueID: 0}}
 			testRunBatchValues := []interface{}{&syncLog{Type: SyncLogTypeInfo, Message: "starting to get all GitHub Actions runs for workflow ", RepoSyncQueueID: 0}}
 			testJobBatchValue := []interface{}{&syncLog{Type: SyncLogTypeInfo, Message: "starting to get all GitHub Actions jobs for workflow ", RepoSyncQueueID: 0}}
+			testErrorBatchValue := []interface{}{&syncLog{Type: SyncLogTypeWarning, Message: "unexpected behavior during the fetching of workflow run page with owner mergestat, repo mergestat and workflowID 0, Error: %!v(PANIC=Error method: runtime error: invalid memory address or nil pointer dereference)", RepoSyncQueueID: 0}}
 			testInsertedRowsBatchValue := []interface{}{&syncLog{Type: SyncLogTypeInfo, Message: "inserted 0 runs and 0 jobs of workflow ", RepoSyncQueueID: 0}}
 
 			inputs = append(inputs, testWorkflowBatchValue)
 			inputRuns = append(inputRuns, testRunBatchValues)
 			inputJobs = append(inputJobs, testJobBatchValue)
+			inputRunError = append(inputRunError, testErrorBatchValue)
 			inputInsertedRows = append(inputInsertedRows, testInsertedRowsBatchValue)
 
-			// mocking bach logs values for workflows
+			// mocking batch logs values for workflows
 			getInputBatches = func(batch []*syncLog) [][]interface{} {
 				return inputs
 			}
@@ -122,21 +125,28 @@ func TestWarehouseHandleWorkflowsOK(t *testing.T) {
 				return inputRuns
 			}
 			gomock.InOrder(
-				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputRuns)).Return(int64(0), nil).MaxTimes(4))
+				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputRuns)).Return(int64(0), nil).MaxTimes(5))
 
-			// mocking bach logs values for jobs
+			// mocking batch logs values for jobs
 			getInputBatches = func(batch []*syncLog) [][]interface{} {
 				return inputJobs
 			}
 			gomock.InOrder(
-				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputJobs)).Return(int64(0), nil).MaxTimes(4))
+				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputJobs)).Return(int64(0), nil).MaxTimes(5))
 
-			// mocking bach logs values for inserted jobs&runs
+			// mocking batch logs values for run error
+			getInputBatches = func(batch []*syncLog) [][]interface{} {
+				return inputRunError
+			}
+			gomock.InOrder(
+				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputRunError)).Return(int64(0), nil).MaxTimes(5))
+
+			// mocking batch logs values for inserted jobs&runs
 			getInputBatches = func(batch []*syncLog) [][]interface{} {
 				return inputInsertedRows
 			}
 			gomock.InOrder(
-				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputInsertedRows)).Return(int64(0), nil).MaxTimes(4))
+				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputInsertedRows)).Return(int64(0), nil).MaxTimes(5))
 
 		},
 		expectedErr: nil,
@@ -251,7 +261,7 @@ func TestWarehouseWorkflowRunsOK(t *testing.T) {
 			gomock.InOrder(
 				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputRuns)).Return(int64(0), nil).MaxTimes(4))
 
-			// mocking bach logs values for jobs
+			// mocking batch logs values for jobs
 			getInputBatches = func(batch []*syncLog) [][]interface{} {
 				return inputJobs
 			}
@@ -436,7 +446,7 @@ func TestWarehouseWorkflowJobsOK(t *testing.T) {
 			testW.logger.Info().Discard()
 			testW.logger.Warn().Discard()
 
-			if err := testW.handleWorkflowRunsJobs(ctx, test.owner, test.repo, testJob.RepoID, testWorkflowRuns, testJobsCount); test.expectedErr != nil && !errors.Is(err, test.expectedErr) {
+			if err := testW.handleWorkflowRunsJobs(ctx, test.owner, test.repo, &testJob, testWorkflowRuns, testJobsCount); test.expectedErr != nil && !errors.Is(err, test.expectedErr) {
 				t.Errorf("warehouse.handleWorkflows() error = %v, wantErr %v", err, test.expectedErr)
 			}
 		})
