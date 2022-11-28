@@ -134,6 +134,7 @@ export const AddUserModal: React.FC = () => {
               <Button skin='secondary' label='Cancel' onClick={close} />
               <Button label='Add User'
                 data-testid={TEST_IDS.usersAddButton}
+                disabled={!username || !password || !passwordConfirm || !role}
                 onClick={handleAddUser}
               />
             </div>
