@@ -47,8 +47,6 @@ export const EditUserModal: React.FC = () => {
   }
 
   const handleUpdateUser = () => {
-    if (!password || !passwordConfirm || !role) return
-
     setError(false)
 
     // If password or confirm password are typed
@@ -158,7 +156,6 @@ export const EditUserModal: React.FC = () => {
               <Button skin='secondary' label='Cancel' onClick={close} />
               <Button label='Save'
                 data-testid={TEST_IDS.usersEditButton}
-                disabled={!password || !passwordConfirm || !role}
                 onClick={handleUpdateUser}
               />
             </div>
