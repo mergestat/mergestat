@@ -1,47 +1,58 @@
-# How to Contribute 
-We'd love to accept your contributions to this project.Here are the guidelines you need to follow.
+# Contributing
 
-# How to submit a change
+We'd love to have you as a contributor!
+This document outlines some general guidelines and instructions to follow when developing and submitting a PR.
 
-- For branching we use trunk based development across all our repos https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development
-- Test your changes
-- To organize our commit history we use conventional commit strategy https://www.conventionalcommits.org/en/v1.0.0/
-- PR should be run with healthy habits and for that we recommend follow the tips from this article https://thenewstack.io/6-pull-request-tricks-you-should-adopt-now-doordash/
+# Submitting a PR
 
-# Usage
-we use docker and make to build our system .
+- We use [trunk based development](https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development) off of our `main` branch
+- Try to test your changes as much as possible before submitting a PR - ideally with tests defined in code
+- We use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to roughly categorize the work done in this repo
+- We try to use the habits described in [this article](https://thenewstack.io/6-pull-request-tricks-you-should-adopt-now-doordash/) when opening PRs 
+
+# Development
+
+To run MergeStat locally for development, we use `docker-compose` with some targets defined in the `Makefile`.
 
 ## Running locally
 
-```
+```sh
+# bring up all containers locally, building from the local source
 make dev
 ```
 
 ## Building changes
 
-```
+```sh
+# build all images
 make docker-build
 
+# build the worker image
 make docker-build-worker
 
+# build the ui image
 make docker-build-ui
 
+# build the graphql service image
 make docker-build-graphql
 ```
 
+## Cleaning Up
 
-## Cleaning Context
-
-```
-make docker-clean
-
+```sh
+# stop running docker containers
 make docker-down
+
+# stop running docker containers and remove all networks/volumes (resets the state of the app)
+make docker-clean
 ```
 
-## Running test
+## Running Tests
 
-You can either run your test via your visual studio code or running this command
+```sh
+# run all the Go tests
+make test
 
-```
-go test ./...
+# run UI tests
+cd ui && npm run test
 ```
