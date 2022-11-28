@@ -156,6 +156,7 @@ export const EditUserModal: React.FC = () => {
               <Button skin='secondary' label='Cancel' onClick={close} />
               <Button label='Save'
                 data-testid={TEST_IDS.usersEditButton}
+                disabled={!password || !passwordConfirm || !role}
                 onClick={handleUpdateUser}
               />
             </div>

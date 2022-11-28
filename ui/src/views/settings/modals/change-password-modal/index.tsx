@@ -97,6 +97,7 @@ export const ChangePasswordModal: React.FC = () => {
               <Button skin='secondary' label='Cancel' onClick={close} />
               <Button label='Change Password'
                 onClick={handleChangePassword}
+                disabled={!password || !passwordConfirm}
                 data-testid={TEST_IDS.usersSettingsChangeButton}
               />
             </div>
