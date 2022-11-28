@@ -15,9 +15,10 @@ func (w *worker) handleGithubActions(ctx context.Context, j *db.DequeueSyncJobRo
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
-	operation := fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit, operation); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatStartingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	var ghToken string
@@ -48,9 +49,10 @@ func (w *worker) handleGithubActions(ctx context.Context, j *db.DequeueSyncJobRo
 		return fmt.Errorf("update status done: %w", err)
 	}
 	// indicate that we're finishing query execution
-	operation = fmt.Sprintf("%s sync for %s", j.SyncType, j.Repo)
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish, operation); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatFinishingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	return tx.Commit(ctx)
