@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import { Avatar, Button, HelpText, Input, Label, Modal, Panel, Toolbar } from '@mergestat/blocks'
 import { UserIcon, XIcon } from '@mergestat/icons'
 import cx from 'classnames'
-import React, { ChangeEvent, useCallback, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { UpdateUserPasswordMutation, UpdateUserRoleMutation } from 'src/api-logic/graphql/generated/schema'
 import { UPDATE_USER_PASSWORD, UPDATE_USER_ROLE } from 'src/api-logic/graphql/mutations/manage-users'
 import { useUserSettingsContext, useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
@@ -64,6 +64,10 @@ export const EditUserModal: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    !password && !passwordConfirm && setError(false)
+  }, [password, passwordConfirm])
+
   return (
     <Modal open onClose={close} size='md'>
       <Modal.Header>
@@ -104,7 +108,7 @@ export const EditUserModal: React.FC = () => {
                 data-testid={TEST_IDS.usersEditPassword}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                onKeyPress={(e) => (e.key === 'Enter' && handleUpdateUser())}
+                onKeyPress={(e) => (e.key === 'Enter' && password && handleUpdateUser())}
               />
             </div>
             <div>
@@ -113,7 +117,7 @@ export const EditUserModal: React.FC = () => {
                 data-testid={TEST_IDS.usersEditPasswordConfirm}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPasswordConfirm(e.target.value)}
-                onKeyPress={(e) => (e.key === 'Enter' && handleUpdateUser())}
+                onKeyPress={(e) => (e.key === 'Enter' && passwordConfirm && handleUpdateUser())}
               />
               {error && (
                 <HelpText variant="error">{'Passwords don\'t match'}</HelpText>
