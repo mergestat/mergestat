@@ -30,9 +30,7 @@ export const ChangePasswordModal: React.FC = () => {
   const handleChangePassword = () => {
     setError('')
 
-    if ((password && password.length < 10) || (passwordConfirm && passwordConfirm.length < 10)) {
-      setError('Password must be at least 10 characters')
-    } else if (password !== passwordConfirm) {
+    if (password !== passwordConfirm) {
       setError('Passwords don\'t match')
     } else { // Update password and/or role
       updatePassword({ variables: { username: usernameEdit, password } })
@@ -75,7 +73,7 @@ export const ChangePasswordModal: React.FC = () => {
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 onKeyPress={(e) => (e.key === 'Enter' && handleChangePassword())}
               />
-              <HelpText>Password must be at least 10 characters</HelpText>
+              {/* <HelpText>Password must be at least 10 characters</HelpText> */}
             </div>
             <div>
               <Label>Confirm password</Label>
