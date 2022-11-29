@@ -1,5 +1,5 @@
 import { Avatar, Dropdown, Icon, Menu, Navbar, Toolbar } from '@mergestat/blocks'
-import { BookIcon, CaretDownIcon, LogoutIcon, UserIcon } from '@mergestat/icons'
+import { BookIcon, CaretDownIcon, CogIcon, LogoutIcon, UserIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -48,14 +48,15 @@ const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: Current
               <Dropdown
                 alignEnd={false}
                 overlay={() => (
-                  <Menu data-popper-placement="bottom-end">
+                  <Menu data-popper-placement="bottom-end" className='-mt-1'>
+                    <Menu.Item text="User settings" onClick={() => router.push('/settings/user-settings')} icon={<CogIcon className="t-icon" />} />
                     <Menu.Item text="Log out" onClick={handleLogout} icon={<LogoutIcon className="t-icon" />} />
                   </Menu>
                 )}
                 trigger={
                   <div className="t-nav-item gap-2 flex-items-center">
                     <button>
-                      <Avatar className="bg-gray-500" icon={<UserIcon className="t-icon text-white" />} />
+                      <Avatar className="t-avatar-dark" icon={<UserIcon className="t-icon text-white" />} />
                       <span>{currentMergeStatUser}</span>
                       <CaretDownIcon className="t-icon" />
                     </button>

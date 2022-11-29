@@ -17,7 +17,7 @@ const SettingsView = ({ children }: Props) => {
     <main className='w-full flex flex-col h-full bg-gray-50 overflow-hidden'>
       <div className='flex h-full'>
         {/* Sidebar content */}
-        <div className='flex flex-col w-72 h-full border-r'>
+        <div className='flex flex-col w-56 md_w-72 h-full border-r'>
           <div className='bg-white h-16 w-full border-b px-8'>
             <Toolbar className='h-full'>
               <Toolbar.Left>
@@ -33,6 +33,12 @@ const SettingsView = ({ children }: Props) => {
               </Link>
               <Link href='/settings/repo-auto-imports'>
                 <VerticalNav.Item href='/settings/repo-auto-imports' text='Repo Auto Imports' active={active('/settings/repo-auto-imports') || active('/settings/repo-auto-imports/[importId]')} />
+              </Link>
+              <Link href='/settings/user-management'>
+                <VerticalNav.Item href='/settings/user-management' text='User Management' active={active('/settings/user-management')} />
+              </Link>
+              <Link href='/settings/user-settings'>
+                <VerticalNav.Item href='/settings/user-settings' text='User Settings' active={active('/settings/user-settings')} />
               </Link>
             </VerticalNav>
           </div>
