@@ -269,7 +269,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	// we this fn we clean all in that tmp dir
 	defer func() {
 		if err = cleanup(); err != nil {
-			w.logger.Err(err).Msgf("error cleaning up repo at: %s, %v", filepath, err)
+			w.logger.Warn().AnErr("Error", err).Msgf("error cleaning up repo at: %s, %v", filepath, err)
 		}
 	}()
 

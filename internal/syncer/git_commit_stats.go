@@ -150,7 +150,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		}
 		defer func() {
 			if err := diff.Free(); err != nil {
-				w.logger.Err(err).Msgf("error freeing diff")
+				w.logger.Warn().AnErr("Error", err).Msgf("error freeing diff")
 			}
 		}()
 
@@ -190,7 +190,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 			}, nil
 		}, libgit2.DiffDetailLines)
 		if err != nil {
-			w.logger.Err(err).Msgf("error iterating over diff")
+			w.logger.Warn().AnErr("Error", err).Msgf("error iterating over diff")
 			return false
 		}
 
