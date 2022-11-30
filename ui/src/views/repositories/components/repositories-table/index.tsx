@@ -1,5 +1,6 @@
 import { Badge, Button, Panel } from '@mergestat/blocks'
 import { ChevronRightIcon, CircleInformationFilledIcon, TrashIcon } from '@mergestat/icons'
+import Link from 'next/link'
 import React, { PropsWithChildren } from 'react'
 import type { RepoDataPropsT } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
@@ -126,7 +127,9 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
                             <div className='t-button-toolbar gap-6'>
                               <div className='flex items-center justify-center gap-2'>
                                 <CircleInformationFilledIcon className='t-icon t-icon-muted' />
-                                <span className='t-text-muted'>Set up sync types</span>
+                                <Link href={`/repos/${repo.id}`}>
+                                  <a href={`/repos/${repo.id}`} className='t-text-muted'>Set up sync types</a>
+                                </Link>
                                 <ChevronRightIcon className='t-icon t-icon-muted' />
                               </div>
                               <Button skin="borderless-muted" startIcon={<TrashIcon className="t-icon" />} isIconOnly onClick={() => prepareToRemove(repo.id, repo.name, !!repo.autoImportFrom)} />
