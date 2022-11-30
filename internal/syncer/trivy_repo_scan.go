@@ -34,7 +34,7 @@ func (w *worker) handleTrivyRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	var output []byte
 	if output, err = cmd.Output(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
-			w.logger.Warn().AnErr("Error", exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running trivy scan")
+			w.logger.Warn().AnErr("error", exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running trivy scan")
 		}
 		return fmt.Errorf("running trivy scan: %w", err)
 	}
