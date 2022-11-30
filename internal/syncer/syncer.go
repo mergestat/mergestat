@@ -102,7 +102,7 @@ func (w *worker) exec(ctx context.Context, id string) {
 					continue
 				}
 
-				w.logger.Warn().AnErr("error", err).Msgf("error dequeuing job: %v", err)
+				w.logger.Err(err).Msgf("error dequeuing job: %v", err)
 				continue
 			}
 
