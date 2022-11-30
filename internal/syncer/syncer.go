@@ -102,7 +102,7 @@ func (w *worker) exec(ctx context.Context, id string) {
 					continue
 				}
 
-				w.logger.Warn().AnErr("Error", err).Msgf("error dequeuing job: %v", err)
+				w.logger.Warn().AnErr("error", err).Msgf("error dequeuing job: %v", err)
 				continue
 			}
 
@@ -110,7 +110,7 @@ func (w *worker) exec(ctx context.Context, id string) {
 
 			if err := w.handle(ctx, j); err != nil {
 				if !errors.Is(err, context.Canceled) {
-					w.logger.Warn().AnErr("Error", err).Msgf("error handling job: %v", j)
+					w.logger.Warn().AnErr("error", err).Msgf("error handling job: %v", j)
 
 					if err := w.db.InsertSyncJobLog(context.TODO(), db.InsertSyncJobLogParams{
 						LogType:         string(SyncLogTypeError),
