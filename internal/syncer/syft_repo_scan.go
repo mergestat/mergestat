@@ -50,7 +50,7 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 	var output []byte
 	if output, err = cmd.Output(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
-			w.logger.Err(exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running syft repo scan")
+			w.logger.Warn().AnErr("error", exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running syft repo scan")
 		}
 		return fmt.Errorf("running syft scan: %w", err)
 	}

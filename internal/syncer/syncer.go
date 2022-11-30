@@ -110,7 +110,7 @@ func (w *worker) exec(ctx context.Context, id string) {
 
 			if err := w.handle(ctx, j); err != nil {
 				if !errors.Is(err, context.Canceled) {
-					w.logger.Err(err).Msgf("error handling job: %v", j)
+					w.logger.Warn().AnErr("error", err).Msgf("error handling job: %v", j)
 
 					if err := w.db.InsertSyncJobLog(context.TODO(), db.InsertSyncJobLogParams{
 						LogType:         string(SyncLogTypeError),
