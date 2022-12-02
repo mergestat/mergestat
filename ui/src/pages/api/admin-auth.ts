@@ -18,7 +18,9 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (!JWT_SECRET) {
-      console.warn('no JWT_SECRET set, login to UI will not work')
+      console.warn(JSON.stringify({
+        message: 'no JWT_SECRET set, login to UI will not work'
+      }))
       res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({ error: 'problem with authentication configuration' })
       return
     }
@@ -43,7 +45,12 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
       await client.connect()
       await client.end()
     } catch (connectErr) {
-      console.error(connectErr)
+      if (connectErr instanceof Error) {
+        console.warn(JSON.stringify({
+          error: connectErr,
+          message: connectErr.message,
+        }))
+      }
       // if the connection fails, the user does not exist or the password is incorrect
       res.status(HTTP_STATUS_UNAUTHORIZED).json({ error: 'invalid username or password' })
       return
