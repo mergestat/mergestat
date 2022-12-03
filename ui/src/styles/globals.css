@@ -101,6 +101,10 @@
   @apply bg-gray-500;
 }
 
+.t-avatar-primary {
+  @apply bg-blue-600;
+}
+
 .t-avatar-xl .t-icon {
     @apply w-6
            h-6;
