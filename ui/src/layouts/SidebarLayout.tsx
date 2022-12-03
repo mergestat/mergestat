@@ -21,10 +21,12 @@ const SidebarLayout: React.FC = ({ children }: PropsWithChildren) => {
       {loading || data?.currentMergeStatUser === 'mergestat_anonymous'
         ? <Loading />
         : <>
-          <NavHeader currentMergeStatUser={data?.currentMergeStatUser} />
           <div className="content-area flex flex-grow">
             <Sidebar />
-            {children}
+            <div className='w-full flex-1'>
+              <NavHeader currentMergeStatUser={data?.currentMergeStatUser} />
+              {children}
+            </div>
           </div>
         </>
       }

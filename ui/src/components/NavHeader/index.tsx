@@ -1,6 +1,5 @@
-import { Avatar, Dropdown, Menu, Navbar, Toolbar } from '@mergestat/blocks'
-import { BookIcon, CaretDownIcon, CogIcon, Icon, LogoutIcon, UserIcon } from '@mergestat/icons'
-import Link from 'next/link'
+import { Avatar, Dropdown, Menu, Toolbar } from '@mergestat/blocks'
+import { BookIcon, CaretDownIcon, CogIcon, LogoutIcon, UserIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { logout } from 'src/api-logic/axios/api'
@@ -15,59 +14,40 @@ const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: Current
   }
 
   return (
-    <nav className="px-6 w-full bg-gray-700">
-      <Toolbar className="h-14">
-        <Toolbar.Left>
-          <Toolbar.Item className='mr-3'>
-            <Link href="/repos">
-              <span className='cursor-pointer'>
-                <Icon
-                  as="/logo-inverse.svg"
-                  width={132}
-                  className="flex w-auto items-center"
-                />
-              </span>
-            </Link>
-          </Toolbar.Item>
-          <Navbar.Divider />
-          <Toolbar.Item>
-            <div className="bg-gray-600 px-3 py-0.5 rounded-full text-gray-100 ml-3 text-sm font-medium">
-              <a target='_blank' href='https://github.com/mergestat/mergestat' rel='noopener noreferrer'>beta</a>
-            </div>
-          </Toolbar.Item>
-        </Toolbar.Left>
-        <Toolbar.Right className="space-x-4">
-          <Toolbar.Item>
-            <Navbar.Items>
-              <Navbar.Item
-                href="https://docs.mergestat.com/"
-                target="_blank"
-                icon={<BookIcon className="t-icon" />}
-              />
-              <Navbar.Divider />
+    <Toolbar className="h-12 px-8 border-b t-border-default bg-white">
+      <Toolbar.Right className="space-x-4">
+        <Toolbar.Item>
+          <div className="flex items-center divide-x t-border-default">
+            <a
+              className="t-button t-button-borderless-muted t-button-icon mx-3"
+              href="https://docs.mergestat.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <BookIcon className="t-icon" />
+            </a>
+            <div className="h-auto px-3">
               <Dropdown
                 alignEnd={false}
                 overlay={() => (
-                  <Menu data-popper-placement="bottom-end" className='-mt-1'>
+                  <Menu data-popper-placement="bottom-end">
                     <Menu.Item text="User settings" onClick={() => router.push('/settings/user-settings')} icon={<CogIcon className="t-icon" />} />
                     <Menu.Item text="Log out" onClick={handleLogout} icon={<LogoutIcon className="t-icon" />} />
                   </Menu>
                 )}
                 trigger={
-                  <div className="t-nav-item gap-2 flex-items-center">
-                    <button>
-                      <Avatar className="t-avatar-dark" icon={<UserIcon className="t-icon text-white" />} />
-                      <span>{currentMergeStatUser}</span>
-                      <CaretDownIcon className="t-icon" />
-                    </button>
-                  </div>
+                  <button className="flex items-center border-0 bg-transparent outline-none space-x-2">
+                    <Avatar size="sm" variant="primary" icon={<UserIcon className="t-icon" />} />
+                    <span>{currentMergeStatUser}</span>
+                    <CaretDownIcon className="t-icon t-icon-sm t-icon-muted" />
+                  </button>
                 }
               />
-            </Navbar.Items>
-          </Toolbar.Item>
-        </Toolbar.Right>
-      </Toolbar>
-    </nav>
+            </div>
+          </div>
+        </Toolbar.Item>
+      </Toolbar.Right>
+    </Toolbar>
   )
 }
 
