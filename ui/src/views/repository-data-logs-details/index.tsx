@@ -6,7 +6,7 @@ import { copyArrayToClipboard } from 'src/utils'
 import { SYNC_STATUS } from 'src/utils/constants'
 import { LogsInfo } from './components'
 
-const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
+const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ logs }) => {
   const logInfo: SyncLogsType | undefined = logs && logs.length > 0 ? logs[0] : undefined
 
   return (

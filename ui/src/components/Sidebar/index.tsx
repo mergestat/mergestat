@@ -1,4 +1,4 @@
-import { Badge, Icon, Sidebar } from '@mergestat/blocks'
+import { Badge, Sidebar } from '@mergestat/blocks'
 import { CogIcon, DatabaseIcon, RepositoryIcon, TerminalIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -10,18 +10,8 @@ const SidebarView: React.FC = () => {
   const isSidebarActive = (path: string) => !!pathname.match(path)?.length
 
   return (
-    <Sidebar compact={false} dark={true} className='flex-none'>
-      <Sidebar.Header>
-        <Link href="/repos">
-          <span className='cursor-pointer'>
-            <Icon
-              as="/logo-inverse.svg"
-              width={132}
-              className="flex w-auto items-center"
-            />
-          </span>
-        </Link>
-      </Sidebar.Header>
+    <Sidebar compact={false} dark={true} collapsible={true} className='flex-none'>
+      <Sidebar.Header />
       <Sidebar.Main>
         <Link href="/repos" passHref>
           <Sidebar.Item
@@ -51,24 +41,28 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label="Settings"
           compact={false}
-          icon={<CogIcon className='t-icon' />}>
+          icon={<CogIcon className='t-icon' />}
+          subNav={
+            <>
               <Link href='/settings/github-authentication' passHref>
-                <Sidebar.Item compact={false} active={isSidebarActive('/settings/github-authentication')} label="GitHub Authentication" subLevel={true} />
+                <Sidebar.Item compact={false} active={isSidebarActive('/settings/github-authentication')} label="GitHub Authentication" level='sub' />
               </Link>
               <Link href='/settings/repo-auto-imports' passHref>
-                <Sidebar.Item compact={false} active={isSidebarActive('/settings/repo-auto-imports')} label="Repo Auto Imports" subLevel={true} />
+                <Sidebar.Item compact={false} active={isSidebarActive('/settings/repo-auto-imports')} label="Repo Auto Imports" level='sub' />
               </Link>
               <Link href='/settings/user-management' passHref>
-                <Sidebar.Item compact={false} active={isSidebarActive('/settings/user-management')} label="User Management" subLevel={true} />
+                <Sidebar.Item compact={false} active={isSidebarActive('/settings/user-management')} label="User Management" level='sub' />
               </Link>
               <Link href='/settings/user-settings' passHref>
-                <Sidebar.Item compact={false} active={isSidebarActive('/settings/user-settings')} label="User Settings" subLevel={true} />
+                <Sidebar.Item compact={false} active={isSidebarActive('/settings/user-settings')} label="User Settings" level='sub' />
               </Link>
+            </>
+          }>
           </Sidebar.Item>
       </Sidebar.Main>
       <Sidebar.Footer>
           <a target='_blank' href='https://github.com/mergestat/mergestat' rel='noopener noreferrer'>
-            <Badge variant='dark' label='beta' rounded={true} />
+          <Sidebar.Version label='v.1.1.0' />
           </a>
       </Sidebar.Footer>
     </Sidebar>

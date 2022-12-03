@@ -9,7 +9,7 @@ import useSetPat from 'src/views/hooks/useSetPat'
 
 import SettingsView from 'src/views/settings'
 
-const Settings: NextPage = () => {
+const GitHubAuthenticationPage: NextPage = () => {
   const {
     pat,
     showValidation,
@@ -127,4 +127,4 @@ const Settings: NextPage = () => {
   )
 }
 
-export default Settings
+export default GitHubAuthenticationPage
