@@ -2,7 +2,7 @@
 SELECT
     repos.repo,
     path,
-    array_to_string(regexp_matches(contents, 'os.Getenv\(\"(.*?)\"\)', 'g'), ',')
+    array_to_string(regexp_matches(contents, 'os.Getenv\(\"(.*?)\"\)', 'g'), ',') AS matches
 FROM git_files
 INNER JOIN repos ON git_files.repo_id = repos.id
 WHERE path LIKE '%.go'
