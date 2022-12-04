@@ -8,5 +8,5 @@ INNER JOIN repos ON repos.id = github_pull_requests.repo_id
 INNER JOIN github_pull_request_reviews ON github_pull_requests.repo_id = github_pull_request_reviews.repo_id AND github_pull_requests.number = github_pull_request_reviews.pr_number
 WHERE
     github_pull_requests.state = 'MERGED' -- only return PRs that were merged
-    AND gprr.state = 'APPROVED' -- only return PRs that were Approved
-	AND gprr.author_login NOT IN ('user1', 'user2', 'user3') -- only return PR's that were not approved by the users in the list
+    AND github_pull_request_reviews.state = 'APPROVED' -- only return PRs that were Approved
+    AND github_pull_request_reviews.author_login NOT IN ('user1', 'user2', 'user3') -- only return PR's that were not approved by the users in the list
