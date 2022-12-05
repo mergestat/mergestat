@@ -9,7 +9,7 @@ import { GITHUB_URL } from 'src/utils/constants'
 type RepoImagePropsT = {
   repoType?: RepoType
   orgName?: string
-  size?: '10' | '8'
+  size?: '10' | '8' | '6'
 }
 
 const RepoImage: React.FC<RepoImagePropsT> = ({
