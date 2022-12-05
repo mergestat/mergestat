@@ -10,7 +10,7 @@ const SidebarView: React.FC = () => {
   const isSidebarActive = (path: string) => !!pathname.match(path)?.length
 
   return (
-    <Sidebar compact={false} dark={true}>
+    <Sidebar compact={false} dark={true} className='flex-none'>
       <Sidebar.Header>
         <Link href="/repos">
           <span className='cursor-pointer'>
