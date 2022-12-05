@@ -31,7 +31,7 @@ export const EmptyRepositoryTable: React.FC = () => {
                 <h3 className="t-h3 mb-2">GitHub Authentication Token</h3>
                 <p className="t-text-muted">Add a personal access token to start importing from GitHub (and to work with private repos).</p>
                 <div className="t-button-toolbar mt-8">
-                  <Link href="/settings">
+                  <Link href="/settings/github-authentication">
                     <Button label="Authenticate GitHub" endIcon={<GithubIcon className="t-icon" />} />
                   </Link>
                   <a href="https://docs.mergestat.com/mergestat/setup/github-authentication" target="_blank" rel="noreferrer" >
