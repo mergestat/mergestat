@@ -25,7 +25,7 @@ const SidebarLayout: React.FC = ({ children }: PropsWithChildren) => {
         : <>
           <div className="content-area flex flex-grow">
             <Sidebar />
-            <div className='w-full flex-1'>
+            <div className='w-full flex-1 overflow-hidden'>
               <NavHeader currentMergeStatUser={data?.currentMergeStatUser} />
               {children}
             </div>
