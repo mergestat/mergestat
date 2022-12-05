@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import { BreadcrumbNav, Button, Checkbox, Panel, Toolbar } from '@mergestat/blocks'
+import { Button, Checkbox, Panel, Toolbar } from '@mergestat/blocks'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -66,19 +66,6 @@ const AutoImportsDetail: NextPage = () => {
     updateAutoImport({ variables: { id: importId, settings: newSettings } })
   }
 
-  const crumbs = [
-    {
-      text: 'Repo Auto Imports',
-      onClick: () => router.push('/settings/repo-auto-imports'),
-    },
-    {
-      text: name,
-      startIcon: (
-        <RepoImage repoType='github' orgName={name} size="8" />
-      ),
-    },
-  ]
-
   return (
     <>
       <Fragment>
@@ -93,7 +80,7 @@ const AutoImportsDetail: NextPage = () => {
               <div className='bg-white h-16 w-full border-b px-8 flex-0'>
                 <Toolbar className='h-full'>
                   <Toolbar.Left>
-                    <BreadcrumbNav data={crumbs} />
+                    <RepoImage repoType='github' orgName={name} size="8" />
                   </Toolbar.Left>
                   <Toolbar.Right>
                     <Button label='Save' onClick={updateImport} />

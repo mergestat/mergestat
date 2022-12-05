@@ -1,9 +1,10 @@
-import { Avatar, Dropdown, Menu, Toolbar } from '@mergestat/blocks'
-import { BookIcon, CaretDownIcon, CogIcon, LogoutIcon, UserIcon } from '@mergestat/icons'
+import { Avatar, BreadcrumbNav, Dropdown, Menu, Toolbar } from '@mergestat/blocks'
+import { BookIcon, CaretDownIcon, CogIcon, LogoutIcon, RepositoryIcon, UserIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { logout } from 'src/api-logic/axios/api'
 import { CurrentUserQuery } from 'src/api-logic/graphql/generated/schema'
+import RepoImage from 'src/components/RepoImage'
 
 const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: CurrentUserQuery) => {
   const router = useRouter()
@@ -13,8 +14,24 @@ const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: Current
     loggedout && router.push('/login')
   }
 
+  /* TODO: Update crumbs according to route/page */
+  const crumbs = [
+    {
+      text: 'Repos',
+      startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
+      onClick: () => router.push('/repos'),
+    },
+    {
+      startIcon: <RepoImage repoType='github' orgName='mergestat' size="6" />,
+      text: 'mergestate/mergestat'
+    },
+  ]
+
   return (
     <Toolbar className="h-12 px-8 border-b t-border-default bg-white">
+      <Toolbar.Left>
+        <BreadcrumbNav data={crumbs} size="sm" />
+      </Toolbar.Left>
       <Toolbar.Right className="space-x-4">
         <Toolbar.Item>
           <div className="flex items-center divide-x t-border-default">
