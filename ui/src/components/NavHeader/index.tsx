@@ -1,5 +1,5 @@
-import { Avatar, Dropdown, Icon, Menu, Navbar, Toolbar } from '@mergestat/blocks'
-import { BookIcon, CaretDownIcon, CogIcon, LogoutIcon, UserIcon } from '@mergestat/icons'
+import { Avatar, Dropdown, Menu, Navbar, Toolbar } from '@mergestat/blocks'
+import { BookIcon, CaretDownIcon, CogIcon, Icon, LogoutIcon, UserIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
