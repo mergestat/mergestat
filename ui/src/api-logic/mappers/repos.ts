@@ -61,7 +61,9 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
     // which is required by the `getStatus` function (used further below in this function). We should probably refactor this to be able to handle
     // the `hasError` field in a better way.
     const statusRepoSyncQueue = st.lastCompletedRepoSyncQueue as RepoSyncQueue
-    statusRepoSyncQueue.hasError = statusRepoSyncQueue?.repoSyncLogs?.totalCount > 0 || false
+    if (statusRepoSyncQueue !== null) {
+      statusRepoSyncQueue.hasError = statusRepoSyncQueue?.repoSyncLogs?.totalCount > 0 || false
+    }
 
     const syncObj: SyncTypeFlatten = {
       idType: st?.id,
