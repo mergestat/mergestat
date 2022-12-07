@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-github/v47/github"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/mergestat/mergestat/internal/db"
-	"github.com/mergestat/mergestat/pool"
+	"github.com/mergestat/mergestat/internal/pool"
 	"github.com/mergestat/mergestat/queries"
 	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
