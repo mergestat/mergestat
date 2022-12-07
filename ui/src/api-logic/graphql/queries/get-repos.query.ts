@@ -60,7 +60,7 @@ const GET_REPOS = gql`
               status
               doneAt
               createdAt
-              errors: repoSyncLogs(condition: {logType: "ERROR"}) {
+              repoSyncLogs(condition: {logType: "ERROR"}) {
                   totalCount
               }
             }
