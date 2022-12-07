@@ -60,16 +60,10 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
     const syncObj: SyncTypeFlatten = {
       idType: st?.id,
       type: st?.repoSyncTypeBySyncType?.shortName || '',
-      idLastSync: '',
-      status: 'empty',
-      lastSync: ''
+      idLastSync: st?.lastCompletedRepoSyncQueue?.id || '',
+      lastSync: st?.lastCompletedRepoSyncQueue?.doneAt || '',
+      status: getStatus(st?.lastCompletedRepoSyncQueue as RepoSyncQueue) || '',
     }
-
-    st?.repoSyncQueues.nodes.forEach((ls: RepoSyncQueue) => {
-      syncObj.idLastSync = ls?.id || ''
-      syncObj.lastSync = ls?.doneAt || ''
-      syncObj.status = getStatus(ls as RepoSyncQueue) || ''
-    })
 
     return syncObj
   })

@@ -55,13 +55,13 @@ const GET_REPOS = gql`
             repoSyncTypeBySyncType {
               shortName
             }
-            repoSyncQueues(first: 1, orderBy: CREATED_AT_DESC) {
-              nodes {
-                id
-                status
-                doneAt
-                createdAt
-                hasError
+            lastCompletedRepoSyncQueue {
+              id
+              status
+              doneAt
+              createdAt
+              errors: repoSyncLogs(condition: {logType: "ERROR"}) {
+                  totalCount
               }
             }
           }

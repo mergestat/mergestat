@@ -829,6 +829,8 @@ export type CreateRepoSyncPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `RepoSyncQueue` that is related to this `RepoSync`. */
+  lastCompletedRepoSyncQueue?: Maybe<RepoSyncQueue>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   /** Reads a single `Repo` that is related to this `RepoSync`. */
@@ -2183,6 +2185,8 @@ export type DeleteRepoSyncPayload = {
    */
   clientMutationId?: Maybe<Scalars['String']>;
   deletedRepoSyncNodeId?: Maybe<Scalars['ID']>;
+  /** Reads a single `RepoSyncQueue` that is related to this `RepoSync`. */
+  lastCompletedRepoSyncQueue?: Maybe<RepoSyncQueue>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   /** Reads a single `Repo` that is related to this `RepoSync`. */
@@ -3862,7 +3866,7 @@ export type GithubActionsWorkflowRun = Node & {
   status?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['Datetime']>;
   url?: Maybe<Scalars['String']>;
-  workflowId: Scalars['BigInt'];
+  workflowId?: Maybe<Scalars['BigInt']>;
   workflowRunNodeId?: Maybe<Scalars['String']>;
   workflowUrl?: Maybe<Scalars['String']>;
 };
@@ -4033,7 +4037,7 @@ export type GithubActionsWorkflowRunInput = {
   status?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   url?: InputMaybe<Scalars['String']>;
-  workflowId: Scalars['BigInt'];
+  workflowId?: InputMaybe<Scalars['BigInt']>;
   workflowRunNodeId?: InputMaybe<Scalars['String']>;
   workflowUrl?: InputMaybe<Scalars['String']>;
 };
@@ -4054,7 +4058,7 @@ export type GithubActionsWorkflowRunJob = Node & {
   /** Reads a single `Repo` that is related to this `GithubActionsWorkflowRunJob`. */
   repo?: Maybe<Repo>;
   repoId: Scalars['UUID'];
-  runId: Scalars['BigInt'];
+  runId?: Maybe<Scalars['BigInt']>;
   runUrl?: Maybe<Scalars['String']>;
   runnerGroupId?: Maybe<Scalars['BigInt']>;
   runnerGroupName?: Maybe<Scalars['String']>;
@@ -4185,7 +4189,7 @@ export type GithubActionsWorkflowRunJobInput = {
   labels?: InputMaybe<Scalars['JSON']>;
   log?: InputMaybe<Scalars['String']>;
   repoId: Scalars['UUID'];
-  runId: Scalars['BigInt'];
+  runId?: InputMaybe<Scalars['BigInt']>;
   runUrl?: InputMaybe<Scalars['String']>;
   runnerGroupId?: InputMaybe<Scalars['BigInt']>;
   runnerGroupName?: InputMaybe<Scalars['String']>;
@@ -9486,7 +9490,9 @@ export type RepoFilter = {
 export type RepoImport = Node & {
   createdAt: Scalars['Datetime'];
   id: Scalars['UUID'];
+  importError?: Maybe<Scalars['String']>;
   importInterval?: Maybe<Interval>;
+  importStatus?: Maybe<Scalars['String']>;
   lastImport?: Maybe<Scalars['Datetime']>;
   lastImportStartedAt?: Maybe<Scalars['Datetime']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -9522,8 +9528,12 @@ export type RepoImportCondition = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `importError` field. */
+  importError?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `importInterval` field. */
   importInterval?: InputMaybe<IntervalInput>;
+  /** Checks for equality with the object’s `importStatus` field. */
+  importStatus?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `lastImport` field. */
   lastImport?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `lastImportStartedAt` field. */
@@ -9544,8 +9554,12 @@ export type RepoImportFilter = {
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `importError` field. */
+  importError?: InputMaybe<StringFilter>;
   /** Filter by the object’s `importInterval` field. */
   importInterval?: InputMaybe<IntervalFilter>;
+  /** Filter by the object’s `importStatus` field. */
+  importStatus?: InputMaybe<StringFilter>;
   /** Filter by the object’s `lastImport` field. */
   lastImport?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `lastImportStartedAt` field. */
@@ -9566,7 +9580,9 @@ export type RepoImportFilter = {
 export type RepoImportInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
+  importError?: InputMaybe<Scalars['String']>;
   importInterval?: InputMaybe<IntervalInput>;
+  importStatus?: InputMaybe<Scalars['String']>;
   lastImport?: InputMaybe<Scalars['Datetime']>;
   lastImportStartedAt?: InputMaybe<Scalars['Datetime']>;
   settings?: InputMaybe<Scalars['JSON']>;
@@ -9578,7 +9594,9 @@ export type RepoImportInput = {
 export type RepoImportPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
+  importError?: InputMaybe<Scalars['String']>;
   importInterval?: InputMaybe<IntervalInput>;
+  importStatus?: InputMaybe<Scalars['String']>;
   lastImport?: InputMaybe<Scalars['Datetime']>;
   lastImportStartedAt?: InputMaybe<Scalars['Datetime']>;
   settings?: InputMaybe<Scalars['JSON']>;
@@ -9703,8 +9721,12 @@ export enum RepoImportsOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
+  ImportErrorAsc = 'IMPORT_ERROR_ASC',
+  ImportErrorDesc = 'IMPORT_ERROR_DESC',
   ImportIntervalAsc = 'IMPORT_INTERVAL_ASC',
   ImportIntervalDesc = 'IMPORT_INTERVAL_DESC',
+  ImportStatusAsc = 'IMPORT_STATUS_ASC',
+  ImportStatusDesc = 'IMPORT_STATUS_DESC',
   LastImportAsc = 'LAST_IMPORT_ASC',
   LastImportDesc = 'LAST_IMPORT_DESC',
   LastImportStartedAtAsc = 'LAST_IMPORT_STARTED_AT_ASC',
@@ -9762,6 +9784,8 @@ export type RepoPatch = {
 
 export type RepoSync = Node & {
   id: Scalars['UUID'];
+  /** Reads a single `RepoSyncQueue` that is related to this `RepoSync`. */
+  lastCompletedRepoSyncQueue?: Maybe<RepoSyncQueue>;
   lastCompletedRepoSyncQueueId?: Maybe<Scalars['BigInt']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -10070,6 +10094,8 @@ export type RepoSyncQueue = Node & {
   repoSyncQueueStatusTypeByStatus?: Maybe<RepoSyncQueueStatusType>;
   /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncQueue`. */
   repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
+  /** Reads and enables pagination through a set of `RepoSync`. */
+  repoSyncsByLastCompletedRepoSyncQueueId: RepoSyncsConnection;
   startedAt?: Maybe<Scalars['Datetime']>;
   status: Scalars['String'];
   typeGroup: Scalars['String'];
@@ -10085,6 +10111,18 @@ export type RepoSyncQueueRepoSyncLogsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<RepoSyncLogsOrderBy>>;
+};
+
+
+export type RepoSyncQueueRepoSyncsByLastCompletedRepoSyncQueueIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncCondition>;
+  filter?: InputMaybe<RepoSyncFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncsOrderBy>>;
 };
 
 /**
@@ -12670,6 +12708,8 @@ export type UpdateRepoSyncPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `RepoSyncQueue` that is related to this `RepoSync`. */
+  lastCompletedRepoSyncQueue?: Maybe<RepoSyncQueue>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   /** Reads a single `Repo` that is related to this `RepoSync`. */
@@ -13546,7 +13586,7 @@ export type GetReposQueryVariables = Exact<{
 }>;
 
 
-export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null }> } }> } }> } | null };
+export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, errors: { totalCount: number } } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null }> } }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];
