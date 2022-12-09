@@ -1,13 +1,11 @@
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 import { concatPagination } from '@apollo/client/utilities'
-import { getCookie } from 'cookies-next'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
 import { NextRouter, useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { showErrorAlert } from 'src/utils/alerts'
-import { COOKIE } from 'src/utils/constants'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
@@ -17,10 +15,7 @@ const httpLink = new HttpLink({
 })
 
 const logoutLink = (router: NextRouter) => onError(({ graphQLErrors }) => {
-  const jwtCookie = getCookie(COOKIE.jwt)
-  if (!jwtCookie) {
-    router.push({ pathname: '/login', query: { lostSession: true } })
-  } else if (graphQLErrors) {
+  if (graphQLErrors) {
     for (const err of graphQLErrors) {
       if (err.message.includes('jwt expired')) {
         router.push({ pathname: '/login', query: { lostSession: true } })

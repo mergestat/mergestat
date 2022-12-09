@@ -80,7 +80,7 @@ export const TagsListDropDown: React.FC<TagsListDropDownProps> = (props) => {
         </Menu>
       )}
       trigger={props.trigger}
-      zIndex={11}
+      zIndex={20}
     />
   )
 }

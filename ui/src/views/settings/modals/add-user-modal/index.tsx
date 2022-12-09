@@ -72,7 +72,7 @@ export const AddUserModal: React.FC = () => {
           <form className='space-y-6'>
             <div>
               <Label>Username</Label>
-              <Input value={username} placeholder="username"
+              <Input value={username || ''} placeholder="username"
                 data-testid={TEST_IDS.usersAddUsername}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                 onKeyPress={(e) => (e.key === 'Enter' && handleAddUser())}
@@ -80,7 +80,7 @@ export const AddUserModal: React.FC = () => {
             </div>
             <div>
               <Label>Password</Label>
-              <Input type='password' value={password} placeholder="password"
+              <Input type='password' value={password || ''} placeholder="password"
                 data-testid={TEST_IDS.usersAddPassword}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
@@ -89,7 +89,7 @@ export const AddUserModal: React.FC = () => {
             </div>
             <div>
               <Label>Confirm password</Label>
-              <Input type='password' value={passwordConfirm} placeholder="confirm password"
+              <Input type='password' value={passwordConfirm || ''} placeholder="confirm password"
                 data-testid={TEST_IDS.usersAddPasswordConfirm}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPasswordConfirm(e.target.value)}
@@ -111,7 +111,7 @@ export const AddUserModal: React.FC = () => {
                             readOnly
                             type='radio'
                             name='role'
-                            value={r.key}
+                            value={r.key || ''}
                             checked={r ? role === r.key : undefined}
                             data-testid={`${TEST_IDS.usersAddRole}-${index}`}
                           />

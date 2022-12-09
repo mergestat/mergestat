@@ -104,7 +104,7 @@ export const EditUserModal: React.FC = () => {
           <form className='space-y-6'>
             <div>
               <Label>Password</Label>
-              <Input type='password' value={password} placeholder="password"
+              <Input type='password' value={password || ''} placeholder="password"
                 data-testid={TEST_IDS.usersEditPassword}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
@@ -113,7 +113,7 @@ export const EditUserModal: React.FC = () => {
             </div>
             <div>
               <Label>Confirm password</Label>
-              <Input type='password' value={passwordConfirm} placeholder="confirm password"
+              <Input type='password' value={passwordConfirm || ''} placeholder="confirm password"
                 data-testid={TEST_IDS.usersEditPasswordConfirm}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPasswordConfirm(e.target.value)}
@@ -135,7 +135,7 @@ export const EditUserModal: React.FC = () => {
                             readOnly
                             type='radio'
                             name='role'
-                            value={r.key}
+                            value={r.key || ''}
                             checked={r ? role === r.key : undefined}
                             data-testid={`${TEST_IDS.usersEditRole}-${index}`}
                           />
