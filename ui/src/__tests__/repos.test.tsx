@@ -82,7 +82,7 @@ describe('GraphQL queries: (Repos)', () => {
     })
   })
 
-  it('calling useQuery() and refetch(): searching \'mergestat\' repo', async () => {
+  it('calling useQuery() and refetch(): searching \'angular\' repo', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposWithData, apolloMockJustAngularRepo]} addTypename={false}>
         <RepositoriesProvider>
@@ -98,11 +98,13 @@ describe('GraphQL queries: (Repos)', () => {
         // Typing 'angular'
         fireEvent.change(searchInput, { target: { value: DynamicValues.angular } })
         expect((searchInput as HTMLInputElement).value).toBe(DynamicValues.angular)
-
-        // Check table to have angular repo record
-        const repoName = screen.getByTestId(TEST_IDS.repoNameTable)
-        expect(repoName).toHaveTextContent('angular/angular')
       }
+    })
+
+    // Check table to have angular repo record
+    await waitFor(() => {
+      const repoName = screen.getByTestId(TEST_IDS.repoNameTable)
+      expect(repoName).toHaveTextContent('angular/angular')
     })
   })
 
@@ -122,12 +124,13 @@ describe('GraphQL queries: (Repos)', () => {
         // Typing 'qwerwefvs'
         fireEvent.change(searchInput, { target: { value: DynamicValues.weirdSearch } })
         expect((searchInput as HTMLInputElement).value).toBe(DynamicValues.weirdSearch)
-
-        // Checks if table is empty
-        const element = screen.getByTestId(TEST_IDS.repoListEmpty)
-        expect(element).toBeInTheDocument()
-        expect(element?.textContent).toBe('No data available!')
       }
+    })
+
+    // Checks if table is empty
+    await waitFor(() => {
+      const element = screen.getByTestId(TEST_IDS.repoListEmpty)
+      expect(element?.textContent).toBe('No data available!')
     })
   })
 

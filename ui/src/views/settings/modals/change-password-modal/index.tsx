@@ -69,7 +69,7 @@ export const ChangePasswordModal: React.FC = () => {
             </div> */}
             <div>
               <Label>Password</Label>
-              <Input type='password' value={password} placeholder="password"
+              <Input type='password' value={password || ''} placeholder="password"
                 data-testid={TEST_IDS.usersSettingsPassword}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
@@ -79,7 +79,7 @@ export const ChangePasswordModal: React.FC = () => {
             </div>
             <div>
               <Label>Confirm password</Label>
-              <Input type='password' value={passwordConfirm} placeholder="confirm password"
+              <Input type='password' value={passwordConfirm || ''} placeholder="confirm password"
                 data-testid={TEST_IDS.usersSettingsPasswordConfirm}
                 variant={error ? 'error' : 'default'}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPasswordConfirm(e.target.value)}

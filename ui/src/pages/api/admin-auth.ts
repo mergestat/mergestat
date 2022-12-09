@@ -65,7 +65,7 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
       .setExpirationTime('5h')
       .sign(new TextEncoder().encode(JWT_SECRET))
 
-    setCookie(COOKIE.jwt, jwt, { req, res, maxAge: (60 * 60 * 5), httpOnly: true, secure: true, sameSite: 'strict', path: '/api/graphql' })
+    setCookie(COOKIE.jwt, jwt, { req, res, httpOnly: true, secure: true, sameSite: 'strict', path: '/api/graphql' })
     res.json({ loggedIn: true })
   } catch (error) {
     if (error instanceof Error) {

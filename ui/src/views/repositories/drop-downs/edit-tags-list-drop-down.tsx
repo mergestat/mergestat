@@ -31,7 +31,7 @@ export const EditTagsListDropDown: React.FC<RepositoryTagListProps> = ({ showMor
           <DotsHorizontalIcon className="t-icon t-icon-small h-full t-icon-default" />
         </div>
       }
-      zIndex={11}
+      zIndex={20}
     />
   )
 }
