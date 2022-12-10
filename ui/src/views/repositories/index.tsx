@@ -21,7 +21,7 @@ interface MetricNumberProp {
 const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric }: MetricNumberProp) => {
   return (
     <div>
-      {loading ? <Spinner size="sm" /> : metric}
+      {loading ? <Spinner size="sm" /> : new Intl.NumberFormat().format(metric)}
     </div>
   )
 }
