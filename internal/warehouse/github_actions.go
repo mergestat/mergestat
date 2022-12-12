@@ -140,7 +140,8 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		w.logger.Info().Msgf("getting workflow runs for workflow %s", *workflow.Name)
 
 		if workflow.ID == nil {
-			continue
+			w.logger.Debug().Msg("workflow with empty ID")
+			break
 		}
 		// we get a page of 30 workflow runs until next page is 0
 		for {
@@ -224,7 +225,8 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	for _, workflowRun := range workflowRunsPage {
 
 		if workflowRun.ID == nil {
-			continue
+			w.logger.Debug().Msg("workflow run with empty ID")
+			break
 		}
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
@@ -295,7 +297,8 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	for i, workflowJob := range workflowRunJobsPage {
 
 		if workflowJob.ID == nil {
-			continue
+			w.logger.Debug().Msg("workflow job with empty ID")
+			break
 		}
 
 		if workflowJob.Name != nil {
