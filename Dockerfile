@@ -11,6 +11,8 @@ COPY . .
 RUN --mount=type=cache,target=/root/.cache/go-build \
 PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ make
 
+FROM zricethezav/gitleaks:v8.15.2 AS gitleaks
+
 FROM alpine:3.16
 RUN set -x && apk add --no-cache curl postgresql-client ca-certificates git
 
@@ -26,6 +28,9 @@ RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/
 
 # install syft binary
 RUN curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v0.58.0
+
+# install gitleaks binary from gitleaks image
+COPY --from=gitleaks /usr/bin/gitleaks /usr/local/bin/gitleaks
 
 # for pprof and prom metrics over http
 EXPOSE 8080
