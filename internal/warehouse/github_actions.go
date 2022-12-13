@@ -310,9 +310,9 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 		}
 
 		if workflowJob.Name != nil {
-			w.logger.Debug().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting log of")
+			w.logger.Debug().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting workflow run log of")
 		} else {
-			w.logger.Debug().Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting log with ID")
+			w.logger.Debug().Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting workflow run log  with ID")
 		}
 
 		workflowJobLog, resp, err := getWorkflowJobLog(ctx, w.githubClient, owner, repo, *workflowJob.ID)
