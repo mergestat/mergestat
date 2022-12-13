@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO mergestat.repo_sync_types (type, description, short_name) VALUES ('GITLEAKS_REPO_SCAN', 'Executes a gitleaks scan on a git repository', 'Gitleaks Repo Scan') ON CONFLICT DO NOTHING;
+INSERT INTO mergestat.repo_sync_types (type, description, short_name, priority) VALUES ('GITLEAKS_REPO_SCAN', 'Executes a gitleaks scan on a git repository', 'Gitleaks Repo Scan', 3) ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS gitleaks_repo_scans (
     repo_id uuid PRIMARY KEY,
