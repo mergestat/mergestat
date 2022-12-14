@@ -33,10 +33,10 @@ const (
 	syncTypeGitHubRepoStars    = "GITHUB_REPO_STARS"
 	syncTypeGitHubPRReviews    = "GITHUB_PR_REVIEWS"
 	syncTypeGitHubPRCommits    = "GITHUB_PR_COMMITS"
-
-	syncTypeTrivyRepoScan = "TRIVY_REPO_SCAN"
-	syncTypeSyftRepoScan  = "SYFT_REPO_SCAN"
-	syncTypeGitHubActions = "GITHUB_ACTIONS"
+	syncTypeTrivyRepoScan      = "TRIVY_REPO_SCAN"
+	syncTypeSyftRepoScan       = "SYFT_REPO_SCAN"
+	syncTypeGitHubActions      = "GITHUB_ACTIONS"
+	synTypeGitleaksRepoScan    = "GITLEAKS_REPO_SCAN"
 )
 
 type worker struct {
@@ -110,7 +110,7 @@ func (w *worker) exec(ctx context.Context, id string) {
 
 			if err := w.handle(ctx, j); err != nil {
 				if !errors.Is(err, context.Canceled) {
-					w.logger.Err(err).Msgf("error handling job: %v", j)
+					w.logger.Warn().AnErr("error", err).Msgf("error handling job: %v", j)
 
 					if err := w.db.InsertSyncJobLog(context.TODO(), db.InsertSyncJobLogParams{
 						LogType:         string(SyncLogTypeError),
@@ -177,6 +177,8 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 		return w.handleSyftRepoScan(ctx, j)
 	case syncTypeGitHubActions:
 		return w.handleGithubActions(ctx, j)
+	case synTypeGitleaksRepoScan:
+		return w.handleGitleaksRepoScan(ctx, j)
 	default:
 		return fmt.Errorf("unknown sync type: %s for job ID: %d", j.SyncType, j.ID)
 	}

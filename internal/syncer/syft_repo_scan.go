@@ -19,8 +19,10 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatStartingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
@@ -48,7 +50,7 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 	var output []byte
 	if output, err = cmd.Output(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
-			w.logger.Err(exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running syft repo scan")
+			w.logger.Warn().AnErr("error", exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running syft repo scan")
 		}
 		return fmt.Errorf("running syft scan: %w", err)
 	}
@@ -97,8 +99,10 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 	}
 
 	// indicate that we're finishing query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatFinishingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	err = tx.Commit(ctx)

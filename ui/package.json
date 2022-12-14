@@ -2,6 +2,9 @@
   "name": "mergestat-console",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "^16"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -17,8 +20,8 @@
   "dependencies": {
     "@apollo/client": "^3.7.0",
     "@apollo/react-testing": "^4.0.0",
-    "@mergestat/blocks": "^1.4.4",
-    "@mergestat/icons": "^1.2.2",
+    "@mergestat/blocks": "1.5.8",
+    "@mergestat/icons": "1.2.5",
     "@monaco-editor/react": "^4.4.6",
     "@next/bundle-analyzer": "^12.1.4",
     "@tailwindcss/line-clamp": "^0.4.2",

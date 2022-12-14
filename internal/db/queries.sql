@@ -18,6 +18,9 @@ WITH dequeued AS (
 SELECT id, created_at, updated_at, type, settings FROM dequeued;
 ;
 
+-- name: UpdateImportStatus :exec
+UPDATE mergestat.repo_imports SET import_status = @status::TEXT, import_error = @error::TEXT WHERE id = @ID;
+
 -- name: UpsertRepo :exec
 INSERT INTO public.repos (repo, is_github, repo_import_id) VALUES($1, $2, $3)
 ON CONFLICT (repo, (ref IS NULL)) WHERE ref IS NULL
@@ -204,7 +207,7 @@ SELECT
     SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
 FROM t;
 
--- name: UpserWorkflowRuns :exec
+-- name: UpsertWorkflowRuns :exec
 WITH t AS(
 	INSERT INTO public.github_actions_workflow_runs(
 	repo_id,

@@ -44,67 +44,62 @@ export const mockRepoData: GetReposQuery = {
             {
               id: faker.datatype.uuid(),
               syncType: 'GIT_COMMIT_STATS',
-              repoSyncQueues: {
-                nodes: [
-                  {
-                    id: faker.random.numeric(4),
-                    status: 'DONE',
-                    createdAt: faker.date.recent(9),
-                  }
-                ],
+              lastCompletedRepoSyncQueue: {
+                id: faker.random.numeric(4),
+                status: 'DONE',
+                createdAt: faker.date.recent(9),
+                repoSyncLogs: {
+                  totalCount: 0
+                }
               },
             },
             {
               id: faker.datatype.uuid(),
               syncType: 'GIT_FILES',
-              repoSyncQueues: {
-                nodes: [
-                  {
-                    id: faker.random.numeric(4),
-                    status: 'RUNNING',
-                    createdAt: faker.date.recent(),
-                  }
-                ],
-              },
+              lastCompletedRepoSyncQueue: {
+                id: faker.random.numeric(4),
+                status: 'RUNNING',
+                createdAt: faker.date.recent(),
+                repoSyncLogs: {
+                  totalCount: 0
+                }
+              }
             },
             {
               id: faker.datatype.uuid(),
               syncType: 'GITHUB_REPO_METADATA',
-              repoSyncQueues: {
-                nodes: [
-                  {
-                    id: faker.random.numeric(4),
-                    status: 'DONE',
-                    createdAt: faker.date.recent(8),
-                  }
-                ],
-              },
+              lastCompletedRepoSyncQueue: {
+                id: faker.random.numeric(4),
+                status: 'DONE',
+                createdAt: faker.date.recent(8),
+                repoSyncLogs: {
+                  totalCount: 0
+                }
+              }
             },
             {
               id: faker.datatype.uuid(),
               syncType: 'GIT_REFS',
-              repoSyncQueues: {
-                nodes: [
-                  {
-                    id: faker.random.numeric(4),
-                    status: 'DONE',
-                    createdAt: faker.date.recent(7),
-                  }
-                ],
-              },
+              lastCompletedRepoSyncQueue: {
+                id: faker.random.numeric(4),
+                status: 'DONE',
+                createdAt: faker.date.recent(7),
+                repoSyncLogs: {
+                  totalCount: 0
+                }
+              }
             },
             {
               id: faker.datatype.uuid(),
               syncType: 'GIT_COMMITS',
-              repoSyncQueues: {
-                nodes: [
-                  {
-                    id: faker.random.numeric(4),
-                    status: 'DONE',
-                    createdAt: faker.date.recent(6),
-                  }
-                ],
-              },
+              lastCompletedRepoSyncQueue: {
+                id: faker.random.numeric(4),
+                status: 'DONE',
+                createdAt: faker.date.recent(6),
+                repoSyncLogs: {
+                  totalCount: 0
+                }
+              }
             }
           ],
         },

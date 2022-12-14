@@ -337,6 +337,108 @@ export type CreateGitTagPayloadGitTagEdgeArgs = {
   orderBy?: InputMaybe<Array<GitTagsOrderBy>>;
 };
 
+/** All input for the create `GithubActionsWorkflow` mutation. */
+export type CreateGithubActionsWorkflowInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `GithubActionsWorkflow` to be created by this mutation. */
+  githubActionsWorkflow: GithubActionsWorkflowInput;
+};
+
+/** The output of our create `GithubActionsWorkflow` mutation. */
+export type CreateGithubActionsWorkflowPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GithubActionsWorkflow` that was created by this mutation. */
+  githubActionsWorkflow?: Maybe<GithubActionsWorkflow>;
+  /** An edge for our `GithubActionsWorkflow`. May be used by Relay 1. */
+  githubActionsWorkflowEdge?: Maybe<GithubActionsWorkflowsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflow`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our create `GithubActionsWorkflow` mutation. */
+export type CreateGithubActionsWorkflowPayloadGithubActionsWorkflowEdgeArgs = {
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowsOrderBy>>;
+};
+
+/** All input for the create `GithubActionsWorkflowRun` mutation. */
+export type CreateGithubActionsWorkflowRunInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `GithubActionsWorkflowRun` to be created by this mutation. */
+  githubActionsWorkflowRun: GithubActionsWorkflowRunInput;
+};
+
+/** All input for the create `GithubActionsWorkflowRunJob` mutation. */
+export type CreateGithubActionsWorkflowRunJobInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `GithubActionsWorkflowRunJob` to be created by this mutation. */
+  githubActionsWorkflowRunJob: GithubActionsWorkflowRunJobInput;
+};
+
+/** The output of our create `GithubActionsWorkflowRunJob` mutation. */
+export type CreateGithubActionsWorkflowRunJobPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GithubActionsWorkflowRunJob` that was created by this mutation. */
+  githubActionsWorkflowRunJob?: Maybe<GithubActionsWorkflowRunJob>;
+  /** An edge for our `GithubActionsWorkflowRunJob`. May be used by Relay 1. */
+  githubActionsWorkflowRunJobEdge?: Maybe<GithubActionsWorkflowRunJobsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflowRunJob`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our create `GithubActionsWorkflowRunJob` mutation. */
+export type CreateGithubActionsWorkflowRunJobPayloadGithubActionsWorkflowRunJobEdgeArgs = {
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunJobsOrderBy>>;
+};
+
+/** The output of our create `GithubActionsWorkflowRun` mutation. */
+export type CreateGithubActionsWorkflowRunPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GithubActionsWorkflowRun` that was created by this mutation. */
+  githubActionsWorkflowRun?: Maybe<GithubActionsWorkflowRun>;
+  /** An edge for our `GithubActionsWorkflowRun`. May be used by Relay 1. */
+  githubActionsWorkflowRunEdge?: Maybe<GithubActionsWorkflowRunsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflowRun`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our create `GithubActionsWorkflowRun` mutation. */
+export type CreateGithubActionsWorkflowRunPayloadGithubActionsWorkflowRunEdgeArgs = {
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunsOrderBy>>;
+};
+
 /** All input for the create `GithubIssue` mutation. */
 export type CreateGithubIssueInput = {
   /**
@@ -727,6 +829,8 @@ export type CreateRepoSyncPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `RepoSyncQueue` that is related to this `RepoSync`. */
+  lastCompletedRepoSyncQueue?: Maybe<RepoSyncQueue>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   /** Reads a single `Repo` that is related to this `RepoSync`. */
@@ -1348,6 +1452,174 @@ export type DeleteGitRefPayloadGitRefEdgeArgs = {
   orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
 };
 
+/** All input for the `deleteGithubActionsWorkflowById` mutation. */
+export type DeleteGithubActionsWorkflowByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+};
+
+/** All input for the `deleteGithubActionsWorkflowByNodeId` mutation. */
+export type DeleteGithubActionsWorkflowByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GithubActionsWorkflow` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteGithubActionsWorkflow` mutation. */
+export type DeleteGithubActionsWorkflowInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `GithubActionsWorkflow` mutation. */
+export type DeleteGithubActionsWorkflowPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedGithubActionsWorkflowNodeId?: Maybe<Scalars['ID']>;
+  /** The `GithubActionsWorkflow` that was deleted by this mutation. */
+  githubActionsWorkflow?: Maybe<GithubActionsWorkflow>;
+  /** An edge for our `GithubActionsWorkflow`. May be used by Relay 1. */
+  githubActionsWorkflowEdge?: Maybe<GithubActionsWorkflowsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflow`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our delete `GithubActionsWorkflow` mutation. */
+export type DeleteGithubActionsWorkflowPayloadGithubActionsWorkflowEdgeArgs = {
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowsOrderBy>>;
+};
+
+/** All input for the `deleteGithubActionsWorkflowRunById` mutation. */
+export type DeleteGithubActionsWorkflowRunByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+};
+
+/** All input for the `deleteGithubActionsWorkflowRunByNodeId` mutation. */
+export type DeleteGithubActionsWorkflowRunByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GithubActionsWorkflowRun` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteGithubActionsWorkflowRun` mutation. */
+export type DeleteGithubActionsWorkflowRunInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  repoId: Scalars['UUID'];
+};
+
+/** All input for the `deleteGithubActionsWorkflowRunJobById` mutation. */
+export type DeleteGithubActionsWorkflowRunJobByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+};
+
+/** All input for the `deleteGithubActionsWorkflowRunJobByNodeId` mutation. */
+export type DeleteGithubActionsWorkflowRunJobByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GithubActionsWorkflowRunJob` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteGithubActionsWorkflowRunJob` mutation. */
+export type DeleteGithubActionsWorkflowRunJobInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `GithubActionsWorkflowRunJob` mutation. */
+export type DeleteGithubActionsWorkflowRunJobPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedGithubActionsWorkflowRunJobNodeId?: Maybe<Scalars['ID']>;
+  /** The `GithubActionsWorkflowRunJob` that was deleted by this mutation. */
+  githubActionsWorkflowRunJob?: Maybe<GithubActionsWorkflowRunJob>;
+  /** An edge for our `GithubActionsWorkflowRunJob`. May be used by Relay 1. */
+  githubActionsWorkflowRunJobEdge?: Maybe<GithubActionsWorkflowRunJobsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflowRunJob`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our delete `GithubActionsWorkflowRunJob` mutation. */
+export type DeleteGithubActionsWorkflowRunJobPayloadGithubActionsWorkflowRunJobEdgeArgs = {
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunJobsOrderBy>>;
+};
+
+/** The output of our delete `GithubActionsWorkflowRun` mutation. */
+export type DeleteGithubActionsWorkflowRunPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedGithubActionsWorkflowRunNodeId?: Maybe<Scalars['ID']>;
+  /** The `GithubActionsWorkflowRun` that was deleted by this mutation. */
+  githubActionsWorkflowRun?: Maybe<GithubActionsWorkflowRun>;
+  /** An edge for our `GithubActionsWorkflowRun`. May be used by Relay 1. */
+  githubActionsWorkflowRunEdge?: Maybe<GithubActionsWorkflowRunsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflowRun`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our delete `GithubActionsWorkflowRun` mutation. */
+export type DeleteGithubActionsWorkflowRunPayloadGithubActionsWorkflowRunEdgeArgs = {
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunsOrderBy>>;
+};
+
 /** All input for the `deleteGithubIssueByNodeId` mutation. */
 export type DeleteGithubIssueByNodeIdInput = {
   /**
@@ -1913,6 +2185,8 @@ export type DeleteRepoSyncPayload = {
    */
   clientMutationId?: Maybe<Scalars['String']>;
   deletedRepoSyncNodeId?: Maybe<Scalars['ID']>;
+  /** Reads a single `RepoSyncQueue` that is related to this `RepoSync`. */
+  lastCompletedRepoSyncQueue?: Maybe<RepoSyncQueue>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   /** Reads a single `Repo` that is related to this `RepoSync`. */
@@ -3444,6 +3718,759 @@ export enum GitTagsOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
+export type GithubActionsWorkflow = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
+  badgeUrl?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['Datetime']>;
+  htmlUrl?: Maybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  name?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  path?: Maybe<Scalars['String']>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflow`. */
+  repo?: Maybe<Repo>;
+  repoId: Scalars['UUID'];
+  state?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['Datetime']>;
+  url?: Maybe<Scalars['String']>;
+  workflowNodeId?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `GithubActionsWorkflow` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type GithubActionsWorkflowCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `badgeUrl` field. */
+  badgeUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `htmlUrl` field. */
+  htmlUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `path` field. */
+  path?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `state` field. */
+  state?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `url` field. */
+  url?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `workflowNodeId` field. */
+  workflowNodeId?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `GithubActionsWorkflow` object types. All fields are combined with a logical ‘and.’ */
+export type GithubActionsWorkflowFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GithubActionsWorkflowFilter>>;
+  /** Filter by the object’s `badgeUrl` field. */
+  badgeUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `htmlUrl` field. */
+  htmlUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GithubActionsWorkflowFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GithubActionsWorkflowFilter>>;
+  /** Filter by the object’s `path` field. */
+  path?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `state` field. */
+  state?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `url` field. */
+  url?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `workflowNodeId` field. */
+  workflowNodeId?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `GithubActionsWorkflow` */
+export type GithubActionsWorkflowInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  badgeUrl?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  htmlUrl?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  name?: InputMaybe<Scalars['String']>;
+  path?: InputMaybe<Scalars['String']>;
+  repoId: Scalars['UUID'];
+  state?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  url?: InputMaybe<Scalars['String']>;
+  workflowNodeId?: InputMaybe<Scalars['String']>;
+};
+
+/** Represents an update to a `GithubActionsWorkflow`. Fields that are set will be updated. */
+export type GithubActionsWorkflowPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  badgeUrl?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  htmlUrl?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['BigInt']>;
+  name?: InputMaybe<Scalars['String']>;
+  path?: InputMaybe<Scalars['String']>;
+  repoId?: InputMaybe<Scalars['UUID']>;
+  state?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  url?: InputMaybe<Scalars['String']>;
+  workflowNodeId?: InputMaybe<Scalars['String']>;
+};
+
+export type GithubActionsWorkflowRun = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
+  artifactsUrl?: Maybe<Scalars['String']>;
+  cancelUrl?: Maybe<Scalars['String']>;
+  checkSuiteId?: Maybe<Scalars['BigInt']>;
+  checkSuiteNodeId?: Maybe<Scalars['String']>;
+  checkSuiteUrl?: Maybe<Scalars['String']>;
+  conclusion?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['Datetime']>;
+  event?: Maybe<Scalars['String']>;
+  headBranch?: Maybe<Scalars['String']>;
+  headCommit?: Maybe<Scalars['JSON']>;
+  headRepositoryUrl?: Maybe<Scalars['String']>;
+  htmlUrl?: Maybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  jobsUrl?: Maybe<Scalars['String']>;
+  logsUrl?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  pullRequests?: Maybe<Scalars['JSON']>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflowRun`. */
+  repo?: Maybe<Repo>;
+  repoId: Scalars['UUID'];
+  repositoryUrl?: Maybe<Scalars['String']>;
+  rerunUrl?: Maybe<Scalars['String']>;
+  runAttempt?: Maybe<Scalars['Int']>;
+  runNumber?: Maybe<Scalars['Int']>;
+  runStartedAt?: Maybe<Scalars['Datetime']>;
+  status?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['Datetime']>;
+  url?: Maybe<Scalars['String']>;
+  workflowId?: Maybe<Scalars['BigInt']>;
+  workflowRunNodeId?: Maybe<Scalars['String']>;
+  workflowUrl?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `GithubActionsWorkflowRun` object types. All
+ * fields are tested for equality and combined with a logical ‘and.’
+ */
+export type GithubActionsWorkflowRunCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `artifactsUrl` field. */
+  artifactsUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `cancelUrl` field. */
+  cancelUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `checkSuiteId` field. */
+  checkSuiteId?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `checkSuiteNodeId` field. */
+  checkSuiteNodeId?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `checkSuiteUrl` field. */
+  checkSuiteUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `conclusion` field. */
+  conclusion?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `event` field. */
+  event?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `headBranch` field. */
+  headBranch?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `headCommit` field. */
+  headCommit?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `headRepositoryUrl` field. */
+  headRepositoryUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `htmlUrl` field. */
+  htmlUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `jobsUrl` field. */
+  jobsUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `logsUrl` field. */
+  logsUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `pullRequests` field. */
+  pullRequests?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `repositoryUrl` field. */
+  repositoryUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `rerunUrl` field. */
+  rerunUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `runAttempt` field. */
+  runAttempt?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `runNumber` field. */
+  runNumber?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `runStartedAt` field. */
+  runStartedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `url` field. */
+  url?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `workflowId` field. */
+  workflowId?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `workflowRunNodeId` field. */
+  workflowRunNodeId?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `workflowUrl` field. */
+  workflowUrl?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `GithubActionsWorkflowRun` object types. All fields are combined with a logical ‘and.’ */
+export type GithubActionsWorkflowRunFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GithubActionsWorkflowRunFilter>>;
+  /** Filter by the object’s `artifactsUrl` field. */
+  artifactsUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `cancelUrl` field. */
+  cancelUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `checkSuiteId` field. */
+  checkSuiteId?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `checkSuiteNodeId` field. */
+  checkSuiteNodeId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `checkSuiteUrl` field. */
+  checkSuiteUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `conclusion` field. */
+  conclusion?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `event` field. */
+  event?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `headBranch` field. */
+  headBranch?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `headCommit` field. */
+  headCommit?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `headRepositoryUrl` field. */
+  headRepositoryUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `htmlUrl` field. */
+  htmlUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `jobsUrl` field. */
+  jobsUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `logsUrl` field. */
+  logsUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GithubActionsWorkflowRunFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GithubActionsWorkflowRunFilter>>;
+  /** Filter by the object’s `pullRequests` field. */
+  pullRequests?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `repositoryUrl` field. */
+  repositoryUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `rerunUrl` field. */
+  rerunUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `runAttempt` field. */
+  runAttempt?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `runNumber` field. */
+  runNumber?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `runStartedAt` field. */
+  runStartedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `url` field. */
+  url?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `workflowId` field. */
+  workflowId?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `workflowRunNodeId` field. */
+  workflowRunNodeId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `workflowUrl` field. */
+  workflowUrl?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `GithubActionsWorkflowRun` */
+export type GithubActionsWorkflowRunInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  artifactsUrl?: InputMaybe<Scalars['String']>;
+  cancelUrl?: InputMaybe<Scalars['String']>;
+  checkSuiteId?: InputMaybe<Scalars['BigInt']>;
+  checkSuiteNodeId?: InputMaybe<Scalars['String']>;
+  checkSuiteUrl?: InputMaybe<Scalars['String']>;
+  conclusion?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  event?: InputMaybe<Scalars['String']>;
+  headBranch?: InputMaybe<Scalars['String']>;
+  headCommit?: InputMaybe<Scalars['JSON']>;
+  headRepositoryUrl?: InputMaybe<Scalars['String']>;
+  htmlUrl?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  jobsUrl?: InputMaybe<Scalars['String']>;
+  logsUrl?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  pullRequests?: InputMaybe<Scalars['JSON']>;
+  repoId: Scalars['UUID'];
+  repositoryUrl?: InputMaybe<Scalars['String']>;
+  rerunUrl?: InputMaybe<Scalars['String']>;
+  runAttempt?: InputMaybe<Scalars['Int']>;
+  runNumber?: InputMaybe<Scalars['Int']>;
+  runStartedAt?: InputMaybe<Scalars['Datetime']>;
+  status?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  url?: InputMaybe<Scalars['String']>;
+  workflowId?: InputMaybe<Scalars['BigInt']>;
+  workflowRunNodeId?: InputMaybe<Scalars['String']>;
+  workflowUrl?: InputMaybe<Scalars['String']>;
+};
+
+export type GithubActionsWorkflowRunJob = Node & {
+  _mergestatSyncedAt: Scalars['Datetime'];
+  checkRunUrl?: Maybe<Scalars['String']>;
+  completedAt?: Maybe<Scalars['Datetime']>;
+  conclusion?: Maybe<Scalars['String']>;
+  headSha?: Maybe<Scalars['String']>;
+  htmlUrl?: Maybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  jobNodeId?: Maybe<Scalars['String']>;
+  labels?: Maybe<Scalars['JSON']>;
+  log?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflowRunJob`. */
+  repo?: Maybe<Repo>;
+  repoId: Scalars['UUID'];
+  runId?: Maybe<Scalars['BigInt']>;
+  runUrl?: Maybe<Scalars['String']>;
+  runnerGroupId?: Maybe<Scalars['BigInt']>;
+  runnerGroupName?: Maybe<Scalars['String']>;
+  runnerId?: Maybe<Scalars['BigInt']>;
+  runnerName?: Maybe<Scalars['String']>;
+  startedAt?: Maybe<Scalars['Datetime']>;
+  status?: Maybe<Scalars['String']>;
+  steps?: Maybe<Scalars['JSON']>;
+  url?: Maybe<Scalars['String']>;
+  workflowName?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `GithubActionsWorkflowRunJob` object types. All
+ * fields are tested for equality and combined with a logical ‘and.’
+ */
+export type GithubActionsWorkflowRunJobCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `checkRunUrl` field. */
+  checkRunUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `completedAt` field. */
+  completedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `conclusion` field. */
+  conclusion?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `headSha` field. */
+  headSha?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `htmlUrl` field. */
+  htmlUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `jobNodeId` field. */
+  jobNodeId?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `labels` field. */
+  labels?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `log` field. */
+  log?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `runId` field. */
+  runId?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `runUrl` field. */
+  runUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `runnerGroupId` field. */
+  runnerGroupId?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `runnerGroupName` field. */
+  runnerGroupName?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `runnerId` field. */
+  runnerId?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `runnerName` field. */
+  runnerName?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `startedAt` field. */
+  startedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `steps` field. */
+  steps?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `url` field. */
+  url?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `workflowName` field. */
+  workflowName?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `GithubActionsWorkflowRunJob` object types. All fields are combined with a logical ‘and.’ */
+export type GithubActionsWorkflowRunJobFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GithubActionsWorkflowRunJobFilter>>;
+  /** Filter by the object’s `checkRunUrl` field. */
+  checkRunUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `completedAt` field. */
+  completedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `conclusion` field. */
+  conclusion?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `headSha` field. */
+  headSha?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `htmlUrl` field. */
+  htmlUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `jobNodeId` field. */
+  jobNodeId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `labels` field. */
+  labels?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `log` field. */
+  log?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GithubActionsWorkflowRunJobFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GithubActionsWorkflowRunJobFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `runId` field. */
+  runId?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `runUrl` field. */
+  runUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `runnerGroupId` field. */
+  runnerGroupId?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `runnerGroupName` field. */
+  runnerGroupName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `runnerId` field. */
+  runnerId?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `runnerName` field. */
+  runnerName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `startedAt` field. */
+  startedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `steps` field. */
+  steps?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `url` field. */
+  url?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `workflowName` field. */
+  workflowName?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `GithubActionsWorkflowRunJob` */
+export type GithubActionsWorkflowRunJobInput = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  checkRunUrl?: InputMaybe<Scalars['String']>;
+  completedAt?: InputMaybe<Scalars['Datetime']>;
+  conclusion?: InputMaybe<Scalars['String']>;
+  headSha?: InputMaybe<Scalars['String']>;
+  htmlUrl?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  jobNodeId?: InputMaybe<Scalars['String']>;
+  labels?: InputMaybe<Scalars['JSON']>;
+  log?: InputMaybe<Scalars['String']>;
+  repoId: Scalars['UUID'];
+  runId?: InputMaybe<Scalars['BigInt']>;
+  runUrl?: InputMaybe<Scalars['String']>;
+  runnerGroupId?: InputMaybe<Scalars['BigInt']>;
+  runnerGroupName?: InputMaybe<Scalars['String']>;
+  runnerId?: InputMaybe<Scalars['BigInt']>;
+  runnerName?: InputMaybe<Scalars['String']>;
+  startedAt?: InputMaybe<Scalars['Datetime']>;
+  status?: InputMaybe<Scalars['String']>;
+  steps?: InputMaybe<Scalars['JSON']>;
+  url?: InputMaybe<Scalars['String']>;
+  workflowName?: InputMaybe<Scalars['String']>;
+};
+
+/** Represents an update to a `GithubActionsWorkflowRunJob`. Fields that are set will be updated. */
+export type GithubActionsWorkflowRunJobPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  checkRunUrl?: InputMaybe<Scalars['String']>;
+  completedAt?: InputMaybe<Scalars['Datetime']>;
+  conclusion?: InputMaybe<Scalars['String']>;
+  headSha?: InputMaybe<Scalars['String']>;
+  htmlUrl?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['BigInt']>;
+  jobNodeId?: InputMaybe<Scalars['String']>;
+  labels?: InputMaybe<Scalars['JSON']>;
+  log?: InputMaybe<Scalars['String']>;
+  repoId?: InputMaybe<Scalars['UUID']>;
+  runId?: InputMaybe<Scalars['BigInt']>;
+  runUrl?: InputMaybe<Scalars['String']>;
+  runnerGroupId?: InputMaybe<Scalars['BigInt']>;
+  runnerGroupName?: InputMaybe<Scalars['String']>;
+  runnerId?: InputMaybe<Scalars['BigInt']>;
+  runnerName?: InputMaybe<Scalars['String']>;
+  startedAt?: InputMaybe<Scalars['Datetime']>;
+  status?: InputMaybe<Scalars['String']>;
+  steps?: InputMaybe<Scalars['JSON']>;
+  url?: InputMaybe<Scalars['String']>;
+  workflowName?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `GithubActionsWorkflowRunJob` values. */
+export type GithubActionsWorkflowRunJobsConnection = {
+  /** A list of edges which contains the `GithubActionsWorkflowRunJob` and cursor to aid in pagination. */
+  edges: Array<GithubActionsWorkflowRunJobsEdge>;
+  /** A list of `GithubActionsWorkflowRunJob` objects. */
+  nodes: Array<GithubActionsWorkflowRunJob>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GithubActionsWorkflowRunJob` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GithubActionsWorkflowRunJob` edge in the connection. */
+export type GithubActionsWorkflowRunJobsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GithubActionsWorkflowRunJob` at the end of the edge. */
+  node: GithubActionsWorkflowRunJob;
+};
+
+/** Methods to use when ordering `GithubActionsWorkflowRunJob`. */
+export enum GithubActionsWorkflowRunJobsOrderBy {
+  CheckRunUrlAsc = 'CHECK_RUN_URL_ASC',
+  CheckRunUrlDesc = 'CHECK_RUN_URL_DESC',
+  CompletedAtAsc = 'COMPLETED_AT_ASC',
+  CompletedAtDesc = 'COMPLETED_AT_DESC',
+  ConclusionAsc = 'CONCLUSION_ASC',
+  ConclusionDesc = 'CONCLUSION_DESC',
+  HeadShaAsc = 'HEAD_SHA_ASC',
+  HeadShaDesc = 'HEAD_SHA_DESC',
+  HtmlUrlAsc = 'HTML_URL_ASC',
+  HtmlUrlDesc = 'HTML_URL_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  JobNodeIdAsc = 'JOB_NODE_ID_ASC',
+  JobNodeIdDesc = 'JOB_NODE_ID_DESC',
+  LabelsAsc = 'LABELS_ASC',
+  LabelsDesc = 'LABELS_DESC',
+  LogAsc = 'LOG_ASC',
+  LogDesc = 'LOG_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  RunnerGroupIdAsc = 'RUNNER_GROUP_ID_ASC',
+  RunnerGroupIdDesc = 'RUNNER_GROUP_ID_DESC',
+  RunnerGroupNameAsc = 'RUNNER_GROUP_NAME_ASC',
+  RunnerGroupNameDesc = 'RUNNER_GROUP_NAME_DESC',
+  RunnerIdAsc = 'RUNNER_ID_ASC',
+  RunnerIdDesc = 'RUNNER_ID_DESC',
+  RunnerNameAsc = 'RUNNER_NAME_ASC',
+  RunnerNameDesc = 'RUNNER_NAME_DESC',
+  RunIdAsc = 'RUN_ID_ASC',
+  RunIdDesc = 'RUN_ID_DESC',
+  RunUrlAsc = 'RUN_URL_ASC',
+  RunUrlDesc = 'RUN_URL_DESC',
+  StartedAtAsc = 'STARTED_AT_ASC',
+  StartedAtDesc = 'STARTED_AT_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  StepsAsc = 'STEPS_ASC',
+  StepsDesc = 'STEPS_DESC',
+  UrlAsc = 'URL_ASC',
+  UrlDesc = 'URL_DESC',
+  WorkflowNameAsc = 'WORKFLOW_NAME_ASC',
+  WorkflowNameDesc = 'WORKFLOW_NAME_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+/** Represents an update to a `GithubActionsWorkflowRun`. Fields that are set will be updated. */
+export type GithubActionsWorkflowRunPatch = {
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  artifactsUrl?: InputMaybe<Scalars['String']>;
+  cancelUrl?: InputMaybe<Scalars['String']>;
+  checkSuiteId?: InputMaybe<Scalars['BigInt']>;
+  checkSuiteNodeId?: InputMaybe<Scalars['String']>;
+  checkSuiteUrl?: InputMaybe<Scalars['String']>;
+  conclusion?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  event?: InputMaybe<Scalars['String']>;
+  headBranch?: InputMaybe<Scalars['String']>;
+  headCommit?: InputMaybe<Scalars['JSON']>;
+  headRepositoryUrl?: InputMaybe<Scalars['String']>;
+  htmlUrl?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['BigInt']>;
+  jobsUrl?: InputMaybe<Scalars['String']>;
+  logsUrl?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  pullRequests?: InputMaybe<Scalars['JSON']>;
+  repoId?: InputMaybe<Scalars['UUID']>;
+  repositoryUrl?: InputMaybe<Scalars['String']>;
+  rerunUrl?: InputMaybe<Scalars['String']>;
+  runAttempt?: InputMaybe<Scalars['Int']>;
+  runNumber?: InputMaybe<Scalars['Int']>;
+  runStartedAt?: InputMaybe<Scalars['Datetime']>;
+  status?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  url?: InputMaybe<Scalars['String']>;
+  workflowId?: InputMaybe<Scalars['BigInt']>;
+  workflowRunNodeId?: InputMaybe<Scalars['String']>;
+  workflowUrl?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `GithubActionsWorkflowRun` values. */
+export type GithubActionsWorkflowRunsConnection = {
+  /** A list of edges which contains the `GithubActionsWorkflowRun` and cursor to aid in pagination. */
+  edges: Array<GithubActionsWorkflowRunsEdge>;
+  /** A list of `GithubActionsWorkflowRun` objects. */
+  nodes: Array<GithubActionsWorkflowRun>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GithubActionsWorkflowRun` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GithubActionsWorkflowRun` edge in the connection. */
+export type GithubActionsWorkflowRunsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GithubActionsWorkflowRun` at the end of the edge. */
+  node: GithubActionsWorkflowRun;
+};
+
+/** Methods to use when ordering `GithubActionsWorkflowRun`. */
+export enum GithubActionsWorkflowRunsOrderBy {
+  ArtifactsUrlAsc = 'ARTIFACTS_URL_ASC',
+  ArtifactsUrlDesc = 'ARTIFACTS_URL_DESC',
+  CancelUrlAsc = 'CANCEL_URL_ASC',
+  CancelUrlDesc = 'CANCEL_URL_DESC',
+  CheckSuiteIdAsc = 'CHECK_SUITE_ID_ASC',
+  CheckSuiteIdDesc = 'CHECK_SUITE_ID_DESC',
+  CheckSuiteNodeIdAsc = 'CHECK_SUITE_NODE_ID_ASC',
+  CheckSuiteNodeIdDesc = 'CHECK_SUITE_NODE_ID_DESC',
+  CheckSuiteUrlAsc = 'CHECK_SUITE_URL_ASC',
+  CheckSuiteUrlDesc = 'CHECK_SUITE_URL_DESC',
+  ConclusionAsc = 'CONCLUSION_ASC',
+  ConclusionDesc = 'CONCLUSION_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  EventAsc = 'EVENT_ASC',
+  EventDesc = 'EVENT_DESC',
+  HeadBranchAsc = 'HEAD_BRANCH_ASC',
+  HeadBranchDesc = 'HEAD_BRANCH_DESC',
+  HeadCommitAsc = 'HEAD_COMMIT_ASC',
+  HeadCommitDesc = 'HEAD_COMMIT_DESC',
+  HeadRepositoryUrlAsc = 'HEAD_REPOSITORY_URL_ASC',
+  HeadRepositoryUrlDesc = 'HEAD_REPOSITORY_URL_DESC',
+  HtmlUrlAsc = 'HTML_URL_ASC',
+  HtmlUrlDesc = 'HTML_URL_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  JobsUrlAsc = 'JOBS_URL_ASC',
+  JobsUrlDesc = 'JOBS_URL_DESC',
+  LogsUrlAsc = 'LOGS_URL_ASC',
+  LogsUrlDesc = 'LOGS_URL_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PullRequestsAsc = 'PULL_REQUESTS_ASC',
+  PullRequestsDesc = 'PULL_REQUESTS_DESC',
+  RepositoryUrlAsc = 'REPOSITORY_URL_ASC',
+  RepositoryUrlDesc = 'REPOSITORY_URL_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  RerunUrlAsc = 'RERUN_URL_ASC',
+  RerunUrlDesc = 'RERUN_URL_DESC',
+  RunAttemptAsc = 'RUN_ATTEMPT_ASC',
+  RunAttemptDesc = 'RUN_ATTEMPT_DESC',
+  RunNumberAsc = 'RUN_NUMBER_ASC',
+  RunNumberDesc = 'RUN_NUMBER_DESC',
+  RunStartedAtAsc = 'RUN_STARTED_AT_ASC',
+  RunStartedAtDesc = 'RUN_STARTED_AT_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  UrlAsc = 'URL_ASC',
+  UrlDesc = 'URL_DESC',
+  WorkflowIdAsc = 'WORKFLOW_ID_ASC',
+  WorkflowIdDesc = 'WORKFLOW_ID_DESC',
+  WorkflowRunNodeIdAsc = 'WORKFLOW_RUN_NODE_ID_ASC',
+  WorkflowRunNodeIdDesc = 'WORKFLOW_RUN_NODE_ID_DESC',
+  WorkflowUrlAsc = 'WORKFLOW_URL_ASC',
+  WorkflowUrlDesc = 'WORKFLOW_URL_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+/** A connection to a list of `GithubActionsWorkflow` values. */
+export type GithubActionsWorkflowsConnection = {
+  /** A list of edges which contains the `GithubActionsWorkflow` and cursor to aid in pagination. */
+  edges: Array<GithubActionsWorkflowsEdge>;
+  /** A list of `GithubActionsWorkflow` objects. */
+  nodes: Array<GithubActionsWorkflow>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GithubActionsWorkflow` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GithubActionsWorkflow` edge in the connection. */
+export type GithubActionsWorkflowsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GithubActionsWorkflow` at the end of the edge. */
+  node: GithubActionsWorkflow;
+};
+
+/** Methods to use when ordering `GithubActionsWorkflow`. */
+export enum GithubActionsWorkflowsOrderBy {
+  BadgeUrlAsc = 'BADGE_URL_ASC',
+  BadgeUrlDesc = 'BADGE_URL_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  HtmlUrlAsc = 'HTML_URL_ASC',
+  HtmlUrlDesc = 'HTML_URL_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PathAsc = 'PATH_ASC',
+  PathDesc = 'PATH_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  StateAsc = 'STATE_ASC',
+  StateDesc = 'STATE_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  UrlAsc = 'URL_ASC',
+  UrlDesc = 'URL_DESC',
+  WorkflowNodeIdAsc = 'WORKFLOW_NODE_ID_ASC',
+  WorkflowNodeIdDesc = 'WORKFLOW_NODE_ID_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
 /** issues of a GitHub repo */
 export type GithubIssue = Node & {
   /** timestamp when record was synced into the MergeStat database */
@@ -3798,7 +4825,7 @@ export enum GithubIssuesOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
-/** pull requests of a GitHub repo */
+/** GitHub Workflow Run Jobs */
 export type GithubPullRequest = Node & {
   /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
@@ -5743,6 +6770,12 @@ export type Mutation = {
   createGitRef?: Maybe<CreateGitRefPayload>;
   /** Creates a single `GitTag`. */
   createGitTag?: Maybe<CreateGitTagPayload>;
+  /** Creates a single `GithubActionsWorkflow`. */
+  createGithubActionsWorkflow?: Maybe<CreateGithubActionsWorkflowPayload>;
+  /** Creates a single `GithubActionsWorkflowRun`. */
+  createGithubActionsWorkflowRun?: Maybe<CreateGithubActionsWorkflowRunPayload>;
+  /** Creates a single `GithubActionsWorkflowRunJob`. */
+  createGithubActionsWorkflowRunJob?: Maybe<CreateGithubActionsWorkflowRunJobPayload>;
   /** Creates a single `GithubIssue`. */
   createGithubIssue?: Maybe<CreateGithubIssuePayload>;
   /** Creates a single `GithubPullRequest`. */
@@ -5807,6 +6840,24 @@ export type Mutation = {
   deleteGitRef?: Maybe<DeleteGitRefPayload>;
   /** Deletes a single `GitRef` using its globally unique id. */
   deleteGitRefByNodeId?: Maybe<DeleteGitRefPayload>;
+  /** Deletes a single `GithubActionsWorkflow` using a unique key. */
+  deleteGithubActionsWorkflow?: Maybe<DeleteGithubActionsWorkflowPayload>;
+  /** Deletes a single `GithubActionsWorkflow` using a unique key. */
+  deleteGithubActionsWorkflowById?: Maybe<DeleteGithubActionsWorkflowPayload>;
+  /** Deletes a single `GithubActionsWorkflow` using its globally unique id. */
+  deleteGithubActionsWorkflowByNodeId?: Maybe<DeleteGithubActionsWorkflowPayload>;
+  /** Deletes a single `GithubActionsWorkflowRun` using a unique key. */
+  deleteGithubActionsWorkflowRun?: Maybe<DeleteGithubActionsWorkflowRunPayload>;
+  /** Deletes a single `GithubActionsWorkflowRun` using a unique key. */
+  deleteGithubActionsWorkflowRunById?: Maybe<DeleteGithubActionsWorkflowRunPayload>;
+  /** Deletes a single `GithubActionsWorkflowRun` using its globally unique id. */
+  deleteGithubActionsWorkflowRunByNodeId?: Maybe<DeleteGithubActionsWorkflowRunPayload>;
+  /** Deletes a single `GithubActionsWorkflowRunJob` using a unique key. */
+  deleteGithubActionsWorkflowRunJob?: Maybe<DeleteGithubActionsWorkflowRunJobPayload>;
+  /** Deletes a single `GithubActionsWorkflowRunJob` using a unique key. */
+  deleteGithubActionsWorkflowRunJobById?: Maybe<DeleteGithubActionsWorkflowRunJobPayload>;
+  /** Deletes a single `GithubActionsWorkflowRunJob` using its globally unique id. */
+  deleteGithubActionsWorkflowRunJobByNodeId?: Maybe<DeleteGithubActionsWorkflowRunJobPayload>;
   /** Deletes a single `GithubIssue` using a unique key. */
   deleteGithubIssue?: Maybe<DeleteGithubIssuePayload>;
   /** Deletes a single `GithubIssue` using its globally unique id. */
@@ -5900,6 +6951,7 @@ export type Mutation = {
   /** Deletes a single `TrivyRepoScan` using its globally unique id. */
   deleteTrivyRepoScanByNodeId?: Maybe<DeleteTrivyRepoScanPayload>;
   replaceGitHubPAT?: Maybe<Scalars['Boolean']>;
+  setSyncJobStatus?: Maybe<SetSyncJobStatusPayload>;
   simpleRepoSyncQueueCleanup?: Maybe<SimpleRepoSyncQueueCleanupPayload>;
   /** Updates a single `GitBlame` using a unique key and a patch. */
   updateGitBlame?: Maybe<UpdateGitBlamePayload>;
@@ -5921,6 +6973,24 @@ export type Mutation = {
   updateGitRef?: Maybe<UpdateGitRefPayload>;
   /** Updates a single `GitRef` using its globally unique id and a patch. */
   updateGitRefByNodeId?: Maybe<UpdateGitRefPayload>;
+  /** Updates a single `GithubActionsWorkflow` using a unique key and a patch. */
+  updateGithubActionsWorkflow?: Maybe<UpdateGithubActionsWorkflowPayload>;
+  /** Updates a single `GithubActionsWorkflow` using a unique key and a patch. */
+  updateGithubActionsWorkflowById?: Maybe<UpdateGithubActionsWorkflowPayload>;
+  /** Updates a single `GithubActionsWorkflow` using its globally unique id and a patch. */
+  updateGithubActionsWorkflowByNodeId?: Maybe<UpdateGithubActionsWorkflowPayload>;
+  /** Updates a single `GithubActionsWorkflowRun` using a unique key and a patch. */
+  updateGithubActionsWorkflowRun?: Maybe<UpdateGithubActionsWorkflowRunPayload>;
+  /** Updates a single `GithubActionsWorkflowRun` using a unique key and a patch. */
+  updateGithubActionsWorkflowRunById?: Maybe<UpdateGithubActionsWorkflowRunPayload>;
+  /** Updates a single `GithubActionsWorkflowRun` using its globally unique id and a patch. */
+  updateGithubActionsWorkflowRunByNodeId?: Maybe<UpdateGithubActionsWorkflowRunPayload>;
+  /** Updates a single `GithubActionsWorkflowRunJob` using a unique key and a patch. */
+  updateGithubActionsWorkflowRunJob?: Maybe<UpdateGithubActionsWorkflowRunJobPayload>;
+  /** Updates a single `GithubActionsWorkflowRunJob` using a unique key and a patch. */
+  updateGithubActionsWorkflowRunJobById?: Maybe<UpdateGithubActionsWorkflowRunJobPayload>;
+  /** Updates a single `GithubActionsWorkflowRunJob` using its globally unique id and a patch. */
+  updateGithubActionsWorkflowRunJobByNodeId?: Maybe<UpdateGithubActionsWorkflowRunJobPayload>;
   /** Updates a single `GithubIssue` using a unique key and a patch. */
   updateGithubIssue?: Maybe<UpdateGithubIssuePayload>;
   /** Updates a single `GithubIssue` using its globally unique id and a patch. */
@@ -6013,6 +7083,10 @@ export type Mutation = {
   updateTrivyRepoScan?: Maybe<UpdateTrivyRepoScanPayload>;
   /** Updates a single `TrivyRepoScan` using its globally unique id and a patch. */
   updateTrivyRepoScanByNodeId?: Maybe<UpdateTrivyRepoScanPayload>;
+  userMgmtAddUser?: Maybe<UserMgmtAddUserPayload>;
+  userMgmtRemoveUser?: Maybe<UserMgmtRemoveUserPayload>;
+  userMgmtSetUserRole?: Maybe<UserMgmtSetUserRolePayload>;
+  userMgmtUpdateUserPassword?: Maybe<UserMgmtUpdateUserPasswordPayload>;
 };
 
 
@@ -6061,6 +7135,24 @@ export type MutationCreateGitRefArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateGitTagArgs = {
   input: CreateGitTagInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGithubActionsWorkflowArgs = {
+  input: CreateGithubActionsWorkflowInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGithubActionsWorkflowRunArgs = {
+  input: CreateGithubActionsWorkflowRunInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGithubActionsWorkflowRunJobArgs = {
+  input: CreateGithubActionsWorkflowRunJobInput;
 };
 
 
@@ -6253,6 +7345,60 @@ export type MutationDeleteGitRefArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteGitRefByNodeIdArgs = {
   input: DeleteGitRefByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGithubActionsWorkflowArgs = {
+  input: DeleteGithubActionsWorkflowInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGithubActionsWorkflowByIdArgs = {
+  input: DeleteGithubActionsWorkflowByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGithubActionsWorkflowByNodeIdArgs = {
+  input: DeleteGithubActionsWorkflowByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGithubActionsWorkflowRunArgs = {
+  input: DeleteGithubActionsWorkflowRunInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGithubActionsWorkflowRunByIdArgs = {
+  input: DeleteGithubActionsWorkflowRunByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGithubActionsWorkflowRunByNodeIdArgs = {
+  input: DeleteGithubActionsWorkflowRunByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGithubActionsWorkflowRunJobArgs = {
+  input: DeleteGithubActionsWorkflowRunJobInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGithubActionsWorkflowRunJobByIdArgs = {
+  input: DeleteGithubActionsWorkflowRunJobByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGithubActionsWorkflowRunJobByNodeIdArgs = {
+  input: DeleteGithubActionsWorkflowRunJobByNodeIdInput;
 };
 
 
@@ -6539,6 +7685,12 @@ export type MutationReplaceGitHubPatArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationSetSyncJobStatusArgs = {
+  input: SetSyncJobStatusInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationSimpleRepoSyncQueueCleanupArgs = {
   input: SimpleRepoSyncQueueCleanupInput;
 };
@@ -6601,6 +7753,60 @@ export type MutationUpdateGitRefArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateGitRefByNodeIdArgs = {
   input: UpdateGitRefByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGithubActionsWorkflowArgs = {
+  input: UpdateGithubActionsWorkflowInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGithubActionsWorkflowByIdArgs = {
+  input: UpdateGithubActionsWorkflowByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGithubActionsWorkflowByNodeIdArgs = {
+  input: UpdateGithubActionsWorkflowByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGithubActionsWorkflowRunArgs = {
+  input: UpdateGithubActionsWorkflowRunInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGithubActionsWorkflowRunByIdArgs = {
+  input: UpdateGithubActionsWorkflowRunByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGithubActionsWorkflowRunByNodeIdArgs = {
+  input: UpdateGithubActionsWorkflowRunByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGithubActionsWorkflowRunJobArgs = {
+  input: UpdateGithubActionsWorkflowRunJobInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGithubActionsWorkflowRunJobByIdArgs = {
+  input: UpdateGithubActionsWorkflowRunJobByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGithubActionsWorkflowRunJobByNodeIdArgs = {
+  input: UpdateGithubActionsWorkflowRunJobByNodeIdInput;
 };
 
 
@@ -6879,6 +8085,30 @@ export type MutationUpdateTrivyRepoScanByNodeIdArgs = {
   input: UpdateTrivyRepoScanByNodeIdInput;
 };
 
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUserMgmtAddUserArgs = {
+  input: UserMgmtAddUserInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUserMgmtRemoveUserArgs = {
+  input: UserMgmtRemoveUserInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUserMgmtSetUserRoleArgs = {
+  input: UserMgmtSetUserRoleInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUserMgmtUpdateUserPasswordArgs = {
+  input: UserMgmtUpdateUserPasswordInput;
+};
+
 /** An object with a globally unique `ID`. */
 export type Node = {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -6931,6 +8161,24 @@ export type Query = Node & {
   gitRefs?: Maybe<GitRefsConnection>;
   /** Reads and enables pagination through a set of `GitTag`. */
   gitTags?: Maybe<GitTagsConnection>;
+  githubActionsWorkflow?: Maybe<GithubActionsWorkflow>;
+  githubActionsWorkflowById?: Maybe<GithubActionsWorkflow>;
+  /** Reads a single `GithubActionsWorkflow` using its globally unique `ID`. */
+  githubActionsWorkflowByNodeId?: Maybe<GithubActionsWorkflow>;
+  githubActionsWorkflowRun?: Maybe<GithubActionsWorkflowRun>;
+  githubActionsWorkflowRunById?: Maybe<GithubActionsWorkflowRun>;
+  /** Reads a single `GithubActionsWorkflowRun` using its globally unique `ID`. */
+  githubActionsWorkflowRunByNodeId?: Maybe<GithubActionsWorkflowRun>;
+  githubActionsWorkflowRunJob?: Maybe<GithubActionsWorkflowRunJob>;
+  githubActionsWorkflowRunJobById?: Maybe<GithubActionsWorkflowRunJob>;
+  /** Reads a single `GithubActionsWorkflowRunJob` using its globally unique `ID`. */
+  githubActionsWorkflowRunJobByNodeId?: Maybe<GithubActionsWorkflowRunJob>;
+  /** Reads and enables pagination through a set of `GithubActionsWorkflowRunJob`. */
+  githubActionsWorkflowRunJobs?: Maybe<GithubActionsWorkflowRunJobsConnection>;
+  /** Reads and enables pagination through a set of `GithubActionsWorkflowRun`. */
+  githubActionsWorkflowRuns?: Maybe<GithubActionsWorkflowRunsConnection>;
+  /** Reads and enables pagination through a set of `GithubActionsWorkflow`. */
+  githubActionsWorkflows?: Maybe<GithubActionsWorkflowsConnection>;
   githubIssue?: Maybe<GithubIssue>;
   /** Reads a single `GithubIssue` using its globally unique `ID`. */
   githubIssueByNodeId?: Maybe<GithubIssue>;
@@ -6965,7 +8213,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan>;
+  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /**
@@ -7058,11 +8306,14 @@ export type Query = Node & {
   trivyRepoScans?: Maybe<TrivyRepoScansConnection>;
   /** Reads and enables pagination through a set of `TrivyRepoVulnerability`. */
   trivyRepoVulnerabilities?: Maybe<TrivyRepoVulnerabilitiesConnection>;
+  /** Reads and enables pagination through a set of `UserMgmtPgUser`. */
+  userMgmtPgUsers?: Maybe<UserMgmtPgUsersConnection>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryExecSqlArgs = {
+  disableReadOnly?: InputMaybe<Scalars['Boolean']>;
   query: Scalars['String'];
   rowLimit?: InputMaybe<Scalars['Int']>;
   variables?: InputMaybe<Array<Scalars['String']>>;
@@ -7225,6 +8476,102 @@ export type QueryGitTagsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<GitTagsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowArgs = {
+  id: Scalars['BigInt'];
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowByIdArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowRunArgs = {
+  id: Scalars['BigInt'];
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowRunByIdArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowRunByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowRunJobArgs = {
+  id: Scalars['BigInt'];
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowRunJobByIdArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowRunJobByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowRunJobsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubActionsWorkflowRunJobCondition>;
+  filter?: InputMaybe<GithubActionsWorkflowRunJobFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunJobsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowRunsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubActionsWorkflowRunCondition>;
+  filter?: InputMaybe<GithubActionsWorkflowRunFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGithubActionsWorkflowsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubActionsWorkflowCondition>;
+  filter?: InputMaybe<GithubActionsWorkflowFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowsOrderBy>>;
 };
 
 
@@ -7842,6 +9189,19 @@ export type QueryTrivyRepoVulnerabilitiesArgs = {
   orderBy?: InputMaybe<Array<TrivyRepoVulnerabilitiesOrderBy>>;
 };
 
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserMgmtPgUsersArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserMgmtPgUserCondition>;
+  filter?: InputMaybe<UserMgmtPgUserFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserMgmtPgUsersOrderBy>>;
+};
+
 /** git repositories to track */
 export type Repo = Node & {
   /** timestamp of when the MergeStat repo entry was created */
@@ -7856,6 +9216,12 @@ export type Repo = Node & {
   gitFiles: GitFilesConnection;
   /** Reads and enables pagination through a set of `GitRef`. */
   gitRefs: GitRefsConnection;
+  /** Reads and enables pagination through a set of `GithubActionsWorkflowRunJob`. */
+  githubActionsWorkflowRunJobs: GithubActionsWorkflowRunJobsConnection;
+  /** Reads and enables pagination through a set of `GithubActionsWorkflowRun`. */
+  githubActionsWorkflowRuns: GithubActionsWorkflowRunsConnection;
+  /** Reads and enables pagination through a set of `GithubActionsWorkflow`. */
+  githubActionsWorkflows: GithubActionsWorkflowsConnection;
   /** Reads and enables pagination through a set of `GithubIssue`. */
   githubIssues: GithubIssuesConnection;
   /** Reads and enables pagination through a set of `GithubPullRequestCommit`. */
@@ -7955,6 +9321,45 @@ export type RepoGitRefsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
+};
+
+
+/** git repositories to track */
+export type RepoGithubActionsWorkflowRunJobsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubActionsWorkflowRunJobCondition>;
+  filter?: InputMaybe<GithubActionsWorkflowRunJobFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunJobsOrderBy>>;
+};
+
+
+/** git repositories to track */
+export type RepoGithubActionsWorkflowRunsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubActionsWorkflowRunCondition>;
+  filter?: InputMaybe<GithubActionsWorkflowRunFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunsOrderBy>>;
+};
+
+
+/** git repositories to track */
+export type RepoGithubActionsWorkflowsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GithubActionsWorkflowCondition>;
+  filter?: InputMaybe<GithubActionsWorkflowFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowsOrderBy>>;
 };
 
 
@@ -8085,7 +9490,9 @@ export type RepoFilter = {
 export type RepoImport = Node & {
   createdAt: Scalars['Datetime'];
   id: Scalars['UUID'];
+  importError?: Maybe<Scalars['String']>;
   importInterval?: Maybe<Interval>;
+  importStatus?: Maybe<Scalars['String']>;
   lastImport?: Maybe<Scalars['Datetime']>;
   lastImportStartedAt?: Maybe<Scalars['Datetime']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -8121,8 +9528,12 @@ export type RepoImportCondition = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `importError` field. */
+  importError?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `importInterval` field. */
   importInterval?: InputMaybe<IntervalInput>;
+  /** Checks for equality with the object’s `importStatus` field. */
+  importStatus?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `lastImport` field. */
   lastImport?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `lastImportStartedAt` field. */
@@ -8143,8 +9554,12 @@ export type RepoImportFilter = {
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `importError` field. */
+  importError?: InputMaybe<StringFilter>;
   /** Filter by the object’s `importInterval` field. */
   importInterval?: InputMaybe<IntervalFilter>;
+  /** Filter by the object’s `importStatus` field. */
+  importStatus?: InputMaybe<StringFilter>;
   /** Filter by the object’s `lastImport` field. */
   lastImport?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `lastImportStartedAt` field. */
@@ -8165,7 +9580,9 @@ export type RepoImportFilter = {
 export type RepoImportInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
+  importError?: InputMaybe<Scalars['String']>;
   importInterval?: InputMaybe<IntervalInput>;
+  importStatus?: InputMaybe<Scalars['String']>;
   lastImport?: InputMaybe<Scalars['Datetime']>;
   lastImportStartedAt?: InputMaybe<Scalars['Datetime']>;
   settings?: InputMaybe<Scalars['JSON']>;
@@ -8177,7 +9594,9 @@ export type RepoImportInput = {
 export type RepoImportPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
+  importError?: InputMaybe<Scalars['String']>;
   importInterval?: InputMaybe<IntervalInput>;
+  importStatus?: InputMaybe<Scalars['String']>;
   lastImport?: InputMaybe<Scalars['Datetime']>;
   lastImportStartedAt?: InputMaybe<Scalars['Datetime']>;
   settings?: InputMaybe<Scalars['JSON']>;
@@ -8302,8 +9721,12 @@ export enum RepoImportsOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
+  ImportErrorAsc = 'IMPORT_ERROR_ASC',
+  ImportErrorDesc = 'IMPORT_ERROR_DESC',
   ImportIntervalAsc = 'IMPORT_INTERVAL_ASC',
   ImportIntervalDesc = 'IMPORT_INTERVAL_DESC',
+  ImportStatusAsc = 'IMPORT_STATUS_ASC',
+  ImportStatusDesc = 'IMPORT_STATUS_DESC',
   LastImportAsc = 'LAST_IMPORT_ASC',
   LastImportDesc = 'LAST_IMPORT_DESC',
   LastImportStartedAtAsc = 'LAST_IMPORT_STARTED_AT_ASC',
@@ -8361,6 +9784,9 @@ export type RepoPatch = {
 
 export type RepoSync = Node & {
   id: Scalars['UUID'];
+  /** Reads a single `RepoSyncQueue` that is related to this `RepoSync`. */
+  lastCompletedRepoSyncQueue?: Maybe<RepoSyncQueue>;
+  lastCompletedRepoSyncQueueId?: Maybe<Scalars['BigInt']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   priority: Scalars['Int'];
@@ -8395,6 +9821,8 @@ export type RepoSyncRepoSyncQueuesArgs = {
 export type RepoSyncCondition = {
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `lastCompletedRepoSyncQueueId` field. */
+  lastCompletedRepoSyncQueueId?: InputMaybe<Scalars['BigInt']>;
   /** Checks for equality with the object’s `priority` field. */
   priority?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `repoId` field. */
@@ -8413,6 +9841,8 @@ export type RepoSyncFilter = {
   and?: InputMaybe<Array<RepoSyncFilter>>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `lastCompletedRepoSyncQueueId` field. */
+  lastCompletedRepoSyncQueueId?: InputMaybe<BigIntFilter>;
   /** Negates the expression. */
   not?: InputMaybe<RepoSyncFilter>;
   /** Checks for any expressions in this list. */
@@ -8432,6 +9862,7 @@ export type RepoSyncFilter = {
 /** An input for mutations affecting `RepoSync` */
 export type RepoSyncInput = {
   id?: InputMaybe<Scalars['UUID']>;
+  lastCompletedRepoSyncQueueId?: InputMaybe<Scalars['BigInt']>;
   priority?: InputMaybe<Scalars['Int']>;
   repoId: Scalars['UUID'];
   scheduleEnabled?: InputMaybe<Scalars['Boolean']>;
@@ -8637,6 +10068,7 @@ export enum RepoSyncLogsOrderBy {
 /** Represents an update to a `RepoSync`. Fields that are set will be updated. */
 export type RepoSyncPatch = {
   id?: InputMaybe<Scalars['UUID']>;
+  lastCompletedRepoSyncQueueId?: InputMaybe<Scalars['BigInt']>;
   priority?: InputMaybe<Scalars['Int']>;
   repoId?: InputMaybe<Scalars['UUID']>;
   scheduleEnabled?: InputMaybe<Scalars['Boolean']>;
@@ -8662,6 +10094,8 @@ export type RepoSyncQueue = Node & {
   repoSyncQueueStatusTypeByStatus?: Maybe<RepoSyncQueueStatusType>;
   /** Reads a single `RepoSyncTypeGroup` that is related to this `RepoSyncQueue`. */
   repoSyncTypeGroupByTypeGroup?: Maybe<RepoSyncTypeGroup>;
+  /** Reads and enables pagination through a set of `RepoSync`. */
+  repoSyncsByLastCompletedRepoSyncQueueId: RepoSyncsConnection;
   startedAt?: Maybe<Scalars['Datetime']>;
   status: Scalars['String'];
   typeGroup: Scalars['String'];
@@ -8677,6 +10111,18 @@ export type RepoSyncQueueRepoSyncLogsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<RepoSyncLogsOrderBy>>;
+};
+
+
+export type RepoSyncQueueRepoSyncsByLastCompletedRepoSyncQueueIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RepoSyncCondition>;
+  filter?: InputMaybe<RepoSyncFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RepoSyncsOrderBy>>;
 };
 
 /**
@@ -9139,6 +10585,8 @@ export type RepoSyncsEdge = {
 export enum RepoSyncsOrderBy {
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
+  LastCompletedRepoSyncQueueIdAsc = 'LAST_COMPLETED_REPO_SYNC_QUEUE_ID_ASC',
+  LastCompletedRepoSyncQueueIdDesc = 'LAST_COMPLETED_REPO_SYNC_QUEUE_ID_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
@@ -9549,6 +10997,29 @@ export enum ServiceAuthCredentialsOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
+/** All input for the `setSyncJobStatus` mutation. */
+export type SetSyncJobStatusInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  newStatus?: InputMaybe<Scalars['String']>;
+  repoSyncQueueId?: InputMaybe<Scalars['BigInt']>;
+};
+
+/** The output of our `setSyncJobStatus` mutation. */
+export type SetSyncJobStatusPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  uuid?: Maybe<Scalars['UUID']>;
+};
+
 /** All input for the `simpleRepoSyncQueueCleanup` mutation. */
 export type SimpleRepoSyncQueueCleanupInput = {
   /**
@@ -9647,6 +11118,46 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
   /** Starts with the specified string (case-insensitive). */
   startsWithInsensitive?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against String List fields. All fields are combined with a logical ‘and.’ */
+export type StringListFilter = {
+  /** Any array item is equal to the specified value. */
+  anyEqualTo?: InputMaybe<Scalars['String']>;
+  /** Any array item is greater than the specified value. */
+  anyGreaterThan?: InputMaybe<Scalars['String']>;
+  /** Any array item is greater than or equal to the specified value. */
+  anyGreaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Any array item is less than the specified value. */
+  anyLessThan?: InputMaybe<Scalars['String']>;
+  /** Any array item is less than or equal to the specified value. */
+  anyLessThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Any array item is not equal to the specified value. */
+  anyNotEqualTo?: InputMaybe<Scalars['String']>;
+  /** Contained by the specified list of values. */
+  containedBy?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Contains the specified list of values. */
+  contains?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Overlaps the specified list of values. */
+  overlaps?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 /** view of Syft repo scans artifacts */
@@ -10409,6 +11920,189 @@ export type UpdateGitRefPayloadGitRefEdgeArgs = {
   orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
 };
 
+/** All input for the `updateGithubActionsWorkflowById` mutation. */
+export type UpdateGithubActionsWorkflowByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  /** An object where the defined keys will be set on the `GithubActionsWorkflow` being updated. */
+  patch: GithubActionsWorkflowPatch;
+};
+
+/** All input for the `updateGithubActionsWorkflowByNodeId` mutation. */
+export type UpdateGithubActionsWorkflowByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GithubActionsWorkflow` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `GithubActionsWorkflow` being updated. */
+  patch: GithubActionsWorkflowPatch;
+};
+
+/** All input for the `updateGithubActionsWorkflow` mutation. */
+export type UpdateGithubActionsWorkflowInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  /** An object where the defined keys will be set on the `GithubActionsWorkflow` being updated. */
+  patch: GithubActionsWorkflowPatch;
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `GithubActionsWorkflow` mutation. */
+export type UpdateGithubActionsWorkflowPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GithubActionsWorkflow` that was updated by this mutation. */
+  githubActionsWorkflow?: Maybe<GithubActionsWorkflow>;
+  /** An edge for our `GithubActionsWorkflow`. May be used by Relay 1. */
+  githubActionsWorkflowEdge?: Maybe<GithubActionsWorkflowsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflow`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our update `GithubActionsWorkflow` mutation. */
+export type UpdateGithubActionsWorkflowPayloadGithubActionsWorkflowEdgeArgs = {
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowsOrderBy>>;
+};
+
+/** All input for the `updateGithubActionsWorkflowRunById` mutation. */
+export type UpdateGithubActionsWorkflowRunByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  /** An object where the defined keys will be set on the `GithubActionsWorkflowRun` being updated. */
+  patch: GithubActionsWorkflowRunPatch;
+};
+
+/** All input for the `updateGithubActionsWorkflowRunByNodeId` mutation. */
+export type UpdateGithubActionsWorkflowRunByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GithubActionsWorkflowRun` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `GithubActionsWorkflowRun` being updated. */
+  patch: GithubActionsWorkflowRunPatch;
+};
+
+/** All input for the `updateGithubActionsWorkflowRun` mutation. */
+export type UpdateGithubActionsWorkflowRunInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  /** An object where the defined keys will be set on the `GithubActionsWorkflowRun` being updated. */
+  patch: GithubActionsWorkflowRunPatch;
+  repoId: Scalars['UUID'];
+};
+
+/** All input for the `updateGithubActionsWorkflowRunJobById` mutation. */
+export type UpdateGithubActionsWorkflowRunJobByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  /** An object where the defined keys will be set on the `GithubActionsWorkflowRunJob` being updated. */
+  patch: GithubActionsWorkflowRunJobPatch;
+};
+
+/** All input for the `updateGithubActionsWorkflowRunJobByNodeId` mutation. */
+export type UpdateGithubActionsWorkflowRunJobByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GithubActionsWorkflowRunJob` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `GithubActionsWorkflowRunJob` being updated. */
+  patch: GithubActionsWorkflowRunJobPatch;
+};
+
+/** All input for the `updateGithubActionsWorkflowRunJob` mutation. */
+export type UpdateGithubActionsWorkflowRunJobInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  /** An object where the defined keys will be set on the `GithubActionsWorkflowRunJob` being updated. */
+  patch: GithubActionsWorkflowRunJobPatch;
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `GithubActionsWorkflowRunJob` mutation. */
+export type UpdateGithubActionsWorkflowRunJobPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GithubActionsWorkflowRunJob` that was updated by this mutation. */
+  githubActionsWorkflowRunJob?: Maybe<GithubActionsWorkflowRunJob>;
+  /** An edge for our `GithubActionsWorkflowRunJob`. May be used by Relay 1. */
+  githubActionsWorkflowRunJobEdge?: Maybe<GithubActionsWorkflowRunJobsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflowRunJob`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our update `GithubActionsWorkflowRunJob` mutation. */
+export type UpdateGithubActionsWorkflowRunJobPayloadGithubActionsWorkflowRunJobEdgeArgs = {
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunJobsOrderBy>>;
+};
+
+/** The output of our update `GithubActionsWorkflowRun` mutation. */
+export type UpdateGithubActionsWorkflowRunPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GithubActionsWorkflowRun` that was updated by this mutation. */
+  githubActionsWorkflowRun?: Maybe<GithubActionsWorkflowRun>;
+  /** An edge for our `GithubActionsWorkflowRun`. May be used by Relay 1. */
+  githubActionsWorkflowRunEdge?: Maybe<GithubActionsWorkflowRunsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GithubActionsWorkflowRun`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our update `GithubActionsWorkflowRun` mutation. */
+export type UpdateGithubActionsWorkflowRunPayloadGithubActionsWorkflowRunEdgeArgs = {
+  orderBy?: InputMaybe<Array<GithubActionsWorkflowRunsOrderBy>>;
+};
+
 /** All input for the `updateGithubIssueByNodeId` mutation. */
 export type UpdateGithubIssueByNodeIdInput = {
   /**
@@ -11014,6 +12708,8 @@ export type UpdateRepoSyncPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `RepoSyncQueue` that is related to this `RepoSync`. */
+  lastCompletedRepoSyncQueue?: Maybe<RepoSyncQueue>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   /** Reads a single `Repo` that is related to this `RepoSync`. */
@@ -11506,6 +13202,220 @@ export type UpdateTrivyRepoScanPayloadTrivyRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<TrivyRepoScansOrderBy>>;
 };
 
+/** All input for the `userMgmtAddUser` mutation. */
+export type UserMgmtAddUserInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
+  role: Scalars['String'];
+  username: Scalars['String'];
+};
+
+/** The output of our `userMgmtAddUser` mutation. */
+export type UserMgmtAddUserPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  integer?: Maybe<Scalars['Int']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+export type UserMgmtPgUser = {
+  memberof?: Maybe<Array<Maybe<Scalars['String']>>>;
+  rolbypassrls?: Maybe<Scalars['Boolean']>;
+  rolcanlogin?: Maybe<Scalars['Boolean']>;
+  rolconnlimit?: Maybe<Scalars['Int']>;
+  rolcreatedb?: Maybe<Scalars['Boolean']>;
+  rolcreaterole?: Maybe<Scalars['Boolean']>;
+  rolinherit?: Maybe<Scalars['Boolean']>;
+  rolname?: Maybe<Scalars['String']>;
+  rolreplication?: Maybe<Scalars['Boolean']>;
+  rolsuper?: Maybe<Scalars['Boolean']>;
+  rolvaliduntil?: Maybe<Scalars['Datetime']>;
+};
+
+/**
+ * A condition to be used against `UserMgmtPgUser` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type UserMgmtPgUserCondition = {
+  /** Checks for equality with the object’s `memberof` field. */
+  memberof?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Checks for equality with the object’s `rolbypassrls` field. */
+  rolbypassrls?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `rolcanlogin` field. */
+  rolcanlogin?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `rolconnlimit` field. */
+  rolconnlimit?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `rolcreatedb` field. */
+  rolcreatedb?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `rolcreaterole` field. */
+  rolcreaterole?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `rolinherit` field. */
+  rolinherit?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `rolname` field. */
+  rolname?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `rolreplication` field. */
+  rolreplication?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `rolsuper` field. */
+  rolsuper?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `rolvaliduntil` field. */
+  rolvaliduntil?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `UserMgmtPgUser` object types. All fields are combined with a logical ‘and.’ */
+export type UserMgmtPgUserFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<UserMgmtPgUserFilter>>;
+  /** Filter by the object’s `memberof` field. */
+  memberof?: InputMaybe<StringListFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<UserMgmtPgUserFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<UserMgmtPgUserFilter>>;
+  /** Filter by the object’s `rolbypassrls` field. */
+  rolbypassrls?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `rolcanlogin` field. */
+  rolcanlogin?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `rolconnlimit` field. */
+  rolconnlimit?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `rolcreatedb` field. */
+  rolcreatedb?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `rolcreaterole` field. */
+  rolcreaterole?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `rolinherit` field. */
+  rolinherit?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `rolname` field. */
+  rolname?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `rolreplication` field. */
+  rolreplication?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `rolsuper` field. */
+  rolsuper?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `rolvaliduntil` field. */
+  rolvaliduntil?: InputMaybe<DatetimeFilter>;
+};
+
+/** A connection to a list of `UserMgmtPgUser` values. */
+export type UserMgmtPgUsersConnection = {
+  /** A list of edges which contains the `UserMgmtPgUser` and cursor to aid in pagination. */
+  edges: Array<UserMgmtPgUsersEdge>;
+  /** A list of `UserMgmtPgUser` objects. */
+  nodes: Array<UserMgmtPgUser>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `UserMgmtPgUser` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `UserMgmtPgUser` edge in the connection. */
+export type UserMgmtPgUsersEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UserMgmtPgUser` at the end of the edge. */
+  node: UserMgmtPgUser;
+};
+
+/** Methods to use when ordering `UserMgmtPgUser`. */
+export enum UserMgmtPgUsersOrderBy {
+  MemberofAsc = 'MEMBEROF_ASC',
+  MemberofDesc = 'MEMBEROF_DESC',
+  Natural = 'NATURAL',
+  RolbypassrlsAsc = 'ROLBYPASSRLS_ASC',
+  RolbypassrlsDesc = 'ROLBYPASSRLS_DESC',
+  RolcanloginAsc = 'ROLCANLOGIN_ASC',
+  RolcanloginDesc = 'ROLCANLOGIN_DESC',
+  RolconnlimitAsc = 'ROLCONNLIMIT_ASC',
+  RolconnlimitDesc = 'ROLCONNLIMIT_DESC',
+  RolcreatedbAsc = 'ROLCREATEDB_ASC',
+  RolcreatedbDesc = 'ROLCREATEDB_DESC',
+  RolcreateroleAsc = 'ROLCREATEROLE_ASC',
+  RolcreateroleDesc = 'ROLCREATEROLE_DESC',
+  RolinheritAsc = 'ROLINHERIT_ASC',
+  RolinheritDesc = 'ROLINHERIT_DESC',
+  RolnameAsc = 'ROLNAME_ASC',
+  RolnameDesc = 'ROLNAME_DESC',
+  RolreplicationAsc = 'ROLREPLICATION_ASC',
+  RolreplicationDesc = 'ROLREPLICATION_DESC',
+  RolsuperAsc = 'ROLSUPER_ASC',
+  RolsuperDesc = 'ROLSUPER_DESC',
+  RolvaliduntilAsc = 'ROLVALIDUNTIL_ASC',
+  RolvaliduntilDesc = 'ROLVALIDUNTIL_DESC'
+}
+
+/** All input for the `userMgmtRemoveUser` mutation. */
+export type UserMgmtRemoveUserInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  username: Scalars['String'];
+};
+
+/** The output of our `userMgmtRemoveUser` mutation. */
+export type UserMgmtRemoveUserPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  integer?: Maybe<Scalars['Int']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+/** All input for the `userMgmtSetUserRole` mutation. */
+export type UserMgmtSetUserRoleInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  role: Scalars['String'];
+  username: Scalars['String'];
+};
+
+/** The output of our `userMgmtSetUserRole` mutation. */
+export type UserMgmtSetUserRolePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  integer?: Maybe<Scalars['Int']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+/** All input for the `userMgmtUpdateUserPassword` mutation. */
+export type UserMgmtUpdateUserPasswordInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+/** The output of our `userMgmtUpdateUserPassword` mutation. */
+export type UserMgmtUpdateUserPasswordPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  integer?: Maybe<Scalars['Int']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 export type AddRepoMutationVariables = Exact<{
   repo: Scalars['String'];
   isGithub: Scalars['Boolean'];
@@ -11529,6 +13439,38 @@ export type UpdateRepoImportMutationVariables = Exact<{
 
 
 export type UpdateRepoImportMutation = { updateRepoImport?: { repoImport?: { id: any, settings: any } | null } | null };
+
+export type AddUserMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+  role: Scalars['String'];
+}>;
+
+
+export type AddUserMutation = { userMgmtAddUser?: { clientMutationId?: string | null, integer?: number | null } | null };
+
+export type UpdateUserRoleMutationVariables = Exact<{
+  username: Scalars['String'];
+  role: Scalars['String'];
+}>;
+
+
+export type UpdateUserRoleMutation = { userMgmtSetUserRole?: { clientMutationId?: string | null, integer?: number | null } | null };
+
+export type UpdateUserPasswordMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type UpdateUserPasswordMutation = { userMgmtUpdateUserPassword?: { clientMutationId?: string | null, integer?: number | null } | null };
+
+export type RemoveUserMutationVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type RemoveUserMutation = { userMgmtRemoveUser?: { clientMutationId?: string | null, integer?: number | null } | null };
 
 export type RemoveRepoMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -11644,7 +13586,7 @@ export type GetReposQueryVariables = Exact<{
 }>;
 
 
-export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null }> } }> } }> } | null };
+export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, repoSyncLogs: { totalCount: number } } | null }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];
@@ -11662,6 +13604,13 @@ export type GetLogsOfSyncQueryVariables = Exact<{
 
 
 export type GetLogsOfSyncQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string, description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+
+export type GetUsersQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetUsersQuery = { userMgmtPgUsers?: { nodes: Array<{ memberof?: Array<string | null> | null, rolname?: string | null }> } | null };
 
 export type ExecuteSqlQueryVariables = Exact<{
   sql: Scalars['String'];

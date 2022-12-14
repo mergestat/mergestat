@@ -13,6 +13,8 @@ import (
 	"github.com/google/go-github/v47/github"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/pool"
+	"github.com/mergestat/mergestat/queries"
 	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
 )
@@ -20,24 +22,25 @@ import (
 type warehouse struct {
 	githubClient *github.Client
 	logger       *zerolog.Logger
-	pool         *pgxpool.Pool
-	db           *db.Queries
+	pool         pool.Pooler
+	db           queries.Querier
 }
 
-func New(ctx context.Context, db *db.Queries, pool *pgxpool.Pool, logger *zerolog.Logger, ghToken string) *warehouse {
+func New(ctx context.Context, db *db.Queries, pgpool *pgxpool.Pool, logger *zerolog.Logger, ghToken string) *warehouse {
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: ghToken},
 	)
 
 	tc := oauth2.NewClient(ctx, ts)
-
 	client := github.NewClient(tc)
+	pool := pool.Init(pgpool)
+	queries := queries.NewQuerier(db)
 
 	return &warehouse{
 		githubClient: client,
 		logger:       logger,
 		pool:         pool,
-		db:           db,
+		db:           queries,
 	}
 }
 

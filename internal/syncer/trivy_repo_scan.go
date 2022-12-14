@@ -22,8 +22,10 @@ func (w *worker) handleTrivyRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatStartingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	cmd := exec.CommandContext(ctx, "trivy", "repository", j.Repo, "-q", "-f", "json", "--timeout", "30m")
@@ -32,7 +34,7 @@ func (w *worker) handleTrivyRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	var output []byte
 	if output, err = cmd.Output(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
-			w.logger.Err(exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running trivy scan")
+			w.logger.Warn().AnErr("error", exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running trivy scan")
 		}
 		return fmt.Errorf("running trivy scan: %w", err)
 	}
@@ -81,8 +83,10 @@ func (w *worker) handleTrivyRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	// indicate that we're finishing query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatFinishingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	return tx.Commit(ctx)

@@ -12,7 +12,7 @@ MergeStat enables SQL queries for data in git repositories (and related sources,
 
 See our [**documentation**](https://docs.mergestat.com/) for additional context.
 
-<img alt="MergeStat Illustration" src="docs/illustration-logs.png" width="500" />
+<img alt="MergeStat Queries" src="docs/queries.gif"/>
 
 ## Running Locally
 
@@ -33,11 +33,9 @@ You can manage a single PAT for your instance in the `Settings` area of the mana
 
 ## Examples
 
-Take a look at all of our [examples](./examples/examples.md)
+Take a look at all of our [examples](./examples)
 
 You can also visit `http://localhost:3000/` to access a local [Grafana](https://grafana.com/) instance with example dashboards using the data from MergeStat 🎉 :
-
-<img alt="MergeStat Example Dashboards" src="examples/templates/grafana/screenshots/mergestat-examples.png" />
 
 ### Resetting a Local Instance
 

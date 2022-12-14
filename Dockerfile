@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1-experimental
 
-FROM golang:1.19-alpine AS builder
-RUN set -x && apk add --no-cache cmake git make gcc libtool g++ openssl-dev
+FROM golang:1.19-alpine3.16 AS builder
+RUN set -x && apk add --no-cache cmake git make gcc libtool g++ openssl1.1-compat-dev
 COPY scripts/install_libgit2.sh install_libgit2.sh
 RUN ./install_libgit2.sh
 WORKDIR /src
@@ -11,7 +11,9 @@ COPY . .
 RUN --mount=type=cache,target=/root/.cache/go-build \
 PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ make
 
-FROM alpine
+FROM zricethezav/gitleaks:v8.15.2 AS gitleaks
+
+FROM alpine:3.16
 RUN set -x && apk add --no-cache curl postgresql-client ca-certificates git
 
 # copy over migrations
@@ -26,6 +28,9 @@ RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/
 
 # install syft binary
 RUN curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v0.58.0
+
+# install gitleaks binary from gitleaks image
+COPY --from=gitleaks /usr/bin/gitleaks /usr/local/bin/gitleaks
 
 # for pprof and prom metrics over http
 EXPOSE 8080

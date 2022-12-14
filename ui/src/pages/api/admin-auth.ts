@@ -18,7 +18,9 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (!JWT_SECRET) {
-      console.warn('no JWT_SECRET set, login to UI will not work')
+      console.warn(JSON.stringify({
+        message: 'no JWT_SECRET set, login to UI will not work'
+      }))
       res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({ error: 'problem with authentication configuration' })
       return
     }
@@ -28,13 +30,12 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // override the user and password in the connection string with the ones provided by the client
     url.username = user
-    url.password = password
+    url.password = encodeURIComponent(password) // password may contain special characters
 
     try {
       const client = new Client({
         // use the connection info supplied by the parsed POSTGRES_CONNECTION url
-        // encodeURI since the password (or user) may contain special characters
-        connectionString: encodeURI(url.toString()),
+        connectionString: url.toString(),
 
         // by default this is "no timeout"
         // so we set it here to have a hard limit
@@ -44,7 +45,12 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
       await client.connect()
       await client.end()
     } catch (connectErr) {
-      console.error(connectErr)
+      if (connectErr instanceof Error) {
+        console.warn(JSON.stringify({
+          error: connectErr,
+          message: connectErr.message,
+        }))
+      }
       // if the connection fails, the user does not exist or the password is incorrect
       res.status(HTTP_STATUS_UNAUTHORIZED).json({ error: 'invalid username or password' })
       return
@@ -59,7 +65,7 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
       .setExpirationTime('5h')
       .sign(new TextEncoder().encode(JWT_SECRET))
 
-    setCookie(COOKIE.jwt, jwt, { req, res, maxAge: (60 * 60 * 5), httpOnly: true, secure: true, sameSite: 'strict', path: '/api/graphql' })
+    setCookie(COOKIE.jwt, jwt, { req, res, httpOnly: true, secure: true, sameSite: 'strict', path: '/api/graphql' })
     res.json({ loggedIn: true })
   } catch (error) {
     if (error instanceof Error) {

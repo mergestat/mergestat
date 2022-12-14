@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
 
 	"github.com/google/go-github/v47/github"
@@ -65,12 +66,22 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job
 				return err
 			}
 		}
-		if workflowsPage, resp, err = w.githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions); err != nil {
+
+		if workflowsPage, resp, err = getWorkflows(ctx, w.githubClient, owner, repo, opt); err != nil {
 			w.logger.Warn().AnErr("Error", err).Msg("error occurred")
+
+			operation := fmt.Sprintf("during the fetching of workflow page with owner %s and repo %s", owner, repo)
+			if batchErr := w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation); batchErr != nil {
+				return batchErr
+			}
+
 			if resp == nil {
 				break
 			}
 
+			if resp.NextPage == 0 {
+				break
+			}
 			opt.Page = resp.NextPage
 			continue
 		}
@@ -113,7 +124,6 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	}
 
 	for _, workflow := range workflowsPage {
-
 		if opt.Page == 0 {
 			operation := fmt.Sprintf("to get all GitHub Actions runs for workflow %s", *workflow.Name)
 
@@ -132,9 +142,19 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		for {
 
 			w.logger.Debug().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).Msg("getting runs of")
-			if workflowRunsPage, resp, err = w.githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, *workflow.ID, opt); err != nil {
+			if workflowRunsPage, resp, err = getWorkflowsRuns(ctx, w.githubClient, owner, repo, *workflow.ID, opt); err != nil {
 				w.logger.Warn().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).AnErr("Error", err).Msg("error occurred")
+
+				operation := fmt.Sprintf("during the fetching of workflow run page with owner %s, repo %s and workflowID %d, Error: %v", owner, repo, *workflow.ID, err)
+				if batchErr := w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation); batchErr != nil {
+					return batchErr
+				}
+
 				if resp == nil {
+					break
+				}
+
+				if resp.NextPage == 0 {
 					break
 				}
 
@@ -149,7 +169,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 				}
 				runsCount += len(workflowRunsPage.WorkflowRuns)
 
-				if err := w.handleWorkflowRunsJobs(ctx, owner, repo, repoID, workflowRunsPage.WorkflowRuns, &jobsCount); err != nil {
+				if err := w.handleWorkflowRunsJobs(ctx, owner, repo, job, workflowRunsPage.WorkflowRuns, &jobsCount); err != nil {
 					return err
 				}
 			}
@@ -178,10 +198,11 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 	return nil
 }
 
-func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo string, repoID uuid.UUID, workflowRunsPage []*github.WorkflowRun, jobsCount *int) error {
+func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo string, job *db.DequeueSyncJobRow, workflowRunsPage []*github.WorkflowRun, jobsCount *int) error {
 	var err error
 	var resp *github.Response
 	var workflowRunJobsPage *github.Jobs
+	repoID := job.RepoID
 	pagination, err := w.getPaginationOpt("GITHUB_WORKFLOW_JOBS_PER_PAGE")
 	if err != nil {
 		return err
@@ -195,12 +216,20 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
 			w.logger.Debug().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Msg("getting jobs of")
-			if workflowRunJobsPage, resp, err = w.githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, *workflowRun.ID, opt); err != nil {
+			if workflowRunJobsPage, resp, err = getWorkflowJobs(ctx, w.githubClient, owner, repo, *workflowRun.ID, opt); err != nil {
 				w.logger.Warn().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).AnErr("Error", err).Msg("error occurred")
+
+				operation := fmt.Sprintf("during the fetching of workflow jobs page with owner %s,repo %s and runID %d Error: %v", owner, repo, *workflowRun.ID, err)
+				if batchErr := w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation); batchErr != nil {
+					return batchErr
+				}
 				if resp == nil {
 					break
 				}
 
+				if resp.NextPage == 0 {
+					break
+				}
 				opt.Page = resp.NextPage
 				continue
 			}
@@ -247,7 +276,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
 		w.logger.Debug().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting log of")
-		workflowJobLog, resp, err := w.githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, *workflowJob.ID, true)
+		workflowJobLog, resp, err := getWorkflowJobLog(ctx, w.githubClient, owner, repo, *workflowJob.ID)
 		if err != nil {
 			w.logger.Warn().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).AnErr("Error", err).Msg("error occurred")
 			// now that we know that the log is missing regularly , we need to also handle to upsert of the rest of the information
@@ -283,7 +312,6 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 }
 
 func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*github.Workflow, repoID uuid.UUID) error {
-
 	var tx pgx.Tx
 	var err error
 
@@ -323,8 +351,8 @@ func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*gith
 func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPage []*github.WorkflowRun, repoID uuid.UUID) error {
 	var tx pgx.Tx
 	var err error
-	var jsonbPullRequest pgtype.JSONB
-	var jsonbHeadCommit pgtype.JSONB
+	//var jsonbPullRequest pgtype.JSONB
+	//var jsonbHeadCommit pgtype.JSONB
 
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
@@ -339,40 +367,32 @@ func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPag
 	}()
 
 	for _, workflowRun := range workflowRunPage {
+		runNumber := helper.GetInt32FromInt(workflowRun.RunNumber)
+		runAttemp := helper.GetInt32FromInt(workflowRun.RunAttempt)
+		workflowRunRepositoryUrl := helper.GetRepositoryURL(workflowRun.Repository)
+		workflowRunHeadRepoUrl := helper.GetRepositoryURL(workflowRun.HeadRepository)
 
-		if workflowRun.Repository == nil {
-			workflowRun.Repository = &github.Repository{URL: new(string)}
-		}
-
-		if workflowRun.HeadRepository == nil {
-			workflowRun.HeadRepository = &github.Repository{URL: new(string)}
-		}
-
-		workflowRunRepositoryUrl := workflowRun.Repository.URL
-		workflowRunHeadRepoUrl := workflowRun.HeadRepository.URL
-		runNumber := int32(*workflowRun.RunNumber)
-		runAttemp := int32(*workflowRun.RunAttempt)
-
-		if jsonbPullRequest, err = helper.InterfaceToSqlJSONB(workflowRun.PullRequests); err != nil {
+		jsonbPullRequest, err := helper.InterfaceToSqlJSONB(workflowRun.PullRequests)
+		if err != nil {
 			return err
 		}
 
-		if jsonbHeadCommit, err = helper.InterfaceToSqlJSONB(workflowRun.HeadCommit); err != nil {
+		jsonbHeadCommit, err := helper.InterfaceToSqlJSONB(workflowRun.HeadCommit)
+		if err != nil {
 			return err
 		}
 
-		if err := w.db.WithTx(tx).UpserWorkflowRuns(ctx, db.UpserWorkflowRunsParams{
-			RepoID:            repoID,
+		if err := w.db.WithTx(tx).UpsertWorkflowRuns(ctx, db.UpsertWorkflowRunsParams{RepoID: repoID,
 			ID:                *workflowRun.ID,
 			Workflowrunnodeid: helper.StringToSqlNullString(workflowRun.NodeID),
 			Name:              helper.StringToSqlNullString(workflowRun.Name),
 			Headbranch:        helper.StringToSqlNullString(workflowRun.HeadBranch),
-			Runnumber:         helper.Int32ToSqlNullInt32(&runNumber),
-			Runattempt:        helper.Int32ToSqlNullInt32(&runAttemp),
+			Runnumber:         helper.Int32ToSqlNullInt32(runNumber),
+			Runattempt:        helper.Int32ToSqlNullInt32(runAttemp),
 			Event:             helper.StringToSqlNullString(workflowRun.Event),
 			Status:            helper.StringToSqlNullString(workflowRun.Status),
 			Conclusion:        helper.StringToSqlNullString(workflowRun.Conclusion),
-			Workflowid:        *workflowRun.WorkflowID,
+			Workflowid:        helper.Int64ToSqlNullInt64(workflowRun.WorkflowID),
 			Checksuiteid:      helper.Int64ToSqlNullInt64(workflowRun.CheckSuiteID),
 			Checksuitenodeid:  helper.StringToSqlNullString(workflowRun.CheckSuiteNodeID),
 			Url:               helper.StringToSqlNullString(workflowRun.URL),
@@ -401,7 +421,6 @@ func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPag
 }
 
 func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *github.WorkflowJob, log string, repoID uuid.UUID) error {
-
 	var tx pgx.Tx
 	var err error
 	var jsonbSteps pgtype.JSONB
@@ -430,7 +449,7 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 	if err := w.db.WithTx(tx).UpsertWorkflowRunJobs(ctx, db.UpsertWorkflowRunJobsParams{
 		Repoid:          repoID,
 		ID:              *workflowJob.ID,
-		Runid:           *workflowJob.RunID,
+		Runid:           helper.Int64ToSqlNullInt64(workflowJob.RunID),
 		Log:             helper.StringToSqlNullString(&log),
 		Runurl:          helper.StringToSqlNullString(workflowJob.RunURL),
 		Jobnodeid:       helper.StringToSqlNullString(workflowJob.NodeID),
@@ -454,4 +473,20 @@ func (w *warehouse) handleWorkflowJobUpsert(ctx context.Context, workflowJob *gi
 	}
 
 	return tx.Commit(ctx)
+}
+
+func getWorkflows(ctx context.Context, githubClient *github.Client, owner, repo string, opt *github.ListWorkflowRunsOptions) (*github.Workflows, *github.Response, error) {
+	return githubClient.Actions.ListWorkflows(ctx, owner, repo, &opt.ListOptions)
+}
+
+func getWorkflowsRuns(ctx context.Context, githubClient *github.Client, owner, repo string, workflowID int64, opt *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error) {
+	return githubClient.Actions.ListWorkflowRunsByID(ctx, owner, repo, workflowID, opt)
+}
+
+func getWorkflowJobs(ctx context.Context, githubClient *github.Client, owner, repo string, workflowRunID int64, opt *github.ListWorkflowJobsOptions) (*github.Jobs, *github.Response, error) {
+	return githubClient.Actions.ListWorkflowJobs(ctx, owner, repo, workflowRunID, opt)
+}
+
+func getWorkflowJobLog(ctx context.Context, githubClient *github.Client, owner, repo string, workflowJobID int64) (*url.URL, *github.Response, error) {
+	return githubClient.Actions.GetWorkflowJobLogs(ctx, owner, repo, workflowJobID, true)
 }

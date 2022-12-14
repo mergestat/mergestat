@@ -1,8 +1,8 @@
+import { Alert, Button, HelpText, Input, Label, Panel } from '@mergestat/blocks'
+import { Icon } from '@mergestat/icons'
 import Head from 'next/head'
-import { ChangeEvent, Fragment, useState } from 'react'
-
-import { Alert, Button, HelpText, Icon, Input, Label, Panel } from '@mergestat/blocks'
 import { useRouter } from 'next/router'
+import { ChangeEvent, Fragment, useState } from 'react'
 import { auth } from 'src/api-logic/axios/api'
 
 const LoginPage = () => {

@@ -13,7 +13,7 @@ export const SyncDataDropDown: React.FC<SyncDataDropDownProps> = ({ triger }: Sy
         <SyncDataTable />
       )}
       trigger={triger}
-      zIndex={11}
+      zIndex={20}
     />
   )
 }

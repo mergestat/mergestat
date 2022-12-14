@@ -64,9 +64,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	var err error
 	l := w.loggerForJob(j)
 
-	// indicate that we're starting query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeInit); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatStartingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
@@ -118,7 +119,15 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		// first detect if a file is binary or not
 		fullPath := filepath.Join(tmpPath, o.Path)
 		if f, err := os.Open(fullPath); err != nil {
-			w.logger.Err(err).Msgf("error opening file in repo: %s, %v", fullPath, err)
+			w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Msgf("error opening file in repo: %s, %v", fullPath, err)
+
+			// indicate that we're detecting unexpected behavior
+			if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeWarn, RepoSyncQueueID: j.ID,
+				Message: fmt.Sprintf(LogFormatErrorWarningMessage, "error opening file in repo", err),
+			}}); err != nil {
+				return fmt.Errorf("send batch log messages: %w", err)
+			}
+
 			continue
 		} else {
 			defer f.Close()
@@ -127,27 +136,44 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 			buffer := make([]byte, 8000)
 			var bytesRead int
 			if bytesRead, err = f.Read(buffer); err != nil && !errors.Is(err, io.EOF) {
-				w.logger.Err(err).Msgf("error reading file in repo: %s, %v", fullPath, err)
+				w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Msgf("error reading file in repo: %s, %v", fullPath, err)
+
+				// indicate that we're detecting unexpected behavior
+				if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeWarn, RepoSyncQueueID: j.ID,
+					Message: fmt.Sprintf(LogFormatErrorWarningMessage, "error reading file in repo", err),
+				}}); err != nil {
+					return fmt.Errorf("send batch log messages: %w", err)
+				}
 			}
 
 			// See here: https://github.com/go-enry/go-enry/blob/v2.8.2/utils.go#L80 for the implementation of IsBinary
 			// basically just looking for a byte(0) in the first portion of the file
 			if enry.IsBinary(buffer[:bytesRead]) {
 				w.logger.Info().Msgf("skipping binary file: %s", fullPath)
+				// TODO(patrickdevivo) maybe we should also log to the DB so the user can see this?
 				continue
 			}
 		}
 
 		// adjustedBufferSize is larger than the default to support longer lines without error
-		// TODO(patrickdevivo) maybe eventually we can make this configurable? Either via an EnVar or a DB setting
-		adjustedBufferSize := bufio.MaxScanTokenSize * 10
+		// TODO(patrickdevivo) maybe eventually we can make this configurable? Either via an ENV var or a DB setting
+		adjustedBufferSize := bufio.MaxScanTokenSize * 30
 		res, err := blame.Exec(ctx, tmpPath, o.Path, blame.WithScannerBuffer(make([]byte, adjustedBufferSize), adjustedBufferSize))
 		if err != nil {
+			l := w.logger.Warn().AnErr("error", err).Str("repo", j.Repo).Str("filePath", o.Path)
 			if exitErr, ok := err.(*exec.ExitError); ok {
-				w.logger.Err(err).Str("repoPath", tmpPath).Str("filePath", o.Path).Msgf("error blaming file in repo: %s, %v: %s", tmpPath, err, exitErr.Stderr)
+				l.Msgf("error blaming file: %s in repo: %s, %v: %s", o.Path, tmpPath, err, exitErr.Stderr)
 			} else {
-				w.logger.Err(err).Msgf("error blaming file: %s in repo: %s, %v", o.Path, tmpPath, err)
+				l.Msgf("error blaming file: %s in repo: %s, %v", o.Path, tmpPath, err)
 			}
+
+			// indicate that we're detecting unexpected behavior
+			if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeWarn, RepoSyncQueueID: j.ID,
+				Message: fmt.Sprintf(LogFormatErrorWarningMessage, "error blaming file in repo", err),
+			}}); err != nil {
+				return fmt.Errorf("send batch log messages: %w", err)
+			}
+
 			continue
 		}
 
@@ -210,8 +236,10 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	// indicate that we're finishing query execution
-	if err := w.formatBatchLogMessages(ctx, SyncLogTypeInfo, j, jobStatusTypeFinish); err != nil {
-		return fmt.Errorf("log messages: %w", err)
+	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
+		Message: fmt.Sprintf(LogFormatFinishingSync, j.SyncType, j.Repo),
+	}}); err != nil {
+		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
 	err = tx.Commit(ctx)

@@ -181,6 +181,7 @@ export const mockSyncsTypesData = (runningSync: boolean, autoImported = false): 
         {
           id: DynamicValues.syncTypeGitCommitStatId,
           syncType: 'GIT_COMMIT_STATS',
+          scheduleEnabled: true,
           repoSyncQueues: {
             nodes: queueArray(false)
           }
@@ -188,6 +189,7 @@ export const mockSyncsTypesData = (runningSync: boolean, autoImported = false): 
         {
           id: DynamicValues.syncTypeGitFilesId,
           syncType: 'GIT_FILES',
+          scheduleEnabled: true,
           repoSyncQueues: {
             nodes: queueArray(runningSync)
           }

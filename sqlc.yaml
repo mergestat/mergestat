@@ -6,6 +6,7 @@ packages:
     sql_package: "pgx/v4"
     schema: "migrations"
     queries: "internal/db/queries.sql"
+    emit_interface: true
     overrides:
       - column: "mergestat.repo_imports.import_interval"
         go_type: "database/sql.NullString"
