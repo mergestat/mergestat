@@ -643,6 +643,38 @@ export type CreateGithubStargazerPayloadGithubStargazerEdgeArgs = {
   orderBy?: InputMaybe<Array<GithubStargazersOrderBy>>;
 };
 
+/** All input for the create `GitleaksRepoScan` mutation. */
+export type CreateGitleaksRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `GitleaksRepoScan` to be created by this mutation. */
+  gitleaksRepoScan: GitleaksRepoScanInput;
+};
+
+/** The output of our create `GitleaksRepoScan` mutation. */
+export type CreateGitleaksRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GitleaksRepoScan` that was created by this mutation. */
+  gitleaksRepoScan?: Maybe<GitleaksRepoScan>;
+  /** An edge for our `GitleaksRepoScan`. May be used by Relay 1. */
+  gitleaksRepoScanEdge?: Maybe<GitleaksRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `GitleaksRepoScan` mutation. */
+export type CreateGitleaksRepoScanPayloadGitleaksRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
+};
+
 /** All input for the create `RepoImport` mutation. */
 export type CreateRepoImportInput = {
   /**
@@ -1921,6 +1953,49 @@ export type DeleteGithubStargazerPayloadGithubStargazerEdgeArgs = {
   orderBy?: InputMaybe<Array<GithubStargazersOrderBy>>;
 };
 
+/** All input for the `deleteGitleaksRepoScanByNodeId` mutation. */
+export type DeleteGitleaksRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GitleaksRepoScan` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteGitleaksRepoScan` mutation. */
+export type DeleteGitleaksRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `GitleaksRepoScan` mutation. */
+export type DeleteGitleaksRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedGitleaksRepoScanNodeId?: Maybe<Scalars['ID']>;
+  /** The `GitleaksRepoScan` that was deleted by this mutation. */
+  gitleaksRepoScan?: Maybe<GitleaksRepoScan>;
+  /** An edge for our `GitleaksRepoScan`. May be used by Relay 1. */
+  gitleaksRepoScanEdge?: Maybe<GitleaksRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `GitleaksRepoScan` mutation. */
+export type DeleteGitleaksRepoScanPayloadGitleaksRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
+};
+
 /** All input for the `deleteRepoByNodeId` mutation. */
 export type DeleteRepoByNodeIdInput = {
   /**
@@ -2654,6 +2729,19 @@ export type DisplayDatabaseConnection = {
   host?: Maybe<Scalars['String']>;
   port?: Maybe<Scalars['Int']>;
   user?: Maybe<Scalars['String']>;
+};
+
+export type ExecSqlInput = {
+  disableReadOnly?: InputMaybe<Scalars['Boolean']>;
+  query?: InputMaybe<Scalars['String']>;
+  rowLimit?: InputMaybe<Scalars['Int']>;
+  variables?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type ExecSqlResult = {
+  columns?: Maybe<Array<Scalars['JSON']>>;
+  rowCount?: Maybe<Scalars['Int']>;
+  rows?: Maybe<Array<Scalars['JSON']>>;
 };
 
 /** git blame of all lines in all files of a repo */
@@ -6538,6 +6626,259 @@ export enum GithubStargazersOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
+export type GitleaksRepoDetection = {
+  author?: Maybe<Scalars['String']>;
+  commit?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  endColumn?: Maybe<Scalars['String']>;
+  endLine?: Maybe<Scalars['String']>;
+  entropy?: Maybe<Scalars['String']>;
+  file?: Maybe<Scalars['String']>;
+  fingerprint?: Maybe<Scalars['String']>;
+  match?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+  repoId?: Maybe<Scalars['UUID']>;
+  ruleId?: Maybe<Scalars['String']>;
+  secret?: Maybe<Scalars['String']>;
+  startColumn?: Maybe<Scalars['String']>;
+  startLine?: Maybe<Scalars['String']>;
+  symlinkFile?: Maybe<Scalars['String']>;
+  tags?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `GitleaksRepoDetection` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type GitleaksRepoDetectionCondition = {
+  /** Checks for equality with the object’s `author` field. */
+  author?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `commit` field. */
+  commit?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `date` field. */
+  date?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `email` field. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `endColumn` field. */
+  endColumn?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `endLine` field. */
+  endLine?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `entropy` field. */
+  entropy?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `file` field. */
+  file?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `fingerprint` field. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `match` field. */
+  match?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `message` field. */
+  message?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `ruleId` field. */
+  ruleId?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `secret` field. */
+  secret?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `startColumn` field. */
+  startColumn?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `startLine` field. */
+  startLine?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `symlinkFile` field. */
+  symlinkFile?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `tags` field. */
+  tags?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `GitleaksRepoDetection` object types. All fields are combined with a logical ‘and.’ */
+export type GitleaksRepoDetectionFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitleaksRepoDetectionFilter>>;
+  /** Filter by the object’s `author` field. */
+  author?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `commit` field. */
+  commit?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `date` field. */
+  date?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `email` field. */
+  email?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `endColumn` field. */
+  endColumn?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `endLine` field. */
+  endLine?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `entropy` field. */
+  entropy?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `file` field. */
+  file?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `fingerprint` field. */
+  fingerprint?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `match` field. */
+  match?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `message` field. */
+  message?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitleaksRepoDetectionFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitleaksRepoDetectionFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `ruleId` field. */
+  ruleId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `secret` field. */
+  secret?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `startColumn` field. */
+  startColumn?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `startLine` field. */
+  startLine?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `symlinkFile` field. */
+  symlinkFile?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `tags` field. */
+  tags?: InputMaybe<StringFilter>;
+};
+
+/** A connection to a list of `GitleaksRepoDetection` values. */
+export type GitleaksRepoDetectionsConnection = {
+  /** A list of edges which contains the `GitleaksRepoDetection` and cursor to aid in pagination. */
+  edges: Array<GitleaksRepoDetectionsEdge>;
+  /** A list of `GitleaksRepoDetection` objects. */
+  nodes: Array<GitleaksRepoDetection>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GitleaksRepoDetection` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GitleaksRepoDetection` edge in the connection. */
+export type GitleaksRepoDetectionsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GitleaksRepoDetection` at the end of the edge. */
+  node: GitleaksRepoDetection;
+};
+
+/** Methods to use when ordering `GitleaksRepoDetection`. */
+export enum GitleaksRepoDetectionsOrderBy {
+  AuthorAsc = 'AUTHOR_ASC',
+  AuthorDesc = 'AUTHOR_DESC',
+  CommitAsc = 'COMMIT_ASC',
+  CommitDesc = 'COMMIT_DESC',
+  DateAsc = 'DATE_ASC',
+  DateDesc = 'DATE_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  EmailAsc = 'EMAIL_ASC',
+  EmailDesc = 'EMAIL_DESC',
+  EndColumnAsc = 'END_COLUMN_ASC',
+  EndColumnDesc = 'END_COLUMN_DESC',
+  EndLineAsc = 'END_LINE_ASC',
+  EndLineDesc = 'END_LINE_DESC',
+  EntropyAsc = 'ENTROPY_ASC',
+  EntropyDesc = 'ENTROPY_DESC',
+  FileAsc = 'FILE_ASC',
+  FileDesc = 'FILE_DESC',
+  FingerprintAsc = 'FINGERPRINT_ASC',
+  FingerprintDesc = 'FINGERPRINT_DESC',
+  MatchAsc = 'MATCH_ASC',
+  MatchDesc = 'MATCH_DESC',
+  MessageAsc = 'MESSAGE_ASC',
+  MessageDesc = 'MESSAGE_DESC',
+  Natural = 'NATURAL',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  RuleIdAsc = 'RULE_ID_ASC',
+  RuleIdDesc = 'RULE_ID_DESC',
+  SecretAsc = 'SECRET_ASC',
+  SecretDesc = 'SECRET_DESC',
+  StartColumnAsc = 'START_COLUMN_ASC',
+  StartColumnDesc = 'START_COLUMN_DESC',
+  StartLineAsc = 'START_LINE_ASC',
+  StartLineDesc = 'START_LINE_DESC',
+  SymlinkFileAsc = 'SYMLINK_FILE_ASC',
+  SymlinkFileDesc = 'SYMLINK_FILE_DESC',
+  TagsAsc = 'TAGS_ASC',
+  TagsDesc = 'TAGS_DESC'
+}
+
+export type GitleaksRepoScan = Node & {
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  repoId: Scalars['UUID'];
+  results: Scalars['JSON'];
+};
+
+/**
+ * A condition to be used against `GitleaksRepoScan` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type GitleaksRepoScanCondition = {
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `results` field. */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `GitleaksRepoScan` object types. All fields are combined with a logical ‘and.’ */
+export type GitleaksRepoScanFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitleaksRepoScanFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitleaksRepoScanFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitleaksRepoScanFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `results` field. */
+  results?: InputMaybe<JsonFilter>;
+};
+
+/** An input for mutations affecting `GitleaksRepoScan` */
+export type GitleaksRepoScanInput = {
+  repoId: Scalars['UUID'];
+  results: Scalars['JSON'];
+};
+
+/** Represents an update to a `GitleaksRepoScan`. Fields that are set will be updated. */
+export type GitleaksRepoScanPatch = {
+  repoId?: InputMaybe<Scalars['UUID']>;
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A connection to a list of `GitleaksRepoScan` values. */
+export type GitleaksRepoScansConnection = {
+  /** A list of edges which contains the `GitleaksRepoScan` and cursor to aid in pagination. */
+  edges: Array<GitleaksRepoScansEdge>;
+  /** A list of `GitleaksRepoScan` objects. */
+  nodes: Array<GitleaksRepoScan>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GitleaksRepoScan` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GitleaksRepoScan` edge in the connection. */
+export type GitleaksRepoScansEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GitleaksRepoScan` at the end of the edge. */
+  node: GitleaksRepoScan;
+};
+
+/** Methods to use when ordering `GitleaksRepoScan`. */
+export enum GitleaksRepoScansOrderBy {
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  ResultsAsc = 'RESULTS_ASC',
+  ResultsDesc = 'RESULTS_DESC'
+}
+
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
 export type IntFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -6788,6 +7129,8 @@ export type Mutation = {
   createGithubRepoInfo?: Maybe<CreateGithubRepoInfoPayload>;
   /** Creates a single `GithubStargazer`. */
   createGithubStargazer?: Maybe<CreateGithubStargazerPayload>;
+  /** Creates a single `GitleaksRepoScan`. */
+  createGitleaksRepoScan?: Maybe<CreateGitleaksRepoScanPayload>;
   /** Creates a single `Repo`. */
   createRepo?: Maybe<CreateRepoPayload>;
   /** Creates a single `RepoImport`. */
@@ -6884,6 +7227,10 @@ export type Mutation = {
   deleteGithubStargazer?: Maybe<DeleteGithubStargazerPayload>;
   /** Deletes a single `GithubStargazer` using its globally unique id. */
   deleteGithubStargazerByNodeId?: Maybe<DeleteGithubStargazerPayload>;
+  /** Deletes a single `GitleaksRepoScan` using a unique key. */
+  deleteGitleaksRepoScan?: Maybe<DeleteGitleaksRepoScanPayload>;
+  /** Deletes a single `GitleaksRepoScan` using its globally unique id. */
+  deleteGitleaksRepoScanByNodeId?: Maybe<DeleteGitleaksRepoScanPayload>;
   /** Deletes a single `Repo` using a unique key. */
   deleteRepo?: Maybe<DeleteRepoPayload>;
   /** Deletes a single `Repo` using its globally unique id. */
@@ -7017,6 +7364,10 @@ export type Mutation = {
   updateGithubStargazer?: Maybe<UpdateGithubStargazerPayload>;
   /** Updates a single `GithubStargazer` using its globally unique id and a patch. */
   updateGithubStargazerByNodeId?: Maybe<UpdateGithubStargazerPayload>;
+  /** Updates a single `GitleaksRepoScan` using a unique key and a patch. */
+  updateGitleaksRepoScan?: Maybe<UpdateGitleaksRepoScanPayload>;
+  /** Updates a single `GitleaksRepoScan` using its globally unique id and a patch. */
+  updateGitleaksRepoScanByNodeId?: Maybe<UpdateGitleaksRepoScanPayload>;
   /** Updates a single `Repo` using a unique key and a patch. */
   updateRepo?: Maybe<UpdateRepoPayload>;
   /** Updates a single `Repo` using its globally unique id and a patch. */
@@ -7189,6 +7540,12 @@ export type MutationCreateGithubRepoInfoArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateGithubStargazerArgs = {
   input: CreateGithubStargazerInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGitleaksRepoScanArgs = {
+  input: CreateGitleaksRepoScanInput;
 };
 
 
@@ -7477,6 +7834,18 @@ export type MutationDeleteGithubStargazerArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteGithubStargazerByNodeIdArgs = {
   input: DeleteGithubStargazerByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGitleaksRepoScanArgs = {
+  input: DeleteGitleaksRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGitleaksRepoScanByNodeIdArgs = {
+  input: DeleteGitleaksRepoScanByNodeIdInput;
 };
 
 
@@ -7889,6 +8258,18 @@ export type MutationUpdateGithubStargazerByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGitleaksRepoScanArgs = {
+  input: UpdateGitleaksRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGitleaksRepoScanByNodeIdArgs = {
+  input: UpdateGitleaksRepoScanByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRepoArgs = {
   input: UpdateRepoInput;
 };
@@ -8131,7 +8512,7 @@ export type PageInfo = {
 export type Query = Node & {
   currentMergeStatUser?: Maybe<Scalars['String']>;
   databaseConnection?: Maybe<DisplayDatabaseConnection>;
-  execSQL?: Maybe<Scalars['JSON']>;
+  execSQL: ExecSqlResult;
   gitBlame?: Maybe<GitBlame>;
   /** Reads a single `GitBlame` using its globally unique `ID`. */
   gitBlameByNodeId?: Maybe<GitBlame>;
@@ -8210,10 +8591,17 @@ export type Query = Node & {
   githubStargazerByNodeId?: Maybe<GithubStargazer>;
   /** Reads and enables pagination through a set of `GithubStargazer`. */
   githubStargazers?: Maybe<GithubStargazersConnection>;
+  /** Reads and enables pagination through a set of `GitleaksRepoDetection`. */
+  gitleaksRepoDetections?: Maybe<GitleaksRepoDetectionsConnection>;
+  gitleaksRepoScan?: Maybe<GitleaksRepoScan>;
+  /** Reads a single `GitleaksRepoScan` using its globally unique `ID`. */
+  gitleaksRepoScanByNodeId?: Maybe<GitleaksRepoScan>;
+  /** Reads and enables pagination through a set of `GitleaksRepoScan`. */
+  gitleaksRepoScans?: Maybe<GitleaksRepoScansConnection>;
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan>;
+  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /**
@@ -8313,10 +8701,7 @@ export type Query = Node & {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryExecSqlArgs = {
-  disableReadOnly?: InputMaybe<Scalars['Boolean']>;
-  query: Scalars['String'];
-  rowLimit?: InputMaybe<Scalars['Int']>;
-  variables?: InputMaybe<Array<Scalars['String']>>;
+  input: ExecSqlInput;
 };
 
 
@@ -8735,6 +9120,44 @@ export type QueryGithubStargazersArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<GithubStargazersOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitleaksRepoDetectionsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitleaksRepoDetectionCondition>;
+  filter?: InputMaybe<GitleaksRepoDetectionFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitleaksRepoDetectionsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitleaksRepoScanArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitleaksRepoScanByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitleaksRepoScansArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitleaksRepoScanCondition>;
+  filter?: InputMaybe<GitleaksRepoScanFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
 };
 
 
@@ -12424,6 +12847,52 @@ export type UpdateGithubStargazerPayloadGithubStargazerEdgeArgs = {
   orderBy?: InputMaybe<Array<GithubStargazersOrderBy>>;
 };
 
+/** All input for the `updateGitleaksRepoScanByNodeId` mutation. */
+export type UpdateGitleaksRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GitleaksRepoScan` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `GitleaksRepoScan` being updated. */
+  patch: GitleaksRepoScanPatch;
+};
+
+/** All input for the `updateGitleaksRepoScan` mutation. */
+export type UpdateGitleaksRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `GitleaksRepoScan` being updated. */
+  patch: GitleaksRepoScanPatch;
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `GitleaksRepoScan` mutation. */
+export type UpdateGitleaksRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GitleaksRepoScan` that was updated by this mutation. */
+  gitleaksRepoScan?: Maybe<GitleaksRepoScan>;
+  /** An edge for our `GitleaksRepoScan`. May be used by Relay 1. */
+  gitleaksRepoScanEdge?: Maybe<GitleaksRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `GitleaksRepoScan` mutation. */
+export type UpdateGitleaksRepoScanPayloadGitleaksRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
+};
+
 /** All input for the `updateRepoByNodeId` mutation. */
 export type UpdateRepoByNodeIdInput = {
   /**
@@ -13577,7 +14046,7 @@ export type GetAllEnabledReposQuery = { allEnabledRepos?: { totalCount: number }
 export type GetSyncErrorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSyncErrorsQuery = { syncErrors?: any | null };
+export type GetSyncErrorsQuery = { syncErrors: { rowCount?: number | null, columns?: Array<any> | null, rows?: Array<any> | null } };
 
 export type GetReposQueryVariables = Exact<{
   search: Scalars['String'];
@@ -13617,4 +14086,4 @@ export type ExecuteSqlQueryVariables = Exact<{
 }>;
 
 
-export type ExecuteSqlQuery = { execSQL?: any | null };
+export type ExecuteSqlQuery = { execSQL: { rowCount?: number | null, columns?: Array<any> | null, rows?: Array<any> | null } };

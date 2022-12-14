@@ -40,9 +40,9 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
   }, [loadingQuery])
 
   useEffect(() => {
-    if (data?.execSQL.length > 0) {
+    if (data?.execSQL.rows?.length && data?.execSQL.rows?.length > 0) {
       setState(States.Filled)
-      setRowLimitReached(data?.execSQL.length > ROWS_LIMIT)
+      setRowLimitReached(data?.execSQL.rows?.length > ROWS_LIMIT)
     } else {
       error ? setState(States.Error) : setState(States.Empty)
     }
