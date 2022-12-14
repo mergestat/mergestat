@@ -67,7 +67,7 @@ const AutoImports: NextPage = () => {
                                     <RepoImage repoType='github' orgName={imp.source} size="10" />
                                   </ColoredBox>
                                   <div>
-                                    <Link href={`/settings/repo-auto-imports/${imp.id}`}>
+                                    <Link href={`/repos/repo-auto-imports/${imp.id}`}>
                                       <h4 className='font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600'>
                                         {imp.source}
                                       </h4>

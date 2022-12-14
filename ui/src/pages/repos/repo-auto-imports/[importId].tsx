@@ -32,7 +32,7 @@ const AutoImportsDetail: NextPage = () => {
   const [updateAutoImport] = useMutation(UPDATE_AUTO_IMPORT_REPOS, {
     onCompleted: () => {
       showSuccessAlert('Default syncs saved')
-      router.push('/settings/repo-auto-imports')
+      router.push('/repos/repo-auto-imports')
     }
   })
 
