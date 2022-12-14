@@ -147,16 +147,16 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		for {
 
 			if workflow.Name != nil {
-				w.logger.Debug().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).Msg("getting runs of")
+				w.logger.Debug().Str("workflow", *workflow.Name).Int64("ID", *workflow.ID).Msg("getting runs of")
 			} else {
-				w.logger.Debug().Str("ID", fmt.Sprintf("%d", *workflow.ID)).Msg("getting runs with ID")
+				w.logger.Debug().Int64("ID", *workflow.ID).Msg("getting runs with ID")
 			}
 
 			if workflowRunsPage, resp, err = getWorkflowsRuns(ctx, w.githubClient, owner, repo, *workflow.ID, opt); err != nil {
 				if workflow.Name != nil {
-					w.logger.Warn().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).AnErr("error", err).Msg("error occurred")
+					w.logger.Warn().Str("workflow", *workflow.Name).Int64("ID", *workflow.ID).AnErr("error", err).Msg("error occurred")
 				} else {
-					w.logger.Warn().Str("ID", fmt.Sprintf("%d", *workflow.ID)).AnErr("error", err).Msg("error occurred")
+					w.logger.Warn().Int64("ID", *workflow.ID).AnErr("error", err).Msg("error occurred")
 				}
 
 				operation := fmt.Sprintf("during the fetching of workflow run page with owner %s, repo %s and workflowID %d, Error: %v", owner, repo, *workflow.ID, err)
@@ -235,16 +235,16 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
 			if workflowRun.Name != nil {
-				w.logger.Debug().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Msg("getting jobs of")
+				w.logger.Debug().Str("workflow-run", *workflowRun.Name).Int64("ID", *workflowRun.ID).Msg("getting jobs of")
 			} else {
-				w.logger.Debug().Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Msg("getting jobs with ID")
+				w.logger.Debug().Int64("ID", *workflowRun.ID).Msg("getting jobs with ID")
 			}
 
 			if workflowRunJobsPage, resp, err = getWorkflowJobs(ctx, w.githubClient, owner, repo, *workflowRun.ID, opt); err != nil {
 				if workflowRun.Name != nil {
-					w.logger.Warn().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).AnErr("Error", err).Msg("error occurred")
+					w.logger.Warn().Str("workflow-run", *workflowRun.Name).Int64("ID", *workflowRun.ID).AnErr("Error", err).Msg("error occurred")
 				} else {
-					w.logger.Warn().Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).AnErr("error", err).Msg("error occurred")
+					w.logger.Warn().Int64("ID", *workflowRun.ID).AnErr("error", err).Msg("error occurred")
 				}
 
 				operation := fmt.Sprintf("during the fetching of workflow jobs page with owner %s,repo %s and runID %d Error: %v", owner, repo, *workflowRun.ID, err)
@@ -310,17 +310,17 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 		}
 
 		if workflowJob.Name != nil {
-			w.logger.Debug().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting workflow run log of")
+			w.logger.Debug().Str("workflow-job", *workflowJob.Name).Int64("ID", *workflowJob.ID).Msg("getting workflow run log of")
 		} else {
-			w.logger.Debug().Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting workflow run log  with ID")
+			w.logger.Debug().Int64("ID", *workflowJob.ID).Msg("getting workflow run log  with ID")
 		}
 
 		workflowJobLog, resp, err := getWorkflowJobLog(ctx, w.githubClient, owner, repo, *workflowJob.ID)
 		if err != nil {
 			if workflowJob.Name != nil {
-				w.logger.Warn().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).AnErr("Error", err).Msg("error occurred")
+				w.logger.Warn().Str("workflow-job", *workflowJob.Name).Int64("ID", *workflowJob.ID).AnErr("Error", err).Msg("error occurred")
 			} else {
-				w.logger.Warn().Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).AnErr("error", err).Msg("error occurred")
+				w.logger.Warn().Int64("ID", *workflowJob.ID).AnErr("error", err).Msg("error occurred")
 			}
 			// now that we know that the log is missing regularly , we need to also handle to upsert of the rest of the information
 			// when we get an error from the call
