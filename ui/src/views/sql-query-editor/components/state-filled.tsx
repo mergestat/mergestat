@@ -7,18 +7,24 @@ import { useEffect, useState } from 'react'
 import { copy, filterByAllFields, getMaxPagination, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
 
+type QueryResult = {
+  rowCount?: number | null
+  columns?: Array<{ name: string | number | boolean, format: string }> | null
+  rows?: Array<Array<string | number | boolean>> | null
+}
+
 type QueryEditorFilledProps = {
   rowLimit: number
   rowLimitReached: boolean
-  data: Array<string | number | boolean>
+  data: QueryResult
   children?: React.ReactNode
 }
 
 const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, data }: QueryEditorFilledProps) => {
-  const [result, setResult] = useState<Array<string | number | boolean>>(data)
+  const [result, setResult] = useState<Array<Array<string | number | boolean>>>(data.rows || [])
   const [rows, setRows] = useState<number>(20)
   const [page, setPage] = useState<number>(0)
-  const [total, setTotal] = useState<number>(data.length)
+  const [total, setTotal] = useState<number>(data.rows?.length || 0)
   const [search, setSearch] = useState<string>('')
   const [exportFormat, setExportFormat] = useState<string>(EXPORT_FORMAT.JSON)
 
@@ -41,11 +47,13 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
   }
 
   const getText = () => {
+    const allData = [data.columns?.map(c => c.name) || [], ...(data.rows || [])]
     let text
     if (exportFormat === EXPORT_FORMAT.JSON) {
-      text = JSON.stringify(data)
+      text = JSON.stringify(allData)
     } else {
-      text = Papa.unparse(data)
+      const tratedData = allData.map(data => data.map(d => getData(d)))
+      text = Papa.unparse(tratedData)
     }
     return text
   }
@@ -67,9 +75,9 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
   useEffect(() => {
     let result
     if (search !== '') {
-      result = filterByAllFields(data, search)
+      result = filterByAllFields(data.rows || [], search)
     } else {
-      result = data
+      result = data.rows || []
     }
 
     setResult(result)
@@ -78,7 +86,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
   }, [search])
 
   useEffect(() => {
-    const result = filterByAllFields(data, search)
+    const result = filterByAllFields(data.rows || [], search)
     setResult(paginate(result, rows, page))
     setTotal(result.length)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,9 +135,9 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
           <table className='t-table-default t-table-sticky-header t-table-nowrap t-table-bordered t-table-dense'>
             <thead>
               <tr className='bg-white'>
-                {result.length > 0 && Object.keys(result[0]).map((key, index) => (
+                {data.columns && data.columns.length > 0 && data.columns.map((col, index) => (
                   <th key={`th-record-${index}`} scope='col' className='whitespace-nowrap pr-6 pl-8'>
-                    <span className='mr-1'>{key}</span>
+                    <span className='mr-1'>{col.name}</span>
                   </th>
                 ))}
               </tr>
@@ -138,7 +146,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             <tbody className='bg-white'>
               {result.map((record, indexRecord) => (
                 <tr key={`tr-record-${indexRecord}`}>
-                  {Object.values(record).map((value, index) => (
+                  {record.map((value, index) => (
                     <td key={`td-record-${index}`} className='w-0 pl-8 max-w-xs truncate'>
                       <span className={cx({ 'text-blue-700': isSpecial(value) })}>{getData(value)}</span>
                     </td>

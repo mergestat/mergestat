@@ -2,7 +2,11 @@ import { gql } from '@apollo/client'
 
 const EXECUTE_SQL = gql`
   query executeSQL($sql: String!) {
-    execSQL(query: $sql)
+    execSQL(input: { query: $sql } ) {
+      rowCount
+      columns
+      rows
+    }
   }
 `
 
