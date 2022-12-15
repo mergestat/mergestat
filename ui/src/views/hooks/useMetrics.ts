@@ -39,7 +39,7 @@ const useMetrics = () => {
     enabledRepos: dataAllEnabledRepos?.allEnabledRepos?.totalCount,
     loadingSyncErrors,
     errorSyncErrors,
-    syncErrors: dataSyncErrors?.syncErrors ? dataSyncErrors?.syncErrors[0]?.syncs_error_count : 0
+    syncErrors: dataSyncErrors?.syncErrors ? (dataSyncErrors.syncErrors.rows ? dataSyncErrors.syncErrors.rows[0][0]?.syncs_error_count : 0) : 0
   }
 }
 

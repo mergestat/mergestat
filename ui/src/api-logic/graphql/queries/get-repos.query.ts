@@ -18,7 +18,13 @@ const GET_ALL_ENABLED_REPOS = gql`
 
 const GET_SYNC_ERRORS = gql`
   query getSyncErrors {
-    syncErrors: execSQL(query: "SELECT COUNT(DISTINCT rs.id) AS syncs_error_count FROM mergestat.repo_syncs AS rs INNER JOIN mergestat.repo_sync_logs AS rsl ON rs.last_completed_repo_sync_queue_id = rsl.repo_sync_queue_id AND log_type = 'ERROR' WHERE rs.id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status IN ('QUEUED', 'RUNNING'))")
+    syncErrors: execSQL(
+      input: { query: "SELECT COUNT(DISTINCT rs.id) AS syncs_error_count FROM mergestat.repo_syncs AS rs INNER JOIN mergestat.repo_sync_logs AS rsl ON rs.last_completed_repo_sync_queue_id = rsl.repo_sync_queue_id AND log_type = 'ERROR' WHERE rs.id NOT IN (SELECT repo_sync_id FROM mergestat.repo_sync_queue WHERE status IN ('QUEUED', 'RUNNING'))" }
+    ) {
+      rowCount
+      columns
+      rows
+    }
   }
 `
 
