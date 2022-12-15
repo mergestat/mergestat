@@ -1,15 +1,19 @@
 
+import { Toggle, Tooltip } from '@mergestat/blocks'
+import { WarningIcon } from '@mergestat/icons'
 import Editor from '@monaco-editor/react'
 import { useEffect, useRef } from 'react'
+import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.contex'
 
 type SQLEditorSectionProps = {
-  query: string
-  setQuery: (text: string | undefined) => void
   onEnterKey?: () => void
   children?: React.ReactNode
 }
 
-const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery, onEnterKey }: SQLEditorSectionProps) => {
+const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEditorSectionProps) => {
+  const [{ query, nonReadOnly }] = useQueryContext()
+  const { setQuery, setNonReadOnly } = useQuerySetState()
+
   const resizeElement = useRef<HTMLDivElement | null>(null)
   const resizerElement = useRef<HTMLDivElement | null>(null)
 
@@ -63,7 +67,7 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery, on
         ref={resizeElement}
         style={{ height: '320px', minHeight: '200px' }}
       >
-        <div className='h-full flex relative py-4 bg-white rounded border border-gray-300'>
+        <div className='h-full flex-col relative pb-8 pt-4 bg-white rounded border border-gray-300'>
           <Editor
             className='text-sm font-mono'
             value={query}
@@ -77,6 +81,13 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery, on
               },
             }}
           />
+          <div className='flex items-center pl-8 pt-1 pb-2'>
+            <Toggle isChecked={nonReadOnly} onChange={(value) => setNonReadOnly(value)} />
+            <span className='text-sm pl-2'>Non-read-only</span>
+            <Tooltip content='Possible destructive actions!' offset={[0, 10]}>
+              <WarningIcon className='t-icon t-icon-warning pl-1' />
+            </Tooltip>
+          </div>
         </div>
       </div>
       <div className='t-resizer z-10' ref={resizerElement} />

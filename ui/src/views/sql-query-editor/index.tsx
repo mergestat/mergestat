@@ -3,6 +3,7 @@ import { Button, Spinner, Toolbar } from '@mergestat/blocks'
 import { useEffect, useState } from 'react'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
+import { useQueryContext } from 'src/state/contexts/query.contex'
 import { States } from 'src/utils/constants'
 import SQLEditorSection from './components/sql-editor-section'
 import QueryEditorCanceled from './components/state-canceled'
@@ -13,12 +14,9 @@ import QueryEditorLoading from './components/state-loading'
 
 const QueryEditor: React.FC = () => {
   const ROWS_LIMIT = 1000
-  const initialSQL = `-- Run (read-only) queries directly against the Postgres database
--- For example, count commits by author across all repositories
-SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY count(*) DESC
-`
 
-  const [query, setQuery] = useState<string>(initialSQL)
+  const [{ query, nonReadOnly }] = useQueryContext()
+
   const [state, setState] = useState<States>(States.Empty)
   const [rowLimitReached, setRowLimitReached] = useState(true)
   const [executed, setExecuted] = useState(false)
@@ -51,7 +49,7 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
   const executeSQLQuery = () => {
     setLoading(true)
     setAbortRef(new AbortController())
-    executeSQL({ variables: { sql: query } })
+    executeSQL({ variables: { sql: query, disableReadOnly: nonReadOnly } })
     setExecuted(true)
   }
 
@@ -85,8 +83,6 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
       <div className='flex flex-col flex-1 items-center overflow-auto'>
         {/* SQL editor */}
         <SQLEditorSection
-          query={query}
-          setQuery={(text) => setQuery(text || '')}
           onEnterKey={() => {
             if (!loading && query) { executeSQLQuery() }
           }}
