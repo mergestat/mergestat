@@ -9,16 +9,17 @@ export type RepositorySyncNowProps = {
   repoId: string
   syncType: string
   syncTypeId: string
+  syncTypeGroup: string
   syncStatus: RepoSyncStateT
 }
 
-export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, syncType, syncTypeId, syncStatus }) => {
+export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, syncType, syncTypeId, syncTypeGroup, syncStatus }) => {
   const { syncNow, addSyncType } = useSyncNow('getRepoSyncs')
   const [status, setStatus] = useState(syncStatus)
 
   const syncNowHandler = () => {
     setStatus(SYNC_STATUS.queued)
-    syncTypeId ? syncNow({ variables: { syncId: syncTypeId } }) : addSyncType({ variables: { repoId, syncType } })
+    syncTypeId ? syncNow({ variables: { syncId: syncTypeId, typeGroup: syncTypeGroup } }) : addSyncType({ variables: { repoId, syncType } })
   }
 
   useEffect(() => {
