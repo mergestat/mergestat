@@ -261,6 +261,11 @@ func (w *worker) addGithubTokenToUrl(urlString, ghToken string) (string, error) 
 		return "", err
 	}
 
+	// for URLs with file:// or no scheme, do not append GitHub token.
+	if parsedUrl.Scheme == "" || parsedUrl.Scheme == "file" {
+		return urlString, nil
+	}
+
 	parsedUrl.User = url.UserPassword(parsedUrl.Path, ghToken)
 	return parsedUrl.String(), nil
 }
