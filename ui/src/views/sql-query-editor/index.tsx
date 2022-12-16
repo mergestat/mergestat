@@ -89,7 +89,7 @@ const QueryEditor: React.FC = () => {
         />
 
         {/* Empty state */}
-        {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} />}
+        {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} data={data?.execSQL} />}
 
         {/* Canceled state */}
         {!error && !loading && state === States.Canceled && <QueryEditorCanceled />}

@@ -4,19 +4,14 @@ import cx from 'classnames'
 import { debounce } from 'lodash'
 import Papa from 'papaparse'
 import { useEffect, useState } from 'react'
+import { QueryResultProps } from 'src/@types'
 import { copy, filterByAllFields, getMaxPagination, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
-
-type QueryResult = {
-  rowCount?: number | null
-  columns?: Array<{ name: string | number | boolean, format: string }> | null
-  rows?: Array<Array<string | number | boolean>> | null
-}
 
 type QueryEditorFilledProps = {
   rowLimit: number
   rowLimitReached: boolean
-  data: QueryResult
+  data: QueryResultProps
   children?: React.ReactNode
 }
 

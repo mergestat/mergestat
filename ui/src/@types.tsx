@@ -151,3 +151,11 @@ export type UserData = {
   role: UserTypeUI
   createdAt?: string
 }
+
+/** Query Props Type */
+
+export type QueryResultProps = {
+  rowCount?: number | null
+  columns?: Array<{ name: string | number | boolean, format: string }> | null
+  rows?: Array<Array<string | number | boolean>> | null
+}

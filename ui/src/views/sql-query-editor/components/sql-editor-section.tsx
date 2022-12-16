@@ -82,7 +82,7 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEd
               },
             }}
           />
-          <div className='flex items-center pl-8 py-4 border-t border-gray-300'>
+          <div className='flex items-center pl-4 py-4 border-t border-gray-300'>
             <Toggle isChecked={readOnly} onChange={(value) => setReadOnly(value)} />
             <span className='text-gray-500 pl-2 pr-1'>Read-only</span>
             <Tooltip content={message} offset={[0, 10]}>
