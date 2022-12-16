@@ -15,7 +15,7 @@ import QueryEditorLoading from './components/state-loading'
 const QueryEditor: React.FC = () => {
   const ROWS_LIMIT = 1000
 
-  const [{ query, nonReadOnly }] = useQueryContext()
+  const [{ query, readOnly }] = useQueryContext()
 
   const [state, setState] = useState<States>(States.Empty)
   const [rowLimitReached, setRowLimitReached] = useState(true)
@@ -49,7 +49,7 @@ const QueryEditor: React.FC = () => {
   const executeSQLQuery = () => {
     setLoading(true)
     setAbortRef(new AbortController())
-    executeSQL({ variables: { sql: query, disableReadOnly: nonReadOnly } })
+    executeSQL({ variables: { sql: query, disableReadOnly: !readOnly } })
     setExecuted(true)
   }
 

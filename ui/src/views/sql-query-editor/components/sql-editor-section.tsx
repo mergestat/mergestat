@@ -1,6 +1,6 @@
 
 import { Toggle, Tooltip } from '@mergestat/blocks'
-import { WarningIcon } from '@mergestat/icons'
+import { CircleInformationIcon } from '@mergestat/icons'
 import Editor from '@monaco-editor/react'
 import { useEffect, useRef } from 'react'
 import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.contex'
@@ -11,8 +11,9 @@ type SQLEditorSectionProps = {
 }
 
 const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEditorSectionProps) => {
-  const [{ query, nonReadOnly }] = useQueryContext()
-  const { setQuery, setNonReadOnly } = useQuerySetState()
+  const [{ query, readOnly }] = useQueryContext()
+  const { setQuery, setReadOnly } = useQuerySetState()
+  const message = 'Non read-only queries are able to make changes in the underlying database, be careful!'
 
   const resizeElement = useRef<HTMLDivElement | null>(null)
   const resizerElement = useRef<HTMLDivElement | null>(null)
@@ -65,9 +66,9 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEd
       <div
         className='w-full p-8'
         ref={resizeElement}
-        style={{ height: '320px', minHeight: '200px' }}
+        style={{ height: '360px', minHeight: '200px' }}
       >
-        <div className='h-full flex-col relative pb-8 pt-4 bg-white rounded border border-gray-300'>
+        <div className='h-full flex-col relative pb-14 pt-4 bg-white rounded border border-gray-300'>
           <Editor
             className='text-sm font-mono'
             value={query}
@@ -81,11 +82,11 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEd
               },
             }}
           />
-          <div className='flex items-center pl-8 pt-1 pb-2'>
-            <Toggle isChecked={nonReadOnly} onChange={(value) => setNonReadOnly(value)} />
-            <span className='text-sm pl-2'>Non-read-only</span>
-            <Tooltip content='Possible destructive actions!' offset={[0, 10]}>
-              <WarningIcon className='t-icon t-icon-warning pl-1' />
+          <div className='flex items-center pl-8 py-4 border-t border-gray-300'>
+            <Toggle isChecked={readOnly} onChange={(value) => setReadOnly(value)} />
+            <span className='text-gray-500 pl-2 pr-1'>Read-only</span>
+            <Tooltip content={message} offset={[0, 10]}>
+              <CircleInformationIcon className='t-icon t-icon-muted pl-1' />
             </Tooltip>
           </div>
         </div>
