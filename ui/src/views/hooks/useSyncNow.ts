@@ -13,7 +13,8 @@ const useSyncNow = (refetch: string, schedule = false) => {
       if (!schedule) {
         syncNow({
           variables: {
-            syncId: data.createRepoSync?.repoSync?.id
+            syncId: data.createRepoSync?.repoSync?.id,
+            typeGroup: data.createRepoSync?.repoSync?.repoSyncTypeBySyncType?.typeGroup
           }
         })
       }

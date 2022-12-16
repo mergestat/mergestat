@@ -26,6 +26,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
       title: s?.repoSyncTypeBySyncType?.shortName || '',
       brief: s?.repoSyncTypeBySyncType?.description || '',
       scheduleEnabled: s?.scheduleEnabled || false,
+      typeGroup: s.repoSyncTypeBySyncType?.typeGroup || '',
       syncState: s?.repoSyncQueues.nodes.length !== 0 ? getStatus(s?.repoSyncQueues.nodes[0] as RepoSyncQueue) : SYNC_STATUS.empty,
     }
 

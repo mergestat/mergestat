@@ -93,6 +93,7 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                               repoId={repoId}
                               syncType={sync.data.type}
                               syncTypeId={sync.data.id}
+                              syncTypeGroup={sync.data.typeGroup}
                               syncStatus={sync.status.syncState}
                             />
                             <RepositoryTableRowOptions state={sync.status.syncState} />

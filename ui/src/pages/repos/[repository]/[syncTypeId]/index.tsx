@@ -16,7 +16,7 @@ const DataTypePage = () => {
         ? <Loading />
         : <RepoDataTypeView {...repoData}
           syncNow={() => syncNow({
-            variables: { syncId: syncTypeId }
+            variables: { syncId: syncTypeId, typeGroup: repoData.sync?.typeGroup }
           })}
         />
       }

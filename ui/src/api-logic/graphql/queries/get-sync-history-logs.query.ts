@@ -14,6 +14,7 @@ const GET_SYNC_HISTORY_LOGS = gql`
           repoSyncTypeBySyncType {
             shortName
             description
+            typeGroup
           }
           repoSyncQueues(first: 50, orderBy: CREATED_AT_DESC) {
             nodes {

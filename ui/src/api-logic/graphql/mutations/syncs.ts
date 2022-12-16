@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client'
 
 const SYNC_NOW = gql`
-  mutation sync($syncId: UUID!) {
+  mutation sync($syncId: UUID!, $typeGroup: String!) {
     createRepoSyncQueue(
-      input: {repoSyncQueue: {repoSyncId: $syncId, status: "QUEUED"}}
+      input: {repoSyncQueue: {repoSyncId: $syncId, status: "QUEUED", typeGroup: $typeGroup}}
     ) {
       repoSyncQueue {
         id
@@ -22,6 +22,9 @@ const ADD_SYNC_TYPE = gql`
       repoSync {
         id
         syncType
+        repoSyncTypeBySyncType {
+          typeGroup
+        }
       }
     }
   }

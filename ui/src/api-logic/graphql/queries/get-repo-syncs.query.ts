@@ -36,6 +36,7 @@ const GET_REPO_SYNCS = gql`
         type
         description
         shortName
+        typeGroup
       }
     }
   }
