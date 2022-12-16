@@ -10,7 +10,8 @@ import { RepoDataLogs, SyncSettings } from './components'
 
 const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow }) => {
   const router = useRouter()
-  const repoName = repo.name.split('/')[0]
+  const repoOwnerName = repo.name.split('/')[0]
+  const repoName = repo.name.split('/')[1]
 
   const crumbs = [
     {
@@ -19,9 +20,9 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
     },
     {
       text: repo.name,
-      startIcon: <RepoImage repoType={repo.type} orgName={repoName} />,
+      startIcon: <RepoImage repoType={repo.type} orgName={repoOwnerName} />,
       endIcon: (
-        <a target="_blank" href={repo.type === 'github' ? GITHUB_URL + repoName : repoName} rel="noopener noreferrer">
+        <a target="_blank" href={repo.type === 'github' ? `${GITHUB_URL + repoOwnerName}/${repoName}` : repo.name} rel="noopener noreferrer">
           <ExternalLinkIcon className='t-icon t-icon-muted t-icon-small' />
         </a>
       ),
