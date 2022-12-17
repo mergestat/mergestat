@@ -32,6 +32,13 @@ RUN curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | 
 # install gitleaks binary from gitleaks image
 COPY --from=gitleaks /usr/bin/gitleaks /usr/local/bin/gitleaks
 
+# install python3 and yelp detect-secrets
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
+RUN pip3 install detect-secrets
+
 # for pprof and prom metrics over http
 EXPOSE 8080
 
