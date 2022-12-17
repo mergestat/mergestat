@@ -22,21 +22,22 @@ import (
 )
 
 const (
-	syncTypeGitCommits         = "GIT_COMMITS"
-	syncTypeGitCommitStats     = "GIT_COMMIT_STATS"
-	syncTypeGitRefs            = "GIT_REFS"
-	syncTypeGitFiles           = "GIT_FILES"
-	syncTypeGitBlame           = "GIT_BLAME"
-	syncTypeGitHubRepoMetadata = "GITHUB_REPO_METADATA"
-	syncTypeGitHubRepoPRs      = "GITHUB_REPO_PRS"
-	syncTypeGitHubRepoIssues   = "GITHUB_REPO_ISSUES"
-	syncTypeGitHubRepoStars    = "GITHUB_REPO_STARS"
-	syncTypeGitHubPRReviews    = "GITHUB_PR_REVIEWS"
-	syncTypeGitHubPRCommits    = "GITHUB_PR_COMMITS"
-	syncTypeTrivyRepoScan      = "TRIVY_REPO_SCAN"
-	syncTypeSyftRepoScan       = "SYFT_REPO_SCAN"
-	syncTypeGitHubActions      = "GITHUB_ACTIONS"
-	synTypeGitleaksRepoScan    = "GITLEAKS_REPO_SCAN"
+	syncTypeGitCommits                = "GIT_COMMITS"
+	syncTypeGitCommitStats            = "GIT_COMMIT_STATS"
+	syncTypeGitRefs                   = "GIT_REFS"
+	syncTypeGitFiles                  = "GIT_FILES"
+	syncTypeGitBlame                  = "GIT_BLAME"
+	syncTypeGitHubRepoMetadata        = "GITHUB_REPO_METADATA"
+	syncTypeGitHubRepoPRs             = "GITHUB_REPO_PRS"
+	syncTypeGitHubRepoIssues          = "GITHUB_REPO_ISSUES"
+	syncTypeGitHubRepoStars           = "GITHUB_REPO_STARS"
+	syncTypeGitHubPRReviews           = "GITHUB_PR_REVIEWS"
+	syncTypeGitHubPRCommits           = "GITHUB_PR_COMMITS"
+	syncTypeTrivyRepoScan             = "TRIVY_REPO_SCAN"
+	syncTypeSyftRepoScan              = "SYFT_REPO_SCAN"
+	syncTypeGitHubActions             = "GITHUB_ACTIONS"
+	syncTypeGitleaksRepoScan          = "GITLEAKS_REPO_SCAN"
+	syncTypeYelpDetectSecretsRepoScan = "YELP_DETECT_SECRETS_REPO_SCAN"
 )
 
 type worker struct {
@@ -177,8 +178,10 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 		return w.handleSyftRepoScan(ctx, j)
 	case syncTypeGitHubActions:
 		return w.handleGithubActions(ctx, j)
-	case synTypeGitleaksRepoScan:
+	case syncTypeGitleaksRepoScan:
 		return w.handleGitleaksRepoScan(ctx, j)
+	case syncTypeYelpDetectSecretsRepoScan:
+		return w.handleYelpDetectSecretsRepoScan(ctx, j)
 	default:
 		return fmt.Errorf("unknown sync type: %s for job ID: %d", j.SyncType, j.ID)
 	}
