@@ -15,7 +15,7 @@ require (
 
 require (
 	github.com/go-enry/go-enry/v2 v2.8.3
-	github.com/go-git/go-git/v5 v5.4.2
+	github.com/go-git/go-git/v5 v5.5.1
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.3.0
@@ -35,12 +35,14 @@ require (
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
+	github.com/pjbgf/sha1cd v0.2.3 // indirect
+	github.com/skeema/knownhosts v1.1.0 // indirect
 )
 
 require (
 	github.com/BurntSushi/toml v1.2.0 // indirect
 	github.com/Microsoft/go-winio v0.6.0 // indirect
-	github.com/ProtonMail/go-crypto v0.0.0-20220930113650-c6815a8c17ad // indirect
+	github.com/ProtonMail/go-crypto v0.0.0-20221026131551-cf6655e29de4 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/augmentable-dev/vtab v0.0.0-20221005151137-0ff49e3f5413 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -83,9 +85,9 @@ require (
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
-	github.com/xanzy/ssh-agent v0.3.2 // indirect
+	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
-	golang.org/x/crypto v0.0.0-20221010152910-d6f0a8c073c2 // indirect
+	golang.org/x/crypto v0.3.0 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
