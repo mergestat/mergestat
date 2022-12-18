@@ -118,7 +118,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
               placeholder='Search...'
               startIcon={<SearchIcon className='t-icon' />}
               onChange={onChange}
-              onKeyPress={(e) => (e.key === 'Enter' && setSearch(e.target.value))}
+              onKeyPress={(e : any) => (e.key === 'Enter' && setSearch(e.target.value))}
             />
           </Toolbar.Right>
         </Toolbar>
