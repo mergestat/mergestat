@@ -1,15 +1,20 @@
 
+import { Toggle, Tooltip } from '@mergestat/blocks'
+import { CircleInformationIcon } from '@mergestat/icons'
 import Editor from '@monaco-editor/react'
 import { useEffect, useRef } from 'react'
+import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.contex'
 
 type SQLEditorSectionProps = {
-  query: string
-  setQuery: (text: string | undefined) => void
   onEnterKey?: () => void
   children?: React.ReactNode
 }
 
-const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery, onEnterKey }: SQLEditorSectionProps) => {
+const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEditorSectionProps) => {
+  const [{ query, readOnly }] = useQueryContext()
+  const { setQuery, setReadOnly } = useQuerySetState()
+  const message = 'Non read-only queries are able to make changes in the underlying database, be careful!'
+
   const resizeElement = useRef<HTMLDivElement | null>(null)
   const resizerElement = useRef<HTMLDivElement | null>(null)
 
@@ -61,9 +66,9 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery, on
       <div
         className='w-full p-8'
         ref={resizeElement}
-        style={{ height: '320px', minHeight: '200px' }}
+        style={{ height: '360px', minHeight: '200px' }}
       >
-        <div className='h-full flex relative py-4 bg-white rounded border border-gray-300'>
+        <div className='h-full flex-col relative pb-14 pt-4 bg-white rounded border border-gray-300'>
           <Editor
             className='text-sm font-mono'
             value={query}
@@ -77,6 +82,13 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ query, setQuery, on
               },
             }}
           />
+          <div className='flex items-center pl-4 py-4 border-t border-gray-300'>
+            <Toggle isChecked={readOnly} onChange={(value) => setReadOnly(value)} />
+            <span className='text-gray-500 pl-2 pr-1'>Read-only</span>
+            <Tooltip content={message} offset={[0, 10]}>
+              <CircleInformationIcon className='t-icon t-icon-muted pl-1' />
+            </Tooltip>
+          </div>
         </div>
       </div>
       <div className='t-resizer z-10' ref={resizerElement} />
