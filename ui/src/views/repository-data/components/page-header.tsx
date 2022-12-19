@@ -12,7 +12,8 @@ interface PageHeaderProps {
 
 export const PageHeader = ({ name, type }: PageHeaderProps) => {
   const router = useRouter()
-  const repoName = name.split('/')[0]
+  const repoOwnerName = name.split('/')[0]
+  const repoName = name.split('/')[1]
   const crumbs = [
     {
       text: 'Repos',
@@ -20,9 +21,9 @@ export const PageHeader = ({ name, type }: PageHeaderProps) => {
     },
     {
       text: name,
-      startIcon: <RepoImage repoType={type} orgName={repoName} />,
+      startIcon: <RepoImage repoType={type} orgName={repoOwnerName} />,
       endIcon: (
-        <a target='_blank' href={type === 'github' ? GITHUB_URL + repoName : repoName} rel='noopener noreferrer'>
+        <a target="_blank" href={type === 'github' ? `${GITHUB_URL + repoOwnerName}/${repoName}` : name} rel="noopener noreferrer">
           <ExternalLinkIcon className='t-icon t-icon-muted t-icon-small' />
         </a>
       ),
