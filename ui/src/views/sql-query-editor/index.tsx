@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client'
-import { Button, Spinner, Toolbar } from '@mergestat/blocks'
+import { Alert, Button, Spinner, Toolbar } from '@mergestat/blocks'
 import { useEffect, useState } from 'react'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
@@ -79,6 +79,11 @@ const QueryEditor: React.FC = () => {
           </Toolbar.Right>
         </Toolbar>
       </div>
+      {!readOnly && <Alert isInline type="warning" className='pl-4 p-3 bg-yellow-50 border-b border-yellow-300'>
+        <span className='text-yellow-900'>
+          Non read-only queries are able to make changes in the underlying database, be careful!
+        </span>
+      </Alert>}
 
       <div className='flex flex-col flex-1 items-center overflow-auto'>
         {/* SQL editor */}
