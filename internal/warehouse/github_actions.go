@@ -146,6 +146,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		// we get a page of 30 workflow runs until next page is 0
 		for {
 
+			// TODO(ramiroJCB) remove nil check for name for logging and hand the nil values upstream when the data is first fetched
 			if workflow.Name != nil {
 				w.logger.Debug().Str("workflow", *workflow.Name).Int64("ID", *workflow.ID).Msg("getting runs of")
 			} else {
