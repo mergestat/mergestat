@@ -138,12 +138,27 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 		}
 
 		w.logger.Info().Msgf("getting workflow runs for workflow %s", *workflow.Name)
+
+		if workflow.ID == nil {
+			w.logger.Debug().Msg("workflow with empty ID")
+			break
+		}
 		// we get a page of 30 workflow runs until next page is 0
 		for {
 
-			w.logger.Debug().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).Msg("getting runs of")
+			// TODO(ramiroJCB) remove nil check for name for logging and hand the nil values upstream when the data is first fetched
+			if workflow.Name != nil {
+				w.logger.Debug().Str("workflow", *workflow.Name).Int64("ID", *workflow.ID).Msg("getting runs of")
+			} else {
+				w.logger.Debug().Int64("ID", *workflow.ID).Msg("getting runs with ID")
+			}
+
 			if workflowRunsPage, resp, err = getWorkflowsRuns(ctx, w.githubClient, owner, repo, *workflow.ID, opt); err != nil {
-				w.logger.Warn().Str("workflow", *workflow.Name).Str("ID", fmt.Sprintf("%d", *workflow.ID)).AnErr("Error", err).Msg("error occurred")
+				if workflow.Name != nil {
+					w.logger.Warn().Str("workflow", *workflow.Name).Int64("ID", *workflow.ID).AnErr("error", err).Msg("error occurred")
+				} else {
+					w.logger.Warn().Int64("ID", *workflow.ID).AnErr("error", err).Msg("error occurred")
+				}
 
 				operation := fmt.Sprintf("during the fetching of workflow run page with owner %s, repo %s and workflowID %d, Error: %v", owner, repo, *workflow.ID, err)
 				if batchErr := w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation); batchErr != nil {
@@ -213,11 +228,25 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 	}
 
 	for _, workflowRun := range workflowRunsPage {
+
+		if workflowRun.ID == nil {
+			w.logger.Debug().Msg("workflow run with empty ID")
+			break
+		}
 		// we get a page of 30 workflow run jobs until next page is 0
 		for {
-			w.logger.Debug().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).Msg("getting jobs of")
+			if workflowRun.Name != nil {
+				w.logger.Debug().Str("workflow-run", *workflowRun.Name).Int64("ID", *workflowRun.ID).Msg("getting jobs of")
+			} else {
+				w.logger.Debug().Int64("ID", *workflowRun.ID).Msg("getting jobs with ID")
+			}
+
 			if workflowRunJobsPage, resp, err = getWorkflowJobs(ctx, w.githubClient, owner, repo, *workflowRun.ID, opt); err != nil {
-				w.logger.Warn().Str("workflow-run", *workflowRun.Name).Str("ID", fmt.Sprintf("%d", *workflowRun.ID)).AnErr("Error", err).Msg("error occurred")
+				if workflowRun.Name != nil {
+					w.logger.Warn().Str("workflow-run", *workflowRun.Name).Int64("ID", *workflowRun.ID).AnErr("Error", err).Msg("error occurred")
+				} else {
+					w.logger.Warn().Int64("ID", *workflowRun.ID).AnErr("error", err).Msg("error occurred")
+				}
 
 				operation := fmt.Sprintf("during the fetching of workflow jobs page with owner %s,repo %s and runID %d Error: %v", owner, repo, *workflowRun.ID, err)
 				if batchErr := w.batchProcessLogMessages(ctx, SyncLogTypeWarning, job, unexpectedBehavior, operation); batchErr != nil {
@@ -275,10 +304,25 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 
 	// we iterate over the workflowrunJobs page to get each log
 	for i, workflowJob := range workflowRunJobsPage {
-		w.logger.Debug().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).Msg("getting log of")
+
+		if workflowJob.ID == nil {
+			w.logger.Debug().Msg("workflow job with empty ID")
+			break
+		}
+
+		if workflowJob.Name != nil {
+			w.logger.Debug().Str("workflow-job", *workflowJob.Name).Int64("ID", *workflowJob.ID).Msg("getting workflow run log of")
+		} else {
+			w.logger.Debug().Int64("ID", *workflowJob.ID).Msg("getting workflow run log  with ID")
+		}
+
 		workflowJobLog, resp, err := getWorkflowJobLog(ctx, w.githubClient, owner, repo, *workflowJob.ID)
 		if err != nil {
-			w.logger.Warn().Str("workflow-job", *workflowJob.Name).Str("ID", fmt.Sprintf("%d", *workflowJob.ID)).AnErr("Error", err).Msg("error occurred")
+			if workflowJob.Name != nil {
+				w.logger.Warn().Str("workflow-job", *workflowJob.Name).Int64("ID", *workflowJob.ID).AnErr("Error", err).Msg("error occurred")
+			} else {
+				w.logger.Warn().Int64("ID", *workflowJob.ID).AnErr("error", err).Msg("error occurred")
+			}
 			// now that we know that the log is missing regularly , we need to also handle to upsert of the rest of the information
 			// when we get an error from the call
 			log = ""
@@ -351,8 +395,6 @@ func (w *warehouse) handleWorkflowsUpsert(ctx context.Context, workflows []*gith
 func (w *warehouse) handleWorkflowRunsUpsert(ctx context.Context, workflowRunPage []*github.WorkflowRun, repoID uuid.UUID) error {
 	var tx pgx.Tx
 	var err error
-	//var jsonbPullRequest pgtype.JSONB
-	//var jsonbHeadCommit pgtype.JSONB
 
 	if tx, err = w.pool.BeginTx(ctx, pgx.TxOptions{}); err != nil {
 		return fmt.Errorf("begin tx: %w", err)
