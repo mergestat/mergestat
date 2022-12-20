@@ -32,7 +32,7 @@ CREATE OR REPLACE VIEW mergestat.user_mgmt_pg_users AS (
     -- but this works for now.
     SELECT * FROM users
     WHERE (memberof && ARRAY['mergestat_role_admin', 'mergestat_role_user', 'mergestat_role_readonly']::name[])
-        AND users.rolname != 'mergestat_admin';
+        AND users.rolname != 'mergestat_admin'
 );
 -- noqa: enable=L011,L031,L051
 
