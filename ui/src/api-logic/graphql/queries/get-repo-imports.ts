@@ -9,6 +9,7 @@ const GET_REPO_IMPORTS = gql`
         type
         settings
         lastImport
+        importStatus
       }
     }
   }

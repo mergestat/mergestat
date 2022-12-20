@@ -1,12 +1,15 @@
 import { useQuery } from '@apollo/client'
 import { useCallback, useEffect, useState } from 'react'
+import { AutoImportData } from 'src/@types'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_REPOS } from 'src/api-logic/graphql/queries/get-repos.query'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
+import { SYNC_REPO_METHOD } from 'src/utils/constants'
 
 const useRepos = () => {
   const [showTable, setShowTable] = useState(false)
-  const [showBanner, setShowBanner] = useState(false)
+  const [runningImports, setRunningImports] = useState<AutoImportData[]>([])
+  const [failedImports, setFailedImports] = useState<AutoImportData[]>([])
 
   const [{ search, rowsRepos, pageRepos }] = useRepositoriesContext()
   const { setTotalRepos } = useRepositoriesSetState()
@@ -21,7 +24,20 @@ const useRepos = () => {
     if (!showTable && data?.repos?.totalCount && data?.repos?.totalCount > 0) {
       setShowTable(true)
     }
-    setShowBanner(data?.repoImports?.totalCount ? data?.repoImports?.totalCount > 0 : false)
+
+    setFailedImports(data?.repoImports?.nodes?.filter(imp => imp.importError !== null).map(imp => ({
+      id: imp.id,
+      name: imp.type === SYNC_REPO_METHOD.GH_USER ? imp.settings.user : imp.settings.org,
+      type: imp.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org',
+      error: imp.importError
+    })) || [])
+
+    setRunningImports(data?.repoImports?.nodes?.filter(imp => imp.importError === null).map(imp => ({
+      id: imp.id,
+      name: imp.type === SYNC_REPO_METHOD.GH_USER ? imp.settings.user : imp.settings.org,
+      type: imp.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org'
+    })) || [])
+
     setTotalRepos(data?.repos?.totalCount || 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, showTable])
@@ -34,7 +50,7 @@ const useRepos = () => {
     refetch({ search, first: rowsRepos, offset: (pageRepos * rowsRepos) })
   }, [refetch, search, rowsRepos, pageRepos])
 
-  return { showTable, loading, data, showBanner, refetch }
+  return { showTable, loading, data, runningImports, failedImports, refetch }
 }
 
 export default useRepos

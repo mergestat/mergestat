@@ -10,6 +10,8 @@ export type UserTypeUI = 'Admin' | 'User' | 'Read Only' | 'Unknown'
 
 export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
 
+export type ImportStatusType = 'SUCCESS' | 'FAILURE'
+
 export type TagType = {
   title: string
   checked: boolean
@@ -128,6 +130,7 @@ export type RepoImportData = {
   source: string
   type: string
   lastSync: string
+  status: ImportStatusType
 }
 
 export type SyncType = {
@@ -142,6 +145,13 @@ export type ImportSync = {
   type: string
   opened: boolean
   defaultSyncs: Array<SyncType>
+}
+
+export type AutoImportData = {
+  id: string
+  name: string
+  type: string
+  error?: string | null
 }
 
 /** Users Props Type */

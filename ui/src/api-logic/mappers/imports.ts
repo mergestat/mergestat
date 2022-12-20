@@ -1,4 +1,4 @@
-import { RepoImportData } from 'src/@types'
+import { ImportStatusType, RepoImportData } from 'src/@types'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
 import { GetRepoImportsQuery } from '../graphql/generated/schema'
 
@@ -18,6 +18,7 @@ const mapToImportsData = (data: GetRepoImportsQuery | undefined): Array<RepoImpo
       type: imp.type,
       source: imp.type === SYNC_REPO_METHOD.GH_USER ? imp.settings.user : imp.settings.org,
       lastSync: imp.lastImport ? imp.lastImport : '',
+      status: imp.importStatus as ImportStatusType
     }
     mappedData.push(importInfo)
   })

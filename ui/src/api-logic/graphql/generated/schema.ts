@@ -14013,7 +14013,7 @@ export type GetPatQuery = { serviceAuthCredentials?: { totalCount: number } | nu
 export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, lastImport?: any | null }> } | null };
+export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, lastImport?: any | null, importStatus?: string | null }> } | null };
 
 export type GetRepoImportQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -14056,7 +14056,7 @@ export type GetReposQueryVariables = Exact<{
 }>;
 
 
-export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, repoSyncLogs: { totalCount: number } } | null }> } }> } | null };
+export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, importError?: string | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, repoSyncLogs: { totalCount: number } } | null }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];
@@ -14084,6 +14084,7 @@ export type GetUsersQuery = { userMgmtPgUsers?: { nodes: Array<{ memberof?: Arra
 
 export type ExecuteSqlQueryVariables = Exact<{
   sql: Scalars['String'];
+  disableReadOnly?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 

@@ -28,7 +28,7 @@ const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric }: MetricNum
 
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showRemoveRepositoryModal }] = useRepositoriesContext()
-  const { showTable, loading, data, showBanner } = useRepos()
+  const { showTable, loading, data, runningImports, failedImports } = useRepos()
   const { loadingAllRepos, allRepos, loadingAllEnabledRepos, enabledRepos, loadingSyncErrors, syncErrors } = useMetrics()
 
   const [repos, setRepos] = useState<Array<RepoDataPropsT>>()
@@ -41,21 +41,35 @@ const RepositoriesView: React.FC = () => {
     <main className='w-full flex flex-col h-full bg-gray-50 overflow-hidden'>
       <PageHeader />
       <div className='flex-1 items-center p-8 overflow-auto'>
-        {showBanner &&
+        {failedImports.length > 0 &&
+          <Alert
+            type='error'
+            theme='light'
+            icon={<CircleErrorFilledIcon className="mt-1 t-icon t-icon-danger" />}
+            title={(<div><span>Auto import error</span></div>)}
+            className='mb-6'
+          >
+            <span className='flex flex-col'>
+              {failedImports.map((imp, index) => (
+                <li key={`failed-imports-${index}`}><b>{`${imp.name} `}</b>{`(${imp.type}): ${imp.error}`}</li>
+              ))}
+            </span>
+          </Alert>}
+
+        {runningImports.length > 0 &&
           <Alert
             type='info'
             theme='light'
-            icon={<Spinner size='sm' className='self-center' />}
-            title={(
-              <div>
-                <span>Auto importing repos</span>
-              </div>
-            )}
+            icon={<Spinner size='sm' className='mt-1' />}
+            title={(<div><span>Auto importing repos</span></div>)}
             className='mb-6'
           >
-            Repositories from an auto-import will appear here once they are finished syncing.
-          </Alert>
-        }
+            <span className='flex flex-col'>
+              {runningImports.map((imp, index) => (
+                <li key={`running-imports-${index}`}><b>{`${imp.name} `}</b>{`(${imp.type})`}</li>
+              ))}
+            </span>
+          </Alert>}
 
         {/* Metrics */}
         {showTable &&

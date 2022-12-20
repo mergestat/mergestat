@@ -35,6 +35,12 @@ const GET_REPOS = gql`
     }
     repoImports(filter: { lastImport: { isNull: true } }) {
       totalCount
+      nodes {
+        id
+        type
+        settings
+        importError
+      }
     }
     repos(
       orderBy: [CREATED_AT_DESC, REPO_DESC]

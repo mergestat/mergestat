@@ -114,6 +114,11 @@ export enum USER_TYPE {
   READ_ONLY = 'READ_ONLY'
 }
 
+export enum IMPORT_STATUS_TYPE {
+  SUCCESS = 'SUCCESS',
+  FAILURE = 'FAILURE'
+}
+
 export const USER_ROLES = [
   {
     key: 'ADMIN',
