@@ -43,6 +43,10 @@ services:
       GITHUB_WORKFLOW_JOBS_PER_PAGE: 30
     ports:
       - 3301:8080
+    # NOTE: Uncomment the following to mount a path on disk to the container to access local git repos.
+    # When adding a the repo in the UI, use file:///projects/<repo-name> to access the repo.
+    # volumes:
+    #   - ~/projects:/projects
 
   graphql:
     # See NOTE above in worker service.
