@@ -30,7 +30,9 @@ CREATE OR REPLACE VIEW mergestat.user_mgmt_pg_users AS (
     -- Maybe there's a better way in the future to filter out the users that are not in one of the mergestat roles
     -- (using a pattern match for instance, to allow for additional roles to be added without this view being updated)
     -- but this works for now.
-    SELECT * FROM users WHERE (memberof && ARRAY['mergestat_role_admin', 'mergestat_role_user', 'mergestat_role_readonly']::name[]) AND users.rolname <> 'mergestat_admin';
+    SELECT * FROM users
+    WHERE (memberof && ARRAY['mergestat_role_admin', 'mergestat_role_user', 'mergestat_role_readonly']::name[])
+        AND users.rolname != 'mergestat_admin';
 );
 -- noqa: enable=L011,L031,L051
 
