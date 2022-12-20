@@ -1,5 +1,5 @@
 import { Alert, Button, ColoredBox, Panel, Toolbar } from '@mergestat/blocks'
-import { CircleCheckFilledIcon, ClockIcon, TrashIcon } from '@mergestat/icons'
+import { CircleCheckFilledIcon, CircleErrorFilledIcon, ClockIcon, TrashIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -7,7 +7,7 @@ import { Fragment } from 'react'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import Loading from 'src/components/Loading'
 import RepoImage from 'src/components/RepoImage'
-import { SYNC_REPO_METHOD } from 'src/utils/constants'
+import { IMPORT_STATUS_TYPE, SYNC_REPO_METHOD } from 'src/utils/constants'
 import useRepoImports from 'src/views/hooks/useRepoImports'
 import { RemoveImportModal } from 'src/views/repositories/modals/remove-import-modal'
 import SettingsView from 'src/views/settings'
@@ -58,9 +58,11 @@ const AutoImports: NextPage = () => {
                           {imports.map((imp, index) => (
                             <tr key={index}>
                               <td className='py-4 pl-8 pr-4 w-0'>
-                                {imp.importDone
+                                {imp.status === IMPORT_STATUS_TYPE.SUCCESS
                                   ? <CircleCheckFilledIcon className="t-icon t-icon-success" />
-                                  : <ClockIcon className='t-icon t-icon-muted' />
+                                  : imp.status === IMPORT_STATUS_TYPE.FAILURE
+                                    ? <CircleErrorFilledIcon className="t-icon t-icon-danger" />
+                                    : <ClockIcon className='t-icon t-icon-muted' />
                                 }
                               </td>
                               <td className='p-4'>
