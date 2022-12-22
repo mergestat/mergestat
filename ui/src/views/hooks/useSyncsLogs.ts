@@ -19,7 +19,7 @@ const useSyncsLogs = (poll = false) => {
   const { updateSchedule, syncNow } = useSyncNow('getSyncHistoryLogs')
 
   const repoData: SyncTypeData = mapToSyncLogsData(data)
-  const title = `${MERGESTAT_TITLE} ${repoData.repo.name}`
+  const title = `${repoData.sync?.title} - ${repoData.repo.name} - Repos  ${MERGESTAT_TITLE}`
 
   return { loading, repoData, title, syncTypeId, updateSchedule, syncNow }
 }

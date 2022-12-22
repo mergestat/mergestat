@@ -15,7 +15,7 @@ const Connect: NextPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>MergeStat</title>
+        <title>Connect - MergeStat</title>
       </Head>
       <main className="w-full flex flex-col h-full bg-gray-50 overflow-hidden">
         <div className="bg-white h-16 w-full border-b px-8">

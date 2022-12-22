@@ -1,7 +1,6 @@
 import { Alert, Button, ColoredBox, Panel, Toolbar } from '@mergestat/blocks'
 import { CircleCheckFilledIcon, CircleErrorFilledIcon, ClockIcon, TrashIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import Link from 'next/link'
 import { Fragment } from 'react'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
@@ -18,9 +17,6 @@ const AutoImports: NextPage = () => {
   return (
     <>
       <Fragment>
-        <Head>
-          <title>MergeStat</title>
-        </Head>
         <SettingsView>
           {/* Main content */}
           <div className='flex flex-col flex-1 overflow-hidden'>

@@ -11,7 +11,7 @@ import { GET_REPO_IMPORT } from 'src/api-logic/graphql/queries/get-repo-imports'
 import Loading from 'src/components/Loading'
 import RepoImage from 'src/components/RepoImage'
 import { showSuccessAlert } from 'src/utils/alerts'
-import { SYNC_REPO_METHOD } from 'src/utils/constants'
+import { SYNC_REPO_METHOD, MERGESTAT_TITLE } from 'src/utils/constants'
 
 import SettingsView from 'src/views/settings'
 
@@ -26,6 +26,8 @@ const AutoImportsDetail: NextPage = () => {
     variables: { id: importId },
     fetchPolicy: 'no-cache',
   })
+
+  const title = `${name} - Auto Import ${MERGESTAT_TITLE}`
 
   const [updateAutoImport] = useMutation(UPDATE_AUTO_IMPORT_REPOS, {
     onCompleted: () => {
@@ -81,7 +83,7 @@ const AutoImportsDetail: NextPage = () => {
     <>
       <Fragment>
         <Head>
-          <title>MergeStat</title>
+          <title>{title}</title>
         </Head>
         <SettingsView>
           {/* Main content */}

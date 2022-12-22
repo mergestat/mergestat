@@ -7,7 +7,7 @@ import { UserSettingsProvider } from 'src/state/contexts'
 import UserManagement from 'src/views/settings/user-management'
 
 const UserManagementPage: NextPage = () => {
-  const title = `${MERGESTAT_TITLE} Imports`
+  const title = `User Management - Settings ${MERGESTAT_TITLE}`
 
   return (
     <Fragment>

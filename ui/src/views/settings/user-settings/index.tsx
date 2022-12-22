@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client'
 import { Avatar, Button, Label, Panel, Toolbar } from '@mergestat/blocks'
 import { UserIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import { Fragment } from 'react'
 import { CurrentUserQuery } from 'src/api-logic/graphql/generated/schema'
 import { CURRENT_USER } from 'src/api-logic/graphql/queries/auth'
@@ -20,9 +19,6 @@ const UserSettings: NextPage = () => {
   return (
     <>
       <Fragment>
-        <Head>
-          <title>MergeStat</title>
-        </Head>
         <SettingsView>
           {/* Main content */}
           <div className='flex flex-col flex-1 overflow-hidden'>
