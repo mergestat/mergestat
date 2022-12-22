@@ -8,7 +8,7 @@ const QueryEditorPage: NextPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>MergeStat</title>
+        <title>Queries - MergeStat</title>
       </Head>
       <QueryProvider>
         <QueryEditor />

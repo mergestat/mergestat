@@ -6,7 +6,7 @@ import { MERGESTAT_TITLE } from 'src/utils/constants'
 import RepositoriesView from 'src/views/repositories'
 
 const ReposPage: NextPage = () => {
-  const title = `${MERGESTAT_TITLE} Repos`
+  const title = `Repos ${MERGESTAT_TITLE}`
 
   return (
     <Fragment>

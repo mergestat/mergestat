@@ -20,7 +20,7 @@ const LogsDetailsPage = () => {
   })
 
   const repoData: SyncTypeData = mapToSyncLogsData(data)
-  const title = `${MERGESTAT_TITLE} ${repoData.repo.name}`
+  const title = `${repoData.logs?.[0].syncStartText} - ${repoData.sync?.title} - ${repoData.repo.name} - Repos ${MERGESTAT_TITLE}`
 
   return (
     <Fragment>

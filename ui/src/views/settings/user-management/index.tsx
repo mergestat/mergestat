@@ -3,7 +3,6 @@ import { Avatar, Button, Input, Panel, Toolbar } from '@mergestat/blocks'
 import { PencilIcon, PlusIcon, SearchIcon, TrashIcon, UserIcon } from '@mergestat/icons'
 import { debounce } from 'lodash'
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import { Fragment, useEffect, useState } from 'react'
 import { UserData, UserTypeUI } from 'src/@types'
 import { CurrentUserQuery, GetUsersQuery } from 'src/api-logic/graphql/generated/schema'
@@ -56,9 +55,6 @@ const UserManagement: NextPage = () => {
   return (
     <>
       <Fragment>
-        <Head>
-          <title>MergeStat</title>
-        </Head>
         <SettingsView>
           {/* Main content */}
           <div className='flex flex-col flex-1 overflow-hidden'>

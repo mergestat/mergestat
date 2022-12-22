@@ -7,7 +7,7 @@ import { RepositoriesProvider } from 'src/state/contexts'
 import AutoImports from 'src/views/settings/repo-auto-imports'
 
 const AutoImportPage: NextPage = () => {
-  const title = `${MERGESTAT_TITLE} Imports`
+  const title = `Repo Auto Imports - Settings  ${MERGESTAT_TITLE}`
 
   return (
     <Fragment>

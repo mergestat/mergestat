@@ -7,7 +7,7 @@ import { UserSettingsProvider } from 'src/state/contexts'
 import UserSettings from 'src/views/settings/user-settings'
 
 const UserSettingsPage: NextPage = () => {
-  const title = `${MERGESTAT_TITLE} Imports`
+  const title = `User Settings - Settings ${MERGESTAT_TITLE}`
 
   return (
     <Fragment>

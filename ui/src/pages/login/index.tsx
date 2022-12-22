@@ -4,8 +4,10 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { ChangeEvent, Fragment, useState } from 'react'
 import { auth } from 'src/api-logic/axios/api'
+import { MERGESTAT_TITLE } from 'src/utils/constants'
 
 const LoginPage = () => {
+  const title = `Login  ${MERGESTAT_TITLE}`
   const router = useRouter()
   const { lostSession } = router.query
 
@@ -22,7 +24,7 @@ const LoginPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>MergeStat</title>
+        <title>{title}</title>
       </Head>
       <main className="w-full min-h-screen h-full flex flex-col items-center justify-center bg-gray-800">
         <Panel className="w-full max-w-lg">

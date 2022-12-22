@@ -16,7 +16,7 @@ const useSyncs = () => {
   })
 
   const repo = mapToSyncsData(data)
-  const title = `${MERGESTAT_TITLE} ${repo?.name}`
+  const title = `${repo?.name} - Repos ${MERGESTAT_TITLE}`
 
   return { loading, repo, title }
 }
