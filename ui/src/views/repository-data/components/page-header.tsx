@@ -1,4 +1,5 @@
 import { ExternalLinkIcon } from '@mergestat/icons'
+import { useRouter } from 'next/router'
 import type { RepoType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { GITHUB_URL } from 'src/utils/constants'
@@ -9,7 +10,6 @@ interface PageHeaderProps {
 }
 
 export const PageHeader = ({ name, type }: PageHeaderProps) => {
-<<<<<<< HEAD
   const router = useRouter()
   const repoOwnerName = name.split('/')[0]
   const repoName = name.split('/')[1]
@@ -28,9 +28,6 @@ export const PageHeader = ({ name, type }: PageHeaderProps) => {
       ),
     }
   ]
-=======
-  const repoName = name.split('/')[0]
->>>>>>> feat: add placeholder breadcrumbs and replace current breadcrumbs with static titles
 
   return (
     <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
