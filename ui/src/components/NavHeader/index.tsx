@@ -23,7 +23,7 @@ const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: Current
     },
     {
       startIcon: <RepoImage repoType='github' orgName='mergestat' size="6" />,
-      text: 'mergestate/mergestat'
+      text: 'mergestat/mergestat'
     },
   ]
 
