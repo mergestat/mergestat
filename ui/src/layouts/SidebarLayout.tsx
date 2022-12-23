@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import React, { PropsWithChildren, useEffect } from 'react'
 import Loading from 'src/components/Loading'
 import useCurrentUser from 'src/views/hooks/useCurrentUser'
+import { GlobalProvider } from 'src/state/contexts'
 
 const NavHeader = dynamic(() => import('../components/NavHeader'))
 const Sidebar = dynamic(() => import('../components/Sidebar'))
@@ -21,13 +22,15 @@ const SidebarLayout: React.FC = ({ children }: PropsWithChildren) => {
       {loading || data?.currentMergeStatUser === 'mergestat_anonymous'
         ? <Loading />
         : <>
-          <div className="content-area flex flex-grow">
-            <Sidebar />
-            <div className='w-full flex-1 overflow-hidden'>
-              <NavHeader currentMergeStatUser={data?.currentMergeStatUser} />
-              {children}
+          <GlobalProvider>
+            <div className="content-area flex flex-grow">
+              <Sidebar />
+              <div className='w-full flex-1 overflow-hidden'>
+                <NavHeader currentMergeStatUser={data?.currentMergeStatUser} />
+                {children}
+              </div>
             </div>
-          </div>
+          </GlobalProvider>
         </>
       }
     </div>

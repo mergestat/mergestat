@@ -3,7 +3,7 @@ import { Toggle, Tooltip } from '@mergestat/blocks'
 import { CircleInformationIcon } from '@mergestat/icons'
 import Editor from '@monaco-editor/react'
 import { useEffect, useRef } from 'react'
-import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.contex'
+import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.context'
 
 type SQLEditorSectionProps = {
   onEnterKey?: () => void

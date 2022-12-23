@@ -2,7 +2,7 @@ import { MockedProvider } from '@apollo/react-testing'
 import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import 'intersection-observer'
-import { RepositoriesProvider } from 'src/state/contexts'
+import { GlobalProvider, RepositoriesProvider } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import RepositoriesView from 'src/views/repositories'
 import { RepositoryStatus } from 'src/views/repositories/components/repositories-table/repositories-table-columns'
@@ -29,9 +29,11 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useQuery(): data is fetched', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposWithData]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepositoriesView />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepositoriesView />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 
@@ -43,9 +45,11 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useQuery(): no data is fetched', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposEmpty]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepositoriesView />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepositoriesView />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 
@@ -57,9 +61,11 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useQuery(): there are no repos and GitHub Pat is not configured', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposEmptyNoGitHubPat]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepositoriesView />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepositoriesView />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 
@@ -71,9 +77,11 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useQuery(): there are no repos and GitHub Pat is configured', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposEmptyGitHubPat]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepositoriesView />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepositoriesView />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 
@@ -85,9 +93,11 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useQuery() and refetch(): searching \'angular\' repo', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposWithData, apolloMockJustAngularRepo]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepositoriesView />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepositoriesView />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 
@@ -111,9 +121,11 @@ describe('GraphQL queries: (Repos)', () => {
   it('calling useQuery() and refetch(): searching repos without any result', async () => {
     render(
       <MockedProvider mocks={[apolloMockReposWithData, apolloMockWithoutResults]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepositoriesView />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepositoriesView />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 
