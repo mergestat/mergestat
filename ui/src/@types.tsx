@@ -1,3 +1,5 @@
+import { ReactElement } from 'react'
+
 export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'warning' | 'error' | 'empty'
 
 export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'gh-auto' | 'csv'
@@ -16,6 +18,13 @@ export type TagType = {
   title: string
   checked: boolean
   color?: string
+}
+
+export type CrumbData = {
+  text: string
+  startIcon?: ReactElement
+  endIcon?: ReactElement
+  onClick?: () => void
 }
 
 /** Repositories Data Props Type */
