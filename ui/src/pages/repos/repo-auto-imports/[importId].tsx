@@ -81,6 +81,7 @@ const AutoImportsDetail: NextPage = () => {
                 <Toolbar className='h-full'>
                   <Toolbar.Left>
                     <RepoImage repoType='github' orgName={name} size="8" />
+                    <h2 className='t-h2 mb-0'>{name}</h2>
                   </Toolbar.Left>
                   <Toolbar.Right>
                     <Button label='Save' onClick={updateImport} />
