@@ -13,7 +13,6 @@
     "plugin:react/jsx-runtime",
     "plugin:jsx-a11y/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:standard-typescript/recommended",
     "plugin:testing-library/react"
   ],
   "parser": "@typescript-eslint/parser",
