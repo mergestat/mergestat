@@ -20,8 +20,8 @@
   "dependencies": {
     "@apollo/client": "^3.7.0",
     "@apollo/react-testing": "^4.0.0",
-    "@mergestat/blocks": "1.5.16",
-    "@mergestat/icons": "1.2.6",
+    "@mergestat/blocks": "1.5.17",
+    "@mergestat/icons": "1.2.7",
     "@monaco-editor/react": "^4.4.6",
     "@next/bundle-analyzer": "^12.1.4",
     "@tailwindcss/line-clamp": "^0.4.2",
