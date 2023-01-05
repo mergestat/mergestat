@@ -1,4 +1,5 @@
 import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
+import Link from 'next/link'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { AddRepositoryModal } from './modals/add-repository-modal'
 
@@ -51,7 +52,7 @@ const RepositoriesView: React.FC = () => {
           >
             <span className='flex flex-col'>
               {failedImports.map((imp, index) => (
-                <li key={`failed-imports-${index}`}><b>{`${imp.name} `}</b>{`(${imp.type}): ${imp.error}`}</li>
+                <li key={`failed-imports-${index}`}><Link href={'/settings/repo-auto-imports'}><span className='font-bold cursor-pointer'>{`${imp.name} `}</span></Link>{`(${imp.type}): ${imp.error}`}</li>
               ))}
             </span>
           </Alert>}
