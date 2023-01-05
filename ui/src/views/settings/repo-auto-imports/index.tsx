@@ -38,7 +38,7 @@ const AutoImports: NextPage = () => {
                   <Panel.Body className='p-0'>
                     {imports.length < 1
                       ? <div className='flex justify-center items-center bg-white py-5'>
-                        No data available!
+                        <p className='t-text-muted'>No repo auto imports yet. Add one at <Link href='/repos'><span className='font-medium mb-0.5 t-text-default cursor-pointer'>/repos</span></Link>.</p>
                       </div>
                       : <table className='t-table-default t-table-hover'>
                         <thead>
