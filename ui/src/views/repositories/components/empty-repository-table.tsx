@@ -1,5 +1,5 @@
 import { Button, Panel } from '@mergestat/blocks'
-import { GithubIcon } from '@mergestat/icons'
+import { BookIcon, GithubIcon } from '@mergestat/icons'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -34,13 +34,14 @@ export const EmptyRepositoryTable: React.FC = () => {
                   <Link href="/settings/github-authentication">
                     <Button label="Authenticate GitHub" endIcon={<GithubIcon className="t-icon" />} />
                   </Link>
-                  {/* <Button
-                    startIcon={<PlusIcon className="t-icon" />}
-                    onClick={() => setShowAddRepositoryModal(true)}
-                    skin="secondary"
-                  >
-                    Add Repository
-                  </Button> */}
+                  <a href="https://docs.mergestat.com/mergestat/setup/github-authentication" target="_blank">
+                    <Button
+                      endIcon={<BookIcon className="t-icon" />}
+                      skin="secondary"
+                    >
+                      Learn More
+                    </Button>
+                  </a>
                 </div>
               </div>
             </div>
