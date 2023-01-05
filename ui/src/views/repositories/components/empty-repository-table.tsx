@@ -34,7 +34,7 @@ export const EmptyRepositoryTable: React.FC = () => {
                   <Link href="/settings/github-authentication">
                     <Button label="Authenticate GitHub" endIcon={<GithubIcon className="t-icon" />} />
                   </Link>
-                  <a href="https://docs.mergestat.com/mergestat/setup/github-authentication" target="_blank">
+                  <a href="https://docs.mergestat.com/mergestat/setup/github-authentication" target="_blank" rel="noreferrer" >
                     <Button
                       endIcon={<BookIcon className="t-icon" />}
                       skin="secondary"
