@@ -6,7 +6,7 @@ import { Client } from 'pg'
 import { COOKIE } from 'src/utils/constants'
 
 const { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_UNAUTHORIZED } = HTTP_CONSTANTS
-const { POSTGRES_CONNECTION, JWT_SECRET } = process.env
+const { POSTGRES_CONNECTION, JWT_SECRET, INSECURE_SESSION_COOKIE } = process.env
 
 // adminAuth (/api/admin-auth) recieves a user and a password from the client
 // and returns a JWT if the password is correct (user exists in the DB)
@@ -65,7 +65,11 @@ const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
       .setExpirationTime('5h')
       .sign(new TextEncoder().encode(JWT_SECRET))
 
-    setCookie(COOKIE.jwt, jwt, { req, res, httpOnly: true, secure: true, sameSite: 'strict', path: '/api/graphql' })
+    // if the INSECURE_SESSION_COOKIE env variable is set to "1" do not set the secure flag on the cookie
+    // this is useful for situations where the UI is running on a private, internal IP (with no SSL)
+    const secureCookie = INSECURE_SESSION_COOKIE !== '1'
+
+    setCookie(COOKIE.jwt, jwt, { req, res, httpOnly: true, secure: secureCookie, sameSite: 'strict', path: '/api/graphql' })
     res.json({ loggedIn: true })
   } catch (error) {
     if (error instanceof Error) {
