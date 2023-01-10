@@ -3,7 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon, CircleCheckFilledIcon, ClipboardIcon
 import cx from 'classnames'
 import { debounce } from 'lodash'
 import Papa from 'papaparse'
-import { KeyboardEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QueryResultProps } from 'src/@types'
 import { copy, filterByAllFields, getMaxPagination, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
@@ -113,11 +113,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
               placeholder='Search...'
               startIcon={<SearchIcon className='t-icon' />}
               onChange={onChange}
-              onKeyPress={(e: KeyboardEvent) => {
-                if (e.target instanceof HTMLInputElement) {
-                  e.key === 'Enter' && setSearch(e.target.value)
-                }
-              }}
+              onKeyPress={(e: any) => (e.key === 'Enter' && setSearch(e.target.value))}
             />
           </Toolbar.Right>
         </Toolbar>

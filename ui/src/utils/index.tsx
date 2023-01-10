@@ -101,6 +101,8 @@ export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
       return SYNC_STATUS.running
     case 'QUEUED':
       return SYNC_STATUS.queued
+    case 'WARNING':
+      return SYNC_STATUS.warning
     case 'ERROR':
       return SYNC_STATUS.error
     case 'DISABLED':
@@ -110,13 +112,20 @@ export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
   }
 }
 
+interface RepoSyncQueueW extends RepoSyncQueue {
+  warnings?: {
+    totalCount: number
+  }
+}
+
 /**
  * Method to get sync queue status
  * @param syncQueue Sync type to evaluate
  * @returns sync queue status
  */
-export const getStatus = (syncQueue: RepoSyncQueue): RepoSyncStateT => {
-  const status = syncQueue?.hasError ? 'ERROR' : syncQueue?.status
+export const getStatus = (syncQueue: RepoSyncQueueW): RepoSyncStateT => {
+  // TODO: Should we extend the schema to have a new property 'hasWarning'
+  const status = syncQueue?.hasError ? 'ERROR' : syncQueue?.warnings?.totalCount && syncQueue?.warnings?.totalCount > 0 ? 'WARNING' : syncQueue?.status
   return mapToRepoSyncStateT(status)
 }
 
