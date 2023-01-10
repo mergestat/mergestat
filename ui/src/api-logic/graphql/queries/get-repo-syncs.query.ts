@@ -26,6 +26,9 @@ const GET_REPO_SYNCS = gql`
               startedAt
               doneAt
               hasError
+              warnings: repoSyncLogs(condition: {logType: "WARNING"}) {
+                totalCount
+              }
             }
           }
         }

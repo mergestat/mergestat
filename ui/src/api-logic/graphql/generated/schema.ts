@@ -11,10 +11,14 @@ export type Scalars = {
   Int: number;
   Float: number;
   BigInt: any;
+  CardinalNumber: any;
+  CharacterData: any;
   Cursor: any;
   Datetime: any;
   JSON: any;
+  SqlIdentifier: any;
   UUID: any;
+  YesOrNo: any;
 };
 
 /** All input for the `addServiceAuthCredential` mutation. */
@@ -101,6 +105,110 @@ export type BooleanFilter = {
   notEqualTo?: InputMaybe<Scalars['Boolean']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['Boolean']>>;
+};
+
+/** A filter to be used against CardinalNumber fields. All fields are combined with a logical ‘and.’ */
+export type CardinalNumberFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['CardinalNumber']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['CardinalNumber']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['CardinalNumber']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['CardinalNumber']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['CardinalNumber']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['CardinalNumber']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['CardinalNumber']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['CardinalNumber']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['CardinalNumber']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['CardinalNumber']>>;
+};
+
+/** A filter to be used against CharacterData fields. All fields are combined with a logical ‘and.’ */
+export type CharacterDataFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['CharacterData']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith?: InputMaybe<Scalars['CharacterData']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['CharacterData']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['CharacterData']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['CharacterData']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['CharacterData']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: InputMaybe<Array<Scalars['CharacterData']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes?: InputMaybe<Scalars['CharacterData']>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['CharacterData']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['CharacterData']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like?: InputMaybe<Scalars['CharacterData']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['CharacterData']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith?: InputMaybe<Scalars['CharacterData']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['CharacterData']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['CharacterData']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: InputMaybe<Array<Scalars['CharacterData']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes?: InputMaybe<Scalars['CharacterData']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike?: InputMaybe<Scalars['CharacterData']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith?: InputMaybe<Scalars['CharacterData']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive?: InputMaybe<Scalars['CharacterData']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith?: InputMaybe<Scalars['CharacterData']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive?: InputMaybe<Scalars['CharacterData']>;
 };
 
 /** All input for the create `GitBlame` mutation. */
@@ -675,6 +783,74 @@ export type CreateGitleaksRepoScanPayloadGitleaksRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
 };
 
+/** All input for the create `LabelAssociation` mutation. */
+export type CreateLabelAssociationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `LabelAssociation` to be created by this mutation. */
+  labelAssociation: LabelAssociationInput;
+};
+
+/** The output of our create `LabelAssociation` mutation. */
+export type CreateLabelAssociationPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `LabelAssociation` that was created by this mutation. */
+  labelAssociation?: Maybe<LabelAssociation>;
+  /** An edge for our `LabelAssociation`. May be used by Relay 1. */
+  labelAssociationEdge?: Maybe<LabelAssociationsEdge>;
+  /** Reads a single `Label` that is related to this `LabelAssociation`. */
+  labelByLabel?: Maybe<Label>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `RepoSyncType` that is related to this `LabelAssociation`. */
+  repoSyncTypeByRepoSyncType?: Maybe<RepoSyncType>;
+};
+
+
+/** The output of our create `LabelAssociation` mutation. */
+export type CreateLabelAssociationPayloadLabelAssociationEdgeArgs = {
+  orderBy?: InputMaybe<Array<LabelAssociationsOrderBy>>;
+};
+
+/** All input for the create `Label` mutation. */
+export type CreateLabelInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `Label` to be created by this mutation. */
+  label: LabelInput;
+};
+
+/** The output of our create `Label` mutation. */
+export type CreateLabelPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Label` that was created by this mutation. */
+  label?: Maybe<Label>;
+  /** An edge for our `Label`. May be used by Relay 1. */
+  labelEdge?: Maybe<LabelsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `Label` mutation. */
+export type CreateLabelPayloadLabelEdgeArgs = {
+  orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
 /** All input for the create `RepoImport` mutation. */
 export type CreateRepoImportInput = {
   /**
@@ -1211,6 +1387,38 @@ export type CreateTrivyRepoScanPayload = {
 /** The output of our create `TrivyRepoScan` mutation. */
 export type CreateTrivyRepoScanPayloadTrivyRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<TrivyRepoScansOrderBy>>;
+};
+
+/** All input for the create `YelpDetectSecretsRepoScan` mutation. */
+export type CreateYelpDetectSecretsRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `YelpDetectSecretsRepoScan` to be created by this mutation. */
+  yelpDetectSecretsRepoScan: YelpDetectSecretsRepoScanInput;
+};
+
+/** The output of our create `YelpDetectSecretsRepoScan` mutation. */
+export type CreateYelpDetectSecretsRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `YelpDetectSecretsRepoScan` that was created by this mutation. */
+  yelpDetectSecretsRepoScan?: Maybe<YelpDetectSecretsRepoScan>;
+  /** An edge for our `YelpDetectSecretsRepoScan`. May be used by Relay 1. */
+  yelpDetectSecretsRepoScanEdge?: Maybe<YelpDetectSecretsRepoScansEdge>;
+};
+
+
+/** The output of our create `YelpDetectSecretsRepoScan` mutation. */
+export type CreateYelpDetectSecretsRepoScanPayloadYelpDetectSecretsRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<YelpDetectSecretsRepoScansOrderBy>>;
 };
 
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
@@ -1971,6 +2179,7 @@ export type DeleteGitleaksRepoScanInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -1994,6 +2203,86 @@ export type DeleteGitleaksRepoScanPayload = {
 /** The output of our delete `GitleaksRepoScan` mutation. */
 export type DeleteGitleaksRepoScanPayloadGitleaksRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
+};
+
+/** All input for the `deleteLabelAssociationByLabelAndRepoSyncType` mutation. */
+export type DeleteLabelAssociationByLabelAndRepoSyncTypeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  label: Scalars['String'];
+  repoSyncType: Scalars['String'];
+};
+
+/** The output of our delete `LabelAssociation` mutation. */
+export type DeleteLabelAssociationPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedRepoSyncTypeLabelAssociationNodeId?: Maybe<Scalars['ID']>;
+  /** The `LabelAssociation` that was deleted by this mutation. */
+  labelAssociation?: Maybe<LabelAssociation>;
+  /** An edge for our `LabelAssociation`. May be used by Relay 1. */
+  labelAssociationEdge?: Maybe<LabelAssociationsEdge>;
+  /** Reads a single `Label` that is related to this `LabelAssociation`. */
+  labelByLabel?: Maybe<Label>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `RepoSyncType` that is related to this `LabelAssociation`. */
+  repoSyncTypeByRepoSyncType?: Maybe<RepoSyncType>;
+};
+
+
+/** The output of our delete `LabelAssociation` mutation. */
+export type DeleteLabelAssociationPayloadLabelAssociationEdgeArgs = {
+  orderBy?: InputMaybe<Array<LabelAssociationsOrderBy>>;
+};
+
+/** All input for the `deleteLabelByNodeId` mutation. */
+export type DeleteLabelByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Label` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteLabel` mutation. */
+export type DeleteLabelInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  label: Scalars['String'];
+};
+
+/** The output of our delete `Label` mutation. */
+export type DeleteLabelPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedRepoSyncTypeLabelNodeId?: Maybe<Scalars['ID']>;
+  /** The `Label` that was deleted by this mutation. */
+  label?: Maybe<Label>;
+  /** An edge for our `Label`. May be used by Relay 1. */
+  labelEdge?: Maybe<LabelsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `Label` mutation. */
+export type DeleteLabelPayloadLabelEdgeArgs = {
+  orderBy?: InputMaybe<Array<LabelsOrderBy>>;
 };
 
 /** All input for the `deleteRepoByNodeId` mutation. */
@@ -2722,6 +3011,50 @@ export type DeleteTrivyRepoScanPayload = {
 /** The output of our delete `TrivyRepoScan` mutation. */
 export type DeleteTrivyRepoScanPayloadTrivyRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<TrivyRepoScansOrderBy>>;
+};
+
+/** All input for the `deleteYelpDetectSecretsRepoScanByNodeId` mutation. */
+export type DeleteYelpDetectSecretsRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `YelpDetectSecretsRepoScan` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteYelpDetectSecretsRepoScan` mutation. */
+export type DeleteYelpDetectSecretsRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `YelpDetectSecretsRepoScan` mutation. */
+export type DeleteYelpDetectSecretsRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedYelpDetectSecretsRepoScanNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `YelpDetectSecretsRepoScan` that was deleted by this mutation. */
+  yelpDetectSecretsRepoScan?: Maybe<YelpDetectSecretsRepoScan>;
+  /** An edge for our `YelpDetectSecretsRepoScan`. May be used by Relay 1. */
+  yelpDetectSecretsRepoScanEdge?: Maybe<YelpDetectSecretsRepoScansEdge>;
+};
+
+
+/** The output of our delete `YelpDetectSecretsRepoScan` mutation. */
+export type DeleteYelpDetectSecretsRepoScanPayloadYelpDetectSecretsRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<YelpDetectSecretsRepoScansOrderBy>>;
 };
 
 export type DisplayDatabaseConnection = {
@@ -6626,25 +6959,45 @@ export enum GithubStargazersOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
+/** view of Gitleaks repo scan detections */
 export type GitleaksRepoDetection = {
+  /** detection author */
   author?: Maybe<Scalars['String']>;
+  /** detection commit */
   commit?: Maybe<Scalars['String']>;
+  /** detection date */
   date?: Maybe<Scalars['String']>;
+  /** description of the detection */
   description?: Maybe<Scalars['String']>;
+  /** detection email */
   email?: Maybe<Scalars['String']>;
+  /** detection end column */
   endColumn?: Maybe<Scalars['String']>;
+  /** detection end line */
   endLine?: Maybe<Scalars['String']>;
+  /** detection entropy */
   entropy?: Maybe<Scalars['String']>;
+  /** detection file */
   file?: Maybe<Scalars['String']>;
+  /** detection fingerprint */
   fingerprint?: Maybe<Scalars['String']>;
+  /** detection match */
   match?: Maybe<Scalars['String']>;
+  /** detection message */
   message?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: Maybe<Scalars['UUID']>;
+  /** detection rule id */
   ruleId?: Maybe<Scalars['String']>;
+  /** detection secret */
   secret?: Maybe<Scalars['String']>;
+  /** detection start column */
   startColumn?: Maybe<Scalars['String']>;
+  /** detection start line */
   startLine?: Maybe<Scalars['String']>;
+  /** detected symlink file */
   symlinkFile?: Maybe<Scalars['String']>;
+  /** detection tags */
   tags?: Maybe<Scalars['String']>;
 };
 
@@ -6804,10 +7157,13 @@ export enum GitleaksRepoDetectionsOrderBy {
   TagsDesc = 'TAGS_DESC'
 }
 
+/** scan output of a Gitleaks repo scan */
 export type GitleaksRepoScan = Node & {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** JSON output of a Gitleaks scan */
   results: Scalars['JSON'];
 };
 
@@ -6838,13 +7194,17 @@ export type GitleaksRepoScanFilter = {
 
 /** An input for mutations affecting `GitleaksRepoScan` */
 export type GitleaksRepoScanInput = {
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** JSON output of a Gitleaks scan */
   results: Scalars['JSON'];
 };
 
 /** Represents an update to a `GitleaksRepoScan`. Fields that are set will be updated. */
 export type GitleaksRepoScanPatch = {
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** JSON output of a Gitleaks scan */
   results?: InputMaybe<Scalars['JSON']>;
 };
 
@@ -7007,6 +7367,176 @@ export type JsonFilter = {
   notIn?: InputMaybe<Array<Scalars['JSON']>>;
 };
 
+export type Label = Node & {
+  color: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  label: Scalars['String'];
+  /** Reads and enables pagination through a set of `LabelAssociation`. */
+  labelAssociationsByLabel: LabelAssociationsConnection;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+};
+
+
+export type LabelLabelAssociationsByLabelArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<LabelAssociationCondition>;
+  filter?: InputMaybe<LabelAssociationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LabelAssociationsOrderBy>>;
+};
+
+export type LabelAssociation = {
+  label: Scalars['String'];
+  /** Reads a single `Label` that is related to this `LabelAssociation`. */
+  labelByLabel?: Maybe<Label>;
+  repoSyncType: Scalars['String'];
+  /** Reads a single `RepoSyncType` that is related to this `LabelAssociation`. */
+  repoSyncTypeByRepoSyncType?: Maybe<RepoSyncType>;
+};
+
+/**
+ * A condition to be used against `LabelAssociation` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type LabelAssociationCondition = {
+  /** Checks for equality with the object’s `label` field. */
+  label?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoSyncType` field. */
+  repoSyncType?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `LabelAssociation` object types. All fields are combined with a logical ‘and.’ */
+export type LabelAssociationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<LabelAssociationFilter>>;
+  /** Filter by the object’s `label` field. */
+  label?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<LabelAssociationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<LabelAssociationFilter>>;
+  /** Filter by the object’s `repoSyncType` field. */
+  repoSyncType?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `LabelAssociation` */
+export type LabelAssociationInput = {
+  label: Scalars['String'];
+  repoSyncType: Scalars['String'];
+};
+
+/** Represents an update to a `LabelAssociation`. Fields that are set will be updated. */
+export type LabelAssociationPatch = {
+  label?: InputMaybe<Scalars['String']>;
+  repoSyncType?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `LabelAssociation` values. */
+export type LabelAssociationsConnection = {
+  /** A list of edges which contains the `LabelAssociation` and cursor to aid in pagination. */
+  edges: Array<LabelAssociationsEdge>;
+  /** A list of `LabelAssociation` objects. */
+  nodes: Array<LabelAssociation>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `LabelAssociation` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `LabelAssociation` edge in the connection. */
+export type LabelAssociationsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `LabelAssociation` at the end of the edge. */
+  node: LabelAssociation;
+};
+
+/** Methods to use when ordering `LabelAssociation`. */
+export enum LabelAssociationsOrderBy {
+  LabelAsc = 'LABEL_ASC',
+  LabelDesc = 'LABEL_DESC',
+  Natural = 'NATURAL',
+  RepoSyncTypeAsc = 'REPO_SYNC_TYPE_ASC',
+  RepoSyncTypeDesc = 'REPO_SYNC_TYPE_DESC'
+}
+
+/** A condition to be used against `Label` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type LabelCondition = {
+  /** Checks for equality with the object’s `color` field. */
+  color?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `label` field. */
+  label?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `Label` object types. All fields are combined with a logical ‘and.’ */
+export type LabelFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<LabelFilter>>;
+  /** Filter by the object’s `color` field. */
+  color?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `label` field. */
+  label?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<LabelFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<LabelFilter>>;
+};
+
+/** An input for mutations affecting `Label` */
+export type LabelInput = {
+  color?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  label: Scalars['String'];
+};
+
+/** Represents an update to a `Label`. Fields that are set will be updated. */
+export type LabelPatch = {
+  color?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  label?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `Label` values. */
+export type LabelsConnection = {
+  /** A list of edges which contains the `Label` and cursor to aid in pagination. */
+  edges: Array<LabelsEdge>;
+  /** A list of `Label` objects. */
+  nodes: Array<Label>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Label` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `Label` edge in the connection. */
+export type LabelsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `Label` at the end of the edge. */
+  node: Label;
+};
+
+/** Methods to use when ordering `Label`. */
+export enum LabelsOrderBy {
+  ColorAsc = 'COLOR_ASC',
+  ColorDesc = 'COLOR_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  LabelAsc = 'LABEL_ASC',
+  LabelDesc = 'LABEL_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
 export type LatestRepoSync = {
   createdAt?: Maybe<Scalars['Datetime']>;
   doneAt?: Maybe<Scalars['Datetime']>;
@@ -7131,6 +7661,10 @@ export type Mutation = {
   createGithubStargazer?: Maybe<CreateGithubStargazerPayload>;
   /** Creates a single `GitleaksRepoScan`. */
   createGitleaksRepoScan?: Maybe<CreateGitleaksRepoScanPayload>;
+  /** Creates a single `Label`. */
+  createLabel?: Maybe<CreateLabelPayload>;
+  /** Creates a single `LabelAssociation`. */
+  createLabelAssociation?: Maybe<CreateLabelAssociationPayload>;
   /** Creates a single `Repo`. */
   createRepo?: Maybe<CreateRepoPayload>;
   /** Creates a single `RepoImport`. */
@@ -7163,6 +7697,8 @@ export type Mutation = {
   createSyftRepoScan?: Maybe<CreateSyftRepoScanPayload>;
   /** Creates a single `TrivyRepoScan`. */
   createTrivyRepoScan?: Maybe<CreateTrivyRepoScanPayload>;
+  /** Creates a single `YelpDetectSecretsRepoScan`. */
+  createYelpDetectSecretsRepoScan?: Maybe<CreateYelpDetectSecretsRepoScanPayload>;
   /** Deletes a single `GitBlame` using a unique key. */
   deleteGitBlame?: Maybe<DeleteGitBlamePayload>;
   /** Deletes a single `GitBlame` using its globally unique id. */
@@ -7231,6 +7767,12 @@ export type Mutation = {
   deleteGitleaksRepoScan?: Maybe<DeleteGitleaksRepoScanPayload>;
   /** Deletes a single `GitleaksRepoScan` using its globally unique id. */
   deleteGitleaksRepoScanByNodeId?: Maybe<DeleteGitleaksRepoScanPayload>;
+  /** Deletes a single `Label` using a unique key. */
+  deleteLabel?: Maybe<DeleteLabelPayload>;
+  /** Deletes a single `LabelAssociation` using a unique key. */
+  deleteLabelAssociationByLabelAndRepoSyncType?: Maybe<DeleteLabelAssociationPayload>;
+  /** Deletes a single `Label` using its globally unique id. */
+  deleteLabelByNodeId?: Maybe<DeleteLabelPayload>;
   /** Deletes a single `Repo` using a unique key. */
   deleteRepo?: Maybe<DeleteRepoPayload>;
   /** Deletes a single `Repo` using its globally unique id. */
@@ -7297,6 +7839,10 @@ export type Mutation = {
   deleteTrivyRepoScan?: Maybe<DeleteTrivyRepoScanPayload>;
   /** Deletes a single `TrivyRepoScan` using its globally unique id. */
   deleteTrivyRepoScanByNodeId?: Maybe<DeleteTrivyRepoScanPayload>;
+  /** Deletes a single `YelpDetectSecretsRepoScan` using a unique key. */
+  deleteYelpDetectSecretsRepoScan?: Maybe<DeleteYelpDetectSecretsRepoScanPayload>;
+  /** Deletes a single `YelpDetectSecretsRepoScan` using its globally unique id. */
+  deleteYelpDetectSecretsRepoScanByNodeId?: Maybe<DeleteYelpDetectSecretsRepoScanPayload>;
   replaceGitHubPAT?: Maybe<Scalars['Boolean']>;
   setSyncJobStatus?: Maybe<SetSyncJobStatusPayload>;
   simpleRepoSyncQueueCleanup?: Maybe<SimpleRepoSyncQueueCleanupPayload>;
@@ -7368,6 +7914,12 @@ export type Mutation = {
   updateGitleaksRepoScan?: Maybe<UpdateGitleaksRepoScanPayload>;
   /** Updates a single `GitleaksRepoScan` using its globally unique id and a patch. */
   updateGitleaksRepoScanByNodeId?: Maybe<UpdateGitleaksRepoScanPayload>;
+  /** Updates a single `Label` using a unique key and a patch. */
+  updateLabel?: Maybe<UpdateLabelPayload>;
+  /** Updates a single `LabelAssociation` using a unique key and a patch. */
+  updateLabelAssociationByLabelAndRepoSyncType?: Maybe<UpdateLabelAssociationPayload>;
+  /** Updates a single `Label` using its globally unique id and a patch. */
+  updateLabelByNodeId?: Maybe<UpdateLabelPayload>;
   /** Updates a single `Repo` using a unique key and a patch. */
   updateRepo?: Maybe<UpdateRepoPayload>;
   /** Updates a single `Repo` using its globally unique id and a patch. */
@@ -7434,6 +7986,10 @@ export type Mutation = {
   updateTrivyRepoScan?: Maybe<UpdateTrivyRepoScanPayload>;
   /** Updates a single `TrivyRepoScan` using its globally unique id and a patch. */
   updateTrivyRepoScanByNodeId?: Maybe<UpdateTrivyRepoScanPayload>;
+  /** Updates a single `YelpDetectSecretsRepoScan` using a unique key and a patch. */
+  updateYelpDetectSecretsRepoScan?: Maybe<UpdateYelpDetectSecretsRepoScanPayload>;
+  /** Updates a single `YelpDetectSecretsRepoScan` using its globally unique id and a patch. */
+  updateYelpDetectSecretsRepoScanByNodeId?: Maybe<UpdateYelpDetectSecretsRepoScanPayload>;
   userMgmtAddUser?: Maybe<UserMgmtAddUserPayload>;
   userMgmtRemoveUser?: Maybe<UserMgmtRemoveUserPayload>;
   userMgmtSetUserRole?: Maybe<UserMgmtSetUserRolePayload>;
@@ -7550,6 +8106,18 @@ export type MutationCreateGitleaksRepoScanArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateLabelArgs = {
+  input: CreateLabelInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateLabelAssociationArgs = {
+  input: CreateLabelAssociationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateRepoArgs = {
   input: CreateRepoInput;
 };
@@ -7642,6 +8210,12 @@ export type MutationCreateSyftRepoScanArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateTrivyRepoScanArgs = {
   input: CreateTrivyRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateYelpDetectSecretsRepoScanArgs = {
+  input: CreateYelpDetectSecretsRepoScanInput;
 };
 
 
@@ -7850,6 +8424,24 @@ export type MutationDeleteGitleaksRepoScanByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteLabelArgs = {
+  input: DeleteLabelInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteLabelAssociationByLabelAndRepoSyncTypeArgs = {
+  input: DeleteLabelAssociationByLabelAndRepoSyncTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteLabelByNodeIdArgs = {
+  input: DeleteLabelByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteRepoArgs = {
   input: DeleteRepoInput;
 };
@@ -8044,6 +8636,18 @@ export type MutationDeleteTrivyRepoScanArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteTrivyRepoScanByNodeIdArgs = {
   input: DeleteTrivyRepoScanByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteYelpDetectSecretsRepoScanArgs = {
+  input: DeleteYelpDetectSecretsRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteYelpDetectSecretsRepoScanByNodeIdArgs = {
+  input: DeleteYelpDetectSecretsRepoScanByNodeIdInput;
 };
 
 
@@ -8270,6 +8874,24 @@ export type MutationUpdateGitleaksRepoScanByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateLabelArgs = {
+  input: UpdateLabelInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateLabelAssociationByLabelAndRepoSyncTypeArgs = {
+  input: UpdateLabelAssociationByLabelAndRepoSyncTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateLabelByNodeIdArgs = {
+  input: UpdateLabelByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRepoArgs = {
   input: UpdateRepoInput;
 };
@@ -8468,6 +9090,18 @@ export type MutationUpdateTrivyRepoScanByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateYelpDetectSecretsRepoScanArgs = {
+  input: UpdateYelpDetectSecretsRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateYelpDetectSecretsRepoScanByNodeIdArgs = {
+  input: UpdateYelpDetectSecretsRepoScanByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUserMgmtAddUserArgs = {
   input: UserMgmtAddUserInput;
 };
@@ -8598,10 +9232,18 @@ export type Query = Node & {
   gitleaksRepoScanByNodeId?: Maybe<GitleaksRepoScan>;
   /** Reads and enables pagination through a set of `GitleaksRepoScan`. */
   gitleaksRepoScans?: Maybe<GitleaksRepoScansConnection>;
+  label?: Maybe<Label>;
+  labelAssociationByLabelAndRepoSyncType?: Maybe<LabelAssociation>;
+  /** Reads and enables pagination through a set of `LabelAssociation`. */
+  labelAssociations?: Maybe<LabelAssociationsConnection>;
+  /** Reads a single `Label` using its globally unique `ID`. */
+  labelByNodeId?: Maybe<Label>;
+  /** Reads and enables pagination through a set of `Label`. */
+  labels?: Maybe<LabelsConnection>;
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan>;
+  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | Label | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan | YelpDetectSecretsRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /**
@@ -8660,6 +9302,8 @@ export type Query = Node & {
   repoSyncs?: Maybe<RepoSyncsConnection>;
   /** Reads and enables pagination through a set of `Repo`. */
   repos?: Maybe<ReposConnection>;
+  /** Reads and enables pagination through a set of `SchemaIntrospection`. */
+  schemaIntrospections?: Maybe<SchemaIntrospectionsConnection>;
   schemaMigration?: Maybe<SchemaMigration>;
   /** Reads a single `SchemaMigration` using its globally unique `ID`. */
   schemaMigrationByNodeId?: Maybe<SchemaMigration>;
@@ -8696,6 +9340,13 @@ export type Query = Node & {
   trivyRepoVulnerabilities?: Maybe<TrivyRepoVulnerabilitiesConnection>;
   /** Reads and enables pagination through a set of `UserMgmtPgUser`. */
   userMgmtPgUsers?: Maybe<UserMgmtPgUsersConnection>;
+  /** Reads and enables pagination through a set of `YelpDetectSecretsRepoDetection`. */
+  yelpDetectSecretsRepoDetections?: Maybe<YelpDetectSecretsRepoDetectionsConnection>;
+  yelpDetectSecretsRepoScan?: Maybe<YelpDetectSecretsRepoScan>;
+  /** Reads a single `YelpDetectSecretsRepoScan` using its globally unique `ID`. */
+  yelpDetectSecretsRepoScanByNodeId?: Maybe<YelpDetectSecretsRepoScan>;
+  /** Reads and enables pagination through a set of `YelpDetectSecretsRepoScan`. */
+  yelpDetectSecretsRepoScans?: Maybe<YelpDetectSecretsRepoScansConnection>;
 };
 
 
@@ -9162,6 +9813,51 @@ export type QueryGitleaksRepoScansArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryLabelArgs = {
+  label: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLabelAssociationByLabelAndRepoSyncTypeArgs = {
+  label: Scalars['String'];
+  repoSyncType: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLabelAssociationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<LabelAssociationCondition>;
+  filter?: InputMaybe<LabelAssociationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LabelAssociationsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLabelByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLabelsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<LabelCondition>;
+  filter?: InputMaybe<LabelFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryLatestRepoSyncsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -9438,6 +10134,19 @@ export type QueryReposArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QuerySchemaIntrospectionsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SchemaIntrospectionCondition>;
+  filter?: InputMaybe<SchemaIntrospectionFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SchemaIntrospectionsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QuerySchemaMigrationArgs = {
   version: Scalars['BigInt'];
 };
@@ -9623,6 +10332,44 @@ export type QueryUserMgmtPgUsersArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<UserMgmtPgUsersOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryYelpDetectSecretsRepoDetectionsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<YelpDetectSecretsRepoDetectionCondition>;
+  filter?: InputMaybe<YelpDetectSecretsRepoDetectionFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<YelpDetectSecretsRepoDetectionsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryYelpDetectSecretsRepoScanArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryYelpDetectSecretsRepoScanByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryYelpDetectSecretsRepoScansArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<YelpDetectSecretsRepoScanCondition>;
+  filter?: InputMaybe<YelpDetectSecretsRepoScanFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<YelpDetectSecretsRepoScansOrderBy>>;
 };
 
 /** git repositories to track */
@@ -10765,6 +11512,8 @@ export enum RepoSyncQueuesOrderBy {
 
 export type RepoSyncType = Node & {
   description?: Maybe<Scalars['String']>;
+  /** Reads and enables pagination through a set of `LabelAssociation`. */
+  labelAssociationsByRepoSyncType: LabelAssociationsConnection;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   priority: Scalars['Int'];
@@ -10775,6 +11524,18 @@ export type RepoSyncType = Node & {
   shortName: Scalars['String'];
   type: Scalars['String'];
   typeGroup: Scalars['String'];
+};
+
+
+export type RepoSyncTypeLabelAssociationsByRepoSyncTypeArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<LabelAssociationCondition>;
+  filter?: InputMaybe<LabelAssociationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LabelAssociationsOrderBy>>;
 };
 
 
@@ -11066,6 +11827,114 @@ export enum ReposOrderBy {
   SettingsDesc = 'SETTINGS_DESC',
   TagsAsc = 'TAGS_ASC',
   TagsDesc = 'TAGS_DESC'
+}
+
+export type SchemaIntrospection = {
+  columnDescription?: Maybe<Scalars['String']>;
+  columnName?: Maybe<Scalars['SqlIdentifier']>;
+  dataType?: Maybe<Scalars['CharacterData']>;
+  isNullable?: Maybe<Scalars['YesOrNo']>;
+  ordinalPosition?: Maybe<Scalars['CardinalNumber']>;
+  schema?: Maybe<Scalars['SqlIdentifier']>;
+  tableName?: Maybe<Scalars['SqlIdentifier']>;
+  tableType?: Maybe<Scalars['CharacterData']>;
+  udtName?: Maybe<Scalars['SqlIdentifier']>;
+};
+
+/**
+ * A condition to be used against `SchemaIntrospection` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type SchemaIntrospectionCondition = {
+  /** Checks for equality with the object’s `columnDescription` field. */
+  columnDescription?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `columnName` field. */
+  columnName?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Checks for equality with the object’s `dataType` field. */
+  dataType?: InputMaybe<Scalars['CharacterData']>;
+  /** Checks for equality with the object’s `isNullable` field. */
+  isNullable?: InputMaybe<Scalars['YesOrNo']>;
+  /** Checks for equality with the object’s `ordinalPosition` field. */
+  ordinalPosition?: InputMaybe<Scalars['CardinalNumber']>;
+  /** Checks for equality with the object’s `schema` field. */
+  schema?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Checks for equality with the object’s `tableName` field. */
+  tableName?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Checks for equality with the object’s `tableType` field. */
+  tableType?: InputMaybe<Scalars['CharacterData']>;
+  /** Checks for equality with the object’s `udtName` field. */
+  udtName?: InputMaybe<Scalars['SqlIdentifier']>;
+};
+
+/** A filter to be used against `SchemaIntrospection` object types. All fields are combined with a logical ‘and.’ */
+export type SchemaIntrospectionFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SchemaIntrospectionFilter>>;
+  /** Filter by the object’s `columnDescription` field. */
+  columnDescription?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `columnName` field. */
+  columnName?: InputMaybe<SqlIdentifierFilter>;
+  /** Filter by the object’s `dataType` field. */
+  dataType?: InputMaybe<CharacterDataFilter>;
+  /** Filter by the object’s `isNullable` field. */
+  isNullable?: InputMaybe<YesOrNoFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SchemaIntrospectionFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SchemaIntrospectionFilter>>;
+  /** Filter by the object’s `ordinalPosition` field. */
+  ordinalPosition?: InputMaybe<CardinalNumberFilter>;
+  /** Filter by the object’s `schema` field. */
+  schema?: InputMaybe<SqlIdentifierFilter>;
+  /** Filter by the object’s `tableName` field. */
+  tableName?: InputMaybe<SqlIdentifierFilter>;
+  /** Filter by the object’s `tableType` field. */
+  tableType?: InputMaybe<CharacterDataFilter>;
+  /** Filter by the object’s `udtName` field. */
+  udtName?: InputMaybe<SqlIdentifierFilter>;
+};
+
+/** A connection to a list of `SchemaIntrospection` values. */
+export type SchemaIntrospectionsConnection = {
+  /** A list of edges which contains the `SchemaIntrospection` and cursor to aid in pagination. */
+  edges: Array<SchemaIntrospectionsEdge>;
+  /** A list of `SchemaIntrospection` objects. */
+  nodes: Array<SchemaIntrospection>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SchemaIntrospection` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `SchemaIntrospection` edge in the connection. */
+export type SchemaIntrospectionsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SchemaIntrospection` at the end of the edge. */
+  node: SchemaIntrospection;
+};
+
+/** Methods to use when ordering `SchemaIntrospection`. */
+export enum SchemaIntrospectionsOrderBy {
+  ColumnDescriptionAsc = 'COLUMN_DESCRIPTION_ASC',
+  ColumnDescriptionDesc = 'COLUMN_DESCRIPTION_DESC',
+  ColumnNameAsc = 'COLUMN_NAME_ASC',
+  ColumnNameDesc = 'COLUMN_NAME_DESC',
+  DataTypeAsc = 'DATA_TYPE_ASC',
+  DataTypeDesc = 'DATA_TYPE_DESC',
+  IsNullableAsc = 'IS_NULLABLE_ASC',
+  IsNullableDesc = 'IS_NULLABLE_DESC',
+  Natural = 'NATURAL',
+  OrdinalPositionAsc = 'ORDINAL_POSITION_ASC',
+  OrdinalPositionDesc = 'ORDINAL_POSITION_DESC',
+  SchemaAsc = 'SCHEMA_ASC',
+  SchemaDesc = 'SCHEMA_DESC',
+  TableNameAsc = 'TABLE_NAME_ASC',
+  TableNameDesc = 'TABLE_NAME_DESC',
+  TableTypeAsc = 'TABLE_TYPE_ASC',
+  TableTypeDesc = 'TABLE_TYPE_DESC',
+  UdtNameAsc = 'UDT_NAME_ASC',
+  UdtNameDesc = 'UDT_NAME_DESC'
 }
 
 /** MergeStat internal table to track schema migrations */
@@ -11463,6 +12332,84 @@ export type SimpleRepoSyncQueueCleanupPayload = {
   integer?: Maybe<Scalars['Int']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+};
+
+/** A filter to be used against SqlIdentifier fields. All fields are combined with a logical ‘and.’ */
+export type SqlIdentifierFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['SqlIdentifier']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: InputMaybe<Array<Scalars['SqlIdentifier']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['SqlIdentifier']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: InputMaybe<Array<Scalars['SqlIdentifier']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith?: InputMaybe<Scalars['SqlIdentifier']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
 };
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
@@ -12869,6 +13816,7 @@ export type UpdateGitleaksRepoScanInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `GitleaksRepoScan` being updated. */
   patch: GitleaksRepoScanPatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -12891,6 +13839,90 @@ export type UpdateGitleaksRepoScanPayload = {
 /** The output of our update `GitleaksRepoScan` mutation. */
 export type UpdateGitleaksRepoScanPayloadGitleaksRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
+};
+
+/** All input for the `updateLabelAssociationByLabelAndRepoSyncType` mutation. */
+export type UpdateLabelAssociationByLabelAndRepoSyncTypeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  label: Scalars['String'];
+  /** An object where the defined keys will be set on the `LabelAssociation` being updated. */
+  patch: LabelAssociationPatch;
+  repoSyncType: Scalars['String'];
+};
+
+/** The output of our update `LabelAssociation` mutation. */
+export type UpdateLabelAssociationPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `LabelAssociation` that was updated by this mutation. */
+  labelAssociation?: Maybe<LabelAssociation>;
+  /** An edge for our `LabelAssociation`. May be used by Relay 1. */
+  labelAssociationEdge?: Maybe<LabelAssociationsEdge>;
+  /** Reads a single `Label` that is related to this `LabelAssociation`. */
+  labelByLabel?: Maybe<Label>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `RepoSyncType` that is related to this `LabelAssociation`. */
+  repoSyncTypeByRepoSyncType?: Maybe<RepoSyncType>;
+};
+
+
+/** The output of our update `LabelAssociation` mutation. */
+export type UpdateLabelAssociationPayloadLabelAssociationEdgeArgs = {
+  orderBy?: InputMaybe<Array<LabelAssociationsOrderBy>>;
+};
+
+/** All input for the `updateLabelByNodeId` mutation. */
+export type UpdateLabelByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Label` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `Label` being updated. */
+  patch: LabelPatch;
+};
+
+/** All input for the `updateLabel` mutation. */
+export type UpdateLabelInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  label: Scalars['String'];
+  /** An object where the defined keys will be set on the `Label` being updated. */
+  patch: LabelPatch;
+};
+
+/** The output of our update `Label` mutation. */
+export type UpdateLabelPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Label` that was updated by this mutation. */
+  label?: Maybe<Label>;
+  /** An edge for our `Label`. May be used by Relay 1. */
+  labelEdge?: Maybe<LabelsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `Label` mutation. */
+export type UpdateLabelPayloadLabelEdgeArgs = {
+  orderBy?: InputMaybe<Array<LabelsOrderBy>>;
 };
 
 /** All input for the `updateRepoByNodeId` mutation. */
@@ -13671,6 +14703,53 @@ export type UpdateTrivyRepoScanPayloadTrivyRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<TrivyRepoScansOrderBy>>;
 };
 
+/** All input for the `updateYelpDetectSecretsRepoScanByNodeId` mutation. */
+export type UpdateYelpDetectSecretsRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `YelpDetectSecretsRepoScan` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `YelpDetectSecretsRepoScan` being updated. */
+  patch: YelpDetectSecretsRepoScanPatch;
+};
+
+/** All input for the `updateYelpDetectSecretsRepoScan` mutation. */
+export type UpdateYelpDetectSecretsRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `YelpDetectSecretsRepoScan` being updated. */
+  patch: YelpDetectSecretsRepoScanPatch;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `YelpDetectSecretsRepoScan` mutation. */
+export type UpdateYelpDetectSecretsRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `YelpDetectSecretsRepoScan` that was updated by this mutation. */
+  yelpDetectSecretsRepoScan?: Maybe<YelpDetectSecretsRepoScan>;
+  /** An edge for our `YelpDetectSecretsRepoScan`. May be used by Relay 1. */
+  yelpDetectSecretsRepoScanEdge?: Maybe<YelpDetectSecretsRepoScansEdge>;
+};
+
+
+/** The output of our update `YelpDetectSecretsRepoScan` mutation. */
+export type UpdateYelpDetectSecretsRepoScanPayloadYelpDetectSecretsRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<YelpDetectSecretsRepoScansOrderBy>>;
+};
+
 /** All input for the `userMgmtAddUser` mutation. */
 export type UserMgmtAddUserInput = {
   /**
@@ -13885,6 +14964,291 @@ export type UserMgmtUpdateUserPasswordPayload = {
   query?: Maybe<Query>;
 };
 
+export type YelpDetectSecretsRepoDetection = {
+  /** detection filename */
+  filename?: Maybe<Scalars['String']>;
+  /** detection filters used */
+  filtersUsed?: Maybe<Scalars['String']>;
+  /** detection generated at */
+  generatedAt?: Maybe<Scalars['String']>;
+  /** detection secret */
+  hashedSecret?: Maybe<Scalars['String']>;
+  /** detection is verified */
+  isVerified?: Maybe<Scalars['String']>;
+  /** detection line number */
+  lineNumber?: Maybe<Scalars['String']>;
+  /** detection plugins used */
+  pluginsUsed?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId?: Maybe<Scalars['UUID']>;
+  /** detection type */
+  type?: Maybe<Scalars['String']>;
+  /** detection version */
+  version?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `YelpDetectSecretsRepoDetection` object types.
+ * All fields are tested for equality and combined with a logical ‘and.’
+ */
+export type YelpDetectSecretsRepoDetectionCondition = {
+  /** Checks for equality with the object’s `filename` field. */
+  filename?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `filtersUsed` field. */
+  filtersUsed?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `generatedAt` field. */
+  generatedAt?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `hashedSecret` field. */
+  hashedSecret?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `isVerified` field. */
+  isVerified?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lineNumber` field. */
+  lineNumber?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `pluginsUsed` field. */
+  pluginsUsed?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `version` field. */
+  version?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `YelpDetectSecretsRepoDetection` object types. All fields are combined with a logical ‘and.’ */
+export type YelpDetectSecretsRepoDetectionFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<YelpDetectSecretsRepoDetectionFilter>>;
+  /** Filter by the object’s `filename` field. */
+  filename?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `filtersUsed` field. */
+  filtersUsed?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `generatedAt` field. */
+  generatedAt?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `hashedSecret` field. */
+  hashedSecret?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `isVerified` field. */
+  isVerified?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lineNumber` field. */
+  lineNumber?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<YelpDetectSecretsRepoDetectionFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<YelpDetectSecretsRepoDetectionFilter>>;
+  /** Filter by the object’s `pluginsUsed` field. */
+  pluginsUsed?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `version` field. */
+  version?: InputMaybe<StringFilter>;
+};
+
+/** A connection to a list of `YelpDetectSecretsRepoDetection` values. */
+export type YelpDetectSecretsRepoDetectionsConnection = {
+  /** A list of edges which contains the `YelpDetectSecretsRepoDetection` and cursor to aid in pagination. */
+  edges: Array<YelpDetectSecretsRepoDetectionsEdge>;
+  /** A list of `YelpDetectSecretsRepoDetection` objects. */
+  nodes: Array<YelpDetectSecretsRepoDetection>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `YelpDetectSecretsRepoDetection` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `YelpDetectSecretsRepoDetection` edge in the connection. */
+export type YelpDetectSecretsRepoDetectionsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `YelpDetectSecretsRepoDetection` at the end of the edge. */
+  node: YelpDetectSecretsRepoDetection;
+};
+
+/** Methods to use when ordering `YelpDetectSecretsRepoDetection`. */
+export enum YelpDetectSecretsRepoDetectionsOrderBy {
+  FilenameAsc = 'FILENAME_ASC',
+  FilenameDesc = 'FILENAME_DESC',
+  FiltersUsedAsc = 'FILTERS_USED_ASC',
+  FiltersUsedDesc = 'FILTERS_USED_DESC',
+  GeneratedAtAsc = 'GENERATED_AT_ASC',
+  GeneratedAtDesc = 'GENERATED_AT_DESC',
+  HashedSecretAsc = 'HASHED_SECRET_ASC',
+  HashedSecretDesc = 'HASHED_SECRET_DESC',
+  IsVerifiedAsc = 'IS_VERIFIED_ASC',
+  IsVerifiedDesc = 'IS_VERIFIED_DESC',
+  LineNumberAsc = 'LINE_NUMBER_ASC',
+  LineNumberDesc = 'LINE_NUMBER_DESC',
+  Natural = 'NATURAL',
+  PluginsUsedAsc = 'PLUGINS_USED_ASC',
+  PluginsUsedDesc = 'PLUGINS_USED_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  VersionAsc = 'VERSION_ASC',
+  VersionDesc = 'VERSION_DESC'
+}
+
+/** scan output of a Yelp detect-secrets repo scan */
+export type YelpDetectSecretsRepoScan = Node & {
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON output of a Yelp detect-secrets scan */
+  results: Scalars['JSON'];
+};
+
+/**
+ * A condition to be used against `YelpDetectSecretsRepoScan` object types. All
+ * fields are tested for equality and combined with a logical ‘and.’
+ */
+export type YelpDetectSecretsRepoScanCondition = {
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `results` field. */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `YelpDetectSecretsRepoScan` object types. All fields are combined with a logical ‘and.’ */
+export type YelpDetectSecretsRepoScanFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<YelpDetectSecretsRepoScanFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<YelpDetectSecretsRepoScanFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<YelpDetectSecretsRepoScanFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `results` field. */
+  results?: InputMaybe<JsonFilter>;
+};
+
+/** An input for mutations affecting `YelpDetectSecretsRepoScan` */
+export type YelpDetectSecretsRepoScanInput = {
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON output of a Yelp detect-secrets scan */
+  results: Scalars['JSON'];
+};
+
+/** Represents an update to a `YelpDetectSecretsRepoScan`. Fields that are set will be updated. */
+export type YelpDetectSecretsRepoScanPatch = {
+  /** foreign key for public.repos.id */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** JSON output of a Yelp detect-secrets scan */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A connection to a list of `YelpDetectSecretsRepoScan` values. */
+export type YelpDetectSecretsRepoScansConnection = {
+  /** A list of edges which contains the `YelpDetectSecretsRepoScan` and cursor to aid in pagination. */
+  edges: Array<YelpDetectSecretsRepoScansEdge>;
+  /** A list of `YelpDetectSecretsRepoScan` objects. */
+  nodes: Array<YelpDetectSecretsRepoScan>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `YelpDetectSecretsRepoScan` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `YelpDetectSecretsRepoScan` edge in the connection. */
+export type YelpDetectSecretsRepoScansEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `YelpDetectSecretsRepoScan` at the end of the edge. */
+  node: YelpDetectSecretsRepoScan;
+};
+
+/** Methods to use when ordering `YelpDetectSecretsRepoScan`. */
+export enum YelpDetectSecretsRepoScansOrderBy {
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  ResultsAsc = 'RESULTS_ASC',
+  ResultsDesc = 'RESULTS_DESC'
+}
+
+/** A filter to be used against YesOrNo fields. All fields are combined with a logical ‘and.’ */
+export type YesOrNoFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['YesOrNo']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith?: InputMaybe<Scalars['YesOrNo']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['YesOrNo']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['YesOrNo']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['YesOrNo']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['YesOrNo']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: InputMaybe<Array<Scalars['YesOrNo']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes?: InputMaybe<Scalars['YesOrNo']>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['YesOrNo']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['YesOrNo']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like?: InputMaybe<Scalars['YesOrNo']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['YesOrNo']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith?: InputMaybe<Scalars['YesOrNo']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['YesOrNo']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['YesOrNo']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: InputMaybe<Array<Scalars['YesOrNo']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes?: InputMaybe<Scalars['YesOrNo']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike?: InputMaybe<Scalars['YesOrNo']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith?: InputMaybe<Scalars['YesOrNo']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith?: InputMaybe<Scalars['YesOrNo']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive?: InputMaybe<Scalars['YesOrNo']>;
+};
+
 export type AddRepoMutationVariables = Exact<{
   repo: Scalars['String'];
   isGithub: Scalars['Boolean'];
@@ -14056,7 +15420,7 @@ export type GetReposQueryVariables = Exact<{
 }>;
 
 
-export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, importError?: string | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, repoSyncLogs: { totalCount: number } } | null }> } }> } | null };
+export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, importError?: string | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null, warnings: { totalCount: number } } | null }> } }> } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];

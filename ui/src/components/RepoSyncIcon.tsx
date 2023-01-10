@@ -1,5 +1,5 @@
 import { Spinner, Tooltip } from '@mergestat/blocks'
-import { CircleCheckFilledIcon, CircleErrorFilledIcon, CircleInformationFilledIcon, ClockIcon, MinusIcon } from '@mergestat/icons'
+import { CircleCheckFilledIcon, CircleErrorFilledIcon, CircleInformationFilledIcon, ClockIcon, MinusIcon, WarningFilledIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import type { RepoSyncStateT } from 'src/@types'
 import { SYNC_STATUS } from 'src/utils/constants'
@@ -32,6 +32,10 @@ export const RepoSyncIcon = ({ type, className = '' }: RepoSyncIconPropsT) => {
     case SYNC_STATUS.succeeded:
       text = 'Last sync was successful'
       icon = <CircleCheckFilledIcon className={cx('t-icon t-icon-success', { [className]: className !== '' })} />
+      break
+    case SYNC_STATUS.warning:
+      text = 'Last sync had a warning'
+      icon = <WarningFilledIcon className={cx('t-icon t-icon-warning', { [className]: className !== '' })} />
       break
     case SYNC_STATUS.error:
       text = 'Last sync had an error'

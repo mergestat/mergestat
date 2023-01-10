@@ -75,6 +75,7 @@ export enum SYNC_STATUS {
   queued = 'queued',
   succeeded = 'succeeded',
   error = 'error',
+  warning = 'warning',
   empty = 'empty'
 }
 

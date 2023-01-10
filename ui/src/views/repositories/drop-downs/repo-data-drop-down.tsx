@@ -1,5 +1,5 @@
 import { Badge, Dropdown, Menu, Spinner } from '@mergestat/blocks'
-import { ChevronRightIcon, CircleCheckFilledIcon, CircleErrorFilledIcon, ClockIcon } from '@mergestat/icons'
+import { ChevronRightIcon, CircleCheckFilledIcon, CircleErrorFilledIcon, ClockIcon, WarningFilledIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import { PropsWithChildren, ReactNode } from 'react'
 import { RepoSyncStateT } from 'src/@types'
@@ -43,6 +43,10 @@ function getRepoStatusComponent(status: RepoSyncStateT, count: number): React.Re
     case SYNC_STATUS.succeeded:
       return <IconAndQuantity count={count}>
         <CircleCheckFilledIcon className="t-icon t-icon-success" />
+      </IconAndQuantity>
+    case SYNC_STATUS.warning:
+      return <IconAndQuantity count={count}>
+        <WarningFilledIcon className="t-icon t-icon-warning" />
       </IconAndQuantity>
     case SYNC_STATUS.error:
       return <IconAndQuantity count={count}>

@@ -1,4 +1,4 @@
-export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'error' | 'empty'
+export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'warning' | 'error' | 'empty'
 
 export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'gh-auto' | 'csv'
 
