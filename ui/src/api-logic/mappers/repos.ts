@@ -57,20 +57,14 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
 const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatusT> => {
   // 1. Syncs info is flatten in a simple object
   const syncTypes = r?.repoSyncs.nodes.map((st: RepoSync) => {
-    // TODO(patrickdevivo) this is a little bit clumsy, it's to populate the `hasError` field
-    // which is required by the `getStatus` function (used further below in this function). We should probably refactor this to be able to handle
-    // the `hasError` field in a better way.
-    const statusRepoSyncQueue = st.lastCompletedRepoSyncQueue as RepoSyncQueue
-    if (statusRepoSyncQueue !== null) {
-      statusRepoSyncQueue.hasError = statusRepoSyncQueue?.repoSyncLogs?.totalCount > 0 || false
-    }
+    const lastSyncQueue = st.lastCompletedRepoSyncQueue as RepoSyncQueue
 
     const syncObj: SyncTypeFlatten = {
       idType: st?.id,
       type: st?.repoSyncTypeBySyncType?.shortName || '',
-      idLastSync: st?.lastCompletedRepoSyncQueue?.id || '',
-      lastSync: st?.lastCompletedRepoSyncQueue?.doneAt || '',
-      status: getStatus(statusRepoSyncQueue) || '',
+      idLastSync: lastSyncQueue?.id || '',
+      lastSync: lastSyncQueue?.doneAt || '',
+      status: getStatus(lastSyncQueue) || '',
     }
 
     return syncObj

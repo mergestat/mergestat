@@ -72,8 +72,9 @@ const GET_REPOS = gql`
               status
               doneAt
               createdAt
-              repoSyncLogs(condition: {logType: "ERROR"}) {
-                  totalCount
+              hasError
+              warnings: repoSyncLogs(condition: {logType: "WARNING"}) {
+                totalCount
               }
             }
           }

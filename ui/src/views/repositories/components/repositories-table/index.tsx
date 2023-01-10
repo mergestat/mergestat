@@ -43,6 +43,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
                       <th scope='col' key='total' className='whitespace-nowrap w-0 text-center'>Total</th>
                       <th scope='col' key='queued' className='whitespace-nowrap w-0 text-center'>Queued</th>
                       <th scope='col' key='running' className='whitespace-nowrap w-0 text-center'>Running</th>
+                      <th scope='col' key='warning' className='whitespace-nowrap w-0 text-center'>Warning</th>
                       <th scope='col' key='error' className='whitespace-nowrap w-0 text-center'>Error</th>
                       <th scope='col' key='success' className='whitespace-nowrap w-0 text-center'>Success</th>
                       <th scope='col' key='option' className='whitespace-nowrap w-0'></th>
@@ -96,6 +97,15 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
                                   idRepo={repo.id}
                                   status={repo.status}
                                   type={SYNC_STATUS.running}
+                                />
+                              </div>
+                            </td>
+                            <td className='h-20 text-center'>
+                              <div className='flex items-center justify-center'>
+                                <RepositoryStatus
+                                  idRepo={repo.id}
+                                  status={repo.status}
+                                  type={SYNC_STATUS.warning}
                                 />
                               </div>
                             </td>
