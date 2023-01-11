@@ -8,9 +8,11 @@ import { GetDatabaseConnectionQuery } from 'src/api-logic/graphql/generated/sche
 import { GET_DB_CONNECTION } from 'src/api-logic/graphql/queries/auth'
 import Loading from 'src/components/Loading'
 import { copy } from 'src/utils'
+import useCurrentUser from 'src/views/hooks/useCurrentUser'
 
 const Connect: NextPage = () => {
   const { loading, data } = useQuery<GetDatabaseConnectionQuery>(GET_DB_CONNECTION, { fetchPolicy: 'no-cache' })
+  const { data: currentUserData } = useCurrentUser()
 
   return (
     <Fragment>
@@ -73,12 +75,12 @@ const Connect: NextPage = () => {
                           <div className="md_flex items-center w-full py-3">
                             <Label className="text-gray-500 w-40 md_w-56">Username</Label>
                             <div className="flex items-center flex-1 space-x-4">
-                              <p className="flex-1 break-all">{data?.databaseConnection?.user}</p>
+                              <p className="flex-1 break-all">{currentUserData?.currentMergeStatUser}</p>
                               <Button
                                 isIconOnly
                                 skin="borderless"
                                 startIcon={<DuplicateIcon className="t-icon" />}
-                                onClick={() => copy(data?.databaseConnection?.user)}
+                                onClick={() => copy(currentUserData?.currentMergeStatUser)}
                               />
                             </div>
                           </div>
@@ -100,7 +102,7 @@ const Connect: NextPage = () => {
                       <Tabs.Panel className="pt-6">
                         <div className="bg-gray-50 border rounded-md p-5 font-mono text-sm text-gray-500 mb-4">
                           <pre>
-                            <code className="whitespace-normal break-all">postgresql://{data?.databaseConnection?.user}:<span className="text-blue-600">your-password-here</span>@{data?.databaseConnection?.host}/{data?.databaseConnection?.database}</code>
+                            <code className="whitespace-normal break-all">postgresql://{currentUserData?.currentMergeStatUser}:<span className="text-blue-600">your-password-here</span>@{data?.databaseConnection?.host}/{data?.databaseConnection?.database}</code>
                           </pre>
                         </div>
                         <Button
@@ -108,7 +110,7 @@ const Connect: NextPage = () => {
                           startIcon={<DuplicateIcon className="t-icon" />}
                           skin="secondary"
                           size="small"
-                          onClick={() => copy(`postgresql://${data?.databaseConnection?.user}:your-password-here@${data?.databaseConnection?.host}/${data?.databaseConnection?.database}`)}
+                          onClick={() => copy(`postgresql://${currentUserData?.currentMergeStatUser}:your-password-here@${data?.databaseConnection?.host}/${data?.databaseConnection?.database}`)}
                         />
 
                       </Tabs.Panel>

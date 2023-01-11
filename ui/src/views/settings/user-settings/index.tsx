@@ -1,12 +1,10 @@
-import { useQuery } from '@apollo/client'
 import { Avatar, Button, Label, Panel, Toolbar } from '@mergestat/blocks'
 import { UserIcon } from '@mergestat/icons'
 import type { NextPage } from 'next'
 import { Fragment } from 'react'
-import { CurrentUserQuery } from 'src/api-logic/graphql/generated/schema'
-import { CURRENT_USER } from 'src/api-logic/graphql/queries/auth'
 import { useUserSettingsContext, useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
 import { TEST_IDS } from 'src/utils/constants'
+import useCurrentUser from 'src/views/hooks/useCurrentUser'
 import SettingsView from 'src/views/settings'
 import { ChangePasswordModal } from 'src/views/settings/modals/change-password-modal'
 
@@ -14,7 +12,7 @@ const UserSettings: NextPage = () => {
   const [{ showChangePasswordModal }] = useUserSettingsContext()
   const { setShowChangePasswordModal, setUsernameEdit } = useUserSettingsSetState()
 
-  const { data } = useQuery<CurrentUserQuery>(CURRENT_USER, { fetchPolicy: 'no-cache' })
+  const { data } = useCurrentUser()
 
   return (
     <>

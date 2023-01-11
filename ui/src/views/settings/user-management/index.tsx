@@ -5,14 +5,14 @@ import { debounce } from 'lodash'
 import type { NextPage } from 'next'
 import { Fragment, useEffect, useState } from 'react'
 import { UserData, UserTypeUI } from 'src/@types'
-import { CurrentUserQuery, GetUsersQuery } from 'src/api-logic/graphql/generated/schema'
-import { CURRENT_USER } from 'src/api-logic/graphql/queries/auth'
+import { GetUsersQuery } from 'src/api-logic/graphql/generated/schema'
 import { LIST_USERS } from 'src/api-logic/graphql/queries/get-users'
 import { mapToUserData } from 'src/api-logic/mappers/users'
 import Loading from 'src/components/Loading'
 import { useUserSettingsContext, useUserSettingsSetState } from 'src/state/contexts/user-settings.context'
 import { mapToUserType } from 'src/utils'
 import { TEST_IDS } from 'src/utils/constants'
+import useCurrentUser from 'src/views/hooks/useCurrentUser'
 import SettingsView from 'src/views/settings'
 import { AddUserModal } from 'src/views/settings/modals/add-user-modal'
 import { EditUserModal } from 'src/views/settings/modals/edit-user-modal'
@@ -24,7 +24,7 @@ const UserManagement: NextPage = () => {
   const [users, setUsers] = useState<UserData[]>([])
   const [search, setSearch] = useState<string>('')
 
-  const { data: currentUserData } = useQuery<CurrentUserQuery>(CURRENT_USER, { fetchPolicy: 'no-cache' })
+  const { data: currentUserData } = useCurrentUser()
 
   const { loading, data, refetch } = useQuery<GetUsersQuery>(LIST_USERS, {
     variables: { search },
