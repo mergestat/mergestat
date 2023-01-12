@@ -2,7 +2,6 @@ import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import Link from 'next/link'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { AddRepositoryModal } from './modals/add-repository-modal'
-
 import { Alert, ColoredBox, Spinner, Stat } from '@mergestat/blocks'
 import { CircleErrorFilledIcon, CircleErrorIcon, RepositoryIcon, TableIcon } from '@mergestat/icons'
 import { useEffect, useState } from 'react'
@@ -29,14 +28,13 @@ const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric }: MetricNum
 
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showRemoveRepositoryModal }] = useRepositoriesContext()
-  const { showTable, loading, data, runningImports, failedImports } = useRepos()
+  const { loading, data, runningImports, failedImports, showReposTable } = useRepos()
   const { loadingAllRepos, allRepos, loadingAllEnabledRepos, enabledRepos, loadingSyncErrors, syncErrors } = useMetrics()
-
   const [repos, setRepos] = useState<Array<RepoDataPropsT>>()
 
   useEffect(() => {
     setRepos(mapToRepoData(data))
-  }, [data])
+  }, [data, showReposTable])
 
   return (
     <main className='w-full flex flex-col h-full bg-gray-50 overflow-hidden'>
@@ -73,7 +71,7 @@ const RepositoriesView: React.FC = () => {
           </Alert>}
 
         {/* Metrics */}
-        {showTable &&
+        {showReposTable &&
           <div className='md_grid md_grid-cols-3 gap-6 space-y-4 md_space-y-0 mb-8'>
             <Stat className='shadow-sm w-full'>
               <Stat.Left>
@@ -114,11 +112,11 @@ const RepositoriesView: React.FC = () => {
           </div>
         }
 
-        {showTable && <FilterHeader />}
+        {showReposTable && <FilterHeader />}
 
         {loading
           ? <Loading />
-          : showTable
+          : showReposTable
             ? <>
               {/* Repo table */}
               <RepositoriesTable repos={repos || []} />
