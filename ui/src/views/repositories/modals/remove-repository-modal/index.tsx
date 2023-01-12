@@ -10,7 +10,7 @@ import { REPOS_REFETCHES, TEST_IDS } from 'src/utils/constants'
 
 export const RemoveRepositoryModal: React.FC = () => {
   const [{ repoToRemove, reposQuantity }] = useRepositoriesContext()
-  const { setShowRemoveRepositoryModal, setShowReposTable, setReposQuantity } = useRepositoriesSetState()
+  const { setShowRemoveRepositoryModal, setShowReposTable } = useRepositoriesSetState()
   const router = useRouter()
 
   const close = useCallback(() => {
