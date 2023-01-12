@@ -7,12 +7,11 @@ import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/conte
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
 
 const useRepos = () => {
-  const [showTable, setShowTable] = useState(false)
   const [runningImports, setRunningImports] = useState<AutoImportData[]>([])
   const [failedImports, setFailedImports] = useState<AutoImportData[]>([])
-
-  const [{ search, rowsRepos, pageRepos }] = useRepositoriesContext()
+  const [{ search, rowsRepos, pageRepos, showReposTable }] = useRepositoriesContext()
   const { setTotalRepos } = useRepositoriesSetState()
+  const { setShowReposTable } = useRepositoriesSetState()
 
   const { loading, error, data, refetch } = useQuery<GetReposQuery>(GET_REPOS, {
     variables: { search, first: rowsRepos, offset: (pageRepos * rowsRepos) },
@@ -21,8 +20,8 @@ const useRepos = () => {
   })
 
   const validateData = useCallback(() => {
-    if (!showTable && data?.repos?.totalCount && data?.repos?.totalCount > 0) {
-      setShowTable(true)
+    if (!showReposTable && data?.repos?.totalCount && data?.repos?.totalCount > 0) {
+      setShowReposTable(true)
     }
 
     setFailedImports(data?.repoImports?.nodes?.filter(imp => imp.importError !== null).map(imp => ({
@@ -40,7 +39,7 @@ const useRepos = () => {
 
     setTotalRepos(data?.repos?.totalCount || 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, showTable])
+  }, [data, showReposTable])
 
   useEffect(() => {
     !loading && !error && validateData()
@@ -50,7 +49,7 @@ const useRepos = () => {
     refetch({ search, first: rowsRepos, offset: (pageRepos * rowsRepos) })
   }, [refetch, search, rowsRepos, pageRepos])
 
-  return { showTable, loading, data, runningImports, failedImports, refetch }
+  return { showReposTable, loading, data, runningImports, failedImports, refetch }
 }
 
 export default useRepos

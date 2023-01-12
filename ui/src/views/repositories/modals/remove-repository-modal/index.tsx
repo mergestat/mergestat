@@ -9,8 +9,8 @@ import { showSuccessAlert } from 'src/utils/alerts'
 import { REPOS_REFETCHES, TEST_IDS } from 'src/utils/constants'
 
 export const RemoveRepositoryModal: React.FC = () => {
-  const [{ repoToRemove }] = useRepositoriesContext()
-  const { setShowRemoveRepositoryModal } = useRepositoriesSetState()
+  const [{ repoToRemove, reposQuantity }] = useRepositoriesContext()
+  const { setShowRemoveRepositoryModal, setShowReposTable, setReposQuantity } = useRepositoriesSetState()
   const router = useRouter()
 
   const close = useCallback(() => {
@@ -19,6 +19,9 @@ export const RemoveRepositoryModal: React.FC = () => {
 
   const [removeRepo] = useMutation(REMOVE_REPO, {
     onCompleted: () => {
+      // When we are deleting the last repo we set showReposTable to false
+      const showTables = reposQuantity === 1
+      setShowReposTable(!showTables)
       repoToRemove?.redirect && router.push('/repos')
       showSuccessAlert('Repository removed successfully')
       close()

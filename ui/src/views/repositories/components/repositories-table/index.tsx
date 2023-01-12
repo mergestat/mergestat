@@ -18,9 +18,10 @@ export type RowLinkProps = {
 }
 
 export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: RepositoriesTableProps) => {
-  const { setShowRemoveRepositoryModal, setRepoToRemove } = useRepositoriesSetState()
+  const { setShowRemoveRepositoryModal, setRepoToRemove, setReposQuantity } = useRepositoriesSetState()
 
   const prepareToRemove = (id: string, name: string, autoImported: boolean) => {
+    setReposQuantity(repos.length)
     setRepoToRemove({ id, name, autoImported, redirect: false })
     setShowRemoveRepositoryModal(true)
   }
