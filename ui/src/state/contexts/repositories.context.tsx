@@ -25,6 +25,8 @@ type RepositoriesContextT = {
   totalRepos: number
   rowsRepos: number
   pageRepos: number
+  showReposTable: boolean
+  reposQuantity: number
 }
 
 type UseRepositoriesContextT = [
@@ -46,7 +48,9 @@ const initialState: RepositoriesContextT = {
   imports: [],
   totalRepos: 0,
   rowsRepos: 20,
-  pageRepos: 0
+  pageRepos: 0,
+  showReposTable: false,
+  reposQuantity: 0
 }
 
 function useRepositories(): UseRepositoriesContextT {
@@ -177,6 +181,20 @@ function useRepositoriesSetState() {
     }))
   }
 
+  const setShowReposTable = (showReposTable: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showReposTable,
+    }))
+  }
+
+  const setReposQuantity = (reposQuantity: number) => {
+    setState(prev => ({
+      ...prev,
+      reposQuantity,
+    }))
+  }
+
   return {
     _,
     setShowOpenRepositoryModal,
@@ -193,7 +211,9 @@ function useRepositoriesSetState() {
     setTotalRepos,
     setRowsRepos,
     setPageRepos,
-    resetValues
+    resetValues,
+    setShowReposTable,
+    setReposQuantity
   }
 }
 
