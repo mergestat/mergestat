@@ -29,6 +29,9 @@ RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/
 # install syft binary
 RUN curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v0.58.0
 
+# install the gosec binary
+RUN curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s -- -b /usr/local/bin/ v2.14.0
+
 # install gitleaks binary from gitleaks image
 COPY --from=gitleaks /usr/bin/gitleaks /usr/local/bin/gitleaks
 
