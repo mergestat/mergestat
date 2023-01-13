@@ -21,9 +21,7 @@ type gosecIssue struct {
 	Severity   string `json:"severity"`   // issue severity (how problematic it is)
 	Confidence string `json:"confidence"` // issue confidence (how sure we are we found it)
 	Cwe        struct {
-		ID          string
-		Name        string
-		Description string
+		ID string `json:"id"`
 	} `json:"cwe"` // Cwe associated with RuleID
 	RuleID string `json:"rule_id"` // Human-readable explanation
 	What   string `json:"details"` // Human-readable explanation
