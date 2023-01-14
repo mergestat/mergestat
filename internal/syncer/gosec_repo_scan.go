@@ -64,7 +64,7 @@ func (w *worker) handleGosecRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	var stdout, stderr bytes.Buffer
-	cmd := exec.CommandContext(ctx, "gosec", "-no-fail", "-fmt", "json", "./...")
+	cmd := exec.CommandContext(ctx, "gosec", "-no-fail", "-fmt", "json", ".")
 	cmd.Dir = tmpPath
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
