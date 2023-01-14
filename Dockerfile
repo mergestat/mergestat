@@ -14,7 +14,7 @@ PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ mak
 FROM zricethezav/gitleaks:v8.15.2 AS gitleaks
 
 FROM alpine:3.16
-RUN set -x && apk add --no-cache curl postgresql-client ca-certificates git
+RUN set -x && apk add --no-cache curl postgresql-client ca-certificates git go
 
 # copy over migrations
 RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.1/migrate.linux-amd64.tar.gz | tar xvz
@@ -28,6 +28,9 @@ RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/
 
 # install syft binary
 RUN curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v0.58.0
+
+# install the gosec binary
+RUN curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s -- -b /usr/local/bin/ v2.14.0
 
 # install gitleaks binary from gitleaks image
 COPY --from=gitleaks /usr/bin/gitleaks /usr/local/bin/gitleaks

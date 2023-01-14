@@ -38,6 +38,7 @@ const (
 	syncTypeGitHubActions             = "GITHUB_ACTIONS"
 	syncTypeGitleaksRepoScan          = "GITLEAKS_REPO_SCAN"
 	syncTypeYelpDetectSecretsRepoScan = "YELP_DETECT_SECRETS_REPO_SCAN"
+	syncTypeGosecRepoScan             = "GOSEC_REPO_SCAN"
 )
 
 type worker struct {
@@ -182,6 +183,8 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 		return w.handleGitleaksRepoScan(ctx, j)
 	case syncTypeYelpDetectSecretsRepoScan:
 		return w.handleYelpDetectSecretsRepoScan(ctx, j)
+	case syncTypeGosecRepoScan:
+		return w.handleGosecRepoScan(ctx, j)
 	default:
 		return fmt.Errorf("unknown sync type: %s for job ID: %d", j.SyncType, j.ID)
 	}
