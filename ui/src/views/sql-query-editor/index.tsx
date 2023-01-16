@@ -15,7 +15,7 @@ import QueryEditorLoading from './components/state-loading'
 const QueryEditor: React.FC = () => {
   const ROWS_LIMIT = 1000
 
-  const [{ query, readOnly }] = useQueryContext()
+  const [{ query, readOnly, expanded }] = useQueryContext()
 
   const [state, setState] = useState<States>(States.Empty)
   const [rowLimitReached, setRowLimitReached] = useState(true)
@@ -62,7 +62,7 @@ const QueryEditor: React.FC = () => {
   return (
     <>
       {/* Header */}
-      <div className='bg-white overflow-auto flex h-16 w-full border-b px-8'>
+      {!expanded && <div className='bg-white overflow-auto flex h-16 w-full border-b px-8'>
         <Toolbar className='flex-1 space-x-4 w-auto h-full'>
           <Toolbar.Left>
             <h2 className='t-h2 mb-0'>Queries</h2>
@@ -78,8 +78,8 @@ const QueryEditor: React.FC = () => {
             />
           </Toolbar.Right>
         </Toolbar>
-      </div>
-      {!readOnly && <Alert isInline type="warning" className='pl-4 p-3 bg-yellow-50 border-b border-yellow-300'>
+      </div>}
+      {!readOnly && !expanded && <Alert isInline type="warning" className='pl-4 p-3 bg-yellow-50 border-b border-yellow-300'>
         <span className='text-yellow-900'>
           Non read-only queries are able to make changes in the underlying database, be careful!
         </span>
@@ -87,11 +87,11 @@ const QueryEditor: React.FC = () => {
 
       <div className='flex flex-col flex-1 items-center overflow-auto'>
         {/* SQL editor */}
-        <SQLEditorSection
+        {!expanded && <SQLEditorSection
           onEnterKey={() => {
             if (!loading && query) { executeSQLQuery() }
           }}
-        />
+        />}
 
         {/* Empty state */}
         {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} data={data?.execSQL} />}

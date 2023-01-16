@@ -9,6 +9,7 @@ SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY coun
 type QueryContextT = {
   query: string
   readOnly: boolean
+  expanded: boolean
 }
 
 type UseQueryContextT = [
@@ -18,7 +19,8 @@ type UseQueryContextT = [
 
 const initialState: QueryContextT = {
   query: initialSQL,
-  readOnly: true
+  readOnly: true,
+  expanded: false
 }
 
 function useQueryEditor(): UseQueryContextT {
@@ -57,10 +59,18 @@ function useQuerySetState() {
     }))
   }
 
+  const setExpanded = (expanded: boolean) => {
+    setState(prev => ({
+      ...prev,
+      expanded
+    }))
+  }
+
   return {
     _,
     setQuery,
-    setReadOnly
+    setReadOnly,
+    setExpanded
   }
 }
 
