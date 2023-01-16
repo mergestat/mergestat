@@ -16,7 +16,7 @@ const NavHeader: React.FC<CurrentUserQuery> = ({ currentMergeStatUser }: Current
   }
 
   return (
-    <Toolbar className="h-12 px-8 border-b t-border-default bg-white">
+    <Toolbar className="h-12 px-8 border-b t-border-default bg-white flex-none">
       <Toolbar.Left>
         <BreadcrumbNav data={crumbs} size="sm" />
       </Toolbar.Left>

@@ -40,7 +40,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
   }, [])
 
   return (
-    <main className="w-full h-full bg-gray-50 flex flex-col overflow-hidden">
+    <>
       <Tabs>
         <div className="bg-white">
           <Toolbar className="px-8 py-4 border-b">
@@ -89,7 +89,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
           </Tabs.Panel>
         </Tabs.Panels>
       </Tabs>
-    </main>
+    </>
   )
 }
 

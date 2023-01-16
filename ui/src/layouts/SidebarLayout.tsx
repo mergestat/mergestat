@@ -18,17 +18,17 @@ const SidebarLayout: React.FC = ({ children }: PropsWithChildren) => {
   }, [data, router])
 
   return (
-    <div className="h-screen flex flex-col min-h-0">
+    <div className="h-screen">
       {loading || data?.currentMergeStatUser === 'mergestat_anonymous'
         ? <Loading />
         : <>
           <GlobalProvider>
-            <div className="content-area flex flex-grow">
+            <div className="h-full flex">
               <Sidebar />
-              <div className='w-full flex-1 overflow-hidden'>
+              <main className='h-full w-full flex-1 flex flex-col bg-gray-50 overflow-hidden'>
                 <NavHeader currentMergeStatUser={data?.currentMergeStatUser} />
                 {children}
-              </div>
+              </main>
             </div>
           </GlobalProvider>
         </>
