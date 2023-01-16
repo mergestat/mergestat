@@ -3,6 +3,7 @@ import { ArrowCollapseIcon, ArrowExpandIcon, CaretDownIcon, ChartBarIcon, ChartL
 import { ReactElement, useState } from 'react'
 import { QueryResultProps } from 'src/@types'
 import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.contex'
+import TabSingleMetric from '../tabs/tab-single-metric'
 import TabTable from '../tabs/tab-table'
 
 type QueryEditorFilledProps = {
@@ -29,7 +30,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
     },
     {
       title: <><SingleMetricIcon className='t-icon' /> <span className='ml-2'>Single metric</span></>,
-      content: 'Content Single metric'
+      content: <TabSingleMetric data={data} />
     },
   ])
 

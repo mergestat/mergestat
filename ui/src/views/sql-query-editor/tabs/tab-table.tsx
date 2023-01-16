@@ -89,7 +89,6 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached, data }: 
   return (
     <>
       {/* Head section */}
-
       <Toolbar className='bg-white overflow-auto flex w-full border-b px-5 py-4'>
         <Toolbar.Left>
           <Input
