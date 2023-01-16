@@ -37,7 +37,7 @@ const RepositoriesView: React.FC = () => {
   }, [data, showReposTable])
 
   return (
-    <main className='w-full flex flex-col h-full bg-gray-50 overflow-hidden'>
+    <>
       <PageHeader />
       <div className='flex-1 items-center p-8 overflow-auto'>
         {failedImports.length > 0 &&
@@ -129,7 +129,7 @@ const RepositoriesView: React.FC = () => {
 
       {showRemoveRepositoryModal && <RemoveRepositoryModal />}
       {showAddRepositoryModal && <AddRepositoryModal />}
-    </main>
+    </>
   )
 }
 

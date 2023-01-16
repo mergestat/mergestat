@@ -7,9 +7,9 @@ interface Props {
 
 const SettingsView = ({ children }: Props) => {
   return (
-    <main className='w-full flex flex-col h-full bg-gray-50 overflow-hidden'>
+    <>
       {children}
-    </main>
+    </>
   )
 }
 

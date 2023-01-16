@@ -22,7 +22,7 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
   }, [data, router])
 
   return (
-    <main className="w-full flex flex-col h-full overflow-hidden bg-gray-50">
+    <>
       <PageHeader name={data?.name || ''} type={data?.type || 'other'} />
       <Tabs.Group>
         <Tabs.List className="bg-white w-full justify-between px-8 items-center border-b border-gray-200">
@@ -47,7 +47,7 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
       </Tabs.Group>
       {showAddRepositoryModal && <AddRepositoryModal />}
       {showRemoveRepositoryModal && <RemoveRepositoryModal />}
-    </main>
+    </>
   )
 }
 

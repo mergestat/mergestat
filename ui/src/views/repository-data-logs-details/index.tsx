@@ -47,7 +47,7 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
   }, [])
 
   return (
-    <main className="w-full bg-gray-50 h-full flex flex-col overflow-hidden">
+    <>
       <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
         <div className="text-xl font-semibold flex items-center space-x-1">
           <RepoSyncIcon type={logInfo?.syncType || SYNC_STATUS.empty} />
@@ -66,7 +66,7 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
               </Panel.Body>
             </Panel>)}
       </div>
-    </main>
+    </>
   )
 }
 
