@@ -28,7 +28,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
 
   return (
     <>
-      <Panel className='rounded-md w-full shadow-sm block'>
+      <Panel className='flex-none rounded-md w-full shadow-sm block'>
         <Panel.Body className='p-0'>
           {repos.length < 1
             ? <div data-testid={TEST_IDS.repoListEmpty} className='flex justify-center items-center bg-white py-5'>

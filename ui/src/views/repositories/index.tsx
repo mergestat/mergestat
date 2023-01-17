@@ -1,5 +1,6 @@
 import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import Link from 'next/link'
+import cx from 'classnames'
 import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { AddRepositoryModal } from './modals/add-repository-modal'
 import { Alert, ColoredBox, Spinner, Stat } from '@mergestat/blocks'
@@ -39,7 +40,7 @@ const RepositoriesView: React.FC = () => {
   return (
     <>
       <PageHeader />
-      <div className='flex-1 items-center p-8 overflow-auto'>
+      <div className={cx('flex-1 flex flex-col p-8 overflow-auto', { 'h-full': !showReposTable })}>
         {failedImports.length > 0 &&
           <Alert
             type='error'
