@@ -134,7 +134,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
                               </div>
                             </td>
                           </>
-                          : <td colSpan={7}>
+                          : <td colSpan={8}>
                             <div className='t-button-toolbar gap-6'>
                               <div className='flex items-center justify-center gap-2'>
                                 <CircleInformationFilledIcon className='t-icon t-icon-muted' />
