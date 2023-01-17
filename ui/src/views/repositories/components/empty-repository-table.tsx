@@ -10,7 +10,7 @@ export const EmptyRepositoryTable: React.FC = () => {
   // const { setShowAddRepositoryModal } = useRepositoriesSetState()
 
   return (
-    <div data-testid={TEST_IDS.emptyRepositoryTable} className="flex items-center justify-center h-full w-full">
+    <div data-testid={TEST_IDS.emptyRepositoryTable} className="flex-1 flex flex-col items-center justify-center">
       <div className="w-full max-w-5xl">
         <Panel className="shadow-sm rounded-md">
           <Panel.Body>
