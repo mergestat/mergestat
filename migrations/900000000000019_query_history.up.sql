@@ -10,6 +10,11 @@ CREATE TABLE mergestat.query_history (
 ALTER TABLE mergestat.query_history ENABLE ROW LEVEL SECURITY;
 
 -- creates an RLS policy that only allows users to see their own queries
-CREATE POLICY query_history_access ON mergestat.query_history USING (run_by = current_user);
+CREATE POLICY query_history_access ON mergestat.query_history FOR ALL USING (run_by = current_user);
+
+-- the mergestat_role_readonly needs to be permitted to INSERT into the query_history table
+-- the policy above will still prevent the mergestat_role_readonly (any or user) from inserting a row
+-- with a run_by value that is *not* the current_user
+GRANT INSERT ON TABLE mergestat.query_history TO mergestat_role_readonly;
 
 COMMIT;
