@@ -1,8 +1,10 @@
 import { Badge, Button, HoverCard, Menu, Tabs, Toolbar, Tooltip } from '@mergestat/blocks'
 import { ArrowCollapseIcon, ArrowExpandIcon, CaretDownIcon, ChartBarIcon, ChartLineIcon, CircleCheckFilledIcon, PlusIcon, SingleMetricIcon, TableIcon } from '@mergestat/icons'
-import { ReactElement, useState } from 'react'
+import { cloneElement, ReactElement, useState } from 'react'
 import { QueryResultProps } from 'src/@types'
-import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.contex'
+import { useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
+import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.context'
+import { TAB_TYPE } from 'src/utils/constants'
 import TabSingleMetric from '../tabs/tab-single-metric'
 import TabTable from '../tabs/tab-table'
 
@@ -14,6 +16,7 @@ type QueryEditorFilledProps = {
 }
 
 interface TabData {
+  tabIndex: number
   title: ReactElement | string
   content: ReactElement | string
   disabled?: boolean
@@ -22,41 +25,48 @@ interface TabData {
 const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, data }: QueryEditorFilledProps) => {
   const [{ expanded }] = useQueryContext()
   const { setExpanded } = useQuerySetState()
+  const dispatch = useQueryTabsDispatch()
 
   const [tabs, setTabs] = useState<TabData[]>([
     {
+      tabIndex: 0,
       title: <><TableIcon className='t-icon' /> <span className='ml-2'>Table</span></>,
       content: <TabTable rowLimit={rowLimit} rowLimitReached={rowLimitReached} data={data} />
-    },
-    {
-      title: <><SingleMetricIcon className='t-icon' /> <span className='ml-2'>Single metric</span></>,
-      content: <TabSingleMetric data={data} />
-    },
+    }
   ])
 
-  const getTabData = (tab: string) => {
+  const getTabData = (tab: string, tabIndex: number) => {
     switch (tab) {
-      case 'bar':
+      case TAB_TYPE.BAR:
         return {
+          tabIndex,
           title: <><ChartBarIcon className='t-icon' /> <span className='ml-2'>Bar chart</span></>,
           content: 'Content Bar chart',
           disabled: true
         }
-      default:
+      case TAB_TYPE.LINE:
         return {
+          tabIndex,
           title: <><ChartLineIcon className='t-icon' /> <span className='ml-2'>Line chart</span></>,
           content: 'Content Line chart',
           disabled: true
+        }
+      default:
+        return {
+          tabIndex,
+          title: <><SingleMetricIcon className='t-icon' /> <span className='ml-2'>Single metric</span></>,
+          content: <TabSingleMetric data={data} />
         }
     }
   }
 
   const addTab = (tab: string) => {
-    setTabs([...tabs, getTabData(tab)])
+    dispatch({ tab: tabs.length, payload: {} })
+    setTabs([...tabs, getTabData(tab, tabs.length)])
   }
 
   return (
-    <div className="flex flex-col flex-1 w-full bg-white">
+    <div className="flex flex-col flex-1 w-full bg-white" style={{ minHeight: '57px' }}>
       <Tabs variant='secondary' className='flex-1'>
         <Tabs.List className='w-full'>
           {tabs.map((tab, index) => (
@@ -70,11 +80,18 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                 placement='bottom-start'
                 overlay={(close) => (
                   <Menu className='mt-0'>
+                    <Menu.Item text="Single metric" withIcon
+                      icon={<SingleMetricIcon className="t-icon" />}
+                      onClick={() => {
+                        addTab(TAB_TYPE.SINGLE_METRIC)
+                        close()
+                      }}
+                    />
                     <Tooltip content='Coming soon!' placement='right' offset={[0, 10]}>
                       <Menu.Item text="Bar chart" withIcon disabled
                         icon={<ChartBarIcon className="t-icon" />}
                         onClick={() => {
-                          addTab('bar')
+                          addTab(TAB_TYPE.BAR)
                           close()
                         }}
                       />
@@ -83,7 +100,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                       <Menu.Item text="Line chart" withIcon disabled
                         icon={<ChartLineIcon className="t-icon" />}
                         onClick={() => {
-                          addTab('line')
+                          addTab(TAB_TYPE.LINE)
                           close()
                         }}
                       />
@@ -126,9 +143,11 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             </Toolbar.Right>
           </Toolbar>
         </Tabs.List>
-        <Tabs.Panels className='flex-1'>
+        <Tabs.Panels className='flex-1 overflow-auto'>
           {tabs.map((tab, index) => (
-            <Tabs.Panel key={`tab-panel-${index}`} className='h-full flex flex-col'>{tab.content}</Tabs.Panel>
+            <Tabs.Panel key={`tab-panel-${index}`} className='h-full flex flex-col'>
+              {cloneElement(tab.content as React.ReactElement, { tabIndex: tab.tabIndex })}
+            </Tabs.Panel>
           ))}
         </Tabs.Panels>
       </Tabs>

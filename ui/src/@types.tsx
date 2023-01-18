@@ -178,3 +178,29 @@ export type QueryResultProps = {
   columns?: Array<{ name: string | number | boolean, format: string }> | null
   rows?: Array<Array<string | number | boolean>> | null
 }
+
+/** Query Tab Types */
+
+export type LineChartData = {
+  anyProp: string
+}
+
+export type BarChartData = {
+  anyProp: string
+}
+
+export type SingleMetricData = {
+  label?: string
+  selectedColumnName?: string
+  selectedColumnIndex?: number
+  stat?: string
+}
+
+export type ActionType = {
+  tab: number
+  payload: SingleMetricData | BarChartData | LineChartData
+}
+
+export type TabsState = {
+  [key: number]: SingleMetricData | BarChartData | LineChartData
+}

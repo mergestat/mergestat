@@ -3,6 +3,7 @@ import { Alert, Button, Spinner, Toolbar } from '@mergestat/blocks'
 import { useEffect, useState } from 'react'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
+import { QueryTabsProvider } from 'src/state/contexts/query-tabs.context'
 import { useQueryContext } from 'src/state/contexts/query.context'
 import { States } from 'src/utils/constants'
 import SQLEditorSection from './components/sql-editor-section'
@@ -106,7 +107,11 @@ const QueryEditor: React.FC = () => {
         {loading && <QueryEditorLoading />}
 
         {/* Filled state */}
-        {!error && !loading && data && state === States.Filled && <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />}
+        {!error && !loading && data && state === States.Filled &&
+          <QueryTabsProvider>
+            <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />
+          </QueryTabsProvider>
+        }
       </div>
     </>
   )

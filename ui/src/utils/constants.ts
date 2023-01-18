@@ -120,6 +120,12 @@ export enum IMPORT_STATUS_TYPE {
   FAILURE = 'FAILURE'
 }
 
+export enum TAB_TYPE {
+  LINE = 'LINE',
+  BAR = 'BAR',
+  SINGLE_METRIC = 'SINGLE_METRIC'
+}
+
 export const USER_ROLES = [
   {
     key: 'ADMIN',

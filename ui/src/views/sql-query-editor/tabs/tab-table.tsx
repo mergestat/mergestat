@@ -1,5 +1,5 @@
 import { Alert, Button, Dropdown, Input, Label, Menu, Select, Toolbar } from '@mergestat/blocks'
-import { CaretDownIcon, ChevronLeftIcon, ChevronRightIcon, ClipboardIcon, SearchIcon } from '@mergestat/icons'
+import { CaretDownIcon, ChevronLeftIcon, ChevronRightIcon, ClipboardIcon, DownloadIcon, SearchIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import { debounce } from 'lodash'
 import Papa from 'papaparse'
@@ -89,7 +89,7 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached, data }: 
   return (
     <>
       {/* Head section */}
-      <Toolbar className='bg-white overflow-auto flex w-full border-b px-5 py-4'>
+      <Toolbar className='bg-white h-16 flex w-full border-b px-5 py-4'>
         <Toolbar.Left>
           <Input
             className='w-96'
@@ -103,7 +103,7 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached, data }: 
           <Toolbar.Item>
             <Dropdown
               alignEnd
-              zIndex={20}
+              zIndex={30}
               trigger={
                 <Button label='Copy' skin='secondary'
                   startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
@@ -127,10 +127,10 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached, data }: 
           <Toolbar.Item>
             <Dropdown
               alignEnd
-              zIndex={20}
+              zIndex={30}
               trigger={
                 <Button label='Download' skin='secondary'
-                  startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
+                  startIcon={<DownloadIcon className='t-icon t-icon-heroicons-clipboard' />}
                   endIcon={<CaretDownIcon className='t-icon' />}
                 />
               }

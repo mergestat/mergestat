@@ -10,7 +10,7 @@ type QueryEditorErrorProps = {
 const QueryEditorError: React.FC<QueryEditorErrorProps> = ({ errors }: QueryEditorErrorProps) => {
   return (
     <>
-      <div className='bg-white overflow-auto flex -mt-2 h-16 w-full border-b px-8'>
+      <div className='bg-white flex h-16 w-full border-b px-8' style={{ minHeight: '64px' }}>
         <Toolbar className='flex-1 w-auto space-x-4 h-full'>
           <Toolbar.Left className='space-x-4'>
             <Toolbar.Item>
@@ -29,7 +29,7 @@ const QueryEditorError: React.FC<QueryEditorErrorProps> = ({ errors }: QueryEdit
           </Toolbar.Left>
         </Toolbar>
       </div>
-      <div className='bg-white w-full flex-1 h-1/2 flex flex-col items-center justify-center p-8'>
+      <div className='bg-white w-full overflow-hidden flex-1 flex flex-col items-center justify-center'>
         <Avatar
           variant='danger'
           icon={<CircleWarningIcon className='t-icon' />}
