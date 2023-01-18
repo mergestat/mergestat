@@ -16,10 +16,7 @@ const TabSingleMetric: React.FC<TabSingleMetricProps> = ({ data, tabIndex = 0 }:
 
   const { label, selectedColumnIndex, selectedColumnName, stat } = (tabsState[tabIndex] as SingleMetricData)
 
-  const setState = (payload: SingleMetricData) => {
-    const datatt = { tab: tabIndex, payload }
-    dispatch(datatt)
-  }
+  const setState = (payload: SingleMetricData) => dispatch({ tab: tabIndex, payload })
 
   useEffect(() => {
     selectedColumnIndex !== undefined && setState({ stat: data.rows ? (data.rows[0][selectedColumnIndex]).toString() : '' })
