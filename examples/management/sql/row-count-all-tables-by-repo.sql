@@ -13,6 +13,6 @@ SELECT
     tbl.table_schema,
     tbl.table_name,
     public.repos.repo,
-    (xpath('/row/c/text()', query_to_xml(format('SELECT COUNT(*) AS c FROM %I.%I JOIN public.repos ON public.repos.id = %I.%I.repo_id WHERE public.repos.id = ''%s''', tbl..table_schema, tbl.table_name, tbl.table_schema, tbl.table_name, public.repos.id), FALSE, TRUE, '')))[1]::text::int AS count
+    (xpath('/row/c/text()', query_to_xml(format('SELECT COUNT(*) AS c FROM %I.%I JOIN public.repos ON public.repos.id = %I.%I.repo_id WHERE public.repos.id = ''%s''', tbl.table_schema, tbl.table_name, tbl.table_schema, tbl.table_name, public.repos.id), FALSE, TRUE, '')))[1]::text::int AS count
 FROM tbl CROSS JOIN public.repos
 ORDER BY 1 DESC, 2 DESC, 4 DESC
