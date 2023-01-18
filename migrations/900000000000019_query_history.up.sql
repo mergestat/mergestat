@@ -7,4 +7,9 @@ CREATE TABLE mergestat.query_history (
     query text NOT NULL
 );
 
+ALTER TABLE mergestat.query_history ENABLE ROW LEVEL SECURITY;
+
+-- creates an RLS policy that only allows users to see their own queries
+CREATE POLICY query_history_access ON mergestat.query_history USING (run_by = current_user);
+
 COMMIT;
