@@ -61,7 +61,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
   }
 
   const addTab = (tab: string) => {
-    dispatch({ tab: tabs.length, payload: {} })
+    dispatch({ tab: tabs.length, payload: { label: '' } })
     setTabs([...tabs, getTabData(tab, tabs.length)])
   }
 
