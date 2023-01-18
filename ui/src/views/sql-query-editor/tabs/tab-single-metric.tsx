@@ -6,17 +6,17 @@ import { useQueryTabsContext, useQueryTabsDispatch } from 'src/state/contexts/qu
 
 type TabSingleMetricProps = {
   data: QueryResultProps
-  tabIndex?: number
+  tabId?: string
   children?: React.ReactNode
 }
 
-const TabSingleMetric: React.FC<TabSingleMetricProps> = ({ data, tabIndex = 0 }: TabSingleMetricProps) => {
+const TabSingleMetric: React.FC<TabSingleMetricProps> = ({ data, tabId = '' }: TabSingleMetricProps) => {
   const tabsState = useQueryTabsContext()
   const dispatch = useQueryTabsDispatch()
 
-  const { label, selectedColumnIndex, selectedColumnName, stat } = (tabsState[tabIndex] as SingleMetricData)
+  const { label, selectedColumnIndex, selectedColumnName, stat } = (tabsState[tabId] as SingleMetricData)
 
-  const setState = (payload: SingleMetricData) => dispatch({ tab: tabIndex, payload })
+  const setState = (payload: SingleMetricData) => dispatch({ tab: tabId, payload })
 
   useEffect(() => {
     selectedColumnIndex !== undefined && setState({ stat: data.rows ? (data.rows[0][selectedColumnIndex]).toString() : '' })

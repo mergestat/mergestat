@@ -6,7 +6,11 @@ type QueryTabsProviderProps = {
 }
 
 const reducer = (state: TabsState, action: ActionType): TabsState => {
-  state[action.tab] = { ...state[action.tab], ...action.payload }
+  if (action.remove) {
+    delete state[action.tab]
+  } else {
+    state[action.tab] = { ...state[action.tab], ...action.payload }
+  }
   return Object.assign({}, state)
 }
 

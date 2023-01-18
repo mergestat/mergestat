@@ -197,10 +197,11 @@ export type SingleMetricData = {
 }
 
 export type ActionType = {
-  tab: number
-  payload: SingleMetricData | BarChartData | LineChartData
+  tab: string
+  remove?: boolean
+  payload?: SingleMetricData | BarChartData | LineChartData
 }
 
 export type TabsState = {
-  [key: number]: SingleMetricData | BarChartData | LineChartData
+  [key: string]: SingleMetricData | BarChartData | LineChartData
 }

@@ -102,7 +102,6 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached, data }: 
         <Toolbar.Right>
           <Toolbar.Item>
             <Dropdown
-              alignEnd
               zIndex={30}
               trigger={
                 <Button label='Copy' skin='secondary'
@@ -126,7 +125,6 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached, data }: 
           </Toolbar.Item>
           <Toolbar.Item>
             <Dropdown
-              alignEnd
               zIndex={30}
               trigger={
                 <Button label='Download' skin='secondary'
