@@ -23,6 +23,7 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
       variables: [String!]
       rowLimit: Int
       disableReadOnly: Boolean
+      trackHistory: Boolean
     }
 
     type ExecSQLResult {
@@ -40,6 +41,10 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
             execSQL(_parent, args, context, _info) {
                 return __awaiter(this, void 0, void 0, function* () {
                     const { input } = args;
+                    if (input.trackHistory) {
+                        // if trackHistory is true, then we need to track the query in the query history table
+                        yield context.pgClient.query("INSERT INTO mergestat.query_history (run_by, query) VALUES ((SELECT current_user), $1);", [input.query]);
+                    }
                     // first set the pg session to be read only, if disableReadOnly is false
                     if (!input.disableReadOnly) {
                         yield context.pgClient.query("SET TRANSACTION READ ONLY;");

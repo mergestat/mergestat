@@ -10,6 +10,7 @@ type ExecSQLInput = {
   variables: [any]
   rowLimit: number
   disableReadOnly: boolean
+  trackHistory: boolean
 }
 
 module.exports = makeExtendSchemaPlugin({
@@ -19,6 +20,7 @@ module.exports = makeExtendSchemaPlugin({
       variables: [String!]
       rowLimit: Int
       disableReadOnly: Boolean
+      trackHistory: Boolean
     }
 
     type ExecSQLResult {
@@ -35,6 +37,12 @@ module.exports = makeExtendSchemaPlugin({
     Query: {
       async execSQL(_parent: any, args: { input: ExecSQLInput }, context: { pgClient: Client }, _info: any) {
         const { input } = args
+
+        if (input.trackHistory) {
+          // if trackHistory is true, then we need to track the query in the query history table
+          await context.pgClient.query("INSERT INTO mergestat.query_history (run_by, query) VALUES ((SELECT current_user), $1);", [input.query])
+        }
+
         // first set the pg session to be read only, if disableReadOnly is false
         if (!input.disableReadOnly) {
           await context.pgClient.query("SET TRANSACTION READ ONLY;")
