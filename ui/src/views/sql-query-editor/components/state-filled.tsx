@@ -76,8 +76,12 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             </Toolbar.Left>
             <Toolbar.Right className='flex-1 pr-5'>
               <Toolbar.Item>
-                <span className='text-sm t-text-muted pl-3 pr-1'>{time}</span>
-              </Toolbar.Item>
+<<<<<<< HEAD
+  <span className='text-sm t-text-muted pl-3 pr-1'>{time}</span>
+=======
+                <span className='text-sm t-text-muted pl-3 pr-1'>5.2s</span>
+>>>>>>> feat(single-metric): Implementing closable tabs
+              </Toolbar.Item >
               <Toolbar.Item>
                 <Badge
                   label='Success'
@@ -99,18 +103,18 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                   onClick={() => setExpanded(!expanded)}
                 />
               </Toolbar.Item>
-            </Toolbar.Right>
-          </Toolbar>
-        </Tabs.List>
-        <Tabs.Panels className='flex-1 overflow-auto'>
-          {tabs.map((tab, index) => (
-            <Tabs.Panel key={`tab-panel-${index}`} className='h-full flex flex-col'>
-              {cloneElement(tab.content as React.ReactElement, { tabId: tab.tabId })}
-            </Tabs.Panel>
-          ))}
-        </Tabs.Panels>
-      </Tabs>
-    </div>
+            </Toolbar.Right >
+          </Toolbar >
+        </Tabs.List >
+  <Tabs.Panels className='flex-1 overflow-auto'>
+    {tabs.map((tab, index) => (
+      <Tabs.Panel key={`tab-panel-${index}`} className='h-full flex flex-col'>
+        {cloneElement(tab.content as React.ReactElement, { tabId: tab.tabId })}
+      </Tabs.Panel>
+    ))}
+  </Tabs.Panels>
+      </Tabs >
+    </div >
   )
 }
 
