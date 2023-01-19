@@ -110,3 +110,8 @@
 .t-modal {
   @apply align-middle;
 }
+
+/* TODO(emily) fix tabs spacing in blocks */
+.t-tab {
+  @apply mb-0;
+}
