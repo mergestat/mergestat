@@ -102,7 +102,6 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached, data }: 
         <Toolbar.Right>
           <Toolbar.Item>
             <Dropdown
-              zIndex={30}
               trigger={
                 <Button label='Copy' skin='secondary'
                   startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
@@ -125,7 +124,6 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached, data }: 
           </Toolbar.Item>
           <Toolbar.Item>
             <Dropdown
-              zIndex={30}
               trigger={
                 <Button label='Download' skin='secondary'
                   startIcon={<DownloadIcon className='t-icon t-icon-heroicons-clipboard' />}
