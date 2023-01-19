@@ -23,6 +23,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/libgit2/git2go/v33 v33.0.9
 	github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b
+	github.com/mergestat/sqlq v0.0.0-20230116164745-f25d0492b4d1
 	github.com/prometheus/client_golang v1.14.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20221229060216-a8d4a561cc93
@@ -77,7 +78,7 @@ require (
 	github.com/mergestat/timediff v0.0.3 // indirect
 	github.com/migueleliasweb/go-github-mock v0.0.13
 	github.com/opencontainers/image-spec v1.1.0-rc2 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.39.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
