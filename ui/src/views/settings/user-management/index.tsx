@@ -86,9 +86,13 @@ const UserManagement: NextPage = () => {
               {loading
                 ? <Loading />
                 : users.length < 1
-                  ? <div data-testid={TEST_IDS.usersListEmpty} className='flex justify-center items-center bg-white py-5'>
-                    No data available!
-                  </div>
+                  ? <Panel className='rounded-md w-full shadow-sm'>
+                      <Panel.Body className='p-0'>
+                        <div data-testid={TEST_IDS.usersListEmpty} className='flex justify-center items-center bg-white py-5'>
+                          No data available!
+                        </div>
+                      </Panel.Body>
+                    </Panel>
                   : <Panel className='rounded-md w-full shadow-sm'>
                     <Panel.Body className='p-0 overflow-hidden'>
                       <div className='flex-1 overflow-x-auto overflow-y-hidden'>

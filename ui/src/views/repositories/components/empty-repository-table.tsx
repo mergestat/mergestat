@@ -10,7 +10,7 @@ export const EmptyRepositoryTable: React.FC = () => {
   // const { setShowAddRepositoryModal } = useRepositoriesSetState()
 
   return (
-    <div data-testid={TEST_IDS.emptyRepositoryTable} className="flex items-center justify-center h-full w-full">
+    <div data-testid={TEST_IDS.emptyRepositoryTable} className="flex-1 flex flex-col items-center justify-center">
       <div className="w-full max-w-5xl">
         <Panel className="shadow-sm rounded-md">
           <Panel.Body>
@@ -31,7 +31,7 @@ export const EmptyRepositoryTable: React.FC = () => {
                 <h3 className="t-h3 mb-2">GitHub Authentication Token</h3>
                 <p className="t-text-muted">Add a personal access token to start importing from GitHub (and to work with private repos).</p>
                 <div className="t-button-toolbar mt-8">
-                  <Link href="/settings">
+                  <Link href="/settings/github-authentication">
                     <Button label="Authenticate GitHub" endIcon={<GithubIcon className="t-icon" />} />
                   </Link>
                   <a href="https://docs.mergestat.com/mergestat/setup/github-authentication" target="_blank" rel="noreferrer" >

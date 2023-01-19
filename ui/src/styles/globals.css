@@ -6,10 +6,6 @@
 @tailwind utilities;
 */
 
-.content-area {
-  height: calc(100% - theme('height.14')); /* Nav height is h-14 */
-}
-
 /*
 .Selectable {
   width: max-content;
@@ -101,6 +97,10 @@
   @apply bg-gray-500;
 }
 
+.t-avatar-primary {
+  @apply bg-blue-600;
+}
+
 .t-avatar-xl .t-icon {
     @apply w-6
            h-6;
@@ -109,4 +109,9 @@
 /* TODO(emily) fix modal position jump on smaller screens */
 .t-modal {
   @apply align-middle;
+}
+
+/* TODO(emily) fix tabs spacing in blocks */
+.t-tab {
+  @apply mb-0;
 }

@@ -3,7 +3,7 @@ import { Alert, Button, Spinner, Toolbar } from '@mergestat/blocks'
 import { useEffect, useState } from 'react'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
-import { useQueryContext } from 'src/state/contexts/query.contex'
+import { useQueryContext } from 'src/state/contexts/query.context'
 import { States } from 'src/utils/constants'
 import SQLEditorSection from './components/sql-editor-section'
 import QueryEditorCanceled from './components/state-canceled'
@@ -60,7 +60,7 @@ const QueryEditor: React.FC = () => {
   }
 
   return (
-    <main className='w-full flex flex-col h-full bg-gray-50 overflow-hidden'>
+    <>
       {/* Header */}
       <div className='bg-white overflow-auto flex h-16 w-full border-b px-8'>
         <Toolbar className='flex-1 space-x-4 w-auto h-full'>
@@ -108,7 +108,7 @@ const QueryEditor: React.FC = () => {
         {/* Filled state */}
         {!error && !loading && data && state === States.Filled && <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />}
       </div>
-    </main>
+    </>
   )
 }
 

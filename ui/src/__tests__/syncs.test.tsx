@@ -5,7 +5,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import 'intersection-observer'
 import { useRouter } from 'next/router'
 import RepoDetailsPage from 'src/pages/repos/[repository]'
-import { RepositoriesProvider } from 'src/state/contexts'
+import { GlobalProvider, RepositoriesProvider } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import { DynamicValues } from 'src/__mocks__/constants.mock'
 import { apolloMockReposWithData } from 'src/__mocks__/repos.mock'
@@ -28,9 +28,11 @@ describe('GraphQL queries: (Syncs Types)', () => {
 
     render(
       <MockedProvider mocks={[apolloMockSyncsTypesData, apolloMockSyncNow, apolloMockSyncsTypesRunningData]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepoDetailsPage />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepoDetailsPage />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 
@@ -58,9 +60,11 @@ describe('GraphQL queries: (Syncs Types)', () => {
 
     render(
       <MockedProvider mocks={[apolloMockSyncsTypesData, apolloMockAddSyncType, apolloMockNextSyncNow, apolloMockSyncsTypesRunningData]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepoDetailsPage />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepoDetailsPage />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 
@@ -88,9 +92,11 @@ describe('GraphQL queries: (Syncs Types)', () => {
 
     render(
       <MockedProvider mocks={[apolloMockSyncsTypesData, apolloMockReposWithData, apolloMockRemoveRepo]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepoDetailsPage />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepoDetailsPage />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 
@@ -142,9 +148,11 @@ describe('GraphQL queries: (Syncs Types)', () => {
 
     render(
       <MockedProvider mocks={[apolloMockSyncsTypesData, apolloMockReposWithData, apolloMockAddTag]} addTypename={false}>
-        <RepositoriesProvider>
-          <RepoDetailsPage />
-        </RepositoriesProvider>
+        <GlobalProvider>
+          <RepositoriesProvider>
+            <RepoDetailsPage />
+          </RepositoriesProvider>
+        </GlobalProvider>
       </MockedProvider>
     )
 

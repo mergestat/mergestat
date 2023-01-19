@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import { BreadcrumbNav, Button, Checkbox, Panel, Toolbar } from '@mergestat/blocks'
+import { Button, Checkbox, Panel, Toolbar } from '@mergestat/blocks'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -11,13 +11,15 @@ import { GET_REPO_IMPORT } from 'src/api-logic/graphql/queries/get-repo-imports'
 import Loading from 'src/components/Loading'
 import RepoImage from 'src/components/RepoImage'
 import { showSuccessAlert } from 'src/utils/alerts'
-import { SYNC_REPO_METHOD, MERGESTAT_TITLE } from 'src/utils/constants'
+import { MERGESTAT_TITLE, SYNC_REPO_METHOD } from 'src/utils/constants'
+import useCrumbsInit from 'src/views/hooks/useCrumbsInit'
 
 import SettingsView from 'src/views/settings'
 
 const AutoImportsDetail: NextPage = () => {
   const [name, setName] = useState('')
   const [syncsTypesArray, setSyncsTypesArray] = useState<SyncType[]>([])
+  useCrumbsInit()
 
   const router = useRouter()
   const { importId } = router.query
@@ -32,7 +34,7 @@ const AutoImportsDetail: NextPage = () => {
   const [updateAutoImport] = useMutation(UPDATE_AUTO_IMPORT_REPOS, {
     onCompleted: () => {
       showSuccessAlert('Default syncs saved')
-      router.push('/settings/repo-auto-imports')
+      router.push('/repos/repo-auto-imports')
     }
   })
 
@@ -66,19 +68,6 @@ const AutoImportsDetail: NextPage = () => {
     updateAutoImport({ variables: { id: importId, settings: newSettings } })
   }
 
-  const crumbs = [
-    {
-      text: 'Repo Auto Imports',
-      onClick: () => router.push('/settings/repo-auto-imports'),
-    },
-    {
-      text: name,
-      startIcon: (
-        <RepoImage repoType='github' orgName={name} size="8" />
-      ),
-    },
-  ]
-
   return (
     <>
       <Fragment>
@@ -93,7 +82,8 @@ const AutoImportsDetail: NextPage = () => {
               <div className='bg-white h-16 w-full border-b px-8 flex-0'>
                 <Toolbar className='h-full'>
                   <Toolbar.Left>
-                    <BreadcrumbNav data={crumbs} />
+                    <RepoImage repoType='github' orgName={name} size="8" />
+                    <h2 className='t-h2 mb-0'>{name}</h2>
                   </Toolbar.Left>
                   <Toolbar.Right>
                     <Button label='Save' onClick={updateImport} />

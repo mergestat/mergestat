@@ -2,7 +2,8 @@ import { MockedProvider } from '@apollo/react-testing'
 import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
-import Settings from 'src/pages/settings'
+import GitHubAuthenticationPage from 'src/pages/settings/github-authentication'
+import { GlobalProvider } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import { DynamicValues } from 'src/__mocks__/constants.mock'
 import { apolloMockSetPAT, mockGitHubToken } from 'src/__mocks__/settings.mock'
@@ -19,7 +20,9 @@ describe('Components: (Settings)', () => {
   it('calling useMutation(): setting PAT - token invalid', async () => {
     render(
       <MockedProvider addTypename={false}>
-        <Settings />
+        <GlobalProvider>
+          <GitHubAuthenticationPage />
+        </GlobalProvider>
       </MockedProvider>
     )
 
@@ -43,9 +46,11 @@ describe('Components: (Settings)', () => {
 
   it('calling useMutation(): setting PAT - token valid', async () => {
     render(
-      <MockedProvider addTypename={false}>
-        <Settings />
-      </MockedProvider>
+      <GlobalProvider>
+        <MockedProvider addTypename={false}>
+          <GitHubAuthenticationPage />
+        </MockedProvider>
+      </GlobalProvider>
     )
 
     // Get input to set PAT
@@ -72,9 +77,11 @@ describe('Components: (Settings)', () => {
 
   it('calling useMutation(): setting PAT - saving token in data base', async () => {
     render(
-      <MockedProvider mocks={[apolloMockSetPAT]} addTypename={false}>
-        <Settings />
-      </MockedProvider>
+      <GlobalProvider>
+        <MockedProvider mocks={[apolloMockSetPAT]} addTypename={false}>
+          <GitHubAuthenticationPage />
+        </MockedProvider>
+      </GlobalProvider>
     )
 
     // Get input to set PAT

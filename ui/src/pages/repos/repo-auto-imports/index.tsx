@@ -4,10 +4,12 @@ import { Fragment } from 'react'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
 
 import { RepositoriesProvider } from 'src/state/contexts'
-import AutoImports from 'src/views/settings/repo-auto-imports'
+import useCrumbsInit from 'src/views/hooks/useCrumbsInit'
+import AutoImports from 'src/views/repo-auto-imports'
 
 const AutoImportPage: NextPage = () => {
   const title = `Repo Auto Imports - Settings  ${MERGESTAT_TITLE}`
+  useCrumbsInit()
 
   return (
     <Fragment>

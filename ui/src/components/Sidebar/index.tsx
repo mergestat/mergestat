@@ -1,45 +1,73 @@
 import { Sidebar } from '@mergestat/blocks'
 import { CogIcon, DatabaseIcon, RepositoryIcon, TerminalIcon } from '@mergestat/icons'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 
 const SidebarView: React.FC = () => {
-  const { pathname } = useRouter()
+  const { pathname, push } = useRouter()
 
   const isSidebarActive = (path: string) => !!pathname.match(path)?.length
 
   return (
-    <Sidebar>
-      <Link href="/repos" passHref>
+    <Sidebar compact={false} dark={true} collapsible={true} className='flex-none'>
+      <Sidebar.Header />
+      <Sidebar.Main>
         <Sidebar.Item
-          label="Repos"
+          label='Repos'
+          compact={false}
           active={isSidebarActive('repos')}
           icon={<RepositoryIcon className='t-icon' />}
+          onClick={() => push('/repos')}
+          subNav={
+            <Sidebar.Item compact={false}
+              onClick={() => push('/repos/repo-auto-imports')}
+              active={isSidebarActive('/repos/repo-auto-imports')}
+              label='Auto Import' level='sub' />
+          }
         />
-      </Link>
-      <Link href="/queries" passHref>
         <Sidebar.Item
-          label="Queries"
+          label='Queries'
+          compact={false}
           active={isSidebarActive('queries')}
+          onClick={() => push('/queries')}
           icon={<TerminalIcon className='t-icon' />}
         />
-      </Link>
-      <Link href="/connect" passHref>
         <Sidebar.Item
-          label="Connect"
+          label='Connect'
+          compact={false}
           active={isSidebarActive('connect')}
+          onClick={() => push('/connect')}
           icon={<DatabaseIcon className='t-icon' />}
         />
-      </Link>
-      <Sidebar.Divider />
-      <Link href="/settings" passHref>
+        <Sidebar.Divider />
         <Sidebar.Item
-          label="Settings"
+          label='Settings'
+          compact={false}
           active={isSidebarActive('settings')}
+          onClick={() => push('/settings/github-authentication')}
           icon={<CogIcon className='t-icon' />}
-        />
-      </Link>
+          subNav={
+            <>
+              <Sidebar.Item compact={false}
+                active={isSidebarActive('/settings/github-authentication')}
+                onClick={() => push('/settings/github-authentication')}
+                label='GitHub Authentication' level='sub' />
+              <Sidebar.Item compact={false}
+                active={isSidebarActive('/settings/user-management')}
+                onClick={() => push('/settings/user-management')}
+                label='User Management' level='sub' />
+              <Sidebar.Item compact={false}
+                active={isSidebarActive('/settings/user-settings')}
+                onClick={() => push('/settings/user-settings')}
+                label='User Settings' level='sub' />
+            </>
+          } />
+      </Sidebar.Main>
+      <Sidebar.Footer>
+        <a target='_blank' href='https://github.com/mergestat/mergestat' rel='noopener noreferrer'>
+          <Sidebar.Version label='beta' />
+        </a>
+      </Sidebar.Footer>
     </Sidebar>
   )
 }
