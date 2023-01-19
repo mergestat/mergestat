@@ -35,7 +35,7 @@ func AutoImport(pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.HandlerFunc {
 		var logger = job.Logger()
 
 		// start sending periodic keep-alive pings!
-		go job.SendKeepAlive(ctx, job.KeepAlive-(5*time.Second))
+		go job.SendKeepAlive(ctx, job.KeepAlive-(5*time.Second)) //nolint:errcheck
 
 		// fetch a list of all configured imports that are due now
 		var imports []db.ListRepoImportsDueForImportRow
@@ -88,7 +88,7 @@ func AutoImport(pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.HandlerFunc {
 // handleImport handles execution of a given import configuration
 func handleImport(ctx context.Context, qry *db.Queries, mergestat *sqlx.DB, imp db.ListRepoImportsDueForImportRow) (err error) {
 	var query, repoOwner string
-	var removeDeletedRepos, defaultSyncTypes = true, make([]string, 0)
+	var removeDeletedRepos, defaultSyncTypes = true, make([]string, 0) //nolint:ineffassign
 
 	// determine the kind of import (Org vs. User) and parse the settings
 	switch imp.Type {
