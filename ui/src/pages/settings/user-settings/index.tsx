@@ -4,10 +4,12 @@ import { Fragment } from 'react'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
 
 import { UserSettingsProvider } from 'src/state/contexts'
+import useCrumbsInit from 'src/views/hooks/useCrumbsInit'
 import UserSettings from 'src/views/settings/user-settings'
 
 const UserSettingsPage: NextPage = () => {
   const title = `User Settings - Settings ${MERGESTAT_TITLE}`
+  useCrumbsInit()
 
   return (
     <Fragment>

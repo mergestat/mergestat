@@ -43,6 +43,7 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Settings'
           compact={false}
+          active={isSidebarActive('settings')}
           onClick={() => push('/settings/github-authentication')}
           icon={<CogIcon className='t-icon' />}
           subNav={
@@ -64,7 +65,7 @@ const SidebarView: React.FC = () => {
       </Sidebar.Main>
       <Sidebar.Footer>
         <a target='_blank' href='https://github.com/mergestat/mergestat' rel='noopener noreferrer'>
-          <Sidebar.Version label='v.1.1.0' />
+          <Sidebar.Version label='beta' />
         </a>
       </Sidebar.Footer>
     </Sidebar>

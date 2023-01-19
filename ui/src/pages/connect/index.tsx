@@ -8,11 +8,13 @@ import { GetDatabaseConnectionQuery } from 'src/api-logic/graphql/generated/sche
 import { GET_DB_CONNECTION } from 'src/api-logic/graphql/queries/auth'
 import Loading from 'src/components/Loading'
 import { copy } from 'src/utils'
+import useCrumbsInit from 'src/views/hooks/useCrumbsInit'
 import useCurrentUser from 'src/views/hooks/useCurrentUser'
 
 const Connect: NextPage = () => {
   const { loading, data } = useQuery<GetDatabaseConnectionQuery>(GET_DB_CONNECTION, { fetchPolicy: 'no-cache' })
   const { data: currentUserData } = useCurrentUser()
+  useCrumbsInit()
 
   return (
     <Fragment>

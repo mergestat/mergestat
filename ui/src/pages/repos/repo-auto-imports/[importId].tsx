@@ -11,13 +11,15 @@ import { GET_REPO_IMPORT } from 'src/api-logic/graphql/queries/get-repo-imports'
 import Loading from 'src/components/Loading'
 import RepoImage from 'src/components/RepoImage'
 import { showSuccessAlert } from 'src/utils/alerts'
-import { SYNC_REPO_METHOD, MERGESTAT_TITLE } from 'src/utils/constants'
+import { MERGESTAT_TITLE, SYNC_REPO_METHOD } from 'src/utils/constants'
+import useCrumbsInit from 'src/views/hooks/useCrumbsInit'
 
 import SettingsView from 'src/views/settings'
 
 const AutoImportsDetail: NextPage = () => {
   const [name, setName] = useState('')
   const [syncsTypesArray, setSyncsTypesArray] = useState<SyncType[]>([])
+  useCrumbsInit()
 
   const router = useRouter()
   const { importId } = router.query

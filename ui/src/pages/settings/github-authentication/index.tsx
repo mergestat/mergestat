@@ -5,8 +5,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { Fragment } from 'react'
 import { LINKS_TO, TEST_IDS } from 'src/utils/constants'
+import useCrumbsInit from 'src/views/hooks/useCrumbsInit'
 import useSetPat from 'src/views/hooks/useSetPat'
-
 import SettingsView from 'src/views/settings'
 
 const GitHubAuthenticationPage: NextPage = () => {
@@ -20,6 +20,8 @@ const GitHubAuthenticationPage: NextPage = () => {
     changeToken,
     handleSavePAT,
   } = useSetPat()
+
+  useCrumbsInit()
 
   return (
     <Fragment>
