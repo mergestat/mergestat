@@ -30,6 +30,7 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
       rowCount: Int
       rows: [JSON!]
       columns: [JSON!]
+      queryRunningTimeMs: Int
     }
 
     extend type Query {
@@ -45,6 +46,7 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                         // if trackHistory is true, then we need to track the query in the query history table
                         yield context.pgClient.query("INSERT INTO mergestat.query_history (run_by, query) VALUES ((SELECT current_user), $1);", [input.query]);
                     }
+                    const start = new Date();
                     // first set the pg session to be read only, if disableReadOnly is false
                     if (!input.disableReadOnly) {
                         yield context.pgClient.query("SET TRANSACTION READ ONLY;");
@@ -79,6 +81,7 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                             });
                         });
                     })();
+                    const queryRunningTimeMs = (new Date()).getTime() - start.getTime();
                     return {
                         rows: rowsToReturn,
                         columns: queryResult.fields.map((f) => ({
@@ -86,6 +89,7 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                             format: f.format
                         })),
                         rowCount: queryResult.rowCount,
+                        queryRunningTimeMs
                     };
                 });
             },

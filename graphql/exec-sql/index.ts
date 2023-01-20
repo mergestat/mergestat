@@ -27,6 +27,7 @@ module.exports = makeExtendSchemaPlugin({
       rowCount: Int
       rows: [JSON!]
       columns: [JSON!]
+      queryRunningTimeMs: Int
     }
 
     extend type Query {
@@ -42,6 +43,8 @@ module.exports = makeExtendSchemaPlugin({
           // if trackHistory is true, then we need to track the query in the query history table
           await context.pgClient.query("INSERT INTO mergestat.query_history (run_by, query) VALUES ((SELECT current_user), $1);", [input.query])
         }
+
+        const start = new Date()
 
         // first set the pg session to be read only, if disableReadOnly is false
         if (!input.disableReadOnly) {
@@ -81,6 +84,8 @@ module.exports = makeExtendSchemaPlugin({
           })
         })()
 
+        const queryRunningTimeMs : number = (new Date()).getTime() - start.getTime()
+
         return {
           rows: rowsToReturn,
           columns: queryResult.fields.map((f: any) => ({
@@ -88,6 +93,7 @@ module.exports = makeExtendSchemaPlugin({
             format: f.format
           })),
           rowCount: queryResult.rowCount,
+          queryRunningTimeMs
         }
       },
     },
