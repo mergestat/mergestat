@@ -6,6 +6,7 @@ const EXECUTE_SQL = gql`
       rowCount
       columns
       rows
+      queryRunningTimeMs
     }
   }
 `

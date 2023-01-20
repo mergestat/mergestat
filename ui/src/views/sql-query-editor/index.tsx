@@ -5,7 +5,7 @@ import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
 import { QueryTabsProvider } from 'src/state/contexts/query-tabs.context'
 import { useQueryContext } from 'src/state/contexts/query.context'
-import { getTimeExecution } from 'src/utils'
+import { formatTimeExecution } from 'src/utils'
 import { States } from 'src/utils/constants'
 import SQLEditorSection from './components/sql-editor-section'
 import QueryEditorCanceled from './components/state-canceled'
@@ -42,6 +42,7 @@ const QueryEditor: React.FC = () => {
 
   useEffect(() => {
     if (data?.execSQL.rows?.length && data?.execSQL.rows?.length > 0) {
+      setTime(formatTimeExecution(data?.execSQL.queryRunningTimeMs || 0))
       setState(States.Filled)
       setRowLimitReached(data?.execSQL.rows?.length > ROWS_LIMIT)
     } else {
@@ -49,16 +50,11 @@ const QueryEditor: React.FC = () => {
     }
   }, [data, error])
 
-  const executeSQLQuery = async () => {
+  const executeSQLQuery = () => {
     setLoading(true)
     setAbortRef(new AbortController())
-    await executeSQL({ variables: { sql: query, disableReadOnly: !readOnly } })
+    executeSQL({ variables: { sql: query, disableReadOnly: !readOnly } })
     setExecuted(true)
-  }
-
-  const execute = async () => {
-    const time = await getTimeExecution(executeSQLQuery)
-    setTime(time)
   }
 
   const cancelSQLQuery = () => {
@@ -82,7 +78,7 @@ const QueryEditor: React.FC = () => {
             <Button className='whitespace-nowrap' label='Execute (Shift + Enter)'
               endIcon={loading && <Spinner size='sm' className='ml-2' />}
               disabled={loading}
-              onClick={() => execute()}
+              onClick={() => executeSQLQuery()}
             />
           </Toolbar.Right>
         </Toolbar>
@@ -97,7 +93,7 @@ const QueryEditor: React.FC = () => {
         {/* SQL editor */}
         {!expanded && <SQLEditorSection
           onEnterKey={() => {
-            if (!loading && query) { execute() }
+            if (!loading && query) { executeSQLQuery() }
           }}
         />}
 

@@ -211,15 +211,10 @@ export const mapToUserType = (role: UserTypeUI) => {
 }
 
 /**
- * Method to measure time execution of a task
- * @param task Task to execute
- * @returns Time execution of a task in secounds or millisecounds
+ * Method to format execution time
+ * @param millisecounds Time to format
+ * @returns Time formatted to millisecounds or secounds
  */
-export const getTimeExecution = async (task: () => void) => {
-  const startTime = performance.now()
-  await task()
-  const endTime = performance.now()
-  const millisecounds = endTime - startTime
-  const secounds = millisecounds / 1000
-  return millisecounds > 1000 ? `${Math.round(secounds * 100) / 100}s` : `${Math.trunc(millisecounds * 100) / 100}ms`
+export const formatTimeExecution = (millisecounds: number) => {
+  return millisecounds > 1000 ? `${Math.round((millisecounds / 1000) * 100) / 100}s` : `${Math.trunc(millisecounds * 100) / 100}ms`
 }
