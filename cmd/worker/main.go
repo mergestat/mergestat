@@ -11,6 +11,7 @@ import (
 	"github.com/mergestat/mergestat/internal/timeout"
 	"github.com/mergestat/sqlq"
 	"github.com/mergestat/sqlq/runtime/embed"
+	"github.com/mergestat/sqlq/schema"
 	"net/http"
 	_ "net/http/pprof"
 	"net/url"
@@ -235,6 +236,11 @@ func main() {
 	var upstream *sql.DB
 	if upstream, err = sql.Open("pgx", postgresConnection); err != nil {
 		logger.Fatal().Err(err).Msg("failed to open connection to upstream")
+	}
+
+	// apply sqlq migrations
+	if err := schema.Apply(upstream); err != nil {
+		logger.Fatal().Err(err).Msg("failed to apply sqlq migrations")
 	}
 
 	var queues = []sqlq.Queue{"default"}
