@@ -5,6 +5,7 @@ import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
 import { QueryTabsProvider } from 'src/state/contexts/query-tabs.context'
 import { useQueryContext } from 'src/state/contexts/query.context'
+import { getTimeExecution } from 'src/utils'
 import { States } from 'src/utils/constants'
 import SQLEditorSection from './components/sql-editor-section'
 import QueryEditorCanceled from './components/state-canceled'
@@ -23,6 +24,7 @@ const QueryEditor: React.FC = () => {
   const [executed, setExecuted] = useState(false)
   const [aborterRef, setAbortRef] = useState(new AbortController())
   const [loading, setLoading] = useState(false)
+  const [time, setTime] = useState('')
 
   const [executeSQL, { loading: loadingQuery, error, data }] = useLazyQuery<ExecuteSqlQuery>(EXECUTE_SQL, {
     fetchPolicy: 'no-cache',
@@ -47,11 +49,16 @@ const QueryEditor: React.FC = () => {
     }
   }, [data, error])
 
-  const executeSQLQuery = () => {
+  const executeSQLQuery = async () => {
     setLoading(true)
     setAbortRef(new AbortController())
-    executeSQL({ variables: { sql: query, disableReadOnly: !readOnly } })
+    await executeSQL({ variables: { sql: query, disableReadOnly: !readOnly } })
     setExecuted(true)
+  }
+
+  const execute = async () => {
+    const time = await getTimeExecution(executeSQLQuery)
+    setTime(time)
   }
 
   const cancelSQLQuery = () => {
@@ -75,7 +82,7 @@ const QueryEditor: React.FC = () => {
             <Button className='whitespace-nowrap' label='Execute (Shift + Enter)'
               endIcon={loading && <Spinner size='sm' className='ml-2' />}
               disabled={loading}
-              onClick={() => executeSQLQuery()}
+              onClick={() => execute()}
             />
           </Toolbar.Right>
         </Toolbar>
@@ -90,7 +97,7 @@ const QueryEditor: React.FC = () => {
         {/* SQL editor */}
         {!expanded && <SQLEditorSection
           onEnterKey={() => {
-            if (!loading && query) { executeSQLQuery() }
+            if (!loading && query) { execute() }
           }}
         />}
 
@@ -109,7 +116,7 @@ const QueryEditor: React.FC = () => {
         {/* Filled state */}
         {!error && !loading && data && state === States.Filled &&
           <QueryTabsProvider>
-            <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} data={data.execSQL} />
+            <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} time={time} data={data.execSQL} />
           </QueryTabsProvider>
         }
       </div>

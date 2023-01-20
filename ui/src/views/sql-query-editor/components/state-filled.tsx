@@ -8,11 +8,12 @@ import useTabs from 'src/views/hooks/useTabs'
 type QueryEditorFilledProps = {
   rowLimit: number
   rowLimitReached: boolean
+  time: string
   data: QueryResultProps
   children?: React.ReactNode
 }
 
-const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, data }: QueryEditorFilledProps) => {
+const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, time, data }: QueryEditorFilledProps) => {
   const { tabs, expanded, activeTab, setActiveTab, setExpanded, addTab, removeTab } = useTabs(rowLimit, rowLimitReached, data)
 
   return (
@@ -75,7 +76,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             </Toolbar.Left>
             <Toolbar.Right className='flex-1 pr-5'>
               <Toolbar.Item>
-                <span className='text-sm t-text-muted pl-3 pr-1'>5.2s</span>
+                <span className='text-sm t-text-muted pl-3 pr-1'>{time}</span>
               </Toolbar.Item>
               <Toolbar.Item>
                 <Badge
