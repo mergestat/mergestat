@@ -2,8 +2,16 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/mergestat/mergestat/internal/cron"
+	"github.com/mergestat/mergestat/internal/jobs/repo"
+	"github.com/mergestat/mergestat/internal/syncer"
+	"github.com/mergestat/mergestat/internal/timeout"
+	"github.com/mergestat/sqlq"
+	"github.com/mergestat/sqlq/runtime/embed"
+	"github.com/mergestat/sqlq/schema"
 	"net/http"
 	_ "net/http/pprof"
 	"net/url"
@@ -20,6 +28,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
+	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mergestat/mergestat-lite/extensions"
@@ -27,10 +36,7 @@ import (
 	"github.com/mergestat/mergestat-lite/extensions/services"
 	"github.com/mergestat/mergestat-lite/pkg/locator"
 	_ "github.com/mergestat/mergestat-lite/pkg/sqlite"
-	repos "github.com/mergestat/mergestat/internal/repos"
 	"github.com/mergestat/mergestat/internal/scheduler"
-	"github.com/mergestat/mergestat/internal/syncer"
-	"github.com/mergestat/mergestat/internal/timeout"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"github.com/shurcooL/githubv4"
@@ -226,36 +232,36 @@ func main() {
 		os.Exit(1)
 	}
 
-	go func() {
-		<-ctx.Done()
-		logger.Info().Msg("received shutdown signal, waiting for workers to finish...")
-		stop()
-	}()
+	// create a new sqlq worker to process tasks in background
+	var upstream *sql.DB
+	if upstream, err = sql.Open("pgx", postgresConnection); err != nil {
+		logger.Fatal().Err(err).Msg("failed to open connection to upstream")
+	}
 
-	var wg sync.WaitGroup
-	wg.Add(4)
+	// apply sqlq migrations
+	if err := schema.Apply(upstream); err != nil {
+		logger.Fatal().Err(err).Msg("failed to apply sqlq migrations")
+	}
+
+	var queues = []sqlq.Queue{"default"}
+	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{Queues: queues})
+
+	// register job handlers for types implemented by this worker
+	_ = worker.Register("repos/auto-import", repo.AutoImport(pool, db))
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars
-	go func() {
-		defer wg.Done()
-		scheduler.New(&logger, pool).Start(ctx, 1*time.Minute)
-	}()
+	go scheduler.New(&logger, pool).Start(ctx, 1*time.Minute)
+	go timeout.New(&logger, pool).Start(ctx, time.Minute)
+	go syncer.New(pool, db, &logger, concurrency, 3*time.Second).Start(ctx)
 
-	go func() {
-		defer wg.Done()
-		repos.NewImporter(&logger, pool, db).Start(ctx, time.Minute)
-	}()
-
-	go func() {
-		defer wg.Done()
-		timeout.New(&logger, pool).Start(ctx, time.Minute)
-	}()
-
-	go func() {
-		defer wg.Done()
-		syncer.New(pool, db, &logger, concurrency, 3*time.Second).Start(ctx)
-	}()
+	// run a basic cron every minute to schedule a repos/auto-import job
+	// these jobs are idempotent, and so, multiple instances can run at same time without conflict
+	go cron.Basic(ctx, 1*time.Minute, func() {
+		if _, err := sqlq.Enqueue(upstream, "default", sqlq.NewJobDesc("repos/auto-import")); err != nil {
+			logger.Err(err).Msg("failed to enqueue repo sync job")
+		}
+	})
 
 	if os.Getenv("DEBUG") != "" {
 		go func() {
@@ -266,5 +272,15 @@ func main() {
 		}()
 	}
 
-	wg.Wait()
+	// start the worker
+	if err = worker.Start(); err != nil {
+		logger.Fatal().Err(err).Msg("failed to start background worker")
+	}
+
+	<-ctx.Done() // wait for ctrl+c
+
+	// stop the worker
+	if err = worker.Shutdown(30 * time.Second); err != nil {
+		logger.Err(err).Msg("failed to terminate worker gracefully")
+	}
 }
