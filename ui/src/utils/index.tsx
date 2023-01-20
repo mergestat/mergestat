@@ -1,7 +1,6 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
-import { RepoSyncStateT, UserTypeUI } from 'src/@types'
-import { RepoSyncQueue } from 'src/api-logic/graphql/generated/schema'
+import { RepoSyncQueueW, RepoSyncStateT, UserTypeUI } from 'src/@types'
 import { showSuccessAlert } from './alerts'
 import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI } from './constants'
 
@@ -112,12 +111,6 @@ export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
   }
 }
 
-interface RepoSyncQueueW extends RepoSyncQueue {
-  warnings?: {
-    totalCount: number
-  }
-}
-
 /**
  * Method to get sync queue status
  * @param syncQueue Sync type to evaluate
@@ -208,4 +201,13 @@ export const mapToUserType = (role: UserTypeUI) => {
     default:
       return null
   }
+}
+
+/**
+ * Method to format execution time
+ * @param millisecounds Time to format
+ * @returns Time formatted to millisecounds or secounds
+ */
+export const formatTimeExecution = (millisecounds: number) => {
+  return millisecounds > 1000 ? `${Math.round((millisecounds / 1000) * 100) / 100}s` : `${Math.trunc(millisecounds * 100) / 100}ms`
 }

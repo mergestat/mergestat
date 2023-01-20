@@ -1,4 +1,5 @@
 import { ReactElement } from 'react'
+import { RepoSyncQueue } from './api-logic/graphql/generated/schema'
 
 export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'warning' | 'error' | 'empty'
 
@@ -163,6 +164,12 @@ export type AutoImportData = {
   error?: string | null
 }
 
+export interface RepoSyncQueueW extends RepoSyncQueue {
+  warnings?: {
+    totalCount: number
+  }
+}
+
 /** Users Props Type */
 
 export type UserData = {
@@ -177,4 +184,31 @@ export type QueryResultProps = {
   rowCount?: number | null
   columns?: Array<{ name: string | number | boolean, format: string }> | null
   rows?: Array<Array<string | number | boolean>> | null
+}
+
+/** Query Tab Types */
+
+export type LineChartData = {
+  anyProp: string
+}
+
+export type BarChartData = {
+  anyProp: string
+}
+
+export type SingleMetricData = {
+  label?: string
+  selectedColumnName?: string
+  selectedColumnIndex?: number
+  stat?: string
+}
+
+export type ActionType = {
+  tab: string
+  remove?: boolean
+  payload?: SingleMetricData | BarChartData | LineChartData
+}
+
+export type TabsState = {
+  [key: string]: SingleMetricData | BarChartData | LineChartData
 }

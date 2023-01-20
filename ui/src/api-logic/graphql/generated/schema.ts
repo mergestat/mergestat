@@ -783,6 +783,38 @@ export type CreateGitleaksRepoScanPayloadGitleaksRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
 };
 
+/** All input for the create `GosecRepoScan` mutation. */
+export type CreateGosecRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `GosecRepoScan` to be created by this mutation. */
+  gosecRepoScan: GosecRepoScanInput;
+};
+
+/** The output of our create `GosecRepoScan` mutation. */
+export type CreateGosecRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GosecRepoScan` that was created by this mutation. */
+  gosecRepoScan?: Maybe<GosecRepoScan>;
+  /** An edge for our `GosecRepoScan`. May be used by Relay 1. */
+  gosecRepoScanEdge?: Maybe<GosecRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `GosecRepoScan` mutation. */
+export type CreateGosecRepoScanPayloadGosecRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<GosecRepoScansOrderBy>>;
+};
+
 /** All input for the create `LabelAssociation` mutation. */
 export type CreateLabelAssociationInput = {
   /**
@@ -849,6 +881,38 @@ export type CreateLabelPayload = {
 /** The output of our create `Label` mutation. */
 export type CreateLabelPayloadLabelEdgeArgs = {
   orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
+/** All input for the create `QueryHistory` mutation. */
+export type CreateQueryHistoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `QueryHistory` to be created by this mutation. */
+  queryHistory: QueryHistoryInput;
+};
+
+/** The output of our create `QueryHistory` mutation. */
+export type CreateQueryHistoryPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `QueryHistory` that was created by this mutation. */
+  queryHistory?: Maybe<QueryHistory>;
+  /** An edge for our `QueryHistory`. May be used by Relay 1. */
+  queryHistoryEdge?: Maybe<QueryHistoriesEdge>;
+};
+
+
+/** The output of our create `QueryHistory` mutation. */
+export type CreateQueryHistoryPayloadQueryHistoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<QueryHistoriesOrderBy>>;
 };
 
 /** All input for the create `RepoImport` mutation. */
@@ -2205,6 +2269,49 @@ export type DeleteGitleaksRepoScanPayloadGitleaksRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
 };
 
+/** All input for the `deleteGosecRepoScanByNodeId` mutation. */
+export type DeleteGosecRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GosecRepoScan` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteGosecRepoScan` mutation. */
+export type DeleteGosecRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `GosecRepoScan` mutation. */
+export type DeleteGosecRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedGosecRepoScanNodeId?: Maybe<Scalars['ID']>;
+  /** The `GosecRepoScan` that was deleted by this mutation. */
+  gosecRepoScan?: Maybe<GosecRepoScan>;
+  /** An edge for our `GosecRepoScan`. May be used by Relay 1. */
+  gosecRepoScanEdge?: Maybe<GosecRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `GosecRepoScan` mutation. */
+export type DeleteGosecRepoScanPayloadGosecRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<GosecRepoScansOrderBy>>;
+};
+
 /** All input for the `deleteLabelAssociationByLabelAndRepoSyncType` mutation. */
 export type DeleteLabelAssociationByLabelAndRepoSyncTypeInput = {
   /**
@@ -2283,6 +2390,49 @@ export type DeleteLabelPayload = {
 /** The output of our delete `Label` mutation. */
 export type DeleteLabelPayloadLabelEdgeArgs = {
   orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
+/** All input for the `deleteQueryHistoryByNodeId` mutation. */
+export type DeleteQueryHistoryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `QueryHistory` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteQueryHistory` mutation. */
+export type DeleteQueryHistoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `QueryHistory` mutation. */
+export type DeleteQueryHistoryPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedQueryHistoryNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `QueryHistory` that was deleted by this mutation. */
+  queryHistory?: Maybe<QueryHistory>;
+  /** An edge for our `QueryHistory`. May be used by Relay 1. */
+  queryHistoryEdge?: Maybe<QueryHistoriesEdge>;
+};
+
+
+/** The output of our delete `QueryHistory` mutation. */
+export type DeleteQueryHistoryPayloadQueryHistoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<QueryHistoriesOrderBy>>;
 };
 
 /** All input for the `deleteRepoByNodeId` mutation. */
@@ -3068,11 +3218,13 @@ export type ExecSqlInput = {
   disableReadOnly?: InputMaybe<Scalars['Boolean']>;
   query?: InputMaybe<Scalars['String']>;
   rowLimit?: InputMaybe<Scalars['Int']>;
+  trackHistory?: InputMaybe<Scalars['Boolean']>;
   variables?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type ExecSqlResult = {
   columns?: Maybe<Array<Scalars['JSON']>>;
+  queryRunningTimeMs?: Maybe<Scalars['Int']>;
   rowCount?: Maybe<Scalars['Int']>;
   rows?: Maybe<Array<Scalars['JSON']>>;
 };
@@ -7239,6 +7391,196 @@ export enum GitleaksRepoScansOrderBy {
   ResultsDesc = 'RESULTS_DESC'
 }
 
+export type GosecRepoDetection = {
+  column?: Maybe<Scalars['JSON']>;
+  confidence?: Maybe<Scalars['JSON']>;
+  cweId?: Maybe<Scalars['JSON']>;
+  details?: Maybe<Scalars['JSON']>;
+  file?: Maybe<Scalars['JSON']>;
+  line?: Maybe<Scalars['JSON']>;
+  nosec?: Maybe<Scalars['JSON']>;
+  repoId?: Maybe<Scalars['UUID']>;
+  ruleId?: Maybe<Scalars['JSON']>;
+  severity?: Maybe<Scalars['JSON']>;
+};
+
+/**
+ * A condition to be used against `GosecRepoDetection` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type GosecRepoDetectionCondition = {
+  /** Checks for equality with the object’s `column` field. */
+  column?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `confidence` field. */
+  confidence?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `cweId` field. */
+  cweId?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `details` field. */
+  details?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `file` field. */
+  file?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `line` field. */
+  line?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `nosec` field. */
+  nosec?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `ruleId` field. */
+  ruleId?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `severity` field. */
+  severity?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `GosecRepoDetection` object types. All fields are combined with a logical ‘and.’ */
+export type GosecRepoDetectionFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GosecRepoDetectionFilter>>;
+  /** Filter by the object’s `column` field. */
+  column?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `confidence` field. */
+  confidence?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `cweId` field. */
+  cweId?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `details` field. */
+  details?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `file` field. */
+  file?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `line` field. */
+  line?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `nosec` field. */
+  nosec?: InputMaybe<JsonFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GosecRepoDetectionFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GosecRepoDetectionFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `ruleId` field. */
+  ruleId?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `severity` field. */
+  severity?: InputMaybe<JsonFilter>;
+};
+
+/** A connection to a list of `GosecRepoDetection` values. */
+export type GosecRepoDetectionsConnection = {
+  /** A list of edges which contains the `GosecRepoDetection` and cursor to aid in pagination. */
+  edges: Array<GosecRepoDetectionsEdge>;
+  /** A list of `GosecRepoDetection` objects. */
+  nodes: Array<GosecRepoDetection>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GosecRepoDetection` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GosecRepoDetection` edge in the connection. */
+export type GosecRepoDetectionsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GosecRepoDetection` at the end of the edge. */
+  node: GosecRepoDetection;
+};
+
+/** Methods to use when ordering `GosecRepoDetection`. */
+export enum GosecRepoDetectionsOrderBy {
+  ColumnAsc = 'COLUMN_ASC',
+  ColumnDesc = 'COLUMN_DESC',
+  ConfidenceAsc = 'CONFIDENCE_ASC',
+  ConfidenceDesc = 'CONFIDENCE_DESC',
+  CweIdAsc = 'CWE_ID_ASC',
+  CweIdDesc = 'CWE_ID_DESC',
+  DetailsAsc = 'DETAILS_ASC',
+  DetailsDesc = 'DETAILS_DESC',
+  FileAsc = 'FILE_ASC',
+  FileDesc = 'FILE_DESC',
+  LineAsc = 'LINE_ASC',
+  LineDesc = 'LINE_DESC',
+  Natural = 'NATURAL',
+  NosecAsc = 'NOSEC_ASC',
+  NosecDesc = 'NOSEC_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  RuleIdAsc = 'RULE_ID_ASC',
+  RuleIdDesc = 'RULE_ID_DESC',
+  SeverityAsc = 'SEVERITY_ASC',
+  SeverityDesc = 'SEVERITY_DESC'
+}
+
+export type GosecRepoScan = Node & {
+  issues: Scalars['JSON'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  repoId: Scalars['UUID'];
+};
+
+/**
+ * A condition to be used against `GosecRepoScan` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type GosecRepoScanCondition = {
+  /** Checks for equality with the object’s `issues` field. */
+  issues?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `GosecRepoScan` object types. All fields are combined with a logical ‘and.’ */
+export type GosecRepoScanFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GosecRepoScanFilter>>;
+  /** Filter by the object’s `issues` field. */
+  issues?: InputMaybe<JsonFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GosecRepoScanFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GosecRepoScanFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+};
+
+/** An input for mutations affecting `GosecRepoScan` */
+export type GosecRepoScanInput = {
+  issues: Scalars['JSON'];
+  repoId: Scalars['UUID'];
+};
+
+/** Represents an update to a `GosecRepoScan`. Fields that are set will be updated. */
+export type GosecRepoScanPatch = {
+  issues?: InputMaybe<Scalars['JSON']>;
+  repoId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A connection to a list of `GosecRepoScan` values. */
+export type GosecRepoScansConnection = {
+  /** A list of edges which contains the `GosecRepoScan` and cursor to aid in pagination. */
+  edges: Array<GosecRepoScansEdge>;
+  /** A list of `GosecRepoScan` objects. */
+  nodes: Array<GosecRepoScan>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GosecRepoScan` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GosecRepoScan` edge in the connection. */
+export type GosecRepoScansEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GosecRepoScan` at the end of the edge. */
+  node: GosecRepoScan;
+};
+
+/** Methods to use when ordering `GosecRepoScan`. */
+export enum GosecRepoScansOrderBy {
+  IssuesAsc = 'ISSUES_ASC',
+  IssuesDesc = 'ISSUES_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC'
+}
+
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
 export type IntFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -7661,10 +8003,14 @@ export type Mutation = {
   createGithubStargazer?: Maybe<CreateGithubStargazerPayload>;
   /** Creates a single `GitleaksRepoScan`. */
   createGitleaksRepoScan?: Maybe<CreateGitleaksRepoScanPayload>;
+  /** Creates a single `GosecRepoScan`. */
+  createGosecRepoScan?: Maybe<CreateGosecRepoScanPayload>;
   /** Creates a single `Label`. */
   createLabel?: Maybe<CreateLabelPayload>;
   /** Creates a single `LabelAssociation`. */
   createLabelAssociation?: Maybe<CreateLabelAssociationPayload>;
+  /** Creates a single `QueryHistory`. */
+  createQueryHistory?: Maybe<CreateQueryHistoryPayload>;
   /** Creates a single `Repo`. */
   createRepo?: Maybe<CreateRepoPayload>;
   /** Creates a single `RepoImport`. */
@@ -7767,12 +8113,20 @@ export type Mutation = {
   deleteGitleaksRepoScan?: Maybe<DeleteGitleaksRepoScanPayload>;
   /** Deletes a single `GitleaksRepoScan` using its globally unique id. */
   deleteGitleaksRepoScanByNodeId?: Maybe<DeleteGitleaksRepoScanPayload>;
+  /** Deletes a single `GosecRepoScan` using a unique key. */
+  deleteGosecRepoScan?: Maybe<DeleteGosecRepoScanPayload>;
+  /** Deletes a single `GosecRepoScan` using its globally unique id. */
+  deleteGosecRepoScanByNodeId?: Maybe<DeleteGosecRepoScanPayload>;
   /** Deletes a single `Label` using a unique key. */
   deleteLabel?: Maybe<DeleteLabelPayload>;
   /** Deletes a single `LabelAssociation` using a unique key. */
   deleteLabelAssociationByLabelAndRepoSyncType?: Maybe<DeleteLabelAssociationPayload>;
   /** Deletes a single `Label` using its globally unique id. */
   deleteLabelByNodeId?: Maybe<DeleteLabelPayload>;
+  /** Deletes a single `QueryHistory` using a unique key. */
+  deleteQueryHistory?: Maybe<DeleteQueryHistoryPayload>;
+  /** Deletes a single `QueryHistory` using its globally unique id. */
+  deleteQueryHistoryByNodeId?: Maybe<DeleteQueryHistoryPayload>;
   /** Deletes a single `Repo` using a unique key. */
   deleteRepo?: Maybe<DeleteRepoPayload>;
   /** Deletes a single `Repo` using its globally unique id. */
@@ -7914,12 +8268,20 @@ export type Mutation = {
   updateGitleaksRepoScan?: Maybe<UpdateGitleaksRepoScanPayload>;
   /** Updates a single `GitleaksRepoScan` using its globally unique id and a patch. */
   updateGitleaksRepoScanByNodeId?: Maybe<UpdateGitleaksRepoScanPayload>;
+  /** Updates a single `GosecRepoScan` using a unique key and a patch. */
+  updateGosecRepoScan?: Maybe<UpdateGosecRepoScanPayload>;
+  /** Updates a single `GosecRepoScan` using its globally unique id and a patch. */
+  updateGosecRepoScanByNodeId?: Maybe<UpdateGosecRepoScanPayload>;
   /** Updates a single `Label` using a unique key and a patch. */
   updateLabel?: Maybe<UpdateLabelPayload>;
   /** Updates a single `LabelAssociation` using a unique key and a patch. */
   updateLabelAssociationByLabelAndRepoSyncType?: Maybe<UpdateLabelAssociationPayload>;
   /** Updates a single `Label` using its globally unique id and a patch. */
   updateLabelByNodeId?: Maybe<UpdateLabelPayload>;
+  /** Updates a single `QueryHistory` using a unique key and a patch. */
+  updateQueryHistory?: Maybe<UpdateQueryHistoryPayload>;
+  /** Updates a single `QueryHistory` using its globally unique id and a patch. */
+  updateQueryHistoryByNodeId?: Maybe<UpdateQueryHistoryPayload>;
   /** Updates a single `Repo` using a unique key and a patch. */
   updateRepo?: Maybe<UpdateRepoPayload>;
   /** Updates a single `Repo` using its globally unique id and a patch. */
@@ -8106,6 +8468,12 @@ export type MutationCreateGitleaksRepoScanArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGosecRepoScanArgs = {
+  input: CreateGosecRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateLabelArgs = {
   input: CreateLabelInput;
 };
@@ -8114,6 +8482,12 @@ export type MutationCreateLabelArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateLabelAssociationArgs = {
   input: CreateLabelAssociationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateQueryHistoryArgs = {
+  input: CreateQueryHistoryInput;
 };
 
 
@@ -8424,6 +8798,18 @@ export type MutationDeleteGitleaksRepoScanByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGosecRepoScanArgs = {
+  input: DeleteGosecRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGosecRepoScanByNodeIdArgs = {
+  input: DeleteGosecRepoScanByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteLabelArgs = {
   input: DeleteLabelInput;
 };
@@ -8438,6 +8824,18 @@ export type MutationDeleteLabelAssociationByLabelAndRepoSyncTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteLabelByNodeIdArgs = {
   input: DeleteLabelByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteQueryHistoryArgs = {
+  input: DeleteQueryHistoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteQueryHistoryByNodeIdArgs = {
+  input: DeleteQueryHistoryByNodeIdInput;
 };
 
 
@@ -8874,6 +9272,18 @@ export type MutationUpdateGitleaksRepoScanByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGosecRepoScanArgs = {
+  input: UpdateGosecRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGosecRepoScanByNodeIdArgs = {
+  input: UpdateGosecRepoScanByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateLabelArgs = {
   input: UpdateLabelInput;
 };
@@ -8888,6 +9298,18 @@ export type MutationUpdateLabelAssociationByLabelAndRepoSyncTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateLabelByNodeIdArgs = {
   input: UpdateLabelByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateQueryHistoryArgs = {
+  input: UpdateQueryHistoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateQueryHistoryByNodeIdArgs = {
+  input: UpdateQueryHistoryByNodeIdInput;
 };
 
 
@@ -9232,6 +9654,13 @@ export type Query = Node & {
   gitleaksRepoScanByNodeId?: Maybe<GitleaksRepoScan>;
   /** Reads and enables pagination through a set of `GitleaksRepoScan`. */
   gitleaksRepoScans?: Maybe<GitleaksRepoScansConnection>;
+  /** Reads and enables pagination through a set of `GosecRepoDetection`. */
+  gosecRepoDetections?: Maybe<GosecRepoDetectionsConnection>;
+  gosecRepoScan?: Maybe<GosecRepoScan>;
+  /** Reads a single `GosecRepoScan` using its globally unique `ID`. */
+  gosecRepoScanByNodeId?: Maybe<GosecRepoScan>;
+  /** Reads and enables pagination through a set of `GosecRepoScan`. */
+  gosecRepoScans?: Maybe<GosecRepoScansConnection>;
   label?: Maybe<Label>;
   labelAssociationByLabelAndRepoSyncType?: Maybe<LabelAssociation>;
   /** Reads and enables pagination through a set of `LabelAssociation`. */
@@ -9243,7 +9672,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | Label | Query | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan | YelpDetectSecretsRepoScan>;
+  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | GosecRepoScan | Label | Query | QueryHistory | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan | YelpDetectSecretsRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /**
@@ -9251,6 +9680,11 @@ export type Query = Node & {
    * which can only query top level fields if they are in a particular form.
    */
   query: Query;
+  /** Reads and enables pagination through a set of `QueryHistory`. */
+  queryHistories?: Maybe<QueryHistoriesConnection>;
+  queryHistory?: Maybe<QueryHistory>;
+  /** Reads a single `QueryHistory` using its globally unique `ID`. */
+  queryHistoryByNodeId?: Maybe<QueryHistory>;
   repo?: Maybe<Repo>;
   /** Reads a single `Repo` using its globally unique `ID`. */
   repoByNodeId?: Maybe<Repo>;
@@ -9813,6 +10247,44 @@ export type QueryGitleaksRepoScansArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryGosecRepoDetectionsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GosecRepoDetectionCondition>;
+  filter?: InputMaybe<GosecRepoDetectionFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GosecRepoDetectionsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGosecRepoScanArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGosecRepoScanByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGosecRepoScansArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GosecRepoScanCondition>;
+  filter?: InputMaybe<GosecRepoScanFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GosecRepoScansOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryLabelArgs = {
   label: Scalars['String'];
 };
@@ -9872,6 +10344,31 @@ export type QueryLatestRepoSyncsArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryNodeArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryQueryHistoriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<QueryHistoryCondition>;
+  filter?: InputMaybe<QueryHistoryFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<QueryHistoriesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryQueryHistoryArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryQueryHistoryByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
@@ -10370,6 +10867,99 @@ export type QueryYelpDetectSecretsRepoScansArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<YelpDetectSecretsRepoScansOrderBy>>;
+};
+
+/** A connection to a list of `QueryHistory` values. */
+export type QueryHistoriesConnection = {
+  /** A list of edges which contains the `QueryHistory` and cursor to aid in pagination. */
+  edges: Array<QueryHistoriesEdge>;
+  /** A list of `QueryHistory` objects. */
+  nodes: Array<QueryHistory>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `QueryHistory` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `QueryHistory` edge in the connection. */
+export type QueryHistoriesEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `QueryHistory` at the end of the edge. */
+  node: QueryHistory;
+};
+
+/** Methods to use when ordering `QueryHistory`. */
+export enum QueryHistoriesOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  QueryAsc = 'QUERY_ASC',
+  QueryDesc = 'QUERY_DESC',
+  RunAtAsc = 'RUN_AT_ASC',
+  RunAtDesc = 'RUN_AT_DESC',
+  RunByAsc = 'RUN_BY_ASC',
+  RunByDesc = 'RUN_BY_DESC'
+}
+
+export type QueryHistory = Node & {
+  id: Scalars['UUID'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  query: Scalars['String'];
+  runAt?: Maybe<Scalars['Datetime']>;
+  runBy: Scalars['String'];
+};
+
+/**
+ * A condition to be used against `QueryHistory` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type QueryHistoryCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `query` field. */
+  query?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `runAt` field. */
+  runAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `runBy` field. */
+  runBy?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `QueryHistory` object types. All fields are combined with a logical ‘and.’ */
+export type QueryHistoryFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<QueryHistoryFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<QueryHistoryFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<QueryHistoryFilter>>;
+  /** Filter by the object’s `query` field. */
+  query?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `runAt` field. */
+  runAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `runBy` field. */
+  runBy?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `QueryHistory` */
+export type QueryHistoryInput = {
+  id?: InputMaybe<Scalars['UUID']>;
+  query: Scalars['String'];
+  runAt?: InputMaybe<Scalars['Datetime']>;
+  runBy: Scalars['String'];
+};
+
+/** Represents an update to a `QueryHistory`. Fields that are set will be updated. */
+export type QueryHistoryPatch = {
+  id?: InputMaybe<Scalars['UUID']>;
+  query?: InputMaybe<Scalars['String']>;
+  runAt?: InputMaybe<Scalars['Datetime']>;
+  runBy?: InputMaybe<Scalars['String']>;
 };
 
 /** git repositories to track */
@@ -13841,6 +14431,52 @@ export type UpdateGitleaksRepoScanPayloadGitleaksRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GitleaksRepoScansOrderBy>>;
 };
 
+/** All input for the `updateGosecRepoScanByNodeId` mutation. */
+export type UpdateGosecRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GosecRepoScan` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `GosecRepoScan` being updated. */
+  patch: GosecRepoScanPatch;
+};
+
+/** All input for the `updateGosecRepoScan` mutation. */
+export type UpdateGosecRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `GosecRepoScan` being updated. */
+  patch: GosecRepoScanPatch;
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `GosecRepoScan` mutation. */
+export type UpdateGosecRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GosecRepoScan` that was updated by this mutation. */
+  gosecRepoScan?: Maybe<GosecRepoScan>;
+  /** An edge for our `GosecRepoScan`. May be used by Relay 1. */
+  gosecRepoScanEdge?: Maybe<GosecRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `GosecRepoScan` mutation. */
+export type UpdateGosecRepoScanPayloadGosecRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<GosecRepoScansOrderBy>>;
+};
+
 /** All input for the `updateLabelAssociationByLabelAndRepoSyncType` mutation. */
 export type UpdateLabelAssociationByLabelAndRepoSyncTypeInput = {
   /**
@@ -13923,6 +14559,52 @@ export type UpdateLabelPayload = {
 /** The output of our update `Label` mutation. */
 export type UpdateLabelPayloadLabelEdgeArgs = {
   orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
+/** All input for the `updateQueryHistoryByNodeId` mutation. */
+export type UpdateQueryHistoryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `QueryHistory` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `QueryHistory` being updated. */
+  patch: QueryHistoryPatch;
+};
+
+/** All input for the `updateQueryHistory` mutation. */
+export type UpdateQueryHistoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `QueryHistory` being updated. */
+  patch: QueryHistoryPatch;
+};
+
+/** The output of our update `QueryHistory` mutation. */
+export type UpdateQueryHistoryPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `QueryHistory` that was updated by this mutation. */
+  queryHistory?: Maybe<QueryHistory>;
+  /** An edge for our `QueryHistory`. May be used by Relay 1. */
+  queryHistoryEdge?: Maybe<QueryHistoriesEdge>;
+};
+
+
+/** The output of our update `QueryHistory` mutation. */
+export type UpdateQueryHistoryPayloadQueryHistoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<QueryHistoriesOrderBy>>;
 };
 
 /** All input for the `updateRepoByNodeId` mutation. */
@@ -15391,7 +16073,7 @@ export type GetRepoSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetRepoSyncsQuery = { serviceAuthCredentials?: { totalCount: number } | null, repo?: { id: any, repo: string, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, scheduleEnabled: boolean, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null, hasError?: boolean | null }> } }> } } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string, typeGroup: string }> } | null };
+export type GetRepoSyncsQuery = { serviceAuthCredentials?: { totalCount: number } | null, repo?: { id: any, repo: string, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, scheduleEnabled: boolean, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number } }> } }> } } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string, typeGroup: string }> } | null };
 
 export type GetSyncTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -15428,7 +16110,7 @@ export type GetSyncHistoryLogsQueryVariables = Exact<{
 }>;
 
 
-export type GetSyncHistoryLogsQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, scheduleEnabled: boolean, repoSyncTypeBySyncType?: { shortName: string, description?: string | null, typeGroup: string } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+export type GetSyncHistoryLogsQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, scheduleEnabled: boolean, repoSyncTypeBySyncType?: { shortName: string, description?: string | null, typeGroup: string } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number }, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
 
 export type GetLogsOfSyncQueryVariables = Exact<{
   repoId: Scalars['UUID'];
@@ -15437,7 +16119,7 @@ export type GetLogsOfSyncQueryVariables = Exact<{
 }>;
 
 
-export type GetLogsOfSyncQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string, description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+export type GetLogsOfSyncQuery = { repo?: { id: any, repo: string, isGithub?: boolean | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string, description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number }, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
 
 export type GetUsersQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;
@@ -15452,4 +16134,4 @@ export type ExecuteSqlQueryVariables = Exact<{
 }>;
 
 
-export type ExecuteSqlQuery = { execSQL: { rowCount?: number | null, columns?: Array<any> | null, rows?: Array<any> | null } };
+export type ExecuteSqlQuery = { execSQL: { rowCount?: number | null, columns?: Array<any> | null, rows?: Array<any> | null, queryRunningTimeMs?: number | null } };

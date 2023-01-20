@@ -3,7 +3,7 @@ import { Badge, Spinner, Toolbar } from '@mergestat/blocks'
 const QueryEditorLoading: React.FC = () => {
   return (
     <>
-      <div className='bg-white overflow-auto flex -mt-2 h-16 w-full border-b px-8'>
+      <div className='bg-white flex -mt-2 h-16 w-full border-b px-8' style={{ minHeight: '64px' }}>
         <Toolbar className='flex-1 w-auto h-full'>
           <Toolbar.Left className='space-x-4'>
             <Toolbar.Item>
@@ -22,7 +22,7 @@ const QueryEditorLoading: React.FC = () => {
           </Toolbar.Left>
         </Toolbar>
       </div>
-      <div className='bg-white w-full flex-1 h-1/2 flex flex-col'>
+      <div className='bg-white w-full flex-1 flex flex-col overflow-hidden'>
         <div className='animate-pulse'>
           <div className='grid grid-cols-4 w-full border-gray-100 border-b-2 h-14 items-center'>
             <div className='col-span-1 py-3 pl-8 pr-3 flex items-center border-gray-100 border-r h-full'>

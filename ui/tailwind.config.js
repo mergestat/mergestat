@@ -33,7 +33,7 @@ module.exports = {
         40: '10rem',
       },
       minWidth: {
-        'sm': '24rem',
+        sm: '24rem',
       },
       width: {
         1.5: '6px',
