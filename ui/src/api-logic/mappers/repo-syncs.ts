@@ -1,8 +1,8 @@
 import { differenceInMilliseconds } from 'date-fns'
-import { RepoSyncData, RepoSyncDataType, SyncStatusDataT } from 'src/@types'
+import { RepoSyncData, RepoSyncDataType, RepoSyncQueueW, SyncStatusDataT } from 'src/@types'
 import { getSimpleDurationTime, getSimpleDurationTimeSeconds, getStatus } from 'src/utils'
 import { GITHUB_URL, SYNC_REPO_METHOD, SYNC_STATUS } from 'src/utils/constants'
-import { GetRepoSyncsQuery, RepoSyncQueue } from '../graphql/generated/schema'
+import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
 /**
  * Method which iterate each sync and map it to RepoSyncDataType to be shown in table
@@ -44,7 +44,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
       avgRunningTime: '-',
       status: {
         data: [],
-        syncState: syncType?.repoSyncQueues.nodes.length !== 0 ? getStatus(syncType?.repoSyncQueues.nodes[0] as RepoSyncQueue) : SYNC_STATUS.empty,
+        syncState: syncType?.repoSyncQueues.nodes.length !== 0 ? getStatus(syncType?.repoSyncQueues.nodes[0] as RepoSyncQueueW) : SYNC_STATUS.empty,
       }
     }
 
@@ -55,7 +55,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
         id: q.id,
         repoId: data?.repo?.id,
         syncTypeId: syncType?.id,
-        status: getStatus(q as RepoSyncQueue),
+        status: getStatus(q as RepoSyncQueueW),
         runningTime: q?.doneAt ? differenceInMilliseconds(new Date(q?.doneAt), new Date(q?.startedAt)) : 0,
         runningTimeReadable: q?.doneAt ? getSimpleDurationTime(new Date(q?.startedAt), new Date(q?.doneAt)) : q?.startedAt ? SYNC_STATUS.running : SYNC_STATUS.queued,
         doneAt: q?.doneAt ?? new Date(q?.doneAt)

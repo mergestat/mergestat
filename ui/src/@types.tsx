@@ -1,4 +1,5 @@
 import { ReactElement } from 'react'
+import { RepoSyncQueue } from './api-logic/graphql/generated/schema'
 
 export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'warning' | 'error' | 'empty'
 
@@ -161,6 +162,12 @@ export type AutoImportData = {
   name: string
   type: string
   error?: string | null
+}
+
+export interface RepoSyncQueueW extends RepoSyncQueue {
+  warnings?: {
+    totalCount: number
+  }
 }
 
 /** Users Props Type */

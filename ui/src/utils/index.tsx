@@ -1,7 +1,6 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
-import { RepoSyncStateT, UserTypeUI } from 'src/@types'
-import { RepoSyncQueue } from 'src/api-logic/graphql/generated/schema'
+import { RepoSyncQueueW, RepoSyncStateT, UserTypeUI } from 'src/@types'
 import { showSuccessAlert } from './alerts'
 import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI } from './constants'
 
@@ -109,12 +108,6 @@ export function mapToRepoSyncStateT(status: string): RepoSyncStateT {
       return SYNC_STATUS.disabled
     default:
       return SYNC_STATUS.empty
-  }
-}
-
-interface RepoSyncQueueW extends RepoSyncQueue {
-  warnings?: {
-    totalCount: number
   }
 }
 
