@@ -11,6 +11,8 @@ export const GITHUB_URL = 'https://github.com/'
 
 export const MERGESTAT_TITLE = '- MergeStat'
 
+export const FONT_FAMILY = 'Inter, ui-sans-serif, system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif'
+
 export enum TEST_IDS {
   emptyRepository = 'empty-repository',
   emptyRepositoryTable = 'empty-repository-table',

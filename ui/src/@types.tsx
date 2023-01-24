@@ -189,7 +189,9 @@ export type QueryResultProps = {
 /** Query Tab Types */
 
 export type LineChartData = {
-  anyProp: string
+  series?: string
+  xAxis?: string
+  yAxis?: string
 }
 
 export type BarChartData = {
