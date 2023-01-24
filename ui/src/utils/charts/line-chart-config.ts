@@ -75,8 +75,7 @@ export const lineChartOptions: ApexOptions = {
         fontSize: '13px',
         fontFamily: FONT_FAMILY,
         fontWeight: 400,
-        colors: ['#6B7280'],
-        cssClass: 'apex-axis-label'
+        colors: '#6B7280'
       },
     }
   },
@@ -88,8 +87,7 @@ export const lineChartOptions: ApexOptions = {
         fontSize: '13px',
         fontFamily: FONT_FAMILY,
         fontWeight: 400,
-        colors: ['#6B7280'],
-        cssClass: 'apex-axis-label'
+        colors: '#6B7280'
       },
     }
   }

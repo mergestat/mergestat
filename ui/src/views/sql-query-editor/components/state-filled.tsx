@@ -54,7 +54,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                       }}
                     />
                     <Tooltip content='Coming soon!' placement='right' offset={[0, 10]}>
-                      <Menu.Item text="Bar chart" withIcon disabled
+                      <Menu.Item text="Bar chart" withIcon
                         icon={<ChartBarIcon className="t-icon" />}
                         onClick={() => {
                           addTab(TAB_TYPE.BAR)
