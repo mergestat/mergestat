@@ -36,7 +36,7 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
       <Panel.Body className='p-0'>
         {data.length < 1
           ? <div className='flex justify-center items-center bg-white py-5'>
-            No data available!
+            No sync history available!
           </div>
           : <div className='flex flex-col min-w-0 bg-white h-full'>
             <div className='flex-1 overflow-x-auto overflow-y-hidden'>

@@ -142,7 +142,7 @@ describe('GraphQL queries: (Repos)', () => {
     // Checks if table is empty
     await waitFor(() => {
       const element = screen.getByTestId(TEST_IDS.repoListEmpty)
-      expect(element?.textContent).toBe('No data available!')
+      expect(element?.textContent).toBe('Couldn\'t find any repositories!')
     })
   })
 
