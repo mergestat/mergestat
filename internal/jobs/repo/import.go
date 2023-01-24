@@ -5,6 +5,10 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"os"
+	"time"
+
+	"github.com/google/go-github/v41/github"
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
@@ -13,7 +17,7 @@ import (
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/sqlq"
 	"github.com/pkg/errors"
-	"time"
+	"golang.org/x/oauth2"
 )
 
 type githubRepository struct {
@@ -57,7 +61,7 @@ func AutoImport(pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.HandlerFunc {
 			// if the execution fails for some reason, only that import is marked as failed
 			// the job still continues executing.
 			var importError error
-			if importError = handleImport(ctx, queries.WithTx(tx), mergestat, imp); importError != nil {
+			if importError = handleImport(ctx, pool, queries.WithTx(tx), mergestat, imp); importError != nil {
 				logger.Warnf("import(%s) failed: %v", imp.ID, importError.Error())
 				_ = tx.Rollback(ctx)
 			} else {
@@ -86,9 +90,25 @@ func AutoImport(pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.HandlerFunc {
 }
 
 // handleImport handles execution of a given import configuration
-func handleImport(ctx context.Context, qry *db.Queries, mergestat *sqlx.DB, imp db.ListRepoImportsDueForImportRow) (err error) {
-	var query, repoOwner string
+func handleImport(ctx context.Context, pool *pgxpool.Pool, qry *db.Queries, mergestat *sqlx.DB, imp db.ListRepoImportsDueForImportRow) (err error) {
+	var repoOwner, ghToken string
 	var removeDeletedRepos, defaultSyncTypes = true, make([]string, 0) //nolint:ineffassign
+	var repos []*githubRepository
+
+	if ghToken, err = fetchGitHubTokenFromDB(ctx, pool); err != nil {
+		return err
+	}
+
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: ghToken},
+	)
+
+	tc := oauth2.NewClient(ctx, ts)
+	if len(ghToken) <= 0 {
+		tc = nil
+	}
+
+	client := github.NewClient(tc)
 
 	// determine the kind of import (Org vs. User) and parse the settings
 	switch imp.Type {
@@ -105,7 +125,10 @@ func handleImport(ctx context.Context, qry *db.Queries, mergestat *sqlx.DB, imp 
 		repoOwner = settings.Org
 		removeDeletedRepos = settings.RemoveDeletedRepos
 		defaultSyncTypes = settings.DefaultSyncTypes
-		query = `SELECT login, name, topics FROM github_org_repos(?)`
+
+		if repos, err = fetchGitHubReposByOrg(ctx, client, repoOwner, ghToken); err != nil {
+			return err
+		}
 	case "GITHUB_USER":
 		var settings struct {
 			User               string   `json:"user"`
@@ -119,15 +142,12 @@ func handleImport(ctx context.Context, qry *db.Queries, mergestat *sqlx.DB, imp 
 		repoOwner = settings.User
 		removeDeletedRepos = settings.RemoveDeletedRepos
 		defaultSyncTypes = settings.DefaultSyncTypes
-		query = `SELECT login, name, topics FROM github_user_repos(?)`
+
+		if repos, err = fetchGitHubReposByUser(ctx, client, repoOwner, ghToken); err != nil {
+			return err
+		}
 	default:
 		return errors.Errorf("unknown import type: %s", imp.Type)
-	}
-
-	// execute the mergestat query - this will scan a list of repos to be imported
-	var repos []*githubRepository
-	if err = mergestat.SelectContext(ctx, &repos, query, repoOwner); err != nil {
-		return errors.Wrapf(err, "failed to fetch repositories")
 	}
 
 	// remove any deleted repositories
@@ -217,4 +237,77 @@ func difference(existing, new []string) []string {
 	}
 
 	return diff
+}
+
+// TODO(ramirocastillo):Move this fn to the helper package
+// fetchGitHubTokenFromDB is a temporary helper function for retrieving the most recently added GITHUB_PAT service credential from the DB.
+// It's "temporary" because the way credentials are managed and retrieved will likely need to be much more robust in the future.
+func fetchGitHubTokenFromDB(ctx context.Context, pool *pgxpool.Pool) (string, error) {
+	encryptionSecret := os.Getenv("ENCRYPTION_SECRET")
+	row := pool.QueryRow(context.TODO(), "SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1", encryptionSecret)
+	var credentials []byte
+	if err := row.Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return "", fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
+	}
+
+	if credentials == nil {
+		// default to the `GITHUB_TOKEN` env var if nothing in the DB
+		credentials = []byte(os.Getenv("GITHUB_TOKEN"))
+	}
+
+	return string(credentials), nil
+}
+
+// fetchGitHubReposByOrg fetch all repos from a given organization, is a github token is not
+// provided will search only public repos
+func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner string, ghToken string) ([]*githubRepository, error) {
+	var repositories []*githubRepository
+	var repos []*github.Repository
+	var err error
+	var typeOfRepo string
+
+	if len(ghToken) <= 0 {
+		typeOfRepo = "public"
+	}
+
+	if repos, _, err = client.Repositories.ListByOrg(ctx, repoOwner, &github.RepositoryListByOrgOptions{Type: typeOfRepo}); err != nil {
+		return repositories, err
+	}
+
+	for _, repo := range repos {
+		var topics []byte
+		if topics, err = json.Marshal(repo.Topics); err != nil {
+			return repositories, err
+		}
+
+		repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL), Topics: string(topics)})
+	}
+	return repositories, err
+}
+
+// fetchGitHubReposByUser fetch all repos from a given user, is a github token is not
+// provided will search only public repos
+func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwner string, ghToken string) ([]*githubRepository, error) {
+	var repositories []*githubRepository
+	var repos []*github.Repository
+	var err error
+	var typeOfRepo string
+
+	if len(ghToken) <= 0 {
+		typeOfRepo = "public"
+	}
+
+	if repos, _, err = client.Repositories.List(ctx, repoOwner, &github.RepositoryListOptions{Type: typeOfRepo}); err != nil {
+		return repositories, err
+	}
+
+	for _, repo := range repos {
+		var topics []byte
+		if topics, err = json.Marshal(repo.Topics); err != nil {
+			return repositories, err
+		}
+
+		repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL), Topics: string(topics)})
+	}
+	return repositories, err
 }
