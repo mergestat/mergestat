@@ -258,56 +258,86 @@ func fetchGitHubTokenFromDB(ctx context.Context, pool *pgxpool.Pool) (string, er
 	return string(credentials), nil
 }
 
-// fetchGitHubReposByOrg fetch all repos from a given organization, is a github token is not
+// fetchGitHubReposByOrg fetch all repos from a given organization, if a github token is not
 // provided will search only public repos
 func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner string, ghToken string) ([]*githubRepository, error) {
 	var repositories []*githubRepository
 	var repos []*github.Repository
 	var err error
 	var typeOfRepo string
+	var resp *github.Response
 
 	if len(ghToken) <= 0 {
 		typeOfRepo = "public"
 	}
+	opt := &github.RepositoryListByOrgOptions{Type: typeOfRepo}
 
-	if repos, _, err = client.Repositories.ListByOrg(ctx, repoOwner, &github.RepositoryListByOrgOptions{Type: typeOfRepo}); err != nil {
-		return repositories, err
-	}
-
-	for _, repo := range repos {
-		var topics []byte
-		if topics, err = json.Marshal(repo.Topics); err != nil {
+	for {
+		if repos, resp, err = client.Repositories.ListByOrg(ctx, repoOwner, opt); err != nil {
 			return repositories, err
 		}
 
-		repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL), Topics: string(topics)})
+		for _, repo := range repos {
+			var topics []byte
+			if topics, err = json.Marshal(repo.Topics); err != nil {
+				return repositories, err
+			}
+
+			repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL), Topics: string(topics)})
+		}
+		if resp == nil {
+			break
+		}
+
+		if resp.NextPage == 0 {
+			break
+		}
+		opt.Page = resp.NextPage
+		continue
+
 	}
 	return repositories, err
 }
 
-// fetchGitHubReposByUser fetch all repos from a given user, is a github token is not
+// fetchGitHubReposByUser fetch all repos from a given user, if a github token is not
 // provided will search only public repos
 func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwner string, ghToken string) ([]*githubRepository, error) {
 	var repositories []*githubRepository
 	var repos []*github.Repository
 	var err error
 	var typeOfRepo string
+	var resp *github.Response
 
 	if len(ghToken) <= 0 {
 		typeOfRepo = "public"
 	}
+	opt := &github.RepositoryListOptions{Type: typeOfRepo}
 
-	if repos, _, err = client.Repositories.List(ctx, repoOwner, &github.RepositoryListOptions{Type: typeOfRepo}); err != nil {
-		return repositories, err
-	}
-
-	for _, repo := range repos {
-		var topics []byte
-		if topics, err = json.Marshal(repo.Topics); err != nil {
+	for {
+		if repos, resp, err = client.Repositories.List(ctx, repoOwner, opt); err != nil {
 			return repositories, err
 		}
 
-		repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL), Topics: string(topics)})
+		for _, repo := range repos {
+			var topics []byte
+			if topics, err = json.Marshal(repo.Topics); err != nil {
+				return repositories, err
+			}
+
+			repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL), Topics: string(topics)})
+		}
+
+		if resp == nil {
+			break
+		}
+
+		if resp.NextPage == 0 {
+			break
+		}
+		opt.Page = resp.NextPage
+		continue
+
 	}
+
 	return repositories, err
 }
