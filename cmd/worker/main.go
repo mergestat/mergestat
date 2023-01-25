@@ -248,7 +248,7 @@ func main() {
 	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{Queues: queues})
 
 	// register job handlers for types implemented by this worker
-	_ = worker.Register("repos/auto-import", repo.AutoImport(&logger, pool, db))
+	_ = worker.Register("repos/auto-import", repo.AutoImport(&logger, pool))
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars

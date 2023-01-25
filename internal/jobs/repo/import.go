@@ -13,7 +13,6 @@ import (
 	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/jmoiron/sqlx"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/sqlq"
 	"github.com/pkg/errors"
@@ -33,12 +32,11 @@ func (repo *githubRepository) URL() string {
 
 // AutoImport implements the githubRepository auto-import job to automatically
 // sync githubRepository from user- or org- accounts.
-func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.HandlerFunc {
+func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 	var queries = db.New(pool)
 
 	return func(ctx context.Context, job *sqlq.Job) (err error) {
-		// We are using our own logger instead of the sqlq logger
-		// var logger = job.Logger()
+		var logger = job.Logger()
 
 		// start sending periodic keep-alive pings!
 		go job.SendKeepAlive(ctx, job.KeepAlive-(5*time.Second)) //nolint:errcheck
@@ -46,12 +44,15 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.
 		// fetch a list of all configured imports that are due now
 		var imports []db.ListRepoImportsDueForImportRow
 		if imports, err = queries.ListRepoImportsDueForImport(ctx); err != nil {
+			logger.Errorf("failed to list repo import job: %v", err)
 			l.Error().Msgf("failed to list repo import job: %v", err)
 			return errors.Wrapf(sqlq.ErrSkipRetry, "failed to list repo import job: %v", err)
 		}
 
+		logger.Infof("handling %d import(s)", len(imports))
 		l.Info().Msgf("handling %d import(s)", len(imports))
 		for _, imp := range imports {
+			logger.Infof("executing import %s", imp.ID)
 			l.Info().Msgf("executing import %s", imp.ID)
 
 			var tx pgx.Tx // each import is executed within its own transaction
@@ -63,7 +64,8 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.
 			// if the execution fails for some reason, only that import is marked as failed
 			// the job still continues executing.
 			var importError error
-			if importError = handleImport(ctx, l, pool, queries.WithTx(tx), mergestat, imp); importError != nil {
+			if importError = handleImport(ctx, queries.WithTx(tx), imp); importError != nil {
+				logger.Warnf("import(%s) failed: %v", imp.ID, importError.Error())
 				l.Warn().Msgf("import(%s) failed: %v", imp.ID, importError.Error())
 				_ = tx.Rollback(ctx)
 			} else {
@@ -71,6 +73,7 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.
 				if err = tx.Commit(ctx); err != nil {
 					return errors.Wrapf(err, "failed to commit database transaction")
 				}
+				logger.Infof("import(%s) was successful", imp.ID)
 				l.Info().Msgf("import(%s) was successful", imp.ID)
 			}
 
@@ -92,12 +95,12 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.
 }
 
 // handleImport handles execution of a given import configuration
-func handleImport(ctx context.Context, logger *zerolog.Logger, pool *pgxpool.Pool, qry *db.Queries, mergestat *sqlx.DB, imp db.ListRepoImportsDueForImportRow) (err error) {
+func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
 	var repoOwner, ghToken string
 	var removeDeletedRepos, defaultSyncTypes = true, make([]string, 0) //nolint:ineffassign
 	var repos []*githubRepository
 
-	if ghToken, err = fetchGitHubTokenFromDB(ctx, pool); err != nil {
+	if ghToken, err = fetchGitHubTokenFromDB(ctx, qry); err != nil {
 		return err
 	}
 
@@ -244,17 +247,18 @@ func difference(existing, new []string) []string {
 // TODO(ramirocastillo):Move this fn to the helper package
 // fetchGitHubTokenFromDB is a temporary helper function for retrieving the most recently added GITHUB_PAT service credential from the DB.
 // It's "temporary" because the way credentials are managed and retrieved will likely need to be much more robust in the future.
-func fetchGitHubTokenFromDB(ctx context.Context, pool *pgxpool.Pool) (string, error) {
+func fetchGitHubTokenFromDB(ctx context.Context, qry *db.Queries) (string, error) {
+	var credentials string
+	var err error
 	encryptionSecret := os.Getenv("ENCRYPTION_SECRET")
-	row := pool.QueryRow(context.TODO(), "SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1", encryptionSecret)
-	var credentials []byte
-	if err := row.Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
-		return "", fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
+
+	if credentials, err = qry.FetchGitHubToken(ctx, encryptionSecret); err != nil {
+		return credentials, fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
 	}
 
-	if credentials == nil {
+	if len(credentials) <= 0 {
 		// default to the `GITHUB_TOKEN` env var if nothing in the DB
-		credentials = []byte(os.Getenv("GITHUB_TOKEN"))
+		credentials = os.Getenv("GITHUB_TOKEN")
 	}
 
 	return string(credentials), nil

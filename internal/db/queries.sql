@@ -86,6 +86,9 @@ INSERT INTO mergestat.repo_sync_logs (log_type, message, repo_sync_queue_id) VAL
 -- name: SetSyncJobStatus :exec
 SELECT mergestat.set_sync_job_status(@Status::TEXT, @ID::BIGINT);
 
+-- name: FetchGitHubToken :one
+SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1;
+
 -- We use a CTE here to retrieve all the repo_sync_jobs that were previously enqueued, to make sure that we *do not* re-enqueue anything new until the previously enqueued jobs are *completed*.
 -- This allows us to make sure all repo syncs complete before we reschedule a new batch.
 -- We have now also added a concept of type groups which allows us to apply this same logic but by each group type which is where the PARTITION BY clause comes into play
