@@ -189,9 +189,16 @@ func main() {
 
 	githubClientGetter := func() *githubv4.Client {
 		encryptionSecret := os.Getenv("ENCRYPTION_SECRET")
-		row := pool.QueryRow(context.TODO(), "SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1", encryptionSecret)
+
+		const fetchToken = `
+			SELECT credentials.token
+				FROM (SELECT * FROM mergestat.providers WHERE name = 'GitHub' AND vendor = 'github') AS provider,
+					  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials
+			ORDER BY credentials.created_at DESC
+			LIMIT 1`
+
 		var credentials []byte
-		if err := row.Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		if err = pool.QueryRow(context.TODO(), fetchToken, encryptionSecret).Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			logger.Err(err).Msgf("error retrieving GitHub PAT from database")
 		}
 

@@ -18,7 +18,7 @@ const { DISPLAY_PG_HOSTNAME, DISPLAY_PG_PORT, DISPLAY_PG_DATABASE, DISPLAY_PG_US
 module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
     typeDefs: (0, graphile_utils_1.gql) `
     extend type Mutation {
-      replaceGitHubPAT(pat: String!): Boolean
+      add_token(provider: UUID!, type: String!, token: String!): Boolean
     }
     extend type Query {
       databaseConnection: DisplayDatabaseConnection
@@ -32,24 +32,17 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
   `,
     resolvers: {
         Mutation: {
-            replaceGitHubPAT(_parent, args, context, _info) {
+            add_token(_parent, args, context, _info) {
                 return __awaiter(this, void 0, void 0, function* () {
                     try {
-                        yield context.pgClient.query('SAVEPOINT replaceGitHubPAT;');
-                        // first delete all the existing PATs in the DB (for now, only allow one at a time)
-                        // TODO(patrickdevivo) this may eventually make more sense to handle with unique constraints/indexes in the DB
-                        // however the encryption adds a wrinkle to that
-                        yield context.pgClient.query("DELETE FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT'");
-                        // then do an insert using the add_service_auth_credential helper in the DB
-                        yield context.pgClient.query("SELECT mergestat.add_service_auth_credential('GITHUB_PAT', $1, $2)", [args.pat, ENCRYPTION_SECRET]);
-                        yield context.pgClient.query('RELEASE SAVEPOINT replaceGitHubPAT;');
+                        yield context.pgClient.query('SAVEPOINT add_token;');
+                        yield context.pgClient.query("SELECT mergestat.add_service_auth_credential($1, $2, $3, $4)", [args.provider, args.type, args.token, ENCRYPTION_SECRET]);
+                        yield context.pgClient.query('RELEASE SAVEPOINT add_token;');
+                        return true;
                     }
                     catch (e) {
-                        yield context.pgClient.query('ROLLBACK TO SAVEPOINT replaceGitHubPAT;');
+                        yield context.pgClient.query('ROLLBACK TO SAVEPOINT add_token;');
                         throw e;
-                    }
-                    finally {
-                        return true;
                     }
                 });
             },
