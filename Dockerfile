@@ -42,6 +42,10 @@ RUN python3 -m ensurepip
 RUN pip3 install --no-cache --upgrade pip setuptools
 RUN pip3 install detect-secrets
 
+# install the scorecard binary
+RUN curl -sfL https://github.com/ossf/scorecard/releases/download/v4.10.2/scorecard_4.10.2_linux_amd64.tar.gz | tar xvz scorecard-linux-amd64
+RUN chmod +x scorecard-linux-amd64 && cp scorecard-linux-amd64 /usr/local/bin/scorecard
+
 # for pprof and prom metrics over http
 EXPOSE 8080
 
