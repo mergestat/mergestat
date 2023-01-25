@@ -13,7 +13,7 @@ CREATE OR REPLACE VIEW mergestat.schema_introspection AS (
         c.is_nullable,
         c.data_type,
         c.udt_name,
-        pg_catalog.col_description(format('%s.%s', c.table_schema, c.table_name)::regclass::oid, c.ordinal_position) as column_description
+        pg_catalog.col_description(format('%s.%s', c.table_schema, c.table_name)::regclass::oid, c.ordinal_position) AS column_description
     FROM information_schema.tables AS t
     INNER JOIN information_schema.columns AS c ON (t.table_name = c.table_name AND t.table_schema = c.table_schema)
     WHERE t.table_schema IN ('public', 'mergestat')
