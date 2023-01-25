@@ -17,11 +17,11 @@ CREATE TABLE mergestat.vendors (
 -- custom providers for any vendor. This is useful in case the user is using self-hosted versions
 -- of the vendors (eg. self-hosted version of GitHub Enterprise).
 CREATE TABLE mergestat.providers (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),             -- auto-generated unique identifier for this provider
-    name TEXT NOT NULL,                                        -- user- / system- provided display name for the provider
-    vendor TEXT NOT NULL,                                      -- the backing vendor implementation for this provider
-    settings JSONB NOT NULL,                                   -- provider specific settings and configurations
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),-- time when this provider was added
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),              -- auto-generated unique identifier for this provider
+    name TEXT NOT NULL,                                         -- user- / system- provided display name for the provider
+    vendor TEXT NOT NULL,                                       -- the backing vendor implementation for this provider
+    settings JSONB NOT NULL,                                    -- provider specific settings and configurations
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), -- time when this provider was added
 
     -- put a foreign key reference point to an entry in the vendors table
     CONSTRAINT FK_vendors_providers_vendor FOREIGN KEY (vendor) REFERENCES mergestat.vendors (name),

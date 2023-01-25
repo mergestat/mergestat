@@ -2,9 +2,9 @@
 BEGIN;
 
 INSERT INTO mergestat.vendors (name, displayName)
-    \VALUES ('github', 'GitHub');
+VALUES ('github', 'GitHub');
 
 INSERT INTO mergestat.providers (name, vendor, settings)
-    VALUES ('GitHub', 'github', '{"url": "https://api.github.com"}'::jsonb);
+VALUES ('GitHub', 'github', '{"url": "https://api.github.com"}'::jsonb);
 
 COMMIT;
