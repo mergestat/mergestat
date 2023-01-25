@@ -17,6 +17,7 @@ import (
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/sqlq"
 	"github.com/pkg/errors"
+	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
 )
 
@@ -32,7 +33,7 @@ func (repo *githubRepository) URL() string {
 
 // AutoImport implements the githubRepository auto-import job to automatically
 // sync githubRepository from user- or org- accounts.
-func AutoImport(pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.HandlerFunc {
+func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.HandlerFunc {
 	var queries = db.New(pool)
 
 	return func(ctx context.Context, job *sqlq.Job) (err error) {
@@ -61,7 +62,7 @@ func AutoImport(pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.HandlerFunc {
 			// if the execution fails for some reason, only that import is marked as failed
 			// the job still continues executing.
 			var importError error
-			if importError = handleImport(ctx, pool, queries.WithTx(tx), mergestat, imp); importError != nil {
+			if importError = handleImport(ctx, l, pool, queries.WithTx(tx), mergestat, imp); importError != nil {
 				logger.Warnf("import(%s) failed: %v", imp.ID, importError.Error())
 				_ = tx.Rollback(ctx)
 			} else {
@@ -90,7 +91,7 @@ func AutoImport(pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.HandlerFunc {
 }
 
 // handleImport handles execution of a given import configuration
-func handleImport(ctx context.Context, pool *pgxpool.Pool, qry *db.Queries, mergestat *sqlx.DB, imp db.ListRepoImportsDueForImportRow) (err error) {
+func handleImport(ctx context.Context, logger *zerolog.Logger, pool *pgxpool.Pool, qry *db.Queries, mergestat *sqlx.DB, imp db.ListRepoImportsDueForImportRow) (err error) {
 	var repoOwner, ghToken string
 	var removeDeletedRepos, defaultSyncTypes = true, make([]string, 0) //nolint:ineffassign
 	var repos []*githubRepository
@@ -168,6 +169,8 @@ func handleImport(ctx context.Context, pool *pgxpool.Pool, qry *db.Queries, merg
 
 	// upsert all fetched repositories
 	for _, repo := range repos {
+		logger.Debug().Msgf(string(repo.Topics))
+
 		var opts = db.UpsertRepoParams{
 			Repo:         fmt.Sprintf("https://github.com/%s/%s", repoOwner, repo.Name),
 			IsGithub:     sql.NullBool{Bool: true, Valid: true},
@@ -278,12 +281,14 @@ func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner
 		}
 
 		for _, repo := range repos {
-			var topics []byte
-			if topics, err = json.Marshal(repo.Topics); err != nil {
+
+			jsonStr, _ := json.Marshal(&repo.Topics)
+			if err != nil {
 				return repositories, err
 			}
 
-			repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL), Topics: string(topics)})
+			repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL),
+				Topics: string(jsonStr)})
 		}
 		if resp == nil {
 			break
@@ -319,12 +324,14 @@ func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwne
 		}
 
 		for _, repo := range repos {
-			var topics []byte
-			if topics, err = json.Marshal(repo.Topics); err != nil {
+
+			jsonStr, err := json.Marshal(&repo.Topics)
+			if err != nil {
 				return repositories, err
 			}
 
-			repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL), Topics: string(topics)})
+			repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL),
+				Topics: string(jsonStr)})
 		}
 
 		if resp == nil {
