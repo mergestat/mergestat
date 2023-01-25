@@ -3,7 +3,16 @@ BEGIN;
 INSERT INTO mergestat.repo_sync_types (type, description, short_name, priority, type_group)
 VALUES ('OSSF_SCORECARD_REPO_SCAN', 'Executes an OSSF scorecard scan on a git repository', 'OSSF Scorecard Repo Scan', 3, 'GITHUB') ON CONFLICT DO NOTHING;
 
-CREATE TABLE IF NOT EXISTS ossf_scorecard_repo_scans (repo_id uuid PRIMARY KEY, results jsonb NOT NULL);
+CREATE TABLE IF NOT EXISTS ossf_scorecard_repo_scans (
+    repo_id uuid PRIMARY KEY REFERENCES repos(id) ON DELETE CASCADE ON UPDATE RESTRICT,
+    results jsonb NOT NULL,
+    _mergestat_synced_at timestamp with time zone NOT NULL DEFAULT now()
+);
+
+COMMENT ON TABLE public.ossf_scorecard_repo_scans IS 'Output of OSSF scorecard scans on a git repository';
+COMMENT ON COLUMN ossf_scorecard_repo_scores.repo_id IS 'foreign key for public.repos.id';
+COMMENT ON COLUMN ossf_scorecard_repo_scores.results IS 'JSON results of the scan';
+COMMENT ON COLUMN ossf_scorecard_repo_scores._mergestat_synced_at IS 'timestamp when record was synced into the MergeStat database';
 
 CREATE OR REPLACE VIEW ossf_scorecard_repo_scores AS
 SELECT
