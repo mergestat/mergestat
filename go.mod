@@ -23,7 +23,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/libgit2/git2go/v33 v33.0.9
 	github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b
-	github.com/mergestat/sqlq v0.0.0-20230118132428-b54365983541
+	github.com/mergestat/sqlq v0.0.0-20230125171658-16556743b06a
 	github.com/prometheus/client_golang v1.14.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20221229060216-a8d4a561cc93
