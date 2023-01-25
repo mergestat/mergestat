@@ -26,6 +26,12 @@ jobs:
       - name: Test
         run: make test
 
+      - name: Run sqlc
+        # TODO(patrickdevivo) we should probably pin the sqlc version elsewhere (https://marcofranssen.nl/manage-go-tools-via-go-modules)
+        run: |
+          go install github.com/kyleconroy/sqlc/cmd/sqlc@v1.16.0
+          sqlc generate
+
       - name: Lint
         run: |
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.47.3

@@ -5,18 +5,18 @@ BEGIN;
 -- This is useful for the schema introspection feature in the UI.
 CREATE OR REPLACE VIEW mergestat.schema_introspection AS (
     SELECT
-        information_schema.tables.table_schema AS schema,
-        information_schema.tables.table_name,
-        information_schema.tables.table_type,
-        information_schema.columns.column_name,
-        information_schema.columns.ordinal_position,
-        information_schema.columns.is_nullable,
-        information_schema.columns.data_type,
-        information_schema.columns.udt_name,
-        pg_catalog.col_description(format('%s.%s', information_schema.columns.table_schema, information_schema.columns.table_name)::regclass::oid, information_schema.columns.ordinal_position) as column_description
-    FROM information_schema.tables
-    INNER JOIN information_schema.columns ON (information_schema.tables.table_name = information_schema.columns.table_name AND information_schema.tables.table_schema = information_schema.columns.table_schema)
-    WHERE information_schema.tables.table_schema IN ('public', 'mergestat')
+        t.table_schema AS schema,
+        t.table_name,
+        t.table_type,
+        c.column_name,
+        c.ordinal_position,
+        c.is_nullable,
+        c.data_type,
+        c.udt_name,
+        pg_catalog.col_description(format('%s.%s', c.table_schema, c.table_name)::regclass::oid, c.ordinal_position) as column_description
+    FROM information_schema.tables as t
+    INNER JOIN information_schema.columns AS c ON (t.table_name = c.table_name AND t.table_schema = c.table_schema)
+    WHERE t.table_schema IN ('public', 'mergestat')
 );
 
 COMMIT;
