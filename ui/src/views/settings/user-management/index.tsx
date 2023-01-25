@@ -89,7 +89,7 @@ const UserManagement: NextPage = () => {
                   ? <Panel className='rounded-md w-full shadow-sm'>
                       <Panel.Body className='p-0'>
                         <div data-testid={TEST_IDS.usersListEmpty} className='flex justify-center items-center bg-white py-5'>
-                          No data available!
+                          Couldn&#39;t find any users
                         </div>
                       </Panel.Body>
                     </Panel>
