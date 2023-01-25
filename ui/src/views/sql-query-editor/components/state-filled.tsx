@@ -1,4 +1,4 @@
-import { Badge, Button, HoverCard, Menu, Tabs, Toolbar, Tooltip } from '@mergestat/blocks'
+import { Badge, Button, HoverCard, Menu, Tabs, Toolbar } from '@mergestat/blocks'
 import { ArrowCollapseIcon, ArrowExpandIcon, CaretDownIcon, ChartBarIcon, ChartLineIcon, CircleCheckFilledIcon, PlusIcon, SingleMetricIcon } from '@mergestat/icons'
 import { cloneElement } from 'react'
 import { QueryResultProps } from 'src/@types'
@@ -53,15 +53,13 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                         close()
                       }}
                     />
-                    <Tooltip content='Coming soon!' placement='right' offset={[0, 10]}>
-                      <Menu.Item text="Bar chart" withIcon
-                        icon={<ChartBarIcon className="t-icon" />}
-                        onClick={() => {
-                          addTab(TAB_TYPE.BAR)
-                          close()
-                        }}
-                      />
-                    </Tooltip>
+                    <Menu.Item text="Bar chart" withIcon
+                      icon={<ChartBarIcon className="t-icon" />}
+                      onClick={() => {
+                        addTab(TAB_TYPE.BAR)
+                        close()
+                      }}
+                    />
                   </Menu>
                 )}
               >
