@@ -30,9 +30,9 @@ type githubRepoInfo struct {
 	TotalIssuesCount  *int       `json:"totalIssuesCount"`
 	LatestRelease     *struct {
 		AuthorLogin *string    `json:"authorLogin"`
-		CreatedAt   *time.Time `json:"created_at"`
+		CreatedAt   *time.Time `json:"createdAt"`
 		Name        *string    `json:"name"`
-		PublishedAt *time.Time `json:"published_at"`
+		PublishedAt *time.Time `json:"publishedAt"`
 	} `json:"latestRelease"`
 	License *struct {
 		Key      *string `json:"key"`
