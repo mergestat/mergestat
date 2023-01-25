@@ -1,10 +1,11 @@
 import { ChartBarIcon, ChartLineIcon, SingleMetricIcon, TableIcon } from '@mergestat/icons'
 import { ReactElement, useState } from 'react'
-import { LineChartData, QueryResultProps, SingleMetricData } from 'src/@types'
+import { ChartData, QueryResultProps, SingleMetricData } from 'src/@types'
 import { useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.context'
 import { TAB_TYPE } from 'src/utils/constants'
 import { v4 as uuidv4 } from 'uuid'
+import TabBarChart from '../sql-query-editor/tabs/tab-bar-chart'
 import TabLineChart from '../sql-query-editor/tabs/tab-line-chart'
 import TabSingleMetric from '../sql-query-editor/tabs/tab-single-metric'
 import TabTable from '../sql-query-editor/tabs/tab-table'
@@ -38,7 +39,7 @@ const useTabs = (rowLimit: number, rowLimitReached: boolean, data: QueryResultPr
         return {
           tabId,
           title: <><ChartBarIcon className='t-icon' /> <span className='ml-2'>Bar chart</span></>,
-          content: 'Content Bar chart',
+          content: <TabBarChart data={data} />,
           closable: true
         }
       case TAB_TYPE.LINE:
@@ -61,9 +62,8 @@ const useTabs = (rowLimit: number, rowLimitReached: boolean, data: QueryResultPr
   const getTabPayload = (tab: string) => {
     switch (tab) {
       case TAB_TYPE.BAR:
-        return {}
       case TAB_TYPE.LINE:
-        return { xAxis: '', yAxis: '' } as LineChartData
+        return { xAxis: '', yAxis: '' } as ChartData
       default:
         return { label: '' } as SingleMetricData
     }

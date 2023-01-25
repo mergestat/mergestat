@@ -115,3 +115,62 @@
 .t-tab {
   @apply mb-0;
 }
+
+.apexcharts-tooltip {
+  @apply border
+         bg-white
+         rounded
+         text-gray-600;
+}
+
+.apexcharts-tooltip.apexcharts-theme-custom .apexcharts-tooltip-title {
+  @apply bg-gray-50
+          font-medium;
+}
+
+.apex-axis-label {
+  @apply text-gray-400;
+}
+
+.apexcharts-menu {
+  padding: 0 !important;
+  @apply bg-white
+          border
+          rounded
+          shadow;
+}
+
+.apexcharts-menu-item {
+  font-size: 1rem !important;
+  padding: 0.5rem 1rem !important;
+  @apply text-gray-700
+         m-0
+         whitespace-nowrap
+         text-left;
+}
+
+.apexcharts-menu-item:hover {
+  background: #F9FAFB !important;
+}
+
+.apexcharts-toolbar {
+  gap: 6px;
+}
+
+.apexcharts-toolbar svg {
+  stroke: none !important;
+  height: 100%;
+  width: 100%;
+  fill: currentColor;
+}
+
+.apexcharts-menu-icon,
+.apexcharts-reset-icon,
+.apexcharts-zoom-icon,
+.apexcharts-zoomin-icon,
+.apexcharts-zoomout-icon,
+.apexcharts-pan-icon {
+  transform: scale(1) !important;
+  width: 20px !important;
+  height: 20px !important;
+}

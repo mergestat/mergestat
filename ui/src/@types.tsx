@@ -188,14 +188,10 @@ export type QueryResultProps = {
 
 /** Query Tab Types */
 
-export type LineChartData = {
+export type ChartData = {
   series?: string
   xAxis?: string
   yAxis?: string
-}
-
-export type BarChartData = {
-  anyProp: string
 }
 
 export type SingleMetricData = {
@@ -208,9 +204,26 @@ export type SingleMetricData = {
 export type ActionType = {
   tab: string
   remove?: boolean
-  payload?: SingleMetricData | BarChartData | LineChartData
+  payload?: SingleMetricData | ChartData
 }
 
 export type TabsState = {
-  [key: string]: SingleMetricData | BarChartData | LineChartData
+  [key: string]: SingleMetricData | ChartData
+}
+
+/** Apex Charts */
+
+export interface ApexDataLine {
+  x: Date | string | number
+  y: string | number
+}
+
+export interface ApexLineSerie {
+  name: string,
+  data: ApexDataLine[]
+}
+
+export interface ApexBarSerie {
+  name?: string,
+  data: number[]
 }
