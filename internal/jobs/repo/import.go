@@ -252,7 +252,7 @@ func fetchGitHubTokenFromDB(ctx context.Context, qry *db.Queries) (string, error
 	var err error
 	encryptionSecret := os.Getenv("ENCRYPTION_SECRET")
 
-	if credentials, err = qry.FetchGitHubToken(ctx, encryptionSecret); err != nil {
+	if credentials, err = qry.FetchGitHubToken(ctx, encryptionSecret); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return credentials, fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
 	}
 
