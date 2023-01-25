@@ -33,7 +33,7 @@ SELECT
     c.value -> 'documentation' ->> 'url' AS documentation_url,
     c.value -> 'documentation' ->> 'short' AS documentation_short,
     c.value AS value
-FROM ossf_scorecard_repo_scans, jsonb_array_elements(results -> 'checks'); c -- noqa: L011
+FROM ossf_scorecard_repo_scans, jsonb_array_elements(results -> 'checks') c; -- noqa: L011
 
 COMMENT ON VIEW ossf_scorecard_repo_check_results IS 'view of OSSF scorecard scan check results';
 COMMENT ON COLUMN ossf_scorecard_repo_check_results.repo_id IS 'foreign key for public.repos.id';
