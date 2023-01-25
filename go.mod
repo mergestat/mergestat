@@ -15,7 +15,7 @@ require (
 
 require (
 	github.com/go-enry/go-enry/v2 v2.8.3
-	github.com/go-git/go-git/v5 v5.5.1
+	github.com/go-git/go-git/v5 v5.5.2
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.3.0
@@ -56,7 +56,7 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-enry/go-oniguruma v1.2.1 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
-	github.com/go-git/go-billy/v5 v5.3.1 // indirect
+	github.com/go-git/go-billy/v5 v5.4.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-github/v47 v47.1.0
 	github.com/hashicorp/errwrap v1.1.0 // indirect
