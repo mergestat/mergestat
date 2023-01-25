@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS ossf_scorecard_repo_scans (
 );
 
 COMMENT ON TABLE public.ossf_scorecard_repo_scans IS 'Output of OSSF scorecard scans on a git repository';
-COMMENT ON COLUMN ossf_scorecard_repo_scores.repo_id IS 'foreign key for public.repos.id';
-COMMENT ON COLUMN ossf_scorecard_repo_scores.results IS 'JSON results of the scan';
-COMMENT ON COLUMN ossf_scorecard_repo_scores._mergestat_synced_at IS 'timestamp when record was synced into the MergeStat database';
+COMMENT ON COLUMN ossf_scorecard_repo_scans.repo_id IS 'foreign key for public.repos.id';
+COMMENT ON COLUMN ossf_scorecard_repo_scans.results IS 'JSON results of the scan';
+COMMENT ON COLUMN ossf_scorecard_repo_scans._mergestat_synced_at IS 'timestamp when record was synced into the MergeStat database';
 
 CREATE OR REPLACE VIEW ossf_scorecard_repo_scores AS
 SELECT
