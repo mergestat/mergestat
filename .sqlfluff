@@ -8,14 +8,9 @@ nocolor = False
 dialect = postgres
 # One of [raw|jinja|python|placeholder]
 templater = raw
-# Comma separated list of rules to check, default to all
 rules = all
 # Comma separated list of rules to exclude, or None
-<<<<<<< HEAD
 exclude_rules = L016,L044,L006,L028,L014,L025,L010,L029,L027,L030,L022,L034,L026,L031
-=======
-exclude_rules = L016,L044,L006,L028,L014,L025,L010,L029,L027,L030,L022,L031
->>>>>>> 440e58c (fix(sqlfluff): Omitting rule)
 # The depth to recursively parse to (0 for unlimited)
 recurse = 0
 # Below controls SQLFluff output, see max_line_length for SQL output
