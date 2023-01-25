@@ -37,7 +37,8 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.
 	var queries = db.New(pool)
 
 	return func(ctx context.Context, job *sqlq.Job) (err error) {
-		var logger = job.Logger()
+		// We are using our own logger instead of the sqlq logger
+		// var logger = job.Logger()
 
 		// start sending periodic keep-alive pings!
 		go job.SendKeepAlive(ctx, job.KeepAlive-(5*time.Second)) //nolint:errcheck
@@ -45,13 +46,13 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.
 		// fetch a list of all configured imports that are due now
 		var imports []db.ListRepoImportsDueForImportRow
 		if imports, err = queries.ListRepoImportsDueForImport(ctx); err != nil {
-			logger.Errorf("failed to list repo import job: %v", err)
+			l.Error().Msgf("failed to list repo import job: %v", err)
 			return errors.Wrapf(sqlq.ErrSkipRetry, "failed to list repo import job: %v", err)
 		}
 
-		logger.Infof("handling %d import(s)", len(imports))
+		l.Info().Msgf("handling %d import(s)", len(imports))
 		for _, imp := range imports {
-			logger.Infof("executing import %s", imp.ID)
+			l.Info().Msgf("executing import %s", imp.ID)
 
 			var tx pgx.Tx // each import is executed within its own transaction
 			if tx, err = pool.Begin(ctx); err != nil {
@@ -63,14 +64,14 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool, mergestat *sqlx.DB) sqlq.
 			// the job still continues executing.
 			var importError error
 			if importError = handleImport(ctx, l, pool, queries.WithTx(tx), mergestat, imp); importError != nil {
-				logger.Warnf("import(%s) failed: %v", imp.ID, importError.Error())
+				l.Warn().Msgf("import(%s) failed: %v", imp.ID, importError.Error())
 				_ = tx.Rollback(ctx)
 			} else {
 				// if the import was successful, commit the changes
 				if err = tx.Commit(ctx); err != nil {
 					return errors.Wrapf(err, "failed to commit database transaction")
 				}
-				logger.Infof("import(%s) was successful", imp.ID)
+				l.Info().Msgf("import(%s) was successful", imp.ID)
 			}
 
 			var importStatus = db.UpdateImportStatusParams{Status: "SUCCESS", ID: imp.ID}
@@ -169,8 +170,6 @@ func handleImport(ctx context.Context, logger *zerolog.Logger, pool *pgxpool.Poo
 
 	// upsert all fetched repositories
 	for _, repo := range repos {
-		logger.Debug().Msgf(string(repo.Topics))
-
 		var opts = db.UpsertRepoParams{
 			Repo:         fmt.Sprintf("https://github.com/%s/%s", repoOwner, repo.Name),
 			IsGithub:     sql.NullBool{Bool: true, Valid: true},
@@ -282,7 +281,7 @@ func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner
 
 		for _, repo := range repos {
 
-			jsonStr, _ := json.Marshal(&repo.Topics)
+			jsonStr, err := json.Marshal(&repo.Topics)
 			if err != nil {
 				return repositories, err
 			}
