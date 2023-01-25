@@ -13,26 +13,25 @@ export const barChartOptions: ApexOptions = {
   plotOptions: {
     bar: {
       borderRadius: 4,
-      columnWidth: '20%',
+      borderRadiusApplication: 'end',
+      columnWidth: '40%',
       horizontal: false,
     }
   },
   dataLabels: {
-    enabled: false,
+    enabled: true,
     style: {
-      colors: ['#6B7280'],
+      colors: ['white'],
     }
   },
-  colors: ['#7DD3FC', '#6366f1', '#a78bfa'],
-  series: [{
-    data: [400, 430, 448, 470, 540]
-  }],
+  colors: ['#1E3A8A', '#8A1E70', '#8A6E1E', '#1E8A38'],
   legend: {
     fontSize: '12px',
     fontFamily: FONT_FAMILY,
     offsetY: 8,
   },
   tooltip: {
+    enabled: false,
     theme: 'custom',
     cssClass: 'text-gray-400',
     style: {

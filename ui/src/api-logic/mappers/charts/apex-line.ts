@@ -1,14 +1,4 @@
-import { QueryResultProps } from 'src/@types'
-
-interface AppexDataLine {
-  x: Date | string | number
-  y: string | number
-}
-
-interface AppexLine {
-  name: string,
-  data: AppexDataLine[]
-}
+import { ApexLineSerie, QueryResultProps } from 'src/@types'
 
 interface MapApexLineParams {
   data: QueryResultProps
@@ -18,14 +8,14 @@ interface MapApexLineParams {
 }
 
 export const mapToAppexLine = ({ data, series, xAxis, yAxis }: MapApexLineParams) => {
-  let list: AppexLine[] = []
+  let serieList: ApexLineSerie[] = []
 
   const serieIndex = data.columns?.findIndex(d => d.name === series) || 0
   const xIndex = data.columns?.findIndex(d => d.name === xAxis) || 0
   const yIndex = data.columns?.findIndex(d => d.name === yAxis) || 0
 
   data.rows && data.rows.forEach(row => {
-    const serie = list.find(s => s.name === row[serieIndex])
+    const serie = serieList.find(s => s.name === row[serieIndex])
     const item = { x: (row[xIndex]).toString(), y: (row[yIndex]).toString() }
 
     if (!serie) { // If not exists, create a serie
@@ -33,11 +23,11 @@ export const mapToAppexLine = ({ data, series, xAxis, yAxis }: MapApexLineParams
         name: (row[serieIndex]).toString(),
         data: [item]
       }
-      list = [...list, newSerie]
+      serieList = [...serieList, newSerie]
     } else {
       serie.data = [...serie.data, item]
     }
   })
 
-  return list
+  return serieList
 }

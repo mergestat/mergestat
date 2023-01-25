@@ -210,3 +210,20 @@ export type ActionType = {
 export type TabsState = {
   [key: string]: SingleMetricData | ChartData
 }
+
+/** Apex Charts */
+
+export interface ApexDataLine {
+  x: Date | string | number
+  y: string | number
+}
+
+export interface ApexLineSerie {
+  name: string,
+  data: ApexDataLine[]
+}
+
+export interface ApexBarSerie {
+  name?: string,
+  data: number[]
+}

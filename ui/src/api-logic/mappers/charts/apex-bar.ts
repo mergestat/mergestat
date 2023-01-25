@@ -1,12 +1,8 @@
-import { QueryResultProps } from 'src/@types'
-
-export interface AppexBarData {
-  data: number[]
-}
+import { ApexBarSerie, QueryResultProps } from 'src/@types'
 
 interface AppexBar {
   categories: string[],
-  series: AppexBarData[]
+  series: ApexBarSerie[]
 }
 
 export const mapToAppexBar = (data: QueryResultProps, categoryColumn: string | undefined, ...dataColumn: (string | undefined)[]) => {
@@ -28,7 +24,7 @@ export const mapToAppexBar = (data: QueryResultProps, categoryColumn: string | u
       const serieIndex = data.columns?.findIndex(d => d.name === column) || 0
 
       if (data.rows) {
-        const serie = {
+        const serie: ApexBarSerie = {
           data: data.rows.map(row => {
             if (!isNaN(+row[serieIndex])) {
               return +row[serieIndex]

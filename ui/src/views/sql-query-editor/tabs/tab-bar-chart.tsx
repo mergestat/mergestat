@@ -2,8 +2,8 @@ import { Button, Dropdown, Label, Menu } from '@mergestat/blocks'
 import { CaretDownIcon } from '@mergestat/icons'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
-import { ChartData, QueryResultProps } from 'src/@types'
-import { AppexBarData, mapToAppexBar } from 'src/api-logic/mappers/charts/apex-bar'
+import { ApexBarSerie, ChartData, QueryResultProps } from 'src/@types'
+import { mapToAppexBar } from 'src/api-logic/mappers/charts/apex-bar'
 import { useQueryTabsContext, useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { barChartOptions } from 'src/utils/charts/bar-chart-config'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
@@ -19,7 +19,7 @@ const TabBarChart: React.FC<TabBarChartProps> = ({ data, tabId = '' }: TabBarCha
   const dispatch = useQueryTabsDispatch()
 
   const [options, setOptions] = useState(barChartOptions)
-  const [series, setSeries] = useState<AppexBarData[]>([])
+  const [series, setSeries] = useState<ApexBarSerie[]>([])
 
   const { xAxis, yAxis } = (tabsState[tabId] as ChartData)
 
