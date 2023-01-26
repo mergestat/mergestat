@@ -11,7 +11,7 @@ COPY . .
 RUN --mount=type=cache,target=/root/.cache/go-build \
 PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ make
 
-FROM zricethezav/gitleaks:v8.15.2 AS gitleaks
+FROM zricethezav/gitleaks:v8.15.3 AS gitleaks
 
 FROM alpine:3.16
 RUN set -x && apk add --no-cache curl postgresql-client ca-certificates git go
