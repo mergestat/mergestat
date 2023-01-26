@@ -167,6 +167,8 @@ func (w *worker) sendBatchGitHubRepoPRs(ctx context.Context, tx pgx.Tx, repo uui
 }
 
 func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRow) error {
+	var ghToken string
+	var err error
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
@@ -174,6 +176,14 @@ func (w *worker) handleGitHubRepoPRs(ctx context.Context, j *db.DequeueSyncJobRo
 		Message: fmt.Sprintf(LogFormatStartingSync, j.SyncType, j.Repo),
 	}}); err != nil {
 		return fmt.Errorf("send batch log messages: %w", err)
+	}
+
+	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
+		return err
+	}
+
+	if len(ghToken) <= 0 {
+		return errGitHubTokenRequired
 	}
 
 	id, err := uuid.FromString(j.RepoID.String())
