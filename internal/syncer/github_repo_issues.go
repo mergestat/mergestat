@@ -132,7 +132,7 @@ func (w *worker) handleGitHubRepoIssues(ctx context.Context, j *db.DequeueSyncJo
 	}
 
 	if len(ghToken) <= 0 {
-		return ErrGitHubTokenRequired
+		return errGitHubTokenRequired
 	}
 
 	id, err := uuid.FromString(j.RepoID.String())

@@ -42,7 +42,7 @@ const (
 	syncTypeOSSFScorecardRepoScan     = "OSSF_SCORECARD_REPO_SCAN"
 )
 
-var noGitHubTokenError = errors.New("in order to run this syncer, a GitHub authentication token must be present")
+var errGitHubTokenRequired = errors.New("in order to run this syncer, a GitHub authentication token must be present")
 
 type worker struct {
 	logger       *zerolog.Logger

@@ -66,7 +66,7 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	}
 
 	if len(ghToken) <= 0 {
-		return ErrGitHubTokenRequired
+		return errGitHubTokenRequired
 	}
 
 	var u *url.URL

@@ -94,7 +94,7 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 	}
 
 	if len(ghToken) <= 0 {
-		return ErrGitHubTokenRequired
+		return errGitHubTokenRequired
 	}
 
 	id, err := uuid.FromString(j.RepoID.String())
