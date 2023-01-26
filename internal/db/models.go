@@ -533,6 +533,73 @@ type GithubStargazer struct {
 	MergestatSyncedAt time.Time
 }
 
+type GitleaksRepoDetection struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// description of the detection
+	Description interface{}
+	// detection start line
+	StartLine interface{}
+	// detection end line
+	EndLine interface{}
+	// detection start column
+	StartColumn interface{}
+	// detection end column
+	EndColumn interface{}
+	// detection match
+	Match interface{}
+	// detection secret
+	Secret interface{}
+	// detection file
+	File interface{}
+	// detected symlink file
+	SymlinkFile interface{}
+	// detection commit
+	Commit interface{}
+	// detection entropy
+	Entropy interface{}
+	// detection author
+	Author interface{}
+	// detection email
+	Email interface{}
+	// detection date
+	Date interface{}
+	// detection message
+	Message interface{}
+	// detection tags
+	Tags interface{}
+	// detection rule id
+	RuleID interface{}
+	// detection fingerprint
+	Fingerprint interface{}
+}
+
+// scan output of a Gitleaks repo scan
+type GitleaksRepoScan struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// JSON output of a Gitleaks scan
+	Results pgtype.JSONB
+}
+
+type GosecRepoDetection struct {
+	RepoID     uuid.UUID
+	Severity   interface{}
+	Confidence interface{}
+	CweID      interface{}
+	RuleID     interface{}
+	Details    interface{}
+	File       interface{}
+	Line       interface{}
+	Column     interface{}
+	Nosec      interface{}
+}
+
+type GosecRepoScan struct {
+	RepoID uuid.UUID
+	Issues pgtype.JSONB
+}
+
 type MergestatLatestRepoSync struct {
 	ID         int64
 	CreatedAt  time.Time
@@ -540,6 +607,13 @@ type MergestatLatestRepoSync struct {
 	Status     string
 	StartedAt  sql.NullTime
 	DoneAt     sql.NullTime
+}
+
+type MergestatQueryHistory struct {
+	ID    uuid.UUID
+	RunAt sql.NullTime
+	RunBy string
+	Query string
 }
 
 // Table for "dynamic" repo imports - regularly loading from a GitHub org for example
@@ -613,6 +687,31 @@ type MergestatRepoSyncType struct {
 type MergestatRepoSyncTypeGroup struct {
 	Group           sql.NullString
 	ConcurrentSyncs sql.NullInt32
+}
+
+// @name labels
+type MergestatRepoSyncTypeLabel struct {
+	Label       string
+	Description sql.NullString
+	Color       string
+}
+
+// @name labelAssociations
+type MergestatRepoSyncTypeLabelAssociation struct {
+	Label        string
+	RepoSyncType string
+}
+
+type MergestatSchemaIntrospection struct {
+	Schema            interface{}
+	TableName         interface{}
+	TableType         interface{}
+	ColumnName        interface{}
+	OrdinalPosition   interface{}
+	IsNullable        interface{}
+	DataType          interface{}
+	UdtName           interface{}
+	ColumnDescription string
 }
 
 type MergestatServiceAuthCredential struct {
@@ -747,4 +846,35 @@ type TrivyRepoVulnerability struct {
 	VulnerabilityDescription interface{}
 	// timestamp when record was synced into the MergeStat database
 	MergestatSyncedAt time.Time
+}
+
+type YelpDetectSecretsRepoDetection struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// detection type
+	Type interface{}
+	// detection filename
+	Filename interface{}
+	// detection is verified
+	IsVerified interface{}
+	// detection line number
+	LineNumber interface{}
+	// detection secret
+	HashedSecret interface{}
+	// detection version
+	Version interface{}
+	// detection generated at
+	GeneratedAt interface{}
+	// detection filters used
+	FiltersUsed interface{}
+	// detection plugins used
+	PluginsUsed interface{}
+}
+
+// scan output of a Yelp detect-secrets repo scan
+type YelpDetectSecretsRepoScan struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// JSON output of a Yelp detect-secrets scan
+	Results pgtype.JSONB
 }

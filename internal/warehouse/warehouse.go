@@ -32,6 +32,10 @@ func New(ctx context.Context, db *db.Queries, pgpool *pgxpool.Pool, logger *zero
 	)
 
 	tc := oauth2.NewClient(ctx, ts)
+	if len(ghToken) <= 0 {
+		tc = nil
+	}
+
 	client := github.NewClient(tc)
 	pool := pool.Init(pgpool)
 	queries := queries.NewQuerier(db)

@@ -160,6 +160,17 @@ func (q *Queries) EnqueueAllSyncs(ctx context.Context) error {
 	return err
 }
 
+const fetchGitHubToken = `-- name: FetchGitHubToken :one
+SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1
+`
+
+func (q *Queries) FetchGitHubToken(ctx context.Context, pgpSymDecrypt string) (string, error) {
+	row := q.db.QueryRow(ctx, fetchGitHubToken, pgpSymDecrypt)
+	var pgp_sym_decrypt string
+	err := row.Scan(&pgp_sym_decrypt)
+	return pgp_sym_decrypt, err
+}
+
 const getRepoIDsFromRepoImport = `-- name: GetRepoIDsFromRepoImport :many
 SELECT id FROM public.repos WHERE repo_import_id = $1::uuid AND repo = ANY($2::TEXT[])
 `
