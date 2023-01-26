@@ -6,6 +6,9 @@ ADD COLUMN IF NOT EXISTS _mergestat_synced_at timestamp with time zone DEFAULT n
 ALTER TABLE IF EXISTS public.gosec_repo_scans
 DROP CONSTRAINT IF EXISTS gosec_repo_scans_repo_id_fkey;
 
+--Delete any orphaned records
+DELETE FROM public.gosec_repo_scans WHERE repo_id NOT IN (SELECT id FROM public.repos);
+
 ALTER TABLE IF EXISTS public.gosec_repo_scans
 ADD CONSTRAINT gosec_repo_scans_repo_id_fkey
 FOREIGN KEY (repo_id) REFERENCES public.repos(id) ON UPDATE RESTRICT ON DELETE CASCADE;
