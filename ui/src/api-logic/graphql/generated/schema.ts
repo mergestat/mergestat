@@ -807,6 +807,8 @@ export type CreateGosecRepoScanPayload = {
   gosecRepoScanEdge?: Maybe<GosecRepoScansEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GosecRepoScan`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -881,6 +883,72 @@ export type CreateLabelPayload = {
 /** The output of our create `Label` mutation. */
 export type CreateLabelPayloadLabelEdgeArgs = {
   orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
+/** All input for the create `OssfScorecardRepoScan` mutation. */
+export type CreateOssfScorecardRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `OssfScorecardRepoScan` to be created by this mutation. */
+  ossfScorecardRepoScan: OssfScorecardRepoScanInput;
+};
+
+/** The output of our create `OssfScorecardRepoScan` mutation. */
+export type CreateOssfScorecardRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `OssfScorecardRepoScan` that was created by this mutation. */
+  ossfScorecardRepoScan?: Maybe<OssfScorecardRepoScan>;
+  /** An edge for our `OssfScorecardRepoScan`. May be used by Relay 1. */
+  ossfScorecardRepoScanEdge?: Maybe<OssfScorecardRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `OssfScorecardRepoScan`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our create `OssfScorecardRepoScan` mutation. */
+export type CreateOssfScorecardRepoScanPayloadOssfScorecardRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<OssfScorecardRepoScansOrderBy>>;
+};
+
+/** All input for the create `OssfScorecardRepoScore` mutation. */
+export type CreateOssfScorecardRepoScoreInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `OssfScorecardRepoScore` to be created by this mutation. */
+  ossfScorecardRepoScore: OssfScorecardRepoScoreInput;
+};
+
+/** The output of our create `OssfScorecardRepoScore` mutation. */
+export type CreateOssfScorecardRepoScorePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `OssfScorecardRepoScore` that was created by this mutation. */
+  ossfScorecardRepoScore?: Maybe<OssfScorecardRepoScore>;
+  /** An edge for our `OssfScorecardRepoScore`. May be used by Relay 1. */
+  ossfScorecardRepoScoreEdge?: Maybe<OssfScorecardRepoScoresEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `OssfScorecardRepoScore` mutation. */
+export type CreateOssfScorecardRepoScorePayloadOssfScorecardRepoScoreEdgeArgs = {
+  orderBy?: InputMaybe<Array<OssfScorecardRepoScoresOrderBy>>;
 };
 
 /** All input for the create `QueryHistory` mutation. */
@@ -1385,6 +1453,38 @@ export type CreateServiceAuthCredentialTypePayload = {
 /** The output of our create `ServiceAuthCredentialType` mutation. */
 export type CreateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
+};
+
+/** All input for the create `SqlqMigration` mutation. */
+export type CreateSqlqMigrationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `SqlqMigration` to be created by this mutation. */
+  sqlqMigration: SqlqMigrationInput;
+};
+
+/** The output of our create `SqlqMigration` mutation. */
+export type CreateSqlqMigrationPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SqlqMigration` that was created by this mutation. */
+  sqlqMigration?: Maybe<SqlqMigration>;
+  /** An edge for our `SqlqMigration`. May be used by Relay 1. */
+  sqlqMigrationEdge?: Maybe<SqlqMigrationsEdge>;
+};
+
+
+/** The output of our create `SqlqMigration` mutation. */
+export type CreateSqlqMigrationPayloadSqlqMigrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<SqlqMigrationsOrderBy>>;
 };
 
 /** All input for the create `SyftRepoScan` mutation. */
@@ -2287,6 +2387,7 @@ export type DeleteGosecRepoScanInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -2304,6 +2405,8 @@ export type DeleteGosecRepoScanPayload = {
   gosecRepoScanEdge?: Maybe<GosecRepoScansEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GosecRepoScan`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -2390,6 +2493,52 @@ export type DeleteLabelPayload = {
 /** The output of our delete `Label` mutation. */
 export type DeleteLabelPayloadLabelEdgeArgs = {
   orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
+/** All input for the `deleteOssfScorecardRepoScanByNodeId` mutation. */
+export type DeleteOssfScorecardRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `OssfScorecardRepoScan` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteOssfScorecardRepoScan` mutation. */
+export type DeleteOssfScorecardRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `OssfScorecardRepoScan` mutation. */
+export type DeleteOssfScorecardRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedOssfScorecardRepoScanNodeId?: Maybe<Scalars['ID']>;
+  /** The `OssfScorecardRepoScan` that was deleted by this mutation. */
+  ossfScorecardRepoScan?: Maybe<OssfScorecardRepoScan>;
+  /** An edge for our `OssfScorecardRepoScan`. May be used by Relay 1. */
+  ossfScorecardRepoScanEdge?: Maybe<OssfScorecardRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `OssfScorecardRepoScan`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our delete `OssfScorecardRepoScan` mutation. */
+export type DeleteOssfScorecardRepoScanPayloadOssfScorecardRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<OssfScorecardRepoScansOrderBy>>;
 };
 
 /** All input for the `deleteQueryHistoryByNodeId` mutation. */
@@ -3071,6 +3220,59 @@ export type DeleteServiceAuthCredentialTypePayload = {
 /** The output of our delete `ServiceAuthCredentialType` mutation. */
 export type DeleteServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
+};
+
+/** All input for the `deleteSqlqMigrationByName` mutation. */
+export type DeleteSqlqMigrationByNameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+/** All input for the `deleteSqlqMigrationByNodeId` mutation. */
+export type DeleteSqlqMigrationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SqlqMigration` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteSqlqMigration` mutation. */
+export type DeleteSqlqMigrationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+};
+
+/** The output of our delete `SqlqMigration` mutation. */
+export type DeleteSqlqMigrationPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedSqlqMigrationNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SqlqMigration` that was deleted by this mutation. */
+  sqlqMigration?: Maybe<SqlqMigration>;
+  /** An edge for our `SqlqMigration`. May be used by Relay 1. */
+  sqlqMigrationEdge?: Maybe<SqlqMigrationsEdge>;
+};
+
+
+/** The output of our delete `SqlqMigration` mutation. */
+export type DeleteSqlqMigrationPayloadSqlqMigrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<SqlqMigrationsOrderBy>>;
 };
 
 /** All input for the `deleteSyftRepoScanByNodeId` mutation. */
@@ -7391,17 +7593,28 @@ export enum GitleaksRepoScansOrderBy {
   ResultsDesc = 'RESULTS_DESC'
 }
 
+/** view of gosec repo scan detections */
 export type GosecRepoDetection = {
-  column?: Maybe<Scalars['JSON']>;
-  confidence?: Maybe<Scalars['JSON']>;
-  cweId?: Maybe<Scalars['JSON']>;
-  details?: Maybe<Scalars['JSON']>;
-  file?: Maybe<Scalars['JSON']>;
-  line?: Maybe<Scalars['JSON']>;
-  nosec?: Maybe<Scalars['JSON']>;
+  /** detection column in line */
+  column?: Maybe<Scalars['String']>;
+  /** detection confidence */
+  confidence?: Maybe<Scalars['String']>;
+  /** detection CWE (Common Weakness Enumeration) ID */
+  cweId?: Maybe<Scalars['String']>;
+  /** detection details */
+  details?: Maybe<Scalars['String']>;
+  /** detection file */
+  file?: Maybe<Scalars['String']>;
+  /** detection line in file */
+  line?: Maybe<Scalars['String']>;
+  /** flag to determine if #nosec annotation was used */
+  nosec?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
   repoId?: Maybe<Scalars['UUID']>;
-  ruleId?: Maybe<Scalars['JSON']>;
-  severity?: Maybe<Scalars['JSON']>;
+  /** detection rule ID */
+  ruleId?: Maybe<Scalars['String']>;
+  /** detection severity */
+  severity?: Maybe<Scalars['String']>;
 };
 
 /**
@@ -7410,25 +7623,25 @@ export type GosecRepoDetection = {
  */
 export type GosecRepoDetectionCondition = {
   /** Checks for equality with the object’s `column` field. */
-  column?: InputMaybe<Scalars['JSON']>;
+  column?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `confidence` field. */
-  confidence?: InputMaybe<Scalars['JSON']>;
+  confidence?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `cweId` field. */
-  cweId?: InputMaybe<Scalars['JSON']>;
+  cweId?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `details` field. */
-  details?: InputMaybe<Scalars['JSON']>;
+  details?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `file` field. */
-  file?: InputMaybe<Scalars['JSON']>;
+  file?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `line` field. */
-  line?: InputMaybe<Scalars['JSON']>;
+  line?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `nosec` field. */
-  nosec?: InputMaybe<Scalars['JSON']>;
+  nosec?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `repoId` field. */
   repoId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `ruleId` field. */
-  ruleId?: InputMaybe<Scalars['JSON']>;
+  ruleId?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `severity` field. */
-  severity?: InputMaybe<Scalars['JSON']>;
+  severity?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `GosecRepoDetection` object types. All fields are combined with a logical ‘and.’ */
@@ -7436,19 +7649,19 @@ export type GosecRepoDetectionFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GosecRepoDetectionFilter>>;
   /** Filter by the object’s `column` field. */
-  column?: InputMaybe<JsonFilter>;
+  column?: InputMaybe<StringFilter>;
   /** Filter by the object’s `confidence` field. */
-  confidence?: InputMaybe<JsonFilter>;
+  confidence?: InputMaybe<StringFilter>;
   /** Filter by the object’s `cweId` field. */
-  cweId?: InputMaybe<JsonFilter>;
+  cweId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `details` field. */
-  details?: InputMaybe<JsonFilter>;
+  details?: InputMaybe<StringFilter>;
   /** Filter by the object’s `file` field. */
-  file?: InputMaybe<JsonFilter>;
+  file?: InputMaybe<StringFilter>;
   /** Filter by the object’s `line` field. */
-  line?: InputMaybe<JsonFilter>;
+  line?: InputMaybe<StringFilter>;
   /** Filter by the object’s `nosec` field. */
-  nosec?: InputMaybe<JsonFilter>;
+  nosec?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<GosecRepoDetectionFilter>;
   /** Checks for any expressions in this list. */
@@ -7456,9 +7669,9 @@ export type GosecRepoDetectionFilter = {
   /** Filter by the object’s `repoId` field. */
   repoId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `ruleId` field. */
-  ruleId?: InputMaybe<JsonFilter>;
+  ruleId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `severity` field. */
-  severity?: InputMaybe<JsonFilter>;
+  severity?: InputMaybe<StringFilter>;
 };
 
 /** A connection to a list of `GosecRepoDetection` values. */
@@ -7506,10 +7719,17 @@ export enum GosecRepoDetectionsOrderBy {
   SeverityDesc = 'SEVERITY_DESC'
 }
 
+/** Table of gosec repo scans */
 export type GosecRepoScan = Node & {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt: Scalars['Datetime'];
+  /** JSON issues from gosec repo scan */
   issues: Scalars['JSON'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** Reads a single `Repo` that is related to this `GosecRepoScan`. */
+  repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -7518,6 +7738,8 @@ export type GosecRepoScan = Node & {
  * tested for equality and combined with a logical ‘and.’
  */
 export type GosecRepoScanCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `issues` field. */
   issues?: InputMaybe<Scalars['JSON']>;
   /** Checks for equality with the object’s `repoId` field. */
@@ -7526,6 +7748,8 @@ export type GosecRepoScanCondition = {
 
 /** A filter to be used against `GosecRepoScan` object types. All fields are combined with a logical ‘and.’ */
 export type GosecRepoScanFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GosecRepoScanFilter>>;
   /** Filter by the object’s `issues` field. */
@@ -7540,13 +7764,21 @@ export type GosecRepoScanFilter = {
 
 /** An input for mutations affecting `GosecRepoScan` */
 export type GosecRepoScanInput = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** JSON issues from gosec repo scan */
   issues: Scalars['JSON'];
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
 /** Represents an update to a `GosecRepoScan`. Fields that are set will be updated. */
 export type GosecRepoScanPatch = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** JSON issues from gosec repo scan */
   issues?: InputMaybe<Scalars['JSON']>;
+  /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -7578,7 +7810,9 @@ export enum GosecRepoScansOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RepoIdAsc = 'REPO_ID_ASC',
-  RepoIdDesc = 'REPO_ID_DESC'
+  RepoIdDesc = 'REPO_ID_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
@@ -8009,6 +8243,10 @@ export type Mutation = {
   createLabel?: Maybe<CreateLabelPayload>;
   /** Creates a single `LabelAssociation`. */
   createLabelAssociation?: Maybe<CreateLabelAssociationPayload>;
+  /** Creates a single `OssfScorecardRepoScan`. */
+  createOssfScorecardRepoScan?: Maybe<CreateOssfScorecardRepoScanPayload>;
+  /** Creates a single `OssfScorecardRepoScore`. */
+  createOssfScorecardRepoScore?: Maybe<CreateOssfScorecardRepoScorePayload>;
   /** Creates a single `QueryHistory`. */
   createQueryHistory?: Maybe<CreateQueryHistoryPayload>;
   /** Creates a single `Repo`. */
@@ -8039,6 +8277,8 @@ export type Mutation = {
   createServiceAuthCredential?: Maybe<CreateServiceAuthCredentialPayload>;
   /** Creates a single `ServiceAuthCredentialType`. */
   createServiceAuthCredentialType?: Maybe<CreateServiceAuthCredentialTypePayload>;
+  /** Creates a single `SqlqMigration`. */
+  createSqlqMigration?: Maybe<CreateSqlqMigrationPayload>;
   /** Creates a single `SyftRepoScan`. */
   createSyftRepoScan?: Maybe<CreateSyftRepoScanPayload>;
   /** Creates a single `TrivyRepoScan`. */
@@ -8123,6 +8363,10 @@ export type Mutation = {
   deleteLabelAssociationByLabelAndRepoSyncType?: Maybe<DeleteLabelAssociationPayload>;
   /** Deletes a single `Label` using its globally unique id. */
   deleteLabelByNodeId?: Maybe<DeleteLabelPayload>;
+  /** Deletes a single `OssfScorecardRepoScan` using a unique key. */
+  deleteOssfScorecardRepoScan?: Maybe<DeleteOssfScorecardRepoScanPayload>;
+  /** Deletes a single `OssfScorecardRepoScan` using its globally unique id. */
+  deleteOssfScorecardRepoScanByNodeId?: Maybe<DeleteOssfScorecardRepoScanPayload>;
   /** Deletes a single `QueryHistory` using a unique key. */
   deleteQueryHistory?: Maybe<DeleteQueryHistoryPayload>;
   /** Deletes a single `QueryHistory` using its globally unique id. */
@@ -8185,6 +8429,12 @@ export type Mutation = {
   deleteServiceAuthCredentialType?: Maybe<DeleteServiceAuthCredentialTypePayload>;
   /** Deletes a single `ServiceAuthCredentialType` using its globally unique id. */
   deleteServiceAuthCredentialTypeByNodeId?: Maybe<DeleteServiceAuthCredentialTypePayload>;
+  /** Deletes a single `SqlqMigration` using a unique key. */
+  deleteSqlqMigration?: Maybe<DeleteSqlqMigrationPayload>;
+  /** Deletes a single `SqlqMigration` using a unique key. */
+  deleteSqlqMigrationByName?: Maybe<DeleteSqlqMigrationPayload>;
+  /** Deletes a single `SqlqMigration` using its globally unique id. */
+  deleteSqlqMigrationByNodeId?: Maybe<DeleteSqlqMigrationPayload>;
   /** Deletes a single `SyftRepoScan` using a unique key. */
   deleteSyftRepoScan?: Maybe<DeleteSyftRepoScanPayload>;
   /** Deletes a single `SyftRepoScan` using its globally unique id. */
@@ -8278,6 +8528,10 @@ export type Mutation = {
   updateLabelAssociationByLabelAndRepoSyncType?: Maybe<UpdateLabelAssociationPayload>;
   /** Updates a single `Label` using its globally unique id and a patch. */
   updateLabelByNodeId?: Maybe<UpdateLabelPayload>;
+  /** Updates a single `OssfScorecardRepoScan` using a unique key and a patch. */
+  updateOssfScorecardRepoScan?: Maybe<UpdateOssfScorecardRepoScanPayload>;
+  /** Updates a single `OssfScorecardRepoScan` using its globally unique id and a patch. */
+  updateOssfScorecardRepoScanByNodeId?: Maybe<UpdateOssfScorecardRepoScanPayload>;
   /** Updates a single `QueryHistory` using a unique key and a patch. */
   updateQueryHistory?: Maybe<UpdateQueryHistoryPayload>;
   /** Updates a single `QueryHistory` using its globally unique id and a patch. */
@@ -8340,6 +8594,12 @@ export type Mutation = {
   updateServiceAuthCredentialType?: Maybe<UpdateServiceAuthCredentialTypePayload>;
   /** Updates a single `ServiceAuthCredentialType` using its globally unique id and a patch. */
   updateServiceAuthCredentialTypeByNodeId?: Maybe<UpdateServiceAuthCredentialTypePayload>;
+  /** Updates a single `SqlqMigration` using a unique key and a patch. */
+  updateSqlqMigration?: Maybe<UpdateSqlqMigrationPayload>;
+  /** Updates a single `SqlqMigration` using a unique key and a patch. */
+  updateSqlqMigrationByName?: Maybe<UpdateSqlqMigrationPayload>;
+  /** Updates a single `SqlqMigration` using its globally unique id and a patch. */
+  updateSqlqMigrationByNodeId?: Maybe<UpdateSqlqMigrationPayload>;
   /** Updates a single `SyftRepoScan` using a unique key and a patch. */
   updateSyftRepoScan?: Maybe<UpdateSyftRepoScanPayload>;
   /** Updates a single `SyftRepoScan` using its globally unique id and a patch. */
@@ -8486,6 +8746,18 @@ export type MutationCreateLabelAssociationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateOssfScorecardRepoScanArgs = {
+  input: CreateOssfScorecardRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateOssfScorecardRepoScoreArgs = {
+  input: CreateOssfScorecardRepoScoreInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateQueryHistoryArgs = {
   input: CreateQueryHistoryInput;
 };
@@ -8572,6 +8844,12 @@ export type MutationCreateServiceAuthCredentialArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateServiceAuthCredentialTypeArgs = {
   input: CreateServiceAuthCredentialTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateSqlqMigrationArgs = {
+  input: CreateSqlqMigrationInput;
 };
 
 
@@ -8828,6 +9106,18 @@ export type MutationDeleteLabelByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteOssfScorecardRepoScanArgs = {
+  input: DeleteOssfScorecardRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteOssfScorecardRepoScanByNodeIdArgs = {
+  input: DeleteOssfScorecardRepoScanByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteQueryHistoryArgs = {
   input: DeleteQueryHistoryInput;
 };
@@ -9010,6 +9300,24 @@ export type MutationDeleteServiceAuthCredentialTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteServiceAuthCredentialTypeByNodeIdArgs = {
   input: DeleteServiceAuthCredentialTypeByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSqlqMigrationArgs = {
+  input: DeleteSqlqMigrationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSqlqMigrationByNameArgs = {
+  input: DeleteSqlqMigrationByNameInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSqlqMigrationByNodeIdArgs = {
+  input: DeleteSqlqMigrationByNodeIdInput;
 };
 
 
@@ -9302,6 +9610,18 @@ export type MutationUpdateLabelByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateOssfScorecardRepoScanArgs = {
+  input: UpdateOssfScorecardRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateOssfScorecardRepoScanByNodeIdArgs = {
+  input: UpdateOssfScorecardRepoScanByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateQueryHistoryArgs = {
   input: UpdateQueryHistoryInput;
 };
@@ -9488,6 +9808,24 @@ export type MutationUpdateServiceAuthCredentialTypeByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSqlqMigrationArgs = {
+  input: UpdateSqlqMigrationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSqlqMigrationByNameArgs = {
+  input: UpdateSqlqMigrationByNameInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSqlqMigrationByNodeIdArgs = {
+  input: UpdateSqlqMigrationByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateSyftRepoScanArgs = {
   input: UpdateSyftRepoScanInput;
 };
@@ -9551,6 +9889,322 @@ export type Node = {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
 };
+
+/** view of OSSF scorecard scan check results */
+export type OssfScorecardRepoCheckResult = {
+  /** details of the check in the scan run */
+  details?: Maybe<Scalars['String']>;
+  /** description of the check in the scan run */
+  documentationShort?: Maybe<Scalars['String']>;
+  /** URL to the documentation of the check in the scan run */
+  documentationUrl?: Maybe<Scalars['String']>;
+  /** name of the check in the scan run */
+  name?: Maybe<Scalars['String']>;
+  /** reason for the score of the check in the scan run */
+  reason?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId?: Maybe<Scalars['UUID']>;
+  /** score of the check in the scan run */
+  score?: Maybe<Scalars['String']>;
+  /** JSON of the check results in the scan run */
+  value?: Maybe<Scalars['JSON']>;
+};
+
+/**
+ * A condition to be used against `OssfScorecardRepoCheckResult` object types. All
+ * fields are tested for equality and combined with a logical ‘and.’
+ */
+export type OssfScorecardRepoCheckResultCondition = {
+  /** Checks for equality with the object’s `details` field. */
+  details?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `documentationShort` field. */
+  documentationShort?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `documentationUrl` field. */
+  documentationUrl?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `reason` field. */
+  reason?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `score` field. */
+  score?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `value` field. */
+  value?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `OssfScorecardRepoCheckResult` object types. All fields are combined with a logical ‘and.’ */
+export type OssfScorecardRepoCheckResultFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<OssfScorecardRepoCheckResultFilter>>;
+  /** Filter by the object’s `details` field. */
+  details?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `documentationShort` field. */
+  documentationShort?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `documentationUrl` field. */
+  documentationUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<OssfScorecardRepoCheckResultFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<OssfScorecardRepoCheckResultFilter>>;
+  /** Filter by the object’s `reason` field. */
+  reason?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `score` field. */
+  score?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `value` field. */
+  value?: InputMaybe<JsonFilter>;
+};
+
+/** A connection to a list of `OssfScorecardRepoCheckResult` values. */
+export type OssfScorecardRepoCheckResultsConnection = {
+  /** A list of edges which contains the `OssfScorecardRepoCheckResult` and cursor to aid in pagination. */
+  edges: Array<OssfScorecardRepoCheckResultsEdge>;
+  /** A list of `OssfScorecardRepoCheckResult` objects. */
+  nodes: Array<OssfScorecardRepoCheckResult>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `OssfScorecardRepoCheckResult` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `OssfScorecardRepoCheckResult` edge in the connection. */
+export type OssfScorecardRepoCheckResultsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `OssfScorecardRepoCheckResult` at the end of the edge. */
+  node: OssfScorecardRepoCheckResult;
+};
+
+/** Methods to use when ordering `OssfScorecardRepoCheckResult`. */
+export enum OssfScorecardRepoCheckResultsOrderBy {
+  DetailsAsc = 'DETAILS_ASC',
+  DetailsDesc = 'DETAILS_DESC',
+  DocumentationShortAsc = 'DOCUMENTATION_SHORT_ASC',
+  DocumentationShortDesc = 'DOCUMENTATION_SHORT_DESC',
+  DocumentationUrlAsc = 'DOCUMENTATION_URL_ASC',
+  DocumentationUrlDesc = 'DOCUMENTATION_URL_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  ReasonAsc = 'REASON_ASC',
+  ReasonDesc = 'REASON_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  ScoreAsc = 'SCORE_ASC',
+  ScoreDesc = 'SCORE_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
+}
+
+/** Output of OSSF scorecard scans on a git repository */
+export type OssfScorecardRepoScan = Node & {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt: Scalars['Datetime'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `Repo` that is related to this `OssfScorecardRepoScan`. */
+  repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON results of the scan */
+  results: Scalars['JSON'];
+};
+
+/**
+ * A condition to be used against `OssfScorecardRepoScan` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type OssfScorecardRepoScanCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `results` field. */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `OssfScorecardRepoScan` object types. All fields are combined with a logical ‘and.’ */
+export type OssfScorecardRepoScanFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<OssfScorecardRepoScanFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<OssfScorecardRepoScanFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<OssfScorecardRepoScanFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `results` field. */
+  results?: InputMaybe<JsonFilter>;
+};
+
+/** An input for mutations affecting `OssfScorecardRepoScan` */
+export type OssfScorecardRepoScanInput = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON results of the scan */
+  results: Scalars['JSON'];
+};
+
+/** Represents an update to a `OssfScorecardRepoScan`. Fields that are set will be updated. */
+export type OssfScorecardRepoScanPatch = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** JSON results of the scan */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A connection to a list of `OssfScorecardRepoScan` values. */
+export type OssfScorecardRepoScansConnection = {
+  /** A list of edges which contains the `OssfScorecardRepoScan` and cursor to aid in pagination. */
+  edges: Array<OssfScorecardRepoScansEdge>;
+  /** A list of `OssfScorecardRepoScan` objects. */
+  nodes: Array<OssfScorecardRepoScan>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `OssfScorecardRepoScan` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `OssfScorecardRepoScan` edge in the connection. */
+export type OssfScorecardRepoScansEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `OssfScorecardRepoScan` at the end of the edge. */
+  node: OssfScorecardRepoScan;
+};
+
+/** Methods to use when ordering `OssfScorecardRepoScan`. */
+export enum OssfScorecardRepoScansOrderBy {
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  ResultsAsc = 'RESULTS_ASC',
+  ResultsDesc = 'RESULTS_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+/** view of OSSF scorecard scan result scores */
+export type OssfScorecardRepoScore = {
+  /** commit of repo that the scan was run on */
+  commit?: Maybe<Scalars['String']>;
+  /** date of the scan */
+  date?: Maybe<Scalars['String']>;
+  /** URL to repo scan was run on */
+  repo?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId?: Maybe<Scalars['UUID']>;
+  /** resulting total score of the scan */
+  score?: Maybe<Scalars['String']>;
+  /** scorecard version used to run the scan */
+  scorecardVersion?: Maybe<Scalars['JSON']>;
+};
+
+/**
+ * A condition to be used against `OssfScorecardRepoScore` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type OssfScorecardRepoScoreCondition = {
+  /** Checks for equality with the object’s `commit` field. */
+  commit?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `date` field. */
+  date?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repo` field. */
+  repo?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `score` field. */
+  score?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `scorecardVersion` field. */
+  scorecardVersion?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `OssfScorecardRepoScore` object types. All fields are combined with a logical ‘and.’ */
+export type OssfScorecardRepoScoreFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<OssfScorecardRepoScoreFilter>>;
+  /** Filter by the object’s `commit` field. */
+  commit?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `date` field. */
+  date?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<OssfScorecardRepoScoreFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<OssfScorecardRepoScoreFilter>>;
+  /** Filter by the object’s `repo` field. */
+  repo?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `score` field. */
+  score?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `scorecardVersion` field. */
+  scorecardVersion?: InputMaybe<JsonFilter>;
+};
+
+/** An input for mutations affecting `OssfScorecardRepoScore` */
+export type OssfScorecardRepoScoreInput = {
+  /** commit of repo that the scan was run on */
+  commit?: InputMaybe<Scalars['String']>;
+  /** date of the scan */
+  date?: InputMaybe<Scalars['String']>;
+  /** URL to repo scan was run on */
+  repo?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** resulting total score of the scan */
+  score?: InputMaybe<Scalars['String']>;
+  /** scorecard version used to run the scan */
+  scorecardVersion?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A connection to a list of `OssfScorecardRepoScore` values. */
+export type OssfScorecardRepoScoresConnection = {
+  /** A list of edges which contains the `OssfScorecardRepoScore` and cursor to aid in pagination. */
+  edges: Array<OssfScorecardRepoScoresEdge>;
+  /** A list of `OssfScorecardRepoScore` objects. */
+  nodes: Array<OssfScorecardRepoScore>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `OssfScorecardRepoScore` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `OssfScorecardRepoScore` edge in the connection. */
+export type OssfScorecardRepoScoresEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `OssfScorecardRepoScore` at the end of the edge. */
+  node: OssfScorecardRepoScore;
+};
+
+/** Methods to use when ordering `OssfScorecardRepoScore`. */
+export enum OssfScorecardRepoScoresOrderBy {
+  CommitAsc = 'COMMIT_ASC',
+  CommitDesc = 'COMMIT_DESC',
+  DateAsc = 'DATE_ASC',
+  DateDesc = 'DATE_DESC',
+  Natural = 'NATURAL',
+  RepoAsc = 'REPO_ASC',
+  RepoDesc = 'REPO_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  ScorecardVersionAsc = 'SCORECARD_VERSION_ASC',
+  ScorecardVersionDesc = 'SCORECARD_VERSION_DESC',
+  ScoreAsc = 'SCORE_ASC',
+  ScoreDesc = 'SCORE_DESC'
+}
 
 /** Information about pagination in a connection. */
 export type PageInfo = {
@@ -9672,9 +10326,18 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | GosecRepoScan | Label | Query | QueryHistory | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SyftRepoScan | TrivyRepoScan | YelpDetectSecretsRepoScan>;
+  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | GosecRepoScan | Label | OssfScorecardRepoScan | Query | QueryHistory | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SqlqMigration | SyftRepoScan | TrivyRepoScan | YelpDetectSecretsRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
+  /** Reads and enables pagination through a set of `OssfScorecardRepoCheckResult`. */
+  ossfScorecardRepoCheckResults?: Maybe<OssfScorecardRepoCheckResultsConnection>;
+  ossfScorecardRepoScan?: Maybe<OssfScorecardRepoScan>;
+  /** Reads a single `OssfScorecardRepoScan` using its globally unique `ID`. */
+  ossfScorecardRepoScanByNodeId?: Maybe<OssfScorecardRepoScan>;
+  /** Reads and enables pagination through a set of `OssfScorecardRepoScan`. */
+  ossfScorecardRepoScans?: Maybe<OssfScorecardRepoScansConnection>;
+  /** Reads and enables pagination through a set of `OssfScorecardRepoScore`. */
+  ossfScorecardRepoScores?: Maybe<OssfScorecardRepoScoresConnection>;
   /**
    * Exposes the root query type nested one level down. This is helpful for Relay 1
    * which can only query top level fields if they are in a particular form.
@@ -9758,6 +10421,12 @@ export type Query = Node & {
   serviceAuthCredentialTypes?: Maybe<ServiceAuthCredentialTypesConnection>;
   /** Reads and enables pagination through a set of `ServiceAuthCredential`. */
   serviceAuthCredentials?: Maybe<ServiceAuthCredentialsConnection>;
+  sqlqMigration?: Maybe<SqlqMigration>;
+  sqlqMigrationByName?: Maybe<SqlqMigration>;
+  /** Reads a single `SqlqMigration` using its globally unique `ID`. */
+  sqlqMigrationByNodeId?: Maybe<SqlqMigration>;
+  /** Reads and enables pagination through a set of `SqlqMigration`. */
+  sqlqMigrations?: Maybe<SqlqMigrationsConnection>;
   /** Reads and enables pagination through a set of `SyftRepoArtifact`. */
   syftRepoArtifacts?: Maybe<SyftRepoArtifactsConnection>;
   syftRepoScan?: Maybe<SyftRepoScan>;
@@ -10349,6 +11018,57 @@ export type QueryNodeArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryOssfScorecardRepoCheckResultsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<OssfScorecardRepoCheckResultCondition>;
+  filter?: InputMaybe<OssfScorecardRepoCheckResultFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OssfScorecardRepoCheckResultsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOssfScorecardRepoScanArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOssfScorecardRepoScanByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOssfScorecardRepoScansArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<OssfScorecardRepoScanCondition>;
+  filter?: InputMaybe<OssfScorecardRepoScanFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OssfScorecardRepoScansOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOssfScorecardRepoScoresArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<OssfScorecardRepoScoreCondition>;
+  filter?: InputMaybe<OssfScorecardRepoScoreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OssfScorecardRepoScoresOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryQueryHistoriesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -10744,6 +11464,37 @@ export type QueryServiceAuthCredentialsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QuerySqlqMigrationArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySqlqMigrationByNameArgs = {
+  name: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySqlqMigrationByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySqlqMigrationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SqlqMigrationCondition>;
+  filter?: InputMaybe<SqlqMigrationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SqlqMigrationsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QuerySyftRepoArtifactsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -10994,12 +11745,16 @@ export type Repo = Node & {
   githubRepoInfo?: Maybe<GithubRepoInfo>;
   /** Reads and enables pagination through a set of `GithubStargazer`. */
   githubStargazers: GithubStargazersConnection;
+  /** Reads a single `GosecRepoScan` that is related to this `Repo`. */
+  gosecRepoScan?: Maybe<GosecRepoScan>;
   /** MergeStat identifier for the repo */
   id: Scalars['UUID'];
   /** boolean to determine if the repo is in GitHub */
   isGithub?: Maybe<Scalars['Boolean']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** Reads a single `OssfScorecardRepoScan` that is related to this `Repo`. */
+  ossfScorecardRepoScan?: Maybe<OssfScorecardRepoScan>;
   /** ref for the repo */
   ref?: Maybe<Scalars['String']>;
   /** URL for the repo */
@@ -13002,6 +13757,99 @@ export type SqlIdentifierFilter = {
   startsWithInsensitive?: InputMaybe<Scalars['SqlIdentifier']>;
 };
 
+export type SqlqMigration = Node & {
+  appliedOn?: Maybe<Scalars['Datetime']>;
+  id: Scalars['BigInt'];
+  name?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  version?: Maybe<Scalars['Int']>;
+};
+
+/**
+ * A condition to be used against `SqlqMigration` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type SqlqMigrationCondition = {
+  /** Checks for equality with the object’s `appliedOn` field. */
+  appliedOn?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `version` field. */
+  version?: InputMaybe<Scalars['Int']>;
+};
+
+/** A filter to be used against `SqlqMigration` object types. All fields are combined with a logical ‘and.’ */
+export type SqlqMigrationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SqlqMigrationFilter>>;
+  /** Filter by the object’s `appliedOn` field. */
+  appliedOn?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SqlqMigrationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SqlqMigrationFilter>>;
+  /** Filter by the object’s `version` field. */
+  version?: InputMaybe<IntFilter>;
+};
+
+/** An input for mutations affecting `SqlqMigration` */
+export type SqlqMigrationInput = {
+  appliedOn?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['BigInt']>;
+  name?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+};
+
+/** Represents an update to a `SqlqMigration`. Fields that are set will be updated. */
+export type SqlqMigrationPatch = {
+  appliedOn?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['BigInt']>;
+  name?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['Int']>;
+};
+
+/** A connection to a list of `SqlqMigration` values. */
+export type SqlqMigrationsConnection = {
+  /** A list of edges which contains the `SqlqMigration` and cursor to aid in pagination. */
+  edges: Array<SqlqMigrationsEdge>;
+  /** A list of `SqlqMigration` objects. */
+  nodes: Array<SqlqMigration>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SqlqMigration` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `SqlqMigration` edge in the connection. */
+export type SqlqMigrationsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SqlqMigration` at the end of the edge. */
+  node: SqlqMigration;
+};
+
+/** Methods to use when ordering `SqlqMigration`. */
+export enum SqlqMigrationsOrderBy {
+  AppliedOnAsc = 'APPLIED_ON_ASC',
+  AppliedOnDesc = 'APPLIED_ON_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  VersionAsc = 'VERSION_ASC',
+  VersionDesc = 'VERSION_DESC'
+}
+
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -14453,6 +15301,7 @@ export type UpdateGosecRepoScanInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `GosecRepoScan` being updated. */
   patch: GosecRepoScanPatch;
+  /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
 };
 
@@ -14469,6 +15318,8 @@ export type UpdateGosecRepoScanPayload = {
   gosecRepoScanEdge?: Maybe<GosecRepoScansEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `GosecRepoScan`. */
+  repo?: Maybe<Repo>;
 };
 
 
@@ -14559,6 +15410,55 @@ export type UpdateLabelPayload = {
 /** The output of our update `Label` mutation. */
 export type UpdateLabelPayloadLabelEdgeArgs = {
   orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
+/** All input for the `updateOssfScorecardRepoScanByNodeId` mutation. */
+export type UpdateOssfScorecardRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `OssfScorecardRepoScan` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `OssfScorecardRepoScan` being updated. */
+  patch: OssfScorecardRepoScanPatch;
+};
+
+/** All input for the `updateOssfScorecardRepoScan` mutation. */
+export type UpdateOssfScorecardRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `OssfScorecardRepoScan` being updated. */
+  patch: OssfScorecardRepoScanPatch;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `OssfScorecardRepoScan` mutation. */
+export type UpdateOssfScorecardRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `OssfScorecardRepoScan` that was updated by this mutation. */
+  ossfScorecardRepoScan?: Maybe<OssfScorecardRepoScan>;
+  /** An edge for our `OssfScorecardRepoScan`. May be used by Relay 1. */
+  ossfScorecardRepoScanEdge?: Maybe<OssfScorecardRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `OssfScorecardRepoScan`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our update `OssfScorecardRepoScan` mutation. */
+export type UpdateOssfScorecardRepoScanPayloadOssfScorecardRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<OssfScorecardRepoScansOrderBy>>;
 };
 
 /** All input for the `updateQueryHistoryByNodeId` mutation. */
@@ -15287,6 +16187,64 @@ export type UpdateServiceAuthCredentialTypePayload = {
 /** The output of our update `ServiceAuthCredentialType` mutation. */
 export type UpdateServiceAuthCredentialTypePayloadServiceAuthCredentialTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<ServiceAuthCredentialTypesOrderBy>>;
+};
+
+/** All input for the `updateSqlqMigrationByName` mutation. */
+export type UpdateSqlqMigrationByNameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  /** An object where the defined keys will be set on the `SqlqMigration` being updated. */
+  patch: SqlqMigrationPatch;
+};
+
+/** All input for the `updateSqlqMigrationByNodeId` mutation. */
+export type UpdateSqlqMigrationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SqlqMigration` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `SqlqMigration` being updated. */
+  patch: SqlqMigrationPatch;
+};
+
+/** All input for the `updateSqlqMigration` mutation. */
+export type UpdateSqlqMigrationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  /** An object where the defined keys will be set on the `SqlqMigration` being updated. */
+  patch: SqlqMigrationPatch;
+};
+
+/** The output of our update `SqlqMigration` mutation. */
+export type UpdateSqlqMigrationPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SqlqMigration` that was updated by this mutation. */
+  sqlqMigration?: Maybe<SqlqMigration>;
+  /** An edge for our `SqlqMigration`. May be used by Relay 1. */
+  sqlqMigrationEdge?: Maybe<SqlqMigrationsEdge>;
+};
+
+
+/** The output of our update `SqlqMigration` mutation. */
+export type UpdateSqlqMigrationPayloadSqlqMigrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<SqlqMigrationsOrderBy>>;
 };
 
 /** All input for the `updateSyftRepoScanByNodeId` mutation. */
