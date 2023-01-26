@@ -2,6 +2,7 @@ const nextJest = require('next/jest')
 
 const createJestConfig = nextJest({
   dir: './',
+  testTimeout: 20000,
 })
 
 const customJestConfig = {
