@@ -301,7 +301,6 @@ func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner
 			break
 		}
 		opt.Page = resp.NextPage
-		continue
 
 	}
 	return repositories, err
@@ -345,7 +344,6 @@ func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwne
 			break
 		}
 		opt.Page = resp.NextPage
-		continue
 
 	}
 
