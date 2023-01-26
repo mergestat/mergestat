@@ -157,7 +157,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 
 	// remove any deleted repositories
 	if removeDeletedRepos {
-		var params = db.DeleteRemovedReposParams{Column1: imp.ID, Column2: repoUrls(repos)}
+		var params = db.DeleteRemovedReposParams{Column1: imp.ID, Column2: repoUrls(repos, repoOwner)}
 		if err = qry.DeleteRemovedRepos(ctx, params); err != nil {
 			return errors.Wrapf(err, "failed to remove deleted repositories")
 		}
@@ -188,7 +188,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 	// (optional) configure default sync types
 	if len(defaultSyncTypes) > 0 {
 		// batch is a collection of newly added repositories
-		var batch = difference(existing, repoUrls(repos))
+		var batch = difference(existing, repoUrls(repos, repoOwner))
 
 		// convert batch into a collection of repo ids
 		var ids []uuid.UUID
@@ -215,10 +215,10 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 	return qry.MarkRepoImportAsUpdated(ctx, imp.ID)
 }
 
-func repoUrls(repos []*githubRepository) []string {
+func repoUrls(repos []*githubRepository, repoOwner string) []string {
 	var ret = make([]string, len(repos))
 	for i, repo := range repos {
-		ret[i] = repo.URL()
+		ret[i] = fmt.Sprintf("https://github.com/%s/%s", repoOwner, repo.Name)
 	}
 	return ret
 }
