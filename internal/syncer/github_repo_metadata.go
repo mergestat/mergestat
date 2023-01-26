@@ -50,6 +50,8 @@ type githubRepoInfo struct {
 }
 
 func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSyncJobRow) error {
+	var ghToken string
+	var err error
 	l := w.loggerForJob(j)
 
 	// indicate that we're starting query execution
@@ -59,8 +61,15 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
+	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
+		return err
+	}
+
+	if len(ghToken) <= 0 {
+		return fmt.Errorf("in order to run this syncer, a GitHub authentication token must be present")
+	}
+
 	var u *url.URL
-	var err error
 	if u, err = url.Parse(j.Repo); err != nil {
 		return fmt.Errorf("could not parse repo: %v", err)
 	}
