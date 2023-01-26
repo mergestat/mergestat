@@ -90,7 +90,9 @@ export const AutoImportFromGitModal: React.FC = () => {
                 </Panel.Header>
               </div>
               {imp.opened && <Panel.Body className='p-0'>
-                <Alert type='info' className='m-3' title='Default syncs are enabled for repos that are imported.' />
+                <Alert type='info' className='m-3' title='Default syncs are enabled for repos this auto-import brings in.'>
+                  These syncs are automatically enabled for all repos that are imported from this GitHub organization or user. <a className='font-medium cursor-pointer' target='_blank' rel='noreferrer' href='https://docs.mergestat.com/mergestat/setup/repo-auto-imports'>Learn more</a>.
+                </Alert>
                 <table className='t-table-default t-table-hover'>
                   <tbody className='bg-white'>
                     {imp.defaultSyncs.map((syncType, index) => (
