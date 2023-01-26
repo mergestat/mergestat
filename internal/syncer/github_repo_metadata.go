@@ -66,7 +66,7 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	}
 
 	if len(ghToken) <= 0 {
-		return fmt.Errorf("in order to run this syncer, a GitHub authentication token must be present")
+		return ErrGitHubTokenRequired
 	}
 
 	var u *url.URL

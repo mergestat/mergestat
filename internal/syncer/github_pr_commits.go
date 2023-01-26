@@ -94,7 +94,7 @@ func (w *worker) handleGitHubPRCommits(ctx context.Context, j *db.DequeueSyncJob
 	}
 
 	if len(ghToken) <= 0 {
-		return fmt.Errorf("in order to run this syncer, a GitHub authentication token must be present")
+		return ErrGitHubTokenRequired
 	}
 
 	id, err := uuid.FromString(j.RepoID.String())

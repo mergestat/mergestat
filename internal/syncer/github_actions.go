@@ -28,7 +28,7 @@ func (w *worker) handleGithubActions(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	if len(ghToken) <= 0 {
-		return fmt.Errorf("in order to run this syncer, a GitHub authentication token must be present")
+		return ErrGitHubTokenRequired
 	}
 
 	if err := warehouse.New(ctx, w.db, w.pool, l, ghToken).GitHubActions(ctx, j); err != nil {
