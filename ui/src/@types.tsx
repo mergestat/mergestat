@@ -15,6 +15,8 @@ export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
 
 export type ImportStatusType = 'SUCCESS' | 'FAILURE'
 
+export type ChartType = 'line' | 'bar'
+
 export type TagType = {
   title: string
   checked: boolean
@@ -189,7 +191,7 @@ export type QueryResultProps = {
 /** Query Tab Types */
 
 export type ChartData = {
-  series?: string
+  serie?: string
   xAxis?: string
   yAxis?: string
 }
@@ -213,17 +215,12 @@ export type TabsState = {
 
 /** Apex Charts */
 
-export interface ApexDataLine {
+export interface ApexDataSerie {
   x: Date | string | number
   y: string | number
 }
 
-export interface ApexLineSerie {
+export interface ApexSerie {
   name: string,
-  data: ApexDataLine[]
-}
-
-export interface ApexBarSerie {
-  name?: string,
-  data: number[]
+  data: ApexDataSerie[]
 }

@@ -128,6 +128,12 @@ export enum TAB_TYPE {
   SINGLE_METRIC = 'SINGLE_METRIC'
 }
 
+export enum XAXIS_TYPE {
+  DATETIME = 'datetime',
+  CATEGORY = 'category',
+  NUMERIC = 'numeric'
+}
+
 export const USER_ROLES = [
   {
     key: 'ADMIN',
