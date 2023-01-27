@@ -5,8 +5,7 @@ import { useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.context'
 import { TAB_TYPE } from 'src/utils/constants'
 import { v4 as uuidv4 } from 'uuid'
-import TabBarChart from '../sql-query-editor/tabs/tab-bar-chart'
-import TabLineChart from '../sql-query-editor/tabs/tab-line-chart'
+import TabChart from '../sql-query-editor/tabs/tab-chart'
 import TabSingleMetric from '../sql-query-editor/tabs/tab-single-metric'
 import TabTable from '../sql-query-editor/tabs/tab-table'
 
@@ -39,14 +38,14 @@ const useTabs = (rowLimit: number, rowLimitReached: boolean, data: QueryResultPr
         return {
           tabId,
           title: <><ChartBarIcon className='t-icon' /> <span className='ml-2'>Bar chart</span></>,
-          content: <TabBarChart data={data} />,
+          content: <TabChart data={data} chartType='bar' />,
           closable: true
         }
       case TAB_TYPE.LINE:
         return {
           tabId,
           title: <><ChartLineIcon className='t-icon' /> <span className='ml-2'>Line chart</span></>,
-          content: <TabLineChart data={data} />,
+          content: <TabChart data={data} chartType='line' />,
           closable: true
         }
       default:
