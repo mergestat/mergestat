@@ -24,7 +24,7 @@ export const chartOptions: ApexOptions = {
     bar: {
       borderRadius: 4,
       borderRadiusApplication: 'end',
-      columnWidth: '40%',
+      columnWidth: '60%',
       horizontal: false,
     }
   },

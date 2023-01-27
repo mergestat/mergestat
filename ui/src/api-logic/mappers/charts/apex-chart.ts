@@ -35,7 +35,5 @@ export const mapToApexChart = ({ data, serie, xAxis, yAxis }: MapApexParams) => 
       }
     })
   }
-
-  console.log('Series: ', serieList)
   return serieList
 }
