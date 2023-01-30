@@ -40,6 +40,7 @@ const (
 	syncTypeYelpDetectSecretsRepoScan = "YELP_DETECT_SECRETS_REPO_SCAN"
 	syncTypeGosecRepoScan             = "GOSEC_REPO_SCAN"
 	syncTypeOSSFScorecardRepoScan     = "OSSF_SCORECARD_REPO_SCAN"
+	syncTypeGrypeScan                 = "GRYPE_REPO_SCAN"
 )
 
 var errGitHubTokenRequired = errors.New("in order to run this syncer, a GitHub authentication token must be present")
@@ -190,6 +191,8 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 		return w.handleGosecRepoScan(ctx, j)
 	case syncTypeOSSFScorecardRepoScan:
 		return w.handleOSSFScorecardScan(ctx, j)
+	case syncTypeGrypeScan:
+		return w.handleGrypeRepoScan(ctx, j)
 	default:
 		return fmt.Errorf("unknown sync type: %s for job ID: %d", j.SyncType, j.ID)
 	}
