@@ -5,13 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/mergestat/mergestat/internal/cron"
-	"github.com/mergestat/mergestat/internal/jobs/repo"
-	"github.com/mergestat/mergestat/internal/syncer"
-	"github.com/mergestat/mergestat/internal/timeout"
-	"github.com/mergestat/sqlq"
-	"github.com/mergestat/sqlq/runtime/embed"
-	"github.com/mergestat/sqlq/schema"
 	"net/http"
 	_ "net/http/pprof"
 	"net/url"
@@ -21,6 +14,14 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/mergestat/mergestat/internal/cron"
+	"github.com/mergestat/mergestat/internal/jobs/repo"
+	"github.com/mergestat/mergestat/internal/syncer"
+	"github.com/mergestat/mergestat/internal/timeout"
+	"github.com/mergestat/sqlq"
+	"github.com/mergestat/sqlq/runtime/embed"
+	"github.com/mergestat/sqlq/schema"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/golang-migrate/migrate/v4"
@@ -254,7 +255,7 @@ func main() {
 	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{Queues: queues})
 
 	// register job handlers for types implemented by this worker
-	_ = worker.Register("repos/auto-import", repo.AutoImport(pool, db))
+	_ = worker.Register("repos/auto-import", repo.AutoImport(&logger, pool))
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars

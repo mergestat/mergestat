@@ -51,7 +51,7 @@ const RepositoriesView: React.FC = () => {
           >
             <span className='flex flex-col'>
               {failedImports.map((imp, index) => (
-                <li key={`failed-imports-${index}`}><Link href={'/settings/repo-auto-imports'}><span className='font-bold cursor-pointer'>{`${imp.name} `}</span></Link>{`(${imp.type}): ${imp.error}`}</li>
+                <li key={`failed-imports-${index}`}><Link href={'/repos/repo-auto-imports'}><span className='font-bold cursor-pointer'>{`${imp.name} `}</span></Link>{`(${imp.type}): ${imp.error}`}</li>
               ))}
             </span>
           </Alert>}

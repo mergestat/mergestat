@@ -53,7 +53,7 @@ const QueryEditor: React.FC = () => {
   const executeSQLQuery = () => {
     setLoading(true)
     setAbortRef(new AbortController())
-    executeSQL({ variables: { sql: query, disableReadOnly: !readOnly } })
+    executeSQL({ variables: { sql: query, disableReadOnly: !readOnly, trackHistory: true } })
     setExecuted(true)
   }
 

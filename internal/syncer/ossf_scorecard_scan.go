@@ -22,6 +22,9 @@ func (w *worker) handleOSSFScorecardScan(ctx context.Context, j *db.DequeueSyncJ
 		return err
 	}
 
+	if len(ghToken) <= 0 {
+		return errGitHubTokenRequired
+	}
 	// indicate that we're starting a scorecard scan
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
 		Message: fmt.Sprintf(LogFormatStartingSync, j.SyncType, j.Repo),

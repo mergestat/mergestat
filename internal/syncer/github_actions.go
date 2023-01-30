@@ -27,6 +27,10 @@ func (w *worker) handleGithubActions(ctx context.Context, j *db.DequeueSyncJobRo
 		return err
 	}
 
+	if len(ghToken) <= 0 {
+		return errGitHubTokenRequired
+	}
+
 	if err := warehouse.New(ctx, w.db, w.pool, l, ghToken).GitHubActions(ctx, j); err != nil {
 		return err
 	}
