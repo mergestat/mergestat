@@ -4,18 +4,19 @@ import cx from 'classnames'
 import { debounce } from 'lodash'
 import Papa from 'papaparse'
 import { KeyboardEvent, useEffect, useState } from 'react'
-import { QueryResultProps } from 'src/@types'
+import { useQueryContext } from 'src/state/contexts'
 import { copy, filterByAllFields, getMaxPagination, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
 
 type TabTableProps = {
   rowLimit: number
   rowLimitReached: boolean
-  data: QueryResultProps
   children?: React.ReactNode
 }
 
-const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached, data }: TabTableProps) => {
+const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTableProps) => {
+  const [{ dataQuery: data }] = useQueryContext()
+
   const [result, setResult] = useState<Array<Array<string | number | boolean>>>(data.rows || [])
   const [rows, setRows] = useState<number>(20)
   const [page, setPage] = useState<number>(0)

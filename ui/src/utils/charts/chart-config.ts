@@ -89,7 +89,6 @@ export const chartOptions: ApexOptions = {
     }
   },
   xaxis: {
-    type: 'category',
     labels: {
       offsetY: 2,
       style: {

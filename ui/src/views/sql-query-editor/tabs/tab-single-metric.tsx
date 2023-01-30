@@ -1,16 +1,18 @@
 import { Button, Dropdown, Input, Label, Menu } from '@mergestat/blocks'
 import { CaretDownIcon } from '@mergestat/icons'
 import { ChangeEvent, useEffect } from 'react'
-import { QueryResultProps, SingleMetricData } from 'src/@types'
+import { SingleMetricData } from 'src/@types'
+import { useQueryContext } from 'src/state/contexts'
 import { useQueryTabsContext, useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 
 type TabSingleMetricProps = {
-  data: QueryResultProps
   tabId?: string
   children?: React.ReactNode
 }
 
-const TabSingleMetric: React.FC<TabSingleMetricProps> = ({ data, tabId = '' }: TabSingleMetricProps) => {
+const TabSingleMetric: React.FC<TabSingleMetricProps> = ({ tabId = '' }: TabSingleMetricProps) => {
+  const [{ dataQuery: data }] = useQueryContext()
+
   const tabsState = useQueryTabsContext()
   const dispatch = useQueryTabsDispatch()
 

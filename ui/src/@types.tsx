@@ -1,3 +1,4 @@
+import { ApexOptions } from 'apexcharts'
 import { ReactElement } from 'react'
 import { RepoSyncQueue } from './api-logic/graphql/generated/schema'
 
@@ -188,12 +189,24 @@ export type QueryResultProps = {
   rows?: Array<Array<string | number | boolean>> | null
 }
 
-/** Query Tab Types */
+/** Apex Charts */
+
+export interface ApexDataSerie {
+  x: Date | string | number
+  y: string | number
+}
+
+export interface ApexSerie {
+  name: string,
+  data: ApexDataSerie[]
+}
 
 export type ChartData = {
   serie?: string
   xAxis?: string
   yAxis?: string
+  options?: ApexOptions
+  series?: ApexSerie[]
 }
 
 export type SingleMetricData = {
@@ -213,14 +226,15 @@ export type TabsState = {
   [key: string]: SingleMetricData | ChartData
 }
 
-/** Apex Charts */
-
-export interface ApexDataSerie {
-  x: Date | string | number
-  y: string | number
+export interface TabData {
+  tabId: string
+  title: ReactElement | string
+  content: ReactElement | string
+  disabled?: boolean
+  closable?: boolean
 }
 
-export interface ApexSerie {
+export interface ColumnInfo {
   name: string,
-  data: ApexDataSerie[]
+  format: string
 }

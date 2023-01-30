@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Fragment } from 'react'
+import { QueryTabsProvider } from 'src/state/contexts/query-tabs.context'
 import { QueryProvider } from 'src/state/contexts/query.context'
 import useCrumbsInit from 'src/views/hooks/useCrumbsInit'
 import QueryEditor from 'src/views/sql-query-editor'
@@ -14,7 +15,9 @@ const QueryEditorPage: NextPage = () => {
         <title>Queries - MergeStat</title>
       </Head>
       <QueryProvider>
-        <QueryEditor />
+        <QueryTabsProvider>
+          <QueryEditor />
+        </QueryTabsProvider>
       </QueryProvider>
     </Fragment>
   )

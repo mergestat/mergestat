@@ -1,10 +1,10 @@
 import { useLazyQuery } from '@apollo/client'
 import { Alert, Button, Spinner, Toolbar } from '@mergestat/blocks'
 import { useEffect, useState } from 'react'
+import { ColumnInfo } from 'src/@types'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
-import { QueryTabsProvider } from 'src/state/contexts/query-tabs.context'
-import { useQueryContext } from 'src/state/contexts/query.context'
+import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.context'
 import { formatTimeExecution } from 'src/utils'
 import { States } from 'src/utils/constants'
 import SQLEditorSection from './components/sql-editor-section'
@@ -17,7 +17,8 @@ import QueryEditorLoading from './components/state-loading'
 const QueryEditor: React.FC = () => {
   const ROWS_LIMIT = 1000
 
-  const [{ query, readOnly, expanded }] = useQueryContext()
+  const [{ query, readOnly, expanded, dataQuery, projection }] = useQueryContext()
+  const { setDataQuery, setProjection, setTabs, setActiveTab } = useQuerySetState()
 
   const [state, setState] = useState<States>(States.Empty)
   const [rowLimitReached, setRowLimitReached] = useState(true)
@@ -36,6 +37,33 @@ const QueryEditor: React.FC = () => {
     }
   })
 
+  const projectionChanged = (columns: ColumnInfo[]) => {
+    const newProjection = columns.map(c => c.name)
+    const previousProjection = projection.map(c => c.name)
+
+    let changed = false
+    newProjection.forEach(p => {
+      if (!previousProjection.includes(p)) {
+        changed = true
+      }
+    })
+    return changed
+  }
+
+  const checkProjection = () => {
+    const columns = data?.execSQL.columns as ColumnInfo[]
+
+    if (projection.length === 0) {
+      setProjection(columns)
+    } else {
+      if (projectionChanged(columns)) {
+        setProjection([])
+        setTabs([])
+        setActiveTab(0)
+      }
+    }
+  }
+
   useEffect(() => {
     setLoading(loadingQuery)
   }, [loadingQuery])
@@ -45,9 +73,12 @@ const QueryEditor: React.FC = () => {
       setTime(formatTimeExecution(data?.execSQL.queryRunningTimeMs || 0))
       setState(States.Filled)
       setRowLimitReached(data?.execSQL.rows?.length > ROWS_LIMIT)
+      setDataQuery(data?.execSQL)
+      checkProjection()
     } else {
       error ? setState(States.Error) : setState(States.Empty)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, error])
 
   const executeSQLQuery = () => {
@@ -98,7 +129,7 @@ const QueryEditor: React.FC = () => {
         />}
 
         {/* Empty state */}
-        {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} data={data?.execSQL} />}
+        {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} data={dataQuery} />}
 
         {/* Canceled state */}
         {!error && !loading && state === States.Canceled && <QueryEditorCanceled />}
@@ -111,9 +142,7 @@ const QueryEditor: React.FC = () => {
 
         {/* Filled state */}
         {!error && !loading && data && state === States.Filled &&
-          <QueryTabsProvider>
-            <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} time={time} data={data.execSQL} />
-          </QueryTabsProvider>
+          <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} time={time} />
         }
       </div>
     </>

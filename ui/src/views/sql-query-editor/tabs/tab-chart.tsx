@@ -1,29 +1,27 @@
 import { Button, Dropdown, Label, Menu } from '@mergestat/blocks'
 import { CaretDownIcon } from '@mergestat/icons'
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
-import { ApexSerie, ChartData, ChartType, QueryResultProps } from 'src/@types'
+import { useEffect } from 'react'
+import { ChartData, ChartType } from 'src/@types'
 import { mapToApexChart } from 'src/api-logic/mappers/charts/apex-chart'
+import { useQueryContext } from 'src/state/contexts'
 import { useQueryTabsContext, useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { chartOptions } from 'src/utils/charts/chart-config'
 import { XAXIS_TYPE } from 'src/utils/constants'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 type TabChartProps = {
-  data: QueryResultProps
   tabId?: string
   chartType: ChartType
   children?: React.ReactNode
 }
 
-const TabChart: React.FC<TabChartProps> = ({ data, tabId = '', chartType }: TabChartProps) => {
+const TabChart: React.FC<TabChartProps> = ({ tabId = '', chartType }: TabChartProps) => {
+  const [{ dataQuery: data }] = useQueryContext()
   const tabsState = useQueryTabsContext()
   const dispatch = useQueryTabsDispatch()
 
-  const [options, setOptions] = useState(chartOptions)
-  const [series, setSeries] = useState<ApexSerie[]>([])
-
-  const { serie, xAxis, yAxis } = (tabsState[tabId] as ChartData)
+  const { serie, xAxis, yAxis, options, series } = (tabsState[tabId] as ChartData)
 
   const setState = (payload: ChartData) => dispatch({ tab: tabId, payload })
 
@@ -31,13 +29,16 @@ const TabChart: React.FC<TabChartProps> = ({ data, tabId = '', chartType }: TabC
     if (xAxis) {
       const xIndex = data.columns?.findIndex(d => d.name === xAxis) || 0
       const value = data.rows ? (data.rows[0][xIndex]).toString() : ''
+      console.log('Value: ', value)
 
       const date = (new Date(value)).valueOf()
+      console.log('Date: ', date)
       if (!isNaN(date)) {
         return XAXIS_TYPE.DATETIME
       }
 
       const num = (+value).valueOf()
+      console.log('Num: ', num)
       if (!isNaN(num)) {
         return XAXIS_TYPE.NUMERIC
       }
@@ -46,24 +47,27 @@ const TabChart: React.FC<TabChartProps> = ({ data, tabId = '', chartType }: TabC
   }
 
   useEffect(() => {
-    const series = mapToApexChart({ data, serie, xAxis, yAxis })
+    const typeX = getChartType(xAxis)
+    console.log('Type: ', typeX)
+    const series = mapToApexChart({ data, serie, xAxis, yAxis, typeX })
+    setState({ series })
 
     if (chartOptions.xaxis) {
-      const newOptions = {
+      const options = {
         ...chartOptions,
         ...{
           xaxis: {
-            type: getChartType(xAxis),
+            type: typeX,
             ...{
               labels: chartOptions.xaxis.labels
             }
           }
         }
       }
-      setOptions(newOptions)
+      setState({ options })
+      console.log('Options: ', chartOptions)
     }
 
-    setSeries(series)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, serie, xAxis, yAxis])
 
