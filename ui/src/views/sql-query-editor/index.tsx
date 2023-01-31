@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { ColumnInfo } from 'src/@types'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
+import { useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.context'
 import { formatTimeExecution } from 'src/utils'
 import { States } from 'src/utils/constants'
@@ -19,6 +20,7 @@ const QueryEditor: React.FC = () => {
 
   const [{ query, readOnly, expanded, dataQuery, projection }] = useQueryContext()
   const { setDataQuery, setProjection, setTabs, setActiveTab } = useQuerySetState()
+  const dispatch = useQueryTabsDispatch()
 
   const [state, setState] = useState<States>(States.Empty)
   const [rowLimitReached, setRowLimitReached] = useState(true)
@@ -37,30 +39,22 @@ const QueryEditor: React.FC = () => {
     }
   })
 
-  const projectionChanged = (columns: ColumnInfo[]) => {
-    const newProjection = columns.map(c => c.name)
-    const previousProjection = projection.map(c => c.name)
-
-    let changed = false
-    newProjection.forEach(p => {
-      if (!previousProjection.includes(p)) {
-        changed = true
+  const projectionChanged = (newProjection: string[]) => {
+    for (const p of newProjection) {
+      if (!projection.includes(p)) {
+        return true
       }
-    })
-    return changed
+    }
+    return false
   }
 
-  const checkProjection = () => {
-    const columns = data?.execSQL.columns as ColumnInfo[]
-
-    if (projection.length === 0) {
-      setProjection(columns)
-    } else {
-      if (projectionChanged(columns)) {
-        setProjection([])
-        setTabs([])
-        setActiveTab(0)
-      }
+  const checkProjection = (columns: ColumnInfo[]) => {
+    const newProjection = columns.map(c => c.name)
+    if (projectionChanged(newProjection)) {
+      setTabs([])
+      setActiveTab(0)
+      setProjection(newProjection)
+      dispatch({ reset: true })
     }
   }
 
@@ -70,11 +64,11 @@ const QueryEditor: React.FC = () => {
 
   useEffect(() => {
     if (data?.execSQL.rows?.length && data?.execSQL.rows?.length > 0) {
+      checkProjection(data?.execSQL.columns as ColumnInfo[])
+      setDataQuery(data?.execSQL)
       setTime(formatTimeExecution(data?.execSQL.queryRunningTimeMs || 0))
       setState(States.Filled)
       setRowLimitReached(data?.execSQL.rows?.length > ROWS_LIMIT)
-      setDataQuery(data?.execSQL)
-      checkProjection()
     } else {
       error ? setState(States.Error) : setState(States.Empty)
     }

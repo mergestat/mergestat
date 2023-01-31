@@ -1,6 +1,6 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
-import { ColumnInfo, QueryResultProps, TabData } from 'src/@types'
+import { QueryResultProps, TabData } from 'src/@types'
 
 const initialSQL = `-- Run (read-only) queries directly against the Postgres database
 -- For example, count commits by author across all repositories
@@ -14,7 +14,7 @@ type QueryContextT = {
   activeTab: number
   tabs: TabData[]
   dataQuery: QueryResultProps
-  projection: ColumnInfo[]
+  projection: string[]
 }
 
 type UseQueryContextT = [
@@ -96,7 +96,7 @@ function useQuerySetState() {
     }))
   }
 
-  const setProjection = (projection: ColumnInfo[]) => {
+  const setProjection = (projection: string[]) => {
     setState(prev => ({
       ...prev,
       projection

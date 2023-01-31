@@ -217,7 +217,8 @@ export type SingleMetricData = {
 }
 
 export type ActionType = {
-  tab: string
+  reset?: boolean
+  tab?: string
   remove?: boolean
   payload?: SingleMetricData | ChartData
 }
