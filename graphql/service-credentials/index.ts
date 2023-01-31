@@ -17,7 +17,7 @@ type AddTokenInput = {
 module.exports = makeExtendSchemaPlugin({
   typeDefs: gql`
     extend type Mutation {
-      add_token(provider: UUID!, type: String!, token: String!): Boolean
+      addToken(provider: UUID!, type: String!, token: String!): Boolean
     }
     extend type Query {
       databaseConnection: DisplayDatabaseConnection
@@ -31,7 +31,7 @@ module.exports = makeExtendSchemaPlugin({
   `,
   resolvers: {
     Mutation: {
-      async add_token(_parent: any, args: AddTokenInput, context: { pgClient: Client }, _info: any) {
+      async addToken(_parent: any, args: AddTokenInput, context: { pgClient: Client }, _info: any) {
         try {
           await context.pgClient.query('SAVEPOINT add_token;')
           await context.pgClient.query("SELECT mergestat.add_service_auth_credential($1, $2, $3, $4)", [ args.provider, args.type, args.token, ENCRYPTION_SECRET ])
