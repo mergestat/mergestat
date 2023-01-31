@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/mergestat/mergestat/internal/cron"
 	"net/http"
 	_ "net/http/pprof"
 	"net/url"
@@ -15,7 +16,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/mergestat/mergestat/internal/cron"
 	"github.com/mergestat/mergestat/internal/jobs/repo"
 	"github.com/mergestat/mergestat/internal/syncer"
 	"github.com/mergestat/mergestat/internal/timeout"
@@ -194,9 +194,7 @@ func main() {
 		const fetchToken = `
 			SELECT credentials.token
 				FROM (SELECT * FROM mergestat.providers WHERE name = 'GitHub' AND vendor = 'github') AS provider,
-					  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials
-			ORDER BY credentials.created_at DESC
-			LIMIT 1`
+					  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials`
 
 		var credentials []byte
 		if err = pool.QueryRow(context.TODO(), fetchToken, encryptionSecret).Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {

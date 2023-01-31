@@ -201,7 +201,7 @@ func (q *Queries) GetRepoIDsFromRepoImport(ctx context.Context, arg GetRepoIDsFr
 }
 
 const getRepoImportByID = `-- name: GetRepoImportByID :one
-SELECT id, created_at, updated_at, type, settings, last_import, import_interval, last_import_started_at, import_status, import_error FROM mergestat.repo_imports
+SELECT id, created_at, updated_at, settings, last_import, import_interval, last_import_started_at, import_status, import_error, provider FROM mergestat.repo_imports
 WHERE id = $1 LIMIT 1
 `
 
@@ -212,13 +212,13 @@ func (q *Queries) GetRepoImportByID(ctx context.Context, id uuid.UUID) (Mergesta
 		&i.ID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
-		&i.Type,
 		&i.Settings,
 		&i.LastImport,
 		&i.ImportInterval,
 		&i.LastImportStartedAt,
 		&i.ImportStatus,
 		&i.ImportError,
+		&i.Provider,
 	)
 	return i, err
 }
@@ -370,16 +370,16 @@ WITH dequeued AS (
             (now() - t.last_import_started_at > t.import_interval OR t.last_import_started_at IS NULL)
         ORDER BY last_import ASC
         FOR UPDATE SKIP LOCKED
-    ) RETURNING id, created_at, updated_at, type, settings, last_import, import_interval, last_import_started_at, import_status, import_error
+    ) RETURNING id, created_at, updated_at, settings, last_import, import_interval, last_import_started_at, import_status, import_error, provider
 )
-SELECT id, created_at, updated_at, type, settings FROM dequeued
+SELECT id, created_at, updated_at, provider, settings FROM dequeued
 `
 
 type ListRepoImportsDueForImportRow struct {
 	ID        uuid.UUID
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Type      string
+	Provider  uuid.UUID
 	Settings  pgtype.JSONB
 }
 
@@ -396,7 +396,7 @@ func (q *Queries) ListRepoImportsDueForImport(ctx context.Context) ([]ListRepoIm
 			&i.ID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
-			&i.Type,
+			&i.Provider,
 			&i.Settings,
 		); err != nil {
 			return nil, err

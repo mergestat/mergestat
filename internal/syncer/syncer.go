@@ -216,9 +216,7 @@ func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
 	const fetchToken = `
 		SELECT credentials.token
 			FROM (SELECT * FROM mergestat.providers WHERE name = 'GitHub' AND vendor = 'github') AS provider,
-    			  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials
-    	ORDER BY credentials.created_at DESC
-		LIMIT 1`
+    			  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials`
 
 	var credentials []byte
 	if err := w.pool.QueryRow(context.TODO(), fetchToken, encryptionSecret).Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {

@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"os"
+	"net/http"
 	"time"
 
 	"github.com/google/go-github/v41/github"
@@ -29,6 +29,8 @@ type githubRepository struct {
 func (repo *githubRepository) URL() string {
 	return fmt.Sprintf("https://github.com/%s/%s", repo.Owner, repo.Name)
 }
+
+type fetchFunc func(ctx context.Context, page int) ([]*github.Repository, *github.Response, error)
 
 // AutoImport implements the githubRepository auto-import job to automatically
 // sync githubRepository from user- or org- accounts.
@@ -96,68 +98,58 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 
 // handleImport handles execution of a given import configuration
 func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
-	var repoOwner, ghToken string
-	var removeDeletedRepos, defaultSyncTypes = true, make([]string, 0) //nolint:ineffassign
-	var repos []*githubRepository
-
-	if ghToken, err = fetchGitHubTokenFromDB(ctx, qry); err != nil {
+	var token string
+	if token, err = qry.FetchCredential(ctx, imp.Provider); err != nil {
 		return err
 	}
 
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: ghToken},
-	)
+	var public = token == ""
 
-	tc := oauth2.NewClient(ctx, ts)
-	if len(ghToken) <= 0 {
-		tc = nil
+	var client *github.Client
+	if !public {
+		var tokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+		client = github.NewClient(oauth2.NewClient(ctx, tokenSource))
+	} else {
+		client = github.NewClient(&http.Client{})
 	}
 
-	client := github.NewClient(tc)
+	var settings struct {
+		Type               string   `json:"type"`
+		Login              string   `json:"userOrOrg"`
+		RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
+		DefaultSyncTypes   []string `json:"defaultSyncTypes"`
+	}
 
-	// determine the kind of import (Org vs. User) and parse the settings
-	switch imp.Type {
+	if err = json.Unmarshal(imp.Settings.Bytes, &settings); err != nil {
+		return errors.Wrapf(err, "failed to parse import settings")
+	}
+
+	var fetchFunction fetchFunc
+	switch settings.Type {
 	case "GITHUB_ORG":
-		var settings struct {
-			Org                string   `json:"org"`
-			RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
-			DefaultSyncTypes   []string `json:"defaultSyncTypes"`
+		var opts = &github.RepositoryListByOrgOptions{}
+		if public {
+			opts.Type = "public"
 		}
-		if err = json.Unmarshal(imp.Settings.Bytes, &settings); err != nil {
-			return errors.Wrapf(err, "failed to parse import settings")
-		}
-
-		repoOwner = settings.Org
-		removeDeletedRepos = settings.RemoveDeletedRepos
-		defaultSyncTypes = settings.DefaultSyncTypes
-
-		if repos, err = fetchGitHubReposByOrg(ctx, client, repoOwner, ghToken); err != nil {
-			return err
-		}
+		fetchFunction = fetchByOrg(client, settings.Login, opts)
 	case "GITHUB_USER":
-		var settings struct {
-			User               string   `json:"user"`
-			RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
-			DefaultSyncTypes   []string `json:"defaultSyncTypes"`
+		var opts = &github.RepositoryListOptions{}
+		if public {
+			opts.Type = "public"
 		}
-		if err = json.Unmarshal(imp.Settings.Bytes, &settings); err != nil {
-			return errors.Wrapf(err, "failed to parse import settings")
-		}
-
-		repoOwner = settings.User
-		removeDeletedRepos = settings.RemoveDeletedRepos
-		defaultSyncTypes = settings.DefaultSyncTypes
-
-		if repos, err = fetchGitHubReposByUser(ctx, client, repoOwner, ghToken); err != nil {
-			return err
-		}
+		fetchFunction = fetchByUser(client, settings.Login, opts)
 	default:
-		return errors.Errorf("unknown import type: %s", imp.Type)
+		return errors.Errorf("unknown import type: %s", settings.Type)
+	}
+
+	var repos []*githubRepository
+	if repos, err = fetchRepositories(ctx, fetchFunction); err != nil {
+		return errors.Wrapf(err, "failed to fetch repositories")
 	}
 
 	// remove any deleted repositories
-	if removeDeletedRepos {
-		var params = db.DeleteRemovedReposParams{Column1: imp.ID, Column2: repoUrls(repos, repoOwner)}
+	if settings.RemoveDeletedRepos {
+		var params = db.DeleteRemovedReposParams{Column1: imp.ID, Column2: repoUrls(repos, settings.Login)}
 		if err = qry.DeleteRemovedRepos(ctx, params); err != nil {
 			return errors.Wrapf(err, "failed to remove deleted repositories")
 		}
@@ -165,7 +157,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 
 	// capture list of existing repositories before we do the upsert below
 	var existing []string
-	if len(defaultSyncTypes) > 0 { // only if defaultSyncTypes is configured
+	if len(settings.DefaultSyncTypes) > 0 { // only if defaultSyncTypes is configured
 		if existing, err = qry.GetRepoUrlFromImport(ctx, imp.ID); err != nil {
 			return errors.Wrapf(err, "failed to enable default sync")
 		}
@@ -174,7 +166,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 	// upsert all fetched repositories
 	for _, repo := range repos {
 		var opts = db.UpsertRepoParams{
-			Repo:         fmt.Sprintf("https://github.com/%s/%s", repoOwner, repo.Name),
+			Repo:         fmt.Sprintf("https://github.com/%s/%s", settings.Login, repo.Name),
 			IsGithub:     sql.NullBool{Bool: true, Valid: true},
 			RepoImportID: uuid.NullUUID{Valid: true, UUID: imp.ID},
 			Tags:         pgtype.JSONB{Status: pgtype.Present, Bytes: []byte(repo.Topics)},
@@ -186,9 +178,9 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 	}
 
 	// (optional) configure default sync types
-	if len(defaultSyncTypes) > 0 {
+	if len(settings.DefaultSyncTypes) > 0 {
 		// batch is a collection of newly added repositories
-		var batch = difference(existing, repoUrls(repos, repoOwner))
+		var batch = difference(existing, repoUrls(repos, settings.Login))
 
 		// convert batch into a collection of repo ids
 		var ids []uuid.UUID
@@ -198,7 +190,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 
 		// for each new repo, enable the provided syncs
 		for _, id := range ids {
-			for _, syncType := range defaultSyncTypes {
+			for _, syncType := range settings.DefaultSyncTypes {
 				var params = db.InsertNewDefaultSyncParams{Repoid: id, Synctype: syncType}
 				if err = qry.InsertNewDefaultSync(ctx, params); err != nil {
 					return errors.Wrapf(err, "failed to enable default sync")
@@ -244,108 +236,45 @@ func difference(existing, new []string) []string {
 	return diff
 }
 
-// TODO(ramirocastillo):Move this fn to the helper package
-// fetchGitHubTokenFromDB is a temporary helper function for retrieving the most recently added GITHUB_PAT service credential from the DB.
-// It's "temporary" because the way credentials are managed and retrieved will likely need to be much more robust in the future.
-func fetchGitHubTokenFromDB(ctx context.Context, qry *db.Queries) (string, error) {
-	var credentials string
-	var err error
-	encryptionSecret := os.Getenv("ENCRYPTION_SECRET")
-
-	if credentials, err = qry.FetchGitHubToken(ctx, encryptionSecret); err != nil && !errors.Is(err, pgx.ErrNoRows) {
-		return credentials, fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
-	}
-
-	if len(credentials) <= 0 {
-		// default to the `GITHUB_TOKEN` env var if nothing in the DB
-		credentials = os.Getenv("GITHUB_TOKEN")
-	}
-
-	return string(credentials), nil
-}
-
-// fetchGitHubReposByOrg fetch all repos from a given organization, if a github token is not
-// provided will search only public repos
-func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner string, ghToken string) ([]*githubRepository, error) {
+func fetchRepositories(ctx context.Context, fetch fetchFunc) (_ []*githubRepository, err error) {
 	var repositories []*githubRepository
 	var repos []*github.Repository
-	var err error
-	var typeOfRepo string
 	var resp *github.Response
 
-	if len(ghToken) <= 0 {
-		typeOfRepo = "public"
-	}
-	opt := &github.RepositoryListByOrgOptions{Type: typeOfRepo}
-
+	var page = 1
 	for {
-		if repos, resp, err = client.Repositories.ListByOrg(ctx, repoOwner, opt); err != nil {
+		if repos, resp, err = fetch(ctx, page); err != nil {
 			return repositories, err
 		}
 
 		for _, repo := range repos {
-
-			jsonStr, err := json.Marshal(&repo.Topics)
-			if err != nil {
+			var jsonStr []byte
+			if jsonStr, err = json.Marshal(&repo.Topics); err != nil {
 				return repositories, err
 			}
 
-			repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL),
+			repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: *repo.Owner.OrganizationsURL,
 				Topics: string(jsonStr)})
 		}
-		if resp == nil {
+
+		if resp.NextPage <= page {
 			break
 		}
-
-		if resp.NextPage == 0 {
-			break
-		}
-		opt.Page = resp.NextPage
-
+		page = resp.NextPage
 	}
 	return repositories, err
 }
 
-// fetchGitHubReposByUser fetch all repos from a given user, if a github token is not
-// provided will search only public repos
-func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwner string, ghToken string) ([]*githubRepository, error) {
-	var repositories []*githubRepository
-	var repos []*github.Repository
-	var err error
-	var typeOfRepo string
-	var resp *github.Response
-
-	if len(ghToken) <= 0 {
-		typeOfRepo = "public"
+func fetchByUser(client *github.Client, user string, opts *github.RepositoryListOptions) fetchFunc {
+	return func(ctx context.Context, page int) ([]*github.Repository, *github.Response, error) {
+		opts.Page = page
+		return client.Repositories.List(ctx, user, opts)
 	}
-	opt := &github.RepositoryListOptions{Type: typeOfRepo}
+}
 
-	for {
-		if repos, resp, err = client.Repositories.List(ctx, repoOwner, opt); err != nil {
-			return repositories, err
-		}
-
-		for _, repo := range repos {
-
-			jsonStr, err := json.Marshal(&repo.Topics)
-			if err != nil {
-				return repositories, err
-			}
-
-			repositories = append(repositories, &githubRepository{Name: *repo.Name, Owner: string(*repo.Owner.OrganizationsURL),
-				Topics: string(jsonStr)})
-		}
-
-		if resp == nil {
-			break
-		}
-
-		if resp.NextPage == 0 {
-			break
-		}
-		opt.Page = resp.NextPage
-
+func fetchByOrg(client *github.Client, org string, opts *github.RepositoryListByOrgOptions) fetchFunc {
+	return func(ctx context.Context, page int) ([]*github.Repository, *github.Response, error) {
+		opts.Page = page
+		return client.Repositories.ListByOrg(ctx, org, opts)
 	}
-
-	return repositories, err
 }

@@ -15,7 +15,7 @@ WITH dequeued AS (
         FOR UPDATE SKIP LOCKED
     ) RETURNING *
 )
-SELECT id, created_at, updated_at, type, settings FROM dequeued;
+SELECT id, created_at, updated_at, provider, settings FROM dequeued;
 ;
 
 -- name: UpdateImportStatus :exec

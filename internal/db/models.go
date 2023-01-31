@@ -609,6 +609,14 @@ type MergestatLatestRepoSync struct {
 	DoneAt     sql.NullTime
 }
 
+type MergestatProvider struct {
+	ID        uuid.UUID
+	Name      string
+	Vendor    string
+	Settings  pgtype.JSONB
+	CreatedAt time.Time
+}
+
 type MergestatQueryHistory struct {
 	ID    uuid.UUID
 	RunAt sql.NullTime
@@ -621,13 +629,13 @@ type MergestatRepoImport struct {
 	ID                  uuid.UUID
 	CreatedAt           time.Time
 	UpdatedAt           time.Time
-	Type                string
 	Settings            pgtype.JSONB
 	LastImport          sql.NullTime
 	ImportInterval      sql.NullString
 	LastImportStartedAt sql.NullTime
 	ImportStatus        sql.NullString
 	ImportError         sql.NullString
+	Provider            uuid.UUID
 }
 
 // Types of repo imports
@@ -720,6 +728,8 @@ type MergestatServiceAuthCredential struct {
 	UpdatedAt   time.Time
 	Type        string
 	Credentials []byte
+	Provider    uuid.UUID
+	IsDefault   sql.NullBool
 }
 
 type MergestatServiceAuthCredentialType struct {
@@ -739,6 +749,12 @@ type MergestatUserMgmtPgUser struct {
 	Rolreplication sql.NullBool
 	Rolbypassrls   sql.NullBool
 	Memberof       interface{}
+}
+
+type MergestatVendor struct {
+	Name        string
+	Displayname string
+	Description sql.NullString
 }
 
 // git repositories to track
