@@ -15,8 +15,10 @@ WITH dequeued AS (
         FOR UPDATE SKIP LOCKED
     ) RETURNING *
 )
-SELECT id, created_at, updated_at, provider, settings FROM dequeued;
-;
+SELECT dq.id, dq.created_at, dq.updated_at, dq.settings, dq.provider, pr.settings AS provider_settings, vd.name AS vendor_name
+FROM dequeued dq
+    INNER JOIN mergestat.providers pr ON pr.id = dequeued.provider
+    INNER JOIN mergestat.vendors vd ON vd.name = pr.vendor;
 
 -- name: UpdateImportStatus :exec
 UPDATE mergestat.repo_imports SET import_status = @status::TEXT, import_error = @error::TEXT WHERE id = @ID;

@@ -97,6 +97,7 @@ func main() {
 	if fileInfo, _ := os.Stdout.Stat(); (fileInfo.Mode()&os.ModeCharDevice) != 0 || prettyLogs {
 		logger = logger.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.Stamp})
 	}
+	zerolog.DefaultContextLogger = &logger
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
@@ -253,7 +254,7 @@ func main() {
 	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{Queues: queues})
 
 	// register job handlers for types implemented by this worker
-	_ = worker.Register("repos/auto-import", repo.AutoImport(&logger, pool))
+	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars

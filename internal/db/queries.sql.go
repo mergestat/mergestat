@@ -372,15 +372,20 @@ WITH dequeued AS (
         FOR UPDATE SKIP LOCKED
     ) RETURNING id, created_at, updated_at, settings, last_import, import_interval, last_import_started_at, import_status, import_error, provider
 )
-SELECT id, created_at, updated_at, provider, settings FROM dequeued
+SELECT dq.id, dq.created_at, dq.updated_at, dq.settings, dq.provider, pr.settings AS provider_settings, vd.name AS vendor_name
+FROM dequeued dq
+    INNER JOIN mergestat.providers pr ON pr.id = dequeued.provider
+    INNER JOIN mergestat.vendors vd ON vd.name = pr.vendor
 `
 
 type ListRepoImportsDueForImportRow struct {
-	ID        uuid.UUID
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Provider  uuid.UUID
-	Settings  pgtype.JSONB
+	ID               uuid.UUID
+	CreatedAt        time.Time
+	UpdatedAt        time.Time
+	Settings         pgtype.JSONB
+	Provider         uuid.UUID
+	ProviderSettings pgtype.JSONB
+	VendorName       string
 }
 
 func (q *Queries) ListRepoImportsDueForImport(ctx context.Context) ([]ListRepoImportsDueForImportRow, error) {
@@ -396,8 +401,10 @@ func (q *Queries) ListRepoImportsDueForImport(ctx context.Context) ([]ListRepoIm
 			&i.ID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
-			&i.Provider,
 			&i.Settings,
+			&i.Provider,
+			&i.ProviderSettings,
+			&i.VendorName,
 		); err != nil {
 			return nil, err
 		}
