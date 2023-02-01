@@ -42,6 +42,7 @@ func (w *worker) handleGrypeRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	cmd := exec.CommandContext(ctx, "grype", tmpPath, "-o", "json", "--file", "_mergestat_grype_scan_results.json")
+	cmd.Dir = tmpPath
 
 	if err = cmd.Run(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
@@ -51,7 +52,7 @@ func (w *worker) handleGrypeRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	var output []byte
-	if output, err = os.ReadFile("_mergestat_grype_scan_results.json"); err != nil {
+	if output, err = os.ReadFile(fmt.Sprintf(tmpPath + "/_mergestat_grype_scan_results.json")); err != nil {
 		return fmt.Errorf("reading grype scan results: %w", err)
 	}
 
