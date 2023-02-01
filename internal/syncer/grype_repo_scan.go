@@ -34,7 +34,7 @@ func (w *worker) handleGrypeRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 		return fmt.Errorf("git clone: %w", err)
 	}
 
-	// indicate that we're starting a gitleaks scan
+	// indicate that we're starting a grype scan
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{{Type: SyncLogTypeInfo, RepoSyncQueueID: j.ID,
 		Message: fmt.Sprintf(LogFormatStartingSync, j.SyncType, j.Repo),
 	}}); err != nil {
@@ -45,9 +45,9 @@ func (w *worker) handleGrypeRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 
 	if err = cmd.Run(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
-			w.logger.Warn().AnErr("error", exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running gitleaks scan")
+			w.logger.Warn().AnErr("error", exitErr).Str("stderr", string(exitErr.Stderr)).Msgf("error running grype scan")
 		}
-		return fmt.Errorf("running gitleaks scan: %w", err)
+		return fmt.Errorf("running grype scan: %w", err)
 	}
 
 	var output []byte
