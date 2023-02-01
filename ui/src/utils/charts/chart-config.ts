@@ -89,6 +89,7 @@ export const chartOptions: ApexOptions = {
     }
   },
   xaxis: {
+    type: 'datetime',
     labels: {
       offsetY: 2,
       style: {

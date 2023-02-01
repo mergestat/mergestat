@@ -27,6 +27,11 @@ const useTabs = (rowLimit: number, rowLimitReached: boolean) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    setActiveTab(tabs.length - 1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabs])
+
   const getTabData = (tab: string, tabId: string) => {
     switch (tab) {
       case TAB_TYPE.BAR:
@@ -67,7 +72,6 @@ const useTabs = (rowLimit: number, rowLimitReached: boolean) => {
     const tabId = uuidv4()
     dispatch({ tab: tabId, payload: getTabPayload(tab) })
     setTabs([...tabs, getTabData(tab, tabId)])
-    setActiveTab(tabs.length)
   }
 
   const removeTab = (tabId: string) => {

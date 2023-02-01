@@ -135,6 +135,12 @@ export enum XAXIS_TYPE {
   NUMERIC = 'numeric'
 }
 
+export enum XAXIS_TYPE_LABEL {
+  DATE = 'date',
+  STRING = 'string',
+  NUMBER = 'number'
+}
+
 export const USER_ROLES = [
   {
     key: 'ADMIN',

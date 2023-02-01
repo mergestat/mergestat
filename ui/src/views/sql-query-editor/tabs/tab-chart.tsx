@@ -7,7 +7,7 @@ import { mapToApexChart } from 'src/api-logic/mappers/charts/apex-chart'
 import { useQueryContext } from 'src/state/contexts'
 import { useQueryTabsContext, useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { chartOptions } from 'src/utils/charts/chart-config'
-import { XAXIS_TYPE } from 'src/utils/constants'
+import { XAXIS_TYPE, XAXIS_TYPE_LABEL } from 'src/utils/constants'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 type TabChartProps = {
@@ -21,55 +21,38 @@ const TabChart: React.FC<TabChartProps> = ({ tabId = '', chartType }: TabChartPr
   const tabsState = useQueryTabsContext()
   const dispatch = useQueryTabsDispatch()
 
-  const { serie, xAxis, yAxis, options, series } = (tabsState[tabId] as ChartData)
+  const { serie, xAxis, yAxis, xAxisType, options, series } = (tabsState[tabId] as ChartData)
 
   const setState = (payload: ChartData) => dispatch({ tab: tabId, payload })
 
-  const getChartType = (xAxis: string | undefined) => {
-    if (xAxis) {
-      const xIndex = data.columns?.findIndex(d => d.name === xAxis) || 0
-      const value = data.rows ? (data.rows[0][xIndex]).toString() : ''
-      console.log('Value: ', value)
-
-      const date = (new Date(value)).valueOf()
-      console.log('Date: ', date)
-      if (!isNaN(date)) {
-        return XAXIS_TYPE.DATETIME
-      }
-
-      const num = (+value).valueOf()
-      console.log('Num: ', num)
-      if (!isNaN(num)) {
-        return XAXIS_TYPE.NUMERIC
-      }
-    }
-    return XAXIS_TYPE.CATEGORY
-  }
-
   useEffect(() => {
-    const typeX = getChartType(xAxis)
-    console.log('Type: ', typeX)
-    const series = mapToApexChart({ data, serie, xAxis, yAxis, typeX })
-    setState({ series })
+    if (xAxis && yAxis) {
+      const series = mapToApexChart({ data, serie, xAxis, yAxis })
+      setState({ series })
 
-    if (chartOptions.xaxis) {
-      const options = {
+      const typeX = xAxisType === XAXIS_TYPE_LABEL.DATE
+        ? XAXIS_TYPE.DATETIME
+        : xAxisType === XAXIS_TYPE_LABEL.STRING
+          ? XAXIS_TYPE.CATEGORY
+          : XAXIS_TYPE.NUMERIC
+
+      const newOptions = {
         ...chartOptions,
-        ...{
-          xaxis: {
-            type: typeX,
-            ...{
-              labels: chartOptions.xaxis.labels
-            }
-          }
+        xaxis: {
+          ...chartOptions.xaxis,
+          type: typeX,
+          convertedCatToNumeric: false
         }
       }
-      setState({ options })
-      console.log('Options: ', chartOptions)
+      setState({ options: { ...newOptions } })
     }
 
+    return () => {
+      setState({ options: chartOptions })
+      setState({ series: [] })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, serie, xAxis, yAxis])
+  }, [data, serie, xAxis, xAxisType, yAxis])
 
   return (
     <div className="flex h-full">
@@ -91,6 +74,30 @@ const TabChart: React.FC<TabChartProps> = ({ tabId = '', chartType }: TabChartPr
                   <Menu.Item key={`col-x-${index}`} text={col.name}
                     onClick={() => {
                       setState({ xAxis: col.name.toString() })
+                      close()
+                    }}
+                  />
+                ))}
+              </Menu>
+            )}
+          />
+        </div>
+        <div className='mt-6'>
+          <Label className='text-gray-500'>X-axis type</Label>
+          <Dropdown
+            alignEnd
+            trigger={
+              <Button label={xAxisType || 'Select'} skin="ghost"
+                className='text-gray-500' isBlockBetween
+                endIcon={<CaretDownIcon className='t-icon' />}
+              />
+            }
+            overlay={(close) => (
+              <Menu className='whitespace-nowrap w-full'>
+                {Object.values(XAXIS_TYPE_LABEL).map((type, index) => (
+                  <Menu.Item key={`col-x-type-${index}`} text={type}
+                    onClick={() => {
+                      setState({ xAxisType: type })
                       close()
                     }}
                   />
@@ -155,7 +162,7 @@ const TabChart: React.FC<TabChartProps> = ({ tabId = '', chartType }: TabChartPr
         </div>
       </div>
       <div className="px-8 py-4 w-full">
-        {xAxis && yAxis && <Chart
+        {options && <Chart
           type={chartType}
           width='100%'
           height='100%'

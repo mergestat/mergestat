@@ -204,6 +204,7 @@ export interface ApexSerie {
 export type ChartData = {
   serie?: string
   xAxis?: string
+  xAxisType?: string
   yAxis?: string
   options?: ApexOptions
   series?: ApexSerie[]

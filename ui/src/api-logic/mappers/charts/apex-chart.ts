@@ -1,15 +1,13 @@
 import { ApexSerie, QueryResultProps } from 'src/@types'
-import { XAXIS_TYPE } from 'src/utils/constants'
 
 interface MapApexParams {
   data: QueryResultProps
   serie?: string
   xAxis?: string
   yAxis?: string | number
-  typeX: string
 }
 
-export const mapToApexChart = ({ data, serie, xAxis, yAxis, typeX }: MapApexParams) => {
+export const mapToApexChart = ({ data, serie, xAxis, yAxis }: MapApexParams) => {
   let serieList: ApexSerie[] = []
 
   if (!serie) {
@@ -25,7 +23,7 @@ export const mapToApexChart = ({ data, serie, xAxis, yAxis, typeX }: MapApexPara
     data.rows && data.rows.forEach(row => {
       const foundSerie = serie ? serieList.find(s => s.name === row[serieIndex]) : serieList[0]
       const item = {
-        x: typeX === XAXIS_TYPE.DATETIME ? Date.parse((row[xIndex]).toString()) : (row[xIndex]).toString(),
+        x: (row[xIndex]).toString(),
         y: (row[yIndex]).toString()
       }
 
@@ -40,6 +38,5 @@ export const mapToApexChart = ({ data, serie, xAxis, yAxis, typeX }: MapApexPara
       }
     })
   }
-  console.log('Series: ', serieList)
   return serieList
 }
