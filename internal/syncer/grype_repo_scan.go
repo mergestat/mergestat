@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/mergestat/internal/db"
@@ -40,8 +41,8 @@ func (w *worker) handleGrypeRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	}}); err != nil {
 		return fmt.Errorf("send batch log messages: %w", err)
 	}
-
-	cmd := exec.CommandContext(ctx, "grype", tmpPath, "-o", "json", "--file", "_mergestat_grype_scan_results.json")
+	var jsonFile = "_mergestat_grype_scan_results.json"
+	cmd := exec.CommandContext(ctx, "grype", tmpPath, "-o", "json", "--file", jsonFile)
 	cmd.Dir = tmpPath
 
 	if err = cmd.Run(); err != nil {
@@ -52,7 +53,8 @@ func (w *worker) handleGrypeRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	var output []byte
-	if output, err = os.ReadFile(fmt.Sprintf(tmpPath + "/_mergestat_grype_scan_results.json")); err != nil {
+	jsonFile = strings.Join([]string{tmpPath, jsonFile}, "/")
+	if output, err = os.ReadFile(jsonFile); err != nil {
 		return fmt.Errorf("reading grype scan results: %w", err)
 	}
 
