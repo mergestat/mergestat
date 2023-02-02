@@ -17,7 +17,7 @@ WITH dequeued AS (
 )
 SELECT dq.id, dq.created_at, dq.updated_at, dq.settings, dq.provider, pr.settings AS provider_settings, vd.name AS vendor_name
 FROM dequeued dq
-    INNER JOIN mergestat.providers pr ON pr.id = dequeued.provider
+    INNER JOIN mergestat.providers pr ON pr.id = dq.provider
     INNER JOIN mergestat.vendors vd ON vd.name = pr.vendor;
 
 -- name: UpdateImportStatus :exec

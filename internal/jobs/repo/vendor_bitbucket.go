@@ -3,36 +3,31 @@ package repo
 import (
 	"context"
 	"encoding/json"
-	"github.com/google/go-github/v41/github"
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
 	"github.com/mergestat/mergestat/internal/db"
+	bitbucket "github.com/mergestat/mergestat/internal/vendors/bitbucket/client"
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
 	"net/http"
 )
 
-type fetchFunc func(ctx context.Context, page int) ([]*github.Repository, *github.Response, error)
-
-func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
+func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
 	var token string
 	if token, err = qry.FetchCredential(ctx, imp.Provider); err != nil {
 		return err
 	}
 
-	var public = token == ""
-
-	var client *github.Client
-	if !public {
-		var tokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-		client = github.NewClient(oauth2.NewClient(ctx, tokenSource))
+	var client *bitbucket.Client
+	if token != "" {
+		var tokenSource = &bitbucket.AppPassword{Username: "", Password: token}
+		client = bitbucket.NewDefaultClient(oauth2.NewClient(ctx, tokenSource))
 	} else {
-		client = github.NewClient(&http.Client{})
+		client = bitbucket.NewDefaultClient(http.DefaultClient)
 	}
 
 	var settings struct {
-		Type               string   `json:"type"`
-		Login              string   `json:"userOrOrg"`
+		Owner              string   `json:"owner"`
 		RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
 		DefaultSyncTypes   []string `json:"defaultSyncTypes"`
 	}
@@ -41,32 +36,14 @@ func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImp
 		return errors.Wrapf(err, "failed to parse import settings")
 	}
 
-	var fetchFunction fetchFunc
-	switch settings.Type {
-	case "GITHUB_ORG":
-		var opts = &github.RepositoryListByOrgOptions{}
-		if public {
-			opts.Type = "public"
-		}
-		fetchFunction = fetchByOrg(client, settings.Login, opts)
-	case "GITHUB_USER":
-		var opts = &github.RepositoryListOptions{}
-		if public {
-			opts.Type = "public"
-		}
-		fetchFunction = fetchByUser(client, settings.Login, opts)
-	default:
-		return errors.Errorf("unknown import type: %s", settings.Type)
-	}
-
-	var repos []*github.Repository
-	if repos, err = fetchRepositories(ctx, fetchFunction); err != nil {
+	var repos []*bitbucket.Repository
+	if repos, err = fetchBitbucketRepositories(ctx, client, settings.Owner); err != nil {
 		return errors.Wrapf(err, "failed to fetch repositories")
 	}
 
 	var repoUrls = make([]string, len(repos))
 	for i, repo := range repos {
-		repoUrls[i] = *repo.URL
+		repoUrls[i] = repo.Links.HTML.Href
 	}
 
 	// remove any deleted repositories
@@ -87,14 +64,8 @@ func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImp
 
 	// upsert all fetched repositories
 	for _, repo := range repos {
-		var topics, _ = json.Marshal(repo.Topics)
-		var opts = db.UpsertRepoParams{
-			Repo:         *repo.URL,
-			RepoImportID: uuid.NullUUID{Valid: true, UUID: imp.ID},
-			Tags:         pgtype.JSONB{Status: pgtype.Present, Bytes: topics},
-		}
-
-		if err = qry.UpsertRepo(ctx, opts); err != nil {
+		var params = db.UpsertRepoParams{Repo: repo.Links.HTML.Href, RepoImportID: uuid.NullUUID{Valid: true, UUID: imp.ID}, Tags: pgtype.JSONB{Status: pgtype.Null}}
+		if err = qry.UpsertRepo(ctx, params); err != nil {
 			return errors.Wrapf(err, "failed to upsert repository")
 		}
 	}
@@ -129,35 +100,21 @@ func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImp
 	return qry.MarkRepoImportAsUpdated(ctx, imp.ID)
 }
 
-func fetchRepositories(ctx context.Context, fetch fetchFunc) (_ []*github.Repository, err error) {
-	var result []*github.Repository
-	var resp *github.Response
+func fetchBitbucketRepositories(ctx context.Context, client *bitbucket.Client, owner string) (_ []*bitbucket.Repository, err error) {
+	var result []*bitbucket.Repository
 
-	var page = 1
+	var next string
 	for {
-		var repositories []*github.Repository
-		if repositories, resp, err = fetch(ctx, page); err != nil {
-			return repositories, err
+		var response *bitbucket.Paginated[*bitbucket.Repository]
+		var params = bitbucket.RepositoryListOptions{Owner: owner, NextPage: next}
+		if response, err = client.Repositories().List(ctx, params); err != nil {
+			return nil, err
 		}
-		result = append(result, repositories...)
-		if resp.NextPage <= page {
+
+		result = append(result, response.Values...)
+		if next = response.Next; next == "" {
 			break
 		}
-		page = resp.NextPage
 	}
 	return result, err
-}
-
-func fetchByUser(client *github.Client, user string, opts *github.RepositoryListOptions) fetchFunc {
-	return func(ctx context.Context, page int) ([]*github.Repository, *github.Response, error) {
-		opts.Page = page
-		return client.Repositories.List(ctx, user, opts)
-	}
-}
-
-func fetchByOrg(client *github.Client, org string, opts *github.RepositoryListByOrgOptions) fetchFunc {
-	return func(ctx context.Context, page int) ([]*github.Repository, *github.Response, error) {
-		opts.Page = page
-		return client.Repositories.ListByOrg(ctx, org, opts)
-	}
 }

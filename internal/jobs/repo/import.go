@@ -2,7 +2,6 @@ package repo
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v4"
@@ -12,16 +11,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
-
-type githubRepository struct {
-	Owner  string `db:"login" json:"login"`
-	Name   string `db:"name" json:"name"`
-	Topics string `db:"topics" json:"topics"`
-}
-
-func (repo *githubRepository) URL() string {
-	return fmt.Sprintf("https://github.com/%s/%s", repo.Owner, repo.Name)
-}
 
 // AutoImport implements the githubRepository auto-import job to automatically
 // sync githubRepository from user- or org- accounts.
@@ -60,6 +49,8 @@ func AutoImport(pool *pgxpool.Pool) sqlq.HandlerFunc {
 			var importError error
 			if imp.VendorName == "github" {
 				importError = handleGithubImport(ctx, queries.WithTx(tx), imp)
+			} else if imp.VendorName == "bitbucket" {
+				importError = handleBitbucketImport(ctx, queries.WithTx(tx), imp)
 			} else {
 				importError = errors.Errorf("unknown vendor: %s", imp.VendorName)
 			}
@@ -92,14 +83,6 @@ func AutoImport(pool *pgxpool.Pool) sqlq.HandlerFunc {
 
 		return nil
 	}
-}
-
-func repoUrls(repos []*githubRepository, repoOwner string) []string {
-	var ret = make([]string, len(repos))
-	for i, repo := range repos {
-		ret[i] = fmt.Sprintf("https://github.com/%s/%s", repoOwner, repo.Name)
-	}
-	return ret
 }
 
 // adapted from https://stackoverflow.com/a/45428032/6611700
