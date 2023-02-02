@@ -239,6 +239,9 @@ func main() {
 		logger.Fatal().Err(err).Msg("failed to open connection to upstream")
 	}
 
+	// this sets the max number of db connections to the same number used by the pgxpool above
+	upstream.SetMaxOpenConns(concurrency + 5)
+
 	// apply sqlq migrations
 	if err := schema.Apply(upstream); err != nil {
 		logger.Fatal().Err(err).Msg("failed to apply sqlq migrations")
