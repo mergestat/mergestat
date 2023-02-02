@@ -18,7 +18,7 @@ const { DISPLAY_PG_HOSTNAME, DISPLAY_PG_PORT, DISPLAY_PG_DATABASE, DISPLAY_PG_US
 module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
     typeDefs: (0, graphile_utils_1.gql) `
     extend type Mutation {
-      addToken(provider: UUID!, type: String!, token: String!): Boolean
+      addToken(provider: UUID!, type: String!, username: String, token: String!): Boolean
     }
     extend type Query {
       databaseConnection: DisplayDatabaseConnection
@@ -36,7 +36,7 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                 return __awaiter(this, void 0, void 0, function* () {
                     try {
                         yield context.pgClient.query('SAVEPOINT add_token;');
-                        yield context.pgClient.query("SELECT mergestat.add_service_auth_credential($1, $2, $3, $4)", [args.provider, args.type, args.token, ENCRYPTION_SECRET]);
+                        yield context.pgClient.query("SELECT mergestat.add_service_auth_credential($1, $2, $3, $4, $5)", [args.provider, args.type, args.username, args.token, ENCRYPTION_SECRET]);
                         yield context.pgClient.query('RELEASE SAVEPOINT add_token;');
                         return true;
                     }

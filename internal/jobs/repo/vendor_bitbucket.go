@@ -13,14 +13,14 @@ import (
 )
 
 func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
-	var token string
-	if token, err = qry.FetchCredential(ctx, imp.Provider); err != nil {
+	var username, password string
+	if username, password, err = qry.FetchCredential(ctx, imp.Provider); err != nil {
 		return err
 	}
 
 	var client *bitbucket.Client
-	if token != "" {
-		var tokenSource = &bitbucket.AppPassword{Username: "", Password: token}
+	if password != "" {
+		var tokenSource = &bitbucket.AppPassword{Username: username, Password: password}
 		client = bitbucket.NewDefaultClient(oauth2.NewClient(ctx, tokenSource))
 	} else {
 		client = bitbucket.NewDefaultClient(http.DefaultClient)
