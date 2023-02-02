@@ -1,6 +1,7 @@
 export const DATE_FORMAT = {
   A: 'MM/dd/yyyy HH:mm:ss',
-  B: 'dd LLL yyyy - HH:mm'
+  B: 'dd LLL yyyy - HH:mm',
+  C: 'dd-MM-yyyy'
 }
 
 export const API = {
@@ -132,6 +133,12 @@ export enum XAXIS_TYPE {
   DATETIME = 'datetime',
   CATEGORY = 'category',
   NUMERIC = 'numeric'
+}
+
+export enum XAXIS_TYPE_LABEL {
+  DATE = 'date',
+  STRING = 'string',
+  NUMBER = 'number'
 }
 
 export const USER_ROLES = [

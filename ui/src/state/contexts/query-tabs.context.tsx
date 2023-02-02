@@ -5,11 +5,19 @@ type QueryTabsProviderProps = {
   children?: React.ReactNode
 }
 
-const reducer = (state: TabsState, action: ActionType): TabsState => {
-  if (action.remove) {
-    delete state[action.tab]
-  } else {
-    state[action.tab] = { ...state[action.tab], ...action.payload }
+const initialState = {}
+
+const reducer = (state: TabsState = initialState, action: ActionType): TabsState => {
+  if (action.reset) {
+    return { ...initialState }
+  }
+
+  if (action.tab) {
+    if (action.remove) {
+      delete state[action.tab]
+    } else {
+      state[action.tab] = { ...state[action.tab], ...action.payload }
+    }
   }
   return Object.assign({}, state)
 }
