@@ -219,7 +219,7 @@ func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
     			  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials`
 
 	var credentials []byte
-	if err := w.pool.QueryRow(context.TODO(), fetchToken, encryptionSecret).Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+	if err := w.pool.QueryRow(ctx, fetchToken, encryptionSecret).Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return "", fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
 	}
 
@@ -229,61 +229,6 @@ func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
 	}
 
 	return string(credentials), nil
-}
-
-// cloneRepo is a helper function for cloning a repository to a path on disk
-func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare bool, job *db.DequeueSyncJobRow) error {
-	logger := w.logger.With().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "").Logger()
-	var err error
-
-	logger.Info().Msgf("starting git repository clone: %s", url)
-
-	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
-		Type:            SyncLogTypeInfo,
-		RepoSyncQueueID: job.ID,
-		Message:         "starting git clone: " + url,
-	}}); err != nil {
-		return err
-	}
-
-	// we add ghtoken to current repo url for private repos access
-	parsedUrl, err := w.addGithubTokenToUrl(url, ghToken)
-	if err != nil {
-		return err
-	}
-
-	if err = clone.Exec(context.Background(), parsedUrl, path, clone.WithBare(bare)); err != nil {
-		return err
-	}
-
-	logger.Info().Msgf("finished git repository clone: %s", url)
-
-	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
-		Type:            SyncLogTypeInfo,
-		RepoSyncQueueID: job.ID,
-		Message:         "finished git clone successfully: " + url,
-	}}); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// addGithubTokenUrl is a helper fn to insert current ghtoken into a repo url
-// to been able to access private repositories
-func (w *worker) addGithubTokenToUrl(urlString, ghToken string) (string, error) {
-	parsedUrl, err := url.Parse(urlString)
-	if err != nil {
-		return "", err
-	}
-
-	// for URLs with file:// or no scheme, do not append GitHub token.
-	if parsedUrl.Scheme == "" || parsedUrl.Scheme == "file" {
-		return urlString, nil
-	}
-
-	parsedUrl.User = url.UserPassword(parsedUrl.Path, ghToken)
-	return parsedUrl.String(), nil
 }
 
 // clone clones the repository tied to this job into the given path.
