@@ -1,24 +1,24 @@
 -- SQL statements for validating saved_queries policies
 -- Run the following statements in order to step through various test scenarios for now.
 
-            ------- Test mergestat_role_user -------
-
 -- AS a mergestat_role_admin level or above
--- create user with mergestat_role_user level.
+-- create users with mergestat_role_user and mergestat_role_admin level.
 SELECT mergestat.user_mgmt_add_user('test', '1234', 'USER');
+SELECT mergestat.user_mgmt_add_user('adminTest1', '1234', 'admin');
 
 -- Insert values in the table mergestat.saved_queries.
 INSERT INTO mergestat.saved_queries (created_by) VALUES('test2');
 
 INSERT INTO mergestat.saved_queries (created_by) VALUES('test3');
 
-    -- Log into your newly created user --
+            ------- Test mergestat_role_user -------
+
+    -- Log into your newly created 'test' user --
 
 -- Insert row with created_by equal to your current_user name.
 INSERT INTO mergestat.saved_queries (created_by) VALUES('test')
 
--- You should be able to only select records that are not matching your 
--- current_user name.
+-- You should be able to see all records from all users.
 SELECT * FROM mergestat.saved_queries;
 
 -- You wont be able to INSERT, UPDATE or DELETE records that are not
@@ -42,7 +42,7 @@ DELETE FROM mergestat.saved_queries WHERE created_by = 'test';
 
             ------- Test mergestat_role_admin -------
 
-    -- Log into a mergestat_role_admin level user  --
+    -- Log into your newly created 'adminTest1' user  --
 
 -- You should be able to have full access over the table
 -- mergestat.saved_queries.
