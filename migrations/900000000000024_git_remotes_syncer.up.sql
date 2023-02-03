@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS git_remotes (
     repo_id uuid PRIMARY KEY,
     name text NOT NULL,
     url text NOT NULL,
-    _mergestat_synced_at timestamptz NOT NULL DEFAULT now()
+    _mergestat_synced_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 COMMENT ON TABLE git_remotes IS 'table of git repo remotes';
