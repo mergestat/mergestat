@@ -21,12 +21,16 @@ func (w *worker) handleGitRemotes(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
+	// open the repo, assumes that it's on disk
+	// TODO(patrickdevivo) we should probably check here to see if the repo is a remote URL or not
+	// and error accordingly if so
 	var repo *libgit2.Repository
 	if repo, err = libgit2.OpenRepository(j.Repo); err != nil {
 		return fmt.Errorf("could not open repository: %w", err)
 	}
 	defer repo.Free()
 
+	// list all the remotes, just the names
 	var remotes []string
 	if remotes, err = repo.Remotes.List(); err != nil {
 		return fmt.Errorf("could not list remotes of repo: %w", err)
@@ -57,6 +61,7 @@ func (w *worker) handleGitRemotes(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return err
 	}
 
+	// iterate over the remotes and insert them into the database
 	for _, rem := range remotes {
 		if err := func() error {
 			var r *libgit2.Remote
