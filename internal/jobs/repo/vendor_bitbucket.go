@@ -64,7 +64,12 @@ func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.ListRepo
 
 	// upsert all fetched repositories
 	for _, repo := range repos {
-		var params = db.UpsertRepoParams{Repo: repo.Links.HTML.Href, RepoImportID: uuid.NullUUID{Valid: true, UUID: imp.ID}, Tags: pgtype.JSONB{Status: pgtype.Null}}
+		var params = db.UpsertRepoParams{
+			Repo:         repo.Links.HTML.Href,
+			RepoImportID: uuid.NullUUID{Valid: true, UUID: imp.ID},
+			Tags:         pgtype.JSONB{Status: pgtype.Null},
+			Provider:     imp.Provider,
+		}
 		if err = qry.UpsertRepo(ctx, params); err != nil {
 			return errors.Wrapf(err, "failed to upsert repository")
 		}
