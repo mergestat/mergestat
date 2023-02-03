@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"net/url"
 
-	"os"
 	"sync"
 	"time"
 
@@ -208,27 +207,18 @@ func (w *worker) Start(ctx context.Context) {
 	g.Wait()
 }
 
-// fetchGitHubTokenFromDB is a temporary helper function for retrieving the most recently added GITHUB_PAT service credential from the DB.
-// It's "temporary" because the way credentials are managed and retrieved will likely need to be much more robust in the future.
-func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
-	encryptionSecret := os.Getenv("ENCRYPTION_SECRET")
-
-	const fetchToken = `
-		SELECT credentials.token
-			FROM (SELECT * FROM mergestat.providers WHERE name = 'GitHub' AND vendor = 'github') AS provider,
-    			  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials`
-
-	var credentials []byte
-	if err := w.pool.QueryRow(ctx, fetchToken, encryptionSecret).Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
-		return "", fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
+func (w *worker) fetchCredentials(ctx context.Context, job *db.DequeueSyncJobRow) (_, _ string, err error) {
+	var repo db.Repo
+	if repo, err = w.db.GetRepoById(ctx, job.RepoID); err != nil {
+		return "", "", err
 	}
 
-	if credentials == nil {
-		// default to the `GITHUB_TOKEN` env var if nothing in the DB
-		credentials = []byte(os.Getenv("GITHUB_TOKEN"))
+	var username, token string
+	if username, token, err = w.db.FetchCredential(ctx, repo.Provider); err != nil {
+		return "", "", err
 	}
 
-	return string(credentials), nil
+	return username, token, nil
 }
 
 // clone clones the repository tied to this job into the given path.

@@ -10,7 +10,7 @@ import (
 	"github.com/mergestat/mergestat/internal/warehouse"
 )
 
-func (w *worker) handleGithubActions(ctx context.Context, j *db.DequeueSyncJobRow) error {
+func (w *worker) handleGithubActions(ctx context.Context, j *db.DequeueSyncJobRow) (err error) {
 
 	l := w.loggerForJob(j)
 
@@ -22,8 +22,7 @@ func (w *worker) handleGithubActions(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	var ghToken string
-	ghToken, err := w.fetchGitHubTokenFromDB(ctx)
-	if err != nil {
+	if _, ghToken, err = w.fetchCredentials(ctx, j); err != nil {
 		return err
 	}
 
