@@ -40,6 +40,11 @@ const GET_REPO_SYNCS = gql`
         description
         shortName
         typeGroup
+        labels: labelAssociationsByRepoSyncType(first: 25) {
+          nodes {
+            label
+          }
+        }
       }
     }
   }
@@ -51,6 +56,11 @@ const GET_SYNC_TYPES = gql`
         type
         description
         shortName
+        labels: labelAssociationsByRepoSyncType(first: 25) {
+          nodes {
+            label
+          }
+        }
       }
     }
   }

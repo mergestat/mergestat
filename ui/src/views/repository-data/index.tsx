@@ -6,7 +6,7 @@ import { useRepositoriesContext } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import { AddRepositoryModal } from '../repositories/modals/add-repository-modal'
 import { RemoveRepositoryModal } from '../repositories/modals/remove-repository-modal'
-import { PageHeader, RepoSettings, SycnTypesTable } from './components'
+import { PageHeader, RepoSettings, SyncTypesTable } from './components'
 
 type RepoDataViewProps = {
   data?: RepoSyncData
@@ -33,7 +33,7 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
         </Tabs.List>
         <Tabs.Panels className="p-8 flex-1 overflow-auto">
           <Tabs.Panel>
-            <SycnTypesTable repoId={data?.id || ''} data={data?.syncs || []} />
+            <SyncTypesTable repoId={data?.id || ''} data={data?.syncs || []} />
           </Tabs.Panel>
           <Tabs.Panel>
             <RepoSettings

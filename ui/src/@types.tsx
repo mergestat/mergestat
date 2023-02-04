@@ -77,6 +77,7 @@ export type RepoSyncDataType = {
     brief: string
     scheduleEnabled: boolean
     typeGroup: string
+    labels?: string[]
   }
   latestRun: string
   avgRunningTime: string
