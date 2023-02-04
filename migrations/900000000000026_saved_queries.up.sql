@@ -1,6 +1,6 @@
 BEGIN;
 
-CREATE TABLE IF NOT EXISTS mergestat.saved_queries(
+CREATE TABLE IF NOT EXISTS mergestat.saved_queries (
     id uuid PRIMARY KEY DEFAULT public.gen_random_uuid() NOT NULL,
     created_by text,
     created_at timestamp with time zone,
@@ -12,11 +12,11 @@ CREATE TABLE IF NOT EXISTS mergestat.saved_queries(
 
 COMMENT ON TABLE mergestat.saved_queries IS 'Table to save queries';
 COMMENT ON COLUMN mergestat.saved_queries.created_by IS 'query creator';
-COMMENT ON COLUMN mergestat.created_at IS 'timestamp when query was created';
-COMMENT ON COLUMN mergestat.name IS 'query name';
-COMMENT ON COLUMN mergestat.description IS 'query description';
-COMMENT ON COLUMN mergestat.sql IS 'query sql';
-COMMENT ON COLUMN mergestat.metadata IS 'query metadata';
+COMMENT ON COLUMN mergestat.saved_queries.created_at IS 'timestamp when query was created';
+COMMENT ON COLUMN mergestat.saved_queries.name IS 'query name';
+COMMENT ON COLUMN mergestat.saved_queries.description IS 'query description';
+COMMENT ON COLUMN mergestat.saved_queries.sql IS 'query sql';
+COMMENT ON COLUMN mergestat.saved_queries.metadata IS 'query metadata';
 
 -- enable RLS 
 ALTER TABLE mergestat.saved_queries ENABLE ROW LEVEL SECURITY;
