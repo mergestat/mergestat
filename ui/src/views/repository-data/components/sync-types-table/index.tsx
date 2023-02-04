@@ -9,12 +9,12 @@ import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useSyncNow from 'src/views/hooks/useSyncNow'
 import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
 
-type SycnTypesTableProps = PropsWithChildren<{
+type SyncTypesTableProps = PropsWithChildren<{
   repoId: string
   data: Array<RepoSyncDataType>
 }>
 
-export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: SycnTypesTableProps) => {
+export const SycnTypesTable: React.FC<SyncTypesTableProps> = ({ repoId, data }: SyncTypesTableProps) => {
   const id = useId()
   const { updateSchedule, addSyncType } = useSyncNow('getRepoSyncs', true)
 
