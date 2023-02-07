@@ -17,8 +17,15 @@ import QueryEditorFilled from './components/state-filled'
 import QueryEditorLoading from './components/state-loading'
 import { QuerySettingsModal } from './modals/query-setting'
 
-const QueryEditor: React.FC = () => {
+type QueryEditorProps = {
+  savedQueryId?: string | string[]
+  children?: React.ReactNode
+}
+
+const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorProps) => {
   const ROWS_LIMIT = 1000
+
+  console.log('Saved Query ID: ', savedQueryId)
 
   const [{ query, readOnly, expanded, dataQuery, projection, showSettingsModal }] = useQueryContext()
   const { setDataQuery, setProjection, setTabs, setActiveTab, setShowSettingsModal } = useQuerySetState()
