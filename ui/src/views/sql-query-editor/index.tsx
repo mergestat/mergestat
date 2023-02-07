@@ -1,6 +1,6 @@
 import { useLazyQuery } from '@apollo/client'
-import { Alert, Button, EditableText, Spinner, SplitButton } from '@mergestat/blocks'
-import { ClockHistoryIcon, CogIcon, TerminalIcon } from '@mergestat/icons'
+import { Button, EditableText, Spinner, SplitButton, Tooltip } from '@mergestat/blocks'
+import { ClockHistoryIcon, CogIcon, TerminalIcon, WarningFilledIcon } from '@mergestat/icons'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ColumnInfo } from 'src/@types'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
@@ -8,19 +8,20 @@ import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
 import { useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.context'
 import { formatTimeExecution } from 'src/utils'
-import { States } from 'src/utils/constants'
+import { MSM_NON_READ_ONLY, States } from 'src/utils/constants'
 import SQLEditorSection from './components/sql-editor-section'
 import QueryEditorCanceled from './components/state-canceled'
 import QueryEditorEmpty from './components/state-empty'
 import QueryEditorError from './components/state-error'
 import QueryEditorFilled from './components/state-filled'
 import QueryEditorLoading from './components/state-loading'
+import { QuerySettingsModal } from './modals/query-setting'
 
 const QueryEditor: React.FC = () => {
   const ROWS_LIMIT = 1000
 
-  const [{ query, readOnly, expanded, dataQuery, projection }] = useQueryContext()
-  const { setDataQuery, setProjection, setTabs, setActiveTab } = useQuerySetState()
+  const [{ query, readOnly, expanded, dataQuery, projection, showSettingsModal }] = useQueryContext()
+  const { setDataQuery, setProjection, setTabs, setActiveTab, setShowSettingsModal } = useQuerySetState()
   const dispatch = useQueryTabsDispatch()
 
   const [state, setState] = useState<States>(States.Empty)
@@ -111,8 +112,20 @@ const QueryEditor: React.FC = () => {
             }}
           />
 
-          <div className='flex items-center gap-x-8'>
-            <CogIcon className='t-icon cursor-pointer text-gray-500' />
+          <div className='flex items-center gap-x-7'>
+            {!readOnly && !expanded && <div className='flex items-center'>
+              <WarningFilledIcon className="t-icon t-icon-warning" />
+              <Tooltip placement='bottom' offset={[0, 10]}
+                content={<div className='w-52'>{MSM_NON_READ_ONLY}</div>}
+              >
+                <span className='ml-2 text-gray-500 border-b-2 border-gray-400 border-dotted'>Non read-only!</span>
+              </Tooltip>
+            </div>}
+
+            <CogIcon className='t-icon cursor-pointer text-gray-500'
+              onClick={() => setShowSettingsModal(true)}
+            />
+
             <ClockHistoryIcon className='t-icon cursor-pointer text-gray-500' />
 
             <div className='flex gap-x-2'>
@@ -143,12 +156,6 @@ const QueryEditor: React.FC = () => {
           </div>
         </div>}
 
-      {!readOnly && !expanded && <Alert isInline type="warning" className='pl-4 p-3 bg-yellow-50 border-b border-yellow-300'>
-        <span className='text-yellow-900'>
-          Non read-only queries are able to make changes in the underlying database, be careful!
-        </span>
-      </Alert>}
-
       <div className='flex flex-col flex-1 items-center overflow-auto'>
         {/* SQL editor */}
         {!expanded && <SQLEditorSection
@@ -174,6 +181,8 @@ const QueryEditor: React.FC = () => {
           <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} time={time} />
         }
       </div>
+
+      {showSettingsModal && <QuerySettingsModal />}
     </>
   )
 }
