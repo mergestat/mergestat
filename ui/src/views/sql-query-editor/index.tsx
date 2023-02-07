@@ -1,6 +1,7 @@
 import { useLazyQuery } from '@apollo/client'
-import { Alert, Button, Spinner, Toolbar } from '@mergestat/blocks'
-import { useEffect, useState } from 'react'
+import { Alert, Button, EditableText, Spinner, SplitButton } from '@mergestat/blocks'
+import { ClockHistoryIcon, CogIcon, TerminalIcon } from '@mergestat/icons'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { ColumnInfo } from 'src/@types'
 import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
@@ -28,6 +29,8 @@ const QueryEditor: React.FC = () => {
   const [aborterRef, setAbortRef] = useState(new AbortController())
   const [loading, setLoading] = useState(false)
   const [time, setTime] = useState('')
+  const [title, setTitle] = useState<string>('')
+  const [desc, setDesc] = useState<string>('')
 
   const [executeSQL, { loading: loadingQuery, error, data }] = useLazyQuery<ExecuteSqlQuery>(EXECUTE_SQL, {
     fetchPolicy: 'no-cache',
@@ -91,23 +94,55 @@ const QueryEditor: React.FC = () => {
   return (
     <>
       {/* Header */}
-      {!expanded && <div className='bg-white overflow-auto flex h-16 w-full border-b px-8'>
-        <Toolbar className='flex-1 space-x-4 w-auto h-full'>
-          <Toolbar.Left>
-            <h2 className='t-h2 mb-0'>Queries</h2>
-          </Toolbar.Left>
-          <Toolbar.Right>
-            <Button skin="secondary" onClick={cancelSQLQuery} disabled={!loading}>
-              Cancel
-            </Button>
-            <Button className='whitespace-nowrap' label='Execute (Shift + Enter)'
-              endIcon={loading && <Spinner size='sm' className='ml-2' />}
-              disabled={loading}
-              onClick={() => executeSQLQuery()}
-            />
-          </Toolbar.Right>
-        </Toolbar>
-      </div>}
+      {!expanded &&
+        <div className='bg-white overflow-auto flex justify-between items-center h-17 w-full border-b px-8 py-2'>
+          <EditableText
+            className='flex-grow mr-5'
+            icon={<TerminalIcon className="t-icon" />}
+            title={{
+              placeholder: 'Untitled',
+              value: title,
+              onChange: (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
+            }}
+            desc={{
+              placeholder: 'This is a short description',
+              value: desc,
+              onChange: (e: ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)
+            }}
+          />
+
+          <div className='flex items-center gap-x-8'>
+            <CogIcon className='t-icon cursor-pointer text-gray-500' />
+            <ClockHistoryIcon className='t-icon cursor-pointer text-gray-500' />
+
+            <div className='flex gap-x-2'>
+              <SplitButton
+                text="Save"
+                items={[
+                  {
+                    text: 'Save as new...',
+                  }
+                ]}
+                onButtonClick={() => console.log('button click')}
+                onItemClick={(index: number) => console.log('item click: ' + index)}
+              />
+
+              {loading
+                ? <Button
+                  className='whitespace-nowrap justify-center w-32'
+                  label='Cancel'
+                  skin="secondary"
+                  startIcon={loading && <Spinner size='sm' className='mr-4' />}
+                  onClick={cancelSQLQuery} />
+                : <Button
+                  className='whitespace-nowrap justify-center ml-0 w-32'
+                  label='Run (⇧ + ↵)'
+                  onClick={() => executeSQLQuery()}
+                />}
+            </div>
+          </div>
+        </div>}
+
       {!readOnly && !expanded && <Alert isInline type="warning" className='pl-4 p-3 bg-yellow-50 border-b border-yellow-300'>
         <span className='text-yellow-900'>
           Non read-only queries are able to make changes in the underlying database, be careful!

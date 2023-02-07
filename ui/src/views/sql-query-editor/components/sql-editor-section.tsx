@@ -64,11 +64,11 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEd
   return (
     <>
       <div
-        className='w-full p-8'
+        className='w-full'
         ref={resizeElement}
         style={{ height: '360px', minHeight: '200px' }}
       >
-        <div className='h-full flex-col relative pb-14 pt-4 bg-white rounded border border-gray-300'>
+        <div className='h-full flex-col relative pb-14 pt-4 bg-white'>
           <Editor
             className='text-sm font-mono'
             value={query}
