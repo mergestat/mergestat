@@ -51,6 +51,8 @@ func AutoImport(pool *pgxpool.Pool) sqlq.HandlerFunc {
 				importError = handleGithubImport(ctx, queries.WithTx(tx), imp)
 			} else if imp.VendorName == "bitbucket" {
 				importError = handleBitbucketImport(ctx, queries.WithTx(tx), imp)
+			} else if imp.VendorName == "gitlab" {
+				importError = handleGitlabImport(ctx, queries.WithTx(tx), imp)
 			} else {
 				importError = errors.Errorf("unknown vendor: %s", imp.VendorName)
 			}
