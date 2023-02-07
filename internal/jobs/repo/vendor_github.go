@@ -2,7 +2,6 @@ package repo
 
 import (
 	"context"
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/google/go-github/v41/github"
@@ -86,7 +85,6 @@ func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImp
 	for _, repo := range repos {
 		var opts = db.UpsertRepoParams{
 			Repo:         fmt.Sprintf("https://github.com/%s/%s", settings.Login, repo.Name),
-			IsGithub:     sql.NullBool{Bool: true, Valid: true},
 			RepoImportID: uuid.NullUUID{Valid: true, UUID: imp.ID},
 			Tags:         pgtype.JSONB{Status: pgtype.Present, Bytes: []byte(repo.Topics)},
 		}

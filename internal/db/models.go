@@ -765,8 +765,6 @@ type Repo struct {
 	Repo string
 	// ref for the repo
 	Ref sql.NullString
-	// boolean to determine if the repo is in GitHub
-	IsGithub sql.NullBool
 	// timestamp of when the MergeStat repo entry was created
 	CreatedAt time.Time
 	// JSON settings for the repo
@@ -775,6 +773,7 @@ type Repo struct {
 	Tags pgtype.JSONB
 	// foreign key for mergestat.repo_imports.id
 	RepoImportID uuid.NullUUID
+	Provider     uuid.UUID
 }
 
 // MergeStat internal table to track schema migrations

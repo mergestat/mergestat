@@ -20,6 +20,7 @@ type Querier interface {
 	// We have now also added a concept of type groups which allows us to apply this same logic but by each group type which is where the PARTITION BY clause comes into play
 	EnqueueAllSyncs(ctx context.Context) error
 	FetchGitHubToken(ctx context.Context, pgpSymDecrypt string) (string, error)
+	GetRepoById(ctx context.Context, id uuid.UUID) (Repo, error)
 	GetRepoIDsFromRepoImport(ctx context.Context, arg GetRepoIDsFromRepoImportParams) ([]uuid.UUID, error)
 	GetRepoImportByID(ctx context.Context, id uuid.UUID) (MergestatRepoImport, error)
 	GetRepoUrlFromImport(ctx context.Context, importid uuid.UUID) ([]string, error)

@@ -72,7 +72,6 @@ SELECT
     repo_syncs.repo_id, repo_syncs.sync_type, repo_syncs.settings, repo_syncs.id, repo_syncs.schedule_enabled, repo_syncs.priority, repo_syncs.last_completed_repo_sync_queue_id,
     repos.repo,
     repos.ref,
-    repos.is_github,
     repos.settings AS repo_settings
 FROM dequeued
 JOIN mergestat.repo_syncs ON mergestat.repo_syncs.id = dequeued.repo_sync_id
@@ -93,7 +92,6 @@ type DequeueSyncJobRow struct {
 	LastCompletedRepoSyncQueueID sql.NullInt64
 	Repo                         string
 	Ref                          sql.NullString
-	IsGithub                     sql.NullBool
 	RepoSettings                 pgtype.JSONB
 }
 
@@ -114,7 +112,6 @@ func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
 		&i.LastCompletedRepoSyncQueueID,
 		&i.Repo,
 		&i.Ref,
-		&i.IsGithub,
 		&i.RepoSettings,
 	)
 	return i, err
@@ -169,6 +166,26 @@ func (q *Queries) FetchGitHubToken(ctx context.Context, pgpSymDecrypt string) (s
 	var pgp_sym_decrypt string
 	err := row.Scan(&pgp_sym_decrypt)
 	return pgp_sym_decrypt, err
+}
+
+const getRepoById = `-- name: GetRepoById :one
+SELECT id, repo, ref, created_at, settings, tags, repo_import_id, provider FROM public.repos WHERE id = $1
+`
+
+func (q *Queries) GetRepoById(ctx context.Context, id uuid.UUID) (Repo, error) {
+	row := q.db.QueryRow(ctx, getRepoById, id)
+	var i Repo
+	err := row.Scan(
+		&i.ID,
+		&i.Repo,
+		&i.Ref,
+		&i.CreatedAt,
+		&i.Settings,
+		&i.Tags,
+		&i.RepoImportID,
+		&i.Provider,
+	)
+	return i, err
 }
 
 const getRepoIDsFromRepoImport = `-- name: GetRepoIDsFromRepoImport :many
@@ -374,7 +391,7 @@ WITH dequeued AS (
 )
 SELECT dq.id, dq.created_at, dq.updated_at, dq.settings, dq.provider, pr.settings AS provider_settings, vd.name AS vendor_name
 FROM dequeued dq
-    INNER JOIN mergestat.providers pr ON pr.id = dequeued.provider
+    INNER JOIN mergestat.providers pr ON pr.id = dq.provider
     INNER JOIN mergestat.vendors vd ON vd.name = pr.vendor
 `
 
@@ -497,27 +514,21 @@ func (q *Queries) UpdateImportStatus(ctx context.Context, arg UpdateImportStatus
 }
 
 const upsertRepo = `-- name: UpsertRepo :exec
-INSERT INTO public.repos (repo, is_github, repo_import_id) VALUES($1, $2, $3)
+INSERT INTO public.repos (repo, repo_import_id) VALUES($1, $2)
 ON CONFLICT (repo, (ref IS NULL)) WHERE ref IS NULL
 DO UPDATE SET tags = (
-    SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $4) x LIMIT 1
+    SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $3) x LIMIT 1
 )
 `
 
 type UpsertRepoParams struct {
 	Repo         string
-	IsGithub     sql.NullBool
 	RepoImportID uuid.NullUUID
 	Tags         pgtype.JSONB
 }
 
 func (q *Queries) UpsertRepo(ctx context.Context, arg UpsertRepoParams) error {
-	_, err := q.db.Exec(ctx, upsertRepo,
-		arg.Repo,
-		arg.IsGithub,
-		arg.RepoImportID,
-		arg.Tags,
-	)
+	_, err := q.db.Exec(ctx, upsertRepo, arg.Repo, arg.RepoImportID, arg.Tags)
 	return err
 }
 
