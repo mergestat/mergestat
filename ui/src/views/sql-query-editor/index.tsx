@@ -129,11 +129,17 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
               </Tooltip>
             </div>}
 
-            <CogIcon className='t-icon cursor-pointer text-gray-500'
+            <Button isIconOnly
+              skin='borderless-muted'
+              startIcon={<CogIcon className='t-icon' />}
               onClick={() => setShowSettingsModal(true)}
             />
 
-            <ClockHistoryIcon className='t-icon cursor-pointer text-gray-500' />
+            <Button isIconOnly
+              skin='borderless-muted'
+              startIcon={<ClockHistoryIcon className='t-icon' />}
+              onClick={() => null}
+            />
 
             <div className='flex gap-x-2'>
               <SplitButton
