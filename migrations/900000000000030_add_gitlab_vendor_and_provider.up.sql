@@ -1,7 +1,7 @@
 -- SQL migration to seed vendors and provider tables
 BEGIN;
 
-INSERT INTO mergestat.vendors (name, displayName)
+INSERT INTO mergestat.vendors (name, display_name)
 VALUES ('gitlab', 'Gitlab');
 
 INSERT INTO mergestat.providers (name, vendor, settings)
