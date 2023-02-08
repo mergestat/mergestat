@@ -3,10 +3,15 @@ package syncer
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/url"
-
+	"github.com/go-git/go-billy/v5/osfs"
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/cache"
+	"github.com/go-git/go-git/v5/plumbing/transport"
+	"github.com/go-git/go-git/v5/plumbing/transport/http"
+	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
+	"github.com/go-git/go-git/v5/storage/filesystem"
+	"github.com/pkg/errors"
 	"sync"
 	"time"
 
@@ -14,7 +19,6 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/mergestat/gitutils/clone"
 	_ "github.com/mergestat/mergestat-lite/pkg/sqlite"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/rs/zerolog"
@@ -239,27 +243,38 @@ func (w *worker) clone(ctx context.Context, path string, job *db.DequeueSyncJobR
 		return err
 	}
 
+	// TODO(@riyaz): we can improve this by first detecting the kind of url
+	// 		and then fetching the appropriate type of credential for it.
+	// 		This still involves couple of challenges (differentiating between different provider tokens etc.)
+
 	// fetch the username and token for the provider
 	var username, token string
 	if username, token, err = w.db.FetchCredential(ctx, repo.Provider); err != nil {
 		return err
 	}
 
-	var repoUrl *url.URL
-	if repoUrl, err = url.Parse(repo.Repo); err != nil {
-		return err
+	var endpoint *transport.Endpoint
+	if endpoint, err = transport.NewEndpoint(repo.Repo); err != nil {
+		return errors.Wrapf(err, "failed to parse url")
 	}
 
-	if token != "" {
+	var auth transport.AuthMethod
+	if endpoint.Protocol == "ssh" {
 		if username == "" {
-			username = "x-mergestat" // placeholder username
+			username = endpoint.User // in case the username is encoded into the url (very common)
 		}
-		repoUrl.User = url.UserPassword(username, token)
+
+		if auth, err = ssh.NewPublicKeys(username, []byte(token), ""); err != nil {
+			return errors.Wrapf(err, "failed to parse ssh key")
+		}
+	} else if endpoint.Protocol == "http" || endpoint.Protocol == "https" || endpoint.Protocol == "git" {
+		auth = &http.BasicAuth{Username: username, Password: token}
 	}
 
-	// execute git clone
-	if err = clone.Exec(ctx, repoUrl.String(), path, clone.WithBare(true)); err != nil {
-		return err
+	var target = filesystem.NewStorage(osfs.New(path), cache.NewObjectLRUDefault())
+	var opts = &git.CloneOptions{URL: endpoint.String(), Auth: auth}
+	if _, err = git.CloneContext(ctx, target, nil, opts); err != nil {
+		return errors.Wrapf(err, "failed to clone repository")
 	}
 
 	logger.Info().Msgf("finished git repository clone: %s", repo.Repo)
