@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/mergestat/mergestat/internal/cron"
 	"net/http"
 	_ "net/http/pprof"
 	"net/url"
@@ -15,7 +16,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/mergestat/mergestat/internal/cron"
 	"github.com/mergestat/mergestat/internal/jobs/repo"
 	"github.com/mergestat/mergestat/internal/syncer"
 	"github.com/mergestat/mergestat/internal/timeout"
@@ -97,6 +97,7 @@ func main() {
 	if fileInfo, _ := os.Stdout.Stat(); (fileInfo.Mode()&os.ModeCharDevice) != 0 || prettyLogs {
 		logger = logger.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.Stamp})
 	}
+	zerolog.DefaultContextLogger = &logger
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
@@ -190,9 +191,14 @@ func main() {
 
 	githubClientGetter := func() *githubv4.Client {
 		encryptionSecret := os.Getenv("ENCRYPTION_SECRET")
-		row := pool.QueryRow(context.TODO(), "SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1", encryptionSecret)
+
+		const fetchToken = `
+			SELECT credentials.token
+				FROM (SELECT * FROM mergestat.providers WHERE name = 'GitHub' AND vendor = 'github') AS provider,
+					  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials`
+
 		var credentials []byte
-		if err := row.Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		if err = pool.QueryRow(context.TODO(), fetchToken, encryptionSecret).Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			logger.Err(err).Msgf("error retrieving GitHub PAT from database")
 		}
 
@@ -248,7 +254,7 @@ func main() {
 	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{Queues: queues})
 
 	// register job handlers for types implemented by this worker
-	_ = worker.Register("repos/auto-import", repo.AutoImport(&logger, pool))
+	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars

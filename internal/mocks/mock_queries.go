@@ -124,6 +124,21 @@ func (mr *MockQuerierMockRecorder) FetchGitHubToken(ctx, pgpSymDecrypt interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchGitHubToken", reflect.TypeOf((*MockQuerier)(nil).FetchGitHubToken), ctx, pgpSymDecrypt)
 }
 
+// GetRepoById mocks base method.
+func (m *MockQuerier) GetRepoById(ctx context.Context, id uuid.UUID) (db.Repo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRepoById", ctx, id)
+	ret0, _ := ret[0].(db.Repo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRepoById indicates an expected call of GetRepoById.
+func (mr *MockQuerierMockRecorder) GetRepoById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRepoById", reflect.TypeOf((*MockQuerier)(nil).GetRepoById), ctx, id)
+}
+
 // GetRepoIDsFromRepoImport mocks base method.
 func (m *MockQuerier) GetRepoIDsFromRepoImport(ctx context.Context, arg db.GetRepoIDsFromRepoImportParams) ([]uuid.UUID, error) {
 	m.ctrl.T.Helper()

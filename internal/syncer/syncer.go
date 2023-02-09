@@ -212,9 +212,14 @@ func (w *worker) Start(ctx context.Context) {
 // It's "temporary" because the way credentials are managed and retrieved will likely need to be much more robust in the future.
 func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
 	encryptionSecret := os.Getenv("ENCRYPTION_SECRET")
-	row := w.pool.QueryRow(context.TODO(), "SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1", encryptionSecret)
+
+	const fetchToken = `
+		SELECT credentials.token
+			FROM (SELECT * FROM mergestat.providers WHERE name = 'GitHub' AND vendor = 'github') AS provider,
+    			  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials`
+
 	var credentials []byte
-	if err := row.Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+	if err := w.pool.QueryRow(context.TODO(), fetchToken, encryptionSecret).Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return "", fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
 	}
 
@@ -279,4 +284,53 @@ func (w *worker) addGithubTokenToUrl(urlString, ghToken string) (string, error) 
 
 	parsedUrl.User = url.UserPassword(parsedUrl.Path, ghToken)
 	return parsedUrl.String(), nil
+}
+
+func (w *worker) clone(ctx context.Context, path string, job *db.DequeueSyncJobRow) (err error) {
+	var logger = w.logger.With().Str("repo", job.RepoID.String()).Logger()
+	logger.Info().Msgf("starting git repository clone")
+
+	var repo db.Repo
+	if repo, err = w.db.GetRepoById(ctx, job.RepoID); err != nil {
+		return err
+	}
+
+	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: job.ID,
+		Message:         "starting git clone: " + repo.Repo,
+	}}); err != nil {
+		return err
+	}
+
+	var token string
+	if token, err = w.db.FetchCredential(ctx, repo.Provider); err != nil {
+		return err
+	}
+
+	var repoUrl *url.URL
+	if repoUrl, err = url.Parse(repo.Repo); err != nil {
+		return err
+	}
+
+	if token != "" {
+		repoUrl.User = url.UserPassword("x-github", token)
+	}
+
+	// execute git clone
+	if err = clone.Exec(context.Background(), repoUrl.String(), path, clone.WithBare(true)); err != nil {
+		return err
+	}
+
+	logger.Info().Msgf("finished git repository clone: %s", repo.Repo)
+
+	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
+		Type:            SyncLogTypeInfo,
+		RepoSyncQueueID: job.ID,
+		Message:         "finished git clone successfully: " + repo.Repo,
+	}}); err != nil {
+		return err
+	}
+
+	return nil
 }

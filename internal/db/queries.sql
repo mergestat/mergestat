@@ -15,17 +15,19 @@ WITH dequeued AS (
         FOR UPDATE SKIP LOCKED
     ) RETURNING *
 )
-SELECT id, created_at, updated_at, type, settings FROM dequeued;
-;
+SELECT dq.id, dq.created_at, dq.updated_at, dq.settings, dq.provider, pr.settings AS provider_settings, vd.name AS vendor_name
+FROM dequeued dq
+    INNER JOIN mergestat.providers pr ON pr.id = dequeued.provider
+    INNER JOIN mergestat.vendors vd ON vd.name = pr.vendor;
 
 -- name: UpdateImportStatus :exec
 UPDATE mergestat.repo_imports SET import_status = @status::TEXT, import_error = @error::TEXT WHERE id = @ID;
 
 -- name: UpsertRepo :exec
-INSERT INTO public.repos (repo, is_github, repo_import_id) VALUES($1, $2, $3)
+INSERT INTO public.repos (repo, repo_import_id) VALUES($1, $2)
 ON CONFLICT (repo, (ref IS NULL)) WHERE ref IS NULL
 DO UPDATE SET tags = (
-    SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $4) x LIMIT 1
+    SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $3) x LIMIT 1
 );
 
 -- name: MarkRepoImportAsUpdated :exec
@@ -57,7 +59,6 @@ SELECT
     repo_syncs.*,
     repos.repo,
     repos.ref,
-    repos.is_github,
     repos.settings AS repo_settings
 FROM dequeued
 JOIN mergestat.repo_syncs ON mergestat.repo_syncs.id = dequeued.repo_sync_id
@@ -388,3 +389,7 @@ SELECT
     SUM(CASE WHEN xmax::int = 0 THEN 1 ELSE 0 END) AS ins,
     SUM(CASE WHEN xmax::int > 0 THEN 1 ELSE 0 END) AS upd
 FROM t;
+
+
+-- name: GetRepoById :one
+SELECT * FROM public.repos WHERE id = @id;

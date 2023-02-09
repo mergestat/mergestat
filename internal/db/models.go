@@ -609,6 +609,14 @@ type MergestatLatestRepoSync struct {
 	DoneAt     sql.NullTime
 }
 
+type MergestatProvider struct {
+	ID        uuid.UUID
+	Name      string
+	Vendor    string
+	Settings  pgtype.JSONB
+	CreatedAt time.Time
+}
+
 type MergestatQueryHistory struct {
 	ID    uuid.UUID
 	RunAt sql.NullTime
@@ -621,13 +629,13 @@ type MergestatRepoImport struct {
 	ID                  uuid.UUID
 	CreatedAt           time.Time
 	UpdatedAt           time.Time
-	Type                string
 	Settings            pgtype.JSONB
 	LastImport          sql.NullTime
 	ImportInterval      sql.NullString
 	LastImportStartedAt sql.NullTime
 	ImportStatus        sql.NullString
 	ImportError         sql.NullString
+	Provider            uuid.UUID
 }
 
 // Types of repo imports
@@ -720,6 +728,8 @@ type MergestatServiceAuthCredential struct {
 	UpdatedAt   time.Time
 	Type        string
 	Credentials []byte
+	Provider    uuid.UUID
+	IsDefault   sql.NullBool
 }
 
 type MergestatServiceAuthCredentialType struct {
@@ -741,6 +751,12 @@ type MergestatUserMgmtPgUser struct {
 	Memberof       interface{}
 }
 
+type MergestatVendor struct {
+	Name        string
+	Displayname string
+	Description sql.NullString
+}
+
 // git repositories to track
 type Repo struct {
 	// MergeStat identifier for the repo
@@ -749,8 +765,6 @@ type Repo struct {
 	Repo string
 	// ref for the repo
 	Ref sql.NullString
-	// boolean to determine if the repo is in GitHub
-	IsGithub sql.NullBool
 	// timestamp of when the MergeStat repo entry was created
 	CreatedAt time.Time
 	// JSON settings for the repo
@@ -759,6 +773,7 @@ type Repo struct {
 	Tags pgtype.JSONB
 	// foreign key for mergestat.repo_imports.id
 	RepoImportID uuid.NullUUID
+	Provider     uuid.UUID
 }
 
 // MergeStat internal table to track schema migrations
