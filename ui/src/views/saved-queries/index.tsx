@@ -9,11 +9,12 @@ import { useSavedQueryContext, useSavedQuerySetState } from 'src/state/contexts/
 import { EmptySavedQueries } from './components/empty-saved-queries'
 import { FilterHeader } from './components/filter-header'
 import { SavedQueriesTable } from './components/saved-queries-table'
+import { RemoveSavedQueryModal } from './modals/remove-saved-query'
 
 const SavedQueryList: React.FC = () => {
   const router = useRouter()
 
-  const [{ search, rows, page }] = useSavedQueryContext()
+  const [{ search, rows, page, showRemoveSQModal }] = useSavedQueryContext()
   const { setTotal } = useSavedQuerySetState()
   const [pageLoaded, setPageLoaded] = useState(false)
   const [records, setRecords] = useState(false)
@@ -70,6 +71,8 @@ const SavedQueryList: React.FC = () => {
         ? <SavedQueriesTable savedQueries={data?.savedQueries ? data?.savedQueries.nodes : []} />
         : <EmptySavedQueries />
       }
+
+      {showRemoveSQModal && <RemoveSavedQueryModal />}
     </>
   )
 }

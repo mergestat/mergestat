@@ -1,6 +1,6 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { AddSavedQueryMutation, GetSavedQueryQuery } from 'src/api-logic/graphql/generated/schema'
 import { ADD_SAVED_QUERY, UPDATE_SAVED_QUERY } from 'src/api-logic/graphql/mutations/saved-query'
 import { GET_SAVED_QUERY } from 'src/api-logic/graphql/queries/get-saved-query'
@@ -17,6 +17,7 @@ type useSavedQueryProps = {
 const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps) => {
   const router = useRouter()
   const { data: userData } = useCurrentUser()
+  const [titleError, setTitleError] = useState<boolean>(false)
 
   const [getSavedQuery, { data }] = useLazyQuery<GetSavedQueryQuery>(GET_SAVED_QUERY, { fetchPolicy: 'no-cache' })
 
@@ -39,29 +40,37 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
   })
 
   const addSavedQueryHandler = () => {
-    addSavedQuery({
-      variables: {
-        createdBy: userData?.currentMergeStatUser,
-        createdAt: 'now',
-        name: title,
-        description: desc,
-        sql: query
-      }
-    })
+    if (title) {
+      addSavedQuery({
+        variables: {
+          createdBy: userData?.currentMergeStatUser,
+          createdAt: 'now',
+          name: title,
+          description: desc,
+          sql: query
+        }
+      })
+    } else {
+      setTitleError(true)
+    }
   }
 
   const updateSavedQueryHandler = () => {
-    updateSavedQuery({
-      variables: {
-        id: savedQueryId,
-        name: title,
-        description: desc,
-        sql: query
-      }
-    })
+    if (title) {
+      updateSavedQuery({
+        variables: {
+          id: savedQueryId,
+          name: title,
+          description: desc,
+          sql: query
+        }
+      })
+    } else {
+      setTitleError(true)
+    }
   }
 
-  return { savedQuery: data?.savedQuery, addSavedQueryHandler, updateSavedQueryHandler }
+  return { savedQuery: data?.savedQuery, titleError, setTitleError, addSavedQueryHandler, updateSavedQueryHandler }
 }
 
 export default useSavedQuery

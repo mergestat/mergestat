@@ -1,9 +1,10 @@
 import { Button, EditableText } from '@mergestat/blocks'
 import { TerminalIcon, TrashIcon } from '@mergestat/icons'
 import { format } from 'date-fns'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 import { SavedQueryData } from 'src/@types'
+import { useSavedQuerySetState } from 'src/state/contexts/saved-query.context'
 import { DATE_FORMAT } from 'src/utils/constants'
 import useCurrentUser from 'src/views/hooks/useCurrentUser'
 import { FilterFooter } from './filter-footer'
@@ -13,7 +14,14 @@ type SavedQueriesTableProps = PropsWithChildren<{
 }>
 
 export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueries }: SavedQueriesTableProps) => {
+  const router = useRouter()
   const { data: userData } = useCurrentUser()
+  const { setShowRemoveSQModal, setSqToRemove } = useSavedQuerySetState()
+
+  const prepareToRemove = (sq: SavedQueryData) => {
+    setSqToRemove(sq)
+    setShowRemoveSQModal(true)
+  }
 
   return (
     <div className='flex flex-col flex-1'>
@@ -40,26 +48,31 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
                       <EditableText
                         className='flex-grow mr-5'
                         icon={<TerminalIcon className="t-icon" />}
-                        title={{ value: query.name || '', readOnly: true }}
-                        desc={{ value: query.description || '', readOnly: true }}
+                        title={{
+                          value: query.name || '',
+                          readOnly: true,
+                          onClick: () => router.push(`/queries/saved/${query.id}`)
+                        }}
+                        desc={{
+                          value: query.description || '',
+                          readOnly: true
+                        }}
                       />
                     </td>
                     <td className='text-gray-500'>
-                      <Link href={`/queries/saved/${query.id}`}>
-                        <h4 className='text-gray-500 font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600'>
-                          {query.createdAt ? format(new Date(query.createdAt?.toString()), DATE_FORMAT.D) : ''}
-                        </h4>
-                      </Link>
+                      {query.createdAt ? format(new Date(query.createdAt?.toString()), DATE_FORMAT.D) : ''}
                     </td>
                     <td className='text-gray-500'>
                       {query.createdBy === userData?.currentMergeStatUser ? 'Me' : query.createdBy}
                     </td>
                     <td className='text-gray-500 py-4 pl-4 pr-8'>
                       <div className='t-button-toolbar'>
-                        <Button isIconOnly
-                          skin="borderless-muted"
-                          startIcon={<TrashIcon className="t-icon" />}
-                          onClick={() => null} />
+                        {query.createdBy === userData?.currentMergeStatUser &&
+                          <Button isIconOnly
+                            skin="borderless-muted"
+                            startIcon={<TrashIcon className="t-icon" />}
+                            onClick={() => prepareToRemove(query)} />
+                        }
                       </div>
                     </td>
                   </tr>

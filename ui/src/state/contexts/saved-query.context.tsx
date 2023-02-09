@@ -1,11 +1,14 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
+import { SavedQueryData } from 'src/@types'
 
 type SavedQueryContext = {
   search: string
   total: number
   rows: number
   page: number
+  showRemoveSQModal: boolean
+  sqToRemove: SavedQueryData | null
 }
 
 type UseSavedQueryContext = [
@@ -17,7 +20,9 @@ const initialState: SavedQueryContext = {
   search: '',
   total: 0,
   rows: 20,
-  page: 0
+  page: 0,
+  showRemoveSQModal: false,
+  sqToRemove: null
 }
 
 function useSavedQuery(): UseSavedQueryContext {
@@ -70,12 +75,28 @@ function useSavedQuerySetState() {
     }))
   }
 
+  const setShowRemoveSQModal = (showRemoveSQModal: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showRemoveSQModal
+    }))
+  }
+
+  const setSqToRemove = (sqToRemove: SavedQueryData) => {
+    setState(prev => ({
+      ...prev,
+      sqToRemove
+    }))
+  }
+
   return {
     _,
     setSearch,
     setTotal,
     setRows,
-    setPage
+    setPage,
+    setShowRemoveSQModal,
+    setSqToRemove
   }
 }
 

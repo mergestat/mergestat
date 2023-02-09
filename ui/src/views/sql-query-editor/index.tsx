@@ -26,7 +26,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
     loading, error, query, data, time, title, desc
   } = useQueryEditor(ROWS_LIMIT)
 
-  const { savedQuery, addSavedQueryHandler, updateSavedQueryHandler } = useSavedQuery({ savedQueryId, title, desc, query })
+  const { savedQuery, titleError, setTitleError, addSavedQueryHandler, updateSavedQueryHandler } = useSavedQuery({ savedQueryId, title, desc, query })
 
   useEffect(() => {
     setTitle(savedQuery?.name || '')
@@ -34,6 +34,11 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
     savedQueryId && setQuery(savedQuery?.sql || '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedQuery])
+
+  useEffect(() => {
+    title !== '' && setTitleError(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title])
 
   return (
     <>
@@ -46,6 +51,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
             title={{
               placeholder: 'Untitled Saved Query',
               value: title,
+              error: titleError,
               onChange: (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
             }}
             desc={{

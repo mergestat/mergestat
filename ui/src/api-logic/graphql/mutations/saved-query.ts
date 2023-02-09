@@ -28,4 +28,12 @@ const UPDATE_SAVED_QUERY = gql`
   }
 `
 
-export { ADD_SAVED_QUERY, UPDATE_SAVED_QUERY }
+const REMOVE_SAVED_QUERY = gql`
+  mutation removeSavedQuery($id: UUID!) {
+    deleteSavedQuery(input: {id: $id}) {
+      deletedSavedQueryNodeId
+    }
+  }
+`
+
+export { ADD_SAVED_QUERY, UPDATE_SAVED_QUERY, REMOVE_SAVED_QUERY }

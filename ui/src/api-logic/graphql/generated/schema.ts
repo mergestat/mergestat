@@ -18030,6 +18030,13 @@ export type UpdateSavedQueryMutationVariables = Exact<{
 
 export type UpdateSavedQueryMutation = { updateSavedQuery?: { savedQuery?: { id: any, name?: string | null, description?: string | null, sql?: string | null } | null } | null };
 
+export type RemoveSavedQueryMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveSavedQueryMutation = { deleteSavedQuery?: { deletedSavedQueryNodeId?: string | null } | null };
+
 export type SetGithubPatMutationVariables = Exact<{
   pat: Scalars['String'];
 }>;
