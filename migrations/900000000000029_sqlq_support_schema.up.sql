@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS jobs(
     type text NOT NULL,
     description text,
     parameters jsonb,
+    results jsonb,
     priority int,
     created_at timestamp with time zone,
     modified_at timestamp with time zone,
