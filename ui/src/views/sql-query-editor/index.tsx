@@ -22,7 +22,8 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
 
   const {
     setQuery, setShowSettingsModal, setTitle, setDesc, executeSQLQuery, cancelSQLQuery,
-    expanded, dataQuery, showSettingsModal, state, rowLimitReached, executed, readOnly, loading, error, query, data, time, title, desc
+    expanded, dataQuery, showSettingsModal, state, rowLimitReached, executed, readOnly,
+    loading, error, query, data, time, title, desc
   } = useQueryEditor(ROWS_LIMIT)
 
   const { savedQuery, addSavedQueryHandler, updateSavedQueryHandler } = useSavedQuery({ savedQueryId, title, desc, query })
@@ -30,7 +31,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
   useEffect(() => {
     setTitle(savedQuery?.name || '')
     setDesc(savedQuery?.description || '')
-    setQuery(savedQuery?.sql || '')
+    savedQueryId && setQuery(savedQuery?.sql || '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedQuery])
 
@@ -107,6 +108,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
           </div>
         </div>}
 
+      {/* Body */}
       <div className='flex flex-col flex-1 items-center overflow-auto'>
         {/* SQL editor */}
         {!expanded && <SQLEditorSection

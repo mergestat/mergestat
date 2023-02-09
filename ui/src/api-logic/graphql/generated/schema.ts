@@ -18125,6 +18125,15 @@ export type GetReposQueryVariables = Exact<{
 
 export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, importError?: string | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null, warnings: { totalCount: number } } | null }> } }> } | null };
 
+export type GetSavedQueryListQueryVariables = Exact<{
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetSavedQueryListQuery = { all?: { totalCount: number } | null, savedQueries?: { totalCount: number, nodes: Array<{ id: any, createdAt?: any | null, createdBy?: string | null, name?: string | null, description?: string | null }> } | null };
+
 export type GetSavedQueryQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;

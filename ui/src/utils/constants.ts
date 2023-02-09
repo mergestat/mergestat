@@ -1,7 +1,8 @@
 export const DATE_FORMAT = {
   A: 'MM/dd/yyyy HH:mm:ss',
   B: 'dd LLL yyyy - HH:mm',
-  C: 'dd-MM-yyyy'
+  C: 'dd-MM-yyyy',
+  D: 'LLL dd, yyyy'
 }
 
 export const API = {
