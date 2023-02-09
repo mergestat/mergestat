@@ -26,15 +26,15 @@ CREATE TABLE IF NOT EXISTS jobs_types(
 );
 
 CREATE TABLE IF NOT EXISTS jobs(
-     id uuid PRIMARY KEY DEFAULT public.gen_random_uuid() NOT NULL,
-     queue text NOT NULL,
-     type text NOT NULL,
-     description text,
-     parameters jsonb,
-     priority int,
-     created_at timestamp with time zone,
-     modified_at timestamp with time zone,
-     deleted_at timestamp with time zone,
+    id uuid PRIMARY KEY DEFAULT public.gen_random_uuid() NOT NULL,
+    queue text NOT NULL,
+    type text NOT NULL,
+    description text,
+    parameters jsonb,
+    priority int,
+    created_at timestamp with time zone,
+    modified_at timestamp with time zone,
+    deleted_at timestamp with time zone,
     FOREIGN KEY (queue) REFERENCES public.queues (name) ON DELETE CASCADE,
     FOREIGN KEY (type) REFERENCES public.jobs_types (name) ON DELETE CASCADE
 );
