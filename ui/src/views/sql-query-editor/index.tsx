@@ -51,7 +51,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
             title={{
               placeholder: 'Untitled Saved Query',
               value: title,
-              error: titleError,
+              required: titleError,
               onChange: (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
             }}
             desc={{
