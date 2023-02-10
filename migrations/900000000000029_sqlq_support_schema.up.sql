@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS mergestat.job_types (
     created_at timestamp with time zone,
     modified_at timestamp with time zone,
     FOREIGN KEY (queue) REFERENCES sqlq.queues (name) ON DELETE CASCADE,
-    FOREIGN KEY (schedule) REFERENCES mergestat.job_schedules (schedule)
     CONSTRAINT unique_type UNIQUE(name)
 );
 
@@ -26,7 +25,7 @@ CREATE TABLE IF NOT EXISTS mergestat.jobs (
     created_at timestamp with time zone,
     modified_at timestamp with time zone,
     FOREIGN KEY (queue) REFERENCES sqlq.queues (name) ON DELETE CASCADE,
-    FOREIGN KEY (type) REFERENCES mergestat.jobs_types (name) ON DELETE CASCADE
+    FOREIGN KEY (type) REFERENCES mergestat.job_types (name) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS mergestat.job_schedules (
