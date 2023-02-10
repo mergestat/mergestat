@@ -8,12 +8,13 @@ import (
 	"os"
 	"time"
 
-	"github.com/google/go-github/v41/github"
+	"github.com/google/go-github/v47/github"
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 	"github.com/mergestat/sqlq"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
@@ -64,7 +65,7 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 			// if the execution fails for some reason, only that import is marked as failed
 			// the job still continues executing.
 			var importError error
-			if importError = handleImport(ctx, queries.WithTx(tx), imp); importError != nil {
+			if importError = handleImport(ctx, queries.WithTx(tx), imp, l); importError != nil {
 				logger.Warnf("import(%s) failed: %v", imp.ID, importError.Error())
 				l.Warn().Msgf("import(%s) failed: %v", imp.ID, importError.Error())
 				_ = tx.Rollback(ctx)
@@ -95,10 +96,11 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 }
 
 // handleImport handles execution of a given import configuration
-func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
+func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow, l *zerolog.Logger) (err error) {
 	var repoOwner, ghToken string
 	var removeDeletedRepos, defaultSyncTypes = true, make([]string, 0) //nolint:ineffassign
 	var repos []*githubRepository
+	var resp *github.Response
 
 	if ghToken, err = fetchGitHubTokenFromDB(ctx, qry); err != nil {
 		return err
@@ -115,6 +117,12 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 
 	client := github.NewClient(tc)
 
+	// we check the rate limit before any call to the GitHub API
+	if _, resp, err = client.RateLimits(ctx); err != nil {
+		return err
+	}
+	l.Info().Msgf("remaining github quota %d", resp.Rate.Remaining)
+	helper.RestRatelimitHandler(ctx, resp, l)
 	// determine the kind of import (Org vs. User) and parse the settings
 	switch imp.Type {
 	case "GITHUB_ORG":
@@ -131,7 +139,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 		removeDeletedRepos = settings.RemoveDeletedRepos
 		defaultSyncTypes = settings.DefaultSyncTypes
 
-		if repos, err = fetchGitHubReposByOrg(ctx, client, repoOwner, ghToken); err != nil {
+		if repos, err = fetchGitHubReposByOrg(ctx, client, repoOwner, ghToken, l); err != nil {
 			return err
 		}
 	case "GITHUB_USER":
@@ -148,7 +156,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 		removeDeletedRepos = settings.RemoveDeletedRepos
 		defaultSyncTypes = settings.DefaultSyncTypes
 
-		if repos, err = fetchGitHubReposByUser(ctx, client, repoOwner, ghToken); err != nil {
+		if repos, err = fetchGitHubReposByUser(ctx, client, repoOwner, ghToken, l); err != nil {
 			return err
 		}
 	default:
@@ -266,7 +274,7 @@ func fetchGitHubTokenFromDB(ctx context.Context, qry *db.Queries) (string, error
 
 // fetchGitHubReposByOrg fetch all repos from a given organization, if a github token is not
 // provided will search only public repos
-func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner string, ghToken string) ([]*githubRepository, error) {
+func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner string, ghToken string, l *zerolog.Logger) ([]*githubRepository, error) {
 	var repositories []*githubRepository
 	var repos []*github.Repository
 	var err error
@@ -282,6 +290,9 @@ func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner
 		if repos, resp, err = client.Repositories.ListByOrg(ctx, repoOwner, opt); err != nil {
 			return repositories, err
 		}
+
+		// we check the rate limit after a call to the GitHub API
+		helper.RestRatelimitHandler(ctx, resp, l)
 
 		for _, repo := range repos {
 
@@ -308,7 +319,7 @@ func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner
 
 // fetchGitHubReposByUser fetch all repos from a given user, if a github token is not
 // provided will search only public repos
-func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwner string, ghToken string) ([]*githubRepository, error) {
+func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwner string, ghToken string, l *zerolog.Logger) ([]*githubRepository, error) {
 	var repositories []*githubRepository
 	var repos []*github.Repository
 	var err error
@@ -324,6 +335,9 @@ func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwne
 		if repos, resp, err = client.Repositories.List(ctx, repoOwner, opt); err != nil {
 			return repositories, err
 		}
+
+		// we check the rate limit after a call to the GitHub API
+		helper.RestRatelimitHandler(ctx, resp, l)
 
 		for _, repo := range repos {
 

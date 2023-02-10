@@ -1,12 +1,16 @@
 package helper
 
 import (
+	"context"
 	"fmt"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/google/go-github/v47/github"
+	"github.com/rs/zerolog"
 )
 
 // GetRepoOwnerAndRepoName extracts the owner and repo name from a GitHub-like repo url
@@ -62,4 +66,29 @@ func GetRepositoryURL(r *github.Repository) *string {
 	}
 
 	return r.URL
+}
+
+func RestRatelimitHandler(ctx context.Context, resp *github.Response, l *zerolog.Logger) {
+	var remaining = resp.Rate.Remaining
+	var delay = 800 * time.Millisecond
+	var untilResetDur = time.Until(resp.Rate.Reset.Time)
+	secondsRemaining := untilResetDur.Seconds()
+
+	if remaining <= 400 {
+		delay = time.Duration(untilResetDur)
+		l.Info().
+			Int("remaining", remaining).
+			Time("resets", resp.Rate.Reset.Time).
+			Str("until-reset", untilResetDur.String()).
+			Float64("delay-seconds", float64(delay)).
+			Msgf("received rate limit info from GitHub API: %d remaining in next %ds. Delaying %ss", remaining, int(secondsRemaining), strconv.FormatFloat(delay.Seconds(), 'f', 2, 64))
+
+	}
+
+	// Allow for shutdown during the delay
+	select {
+	case <-ctx.Done():
+	case <-time.After(delay):
+	}
+
 }
