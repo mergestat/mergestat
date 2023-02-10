@@ -133,6 +133,10 @@ func main() {
 	if upstream, err = sql.Open("pgx", postgresConnection); err != nil {
 		logger.Fatal().Err(err).Msg("failed to open connection to upstream")
 	}
+
+	// this sets the max number of db connections to the same number used by the pgxpool above
+	upstream.SetMaxOpenConns(concurrency + 5)
+
 	// apply sqlq migrations
 	if err := schema.Apply(upstream); err != nil {
 		logger.Fatal().Err(err).Msg("failed to apply sqlq migrations")
@@ -242,9 +246,6 @@ func main() {
 		logger.Err(err).Msgf("could not open mergestat db: %v", err)
 		os.Exit(1)
 	}
-
-	// this sets the max number of db connections to the same number used by the pgxpool above
-	upstream.SetMaxOpenConns(concurrency + 5)
 
 	var queues = []sqlq.Queue{"default"}
 	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{Queues: queues})
