@@ -30,7 +30,7 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
           <Panel className='rounded-md w-full shadow-sm mx-8'>
             <Panel.Body className='p-0'>
               <div className='flex justify-center items-center bg-white py-5'>
-                Couldn&#39;t find any saved query!
+                Couldn&#39;t find any saved queries.
               </div>
             </Panel.Body>
           </Panel>

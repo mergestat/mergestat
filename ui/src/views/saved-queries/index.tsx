@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client'
 import { Button } from '@mergestat/blocks'
-import { PlusIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { GetSavedQueryListQuery } from 'src/api-logic/graphql/generated/schema'
@@ -49,19 +48,11 @@ const SavedQueryList: React.FC = () => {
         <div className="text-xl font-semibold">Saved Queries</div>
 
         <div className='flex items-center gap-x-7'>
-          {records
-            ? <Button
-              className='whitespace-nowrap justify-center'
-              label='Query'
-              onClick={gotToQueryEditor}
-            />
-            : <Button
-              className='whitespace-nowrap justify-center'
-              label='Add Query'
-              startIcon={<PlusIcon className='t-icon' />}
-              onClick={gotToQueryEditor}
-            />
-          }
+          <Button
+            className='whitespace-nowrap justify-center'
+            label='Query'
+            onClick={gotToQueryEditor}
+          />
         </div>
       </div>
 
