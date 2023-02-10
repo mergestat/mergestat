@@ -1,13 +1,12 @@
 import { Button, Panel } from '@mergestat/blocks'
 import { BookIcon, GithubIcon } from '@mergestat/icons'
 import Image from 'next/image'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
-// import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import { TEST_IDS } from 'src/utils/constants'
 
 export const EmptyRepositoryTable: React.FC = () => {
-  // const { setShowAddRepositoryModal } = useRepositoriesSetState()
+  const router = useRouter()
 
   return (
     <div data-testid={TEST_IDS.emptyRepositoryTable} className="flex-1 flex flex-col items-center justify-center">
@@ -18,11 +17,12 @@ export const EmptyRepositoryTable: React.FC = () => {
               <div className="w-full md_w-8/12 lg_w-6/12 p-8 lg_p-10 mx-auto">
                 <Image
                   className="inline-block"
-                  src={'/assets/illustration-repo-syncs.png'}
+                  src={'/assets/illustration-repos.png'}
                   width={300}
                   height={178}
                   layout="responsive"
                   alt=""
+                  priority
                 />
               </div>
 
@@ -31,9 +31,10 @@ export const EmptyRepositoryTable: React.FC = () => {
                 <h3 className="t-h3 mb-2">GitHub Authentication Token</h3>
                 <p className="t-text-muted">Add a personal access token to start importing from GitHub (and to work with private repos).</p>
                 <div className="t-button-toolbar mt-8">
-                  <Link href="/settings/github-authentication">
-                    <Button label="Authenticate GitHub" endIcon={<GithubIcon className="t-icon" />} />
-                  </Link>
+                  <Button label="Authenticate GitHub"
+                    endIcon={<GithubIcon className="t-icon" />}
+                    onClick={() => router.push('/settings/github-authentication')}
+                  />
                   <a href="https://docs.mergestat.com/mergestat/setup/github-authentication" target="_blank" rel="noreferrer" >
                     <Button
                       endIcon={<BookIcon className="t-icon" />}

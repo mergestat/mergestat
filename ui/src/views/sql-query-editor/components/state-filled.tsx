@@ -93,9 +93,9 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                   onClick={() => setExpanded(!expanded)}
                 />
               </Toolbar.Item>
-            </Toolbar.Right >
-          </Toolbar >
-        </Tabs.List >
+            </Toolbar.Right>
+          </Toolbar>
+        </Tabs.List>
         <Tabs.Panels className='flex-1 overflow-auto'>
           {tabs.map((tab, index) => (
             <Tabs.Panel key={`tab-panel-${index}`} className='h-full flex flex-col'>
@@ -103,8 +103,8 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             </Tabs.Panel>
           ))}
         </Tabs.Panels>
-      </Tabs >
-    </div >
+      </Tabs>
+    </div>
   )
 }
 

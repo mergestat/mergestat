@@ -18008,6 +18008,35 @@ export type UpdateTagsMutationVariables = Exact<{
 
 export type UpdateTagsMutation = { updateRepo?: { repo?: { id: any, tags: any } | null } | null };
 
+export type AddSavedQueryMutationVariables = Exact<{
+  createdBy: Scalars['String'];
+  createdAt: Scalars['Datetime'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+  sql: Scalars['String'];
+  metadata?: InputMaybe<Scalars['JSON']>;
+}>;
+
+
+export type AddSavedQueryMutation = { createSavedQuery?: { savedQuery?: { id: any, name?: string | null } | null } | null };
+
+export type UpdateSavedQueryMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  sql?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateSavedQueryMutation = { updateSavedQuery?: { savedQuery?: { id: any, name?: string | null, description?: string | null, sql?: string | null } | null } | null };
+
+export type RemoveSavedQueryMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveSavedQueryMutation = { deleteSavedQuery?: { deletedSavedQueryNodeId?: string | null } | null };
+
 export type SetGithubPatMutationVariables = Exact<{
   pat: Scalars['String'];
 }>;
@@ -18102,6 +18131,22 @@ export type GetReposQueryVariables = Exact<{
 
 
 export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, importError?: string | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null, warnings: { totalCount: number } } | null }> } }> } | null };
+
+export type GetSavedQueryListQueryVariables = Exact<{
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetSavedQueryListQuery = { all?: { totalCount: number } | null, savedQueries?: { totalCount: number, nodes: Array<{ id: any, createdAt?: any | null, createdBy?: string | null, name?: string | null, description?: string | null }> } | null };
+
+export type GetSavedQueryQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetSavedQueryQuery = { savedQuery?: { createdAt?: any | null, createdBy?: string | null, name?: string | null, description?: string | null, sql?: string | null, metadata?: any | null } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];

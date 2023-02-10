@@ -15,6 +15,7 @@ type QueryContextT = {
   tabs: TabData[]
   dataQuery: QueryResultProps
   projection: string[]
+  showSettingsModal: boolean
 }
 
 type UseQueryContextT = [
@@ -29,7 +30,8 @@ const initialState: QueryContextT = {
   activeTab: 0,
   tabs: [],
   dataQuery: {},
-  projection: []
+  projection: [],
+  showSettingsModal: false
 }
 
 function useQueryEditor(): UseQueryContextT {
@@ -103,6 +105,13 @@ function useQuerySetState() {
     }))
   }
 
+  const setShowSettingsModal = (showSettingsModal: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showSettingsModal
+    }))
+  }
+
   return {
     _,
     setQuery,
@@ -111,7 +120,8 @@ function useQuerySetState() {
     setActiveTab,
     setTabs,
     setDataQuery,
-    setProjection
+    setProjection,
+    setShowSettingsModal
   }
 }
 

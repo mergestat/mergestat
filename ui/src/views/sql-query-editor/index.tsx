@@ -1,119 +1,122 @@
-import { useLazyQuery } from '@apollo/client'
-import { Alert, Button, Spinner, Toolbar } from '@mergestat/blocks'
-import { useEffect, useState } from 'react'
-import { ColumnInfo } from 'src/@types'
-import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
-import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
-import { useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
-import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.context'
-import { formatTimeExecution } from 'src/utils'
-import { States } from 'src/utils/constants'
+import { Button, EditableText, Spinner, SplitButton, Tooltip } from '@mergestat/blocks'
+import { ClockHistoryIcon, CogIcon, TerminalIcon, WarningFilledIcon } from '@mergestat/icons'
+import { ChangeEvent, useEffect } from 'react'
+import { MSM_NON_READ_ONLY, States } from 'src/utils/constants'
+import useQueryEditor from '../hooks/useQueryEditor'
+import useSavedQuery from '../hooks/useSavedQuery'
 import SQLEditorSection from './components/sql-editor-section'
 import QueryEditorCanceled from './components/state-canceled'
 import QueryEditorEmpty from './components/state-empty'
 import QueryEditorError from './components/state-error'
 import QueryEditorFilled from './components/state-filled'
 import QueryEditorLoading from './components/state-loading'
+import { QuerySettingsModal } from './modals/query-setting'
 
-const QueryEditor: React.FC = () => {
+type QueryEditorProps = {
+  savedQueryId?: string | string[]
+  children?: React.ReactNode
+}
+
+const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorProps) => {
   const ROWS_LIMIT = 1000
 
-  const [{ query, readOnly, expanded, dataQuery, projection }] = useQueryContext()
-  const { setDataQuery, setProjection, setTabs, setActiveTab } = useQuerySetState()
-  const dispatch = useQueryTabsDispatch()
+  const {
+    setQuery, setShowSettingsModal, setTitle, setDesc, executeSQLQuery, cancelSQLQuery,
+    expanded, dataQuery, showSettingsModal, state, rowLimitReached, executed, readOnly,
+    loading, error, query, data, time, title, desc
+  } = useQueryEditor(ROWS_LIMIT)
 
-  const [state, setState] = useState<States>(States.Empty)
-  const [rowLimitReached, setRowLimitReached] = useState(true)
-  const [executed, setExecuted] = useState(false)
-  const [aborterRef, setAbortRef] = useState(new AbortController())
-  const [loading, setLoading] = useState(false)
-  const [time, setTime] = useState('')
-
-  const [executeSQL, { loading: loadingQuery, error, data }] = useLazyQuery<ExecuteSqlQuery>(EXECUTE_SQL, {
-    fetchPolicy: 'no-cache',
-    context: {
-      fetchOptions: {
-        signal: aborterRef.signal
-      },
-      queryDeduplication: false
-    }
-  })
-
-  const projectionChanged = (newProjection: string[]) => {
-    for (const p of newProjection) {
-      if (!projection.includes(p)) {
-        return true
-      }
-    }
-    return false
-  }
-
-  const checkProjection = (columns: ColumnInfo[]) => {
-    const newProjection = columns.map(c => c.name)
-    if (projectionChanged(newProjection)) {
-      setTabs([])
-      setActiveTab(0)
-      setProjection(newProjection)
-      dispatch({ reset: true })
-    }
-  }
+  const { savedQuery, titleError, setTitleError, addSavedQueryHandler, updateSavedQueryHandler } = useSavedQuery({ savedQueryId, title, desc, query })
 
   useEffect(() => {
-    setLoading(loadingQuery)
-  }, [loadingQuery])
-
-  useEffect(() => {
-    if (data?.execSQL.rows?.length && data?.execSQL.rows?.length > 0) {
-      checkProjection(data?.execSQL.columns as ColumnInfo[])
-      setDataQuery(data?.execSQL)
-      setTime(formatTimeExecution(data?.execSQL.queryRunningTimeMs || 0))
-      setState(States.Filled)
-      setRowLimitReached(data?.execSQL.rows?.length > ROWS_LIMIT)
-    } else {
-      error ? setState(States.Error) : setState(States.Empty)
-    }
+    setTitle(savedQuery?.name || '')
+    setDesc(savedQuery?.description || '')
+    savedQueryId && setQuery(savedQuery?.sql || '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, error])
+  }, [savedQuery])
 
-  const executeSQLQuery = () => {
-    setLoading(true)
-    setAbortRef(new AbortController())
-    executeSQL({ variables: { sql: query, disableReadOnly: !readOnly, trackHistory: true } })
-    setExecuted(true)
-  }
-
-  const cancelSQLQuery = () => {
-    setState(States.Canceled)
-    aborterRef.abort()
-    setLoading(false)
-  }
+  useEffect(() => {
+    title !== '' && setTitleError(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title])
 
   return (
     <>
       {/* Header */}
-      {!expanded && <div className='bg-white overflow-auto flex h-16 w-full border-b px-8'>
-        <Toolbar className='flex-1 space-x-4 w-auto h-full'>
-          <Toolbar.Left>
-            <h2 className='t-h2 mb-0'>Queries</h2>
-          </Toolbar.Left>
-          <Toolbar.Right>
-            <Button skin="secondary" onClick={cancelSQLQuery} disabled={!loading}>
-              Cancel
-            </Button>
-            <Button className='whitespace-nowrap' label='Execute (Shift + Enter)'
-              endIcon={loading && <Spinner size='sm' className='ml-2' />}
-              disabled={loading}
-              onClick={() => executeSQLQuery()}
-            />
-          </Toolbar.Right>
-        </Toolbar>
-      </div>}
-      {!readOnly && !expanded && <Alert isInline type="warning" className='pl-4 p-3 bg-yellow-50 border-b border-yellow-300'>
-        <span className='text-yellow-900'>
-          Non read-only queries are able to make changes in the underlying database, be careful!
-        </span>
-      </Alert>}
+      {!expanded &&
+        <div className='bg-white overflow-auto flex justify-between items-center h-17 w-full border-b px-8 py-2'>
+          <EditableText
+            className='flex-grow mr-5'
+            icon={<TerminalIcon className="t-icon" />}
+            title={{
+              placeholder: 'Untitled Saved Query',
+              value: title,
+              required: titleError,
+              onChange: (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
+            }}
+            desc={{
+              placeholder: 'Enter a short description for this query (optional)',
+              value: desc,
+              onChange: (e: ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)
+            }}
+          />
 
+          <div className='flex items-center gap-x-7'>
+            {!readOnly && !expanded && <div className='flex items-center'>
+              <WarningFilledIcon className="t-icon t-icon-warning" />
+              <Tooltip placement='bottom' offset={[0, 10]}
+                content={<div className='w-52'>{MSM_NON_READ_ONLY}</div>}
+              >
+                <span className='ml-2 text-gray-500 border-b-2 border-gray-400 border-dotted'>Non read-only!</span>
+              </Tooltip>
+            </div>}
+
+            <Button isIconOnly
+              skin='borderless-muted'
+              startIcon={<CogIcon className='t-icon' />}
+              onClick={() => setShowSettingsModal(true)}
+            />
+
+            <Tooltip content='Query history coming soon' placement='bottom' offset={[0, 10]}>
+              <Button isIconOnly disabled
+                skin='borderless-muted'
+                startIcon={<ClockHistoryIcon className='t-icon' />}
+                onClick={() => null}
+              />
+            </Tooltip>
+
+            <div className='flex gap-x-2'>
+              {savedQueryId
+                ? <SplitButton
+                  text="Save"
+                  items={[{ text: 'Save as new...' }]}
+                  onButtonClick={updateSavedQueryHandler}
+                  onItemClick={addSavedQueryHandler}
+                />
+                : <Button
+                  className='whitespace-nowrap justify-center'
+                  label='Save as new'
+                  skin="secondary"
+                  onClick={addSavedQueryHandler}
+                />}
+
+              {loading
+                ? <Button
+                  className='whitespace-nowrap justify-center w-32'
+                  label='Cancel'
+                  skin="secondary"
+                  startIcon={loading && <Spinner size='sm' className='mr-4' />}
+                  onClick={cancelSQLQuery} />
+                : <Button
+                  className='whitespace-nowrap justify-center ml-0 w-32'
+                  label='Run (⇧ + ↵)'
+                  onClick={() => executeSQLQuery()}
+                />}
+            </div>
+          </div>
+        </div>}
+
+      {/* Body */}
       <div className='flex flex-col flex-1 items-center overflow-auto'>
         {/* SQL editor */}
         {!expanded && <SQLEditorSection
@@ -139,6 +142,8 @@ const QueryEditor: React.FC = () => {
           <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} time={time} />
         }
       </div>
+
+      {showSettingsModal && <QuerySettingsModal />}
     </>
   )
 }

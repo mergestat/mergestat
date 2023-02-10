@@ -241,3 +241,13 @@ export interface ColumnInfo {
   name: string,
   format: string
 }
+
+/** Saved Queries */
+
+export type SavedQueryData = {
+  id: string;
+  createdAt?: string;
+  createdBy?: string | null | undefined;
+  name?: string | null | undefined;
+  description?: string | null | undefined;
+}
