@@ -69,7 +69,7 @@ services:
       - "--port"
       - "5433"
       - "--schema"
-      - "mergestat,public,sqlq"
+      - "mergestat,public"
       - "--append-plugins"
       - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/exec-sql/index.js,/graphql/service-credentials/index.js"
       - "-o"
