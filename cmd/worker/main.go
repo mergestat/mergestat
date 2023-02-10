@@ -128,6 +128,20 @@ func main() {
 	}
 	defer pool.Close()
 
+	// create a new sqlq worker to process tasks in background
+	var upstream *sql.DB
+	if upstream, err = sql.Open("pgx", postgresConnection); err != nil {
+		logger.Fatal().Err(err).Msg("failed to open connection to upstream")
+	}
+
+	// this sets the max number of db connections to the same number used by the pgxpool above
+	upstream.SetMaxOpenConns(concurrency + 5)
+
+	// apply sqlq migrations
+	if err := schema.Apply(upstream); err != nil {
+		logger.Fatal().Err(err).Msg("failed to apply sqlq migrations")
+	}
+
 	var m *migrate.Migrate
 	if m, err = migrate.New("file://migrations", postgresConnection); err != nil {
 		logger.Err(err).Msgf("could not initialize migrations")
@@ -231,20 +245,6 @@ func main() {
 	if db, err = sqlx.Open("sqlite3", ":memory:"); err != nil {
 		logger.Err(err).Msgf("could not open mergestat db: %v", err)
 		os.Exit(1)
-	}
-
-	// create a new sqlq worker to process tasks in background
-	var upstream *sql.DB
-	if upstream, err = sql.Open("pgx", postgresConnection); err != nil {
-		logger.Fatal().Err(err).Msg("failed to open connection to upstream")
-	}
-
-	// this sets the max number of db connections to the same number used by the pgxpool above
-	upstream.SetMaxOpenConns(concurrency + 5)
-
-	// apply sqlq migrations
-	if err := schema.Apply(upstream); err != nil {
-		logger.Fatal().Err(err).Msg("failed to apply sqlq migrations")
 	}
 
 	var queues = []sqlq.Queue{"default"}
