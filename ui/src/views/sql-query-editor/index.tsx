@@ -77,11 +77,13 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
               onClick={() => setShowSettingsModal(true)}
             />
 
-            <Button isIconOnly
-              skin='borderless-muted'
-              startIcon={<ClockHistoryIcon className='t-icon' />}
-              onClick={() => null}
-            />
+            <Tooltip content='Query history coming soon' placement='bottom' offset={[0, 10]}>
+              <Button isIconOnly disabled
+                skin='borderless-muted'
+                startIcon={<ClockHistoryIcon className='t-icon' />}
+                onClick={() => null}
+              />
+            </Tooltip>
 
             <div className='flex gap-x-2'>
               {savedQueryId

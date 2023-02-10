@@ -34,6 +34,7 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
   })
 
   const [updateSavedQuery] = useMutation(UPDATE_SAVED_QUERY, {
+    onError: () => null,
     onCompleted: () => {
       showSuccessAlert('Query saved')
     }
