@@ -70,7 +70,7 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
                         {query.createdAt ? format(new Date(query.createdAt?.toString()), DATE_FORMAT.D) : ''}
                       </td>
                       <td className='text-gray-500'>
-                        {query.createdBy === userData?.currentMergeStatUser ? 'Me' : query.createdBy}
+                        {query.createdBy}
                       </td>
                       <td className='text-gray-500 pl-4 pr-8'>
                         <div className='t-button-toolbar'>
