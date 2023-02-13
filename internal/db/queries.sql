@@ -17,17 +17,17 @@ WITH dequeued AS (
 )
 SELECT dq.id, dq.created_at, dq.updated_at, dq.settings, dq.provider, pr.settings AS provider_settings, vd.name AS vendor_name
 FROM dequeued dq
-    INNER JOIN mergestat.providers pr ON pr.id = dequeued.provider
+    INNER JOIN mergestat.providers pr ON pr.id = dq.provider
     INNER JOIN mergestat.vendors vd ON vd.name = pr.vendor;
 
 -- name: UpdateImportStatus :exec
 UPDATE mergestat.repo_imports SET import_status = @status::TEXT, import_error = @error::TEXT WHERE id = @ID;
 
 -- name: UpsertRepo :exec
-INSERT INTO public.repos (repo, repo_import_id) VALUES($1, $2)
+INSERT INTO public.repos (repo, repo_import_id, provider) VALUES($1, $2, $3)
 ON CONFLICT (repo, (ref IS NULL)) WHERE ref IS NULL
 DO UPDATE SET tags = (
-    SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $3) x LIMIT 1
+    SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $4) x LIMIT 1
 );
 
 -- name: MarkRepoImportAsUpdated :exec

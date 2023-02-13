@@ -35,12 +35,7 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 		}
 	}()
 
-	var ghToken string
-	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
-		return err
-	}
-
-	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, false, j); err != nil {
+	if err = w.clone(ctx, tmpPath, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 

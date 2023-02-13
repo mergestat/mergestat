@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"net/url"
 
-	"os"
 	"sync"
 	"time"
 
@@ -208,84 +207,21 @@ func (w *worker) Start(ctx context.Context) {
 	g.Wait()
 }
 
-// fetchGitHubTokenFromDB is a temporary helper function for retrieving the most recently added GITHUB_PAT service credential from the DB.
-// It's "temporary" because the way credentials are managed and retrieved will likely need to be much more robust in the future.
-func (w *worker) fetchGitHubTokenFromDB(ctx context.Context) (string, error) {
-	encryptionSecret := os.Getenv("ENCRYPTION_SECRET")
-
-	const fetchToken = `
-		SELECT credentials.token
-			FROM (SELECT * FROM mergestat.providers WHERE name = 'GitHub' AND vendor = 'github') AS provider,
-    			  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials`
-
-	var credentials []byte
-	if err := w.pool.QueryRow(context.TODO(), fetchToken, encryptionSecret).Scan(&credentials); err != nil && !errors.Is(err, pgx.ErrNoRows) {
-		return "", fmt.Errorf("could not retrieve GitHub PAT from database: %v", err)
+func (w *worker) fetchCredentials(ctx context.Context, job *db.DequeueSyncJobRow) (_, _ string, err error) {
+	var repo db.Repo
+	if repo, err = w.db.GetRepoById(ctx, job.RepoID); err != nil {
+		return "", "", err
 	}
 
-	if credentials == nil {
-		// default to the `GITHUB_TOKEN` env var if nothing in the DB
-		credentials = []byte(os.Getenv("GITHUB_TOKEN"))
+	var username, token string
+	if username, token, err = w.db.FetchCredential(ctx, repo.Provider); err != nil {
+		return "", "", err
 	}
 
-	return string(credentials), nil
+	return username, token, nil
 }
 
-// cloneRepo is a helper function for cloning a repository to a path on disk
-func (w *worker) cloneRepo(ctx context.Context, ghToken, url, path string, bare bool, job *db.DequeueSyncJobRow) error {
-	logger := w.logger.With().Bool("bare", bare).Str("url", url).Bool("githubTokenSet", ghToken != "").Logger()
-	var err error
-
-	logger.Info().Msgf("starting git repository clone: %s", url)
-
-	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
-		Type:            SyncLogTypeInfo,
-		RepoSyncQueueID: job.ID,
-		Message:         "starting git clone: " + url,
-	}}); err != nil {
-		return err
-	}
-
-	// we add ghtoken to current repo url for private repos access
-	parsedUrl, err := w.addGithubTokenToUrl(url, ghToken)
-	if err != nil {
-		return err
-	}
-
-	if err = clone.Exec(context.Background(), parsedUrl, path, clone.WithBare(bare)); err != nil {
-		return err
-	}
-
-	logger.Info().Msgf("finished git repository clone: %s", url)
-
-	if err = w.sendBatchLogMessages(ctx, []*syncLog{{
-		Type:            SyncLogTypeInfo,
-		RepoSyncQueueID: job.ID,
-		Message:         "finished git clone successfully: " + url,
-	}}); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// addGithubTokenUrl is a helper fn to insert current ghtoken into a repo url
-// to been able to access private repositories
-func (w *worker) addGithubTokenToUrl(urlString, ghToken string) (string, error) {
-	parsedUrl, err := url.Parse(urlString)
-	if err != nil {
-		return "", err
-	}
-
-	// for URLs with file:// or no scheme, do not append GitHub token.
-	if parsedUrl.Scheme == "" || parsedUrl.Scheme == "file" {
-		return urlString, nil
-	}
-
-	parsedUrl.User = url.UserPassword(parsedUrl.Path, ghToken)
-	return parsedUrl.String(), nil
-}
-
+// clone clones the repository tied to this job into the given path.
 func (w *worker) clone(ctx context.Context, path string, job *db.DequeueSyncJobRow) (err error) {
 	var logger = w.logger.With().Str("repo", job.RepoID.String()).Logger()
 	logger.Info().Msgf("starting git repository clone")
@@ -303,8 +239,9 @@ func (w *worker) clone(ctx context.Context, path string, job *db.DequeueSyncJobR
 		return err
 	}
 
-	var token string
-	if token, err = w.db.FetchCredential(ctx, repo.Provider); err != nil {
+	// fetch the username and token for the provider
+	var username, token string
+	if username, token, err = w.db.FetchCredential(ctx, repo.Provider); err != nil {
 		return err
 	}
 
@@ -314,11 +251,14 @@ func (w *worker) clone(ctx context.Context, path string, job *db.DequeueSyncJobR
 	}
 
 	if token != "" {
-		repoUrl.User = url.UserPassword("x-github", token)
+		if username == "" {
+			username = "x-mergestat" // placeholder username
+		}
+		repoUrl.User = url.UserPassword(username, token)
 	}
 
 	// execute git clone
-	if err = clone.Exec(context.Background(), repoUrl.String(), path, clone.WithBare(true)); err != nil {
+	if err = clone.Exec(ctx, repoUrl.String(), path, clone.WithBare(true)); err != nil {
 		return err
 	}
 

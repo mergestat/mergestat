@@ -729,6 +729,7 @@ type MergestatServiceAuthCredential struct {
 	Type        string
 	Credentials []byte
 	Provider    uuid.UUID
+	Username    string
 	IsDefault   sql.NullBool
 }
 

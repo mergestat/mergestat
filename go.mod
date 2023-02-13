@@ -38,6 +38,7 @@ require (
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/pjbgf/sha1cd v0.2.3 // indirect
 	github.com/skeema/knownhosts v1.1.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
 )
 
 require (

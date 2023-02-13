@@ -50,7 +50,6 @@ type githubRepoInfo struct {
 }
 
 func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSyncJobRow) error {
-	var ghToken string
 	var err error
 	l := w.loggerForJob(j)
 
@@ -61,7 +60,8 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
-	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
+	var ghToken string
+	if _, ghToken, err = w.fetchCredentials(ctx, j); err != nil {
 		return err
 	}
 
