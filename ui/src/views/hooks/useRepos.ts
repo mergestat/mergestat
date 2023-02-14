@@ -24,8 +24,6 @@ const useRepos = () => {
       setShowReposTable(true)
     }
 
-    console.log(data?.repoImports?.nodes)
-
     setFailedImports(data?.repoImports?.nodes?.filter(imp => imp.importError !== null && (imp.importError as string) !== '').map(imp => ({
       id: imp.id,
       name: imp.type === SYNC_REPO_METHOD.GH_USER ? imp.settings.user : imp.settings.org,
