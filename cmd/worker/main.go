@@ -180,7 +180,9 @@ func main() {
 			delayDur = untilResetDur
 		}
 
-		helper.WaitForImports(ctx, &l, queries.NewQuerier(db.New(pool)))
+		if err := helper.WaitForImports(ctx, &l, queries.NewQuerier(db.New(pool))); err != nil {
+			l.Err(err).Msgf("error waiting for imports:%v", err)
+		}
 
 		logger.Info().
 			Int("remaining", rlr.Remaining).

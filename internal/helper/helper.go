@@ -78,7 +78,9 @@ func RestRatelimitHandler(ctx context.Context, resp *github.Response, l *zerolog
 	// we check whether an import process is the  one calling this handler
 	// or not,if it is we omit this clause.
 	if !impRunning {
-		WaitForImports(ctx, l, qry)
+		if err := WaitForImports(ctx, l, qry); err != nil {
+			l.Err(err).Msgf("error waiting for imports:%v", err)
+		}
 	}
 
 	if remaining <= 400 {
