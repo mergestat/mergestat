@@ -915,12 +915,8 @@ github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b h1:iKHgNnVLgSzw
 github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
 github.com/mergestat/mergestat-lite v0.5.10 h1:3KBUQoRwC27bLHLXUWU7UDjP9IBtumb4vE44bZ3H9Ls=
 github.com/mergestat/mergestat-lite v0.5.10/go.mod h1:tQYFBsEpWDfJ37DQIh3I9ZC2qmVpES9mtJPMDUG64zM=
-github.com/mergestat/sqlq v0.0.0-20230118132428-b54365983541 h1:IYWFL6wadjmVkG7x4BBATWSwdxcWXWbIebelrlXeSXk=
-github.com/mergestat/sqlq v0.0.0-20230118132428-b54365983541/go.mod h1:X356rVb6XuW2XUiXHie9NO9G8bZl5BQTyEFTtYgAo2Y=
-github.com/mergestat/sqlq v0.0.0-20230127190246-b0cfaab1e11e h1:elFDkWied263SsfzqjtvhyrgWTTc/gzNMbCCC8Ebn80=
-github.com/mergestat/sqlq v0.0.0-20230127190246-b0cfaab1e11e/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
-github.com/mergestat/sqlq v0.0.0-20230131183803-60eb8f6d4b0d h1:oB3y38/zUCicWgfQD/pX5pYxFWPyre12NsCk+dOY4GA=
-github.com/mergestat/sqlq v0.0.0-20230131183803-60eb8f6d4b0d/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
+github.com/mergestat/sqlq v0.0.0-20230210225402-daece01122ea h1:ChYPcwyZ1Q1t7T0OXFRNIj2OTU/scRKK3Ulga1AbIZc=
+github.com/mergestat/sqlq v0.0.0-20230210225402-daece01122ea/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
 github.com/mergestat/timediff v0.0.3 h1:ucCNh4/ZrTPjFZ081PccNbhx9spymCJkFxSzgVuPU+Y=
 github.com/mergestat/timediff v0.0.3/go.mod h1:yvMUaRu2oetc+9IbPLYBJviz6sA7xz8OXMDfhBl7YSI=
 github.com/miekg/dns v1.0.14/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=

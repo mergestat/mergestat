@@ -413,6 +413,38 @@ export type CreateGitRefPayloadGitRefEdgeArgs = {
   orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
 };
 
+/** All input for the create `GitRemote` mutation. */
+export type CreateGitRemoteInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `GitRemote` to be created by this mutation. */
+  gitRemote: GitRemoteInput;
+};
+
+/** The output of our create `GitRemote` mutation. */
+export type CreateGitRemotePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GitRemote` that was created by this mutation. */
+  gitRemote?: Maybe<GitRemote>;
+  /** An edge for our `GitRemote`. May be used by Relay 1. */
+  gitRemoteEdge?: Maybe<GitRemotesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `GitRemote` mutation. */
+export type CreateGitRemotePayloadGitRemoteEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitRemotesOrderBy>>;
+};
+
 /** All input for the create `GitTag` mutation. */
 export type CreateGitTagInput = {
   /**
@@ -815,6 +847,38 @@ export type CreateGosecRepoScanPayload = {
 /** The output of our create `GosecRepoScan` mutation. */
 export type CreateGosecRepoScanPayloadGosecRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GosecRepoScansOrderBy>>;
+};
+
+/** All input for the create `GrypeRepoScan` mutation. */
+export type CreateGrypeRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `GrypeRepoScan` to be created by this mutation. */
+  grypeRepoScan: GrypeRepoScanInput;
+};
+
+/** The output of our create `GrypeRepoScan` mutation. */
+export type CreateGrypeRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GrypeRepoScan` that was created by this mutation. */
+  grypeRepoScan?: Maybe<GrypeRepoScan>;
+  /** An edge for our `GrypeRepoScan`. May be used by Relay 1. */
+  grypeRepoScanEdge?: Maybe<GrypeRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `GrypeRepoScan` mutation. */
+export type CreateGrypeRepoScanPayloadGrypeRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<GrypeRepoScansOrderBy>>;
 };
 
 /** All input for the create `LabelAssociation` mutation. */
@@ -1323,6 +1387,38 @@ export type CreateRepoSyncTypePayload = {
 /** The output of our create `RepoSyncType` mutation. */
 export type CreateRepoSyncTypePayloadRepoSyncTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<RepoSyncTypesOrderBy>>;
+};
+
+/** All input for the create `SavedQuery` mutation. */
+export type CreateSavedQueryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `SavedQuery` to be created by this mutation. */
+  savedQuery: SavedQueryInput;
+};
+
+/** The output of our create `SavedQuery` mutation. */
+export type CreateSavedQueryPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SavedQuery` that was created by this mutation. */
+  savedQuery?: Maybe<SavedQuery>;
+  /** An edge for our `SavedQuery`. May be used by Relay 1. */
+  savedQueryEdge?: Maybe<SavedQueriesEdge>;
+};
+
+
+/** The output of our create `SavedQuery` mutation. */
+export type CreateSavedQueryPayloadSavedQueryEdgeArgs = {
+  orderBy?: InputMaybe<Array<SavedQueriesOrderBy>>;
 };
 
 /** All input for the create `SchemaMigration` mutation. */
@@ -1854,6 +1950,50 @@ export type DeleteGitRefPayload = {
 /** The output of our delete `GitRef` mutation. */
 export type DeleteGitRefPayloadGitRefEdgeArgs = {
   orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
+};
+
+/** All input for the `deleteGitRemoteByNodeId` mutation. */
+export type DeleteGitRemoteByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GitRemote` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteGitRemote` mutation. */
+export type DeleteGitRemoteInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `GitRemote` mutation. */
+export type DeleteGitRemotePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedGitRemoteNodeId?: Maybe<Scalars['ID']>;
+  /** The `GitRemote` that was deleted by this mutation. */
+  gitRemote?: Maybe<GitRemote>;
+  /** An edge for our `GitRemote`. May be used by Relay 1. */
+  gitRemoteEdge?: Maybe<GitRemotesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `GitRemote` mutation. */
+export type DeleteGitRemotePayloadGitRemoteEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitRemotesOrderBy>>;
 };
 
 /** All input for the `deleteGithubActionsWorkflowById` mutation. */
@@ -2413,6 +2553,50 @@ export type DeleteGosecRepoScanPayload = {
 /** The output of our delete `GosecRepoScan` mutation. */
 export type DeleteGosecRepoScanPayloadGosecRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GosecRepoScansOrderBy>>;
+};
+
+/** All input for the `deleteGrypeRepoScanByNodeId` mutation. */
+export type DeleteGrypeRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GrypeRepoScan` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteGrypeRepoScan` mutation. */
+export type DeleteGrypeRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `GrypeRepoScan` mutation. */
+export type DeleteGrypeRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedGrypeRepoScanNodeId?: Maybe<Scalars['ID']>;
+  /** The `GrypeRepoScan` that was deleted by this mutation. */
+  grypeRepoScan?: Maybe<GrypeRepoScan>;
+  /** An edge for our `GrypeRepoScan`. May be used by Relay 1. */
+  grypeRepoScanEdge?: Maybe<GrypeRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `GrypeRepoScan` mutation. */
+export type DeleteGrypeRepoScanPayloadGrypeRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<GrypeRepoScansOrderBy>>;
 };
 
 /** All input for the `deleteLabelAssociationByLabelAndRepoSyncType` mutation. */
@@ -3046,6 +3230,49 @@ export type DeleteRepoSyncTypePayload = {
 /** The output of our delete `RepoSyncType` mutation. */
 export type DeleteRepoSyncTypePayloadRepoSyncTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<RepoSyncTypesOrderBy>>;
+};
+
+/** All input for the `deleteSavedQueryByNodeId` mutation. */
+export type DeleteSavedQueryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SavedQuery` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteSavedQuery` mutation. */
+export type DeleteSavedQueryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `SavedQuery` mutation. */
+export type DeleteSavedQueryPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedSavedQueryNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SavedQuery` that was deleted by this mutation. */
+  savedQuery?: Maybe<SavedQuery>;
+  /** An edge for our `SavedQuery`. May be used by Relay 1. */
+  savedQueryEdge?: Maybe<SavedQueriesEdge>;
+};
+
+
+/** The output of our delete `SavedQuery` mutation. */
+export type DeleteSavedQueryPayloadSavedQueryEdgeArgs = {
+  orderBy?: InputMaybe<Array<SavedQueriesOrderBy>>;
 };
 
 /** All input for the `deleteSchemaMigrationByNodeId` mutation. */
@@ -4354,6 +4581,112 @@ export enum GitRefsOrderBy {
   TargetDesc = 'TARGET_DESC',
   TypeAsc = 'TYPE_ASC',
   TypeDesc = 'TYPE_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+/** table of git repo remotes */
+export type GitRemote = Node & {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt: Scalars['Datetime'];
+  /** name of the remote */
+  name: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** url of the remote */
+  url: Scalars['String'];
+};
+
+/**
+ * A condition to be used against `GitRemote` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type GitRemoteCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `url` field. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `GitRemote` object types. All fields are combined with a logical ‘and.’ */
+export type GitRemoteFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GitRemoteFilter>>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GitRemoteFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GitRemoteFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `url` field. */
+  url?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `GitRemote` */
+export type GitRemoteInput = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** name of the remote */
+  name: Scalars['String'];
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** url of the remote */
+  url: Scalars['String'];
+};
+
+/** Represents an update to a `GitRemote`. Fields that are set will be updated. */
+export type GitRemotePatch = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** name of the remote */
+  name?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** url of the remote */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `GitRemote` values. */
+export type GitRemotesConnection = {
+  /** A list of edges which contains the `GitRemote` and cursor to aid in pagination. */
+  edges: Array<GitRemotesEdge>;
+  /** A list of `GitRemote` objects. */
+  nodes: Array<GitRemote>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GitRemote` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GitRemote` edge in the connection. */
+export type GitRemotesEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GitRemote` at the end of the edge. */
+  node: GitRemote;
+};
+
+/** Methods to use when ordering `GitRemote`. */
+export enum GitRemotesOrderBy {
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  UrlAsc = 'URL_ASC',
+  UrlDesc = 'URL_DESC',
   MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
@@ -7815,6 +8148,210 @@ export enum GosecRepoScansOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
+/** Table for Grype repo scan results */
+export type GrypeRepoScan = Node & {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt: Scalars['Datetime'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON results of Grype repo scanner */
+  results: Scalars['JSON'];
+};
+
+/**
+ * A condition to be used against `GrypeRepoScan` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type GrypeRepoScanCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `results` field. */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `GrypeRepoScan` object types. All fields are combined with a logical ‘and.’ */
+export type GrypeRepoScanFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GrypeRepoScanFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<GrypeRepoScanFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GrypeRepoScanFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `results` field. */
+  results?: InputMaybe<JsonFilter>;
+};
+
+/** An input for mutations affecting `GrypeRepoScan` */
+export type GrypeRepoScanInput = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON results of Grype repo scanner */
+  results: Scalars['JSON'];
+};
+
+/** Represents an update to a `GrypeRepoScan`. Fields that are set will be updated. */
+export type GrypeRepoScanPatch = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** JSON results of Grype repo scanner */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A connection to a list of `GrypeRepoScan` values. */
+export type GrypeRepoScansConnection = {
+  /** A list of edges which contains the `GrypeRepoScan` and cursor to aid in pagination. */
+  edges: Array<GrypeRepoScansEdge>;
+  /** A list of `GrypeRepoScan` objects. */
+  nodes: Array<GrypeRepoScan>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GrypeRepoScan` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GrypeRepoScan` edge in the connection. */
+export type GrypeRepoScansEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GrypeRepoScan` at the end of the edge. */
+  node: GrypeRepoScan;
+};
+
+/** Methods to use when ordering `GrypeRepoScan`. */
+export enum GrypeRepoScansOrderBy {
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  ResultsAsc = 'RESULTS_ASC',
+  ResultsDesc = 'RESULTS_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+/** A connection to a list of `GrypeRepoVulnerability` values. */
+export type GrypeRepoVulnerabilitiesConnection = {
+  /** A list of edges which contains the `GrypeRepoVulnerability` and cursor to aid in pagination. */
+  edges: Array<GrypeRepoVulnerabilitiesEdge>;
+  /** A list of `GrypeRepoVulnerability` objects. */
+  nodes: Array<GrypeRepoVulnerability>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `GrypeRepoVulnerability` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `GrypeRepoVulnerability` edge in the connection. */
+export type GrypeRepoVulnerabilitiesEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `GrypeRepoVulnerability` at the end of the edge. */
+  node: GrypeRepoVulnerability;
+};
+
+/** Methods to use when ordering `GrypeRepoVulnerability`. */
+export enum GrypeRepoVulnerabilitiesOrderBy {
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  LanguageAsc = 'LANGUAGE_ASC',
+  LanguageDesc = 'LANGUAGE_DESC',
+  Natural = 'NATURAL',
+  PathAsc = 'PATH_ASC',
+  PathDesc = 'PATH_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  SeverityAsc = 'SEVERITY_ASC',
+  SeverityDesc = 'SEVERITY_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  VersionAsc = 'VERSION_ASC',
+  VersionDesc = 'VERSION_DESC'
+}
+
+/** view of Grype repo scans results */
+export type GrypeRepoVulnerability = {
+  /** description  of vulnerability */
+  description?: Maybe<Scalars['String']>;
+  /** id of the current vulnerability */
+  id?: Maybe<Scalars['String']>;
+  /** programming language associated to vulnerability */
+  language?: Maybe<Scalars['String']>;
+  /** path to file of current vulnerability */
+  path?: Maybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId?: Maybe<Scalars['UUID']>;
+  /** level of severity */
+  severity?: Maybe<Scalars['String']>;
+  /** type of vulnerability */
+  type?: Maybe<Scalars['String']>;
+  /** current version of package vulnerable */
+  version?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `GrypeRepoVulnerability` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type GrypeRepoVulnerabilityCondition = {
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `language` field. */
+  language?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `path` field. */
+  path?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `severity` field. */
+  severity?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `version` field. */
+  version?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `GrypeRepoVulnerability` object types. All fields are combined with a logical ‘and.’ */
+export type GrypeRepoVulnerabilityFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<GrypeRepoVulnerabilityFilter>>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `language` field. */
+  language?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<GrypeRepoVulnerabilityFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<GrypeRepoVulnerabilityFilter>>;
+  /** Filter by the object’s `path` field. */
+  path?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `severity` field. */
+  severity?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `version` field. */
+  version?: InputMaybe<StringFilter>;
+};
+
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
 export type IntFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -8215,6 +8752,8 @@ export type Mutation = {
   createGitFile?: Maybe<CreateGitFilePayload>;
   /** Creates a single `GitRef`. */
   createGitRef?: Maybe<CreateGitRefPayload>;
+  /** Creates a single `GitRemote`. */
+  createGitRemote?: Maybe<CreateGitRemotePayload>;
   /** Creates a single `GitTag`. */
   createGitTag?: Maybe<CreateGitTagPayload>;
   /** Creates a single `GithubActionsWorkflow`. */
@@ -8239,6 +8778,8 @@ export type Mutation = {
   createGitleaksRepoScan?: Maybe<CreateGitleaksRepoScanPayload>;
   /** Creates a single `GosecRepoScan`. */
   createGosecRepoScan?: Maybe<CreateGosecRepoScanPayload>;
+  /** Creates a single `GrypeRepoScan`. */
+  createGrypeRepoScan?: Maybe<CreateGrypeRepoScanPayload>;
   /** Creates a single `Label`. */
   createLabel?: Maybe<CreateLabelPayload>;
   /** Creates a single `LabelAssociation`. */
@@ -8269,6 +8810,8 @@ export type Mutation = {
   createRepoSyncType?: Maybe<CreateRepoSyncTypePayload>;
   /** Creates a single `RepoSyncTypeGroup`. */
   createRepoSyncTypeGroup?: Maybe<CreateRepoSyncTypeGroupPayload>;
+  /** Creates a single `SavedQuery`. */
+  createSavedQuery?: Maybe<CreateSavedQueryPayload>;
   /** Creates a single `SchemaMigration`. */
   createSchemaMigration?: Maybe<CreateSchemaMigrationPayload>;
   /** Creates a single `SchemaMigrationsHistory`. */
@@ -8305,6 +8848,10 @@ export type Mutation = {
   deleteGitRef?: Maybe<DeleteGitRefPayload>;
   /** Deletes a single `GitRef` using its globally unique id. */
   deleteGitRefByNodeId?: Maybe<DeleteGitRefPayload>;
+  /** Deletes a single `GitRemote` using a unique key. */
+  deleteGitRemote?: Maybe<DeleteGitRemotePayload>;
+  /** Deletes a single `GitRemote` using its globally unique id. */
+  deleteGitRemoteByNodeId?: Maybe<DeleteGitRemotePayload>;
   /** Deletes a single `GithubActionsWorkflow` using a unique key. */
   deleteGithubActionsWorkflow?: Maybe<DeleteGithubActionsWorkflowPayload>;
   /** Deletes a single `GithubActionsWorkflow` using a unique key. */
@@ -8357,6 +8904,10 @@ export type Mutation = {
   deleteGosecRepoScan?: Maybe<DeleteGosecRepoScanPayload>;
   /** Deletes a single `GosecRepoScan` using its globally unique id. */
   deleteGosecRepoScanByNodeId?: Maybe<DeleteGosecRepoScanPayload>;
+  /** Deletes a single `GrypeRepoScan` using a unique key. */
+  deleteGrypeRepoScan?: Maybe<DeleteGrypeRepoScanPayload>;
+  /** Deletes a single `GrypeRepoScan` using its globally unique id. */
+  deleteGrypeRepoScanByNodeId?: Maybe<DeleteGrypeRepoScanPayload>;
   /** Deletes a single `Label` using a unique key. */
   deleteLabel?: Maybe<DeleteLabelPayload>;
   /** Deletes a single `LabelAssociation` using a unique key. */
@@ -8413,6 +8964,10 @@ export type Mutation = {
   deleteRepoSyncTypeGroup?: Maybe<DeleteRepoSyncTypeGroupPayload>;
   /** Deletes a single `RepoSyncTypeGroup` using its globally unique id. */
   deleteRepoSyncTypeGroupByNodeId?: Maybe<DeleteRepoSyncTypeGroupPayload>;
+  /** Deletes a single `SavedQuery` using a unique key. */
+  deleteSavedQuery?: Maybe<DeleteSavedQueryPayload>;
+  /** Deletes a single `SavedQuery` using its globally unique id. */
+  deleteSavedQueryByNodeId?: Maybe<DeleteSavedQueryPayload>;
   /** Deletes a single `SchemaMigration` using a unique key. */
   deleteSchemaMigration?: Maybe<DeleteSchemaMigrationPayload>;
   /** Deletes a single `SchemaMigration` using its globally unique id. */
@@ -8470,6 +9025,10 @@ export type Mutation = {
   updateGitRef?: Maybe<UpdateGitRefPayload>;
   /** Updates a single `GitRef` using its globally unique id and a patch. */
   updateGitRefByNodeId?: Maybe<UpdateGitRefPayload>;
+  /** Updates a single `GitRemote` using a unique key and a patch. */
+  updateGitRemote?: Maybe<UpdateGitRemotePayload>;
+  /** Updates a single `GitRemote` using its globally unique id and a patch. */
+  updateGitRemoteByNodeId?: Maybe<UpdateGitRemotePayload>;
   /** Updates a single `GithubActionsWorkflow` using a unique key and a patch. */
   updateGithubActionsWorkflow?: Maybe<UpdateGithubActionsWorkflowPayload>;
   /** Updates a single `GithubActionsWorkflow` using a unique key and a patch. */
@@ -8522,6 +9081,10 @@ export type Mutation = {
   updateGosecRepoScan?: Maybe<UpdateGosecRepoScanPayload>;
   /** Updates a single `GosecRepoScan` using its globally unique id and a patch. */
   updateGosecRepoScanByNodeId?: Maybe<UpdateGosecRepoScanPayload>;
+  /** Updates a single `GrypeRepoScan` using a unique key and a patch. */
+  updateGrypeRepoScan?: Maybe<UpdateGrypeRepoScanPayload>;
+  /** Updates a single `GrypeRepoScan` using its globally unique id and a patch. */
+  updateGrypeRepoScanByNodeId?: Maybe<UpdateGrypeRepoScanPayload>;
   /** Updates a single `Label` using a unique key and a patch. */
   updateLabel?: Maybe<UpdateLabelPayload>;
   /** Updates a single `LabelAssociation` using a unique key and a patch. */
@@ -8578,6 +9141,10 @@ export type Mutation = {
   updateRepoSyncTypeGroup?: Maybe<UpdateRepoSyncTypeGroupPayload>;
   /** Updates a single `RepoSyncTypeGroup` using its globally unique id and a patch. */
   updateRepoSyncTypeGroupByNodeId?: Maybe<UpdateRepoSyncTypeGroupPayload>;
+  /** Updates a single `SavedQuery` using a unique key and a patch. */
+  updateSavedQuery?: Maybe<UpdateSavedQueryPayload>;
+  /** Updates a single `SavedQuery` using its globally unique id and a patch. */
+  updateSavedQueryByNodeId?: Maybe<UpdateSavedQueryPayload>;
   /** Updates a single `SchemaMigration` using a unique key and a patch. */
   updateSchemaMigration?: Maybe<UpdateSchemaMigrationPayload>;
   /** Updates a single `SchemaMigration` using its globally unique id and a patch. */
@@ -8662,6 +9229,12 @@ export type MutationCreateGitRefArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGitRemoteArgs = {
+  input: CreateGitRemoteInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateGitTagArgs = {
   input: CreateGitTagInput;
 };
@@ -8730,6 +9303,12 @@ export type MutationCreateGitleaksRepoScanArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateGosecRepoScanArgs = {
   input: CreateGosecRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateGrypeRepoScanArgs = {
+  input: CreateGrypeRepoScanInput;
 };
 
 
@@ -8820,6 +9399,12 @@ export type MutationCreateRepoSyncTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateRepoSyncTypeGroupArgs = {
   input: CreateRepoSyncTypeGroupInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateSavedQueryArgs = {
+  input: CreateSavedQueryInput;
 };
 
 
@@ -8928,6 +9513,18 @@ export type MutationDeleteGitRefArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteGitRefByNodeIdArgs = {
   input: DeleteGitRefByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGitRemoteArgs = {
+  input: DeleteGitRemoteInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGitRemoteByNodeIdArgs = {
+  input: DeleteGitRemoteByNodeIdInput;
 };
 
 
@@ -9084,6 +9681,18 @@ export type MutationDeleteGosecRepoScanArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteGosecRepoScanByNodeIdArgs = {
   input: DeleteGosecRepoScanByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGrypeRepoScanArgs = {
+  input: DeleteGrypeRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteGrypeRepoScanByNodeIdArgs = {
+  input: DeleteGrypeRepoScanByNodeIdInput;
 };
 
 
@@ -9252,6 +9861,18 @@ export type MutationDeleteRepoSyncTypeGroupArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteRepoSyncTypeGroupByNodeIdArgs = {
   input: DeleteRepoSyncTypeGroupByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSavedQueryArgs = {
+  input: DeleteSavedQueryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSavedQueryByNodeIdArgs = {
+  input: DeleteSavedQueryByNodeIdInput;
 };
 
 
@@ -9436,6 +10057,18 @@ export type MutationUpdateGitRefByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGitRemoteArgs = {
+  input: UpdateGitRemoteInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGitRemoteByNodeIdArgs = {
+  input: UpdateGitRemoteByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateGithubActionsWorkflowArgs = {
   input: UpdateGithubActionsWorkflowInput;
 };
@@ -9588,6 +10221,18 @@ export type MutationUpdateGosecRepoScanArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateGosecRepoScanByNodeIdArgs = {
   input: UpdateGosecRepoScanByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGrypeRepoScanArgs = {
+  input: UpdateGrypeRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateGrypeRepoScanByNodeIdArgs = {
+  input: UpdateGrypeRepoScanByNodeIdInput;
 };
 
 
@@ -9756,6 +10401,18 @@ export type MutationUpdateRepoSyncTypeGroupArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRepoSyncTypeGroupByNodeIdArgs = {
   input: UpdateRepoSyncTypeGroupByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSavedQueryArgs = {
+  input: UpdateSavedQueryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSavedQueryByNodeIdArgs = {
+  input: UpdateSavedQueryByNodeIdInput;
 };
 
 
@@ -10250,6 +10907,11 @@ export type Query = Node & {
   gitRefByNodeId?: Maybe<GitRef>;
   /** Reads and enables pagination through a set of `GitRef`. */
   gitRefs?: Maybe<GitRefsConnection>;
+  gitRemote?: Maybe<GitRemote>;
+  /** Reads a single `GitRemote` using its globally unique `ID`. */
+  gitRemoteByNodeId?: Maybe<GitRemote>;
+  /** Reads and enables pagination through a set of `GitRemote`. */
+  gitRemotes?: Maybe<GitRemotesConnection>;
   /** Reads and enables pagination through a set of `GitTag`. */
   gitTags?: Maybe<GitTagsConnection>;
   githubActionsWorkflow?: Maybe<GithubActionsWorkflow>;
@@ -10315,6 +10977,13 @@ export type Query = Node & {
   gosecRepoScanByNodeId?: Maybe<GosecRepoScan>;
   /** Reads and enables pagination through a set of `GosecRepoScan`. */
   gosecRepoScans?: Maybe<GosecRepoScansConnection>;
+  grypeRepoScan?: Maybe<GrypeRepoScan>;
+  /** Reads a single `GrypeRepoScan` using its globally unique `ID`. */
+  grypeRepoScanByNodeId?: Maybe<GrypeRepoScan>;
+  /** Reads and enables pagination through a set of `GrypeRepoScan`. */
+  grypeRepoScans?: Maybe<GrypeRepoScansConnection>;
+  /** Reads and enables pagination through a set of `GrypeRepoVulnerability`. */
+  grypeRepoVulnerabilities?: Maybe<GrypeRepoVulnerabilitiesConnection>;
   label?: Maybe<Label>;
   labelAssociationByLabelAndRepoSyncType?: Maybe<LabelAssociation>;
   /** Reads and enables pagination through a set of `LabelAssociation`. */
@@ -10326,7 +10995,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | GosecRepoScan | Label | OssfScorecardRepoScan | Query | QueryHistory | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SqlqMigration | SyftRepoScan | TrivyRepoScan | YelpDetectSecretsRepoScan>;
+  node?: Maybe<GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GitRemote | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | GosecRepoScan | GrypeRepoScan | Label | OssfScorecardRepoScan | Query | QueryHistory | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SavedQuery | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SqlqMigration | SyftRepoScan | TrivyRepoScan | YelpDetectSecretsRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `OssfScorecardRepoCheckResult`. */
@@ -10399,6 +11068,11 @@ export type Query = Node & {
   repoSyncs?: Maybe<RepoSyncsConnection>;
   /** Reads and enables pagination through a set of `Repo`. */
   repos?: Maybe<ReposConnection>;
+  /** Reads and enables pagination through a set of `SavedQuery`. */
+  savedQueries?: Maybe<SavedQueriesConnection>;
+  savedQuery?: Maybe<SavedQuery>;
+  /** Reads a single `SavedQuery` using its globally unique `ID`. */
+  savedQueryByNodeId?: Maybe<SavedQuery>;
   /** Reads and enables pagination through a set of `SchemaIntrospection`. */
   schemaIntrospections?: Maybe<SchemaIntrospectionsConnection>;
   schemaMigration?: Maybe<SchemaMigration>;
@@ -10602,6 +11276,31 @@ export type QueryGitRefsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitRemoteArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitRemoteByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGitRemotesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GitRemoteCondition>;
+  filter?: InputMaybe<GitRemoteFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GitRemotesOrderBy>>;
 };
 
 
@@ -10950,6 +11649,44 @@ export type QueryGosecRepoScansArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<GosecRepoScansOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGrypeRepoScanArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGrypeRepoScanByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGrypeRepoScansArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GrypeRepoScanCondition>;
+  filter?: InputMaybe<GrypeRepoScanFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GrypeRepoScansOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGrypeRepoVulnerabilitiesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GrypeRepoVulnerabilityCondition>;
+  filter?: InputMaybe<GrypeRepoVulnerabilityFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GrypeRepoVulnerabilitiesOrderBy>>;
 };
 
 
@@ -11347,6 +12084,31 @@ export type QueryReposArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<ReposOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySavedQueriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SavedQueryCondition>;
+  filter?: InputMaybe<SavedQueryFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SavedQueriesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySavedQueryArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySavedQueryByNodeIdArgs = {
+  nodeId: Scalars['ID'];
 };
 
 
@@ -13174,6 +13936,145 @@ export enum ReposOrderBy {
   TagsDesc = 'TAGS_DESC'
 }
 
+/** A connection to a list of `SavedQuery` values. */
+export type SavedQueriesConnection = {
+  /** A list of edges which contains the `SavedQuery` and cursor to aid in pagination. */
+  edges: Array<SavedQueriesEdge>;
+  /** A list of `SavedQuery` objects. */
+  nodes: Array<SavedQuery>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SavedQuery` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `SavedQuery` edge in the connection. */
+export type SavedQueriesEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SavedQuery` at the end of the edge. */
+  node: SavedQuery;
+};
+
+/** Methods to use when ordering `SavedQuery`. */
+export enum SavedQueriesOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  CreatedByAsc = 'CREATED_BY_ASC',
+  CreatedByDesc = 'CREATED_BY_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  MetadataAsc = 'METADATA_ASC',
+  MetadataDesc = 'METADATA_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  SqlAsc = 'SQL_ASC',
+  SqlDesc = 'SQL_DESC'
+}
+
+/** Table to save queries */
+export type SavedQuery = Node & {
+  /** timestamp when query was created */
+  createdAt?: Maybe<Scalars['Datetime']>;
+  /** query creator */
+  createdBy?: Maybe<Scalars['String']>;
+  /** query description */
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** query metadata */
+  metadata?: Maybe<Scalars['JSON']>;
+  /** query name */
+  name?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** query sql */
+  sql?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `SavedQuery` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type SavedQueryCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `createdBy` field. */
+  createdBy?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `metadata` field. */
+  metadata?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `sql` field. */
+  sql?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `SavedQuery` object types. All fields are combined with a logical ‘and.’ */
+export type SavedQueryFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SavedQueryFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdBy` field. */
+  createdBy?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `metadata` field. */
+  metadata?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SavedQueryFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SavedQueryFilter>>;
+  /** Filter by the object’s `sql` field. */
+  sql?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `SavedQuery` */
+export type SavedQueryInput = {
+  /** timestamp when query was created */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** query creator */
+  createdBy?: InputMaybe<Scalars['String']>;
+  /** query description */
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  /** query metadata */
+  metadata?: InputMaybe<Scalars['JSON']>;
+  /** query name */
+  name?: InputMaybe<Scalars['String']>;
+  /** query sql */
+  sql?: InputMaybe<Scalars['String']>;
+};
+
+/** Represents an update to a `SavedQuery`. Fields that are set will be updated. */
+export type SavedQueryPatch = {
+  /** timestamp when query was created */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** query creator */
+  createdBy?: InputMaybe<Scalars['String']>;
+  /** query description */
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  /** query metadata */
+  metadata?: InputMaybe<Scalars['JSON']>;
+  /** query name */
+  name?: InputMaybe<Scalars['String']>;
+  /** query sql */
+  sql?: InputMaybe<Scalars['String']>;
+};
+
 export type SchemaIntrospection = {
   columnDescription?: Maybe<Scalars['String']>;
   columnName?: Maybe<Scalars['SqlIdentifier']>;
@@ -14728,6 +15629,53 @@ export type UpdateGitRefPayloadGitRefEdgeArgs = {
   orderBy?: InputMaybe<Array<GitRefsOrderBy>>;
 };
 
+/** All input for the `updateGitRemoteByNodeId` mutation. */
+export type UpdateGitRemoteByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GitRemote` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `GitRemote` being updated. */
+  patch: GitRemotePatch;
+};
+
+/** All input for the `updateGitRemote` mutation. */
+export type UpdateGitRemoteInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `GitRemote` being updated. */
+  patch: GitRemotePatch;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `GitRemote` mutation. */
+export type UpdateGitRemotePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GitRemote` that was updated by this mutation. */
+  gitRemote?: Maybe<GitRemote>;
+  /** An edge for our `GitRemote`. May be used by Relay 1. */
+  gitRemoteEdge?: Maybe<GitRemotesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `GitRemote` mutation. */
+export type UpdateGitRemotePayloadGitRemoteEdgeArgs = {
+  orderBy?: InputMaybe<Array<GitRemotesOrderBy>>;
+};
+
 /** All input for the `updateGithubActionsWorkflowById` mutation. */
 export type UpdateGithubActionsWorkflowByIdInput = {
   /**
@@ -15326,6 +16274,53 @@ export type UpdateGosecRepoScanPayload = {
 /** The output of our update `GosecRepoScan` mutation. */
 export type UpdateGosecRepoScanPayloadGosecRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GosecRepoScansOrderBy>>;
+};
+
+/** All input for the `updateGrypeRepoScanByNodeId` mutation. */
+export type UpdateGrypeRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `GrypeRepoScan` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `GrypeRepoScan` being updated. */
+  patch: GrypeRepoScanPatch;
+};
+
+/** All input for the `updateGrypeRepoScan` mutation. */
+export type UpdateGrypeRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `GrypeRepoScan` being updated. */
+  patch: GrypeRepoScanPatch;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `GrypeRepoScan` mutation. */
+export type UpdateGrypeRepoScanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `GrypeRepoScan` that was updated by this mutation. */
+  grypeRepoScan?: Maybe<GrypeRepoScan>;
+  /** An edge for our `GrypeRepoScan`. May be used by Relay 1. */
+  grypeRepoScanEdge?: Maybe<GrypeRepoScansEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `GrypeRepoScan` mutation. */
+export type UpdateGrypeRepoScanPayloadGrypeRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<GrypeRepoScansOrderBy>>;
 };
 
 /** All input for the `updateLabelAssociationByLabelAndRepoSyncType` mutation. */
@@ -16001,6 +16996,52 @@ export type UpdateRepoSyncTypePayload = {
 /** The output of our update `RepoSyncType` mutation. */
 export type UpdateRepoSyncTypePayloadRepoSyncTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<RepoSyncTypesOrderBy>>;
+};
+
+/** All input for the `updateSavedQueryByNodeId` mutation. */
+export type UpdateSavedQueryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SavedQuery` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `SavedQuery` being updated. */
+  patch: SavedQueryPatch;
+};
+
+/** All input for the `updateSavedQuery` mutation. */
+export type UpdateSavedQueryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `SavedQuery` being updated. */
+  patch: SavedQueryPatch;
+};
+
+/** The output of our update `SavedQuery` mutation. */
+export type UpdateSavedQueryPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SavedQuery` that was updated by this mutation. */
+  savedQuery?: Maybe<SavedQuery>;
+  /** An edge for our `SavedQuery`. May be used by Relay 1. */
+  savedQueryEdge?: Maybe<SavedQueriesEdge>;
+};
+
+
+/** The output of our update `SavedQuery` mutation. */
+export type UpdateSavedQueryPayloadSavedQueryEdgeArgs = {
+  orderBy?: InputMaybe<Array<SavedQueriesOrderBy>>;
 };
 
 /** All input for the `updateSchemaMigrationByNodeId` mutation. */
@@ -16967,6 +18008,35 @@ export type UpdateTagsMutationVariables = Exact<{
 
 export type UpdateTagsMutation = { updateRepo?: { repo?: { id: any, tags: any } | null } | null };
 
+export type AddSavedQueryMutationVariables = Exact<{
+  createdBy: Scalars['String'];
+  createdAt: Scalars['Datetime'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+  sql: Scalars['String'];
+  metadata?: InputMaybe<Scalars['JSON']>;
+}>;
+
+
+export type AddSavedQueryMutation = { createSavedQuery?: { savedQuery?: { id: any, name?: string | null } | null } | null };
+
+export type UpdateSavedQueryMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  sql?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateSavedQueryMutation = { updateSavedQuery?: { savedQuery?: { id: any, name?: string | null, description?: string | null, sql?: string | null } | null } | null };
+
+export type RemoveSavedQueryMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveSavedQueryMutation = { deleteSavedQuery?: { deletedSavedQueryNodeId?: string | null } | null };
+
 export type SetGithubPatMutationVariables = Exact<{
   pat: Scalars['String'];
 }>;
@@ -17031,12 +18101,12 @@ export type GetRepoSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetRepoSyncsQuery = { serviceAuthCredentials?: { totalCount: number } | null, repo?: { id: any, repo: string, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, scheduleEnabled: boolean, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number } }> } }> } } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string, typeGroup: string }> } | null };
+export type GetRepoSyncsQuery = { serviceAuthCredentials?: { totalCount: number } | null, repo?: { id: any, repo: string, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, scheduleEnabled: boolean, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number } }> } }> } } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string, typeGroup: string, labels: { nodes: Array<{ label: string }> } }> } | null };
 
 export type GetSyncTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSyncTypesQuery = { repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
+export type GetSyncTypesQuery = { repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string, labels: { nodes: Array<{ label: string }> } }> } | null };
 
 export type GetRepoTotalCountQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -17061,6 +18131,22 @@ export type GetReposQueryVariables = Exact<{
 
 
 export type GetReposQuery = { serviceAuthCredentials?: { totalCount: number } | null, repoImports?: { totalCount: number, nodes: Array<{ id: any, type: string, settings: any, importError?: string | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, isGithub?: boolean | null, tags: any, repoImport?: { type: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null, warnings: { totalCount: number } } | null }> } }> } | null };
+
+export type GetSavedQueryListQueryVariables = Exact<{
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetSavedQueryListQuery = { all?: { totalCount: number } | null, savedQueries?: { totalCount: number, nodes: Array<{ id: any, createdAt?: any | null, createdBy?: string | null, name?: string | null, description?: string | null }> } | null };
+
+export type GetSavedQueryQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetSavedQueryQuery = { savedQuery?: { createdAt?: any | null, createdBy?: string | null, name?: string | null, description?: string | null, sql?: string | null, metadata?: any | null } | null };
 
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];
@@ -17089,6 +18175,7 @@ export type GetUsersQuery = { userMgmtPgUsers?: { nodes: Array<{ memberof?: Arra
 export type ExecuteSqlQueryVariables = Exact<{
   sql: Scalars['String'];
   disableReadOnly?: InputMaybe<Scalars['Boolean']>;
+  trackHistory?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
