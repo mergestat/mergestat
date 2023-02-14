@@ -24,14 +24,16 @@ const useRepos = () => {
       setShowReposTable(true)
     }
 
-    setFailedImports(data?.repoImports?.nodes?.filter(imp => imp.importError !== null).map(imp => ({
+    console.log(data?.repoImports?.nodes)
+
+    setFailedImports(data?.repoImports?.nodes?.filter(imp => imp.importError !== null && (imp.importError as string) !== '').map(imp => ({
       id: imp.id,
       name: imp.type === SYNC_REPO_METHOD.GH_USER ? imp.settings.user : imp.settings.org,
       type: imp.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org',
       error: imp.importError
     })) || [])
 
-    setRunningImports(data?.repoImports?.nodes?.filter(imp => imp.importError === null).map(imp => ({
+    setRunningImports(data?.repoImports?.nodes?.filter(imp => imp.importError === null || (imp.importError as string) === '').map(imp => ({
       id: imp.id,
       name: imp.type === SYNC_REPO_METHOD.GH_USER ? imp.settings.user : imp.settings.org,
       type: imp.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org'

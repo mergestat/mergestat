@@ -15,6 +15,7 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/mergestat/internal/helper"
+	"github.com/mergestat/mergestat/queries"
 	"github.com/mergestat/sqlq"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
@@ -38,6 +39,7 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 
 	return func(ctx context.Context, job *sqlq.Job) (err error) {
 		var logger = job.Logger()
+		var importError error
 
 		// start sending periodic keep-alive pings!
 		go job.SendKeepAlive(ctx, job.KeepAlive-(5*time.Second)) //nolint:errcheck
@@ -55,16 +57,17 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 		for _, imp := range imports {
 			logger.Infof("executing import %s", imp.ID)
 			l.Info().Msgf("executing import %s", imp.ID)
-
 			var tx pgx.Tx // each import is executed within its own transaction
 			if tx, err = pool.Begin(ctx); err != nil {
 				return errors.Wrapf(err, "failed to start new database transaction")
 			}
-
+			var importStatus = db.UpdateImportStatusParams{Status: "RUNNING", ID: imp.ID}
+			if err = queries.UpdateImportStatus(ctx, importStatus); err != nil {
+				return errors.Wrapf(sqlq.ErrSkipRetry, "failed to update import status: %v", err)
+			}
 			// execute the import
 			// if the execution fails for some reason, only that import is marked as failed
 			// the job still continues executing.
-			var importError error
 			if importError = handleImport(ctx, queries.WithTx(tx), imp, l); importError != nil {
 				logger.Warnf("import(%s) failed: %v", imp.ID, importError.Error())
 				l.Warn().Msgf("import(%s) failed: %v", imp.ID, importError.Error())
@@ -78,7 +81,7 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 				l.Info().Msgf("import(%s) was successful", imp.ID)
 			}
 
-			var importStatus = db.UpdateImportStatusParams{Status: "SUCCESS", ID: imp.ID}
+			importStatus = db.UpdateImportStatusParams{Status: "SUCCESS", ID: imp.ID}
 			if importError != nil {
 				importStatus.Status, importStatus.Error = "FAILURE", importError.Error()
 			}
@@ -122,7 +125,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 		return err
 	}
 	l.Info().Msgf("remaining github quota %d", resp.Rate.Remaining)
-	helper.RestRatelimitHandler(ctx, resp, l)
+	helper.RestRatelimitHandler(ctx, resp, l, queries.NewQuerier(qry), true)
 	// determine the kind of import (Org vs. User) and parse the settings
 	switch imp.Type {
 	case "GITHUB_ORG":
@@ -139,7 +142,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 		removeDeletedRepos = settings.RemoveDeletedRepos
 		defaultSyncTypes = settings.DefaultSyncTypes
 
-		if repos, err = fetchGitHubReposByOrg(ctx, client, repoOwner, ghToken, l); err != nil {
+		if repos, err = fetchGitHubReposByOrg(ctx, client, repoOwner, ghToken, l, qry); err != nil {
 			return err
 		}
 	case "GITHUB_USER":
@@ -156,7 +159,7 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 		removeDeletedRepos = settings.RemoveDeletedRepos
 		defaultSyncTypes = settings.DefaultSyncTypes
 
-		if repos, err = fetchGitHubReposByUser(ctx, client, repoOwner, ghToken, l); err != nil {
+		if repos, err = fetchGitHubReposByUser(ctx, client, repoOwner, ghToken, l, qry); err != nil {
 			return err
 		}
 	default:
@@ -274,7 +277,7 @@ func fetchGitHubTokenFromDB(ctx context.Context, qry *db.Queries) (string, error
 
 // fetchGitHubReposByOrg fetch all repos from a given organization, if a github token is not
 // provided will search only public repos
-func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner string, ghToken string, l *zerolog.Logger) ([]*githubRepository, error) {
+func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner string, ghToken string, l *zerolog.Logger, qry *db.Queries) ([]*githubRepository, error) {
 	var repositories []*githubRepository
 	var repos []*github.Repository
 	var err error
@@ -292,7 +295,7 @@ func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner
 		}
 
 		// we check the rate limit after a call to the GitHub API
-		helper.RestRatelimitHandler(ctx, resp, l)
+		helper.RestRatelimitHandler(ctx, resp, l, queries.NewQuerier(qry), true)
 
 		for _, repo := range repos {
 
@@ -319,7 +322,7 @@ func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner
 
 // fetchGitHubReposByUser fetch all repos from a given user, if a github token is not
 // provided will search only public repos
-func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwner string, ghToken string, l *zerolog.Logger) ([]*githubRepository, error) {
+func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwner string, ghToken string, l *zerolog.Logger, qry *db.Queries) ([]*githubRepository, error) {
 	var repositories []*githubRepository
 	var repos []*github.Repository
 	var err error
@@ -337,7 +340,7 @@ func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwne
 		}
 
 		// we check the rate limit after a call to the GitHub API
-		helper.RestRatelimitHandler(ctx, resp, l)
+		helper.RestRatelimitHandler(ctx, resp, l, queries.NewQuerier(qry), true)
 
 		for _, repo := range repos {
 

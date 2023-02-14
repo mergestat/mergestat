@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/google/go-github/v47/github"
+	"github.com/mergestat/mergestat/queries"
 	"github.com/rs/zerolog"
 )
 
@@ -68,11 +69,17 @@ func GetRepositoryURL(r *github.Repository) *string {
 	return r.URL
 }
 
-func RestRatelimitHandler(ctx context.Context, resp *github.Response, l *zerolog.Logger) {
+func RestRatelimitHandler(ctx context.Context, resp *github.Response, l *zerolog.Logger, qry queries.Querier, impRunning bool) {
 	var remaining = resp.Rate.Remaining
 	var delay = 800 * time.Millisecond
 	var untilResetDur = time.Until(resp.Rate.Reset.Time)
 	secondsRemaining := untilResetDur.Seconds()
+
+	// we check whether an import process is the  one calling this handler
+	// or not,if it is we omit this clause.
+	if !impRunning {
+		WaitForImports(ctx, l, qry)
+	}
 
 	if remaining <= 400 {
 		delay = time.Duration(untilResetDur)
@@ -84,11 +91,43 @@ func RestRatelimitHandler(ctx context.Context, resp *github.Response, l *zerolog
 			Msgf("received rate limit info from GitHub API: %d remaining in next %ds. Delaying %ss", remaining, int(secondsRemaining), strconv.FormatFloat(delay.Seconds(), 'f', 2, 64))
 
 	}
-
 	// Allow for shutdown during the delay
 	select {
 	case <-ctx.Done():
 	case <-time.After(delay):
+	}
+
+}
+
+// WaitForImports waits 2 seconds each time we find a running import.
+// this behavior will continue until no import is running.
+func WaitForImports(ctx context.Context, l *zerolog.Logger, qry queries.Querier) error {
+	var imp int64
+	var err error
+	if imp, err = qry.CheckRunningImps(ctx); err != nil {
+		return err
+	}
+
+	if imp == 0 {
+		return nil
+	}
+
+	for {
+		select {
+		case <-ctx.Done():
+		case <-time.After(2 * time.Second):
+
+			//TODO:(ramiro) should we log the imp ids ?
+			l.Info().Msg("Waiting for import to finish")
+
+			if imp, err = qry.CheckRunningImps(ctx); err != nil {
+				return err
+			}
+
+			if imp == 0 {
+				return nil
+			}
+		}
 	}
 
 }
