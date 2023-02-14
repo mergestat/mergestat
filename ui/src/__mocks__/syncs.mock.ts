@@ -117,52 +117,62 @@ const syncsTypesArray = [
   {
     type: 'GIT_COMMITS',
     description: 'Retrieves the commit history of a repo',
-    shortName: 'Git Commits'
+    shortName: 'Git Commits',
+    labels: { nodes: [] }
   },
   {
     type: 'GIT_COMMIT_STATS',
     description: 'Retrieves commit stats for a repo',
-    shortName: 'Git Commit Stats'
+    shortName: 'Git Commit Stats',
+    labels: { nodes: [] }
   },
   {
     type: 'GIT_FILES',
     description: 'Retrieves files (content and paths) of a git repo',
-    shortName: 'Git Files'
+    shortName: 'Git Files',
+    labels: { nodes: [] }
   },
   {
     type: 'GITHUB_PR_COMMITS',
     description: 'Retrieves commits for all pull requests in a GitHub repo',
-    shortName: 'GitHub PR Commits'
+    shortName: 'GitHub PR Commits',
+    labels: { nodes: [] }
   },
   {
     type: 'GITHUB_PR_REVIEWS',
     description: 'Retrieves the reviews of all pull requests in a GitHub repo',
-    shortName: 'GitHub PR Reviews'
+    shortName: 'GitHub PR Reviews',
+    labels: { nodes: [] }
   },
   {
     type: 'GITHUB_REPO_ISSUES',
     description: 'Retrieves all the issues of a GitHub repo',
-    shortName: 'GitHub Repo Issues'
+    shortName: 'GitHub Repo Issues',
+    labels: { nodes: [] }
   },
   {
     type: 'GITHUB_REPO_METADATA',
     description: 'Retrieves metadata about a GitHub repo',
-    shortName: 'GitHub Repo Metadata'
+    shortName: 'GitHub Repo Metadata',
+    labels: { nodes: [] }
   },
   {
     type: 'GITHUB_REPO_PRS',
     description: 'Retrieves all the pull requests of a GitHub repo',
-    shortName: 'GitHub Repo Pull Requests'
+    shortName: 'GitHub Repo Pull Requests',
+    labels: { nodes: [] }
   },
   {
     type: 'GITHUB_REPO_STARS',
     description: 'Retrieves all stargazers of a GitHub repo',
-    shortName: 'GitHub Repo Stars'
+    shortName: 'GitHub Repo Stars',
+    labels: { nodes: [] }
   },
   {
     type: 'GIT_REFS',
     description: 'Retrieves all the refs of a git repo',
-    shortName: 'Git Refs'
+    shortName: 'Git Refs',
+    labels: { nodes: [] }
   }
 ]
 

@@ -7,14 +7,14 @@ import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { showSuccessAlert } from 'src/utils/alerts'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useSyncNow from 'src/views/hooks/useSyncNow'
-import { RepositoryData, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
+import { RepoSyncTypeDesc, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
 
-type SycnTypesTableProps = PropsWithChildren<{
+type SyncTypesTableProps = PropsWithChildren<{
   repoId: string
   data: Array<RepoSyncDataType>
 }>
 
-export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: SycnTypesTableProps) => {
+export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ repoId, data }: SyncTypesTableProps) => {
   const id = useId()
   const { updateSchedule, addSyncType } = useSyncNow('getRepoSyncs', true)
 
@@ -50,10 +50,11 @@ export const SycnTypesTable: React.FC<SycnTypesTableProps> = ({ repoId, data }: 
                       </td>
 
                       <td className='min-w-sm h-20'>
-                        <RepositoryData
+                        <RepoSyncTypeDesc
                           id={sync.data.id}
                           title={sync.data.title}
                           brief={sync.data.brief}
+                          labels={sync.data.labels}
                           disabled={sync.status.syncState === SYNC_STATUS.disabled}
                         />
                       </td>

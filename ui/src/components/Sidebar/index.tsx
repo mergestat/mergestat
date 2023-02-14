@@ -31,6 +31,12 @@ const SidebarView: React.FC = () => {
           active={isSidebarActive('queries')}
           onClick={() => push('/queries')}
           icon={<TerminalIcon className='t-icon' />}
+          subNav={
+            <Sidebar.Item compact={false}
+              onClick={() => push('/queries/saved')}
+              active={isSidebarActive('/queries/saved')}
+              label='Saved Queries' level='sub' />
+          }
         />
         <Sidebar.Item
           label='Connect'

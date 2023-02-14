@@ -1,5 +1,6 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
+import { QueryResultProps, TabData } from 'src/@types'
 
 const initialSQL = `-- Run (read-only) queries directly against the Postgres database
 -- For example, count commits by author across all repositories
@@ -10,6 +11,11 @@ type QueryContextT = {
   query: string
   readOnly: boolean
   expanded: boolean
+  activeTab: number
+  tabs: TabData[]
+  dataQuery: QueryResultProps
+  projection: string[]
+  showSettingsModal: boolean
 }
 
 type UseQueryContextT = [
@@ -20,7 +26,12 @@ type UseQueryContextT = [
 const initialState: QueryContextT = {
   query: initialSQL,
   readOnly: true,
-  expanded: false
+  expanded: false,
+  activeTab: 0,
+  tabs: [],
+  dataQuery: {},
+  projection: [],
+  showSettingsModal: false
 }
 
 function useQueryEditor(): UseQueryContextT {
@@ -66,11 +77,51 @@ function useQuerySetState() {
     }))
   }
 
+  const setActiveTab = (activeTab: number) => {
+    setState(prev => ({
+      ...prev,
+      activeTab
+    }))
+  }
+
+  const setTabs = (tabs: TabData[]) => {
+    setState(prev => ({
+      ...prev,
+      tabs
+    }))
+  }
+
+  const setDataQuery = (dataQuery: QueryResultProps) => {
+    setState(prev => ({
+      ...prev,
+      dataQuery
+    }))
+  }
+
+  const setProjection = (projection: string[]) => {
+    setState(prev => ({
+      ...prev,
+      projection
+    }))
+  }
+
+  const setShowSettingsModal = (showSettingsModal: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showSettingsModal
+    }))
+  }
+
   return {
     _,
     setQuery,
     setReadOnly,
-    setExpanded
+    setExpanded,
+    setActiveTab,
+    setTabs,
+    setDataQuery,
+    setProjection,
+    setShowSettingsModal
   }
 }
 

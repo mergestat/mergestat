@@ -1,71 +1,58 @@
 import { Button, Dropdown, Label, Menu } from '@mergestat/blocks'
 import { CaretDownIcon } from '@mergestat/icons'
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
-import { ApexSerie, ChartData, ChartType, QueryResultProps } from 'src/@types'
+import { useEffect } from 'react'
+import { ChartData, ChartType } from 'src/@types'
 import { mapToApexChart } from 'src/api-logic/mappers/charts/apex-chart'
+import { useQueryContext } from 'src/state/contexts'
 import { useQueryTabsContext, useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { chartOptions } from 'src/utils/charts/chart-config'
-import { XAXIS_TYPE } from 'src/utils/constants'
+import { XAXIS_TYPE, XAXIS_TYPE_LABEL } from 'src/utils/constants'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 type TabChartProps = {
-  data: QueryResultProps
   tabId?: string
   chartType: ChartType
   children?: React.ReactNode
 }
 
-const TabChart: React.FC<TabChartProps> = ({ data, tabId = '', chartType }: TabChartProps) => {
+const TabChart: React.FC<TabChartProps> = ({ tabId = '', chartType }: TabChartProps) => {
+  const [{ dataQuery: data }] = useQueryContext()
   const tabsState = useQueryTabsContext()
   const dispatch = useQueryTabsDispatch()
 
-  const [options, setOptions] = useState(chartOptions)
-  const [series, setSeries] = useState<ApexSerie[]>([])
-
-  const { serie, xAxis, yAxis } = (tabsState[tabId] as ChartData)
+  const { serie, xAxis, yAxis, xAxisType, options, series } = (tabsState[tabId] as ChartData)
 
   const setState = (payload: ChartData) => dispatch({ tab: tabId, payload })
 
-  const getChartType = (xAxis: string | undefined) => {
-    if (xAxis) {
-      const xIndex = data.columns?.findIndex(d => d.name === xAxis) || 0
-      const value = data.rows ? (data.rows[0][xIndex]).toString() : ''
-
-      const date = (new Date(value)).valueOf()
-      if (!isNaN(date)) {
-        return XAXIS_TYPE.DATETIME
-      }
-
-      const num = (+value).valueOf()
-      if (!isNaN(num)) {
-        return XAXIS_TYPE.NUMERIC
-      }
-    }
-    return XAXIS_TYPE.CATEGORY
-  }
-
   useEffect(() => {
-    const series = mapToApexChart({ data, serie, xAxis, yAxis })
+    if (xAxis && yAxis) {
+      const series = mapToApexChart({ data, serie, xAxis, yAxis })
+      setState({ series })
 
-    if (chartOptions.xaxis) {
+      const typeX = xAxisType === XAXIS_TYPE_LABEL.DATE
+        ? XAXIS_TYPE.DATETIME
+        : xAxisType === XAXIS_TYPE_LABEL.STRING
+          ? XAXIS_TYPE.CATEGORY
+          : XAXIS_TYPE.NUMERIC
+
       const newOptions = {
         ...chartOptions,
-        ...{
-          xaxis: {
-            type: getChartType(xAxis),
-            ...{
-              labels: chartOptions.xaxis.labels
-            }
-          }
+        xaxis: {
+          ...chartOptions.xaxis,
+          type: typeX,
+          convertedCatToNumeric: false
         }
       }
-      setOptions(newOptions)
+      setState({ options: { ...newOptions } })
     }
 
-    setSeries(series)
+    return () => {
+      setState({ options: chartOptions })
+      setState({ series: [] })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, serie, xAxis, yAxis])
+  }, [data, serie, xAxis, xAxisType, yAxis])
 
   return (
     <div className="flex h-full">
@@ -87,6 +74,30 @@ const TabChart: React.FC<TabChartProps> = ({ data, tabId = '', chartType }: TabC
                   <Menu.Item key={`col-x-${index}`} text={col.name}
                     onClick={() => {
                       setState({ xAxis: col.name.toString() })
+                      close()
+                    }}
+                  />
+                ))}
+              </Menu>
+            )}
+          />
+        </div>
+        <div className='mt-6'>
+          <Label className='text-gray-500'>X-axis type</Label>
+          <Dropdown
+            alignEnd
+            trigger={
+              <Button label={xAxisType || 'Select'} skin="ghost"
+                className='text-gray-500' isBlockBetween
+                endIcon={<CaretDownIcon className='t-icon' />}
+              />
+            }
+            overlay={(close) => (
+              <Menu className='whitespace-nowrap w-full'>
+                {Object.values(XAXIS_TYPE_LABEL).map((type, index) => (
+                  <Menu.Item key={`col-x-type-${index}`} text={type}
+                    onClick={() => {
+                      setState({ xAxisType: type })
                       close()
                     }}
                   />
@@ -151,7 +162,7 @@ const TabChart: React.FC<TabChartProps> = ({ data, tabId = '', chartType }: TabC
         </div>
       </div>
       <div className="px-8 py-4 w-full">
-        {xAxis && yAxis && <Chart
+        {options && <Chart
           type={chartType}
           width='100%'
           height='100%'

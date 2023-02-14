@@ -1,3 +1,4 @@
+import { ApexOptions } from 'apexcharts'
 import { ReactElement } from 'react'
 import { RepoSyncQueue } from './api-logic/graphql/generated/schema'
 
@@ -76,6 +77,7 @@ export type RepoSyncDataType = {
     brief: string
     scheduleEnabled: boolean
     typeGroup: string
+    labels?: string[]
   }
   latestRun: string
   avgRunningTime: string
@@ -188,31 +190,6 @@ export type QueryResultProps = {
   rows?: Array<Array<string | number | boolean>> | null
 }
 
-/** Query Tab Types */
-
-export type ChartData = {
-  serie?: string
-  xAxis?: string
-  yAxis?: string
-}
-
-export type SingleMetricData = {
-  label?: string
-  selectedColumnName?: string
-  selectedColumnIndex?: number
-  stat?: string
-}
-
-export type ActionType = {
-  tab: string
-  remove?: boolean
-  payload?: SingleMetricData | ChartData
-}
-
-export type TabsState = {
-  [key: string]: SingleMetricData | ChartData
-}
-
 /** Apex Charts */
 
 export interface ApexDataSerie {
@@ -223,4 +200,54 @@ export interface ApexDataSerie {
 export interface ApexSerie {
   name: string,
   data: ApexDataSerie[]
+}
+
+export type ChartData = {
+  serie?: string
+  xAxis?: string
+  xAxisType?: string
+  yAxis?: string
+  options?: ApexOptions
+  series?: ApexSerie[]
+}
+
+export type SingleMetricData = {
+  label?: string
+  selectedColumnName?: string
+  selectedColumnIndex?: number
+  stat?: string
+}
+
+export type ActionType = {
+  reset?: boolean
+  tab?: string
+  remove?: boolean
+  payload?: SingleMetricData | ChartData
+}
+
+export type TabsState = {
+  [key: string]: SingleMetricData | ChartData
+}
+
+export interface TabData {
+  tabId: string
+  title: ReactElement | string
+  content: ReactElement | string
+  disabled?: boolean
+  closable?: boolean
+}
+
+export interface ColumnInfo {
+  name: string,
+  format: string
+}
+
+/** Saved Queries */
+
+export type SavedQueryData = {
+  id: string;
+  createdAt?: string;
+  createdBy?: string | null | undefined;
+  name?: string | null | undefined;
+  description?: string | null | undefined;
 }

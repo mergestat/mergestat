@@ -1,6 +1,8 @@
 export const DATE_FORMAT = {
   A: 'MM/dd/yyyy HH:mm:ss',
-  B: 'dd LLL yyyy - HH:mm'
+  B: 'dd LLL yyyy - HH:mm',
+  C: 'dd-MM-yyyy',
+  D: 'LLL dd, yyyy'
 }
 
 export const API = {
@@ -12,6 +14,8 @@ export const GITHUB_URL = 'https://github.com/'
 export const MERGESTAT_TITLE = '- MergeStat'
 
 export const FONT_FAMILY = 'Inter, ui-sans-serif, system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif'
+
+export const MSM_NON_READ_ONLY = 'Non read-only queries are able to make changes in the underlying database, be careful!'
 
 export enum TEST_IDS {
   emptyRepository = 'empty-repository',
@@ -132,6 +136,12 @@ export enum XAXIS_TYPE {
   DATETIME = 'datetime',
   CATEGORY = 'category',
   NUMERIC = 'numeric'
+}
+
+export enum XAXIS_TYPE_LABEL {
+  DATE = 'date',
+  STRING = 'string',
+  NUMBER = 'number'
 }
 
 export const USER_ROLES = [

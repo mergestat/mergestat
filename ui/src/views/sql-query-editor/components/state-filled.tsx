@@ -1,7 +1,6 @@
 import { Badge, Button, HoverCard, Menu, Tabs, Toolbar } from '@mergestat/blocks'
 import { ArrowCollapseIcon, ArrowExpandIcon, CaretDownIcon, ChartBarIcon, ChartLineIcon, CircleCheckFilledIcon, PlusIcon, SingleMetricIcon } from '@mergestat/icons'
 import { cloneElement } from 'react'
-import { QueryResultProps } from 'src/@types'
 import { TAB_TYPE } from 'src/utils/constants'
 import useTabs from 'src/views/hooks/useTabs'
 
@@ -9,12 +8,11 @@ type QueryEditorFilledProps = {
   rowLimit: number
   rowLimitReached: boolean
   time: string
-  data: QueryResultProps
   children?: React.ReactNode
 }
 
-const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, time, data }: QueryEditorFilledProps) => {
-  const { tabs, expanded, activeTab, setActiveTab, setExpanded, addTab, removeTab } = useTabs(rowLimit, rowLimitReached, data)
+const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, time }: QueryEditorFilledProps) => {
+  const { tabs, expanded, activeTab, setActiveTab, setExpanded, addTab, removeTab } = useTabs(rowLimit, rowLimitReached)
 
   return (
     <div className="flex flex-col flex-1 w-full bg-white" style={{ minHeight: '48px' }}>
@@ -95,9 +93,9 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                   onClick={() => setExpanded(!expanded)}
                 />
               </Toolbar.Item>
-            </Toolbar.Right >
-          </Toolbar >
-        </Tabs.List >
+            </Toolbar.Right>
+          </Toolbar>
+        </Tabs.List>
         <Tabs.Panels className='flex-1 overflow-auto'>
           {tabs.map((tab, index) => (
             <Tabs.Panel key={`tab-panel-${index}`} className='h-full flex flex-col'>
@@ -105,8 +103,8 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             </Tabs.Panel>
           ))}
         </Tabs.Panels>
-      </Tabs >
-    </div >
+      </Tabs>
+    </div>
   )
 }
 

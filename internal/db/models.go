@@ -133,6 +133,18 @@ type GitRef struct {
 	MergestatSyncedAt time.Time
 }
 
+// table of git repo remotes
+type GitRemote struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// name of the remote
+	Name string
+	// url of the remote
+	Url string
+	// timestamp when record was synced into the MergeStat database
+	MergestatSyncedAt time.Time
+}
+
 type GitTag struct {
 	// foreign key for public.repos.id
 	RepoID   uuid.UUID
@@ -583,21 +595,65 @@ type GitleaksRepoScan struct {
 }
 
 type GosecRepoDetection struct {
-	RepoID     uuid.UUID
-	Severity   interface{}
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// detection severity
+	Severity interface{}
+	// detection confidence
 	Confidence interface{}
-	CweID      interface{}
-	RuleID     interface{}
-	Details    interface{}
-	File       interface{}
-	Line       interface{}
-	Column     interface{}
-	Nosec      interface{}
+	// detection CWE (Common Weakness Enumeration) ID
+	CweID interface{}
+	// detection rule ID
+	RuleID interface{}
+	// detection details
+	Details interface{}
+	// detection file
+	File interface{}
+	// detection line in file
+	Line interface{}
+	// detection column in line
+	Column interface{}
+	// flag to determine if #nosec annotation was used
+	Nosec interface{}
 }
 
+// Table of gosec repo scans
 type GosecRepoScan struct {
+	// foreign key for public.repos.id
 	RepoID uuid.UUID
+	// JSON issues from gosec repo scan
 	Issues pgtype.JSONB
+	// timestamp when record was synced into the MergeStat database
+	MergestatSyncedAt time.Time
+}
+
+// Table for Grype repo scan results
+type GrypeRepoScan struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// JSON results of Grype repo scanner
+	Results pgtype.JSONB
+	// timestamp when record was synced into the MergeStat database
+	MergestatSyncedAt time.Time
+}
+
+type GrypeRepoVulnerability struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// id of the current vulnerability
+	ID interface{}
+	// level of severity
+	Severity interface{}
+	// description  of vulnerability
+	Description interface{}
+	// current version of package vulnerable
+	Version interface{}
+	// type of vulnerability
+	Type interface{}
+	// programming language associated to vulnerability
+	Language interface{}
+	// path to file of current vulnerability
+	Path interface{}
 }
 
 type MergestatLatestRepoSync struct {
@@ -710,6 +766,23 @@ type MergestatRepoSyncTypeLabelAssociation struct {
 	RepoSyncType string
 }
 
+// Table to save queries
+type MergestatSavedQuery struct {
+	ID uuid.UUID
+	// query creator
+	CreatedBy sql.NullString
+	// timestamp when query was created
+	CreatedAt sql.NullTime
+	// query name
+	Name sql.NullString
+	// query description
+	Description sql.NullString
+	// query sql
+	Sql sql.NullString
+	// query metadata
+	Metadata pgtype.JSONB
+}
+
 type MergestatSchemaIntrospection struct {
 	Schema            interface{}
 	TableName         interface{}
@@ -756,6 +829,50 @@ type MergestatVendor struct {
 	Name        string
 	Displayname string
 	Description sql.NullString
+}
+
+type OssfScorecardRepoCheckResult struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// name of the check in the scan run
+	Name interface{}
+	// score of the check in the scan run
+	Score interface{}
+	// reason for the score of the check in the scan run
+	Reason interface{}
+	// details of the check in the scan run
+	Details interface{}
+	// URL to the documentation of the check in the scan run
+	DocumentationUrl interface{}
+	// description of the check in the scan run
+	DocumentationShort interface{}
+	// JSON of the check results in the scan run
+	Value pgtype.JSONB
+}
+
+// Output of OSSF scorecard scans on a git repository
+type OssfScorecardRepoScan struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// JSON results of the scan
+	Results pgtype.JSONB
+	// timestamp when record was synced into the MergeStat database
+	MergestatSyncedAt time.Time
+}
+
+type OssfScorecardRepoScore struct {
+	// foreign key for public.repos.id
+	RepoID uuid.UUID
+	// URL to repo scan was run on
+	Repo interface{}
+	// commit of repo that the scan was run on
+	Commit interface{}
+	// date of the scan
+	Date interface{}
+	// resulting total score of the scan
+	Score interface{}
+	// scorecard version used to run the scan
+	ScorecardVersion interface{}
 }
 
 // git repositories to track

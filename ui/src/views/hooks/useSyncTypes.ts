@@ -12,7 +12,7 @@ const useSyncTypes = () => {
   })
 
   useEffect(() => {
-    const list = data?.repoSyncTypes?.nodes.map(st => ({ type: st.type, description: st.description, shortName: st.shortName, checked: false }))
+    const list = data?.repoSyncTypes?.nodes.map(st => ({ type: st.type, description: st.description, shortName: st.shortName, checked: false, labels: st.labels.nodes.map(l => l.label) }))
     setSyncsTypesArray(list || [])
   }, [data])
 
