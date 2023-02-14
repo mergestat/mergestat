@@ -26,12 +26,7 @@ func (w *worker) handleGrypeRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 		}
 	}()
 
-	var ghToken string
-	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
-		return err
-	}
-
-	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, false, j); err != nil {
+	if err = w.clone(ctx, j.Repo, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 
