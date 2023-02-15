@@ -95,7 +95,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
                 />
                 : <Button
                   className='whitespace-nowrap justify-center'
-                  label='Save as new'
+                  label='Save As New'
                   skin="secondary"
                   onClick={addSavedQueryHandler}
                 />}
