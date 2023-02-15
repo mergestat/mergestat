@@ -1,7 +1,7 @@
-import { Button, EditableText, Panel } from '@mergestat/blocks'
+import { Button, ColoredBox, Panel } from '@mergestat/blocks'
 import { TerminalIcon, TrashIcon } from '@mergestat/icons'
 import { format } from 'date-fns'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import React, { PropsWithChildren } from 'react'
 import { SavedQueryData } from 'src/@types'
 import { useSavedQuerySetState } from 'src/state/contexts/saved-query.context'
@@ -14,7 +14,6 @@ type SavedQueriesTableProps = PropsWithChildren<{
 }>
 
 export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueries }: SavedQueriesTableProps) => {
-  const router = useRouter()
   const { data: userData } = useCurrentUser()
   const { setShowRemoveSQModal, setSqToRemove } = useSavedQuerySetState()
 
@@ -52,24 +51,26 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
                   {savedQueries.map((query) => (
                     <tr key={query.id}>
                       <td>
-                        <EditableText
-                          className='flex-grow mr-5'
-                          icon={<TerminalIcon className="t-icon" />}
-                          title={{
-                            value: query.name || '',
-                            readOnly: true,
-                            onClick: () => router.push(`/queries/saved/${query.id}`)
-                          }}
-                          desc={{
-                            value: query.description || '',
-                            readOnly: true
-                          }}
-                        />
+                        <div className='flex items-center gap-4 py-2'>
+                          <ColoredBox size='8'>
+                            <TerminalIcon className='t-icon t-icon-default' />
+                          </ColoredBox>
+                          <div>
+                            <Link href={`/queries/saved/${query.id}`}>
+                              <h4 className='font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600'>
+                                { query.name || '' }
+                              </h4>
+                            </Link>
+                            <p className="text-sm t-text-muted">
+                              { query.description || '' }
+                            </p>
+                          </div>
+                        </div>
                       </td>
-                      <td className='text-gray-500 py-5'>
+                      <td className='text-gray-500 py-5 whitespace-nowrap'>
                         {query.createdAt ? format(new Date(query.createdAt?.toString()), DATE_FORMAT.D) : ''}
                       </td>
-                      <td className='text-gray-500'>
+                      <td className='text-gray-500 whitespace-nowrap'>
                         {query.createdBy}
                       </td>
                       <td className='text-gray-500 pl-4 pr-8'>
