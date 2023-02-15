@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Button, Modal, Toolbar } from '@mergestat/blocks'
+import { Button, Modal, ThreeDots, Toolbar } from '@mergestat/blocks'
 import { TrashIcon, XIcon } from '@mergestat/icons'
 import React, { useCallback } from 'react'
 import { REMOVE_IMPORT } from 'src/api-logic/graphql/mutations/repos'
@@ -15,7 +15,7 @@ export const RemoveImportModal: React.FC = () => {
     setShowRemoveImportModal(false)
   }, [setShowRemoveImportModal])
 
-  const [removeImport] = useMutation(REMOVE_IMPORT, {
+  const [removeImport, { loading }] = useMutation(REMOVE_IMPORT, {
     onCompleted: () => {
       showSuccessAlert('Repo auto import removed')
       close()
@@ -62,14 +62,15 @@ export const RemoveImportModal: React.FC = () => {
               </Button>
               <Button
                 skin="danger"
+                disabled={loading}
                 onClick={() => removeImport({
                   variables: { id: importToRemove?.id }
                 })}
-                startIcon={<TrashIcon className="t-icon" />}
+                startIcon={!loading && <TrashIcon className="t-icon" />}
                 data-testid={TEST_IDS.removeRepoButtonModal}
                 className="my-3"
               >
-                Remove Auto Import
+                { loading ? <ThreeDots height={9} /> : 'Remove Auto Import' }
               </Button>
             </Toolbar.Item>
           </Toolbar.Right>
