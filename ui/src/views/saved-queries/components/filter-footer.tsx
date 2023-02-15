@@ -9,7 +9,7 @@ export const FilterFooter: React.FC = () => {
   const { setRows, setPage } = useSavedQuerySetState()
 
   return (
-    <div className='px-8 py-3 w-full flex bg-white border-t-2 border-gray-100'>
+    <div className='px-8 h-14 w-full flex items-center bg-white border-t t-border-default'>
       <div className='flex-1 overflow-x-auto overflow-y-hidden'>
         <Toolbar className='t-toolbar flex-1 w-auto h-full space-x-4'>
           <Toolbar.Left className='space-x-4 divide-x'>

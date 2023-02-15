@@ -183,7 +183,7 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
       </div>
 
       {/* Footer section */}
-      <div className='bg-white overflow-auto flex h-16 flex-shrink-0 w-full border-t px-8'>
+      <div className='bg-white overflow-auto flex h-14 items-center flex-shrink-0 w-full border-t px-8'>
         <Toolbar className='t-toolbar flex-1 w-auto h-full space-x-4'>
           <Toolbar.Left className='space-x-3'>
             <div className='flex items-center'>
