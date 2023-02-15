@@ -120,12 +120,15 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 
 	client := github.NewClient(tc)
 
-	// we check the rate limit before any call to the GitHub API
-	if _, resp, err = client.RateLimits(ctx); err != nil {
-		return err
+	if len(ghToken) > 0 {
+		// we check the rate limit before any call to the GitHub API
+		if _, resp, err = client.RateLimits(ctx); err != nil {
+			return err
+		}
+
+		helper.RestRatelimitHandler(ctx, resp, l, queries.NewQuerier(qry), true)
 	}
-	l.Info().Msgf("remaining github quota %d", resp.Rate.Remaining)
-	helper.RestRatelimitHandler(ctx, resp, l, queries.NewQuerier(qry), true)
+
 	// determine the kind of import (Org vs. User) and parse the settings
 	switch imp.Type {
 	case "GITHUB_ORG":
@@ -294,8 +297,10 @@ func fetchGitHubReposByOrg(ctx context.Context, client *github.Client, repoOwner
 			return repositories, err
 		}
 
-		// we check the rate limit after a call to the GitHub API
-		helper.RestRatelimitHandler(ctx, resp, l, queries.NewQuerier(qry), true)
+		if len(ghToken) > 0 {
+			// we check the rate limit after a call to the GitHub API
+			helper.RestRatelimitHandler(ctx, resp, l, queries.NewQuerier(qry), true)
+		}
 
 		for _, repo := range repos {
 
@@ -339,8 +344,10 @@ func fetchGitHubReposByUser(ctx context.Context, client *github.Client, repoOwne
 			return repositories, err
 		}
 
-		// we check the rate limit after a call to the GitHub API
-		helper.RestRatelimitHandler(ctx, resp, l, queries.NewQuerier(qry), true)
+		if len(ghToken) > 0 {
+			// we check the rate limit after a call to the GitHub API
+			helper.RestRatelimitHandler(ctx, resp, l, queries.NewQuerier(qry), true)
+		}
 
 		for _, repo := range repos {
 
