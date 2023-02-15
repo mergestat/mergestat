@@ -41,7 +41,7 @@ const SchemaSection: React.FC = () => {
           ? <Loading />
           : <Tree>
             {schameInfo?.map((s, index) =>
-              <Tree.Item key={`schema-${index}`} name={s.schema || ''} icon={<SchemaIcon className="t-icon t-icon-muted" />} >
+              <Tree.Item key={`schema-${index}`} name={s.schema || ''} icon={<SchemaIcon className="t-icon t-icon-muted" />} open={index === 0}>
                 {s.tables?.map((t, index) =>
                   <Tree.Item key={`${s.schema}-table-${index}`} name={t.tableName || ''} icon={<TableIcon className="t-icon t-icon-muted" />} >
                     {t.columns?.map((c, index) =>

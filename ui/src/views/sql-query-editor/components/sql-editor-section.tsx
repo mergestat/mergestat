@@ -82,7 +82,7 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEd
           />
         </div>
 
-        <div className='border-l' style={{ minWidth: '340px' }}>
+        <div className='border-l flex-1' style={{ minWidth: '340px' }}>
           <SchemaSection />
         </div>
       </div>
