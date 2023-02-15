@@ -251,3 +251,20 @@ export type SavedQueryData = {
   name?: string | null | undefined;
   description?: string | null | undefined;
 }
+
+/** Schema */
+
+export type ColumnData = {
+  columnName: string | null,
+  columnDescription?: string | null
+}
+
+export type TableData = {
+  tableName: string | null
+  columns: ColumnData[]
+}
+
+export type SchemaData = {
+  schema: string | null
+  tables: TableData[]
+}
