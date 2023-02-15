@@ -2,6 +2,7 @@
 import Editor from '@monaco-editor/react'
 import { useEffect, useRef } from 'react'
 import { useQueryContext, useQuerySetState } from 'src/state/contexts/query.context'
+import SchemaSection from './schema-section'
 
 type SQLEditorSectionProps = {
   onEnterKey?: () => void
@@ -61,11 +62,11 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEd
   return (
     <>
       <div
-        className='w-full'
+        className='flex w-full bg-white overflow-x-auto'
         ref={resizeElement}
         style={{ height: '360px', minHeight: '200px' }}
       >
-        <div className='h-full flex-col relative pb-14 pt-4 bg-white'>
+        <div className='w-3/4 h-full'>
           <Editor
             className='text-sm font-mono'
             value={query}
@@ -79,6 +80,10 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEd
               },
             }}
           />
+        </div>
+
+        <div className='border-l flex-1' style={{ minWidth: '340px' }}>
+          <SchemaSection />
         </div>
       </div>
       <div className='t-resizer z-10' ref={resizerElement} />
