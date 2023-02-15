@@ -102,48 +102,48 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
         </Toolbar.Left>
         <Toolbar.Right>
           <Toolbar.Item>
-            <Dropdown
-              trigger={
-                <Button label='Copy' skin='secondary'
-                  startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
-                  endIcon={<CaretDownIcon className='t-icon' />}
-                />
-              }
-              overlay={(close) => (
-                <Menu className='whitespace-nowrap w-full'>
-                  <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
-                    copyToClipboard(EXPORT_FORMAT.JSON)
-                    close()
-                  }} />
-                  <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
-                    copyToClipboard(EXPORT_FORMAT.CSV)
-                    close()
-                  }} />
-                </Menu>
-              )}
-            />
-          </Toolbar.Item>
-          <Toolbar.Item>
-            <Dropdown
-              trigger={
-                <Button label='Download' skin='secondary'
-                  startIcon={<DownloadIcon className='t-icon t-icon-heroicons-clipboard' />}
-                  endIcon={<CaretDownIcon className='t-icon' />}
-                />
-              }
-              overlay={(close) => (
-                <Menu className='whitespace-nowrap w-full'>
-                  <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
-                    exportData(EXPORT_FORMAT.JSON)
-                    close()
-                  }} />
-                  <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
-                    exportData(EXPORT_FORMAT.CSV)
-                    close()
-                  }} />
-                </Menu>
-              )}
-            />
+            <div className='t-button-toolbar'>
+              <Dropdown
+                trigger={
+                  <Button label='Copy' skin='secondary' size='small'
+                    startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
+                    endIcon={<CaretDownIcon className='t-icon' />}
+                  />
+                }
+                overlay={(close) => (
+                  <Menu className='whitespace-nowrap w-full'>
+                    <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
+                      copyToClipboard(EXPORT_FORMAT.JSON)
+                      close()
+                    }} />
+                    <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
+                      copyToClipboard(EXPORT_FORMAT.CSV)
+                      close()
+                    }} />
+                  </Menu>
+                )}
+              />
+              <Dropdown
+                trigger={
+                  <Button label='Download' skin='secondary' size='small'
+                    startIcon={<DownloadIcon className='t-icon t-icon-heroicons-clipboard' />}
+                    endIcon={<CaretDownIcon className='t-icon' />}
+                  />
+                }
+                overlay={(close) => (
+                  <Menu className='whitespace-nowrap w-full'>
+                    <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
+                      exportData(EXPORT_FORMAT.JSON)
+                      close()
+                    }} />
+                    <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
+                      exportData(EXPORT_FORMAT.CSV)
+                      close()
+                    }} />
+                  </Menu>
+                )}
+              />
+            </div>
           </Toolbar.Item>
         </Toolbar.Right>
       </Toolbar>

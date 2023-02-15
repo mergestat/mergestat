@@ -61,7 +61,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
             }}
           />
 
-          <div className='flex items-center gap-x-7'>
+          <div className='flex items-center gap-x-6'>
             {!readOnly && !expanded && <div className='flex items-center'>
               <WarningFilledIcon className="t-icon t-icon-warning" />
               <Tooltip placement='bottom' offset={[0, 10]}

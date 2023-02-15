@@ -68,7 +68,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                 </div>
               </HoverCard>
             </Toolbar.Left>
-            <Toolbar.Right className='flex-1 pr-5'>
+            <Toolbar.Right className='flex-1 pr-5 space-x-4'>
               <Toolbar.Item>
                 <span className='text-sm t-text-muted pl-3 pr-1'>{time}</span>
               </Toolbar.Item >
