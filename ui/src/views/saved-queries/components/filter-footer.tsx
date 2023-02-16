@@ -15,7 +15,7 @@ export const FilterFooter: React.FC = () => {
           <Toolbar.Left className='space-x-4 divide-x'>
             <Toolbar.Item>
               <div className='flex items-center'>
-                <Label className='mr-2 whitespace-nowrap text-gray-500' htmlFor='resultsPerPage'>
+                <Label className='mr-2 whitespace-nowrap' htmlFor='resultsPerPage'>
                   Results per page
                 </Label>
                 <Select

@@ -38,21 +38,21 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                 overlay={(close) => (
                   <Menu className='mt-0'>
                     <Menu.Item text="Single metric" withIcon
-                      icon={<SingleMetricIcon className="t-icon" />}
+                      icon={<SingleMetricIcon className="t-icon t-icon-default" />}
                       onClick={() => {
                         addTab(TAB_TYPE.SINGLE_METRIC)
                         close()
                       }}
                     />
                     <Menu.Item text="Line chart" withIcon
-                      icon={<ChartLineIcon className="t-icon" />}
+                      icon={<ChartLineIcon className="t-icon t-icon-default" />}
                       onClick={() => {
                         addTab(TAB_TYPE.LINE)
                         close()
                       }}
                     />
                     <Menu.Item text="Bar chart" withIcon
-                      icon={<ChartBarIcon className="t-icon" />}
+                      icon={<ChartBarIcon className="t-icon t-icon-default" />}
                       onClick={() => {
                         addTab(TAB_TYPE.BAR)
                         close()

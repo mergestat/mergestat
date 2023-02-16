@@ -93,7 +93,7 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
       <Toolbar className='bg-white h-14 flex w-full border-b px-8'>
         <Toolbar.Left>
           <Input
-            className='w-96'
+            className='sm_w-150'
             placeholder='Search...'
             startIcon={<SearchIcon className='t-icon' />}
             onChange={onChange}
