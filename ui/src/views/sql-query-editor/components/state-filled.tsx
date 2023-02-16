@@ -28,7 +28,7 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             </Tabs.Item>
           ))}
 
-          <Toolbar className='flex flex-1 border-b border-t border-gray-200'>
+          <Toolbar className='flex flex-1 border-b border-t t-border-default'>
             <Toolbar.Left>
               <HoverCard
                 interaction='click'
@@ -38,21 +38,21 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                 overlay={(close) => (
                   <Menu className='mt-0'>
                     <Menu.Item text="Single metric" withIcon
-                      icon={<SingleMetricIcon className="t-icon" />}
+                      icon={<SingleMetricIcon className="t-icon t-icon-default" />}
                       onClick={() => {
                         addTab(TAB_TYPE.SINGLE_METRIC)
                         close()
                       }}
                     />
                     <Menu.Item text="Line chart" withIcon
-                      icon={<ChartLineIcon className="t-icon" />}
+                      icon={<ChartLineIcon className="t-icon t-icon-default" />}
                       onClick={() => {
                         addTab(TAB_TYPE.LINE)
                         close()
                       }}
                     />
                     <Menu.Item text="Bar chart" withIcon
-                      icon={<ChartBarIcon className="t-icon" />}
+                      icon={<ChartBarIcon className="t-icon t-icon-default" />}
                       onClick={() => {
                         addTab(TAB_TYPE.BAR)
                         close()
@@ -61,14 +61,14 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
                   </Menu>
                 )}
               >
-                <div className='flex px-3 h-full items-center text-blue-600 hover_bg-gray-100 cursor-pointer whitespace-nowrap'>
+                <div className='t-tab-btn border-gray-200 border-t-0 border-b-0'>
                   <PlusIcon className="t-icon" />
-                  <span className='px-1'>Add view</span>
+                  <span className='whitespace-nowrap'>Add View</span>
                   <CaretDownIcon className="t-icon" />
                 </div>
               </HoverCard>
             </Toolbar.Left>
-            <Toolbar.Right className='flex-1 pr-5'>
+            <Toolbar.Right className='flex-1 pr-8 space-x-4'>
               <Toolbar.Item>
                 <span className='text-sm t-text-muted pl-3 pr-1'>{time}</span>
               </Toolbar.Item >

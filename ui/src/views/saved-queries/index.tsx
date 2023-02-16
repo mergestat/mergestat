@@ -44,7 +44,7 @@ const SavedQueryList: React.FC = () => {
   return (
     <>
       {/* Header */}
-      <div className='bg-white overflow-auto flex justify-between items-center h-17 w-full border-b px-8 py-2'>
+      <div className='bg-white overflow-auto flex justify-between items-center h-14 flex-none w-full border-b px-8 py-2'>
         <div className="text-xl font-semibold">Saved Queries</div>
 
         <div className='flex items-center gap-x-7'>
