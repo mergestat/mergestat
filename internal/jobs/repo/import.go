@@ -40,6 +40,7 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 	return func(ctx context.Context, job *sqlq.Job) (err error) {
 		var logger = job.Logger()
 		var importError error
+		var jobErrors error
 
 		// start sending periodic keep-alive pings!
 		go job.SendKeepAlive(ctx, job.KeepAlive-(5*time.Second)) //nolint:errcheck
@@ -71,11 +72,19 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 			if importError = handleImport(ctx, queries.WithTx(tx), imp, l); importError != nil {
 				logger.Warnf("import(%s) failed: %v", imp.ID, importError.Error())
 				l.Warn().Msgf("import(%s) failed: %v", imp.ID, importError.Error())
-				_ = tx.Rollback(ctx)
+
+				if err = tx.Rollback(ctx); err != nil {
+					jobErrors = errors.Wrap(err, "failer to rollback transaccion")
+					return jobErrors
+				}
+
+				jobErrors = errors.Wrap(importError, "failer to handle import")
+
 			} else {
 				// if the import was successful, commit the changes
 				if err = tx.Commit(ctx); err != nil {
-					return errors.Wrapf(err, "failed to commit database transaction")
+					jobErrors = errors.Wrapf(err, "failed to commit database transaction")
+					return jobErrors
 				}
 				logger.Infof("import(%s) was successful", imp.ID)
 				l.Info().Msgf("import(%s) was successful", imp.ID)
@@ -90,11 +99,11 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 			// this is so that even if the transaction is marked as errored, we could still go ahead and update
 			// the job status.
 			if err = queries.UpdateImportStatus(ctx, importStatus); err != nil {
-				return errors.Wrapf(sqlq.ErrSkipRetry, "failed to update import status: %v", err)
+				jobErrors = errors.Wrapf(sqlq.ErrSkipRetry, "failed to update import status: %v", err)
+				return jobErrors
 			}
 		}
-
-		return nil
+		return jobErrors
 	}
 }
 
