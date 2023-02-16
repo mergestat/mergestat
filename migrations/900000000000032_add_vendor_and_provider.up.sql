@@ -5,9 +5,9 @@ BEGIN;
 -- It is almost always read-only for users, and data can only be inserted in this table using
 -- a migration.
 CREATE TABLE mergestat.vendors (
-    name TEXT PRIMARY KEY,     -- the enumerated name of the vendor; try to keep it lower-case
-    displayName TEXT NOT NULL, -- the name shown on the user interface
-    description TEXT           -- a brief description of the vendor
+    name TEXT PRIMARY KEY,      -- the enumerated name of the vendor; try to keep it lower-case
+    display_name TEXT NOT NULL, -- the name shown on the user interface
+    description TEXT            -- a brief description of the vendor
 );
 
 

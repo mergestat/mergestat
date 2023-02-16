@@ -2,12 +2,12 @@
 BEGIN;
 
 INSERT INTO mergestat.vendors (name, display_name)
-VALUES ('bitbucket', 'Bitbucket');
+VALUES ('gitlab', 'Gitlab');
 
 INSERT INTO mergestat.providers (name, vendor, settings)
-VALUES ('Bitbucket', 'bitbucket', '{"url": "https://api.bitbucket.org"}'::jsonb);
+VALUES ('Gitlab', 'gitlab', '{"url": "https://gitlab.com"}'::jsonb);
 
 INSERT INTO mergestat.service_auth_credential_types (type, description) VALUES
-('BITBUCKET_APP_PASSWORD', 'Authentication using Bitbucket app password');
+('GITLAB_PAT', 'Authentication using Gitlab Personal Access Token');
 
 COMMIT;
