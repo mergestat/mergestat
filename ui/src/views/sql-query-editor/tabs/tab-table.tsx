@@ -90,10 +90,10 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
   return (
     <>
       {/* Head section */}
-      <Toolbar className='bg-white h-16 flex w-full border-b px-5 py-4'>
+      <Toolbar className='bg-white h-14 flex w-full border-b px-8'>
         <Toolbar.Left>
           <Input
-            className='w-96'
+            className='sm_w-150'
             placeholder='Search...'
             startIcon={<SearchIcon className='t-icon' />}
             onChange={onChange}
@@ -102,48 +102,48 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
         </Toolbar.Left>
         <Toolbar.Right>
           <Toolbar.Item>
-            <Dropdown
-              trigger={
-                <Button label='Copy' skin='secondary'
-                  startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
-                  endIcon={<CaretDownIcon className='t-icon' />}
-                />
-              }
-              overlay={(close) => (
-                <Menu className='whitespace-nowrap w-full'>
-                  <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
-                    copyToClipboard(EXPORT_FORMAT.JSON)
-                    close()
-                  }} />
-                  <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
-                    copyToClipboard(EXPORT_FORMAT.CSV)
-                    close()
-                  }} />
-                </Menu>
-              )}
-            />
-          </Toolbar.Item>
-          <Toolbar.Item>
-            <Dropdown
-              trigger={
-                <Button label='Download' skin='secondary'
-                  startIcon={<DownloadIcon className='t-icon t-icon-heroicons-clipboard' />}
-                  endIcon={<CaretDownIcon className='t-icon' />}
-                />
-              }
-              overlay={(close) => (
-                <Menu className='whitespace-nowrap w-full'>
-                  <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
-                    exportData(EXPORT_FORMAT.JSON)
-                    close()
-                  }} />
-                  <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
-                    exportData(EXPORT_FORMAT.CSV)
-                    close()
-                  }} />
-                </Menu>
-              )}
-            />
+            <div className='t-button-toolbar'>
+              <Dropdown
+                trigger={
+                  <Button label='Copy' skin='secondary' size='small'
+                    startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
+                    endIcon={<CaretDownIcon className='t-icon' />}
+                  />
+                }
+                overlay={(close) => (
+                  <Menu className='whitespace-nowrap w-full'>
+                    <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
+                      copyToClipboard(EXPORT_FORMAT.JSON)
+                      close()
+                    }} />
+                    <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
+                      copyToClipboard(EXPORT_FORMAT.CSV)
+                      close()
+                    }} />
+                  </Menu>
+                )}
+              />
+              <Dropdown
+                trigger={
+                  <Button label='Download' skin='secondary' size='small'
+                    startIcon={<DownloadIcon className='t-icon t-icon-heroicons-clipboard' />}
+                    endIcon={<CaretDownIcon className='t-icon' />}
+                  />
+                }
+                overlay={(close) => (
+                  <Menu className='whitespace-nowrap w-full'>
+                    <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
+                      exportData(EXPORT_FORMAT.JSON)
+                      close()
+                    }} />
+                    <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
+                      exportData(EXPORT_FORMAT.CSV)
+                      close()
+                    }} />
+                  </Menu>
+                )}
+              />
+            </div>
           </Toolbar.Item>
         </Toolbar.Right>
       </Toolbar>
@@ -183,7 +183,7 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
       </div>
 
       {/* Footer section */}
-      <div className='bg-white overflow-auto flex h-16 flex-shrink-0 w-full border-t px-8'>
+      <div className='bg-white overflow-auto flex h-14 items-center flex-shrink-0 w-full border-t px-8'>
         <Toolbar className='t-toolbar flex-1 w-auto h-full space-x-4'>
           <Toolbar.Left className='space-x-3'>
             <div className='flex items-center'>
