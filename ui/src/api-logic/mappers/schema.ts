@@ -33,4 +33,16 @@ const mapToSchemaData = (data: GetSchemaQuery | undefined): SchemaData[] => {
   return mappedData
 }
 
-export { mapToSchemaData }
+
+const getRecordsFromSchema = (data: GetSchemaQuery | undefined, field: 'schema' | 'tableName' | 'columnName'): string[] => {
+  let result: string[] = []
+  data?.schemaIntrospections?.nodes.forEach((data) => {
+    if (!result.includes(data[field])) {
+      result.push(data[field])
+    }
+  })
+  return result
+}
+
+
+export { mapToSchemaData, getRecordsFromSchema }
