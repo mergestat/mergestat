@@ -63,17 +63,25 @@ export const AddRepositoryFromURLModal: React.FC = () => {
         {reposToAdd.length === 0 && <EmptyRepositories />}
         {reposToAdd.length > 0 && (
           <div className="border border-gray-200 rounded">
-            {reposToAdd.map((repository, index) => (
-              <ListItem
-                key={index}
-                title={repository}
-                subline={repository}
-                className={'p-2 border-b'}
-                startIcon={<RepoIcon repository={repository} />}
-                onClick={() => false}
-                onTrashClick={() => removeURL(repository)}
-              />
-            ))}
+            {reposToAdd.map((repository, index) => {
+              let formattedRepo = repository
+              if (repository.includes('https://github.com/')) {
+                const [owner, repo] = repository.replace('https://github.com/', '').split('/')
+                formattedRepo = `${owner}/${repo}`
+              }
+
+              return (
+                <ListItem
+                  key={index}
+                  title={formattedRepo}
+                  subline={formattedRepo}
+                  className={'p-2 border-b'}
+                  startIcon={<RepoIcon repository={repository} />}
+                  onClick={() => false}
+                  onTrashClick={() => removeURL(repository)}
+                />
+              )
+            })}
           </div>
         )}
       </div>
