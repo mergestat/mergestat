@@ -107,12 +107,12 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
                 disabled={!window.isSecureContext}
                 trigger={
                   window.isSecureContext
-                    ? <Button label='Copy' skin='secondary'
+                    ? <Button label='Copy' skin='secondary' size='small'
                         startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
                         endIcon={<CaretDownIcon className='t-icon' />}
                       />
                     : <Tooltip content='Copy is only available on HTTPs connections'>
-                        <Button disabled label='Copy' skin='secondary'
+                        <Button disabled label='Copy' skin='secondary' size='small'
                           startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
                           endIcon={<CaretDownIcon className='t-icon' />}
                         />
