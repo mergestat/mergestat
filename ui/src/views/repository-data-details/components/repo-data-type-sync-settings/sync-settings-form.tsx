@@ -2,6 +2,9 @@ import { Label, Panel, Toggle } from '@mergestat/blocks'
 import React, { PropsWithChildren } from 'react'
 import Loading from 'src/components/Loading'
 import useSyncsLogs from 'src/views/hooks/useSyncsLogs'
+import { showErrorAlert, showSuccessAlert } from 'src/utils/alerts'
+import { ApolloError } from '@apollo/client'
+import { ScheduleMutation } from 'src/api-logic/graphql/generated/schema'
 
 export const SyncSettingsForm = () => {
   const { loading, repoData, syncTypeId, updateSchedule } = useSyncsLogs()
@@ -22,7 +25,13 @@ export const SyncSettingsForm = () => {
                   <Toggle
                     isChecked={repoData.sync?.scheduleEnabled || false}
                     onChange={() => updateSchedule({
-                      variables: { syncId: syncTypeId, schedule: !repoData.sync?.scheduleEnabled }
+                      variables: { syncId: syncTypeId, schedule: !repoData.sync?.scheduleEnabled },
+                      onCompleted(data: ScheduleMutation) {
+                        showSuccessAlert(`Schedule ${data.updateRepoSync?.repoSync?.scheduleEnabled ? 'enabled' : 'disabled'}`)
+                      },
+                      onError(error: ApolloError) {
+                        showErrorAlert(error.message)
+                      },
                     })}
                   />
                   <span className="t-text-default">Enable</span>
