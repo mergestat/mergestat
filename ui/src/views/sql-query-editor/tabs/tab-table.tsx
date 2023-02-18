@@ -1,4 +1,4 @@
-import { Alert, Button, Dropdown, Input, Label, Menu, Select, Toolbar } from '@mergestat/blocks'
+import { Alert, Button, Dropdown, Input, Label, Menu, Select, Toolbar, Tooltip } from '@mergestat/blocks'
 import { CaretDownIcon, ChevronLeftIcon, ChevronRightIcon, ClipboardIcon, DownloadIcon, SearchIcon } from '@mergestat/icons'
 import cx from 'classnames'
 import { debounce } from 'lodash'
@@ -104,11 +104,19 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
           <Toolbar.Item>
             <div className='t-button-toolbar'>
               <Dropdown
+                disabled={!window.isSecureContext}
                 trigger={
-                  <Button label='Copy' skin='secondary' size='small'
-                    startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
-                    endIcon={<CaretDownIcon className='t-icon' />}
-                  />
+                  window.isSecureContext
+                    ? <Button label='Copy' skin='secondary' size='small'
+                        startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
+                        endIcon={<CaretDownIcon className='t-icon' />}
+                      />
+                    : <Tooltip content='Copy is only available on HTTPs connections'>
+                        <Button disabled label='Copy' skin='secondary' size='small'
+                          startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
+                          endIcon={<CaretDownIcon className='t-icon' />}
+                        />
+                      </Tooltip>
                 }
                 overlay={(close) => (
                   <Menu className='whitespace-nowrap w-full'>
