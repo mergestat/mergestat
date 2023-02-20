@@ -1,6 +1,6 @@
--- SQL migration to add an optional comment field to providers
+-- SQL migration to add an optional description field to providers
 BEGIN;
 
-ALTER TABLE mergestat.providers ADD COLUMN comment TEXT;
+ALTER TABLE mergestat.providers ADD COLUMN description TEXT;
 
 COMMIT;
