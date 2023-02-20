@@ -120,7 +120,7 @@ func WaitForImports(ctx context.Context, l *zerolog.Logger, qry queries.Querier)
 		case <-time.After(2 * time.Second):
 
 			//TODO:(ramiro) should we log the imp ids ?
-			l.Info().Msg("Waiting for import to finish")
+			l.Info().Msg("waiting for import to finish")
 
 			if imp, err = qry.CheckRunningImps(ctx); err != nil {
 				return err

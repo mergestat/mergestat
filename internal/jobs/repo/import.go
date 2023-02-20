@@ -74,11 +74,11 @@ func AutoImport(l *zerolog.Logger, pool *pgxpool.Pool) sqlq.HandlerFunc {
 				l.Warn().Msgf("import(%s) failed: %v", imp.ID, importError.Error())
 
 				if err = tx.Rollback(ctx); err != nil {
-					jobErrors = errors.Wrap(err, "failer to rollback transaccion")
+					jobErrors = errors.Wrap(err, "failed to rollback transaction")
 					return jobErrors
 				}
 
-				jobErrors = errors.Wrap(importError, "failer to handle import")
+				jobErrors = errors.Wrap(importError, "failed to handle import")
 
 			} else {
 				// if the import was successful, commit the changes

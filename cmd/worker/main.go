@@ -181,7 +181,7 @@ func main() {
 		}
 
 		if err := helper.WaitForImports(ctx, &l, queries.NewQuerier(db.New(pool))); err != nil {
-			l.Err(err).Msgf("error waiting for imports:%v", err)
+			l.Err(err).Msgf("error waiting for imports: %v", err)
 		}
 
 		logger.Info().
