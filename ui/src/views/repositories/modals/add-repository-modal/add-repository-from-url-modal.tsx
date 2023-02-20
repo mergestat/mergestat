@@ -50,6 +50,7 @@ export const AddRepositoryFromURLModal: React.FC = () => {
           />
           <Button
             skin="secondary"
+            disabled={url === ''}
             className="whitespace-nowrap"
             data-testid={TEST_IDS.addRepoButton}
             startIcon={<PlusIcon className="t-icon" />}

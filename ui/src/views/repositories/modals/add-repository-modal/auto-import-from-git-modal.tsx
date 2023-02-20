@@ -60,6 +60,7 @@ export const AutoImportFromGitModal: React.FC = () => {
           <Button
             skin='secondary'
             className='whitespace-nowrap'
+            disabled={orgUserText === ''}
             startIcon={<PlusIcon className='t-icon' />}
             onClick={addImport}
           >
