@@ -33,6 +33,7 @@ require (
 )
 
 require (
+	github.com/google/go-github/v50 v50.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
@@ -76,7 +77,7 @@ require (
 	github.com/mattn/go-pointer v0.0.1 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/mergestat/timediff v0.0.3 // indirect
-	github.com/migueleliasweb/go-github-mock v0.0.13
+	github.com/migueleliasweb/go-github-mock v0.0.16
 	github.com/opencontainers/image-spec v1.1.0-rc2 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_model v0.3.0 // indirect
