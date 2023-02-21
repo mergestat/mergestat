@@ -16,9 +16,12 @@ import (
 	"time"
 
 	"github.com/mergestat/mergestat/internal/cron"
+	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 	"github.com/mergestat/mergestat/internal/jobs/repo"
 	"github.com/mergestat/mergestat/internal/syncer"
 	"github.com/mergestat/mergestat/internal/timeout"
+	"github.com/mergestat/mergestat/queries"
 	"github.com/mergestat/sqlq"
 	"github.com/mergestat/sqlq/runtime/embed"
 	"github.com/mergestat/sqlq/schema"
@@ -175,6 +178,10 @@ func main() {
 		// if remaining points are 400 or less then we will delay until the quota is reset
 		if rlr.Remaining <= 400 {
 			delayDur = untilResetDur
+		}
+
+		if err := helper.WaitForImports(ctx, &l, queries.NewQuerier(db.New(pool))); err != nil {
+			l.Err(err).Msgf("error waiting for imports: %v", err)
 		}
 
 		logger.Info().

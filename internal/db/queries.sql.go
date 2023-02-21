@@ -14,6 +14,17 @@ import (
 	"github.com/jackc/pgtype"
 )
 
+const checkRunningImps = `-- name: CheckRunningImps :one
+SELECT COUNT(*) FROM mergestat.repo_imports WHERE import_status = 'RUNNING'
+`
+
+func (q *Queries) CheckRunningImps(ctx context.Context) (int64, error) {
+	row := q.db.QueryRow(ctx, checkRunningImps)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const cleanOldRepoSyncQueue = `-- name: CleanOldRepoSyncQueue :exec
 SELECT mergestat.simple_repo_sync_queue_cleanup($1::INTEGER)
 `

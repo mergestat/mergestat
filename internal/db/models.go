@@ -766,11 +766,11 @@ type MergestatSavedQuery struct {
 	// timestamp when query was created
 	CreatedAt sql.NullTime
 	// query name
-	Name sql.NullString
+	Name string
 	// query description
 	Description sql.NullString
 	// query sql
-	Sql sql.NullString
+	Sql string
 	// query metadata
 	Metadata pgtype.JSONB
 }

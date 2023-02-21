@@ -21,6 +21,9 @@ SELECT id, created_at, updated_at, type, settings FROM dequeued;
 -- name: UpdateImportStatus :exec
 UPDATE mergestat.repo_imports SET import_status = @status::TEXT, import_error = @error::TEXT WHERE id = @ID;
 
+-- name: CheckRunningImps :one
+SELECT COUNT(*) FROM mergestat.repo_imports WHERE import_status = 'RUNNING';
+
 -- name: UpsertRepo :exec
 INSERT INTO public.repos (repo, is_github, repo_import_id) VALUES($1, $2, $3)
 ON CONFLICT (repo, (ref IS NULL)) WHERE ref IS NULL
