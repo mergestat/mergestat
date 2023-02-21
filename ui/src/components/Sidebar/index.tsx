@@ -19,10 +19,16 @@ const SidebarView: React.FC = () => {
           icon={<RepositoryIcon className='t-icon' />}
           onClick={() => push('/repos')}
           subNav={
-            <Sidebar.Item compact={false}
-              onClick={() => push('/repos/repo-auto-imports')}
-              active={isSidebarActive('/repos/repo-auto-imports')}
-              label='Auto Import' level='sub' />
+            <>
+              <Sidebar.Item compact={false}
+                onClick={() => push('/repos/repo-auto-imports')}
+                active={isSidebarActive('/repos/repo-auto-imports')}
+                label='Auto Import' level='sub' />
+              <Sidebar.Item compact={false}
+                onClick={() => push('/repos/add-git-source')}
+                active={isSidebarActive('/repos/add-git-source')}
+                label='Git Sources' level='sub' />
+            </>
           }
         />
         <Sidebar.Item

@@ -161,3 +161,16 @@ export const USER_ROLES = [
     desc: 'Read Only users can only read data'
   },
 ]
+
+export enum VENDOR_TYPE {
+  BITBUCKET = 'bitbucket',
+  GITLAB = 'gitlab',
+  GITHUB = 'github',
+  GIT = 'git'
+}
+
+export enum VENDOR_URL {
+  BITBUCKET = 'https://api.bitbucket.org',
+  GITLAB = 'https://gitlab.com',
+  GITHUB = 'https://api.github.com'
+}
