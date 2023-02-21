@@ -6,7 +6,7 @@ import React from 'react'
 const SidebarView: React.FC = () => {
   const { pathname, push } = useRouter()
 
-  const isSidebarActive = (path: string) => !!pathname.match(path)?.length
+  const isSidebarActive = (path: string | RegExp) => !!pathname.match(path)?.length
 
   return (
     <Sidebar compact={false} dark={true} collapsible={true} className='flex-none'>
@@ -15,7 +15,7 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Repos'
           compact={false}
-          active={isSidebarActive('repos')}
+          active={isSidebarActive(/^\/repos$/)}
           icon={<RepositoryIcon className='t-icon' />}
           onClick={() => push('/repos')}
           subNav={
@@ -28,7 +28,7 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Queries'
           compact={false}
-          active={isSidebarActive('queries')}
+          active={isSidebarActive(/^\/queries$/)}
           onClick={() => push('/queries')}
           icon={<TerminalIcon className='t-icon' />}
           subNav={
@@ -41,7 +41,7 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Connect'
           compact={false}
-          active={isSidebarActive('connect')}
+          active={isSidebarActive(/^\/connect$/)}
           onClick={() => push('/connect')}
           icon={<DatabaseIcon className='t-icon' />}
         />
@@ -49,7 +49,7 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Settings'
           compact={false}
-          active={isSidebarActive('settings')}
+          active={isSidebarActive(/^\/settings$/)}
           onClick={() => push('/settings/github-authentication')}
           icon={<CogIcon className='t-icon' />}
           subNav={
