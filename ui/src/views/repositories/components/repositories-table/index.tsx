@@ -58,7 +58,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
                           <RepositoryName
                             id={repo.id}
                             name={repo.name}
-                            type={repo.type}
+                            providerName={repo.provider.name}
                             createdAt={repo.createdAt}
                             autoImportFrom={repo.autoImportFrom}
                           />

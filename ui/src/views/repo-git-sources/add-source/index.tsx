@@ -7,6 +7,7 @@ import { ADD_GIT_SOURCE } from 'src/api-logic/graphql/mutations/git-sources'
 import { GET_GIT_SOURCES } from 'src/api-logic/graphql/queries/get-git-sources'
 import Loading from 'src/components/Loading'
 import { useGlobalSetState } from 'src/state/contexts'
+import { getGitSourceIcon } from 'src/utils'
 import { VENDOR_TYPE, VENDOR_URL } from 'src/utils/constants'
 
 const AddSourceView: React.FC = () => {
@@ -178,15 +179,7 @@ const AddSourceView: React.FC = () => {
                     <ListItem key={`git-source-${index}`}
                       title={provider.name}
                       className={'px-4 py-2 border-b'}
-                      startIcon={
-                        provider.vendor === VENDOR_TYPE.BITBUCKET
-                          ? <BitbucketIcon className="t-icon" />
-                          : provider.vendor === VENDOR_TYPE.GITHUB
-                            ? <GithubIcon className="t-icon" />
-                            : provider.vendor === VENDOR_TYPE.GITLAB
-                              ? <GitlabIcon className="t-icon" />
-                              : <BranchIcon className="t-icon" />
-                      }
+                      startIcon={getGitSourceIcon(provider.vendor)}
                       onClick={() => console.log(`Go to ${provider.id}`)}
                       action={<div className='t-list-item-go-to'>
                         <span className='px-2'>Go to</span>

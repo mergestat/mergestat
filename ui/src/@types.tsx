@@ -8,8 +8,6 @@ export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'gh-auto' | 'csv'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
-export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
-
 export type UserTypeUI = 'Admin' | 'User' | 'Read Only' | 'Unknown'
 
 export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
@@ -46,11 +44,16 @@ export type RepoDataStatusT = {
   syncs?: Array<RepoSyncDataT>
 }
 
+export type ProviderT = {
+  id: string
+  name: string
+}
+
 export type RepoDataPropsT = {
   id: string
   name: string
   createdAt: Date
-  type: RepoType
+  provider: ProviderT
   autoImportFrom?: string
   tags: Array<{ title: string, checked: boolean }>
   lastSync: string
@@ -90,7 +93,6 @@ export type RepoSyncDataType = {
 export type RepoSyncData = {
   id: string
   name: string
-  type: RepoType
   gitHubPat: boolean
   tags: TagType[]
   autoImportFrom?: string
@@ -123,7 +125,6 @@ export type SyncTypeData = {
   repo: {
     id: string
     name: string
-    type: RepoType
   }
   sync?: SyncTypeInfo
   logs?: Array<SyncLogsType>
@@ -245,9 +246,23 @@ export interface ColumnInfo {
 /** Saved Queries */
 
 export type SavedQueryData = {
-  id: string;
-  createdAt?: string;
-  createdBy?: string | null | undefined;
-  name?: string | null | undefined;
-  description?: string | null | undefined;
+  id: string
+  createdAt?: string
+  createdBy?: string | null | undefined
+  name?: string | null | undefined
+  description?: string | null | undefined
+}
+
+/** Git Sources */
+
+export type GitSourceData = {
+  id: string
+  name: string
+  description: string
+  createdAt: string
+  settings: JSON
+  vendor: string
+  reposByProvider: {
+    totalCount: number
+  }
 }

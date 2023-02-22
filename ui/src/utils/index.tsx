@@ -1,8 +1,9 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
+import { BitbucketIcon, BranchIcon, GithubIcon, GitlabIcon } from '@mergestat/icons'
 import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncQueueW, RepoSyncStateT, UserTypeUI } from 'src/@types'
 import { showSuccessAlert } from './alerts'
-import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI } from './constants'
+import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI, VENDOR_TYPE } from './constants'
 
 export function checkRepoValidate(repo: string, checkDomain = true) {
   return checkDomain
@@ -210,4 +211,19 @@ export const mapToUserType = (role: UserTypeUI) => {
  */
 export const formatTimeExecution = (millisecounds: number) => {
   return millisecounds > 1000 ? `${Math.round((millisecounds / 1000) * 100) / 100}s` : `${Math.trunc(millisecounds * 100) / 100}ms`
+}
+
+/**
+ * Method to get git source icon
+ * @param vendor vendor to evaluate
+ * @returns corresponding icon vendor
+ */
+export const getGitSourceIcon = (vendor: string) => {
+  return vendor === VENDOR_TYPE.BITBUCKET
+    ? <BitbucketIcon className="t-icon" />
+    : vendor === VENDOR_TYPE.GITHUB
+      ? <GithubIcon className="t-icon" />
+      : vendor === VENDOR_TYPE.GITLAB
+        ? <GitlabIcon className="t-icon" />
+        : <BranchIcon className="t-icon" />
 }

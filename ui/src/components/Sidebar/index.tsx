@@ -25,8 +25,8 @@ const SidebarView: React.FC = () => {
                 active={isSidebarActive('/repos/repo-auto-imports')}
                 label='Auto Import' level='sub' />
               <Sidebar.Item compact={false}
-                onClick={() => push('/repos/add-git-source')}
-                active={isSidebarActive('/repos/add-git-source')}
+                onClick={() => push('/repos/git-sources')}
+                active={isSidebarActive('/repos/git-sources') || isSidebarActive('/repos/add-git-source')}
                 label='Git Sources' level='sub' />
             </>
           }

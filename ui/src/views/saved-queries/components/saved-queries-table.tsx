@@ -7,7 +7,6 @@ import { SavedQueryData } from 'src/@types'
 import { useSavedQuerySetState } from 'src/state/contexts/saved-query.context'
 import { DATE_FORMAT } from 'src/utils/constants'
 import useCurrentUser from 'src/views/hooks/useCurrentUser'
-import { FilterFooter } from './filter-footer'
 
 type SavedQueriesTableProps = PropsWithChildren<{
   savedQueries: SavedQueryData[]
@@ -88,7 +87,6 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
               </table>
             </div>
           </div>
-          <FilterFooter />
         </>
       }
     </div>

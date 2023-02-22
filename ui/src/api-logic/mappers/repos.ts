@@ -36,7 +36,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
           : `org: ${r?.repoImport?.settings.org}`
         : undefined,
       lastSync: '',
-      type: r?.isGithub ? 'github' : 'other',
+      provider: { id: r?.providerByProvider.id, name: r?.providerByProvider.name },
       tags: r?.tags.map((t: string) => ({ title: t, checked: true })),
       status: [],
     }

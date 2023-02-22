@@ -1,24 +1,27 @@
 import { useQuery } from '@apollo/client'
 import { Button } from '@mergestat/blocks'
+import { TerminalIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { GetSavedQueryListQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_SAVED_QUERY_LIST } from 'src/api-logic/graphql/queries/get-saved-query'
+import Loading from 'src/components/Loading'
 import { useSavedQueryContext, useSavedQuerySetState } from 'src/state/contexts/saved-query.context'
-import { EmptySavedQueries } from './components/empty-saved-queries'
-import { FilterHeader } from './components/filter-header'
+import { EmptyData } from '../shared/empty-data'
+import { FilterFooter } from '../shared/filter-footer'
+import { FilterHeader } from '../shared/filter-header'
 import { SavedQueriesTable } from './components/saved-queries-table'
 import { RemoveSavedQueryModal } from './modals/remove-saved-query'
 
 const SavedQueryList: React.FC = () => {
   const router = useRouter()
 
-  const [{ search, rows, page, showRemoveSQModal }] = useSavedQueryContext()
-  const { setTotal } = useSavedQuerySetState()
+  const [{ search, rows, page, total, showRemoveSQModal }] = useSavedQueryContext()
+  const { setTotal, setSearch, setRows, setPage } = useSavedQuerySetState()
   const [pageLoaded, setPageLoaded] = useState(false)
   const [records, setRecords] = useState(false)
 
-  const { data, refetch } = useQuery<GetSavedQueryListQuery>(GET_SAVED_QUERY_LIST, {
+  const { loading, data, refetch } = useQuery<GetSavedQueryListQuery>(GET_SAVED_QUERY_LIST, {
     variables: { search, first: rows, offset: (page * rows) },
     fetchPolicy: 'no-cache'
   })
@@ -57,11 +60,15 @@ const SavedQueryList: React.FC = () => {
       </div>
 
       {/* Body */}
-      {records && <FilterHeader />}
-      {records
-        ? <SavedQueriesTable savedQueries={data?.savedQueries ? data?.savedQueries.nodes : []} />
-        : <EmptySavedQueries />
+      {records && <FilterHeader setSearch={setSearch} />}
+
+      {loading
+        ? <Loading />
+        : records
+          ? <SavedQueriesTable savedQueries={data?.savedQueries ? data?.savedQueries.nodes : []} />
+          : <EmptyData message='No saved queries yet' icon={<TerminalIcon className="t-icon" />} />
       }
+      {records && <FilterFooter total={total} rows={rows} page={page} setRows={setRows} setPage={setPage} />}
 
       {showRemoveSQModal && <RemoveSavedQueryModal />}
     </>

@@ -3,7 +3,6 @@ import { AutoImportIcon, GithubIcon, RepositoryIcon } from '@mergestat/icons'
 import { format } from 'date-fns'
 import Link from 'next/link'
 import React from 'react'
-import type { RepoType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { capitalize, getRelativeTime } from 'src/utils'
 import { GITHUB_URL, TEST_IDS } from 'src/utils/constants'
@@ -11,7 +10,7 @@ import { GITHUB_URL, TEST_IDS } from 'src/utils/constants'
 export type RepositoryNameProps = {
   id: string
   name: string
-  type: RepoType
+  providerName: string
   createdAt: Date
   autoImportFrom?: string
 }

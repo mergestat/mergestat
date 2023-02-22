@@ -37,10 +37,14 @@ const GET_REPOS = gql`
       totalCount
       nodes {
         id
-        type
         settings
         importError
       }
+    }
+    providerByProvider {
+      id
+      name
+      settings
     }
     repos(
       orderBy: [CREATED_AT_DESC, REPO_DESC]
@@ -53,10 +57,8 @@ const GET_REPOS = gql`
         id
         repo
         createdAt
-        isGithub
         tags
         repoImport {
-          type
           settings
         }
         repoSyncs(orderBy: SYNC_TYPE_ASC) {
