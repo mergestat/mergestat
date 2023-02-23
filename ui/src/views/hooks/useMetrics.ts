@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { GetAllEnabledReposQuery, GetRepoTotalCountQuery, GetSyncErrorsQuery } from 'src/api-logic/graphql/generated/schema'
-import { GET_ALL_ENABLED_REPOS, GET_REPO_TOTAL_COUNT, GET_SYNC_ERRORS } from 'src/api-logic/graphql/queries/get-repos.query'
+import { GET_ALL_ENABLED_REPOS, GET_REPO_TOTAL_COUNT, GET_SYNC_ERRORS } from 'src/api-logic/graphql/queries/get-repos'
 
 const useMetrics = () => {
   const {

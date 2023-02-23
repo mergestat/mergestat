@@ -39,7 +39,7 @@ const AutoImportsDetail: NextPage = () => {
   })
 
   useEffect(() => {
-    const property = data?.repoImport?.type === SYNC_REPO_METHOD.GH_ORG ? 'org' : 'user'
+    const property = data?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_ORG ? 'org' : 'user'
     setName(data?.repoImport?.settings[property])
 
     const defaultSyncs = data?.repoImport?.settings.defaultSyncTypes || []
@@ -82,7 +82,11 @@ const AutoImportsDetail: NextPage = () => {
               <div className='bg-white h-16 w-full border-b px-8 flex-0'>
                 <Toolbar className='h-full'>
                   <Toolbar.Left>
-                    <RepoImage repoType='github' orgName={name} size="8" />
+                    <RepoImage
+                      vendor={data?.repoImport?.providerByProvider?.vendor || ''}
+                      vendorUrl={data?.repoImport?.providerByProvider?.settings?.url || ''}
+                      orgName={name} size="8"
+                    />
                     <h2 className='t-h2 mb-0'>{name}</h2>
                   </Toolbar.Left>
                   <Toolbar.Right>

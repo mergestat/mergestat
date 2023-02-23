@@ -216,14 +216,15 @@ export const formatTimeExecution = (millisecounds: number) => {
 /**
  * Method to get git source icon
  * @param vendor vendor to evaluate
+ * @param className aditional classes
  * @returns corresponding icon vendor
  */
-export const getGitSourceIcon = (vendor: string) => {
+export const getGitSourceIcon = (vendor: string, className?: string) => {
   return vendor === VENDOR_TYPE.BITBUCKET
-    ? <BitbucketIcon className="t-icon" />
+    ? <BitbucketIcon className={`t-icon ${className}`} />
     : vendor === VENDOR_TYPE.GITHUB
-      ? <GithubIcon className="t-icon" />
+      ? <GithubIcon className={`t-icon ${className}`} />
       : vendor === VENDOR_TYPE.GITLAB
-        ? <GitlabIcon className="t-icon" />
-        : <BranchIcon className="t-icon" />
+        ? <GitlabIcon className={`t-icon ${className}`} />
+        : <BranchIcon className={`t-icon ${className}`} />
 }

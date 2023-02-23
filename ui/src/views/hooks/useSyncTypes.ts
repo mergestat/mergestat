@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { SyncType } from 'src/@types'
 import { GetSyncTypesQuery } from 'src/api-logic/graphql/generated/schema'
-import { GET_SYNC_TYPES } from 'src/api-logic/graphql/queries/get-repo-syncs.query'
+import { GET_SYNC_TYPES } from 'src/api-logic/graphql/queries/get-repo-syncs'
 
 const useSyncTypes = () => {
   const [syncsTypesArray, setSyncsTypesArray] = useState<SyncType[]>([])

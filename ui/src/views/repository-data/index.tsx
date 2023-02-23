@@ -23,7 +23,7 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
 
   return (
     <>
-      <PageHeader name={data?.name || ''} type={data?.type || 'other'} />
+      <PageHeader name={data?.name || ''} vendor={data?.provider.vendor || ''} vendorUrl={data?.provider.url} />
       <Tabs.Group>
         <Tabs.List className="bg-white w-full justify-between px-8 items-center border-b border-gray-200">
           <Tabs.Item className="ring-transparent focus_ring-transparent">

@@ -47,6 +47,8 @@ export type RepoDataStatusT = {
 export type ProviderT = {
   id: string
   name: string
+  vendor: string
+  url: string
 }
 
 export type RepoDataPropsT = {
@@ -54,7 +56,7 @@ export type RepoDataPropsT = {
   name: string
   createdAt: Date
   provider: ProviderT
-  autoImportFrom?: string
+  autoImportFrom?: string | null
   tags: Array<{ title: string, checked: boolean }>
   lastSync: string
   status: Array<RepoDataStatusT>
@@ -93,9 +95,9 @@ export type RepoSyncDataType = {
 export type RepoSyncData = {
   id: string
   name: string
-  gitHubPat: boolean
   tags: TagType[]
-  autoImportFrom?: string
+  provider: ProviderT
+  autoImportFrom?: string | null
   syncs?: Array<RepoSyncDataType>
 }
 
@@ -125,6 +127,7 @@ export type SyncTypeData = {
   repo: {
     id: string
     name: string
+    provider: ProviderT
   }
   sync?: SyncTypeInfo
   logs?: Array<SyncLogsType>
@@ -258,7 +261,7 @@ export type SavedQueryData = {
 export type GitSourceData = {
   id: string
   name: string
-  description: string
+  description?: string | null | undefined
   createdAt: string
   settings: JSON
   vendor: string

@@ -1,17 +1,17 @@
-import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
-import Link from 'next/link'
-import cx from 'classnames'
-import { EmptyRepositoryTable, FilterHeader, PageHeader, RepositoriesTable } from './components'
-import { AddRepositoryModal } from './modals/add-repository-modal'
 import { Alert, ColoredBox, Spinner, Stat } from '@mergestat/blocks'
 import { CircleErrorFilledIcon, CircleErrorIcon, RepositoryIcon, TableIcon } from '@mergestat/icons'
+import cx from 'classnames'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { RepoDataPropsT } from 'src/@types'
 import { mapToRepoData } from 'src/api-logic/mappers/repos'
 import Loading from 'src/components/Loading'
+import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import useMetrics from 'src/views/hooks/useMetrics'
 import useRepos from 'src/views/hooks/useRepos'
-import { EmptyRepository } from './components/empty-repository'
+import { EmptyData } from '../shared/empty-data'
+import { FilterHeader, PageHeader, RepositoriesTable } from './components'
+import { AddRepositoryModal } from './modals/add-repository-modal'
 import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
 interface MetricNumberProp {
@@ -122,9 +122,7 @@ const RepositoriesView: React.FC = () => {
               {/* Repo table */}
               <RepositoriesTable repos={repos || []} />
             </>
-            : data?.serviceAuthCredentials?.totalCount && data?.serviceAuthCredentials?.totalCount > 0
-              ? <EmptyRepository />
-              : <EmptyRepositoryTable />
+            : <EmptyData message='No repos yet' icon={<RepositoryIcon className="t-icon" />} />
         }
       </div>
 

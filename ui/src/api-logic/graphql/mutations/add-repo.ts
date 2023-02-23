@@ -1,21 +1,20 @@
 import { gql } from '@apollo/client'
 
 const ADD_REPO = gql`
-  mutation addRepo($repo: String!, $isGithub: Boolean!) {
-    createRepo(input: {repo: {repo: $repo, isGithub: $isGithub}}) {
+  mutation addRepo($repo: String!, $provider: UUID!) {
+    createRepo(input: {repo: {repo: $repo, provider: $provider}}) {
       repo {
-        id,
+        id
         repo
       }
     }
   }
 `
 const AUTO_IMPORT_REPOS = gql`
-  mutation addRepoImport($type: String!, $settings: JSON!) {
-    createRepoImport(input: {repoImport: {type: $type, settings: $settings}}) {
+  mutation addRepoImport($settings: JSON!, $provider: UUID!) {
+    createRepoImport(input: {repoImport: {settings: $settings, provider: $provider}}) {
       repoImport {
         id
-        type
         settings
       }
     }

@@ -6,7 +6,6 @@ const GET_REPO_IMPORTS = gql`
       totalCount
       nodes {
         id
-        type
         settings
         lastImport
         importStatus
@@ -18,9 +17,14 @@ const GET_REPO_IMPORT = gql`
   query getRepoImport($id: UUID!) {
     repoImport(id: $id) {
       id
-      type
       lastImport
       settings
+      providerByProvider {
+        id
+        name
+        vendor
+        settings
+      }
     }
     repoSyncTypes {
       nodes {

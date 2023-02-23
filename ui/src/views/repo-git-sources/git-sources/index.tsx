@@ -3,6 +3,7 @@ import { Button, Toolbar } from '@mergestat/blocks'
 import { BranchIcon, PlusIcon, RepositoryIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { GetGitSourcesListQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_GIT_SOURCES_LIST } from 'src/api-logic/graphql/queries/get-git-sources'
 import Loading from 'src/components/Loading'
 import { useGlobalSetState } from 'src/state/contexts'
@@ -22,7 +23,7 @@ const GitSourcesView: React.FC = () => {
   const [pageLoaded, setPageLoaded] = useState(false)
   const [records, setRecords] = useState(false)
 
-  const { loading, data, refetch } = useQuery(GET_GIT_SOURCES_LIST, {
+  const { loading, data, refetch } = useQuery<GetGitSourcesListQuery>(GET_GIT_SOURCES_LIST, {
     variables: { search, first: rows, offset: (page * rows) },
     fetchPolicy: 'no-cache'
   })

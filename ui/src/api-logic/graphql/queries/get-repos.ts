@@ -30,21 +30,13 @@ const GET_SYNC_ERRORS = gql`
 
 const GET_REPOS = gql`
   query getRepos($search: String!, $first: Int, $offset: Int) {
-    serviceAuthCredentials(filter: {type: {equalTo: "GITHUB_PAT"}}) {
-      totalCount
-    }
-    repoImports(filter: { lastImport: { isNull: true } }) {
+    repoImports(filter: {lastImport: {isNull: true}}) {
       totalCount
       nodes {
         id
         settings
         importError
       }
-    }
-    providerByProvider {
-      id
-      name
-      settings
     }
     repos(
       orderBy: [CREATED_AT_DESC, REPO_DESC]
@@ -59,6 +51,12 @@ const GET_REPOS = gql`
         createdAt
         tags
         repoImport {
+          settings
+        }
+        providerByProvider {
+          id
+          name
+          vendor
           settings
         }
         repoSyncs(orderBy: SYNC_TYPE_ASC) {

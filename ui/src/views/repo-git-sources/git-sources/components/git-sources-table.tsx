@@ -21,7 +21,7 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
           </Panel>
         </div>
         : <>
-          <div className='flex flex-col min-w-0 bg-white h-full'>
+          <div className='flex flex-col min-w-0 bg-gray-50 h-full'>
             <div className='flex-1 overflow-x-auto overflow-y-hidden'>
               <table className='t-table-default t-table-hover border-b'>
                 <thead>

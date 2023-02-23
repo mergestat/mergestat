@@ -2,16 +2,17 @@ import { gql } from '@apollo/client'
 
 const GET_REPO_SYNCS = gql`
   query getRepoSyncs($id: UUID!) {
-    serviceAuthCredentials(filter: {type: {equalTo: "GITHUB_PAT"}}) {
-      totalCount
-    }
     repo(id: $id) {
       id
       repo
-      isGithub
       tags
       repoImport {
-        type
+        settings
+      }
+      providerByProvider {
+        id
+        name
+        vendor
         settings
       }
       repoSyncs {

@@ -22,7 +22,7 @@ export const PageHeader: React.FC = () => {
             onClick={() => setShowAddRepositoryModal(true)}
             skin="primary"
           >
-            Add Repositories
+            Add Repos
           </Button>
         </Toolbar.Right>
       </Toolbar>

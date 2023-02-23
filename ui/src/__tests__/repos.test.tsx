@@ -10,7 +10,7 @@ import { AddRepositoryModal } from 'src/views/repositories/modals/add-repository
 import { DynamicValues } from 'src/__mocks__/constants.mock'
 import { apolloMockAddExistingRepo, apolloMockAddNewRepo } from 'src/__mocks__/repo-add.mock'
 import { mockRepoSatus } from 'src/__mocks__/repo-status.mock'
-import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposEmptyGitHubPat, apolloMockReposEmptyNoGitHubPat, apolloMockReposWithData, apolloMockWithoutResults } from 'src/__mocks__/repos.mock'
+import { apolloMockJustAngularRepo, apolloMockReposEmpty, apolloMockReposWithData, apolloMockWithoutResults } from 'src/__mocks__/repos.mock'
 
 afterEach(() => {
   cleanup()
@@ -54,39 +54,7 @@ describe('GraphQL queries: (Repos)', () => {
     )
 
     await waitFor(() => {
-      expect(screen.getByTestId(TEST_IDS.emptyRepositoryTable)).toBeInTheDocument()
-    })
-  })
-
-  it('calling useQuery(): there are no repos and GitHub Pat is not configured', async () => {
-    render(
-      <MockedProvider mocks={[apolloMockReposEmptyNoGitHubPat]} addTypename={false}>
-        <GlobalProvider>
-          <RepositoriesProvider>
-            <RepositoriesView />
-          </RepositoriesProvider>
-        </GlobalProvider>
-      </MockedProvider>
-    )
-
-    await waitFor(() => {
-      expect(screen.getByTestId(TEST_IDS.emptyRepositoryTable)).toBeInTheDocument()
-    })
-  })
-
-  it('calling useQuery(): there are no repos and GitHub Pat is configured', async () => {
-    render(
-      <MockedProvider mocks={[apolloMockReposEmptyGitHubPat]} addTypename={false}>
-        <GlobalProvider>
-          <RepositoriesProvider>
-            <RepositoriesView />
-          </RepositoriesProvider>
-        </GlobalProvider>
-      </MockedProvider>
-    )
-
-    await waitFor(() => {
-      expect(screen.getByTestId(TEST_IDS.emptyRepository)).toBeInTheDocument()
+      expect(screen.getByTestId(TEST_IDS.emptyData)).toBeInTheDocument()
     })
   })
 

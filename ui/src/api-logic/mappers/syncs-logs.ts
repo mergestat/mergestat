@@ -1,7 +1,7 @@
 import { format, lightFormat } from 'date-fns'
 import { RepoSyncQueueW, SyncLogsType, SyncTypeData } from 'src/@types'
 import { getSimpleDurationTime, getStatus } from 'src/utils'
-import { DATE_FORMAT, GITHUB_URL, SYNC_STATUS } from 'src/utils/constants'
+import { DATE_FORMAT, SYNC_STATUS } from 'src/utils/constants'
 import { GetSyncHistoryLogsQuery } from '../graphql/generated/schema'
 
 /**
@@ -14,8 +14,13 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
   const repoData: SyncTypeData = {
     repo: {
       id: data?.repo?.id,
-      name: data?.repo?.repo.replace(GITHUB_URL, '') || '',
-      type: data?.repo?.isGithub ? 'github' : 'other',
+      name: data?.repo?.repo.replace(data?.repo?.providerByProvider?.settings?.url, '') || '',
+      provider: {
+        id: data?.repo?.providerByProvider?.id,
+        name: data?.repo?.providerByProvider?.name || '',
+        vendor: data?.repo?.providerByProvider?.vendor || '',
+        url: data?.repo?.providerByProvider?.settings?.url,
+      },
     }
   }
 
