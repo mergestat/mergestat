@@ -56,12 +56,20 @@ const useQueryEditor = (rowsLimit: number) => {
   }, [loadingQuery])
 
   useEffect(() => {
-    if (data?.execSQL.rows?.length && data?.execSQL.rows?.length > 0) {
+    const rowsExist = data?.execSQL.rows?.length && data?.execSQL.rows?.length > 0
+    const rowsAffected = data?.execSQL?.rowCount && data?.execSQL?.rowCount > 0
+    const currentState = rowsExist ? States.Filled : States.Affected
+
+    if (rowsExist || rowsAffected) {
       checkProjection(data?.execSQL.columns as ColumnInfo[])
       setDataQuery(data?.execSQL)
       setTime(formatTimeExecution(data?.execSQL.queryRunningTimeMs || 0))
-      setState(States.Filled)
-      setRowLimitReached(data?.execSQL.rows?.length > rowsLimit)
+      setState(currentState)
+      if (data?.execSQL.rows?.length) {
+        setRowLimitReached(data?.execSQL.rows?.length > rowsLimit)
+      } else {
+        setRowLimitReached(false)
+      }
     } else {
       error ? setState(States.Error) : setState(States.Empty)
     }

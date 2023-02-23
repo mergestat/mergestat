@@ -10,6 +10,7 @@ import QueryEditorEmpty from './components/state-empty'
 import QueryEditorError from './components/state-error'
 import QueryEditorFilled from './components/state-filled'
 import QueryEditorLoading from './components/state-loading'
+import QueryEditorRowsImpacted from './components/state-rows-affected'
 import { QuerySettingsModal } from './modals/query-setting'
 
 type QueryEditorProps = {
@@ -136,6 +137,10 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
 
         {/* Loading state */}
         {loading && <QueryEditorLoading />}
+
+        {!error && !loading && data?.execSQL.rows?.length === 0 && state === States.Affected && data.execSQL.rowCount &&
+          <QueryEditorRowsImpacted data={dataQuery} />
+        }
 
         {/* Filled state */}
         {!error && !loading && data && state === States.Filled &&
