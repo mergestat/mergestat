@@ -19,7 +19,7 @@ const useAddRepos = () => {
       message ? setAddedWarning(addedWarning + 1) : showErrorAlert(error.message)
     },
     onCompleted: () => {
-      setAddedSuccess(addedSuccess + 1)
+      setAddedSuccess(prev => prev + 1)
     },
     awaitRefetchQueries: true,
     refetchQueries: () => REPOS_REFETCHES
