@@ -25,11 +25,10 @@ UPDATE mergestat.repo_imports SET import_status = @status::TEXT, import_error = 
 SELECT COUNT(*) FROM mergestat.repo_imports WHERE import_status = 'RUNNING';
 
 -- name: UpsertRepo :exec
-INSERT INTO public.repos (repo, is_github, repo_import_id) VALUES($1, $2, $3)
+INSERT INTO public.repos (repo, is_github, repo_import_id, tags) VALUES($1, $2, $3, $4)
 ON CONFLICT (repo, (ref IS NULL)) WHERE ref IS NULL
 DO UPDATE SET tags = (
-    SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $4) x LIMIT 1
-);
+  SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $4) x LIMIT 1);
 
 -- name: MarkRepoImportAsUpdated :exec
 UPDATE mergestat.repo_imports SET last_import = now() WHERE id = $1;

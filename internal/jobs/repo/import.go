@@ -202,7 +202,6 @@ func handleImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDu
 			RepoImportID: uuid.NullUUID{Valid: true, UUID: imp.ID},
 			Tags:         pgtype.JSONB{Status: pgtype.Present, Bytes: []byte(repo.Topics)},
 		}
-
 		if err = qry.UpsertRepo(ctx, opts); err != nil {
 			return errors.Wrapf(err, "failed to upsert repository")
 		}
