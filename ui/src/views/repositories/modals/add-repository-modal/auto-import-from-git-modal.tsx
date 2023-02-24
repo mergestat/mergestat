@@ -77,7 +77,6 @@ export const AutoImportFromGitModal: React.FC = () => {
                 subline={imp.type === SYNC_REPO_METHOD.GH_ORG ? 'GitHub organization' : 'GitHub user'}
                 className={'px-4 py-2'}
                 startIcon={<RepoImage repoType='github' orgName={imp.name} size="10" />}
-                onClick={() => false}
                 onTrashClick={() => removeURL(imp.name)}
               />
             </div>

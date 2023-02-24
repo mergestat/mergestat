@@ -70,7 +70,6 @@ export const AddRepositoryFromURLModal: React.FC = () => {
                 subline={repository}
                 className={'p-2 border-b'}
                 startIcon={<RepoIcon repository={repository} />}
-                onClick={() => false}
                 onTrashClick={() => removeURL(repository)}
               />
             ))}

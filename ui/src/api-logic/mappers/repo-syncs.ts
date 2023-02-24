@@ -13,14 +13,14 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
   // General repo info
   const repoData: RepoSyncData = {
     id: data?.repo?.id,
-    name: data?.repo?.repo.replace(data?.repo?.providerByProvider?.settings?.url, '') || '',
+    name: data?.repo?.repo.replace(data?.repo?.provider?.settings?.url, '') || '',
     tags: data?.repo?.tags.map((t: string) => ({ title: t, checked: true })),
     autoImportFrom: data?.repo?.repoImport && `${data?.repo?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${data?.repo?.repoImport?.settings.userOrOrg}`,
     provider: {
-      id: data?.repo?.providerByProvider?.id,
-      name: data?.repo?.providerByProvider?.name || '',
-      vendor: data?.repo?.providerByProvider?.vendor || '',
-      url: data?.repo?.providerByProvider?.settings?.url,
+      id: data?.repo?.provider?.id,
+      name: data?.repo?.provider?.name || '',
+      vendor: data?.repo?.provider?.vendor || '',
+      url: data?.repo?.provider?.settings?.url,
     },
   }
 

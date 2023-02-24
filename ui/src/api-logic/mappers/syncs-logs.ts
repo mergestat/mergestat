@@ -14,12 +14,12 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
   const repoData: SyncTypeData = {
     repo: {
       id: data?.repo?.id,
-      name: data?.repo?.repo.replace(data?.repo?.providerByProvider?.settings?.url, '') || '',
+      name: data?.repo?.repo.replace(data?.repo?.provider?.settings?.url, '') || '',
       provider: {
-        id: data?.repo?.providerByProvider?.id,
-        name: data?.repo?.providerByProvider?.name || '',
-        vendor: data?.repo?.providerByProvider?.vendor || '',
-        url: data?.repo?.providerByProvider?.settings?.url,
+        id: data?.repo?.provider?.id,
+        name: data?.repo?.provider?.name || '',
+        vendor: data?.repo?.provider?.vendor || '',
+        url: data?.repo?.provider?.settings?.url,
       },
     }
   }

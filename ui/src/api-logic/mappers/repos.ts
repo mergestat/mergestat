@@ -28,15 +28,15 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
     // Consolidated Repo info
     const repoInfo: RepoDataPropsT = {
       id: r?.id,
-      name: r?.repo.replace(r?.providerByProvider?.settings?.url, '') || '',
+      name: r?.repo.replace(r?.provider?.settings?.url, '') || '',
       createdAt: new Date(r?.createdAt),
       autoImportFrom: r?.repoImport && `${r?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${r?.repoImport?.settings.userOrOrg}`,
       lastSync: '',
       provider: {
-        id: r?.providerByProvider?.id,
-        name: r?.providerByProvider?.name || '',
-        vendor: r?.providerByProvider?.vendor || '',
-        url: r?.providerByProvider?.settings?.url,
+        id: r?.provider?.id,
+        name: r?.provider?.name || '',
+        vendor: r?.provider?.vendor || '',
+        url: r?.provider?.settings?.url,
       },
       tags: r?.tags.map((t: string) => ({ title: t, checked: true })),
       status: [],

@@ -1,20 +1,18 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { ChangeEvent, useEffect, useState } from 'react'
+import { AuthDetail } from 'src/@types'
 import { validateGtihubToken } from 'src/api-logic/axios/api'
-import { GetPatQuery } from 'src/api-logic/graphql/generated/schema'
-import SET_PAT from 'src/api-logic/graphql/mutations/set-pat'
-import { GET_PAT } from 'src/api-logic/graphql/queries/auth'
+import { ADD_TOKEN } from 'src/api-logic/graphql/mutations/addToken'
 import { validateGitHubPAT } from 'src/utils'
 import { showSuccessAlert } from 'src/utils/alerts'
 
-const useSetPat = () => {
+const useSetPat = (idProvider: string, auth: AuthDetail) => {
   const [showValidation, setShowValidation] = useState(false)
   const [isTokenValid, setIsTokenValid] = useState(false)
   const [isTokenSet, setIsTokenSet] = useState(false)
-  const [anyRepo, setAnyRepo] = useState(false)
-  const [pat, setPAT] = useState('')
+  const [pat, setPAT] = useState<string>('')
 
-  const [savePAT] = useMutation(SET_PAT, {
+  const [addToken] = useMutation(ADD_TOKEN, {
     onCompleted: () => {
       showSuccessAlert('GitHub access token saved')
       setShowValidation(false)
@@ -23,14 +21,11 @@ const useSetPat = () => {
     }
   })
 
-  const { data } = useQuery<GetPatQuery>(GET_PAT, {
-    fetchPolicy: 'no-cache',
-  })
-
   useEffect(() => {
-    setIsTokenSet(data?.serviceAuthCredentials ? data?.serviceAuthCredentials?.totalCount > 0 : false)
-    setAnyRepo(data?.repos ? data?.repos?.totalCount > 0 : false)
-  }, [data])
+    setIsTokenSet(!!auth.credentials)
+    setPAT(auth.credentials ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const changeToken = (e: ChangeEvent<HTMLInputElement>) => {
     setPAT(e.target.value)
@@ -61,7 +56,13 @@ const useSetPat = () => {
     setShowValidation(false)
     const isRight = await isARightToken()
     if (isRight) {
-      savePAT({ variables: { pat } })
+      addToken({
+        variables: {
+          provider: idProvider,
+          token: pat,
+          type: 'GITHUB_PAT'
+        }
+      })
     } else {
       setShowValidation(true)
       setIsTokenValid(isRight)
@@ -73,7 +74,6 @@ const useSetPat = () => {
     showValidation,
     isTokenValid,
     isTokenSet,
-    anyRepo,
     validatePAT,
     changeToken,
     handleSavePAT

@@ -19,7 +19,7 @@ const GET_REPO_IMPORT = gql`
       id
       lastImport
       settings
-      providerByProvider {
+      provider: providerByProvider {
         id
         name
         vendor

@@ -9,7 +9,7 @@ const GET_REPO_SYNCS = gql`
       repoImport {
         settings
       }
-      providerByProvider {
+      provider: providerByProvider {
         id
         name
         vendor

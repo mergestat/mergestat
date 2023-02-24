@@ -41,4 +41,40 @@ const GET_GIT_SOURCES = gql`
   }
 `
 
-export { GET_GIT_SOURCES_LIST, GET_GIT_SOURCES }
+const GET_GIT_SOURCE = gql`
+  query getGitSource($id: UUID!) {
+    provider(id: $id) {
+      id
+      name
+      description
+      vendor
+      settings
+      auth: serviceAuthCredentialsByProvider {
+        nodes {
+          id
+          type
+          credentials
+        }
+      }
+      auto: repoImportsByProvider {
+        nodes {
+          id
+          settings
+          repos {
+            totalCount
+          }
+        }
+      }
+      manual: reposByProvider(condition: {repoImportId: null}) {
+        totalCount
+        nodes {
+          id
+          repo
+          settings
+        }
+      }
+    }
+  }
+`
+
+export { GET_GIT_SOURCES_LIST, GET_GIT_SOURCES, GET_GIT_SOURCE }

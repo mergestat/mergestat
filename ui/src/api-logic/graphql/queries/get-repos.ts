@@ -53,7 +53,7 @@ const GET_REPOS = gql`
         repoImport {
           settings
         }
-        providerByProvider {
+        provider: providerByProvider {
           id
           name
           vendor

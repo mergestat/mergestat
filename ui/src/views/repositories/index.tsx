@@ -10,22 +10,10 @@ import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import useMetrics from 'src/views/hooks/useMetrics'
 import useRepos from 'src/views/hooks/useRepos'
 import { EmptyData } from '../shared/empty-data'
+import { MetricNumber } from '../shared/metric-number'
 import { FilterHeader, PageHeader, RepositoriesTable } from './components'
 import { AddRepositoryModal } from './modals/add-repository-modal'
 import { RemoveRepositoryModal } from './modals/remove-repository-modal'
-
-interface MetricNumberProp {
-  loading: boolean
-  metric: number
-}
-
-const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric }: MetricNumberProp) => {
-  return (
-    <div>
-      {loading ? <Spinner size="sm" /> : new Intl.NumberFormat().format(metric)}
-    </div>
-  )
-}
 
 const RepositoriesView: React.FC = () => {
   const [{ showAddRepositoryModal, showRemoveRepositoryModal }] = useRepositoriesContext()

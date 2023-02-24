@@ -269,3 +269,37 @@ export type GitSourceData = {
     totalCount: number
   }
 }
+
+export type AuthDetail = {
+  id?: string
+  type?: string
+  credentials?: string | null
+}
+
+export type RepoAuto = {
+  id: string
+  settings: JSON
+  totalRepos: number
+}
+
+export type RepoManual = {
+  id: string
+  repo: string
+  settings: JSON
+}
+
+export type GitSourceDetail = {
+  id: string
+  name: string
+  description?: string | null
+  vendor: string
+  settings: JSON
+
+  auth?: AuthDetail
+  auto: RepoAuto[]
+  manual: RepoManual[]
+
+  totalAuto: number
+  totalManual: number
+  totalRepos: number
+}

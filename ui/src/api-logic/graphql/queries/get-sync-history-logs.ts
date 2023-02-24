@@ -5,7 +5,7 @@ const GET_SYNC_HISTORY_LOGS = gql`
     repo(id: $repoId) {
       id
       repo
-      providerByProvider {
+      provider: providerByProvider {
         id
         name
         vendor
@@ -53,7 +53,7 @@ const GET_LOGS_OF_A_SYNC = gql`
     repo(id: $repoId) {
       id
       repo
-      providerByProvider {
+      provider: providerByProvider {
         id
         name
         vendor

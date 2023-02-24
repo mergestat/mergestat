@@ -3,6 +3,7 @@ import { Alert, Button, HelpText, Input, Label, ListItem, Panel, RadioCard, Tool
 import { BitbucketIcon, BranchIcon, ChevronRightIcon, GithubIcon, GitlabIcon, RepositoryIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
+import { AddGitSourceMutation, GetGitSourcesQuery } from 'src/api-logic/graphql/generated/schema'
 import { ADD_GIT_SOURCE } from 'src/api-logic/graphql/mutations/git-sources'
 import { GET_GIT_SOURCES } from 'src/api-logic/graphql/queries/get-git-sources'
 import Loading from 'src/components/Loading'
@@ -20,12 +21,12 @@ const AddSourceView: React.FC = () => {
   const [errorVendor, setErrorVendor] = useState<boolean>(false)
 
   const [addGitSource] = useMutation(ADD_GIT_SOURCE, {
-    onCompleted: () => {
-      console.log('Redirect to git created source')
+    onCompleted: (data: AddGitSourceMutation) => {
+      router.push(`/repos/git-sources/${data.createProvider?.provider?.id}`)
     }
   })
 
-  const { loading, data } = useQuery(GET_GIT_SOURCES, {
+  const { loading, data } = useQuery<GetGitSourcesQuery>(GET_GIT_SOURCES, {
     fetchPolicy: 'no-cache',
   })
 
@@ -175,16 +176,18 @@ const AddSourceView: React.FC = () => {
               <Panel.Body className='p-0'>
                 {loading
                   ? <Loading />
-                  : data?.providers.nodes.map((provider, index) =>
+                  : data?.providers && data?.providers.nodes.map((provider, index) =>
                     <ListItem key={`git-source-${index}`}
                       title={provider.name}
                       className={'px-4 py-2 border-b'}
                       startIcon={getGitSourceIcon(provider.vendor)}
-                      onClick={() => console.log(`Go to ${provider.id}`)}
-                      action={<div className='t-list-item-go-to'>
-                        <span className='px-2'>Go to</span>
-                        <ChevronRightIcon className="t-icon" />
-                      </div>}
+                      action={
+                        <Button label='Go to git source' skin="borderless-muted"
+                          className='hover_text-blue-600 font-normal'
+                          endIcon={<ChevronRightIcon className="t-icon" />}
+                          onClick={() => router.push(`/repos/git-sources/${provider.id}`)}
+                        />
+                      }
                     />
                   )}
               </Panel.Body>

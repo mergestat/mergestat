@@ -83,8 +83,8 @@ const AutoImportsDetail: NextPage = () => {
                 <Toolbar className='h-full'>
                   <Toolbar.Left>
                     <RepoImage
-                      vendor={data?.repoImport?.providerByProvider?.vendor || ''}
-                      vendorUrl={data?.repoImport?.providerByProvider?.settings?.url || ''}
+                      vendor={data?.repoImport?.provider?.vendor || ''}
+                      vendorUrl={data?.repoImport?.provider?.settings?.url || ''}
                       orgName={name} size="8"
                     />
                     <h2 className='t-h2 mb-0'>{name}</h2>

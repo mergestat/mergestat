@@ -1,4 +1,5 @@
 import { ListItem, Panel } from '@mergestat/blocks'
+import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 import { GitSourceData } from 'src/@types'
 import { getGitSourceIcon } from 'src/utils'
@@ -8,6 +9,8 @@ type GitSourcesTableProps = PropsWithChildren<{
 }>
 
 export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: GitSourcesTableProps) => {
+  const router = useRouter()
+
   return (
     <div className='flex flex-col flex-1'>
       {gitSources.length < 1
@@ -40,6 +43,7 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                           title={gs.name}
                           className={'px-4 py-2'}
                           startIcon={getGitSourceIcon(gs.vendor)}
+                          onClick={() => router.push(`/repos/git-sources/${gs.id}`)}
                         />
                       </td>
                       <td className='text-gray-500 py-5'>
