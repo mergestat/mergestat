@@ -1,18 +1,18 @@
 import { Avatar } from '@mergestat/blocks'
 import { MinusIcon } from '@mergestat/icons'
-import { QueryResultProps } from 'src/@types'
+import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 
 type QueryEditorRowsImpactedProps = {
-    data: QueryResultProps | undefined
-    children?: React.ReactNode
+  data: ExecuteSqlQuery | undefined
+  children?: React.ReactNode
 }
 
 const QueryEditorRowsImpacted: React.FC<QueryEditorRowsImpactedProps> = ({ data }: QueryEditorRowsImpactedProps) => (
-    <div className='flex-1 h-1/2 flex flex-col items-center justify-center p-8'>
-        <Avatar icon={<MinusIcon className="t-icon" />} />
-        <p className='t-text-muted mt-6'>
-            {`rows impacted ${data?.rowCount}`}
-        </p>
-    </div>)
+  <div className='flex-1 h-1/2 flex flex-col items-center justify-center p-8'>
+    <Avatar icon={<MinusIcon className="t-icon" />} />
+    <p className='t-text-muted mt-6'>
+      {`rows impacted ${data?.execSQL.rowCount}`}
+    </p>
+  </div>)
 
 export default QueryEditorRowsImpacted

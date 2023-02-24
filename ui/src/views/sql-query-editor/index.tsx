@@ -20,10 +20,9 @@ type QueryEditorProps = {
 
 const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorProps) => {
   const ROWS_LIMIT = 1000
-
   const {
     setQuery, setShowSettingsModal, setTitle, setDesc, executeSQLQuery, cancelSQLQuery,
-    expanded, dataQuery, showSettingsModal, state, rowLimitReached, executed, readOnly,
+    expanded, showSettingsModal, state, rowLimitReached, executed, readOnly,
     loading, error, query, data, time, title, desc
   } = useQueryEditor(ROWS_LIMIT)
 
@@ -127,7 +126,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
         />}
 
         {/* Empty state */}
-        {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} data={dataQuery} />}
+        {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} data={data} />}
 
         {/* Canceled state */}
         {!error && !loading && state === States.Canceled && <QueryEditorCanceled />}
@@ -139,7 +138,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
         {loading && <QueryEditorLoading />}
 
         {!error && !loading && data?.execSQL.rows?.length === 0 && state === States.Affected && data.execSQL.rowCount &&
-          <QueryEditorRowsImpacted data={dataQuery} />
+          <QueryEditorRowsImpacted data={data} />
         }
 
         {/* Filled state */}
