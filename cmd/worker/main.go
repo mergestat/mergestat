@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/mergestat/mergestat/internal/cron"
+	"github.com/mergestat/mergestat/internal/jobs/sync/podman"
 	"net/http"
 	_ "net/http/pprof"
 	"net/url"
@@ -16,6 +18,8 @@ import (
 	"time"
 
 	"github.com/mergestat/mergestat/internal/cron"
+	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/mergestat/internal/helper"
 	"github.com/mergestat/mergestat/internal/jobs/repo"
@@ -265,6 +269,7 @@ func main() {
 
 	// register job handlers for types implemented by this worker
 	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
+	_ = worker.Register("container/sync", podman.ContainerSync())
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars
@@ -279,6 +284,9 @@ func main() {
 			logger.Err(err).Msg("failed to enqueue repo sync job")
 		}
 	})
+
+	// run container sync scheduler every 5 minutes
+	go cron.ContainerSync(ctx, 5*time.Minute, upstream)
 
 	if os.Getenv("DEBUG") != "" {
 		go func() {
