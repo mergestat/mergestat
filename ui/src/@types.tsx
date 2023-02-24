@@ -274,6 +274,7 @@ export type AuthDetail = {
   id?: string
   type?: string
   credentials?: string | null
+  createdAt?: string
 }
 
 export type RepoAuto = {

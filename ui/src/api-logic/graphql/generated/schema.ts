@@ -19890,6 +19890,15 @@ export type UpdateRepoImportMutationVariables = Exact<{
 
 export type UpdateRepoImportMutation = { updateRepoImport?: { repoImport?: { id: any, settings: any } | null } | null };
 
+export type AddTokenMutationVariables = Exact<{
+  provider: Scalars['UUID'];
+  token: Scalars['String'];
+  type: Scalars['String'];
+}>;
+
+
+export type AddTokenMutation = { addToken?: boolean | null };
+
 export type AddGitSourceMutationVariables = Exact<{
   name: Scalars['String'];
   settings: Scalars['JSON'];
@@ -20017,11 +20026,6 @@ export type GetDatabaseConnectionQueryVariables = Exact<{ [key: string]: never; 
 
 export type GetDatabaseConnectionQuery = { databaseConnection?: { database?: string | null, host?: string | null, port?: number | null, user?: string | null } | null };
 
-export type GetPatQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetPatQuery = { serviceAuthCredentials?: { totalCount: number } | null, repos?: { totalCount: number } | null };
-
 export type GetGitSourcesListQueryVariables = Exact<{
   search: Scalars['String'];
   first?: InputMaybe<Scalars['Int']>;
@@ -20041,7 +20045,7 @@ export type GetGitSourceQueryVariables = Exact<{
 }>;
 
 
-export type GetGitSourceQuery = { provider?: { id: any, name: string, description?: string | null, vendor: string, settings: any, auth: { nodes: Array<{ id: any, type: string, credentials?: string | null }> }, auto: { nodes: Array<{ id: any, settings: any, repos: { totalCount: number } }> }, manual: { totalCount: number, nodes: Array<{ id: any, repo: string, settings: any }> } } | null };
+export type GetGitSourceQuery = { provider?: { id: any, name: string, description?: string | null, vendor: string, settings: any, auth: { nodes: Array<{ id: any, type: string, credentials?: string | null, createdAt: any }> }, auto: { nodes: Array<{ id: any, settings: any, repos: { totalCount: number } }> }, manual: { totalCount: number, nodes: Array<{ id: any, repo: string, settings: any }> } } | null };
 
 export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
 

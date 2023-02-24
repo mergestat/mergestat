@@ -54,6 +54,7 @@ const GET_GIT_SOURCE = gql`
           id
           type
           credentials
+          createdAt
         }
       }
       auto: repoImportsByProvider {

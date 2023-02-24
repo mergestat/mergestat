@@ -2,28 +2,27 @@ import { useMutation } from '@apollo/client'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { AuthDetail } from 'src/@types'
 import { validateGtihubToken } from 'src/api-logic/axios/api'
-import { ADD_TOKEN } from 'src/api-logic/graphql/mutations/addToken'
+import { ADD_CREDENTIAL } from 'src/api-logic/graphql/mutations/auth-credentials'
 import { validateGitHubPAT } from 'src/utils'
 import { showSuccessAlert } from 'src/utils/alerts'
 
-const useSetPat = (idProvider: string, auth: AuthDetail) => {
+const useSetPat = (idProvider: string, auth?: AuthDetail) => {
   const [showValidation, setShowValidation] = useState(false)
   const [isTokenValid, setIsTokenValid] = useState(false)
-  const [isTokenSet, setIsTokenSet] = useState(false)
   const [pat, setPAT] = useState<string>('')
 
-  const [addToken] = useMutation(ADD_TOKEN, {
+  const [addCredential] = useMutation(ADD_CREDENTIAL, {
     onCompleted: () => {
       showSuccessAlert('GitHub access token saved')
       setShowValidation(false)
-      setIsTokenSet(true)
       setPAT('')
-    }
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => ['getGitSource']
   })
 
   useEffect(() => {
-    setIsTokenSet(!!auth.credentials)
-    setPAT(auth.credentials ?? '')
+    setPAT(auth?.credentials ?? '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -56,7 +55,7 @@ const useSetPat = (idProvider: string, auth: AuthDetail) => {
     setShowValidation(false)
     const isRight = await isARightToken()
     if (isRight) {
-      addToken({
+      addCredential({
         variables: {
           provider: idProvider,
           token: pat,
@@ -73,7 +72,6 @@ const useSetPat = (idProvider: string, auth: AuthDetail) => {
     pat,
     showValidation,
     isTokenValid,
-    isTokenSet,
     validatePAT,
     changeToken,
     handleSavePAT

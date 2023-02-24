@@ -20,7 +20,7 @@ const GitSourceOverviewTab: React.FC<GitSourceOverviewTabProps> = ({ loading, da
         totalRepos={totalRepos || 0}
       />
 
-      {vendor === VENDOR_TYPE.GITHUB && <GitHubAuth idProvider={data?.id || ''} auth={data?.auth || {}} />}
+      {vendor === VENDOR_TYPE.GITHUB && <GitHubAuth idProvider={data?.id || ''} auth={data?.auth} />}
       {vendor === VENDOR_TYPE.BITBUCKET && <BitbucketAuth {...data?.auth} />}
     </>
   )

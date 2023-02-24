@@ -1,4 +1,6 @@
+import { format } from 'date-fns'
 import { AuthDetail, GitSourceDetail, RepoAuto, RepoManual } from 'src/@types'
+import { DATE_FORMAT } from 'src/utils/constants'
 import { GetGitSourceQuery } from '../graphql/generated/schema'
 
 const mapToGitSourceDetail = (data: GetGitSourceQuery | undefined): GitSourceDetail => {
@@ -11,7 +13,12 @@ const mapToGitSourceDetail = (data: GetGitSourceQuery | undefined): GitSourceDet
     vendor: data?.provider?.vendor || '',
     settings: data?.provider?.settings,
     auth: authData
-      ? { id: authData.id, type: authData.type, credentials: authData.credentials } as AuthDetail
+      ? {
+        id: authData.id,
+        type: authData.type,
+        credentials: authData.credentials,
+        createdAt: format(new Date(authData.createdAt?.toString()), DATE_FORMAT.D)
+      } as AuthDetail
       : undefined,
     auto: [] as RepoAuto[],
     manual: [] as RepoManual[],
