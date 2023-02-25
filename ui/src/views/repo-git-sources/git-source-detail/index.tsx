@@ -1,48 +1,30 @@
 import { Button, EditableText, Tabs, Toolbar } from '@mergestat/blocks'
-import { RepositoryIcon, TrashIcon } from '@mergestat/icons'
-import { useRouter } from 'next/router'
+import { TrashIcon } from '@mergestat/icons'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { GitSourceDetail } from 'src/@types'
-import { useGlobalSetState } from 'src/state/contexts'
+import { useGitSourceDetailContext } from 'src/state/contexts/git-source-detail.context'
 import { getGitSourceIcon } from 'src/utils'
+import useGitSourceCrumb from 'src/views/hooks/gitSources/useGitSourceCrumb'
+import useGitSourceDetail from 'src/views/hooks/gitSources/useGitSourceDetail'
 import GitSourceOverviewTab from './tabs/overview'
 
-type GitSourceDetailViewProps = {
-  loading: boolean
-  data?: GitSourceDetail
+type GitSourceDetailView = {
+  gitSourceId?: string | string[]
 }
 
-const GitSourceDetailView: React.FC<GitSourceDetailViewProps> = ({ loading, data }: GitSourceDetailViewProps) => {
-  const { name, description, vendor } = data || {}
+const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: GitSourceDetailView) => {
+  useGitSourceDetail(gitSourceId)
+  useGitSourceCrumb()
 
-  const router = useRouter()
-  const { setCrumbs } = useGlobalSetState()
+  const [{ gsDetail: { name, description, vendor } }] = useGitSourceDetailContext()
 
   const [nameGS, setNameGS] = useState('')
   const [descriptionGS, setDescriptionGS] = useState('')
 
   useEffect(() => {
-    const crumbs = [
-      {
-        text: 'Repos',
-        startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
-      },
-      {
-        text: 'Git Sources',
-        onClick: () => router.push('/repos/git-sources'),
-      },
-    ]
-
-    setCrumbs(crumbs)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
     setNameGS(name || '')
     setDescriptionGS(description || '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [name, description])
 
   return (
     <div className='flex flex-col flex-1 overflow-hidden'>
@@ -79,7 +61,7 @@ const GitSourceDetailView: React.FC<GitSourceDetailViewProps> = ({ loading, data
           </Tabs.List>
           <Tabs.Panels className="p-8 h-full bg-gray-50 overflow-auto">
             <Tabs.Panel>
-              <GitSourceOverviewTab loading={loading} data={data} />
+              <GitSourceOverviewTab />
             </Tabs.Panel>
           </Tabs.Panels>
         </Tabs>

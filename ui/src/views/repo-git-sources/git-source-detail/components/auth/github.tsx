@@ -1,16 +1,13 @@
 import { Badge, Button, Input, Label, Panel } from '@mergestat/blocks'
 import { CheckIcon, CircleCheckFilledIcon, CircleWarningFilledIcon } from '@mergestat/icons'
-import { AuthDetail } from 'src/@types'
+import { useGitSourceDetailContext } from 'src/state/contexts/git-source-detail.context'
 import { LINKS_TO, TEST_IDS } from 'src/utils/constants'
 import useSetPat from 'src/views/hooks/useSetPat'
 import SettedAuth from './setted-auth'
 
-type GitHubAuthProps = {
-  idProvider: string
-  auth?: AuthDetail
-}
+const GitHubAuth: React.FC = () => {
+  const [{ gsDetail: { id, auth } }] = useGitSourceDetailContext()
 
-const GitHubAuth: React.FC<GitHubAuthProps> = ({ idProvider, auth }: GitHubAuthProps) => {
   const {
     pat,
     showValidation,
@@ -18,7 +15,7 @@ const GitHubAuth: React.FC<GitHubAuthProps> = ({ idProvider, auth }: GitHubAuthP
     validatePAT,
     changeToken,
     handleSavePAT,
-  } = useSetPat(idProvider, auth)
+  } = useSetPat(id, auth)
 
   return (
     <Panel className='rounded-md shadow-sm m-auto'>

@@ -1,6 +1,8 @@
-import { AuthDetail } from 'src/@types'
+import { useGitSourceDetailContext } from 'src/state/contexts/git-source-detail.context'
 
-const BitbucketAuth: React.FC<AuthDetail> = ({ id, type, credentials, createdAt }: AuthDetail) => {
+const BitbucketAuth: React.FC = () => {
+  const [{ gsDetail: { id, auth } }] = useGitSourceDetailContext()
+
   return (
     <></>
   )

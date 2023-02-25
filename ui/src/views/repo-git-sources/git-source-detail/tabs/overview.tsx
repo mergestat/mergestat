@@ -1,16 +1,12 @@
-import { GitSourceDetail } from 'src/@types'
+import { useGitSourceDetailContext } from 'src/state/contexts/git-source-detail.context'
 import { VENDOR_TYPE } from 'src/utils/constants'
 import BitbucketAuth from '../components/auth/bitbucket'
 import GitHubAuth from '../components/auth/github'
+import ReposAutoManual from '../components/repos'
 import GitSourceStats from '../components/stats'
 
-type GitSourceOverviewTabProps = {
-  loading: boolean
-  data?: GitSourceDetail
-}
-
-const GitSourceOverviewTab: React.FC<GitSourceOverviewTabProps> = ({ loading, data }: GitSourceOverviewTabProps) => {
-  const { totalAuto, totalManual, totalRepos, vendor } = data || {}
+const GitSourceOverviewTab: React.FC = () => {
+  const [{ loading, gsDetail: { totalAuto, totalManual, totalRepos, vendor } }] = useGitSourceDetailContext()
 
   return (
     <>
@@ -20,8 +16,10 @@ const GitSourceOverviewTab: React.FC<GitSourceOverviewTabProps> = ({ loading, da
         totalRepos={totalRepos || 0}
       />
 
-      {vendor === VENDOR_TYPE.GITHUB && <GitHubAuth idProvider={data?.id || ''} auth={data?.auth} />}
-      {vendor === VENDOR_TYPE.BITBUCKET && <BitbucketAuth {...data?.auth} />}
+      {vendor === VENDOR_TYPE.GITHUB && <GitHubAuth />}
+      {vendor === VENDOR_TYPE.BITBUCKET && <BitbucketAuth />}
+
+      <ReposAutoManual />
     </>
   )
 }

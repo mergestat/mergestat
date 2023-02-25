@@ -5,7 +5,7 @@ import { AuthDetail } from 'src/@types'
 import { RemoveAuthModal } from '../../modals/remove-auth-credential'
 
 const SettedAuth: React.FC<AuthDetail> = ({ id, createdAt }: AuthDetail) => {
-  const [showRemoveAuthModal, setshowRemoveAuthModal] = useState(false)
+  const [showRemoveAuthModal, setShowRemoveAuthModal] = useState(false)
 
   return (
     <>
@@ -15,12 +15,12 @@ const SettedAuth: React.FC<AuthDetail> = ({ id, createdAt }: AuthDetail) => {
             title={`Authenticated on ${createdAt}`}
             className={'p-2'}
             startIcon={<KeyIcon className='t-icon t-icon-muted' />}
-            onTrashClick={() => setshowRemoveAuthModal(true)}
+            onTrashClick={() => setShowRemoveAuthModal(true)}
           />
         </Panel.Body>
       </Panel>
 
-      {showRemoveAuthModal && <RemoveAuthModal id={id} setshowRemoveAuthModal={setshowRemoveAuthModal} />}
+      {showRemoveAuthModal && <RemoveAuthModal id={id} setShowRemoveAuthModal={setShowRemoveAuthModal} />}
     </>
   )
 }

@@ -8,13 +8,13 @@ import { TEST_IDS } from 'src/utils/constants'
 
 type RemoveAuthModalProps = {
   id?: string
-  setshowRemoveAuthModal: (e: boolean) => void
+  setShowRemoveAuthModal: (e: boolean) => void
 }
 
-export const RemoveAuthModal: React.FC<RemoveAuthModalProps> = ({ id, setshowRemoveAuthModal }: RemoveAuthModalProps) => {
+export const RemoveAuthModal: React.FC<RemoveAuthModalProps> = ({ id, setShowRemoveAuthModal }: RemoveAuthModalProps) => {
   const close = useCallback(() => {
-    setshowRemoveAuthModal(false)
-  }, [setshowRemoveAuthModal])
+    setShowRemoveAuthModal(false)
+  }, [setShowRemoveAuthModal])
 
   const [removeCredential] = useMutation(REMOVE_CREDENTIAL, {
     onCompleted: () => {

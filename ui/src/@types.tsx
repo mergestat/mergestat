@@ -161,7 +161,7 @@ export type SyncType = {
 export type ImportSync = {
   name: string
   type: string
-  opened: boolean
+  opened?: boolean
   defaultSyncs: Array<SyncType>
 }
 
