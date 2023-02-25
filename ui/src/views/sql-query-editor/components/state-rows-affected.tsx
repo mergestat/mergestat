@@ -11,7 +11,7 @@ const QueryEditorRowsImpacted: React.FC<QueryEditorRowsImpactedProps> = ({ data 
   <div className='flex-1 h-1/2 flex flex-col items-center justify-center p-8'>
     <Avatar icon={<MinusIcon className="t-icon" />} />
     <p className='t-text-muted mt-6'>
-      {`rows impacted ${data?.execSQL.rowCount}`}
+      `${data.execSQL.rowCount} row${data.execSQL.rowCount > 1 ? 's' : ''} impacted`
     </p>
   </div>)
 
