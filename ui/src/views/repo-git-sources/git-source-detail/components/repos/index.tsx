@@ -17,7 +17,7 @@ const ReposAutoManual: React.FC = () => {
       <Panel.Body className='p-0'>
         <Tabs>
           <Tabs.List className='border-b px-6'>
-            <Tabs.Item>{`Auto (${auto.length})`}</Tabs.Item>
+            <Tabs.Item>{`Auto (${auto?.length || 0})`}</Tabs.Item>
             <Tabs.Item>{`Manual (${totalManual})`}</Tabs.Item>
           </Tabs.List>
           <Tabs.Panels className="h-full bg-gray-50 overflow-auto">
