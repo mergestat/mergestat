@@ -7,6 +7,9 @@ import { KeyboardEvent, useEffect, useState } from 'react'
 import { useQueryContext } from 'src/state/contexts'
 import { copy, filterByAllFields, getMaxPagination, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
+import { Table2, Column, Cell, SelectionModes} from '@blueprintjs/table'
+import '@blueprintjs/table/lib/css/table.css'
+import '@blueprintjs/popover2/lib/css/blueprint-popover2.css'
 
 type TabTableProps = {
   rowLimit: number
@@ -87,6 +90,8 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, page])
 
+  const renderDataCell = (rowIndex: number, columnIndex: number) => <Cell>{result[rowIndex][columnIndex]}</Cell>;
+
   return (
     <>
       {/* Head section */}
@@ -164,29 +169,11 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
           </Alert>
         )}
         <div className='overflow-auto w-full flex-1'>
-          <table className='t-table-default t-table-sticky-header t-table-nowrap t-table-bordered t-table-dense'>
-            <thead>
-              <tr className='bg-white'>
-                {data.columns && data.columns.length > 0 && data.columns.map((col, index) => (
-                  <th key={`th-record-${index}`} scope='col' className='whitespace-nowrap pr-6 pl-8'>
-                    <span className='mr-1'>{col.name}</span>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody className='bg-white'>
-              {result.map((record, indexRecord) => (
-                <tr key={`tr-record-${indexRecord}`}>
-                  {record.map((value, index) => (
-                    <td key={`td-record-${index}`} className='w-0 pl-8 max-w-xs truncate'>
-                      <span className={cx({ 'text-blue-700': isSpecial(value) })}>{getData(value)}</span>
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table2 numRows={result.length} selectionModes={SelectionModes.COLUMNS_AND_CELLS}>
+            {data.columns && data.columns.length > 0 && data.columns.map((col) => (
+                <Column name={col.name.toString()} cellRenderer={renderDataCell}/>
+            )) || []}
+          </Table2>
         </div>
       </div>
 
