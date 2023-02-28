@@ -145,10 +145,13 @@ export type SettingsDataType = {
 export type RepoImportData = {
   id: string
   importDone: boolean
-  source: string
+  name: string
   type: string
   lastSync: string
   status: ImportStatusType
+  totalRepos: number
+  vendor: string
+  vendorUrl: string
 }
 
 export type SyncType = {

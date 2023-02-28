@@ -4,29 +4,28 @@ import { RepoImportData } from 'src/@types'
 import { GetRepoImportsQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_REPO_IMPORTS } from 'src/api-logic/graphql/queries/get-repo-imports'
 import { mapToImportsData } from 'src/api-logic/mappers/imports'
-import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
+import { useGitSourceDetailContext } from 'src/state/contexts/git-source-detail.context'
 
 const useRepoImports = () => {
-  const { setShowRemoveImportModal, setImportToRemove } = useRepositoriesSetState()
-  const [{ showRemoveImportModal }] = useRepositoriesContext()
+  const [{ idProvider, searchImport }] = useGitSourceDetailContext()
 
   const [imports, setImports] = useState<RepoImportData[]>([])
+  const [records, setRecords] = useState<boolean>(false)
 
   const { loading, data } = useQuery<GetRepoImportsQuery>(GET_REPO_IMPORTS, {
+    variables: { idProvider },
     fetchPolicy: 'no-cache',
     pollInterval: 5000,
   })
 
   useEffect(() => {
-    setImports(mapToImportsData(data))
-  }, [data])
+    const importsData = mapToImportsData(data)
+    setImports(importsData)
+    setRecords((data?.repoImports && data?.repoImports?.totalCount > 0) || false)
+    searchImport && setImports(importsData.filter(imp => imp.name?.includes(searchImport)))
+  }, [data, searchImport])
 
-  const prepareToRemove = (id: string, name: string, type: string) => {
-    setImportToRemove({ id, name, type })
-    setShowRemoveImportModal(true)
-  }
-
-  return { loading, imports, showRemoveImportModal, prepareToRemove }
+  return { loading, imports, records }
 }
 
 export default useRepoImports

@@ -1,14 +1,23 @@
 import { gql } from '@apollo/client'
 
 const GET_REPO_IMPORTS = gql`
-  query getRepoImports {
-    repoImports(orderBy: CREATED_AT_DESC) {
+  query getRepoImports($idProvider: UUID!) {
+    repoImports(orderBy: CREATED_AT_DESC, condition: {provider: $idProvider}) {
       totalCount
       nodes {
         id
         settings
         lastImport
         importStatus
+        provider: providerByProvider {
+          id
+          name
+          vendor
+          settings
+        }
+        repos {
+          totalCount
+        }
       }
     }
   }

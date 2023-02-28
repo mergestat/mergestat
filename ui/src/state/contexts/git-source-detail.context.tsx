@@ -1,12 +1,17 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
-import { GitSourceDetail, ImportSync } from 'src/@types'
+import { GitSourceDetail, ImportSync, RepoImportData } from 'src/@types'
 
 type GitSourceDetailContext = {
   loading: boolean
+  idProvider: string | string[]
   gsDetail: GitSourceDetail
+  searchImport: string
   importAuto: ImportSync
   showAddRepoModal: boolean
+  showAutoImportModal: boolean
+  showRemoveImportModal: boolean
+  importInfo: RepoImportData
 }
 
 type UseGitSourceDetailContext = [
@@ -16,9 +21,14 @@ type UseGitSourceDetailContext = [
 
 const initialState: GitSourceDetailContext = {
   loading: false,
+  idProvider: '',
   gsDetail: {} as GitSourceDetail,
+  searchImport: '',
   importAuto: {} as ImportSync,
   showAddRepoModal: false,
+  showAutoImportModal: false,
+  showRemoveImportModal: false,
+  importInfo: {} as RepoImportData
 }
 
 function useGitSourceDetail(): UseGitSourceDetailContext {
@@ -50,10 +60,24 @@ function useGitSourceDetailSetState() {
     }))
   }
 
+  const setIdProvider = (idProvider: string | string[]) => {
+    setState(prev => ({
+      ...prev,
+      idProvider
+    }))
+  }
+
   const setGsDetail = (gsDetail: GitSourceDetail) => {
     setState(prev => ({
       ...prev,
       gsDetail
+    }))
+  }
+
+  const setSearchImport = (searchImport: string) => {
+    setState(prev => ({
+      ...prev,
+      searchImport
     }))
   }
 
@@ -71,12 +95,38 @@ function useGitSourceDetailSetState() {
     }))
   }
 
+  const setShowAutoImportModal = (show: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showAutoImportModal: show
+    }))
+  }
+
+  const setShowRemoveImportModal = (show: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showRemoveImportModal: show
+    }))
+  }
+
+  const setImportInfo = (importInfo: RepoImportData) => {
+    setState(prev => ({
+      ...prev,
+      importInfo
+    }))
+  }
+
   return {
     _,
     setLoading,
+    setIdProvider,
     setGsDetail,
+    setSearchImport,
     setImportAuto,
-    setShowAddRepoModal
+    setShowAddRepoModal,
+    setShowAutoImportModal,
+    setShowRemoveImportModal,
+    setImportInfo
   }
 }
 

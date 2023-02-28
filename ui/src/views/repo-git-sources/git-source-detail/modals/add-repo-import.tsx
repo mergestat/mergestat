@@ -5,7 +5,6 @@ import React, { useCallback } from 'react'
 import { AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 import { showSuccessAlert } from 'src/utils/alerts'
-import { SYNC_REPO_METHOD } from 'src/utils/constants'
 
 export const AddRepoImportModal: React.FC = () => {
   const { setImportAuto, setShowAddRepoModal } = useGitSourceDetailSetState()
@@ -21,7 +20,7 @@ export const AddRepoImportModal: React.FC = () => {
       close()
     },
     awaitRefetchQueries: true,
-    refetchQueries: () => ['getGitSource']
+    refetchQueries: () => ['getGitSource', 'getRepoImports']
   })
 
   const handleCheckBox = (type: string) => {
@@ -37,7 +36,8 @@ export const AddRepoImportModal: React.FC = () => {
   const addImport = () => {
     const defaultSyncs = importAuto.defaultSyncs.filter(ds => ds.checked).map(ds => ds.type)
     const settings = {
-      [importAuto.type === SYNC_REPO_METHOD.GH_ORG ? 'org' : 'user']: importAuto.name,
+      type: importAuto.type,
+      userOrOrg: importAuto.name,
       defaultSyncTypes: defaultSyncs
     }
 

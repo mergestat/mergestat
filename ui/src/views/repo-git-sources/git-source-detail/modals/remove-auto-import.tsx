@@ -3,13 +3,13 @@ import { Button, Modal, Toolbar } from '@mergestat/blocks'
 import { TrashIcon, XIcon } from '@mergestat/icons'
 import React, { useCallback } from 'react'
 import { REMOVE_IMPORT } from 'src/api-logic/graphql/mutations/repos'
-import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
+import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 import { showSuccessAlert } from 'src/utils/alerts'
-import { SYNC_REPO_METHOD, TEST_IDS } from 'src/utils/constants'
+import { TEST_IDS } from 'src/utils/constants'
 
-export const RemoveImportModal: React.FC = () => {
-  const [{ importToRemove }] = useRepositoriesContext()
-  const { setShowRemoveImportModal } = useRepositoriesSetState()
+export const RemoveAutoImportModal: React.FC = () => {
+  const { setShowRemoveImportModal } = useGitSourceDetailSetState()
+  const [{ importInfo }] = useGitSourceDetailContext()
 
   const close = useCallback(() => {
     setShowRemoveImportModal(false)
@@ -21,7 +21,7 @@ export const RemoveImportModal: React.FC = () => {
       close()
     },
     awaitRefetchQueries: true,
-    refetchQueries: () => ['getRepoImports']
+    refetchQueries: () => ['getGitSource', 'getRepoImports']
   })
 
   return (
@@ -46,7 +46,7 @@ export const RemoveImportModal: React.FC = () => {
       </Modal.Header>
       <Modal.Body>
         <div className='px-6 py-6'>
-          Are you sure you want to remove the GitHub repo auto import for the <strong className="font-semibold text-gray-800">{importToRemove?.name}</strong> {importToRemove?.type === SYNC_REPO_METHOD.GH_ORG ? 'organization' : 'user'}?
+          Are you sure you want to remove the repo auto import for the <strong className="font-semibold text-gray-800">{importInfo?.name}</strong> {importInfo?.type}?
         </div>
       </Modal.Body>
       <Modal.Footer>
@@ -63,7 +63,7 @@ export const RemoveImportModal: React.FC = () => {
               <Button
                 skin="danger"
                 onClick={() => removeImport({
-                  variables: { id: importToRemove?.id }
+                  variables: { id: importInfo?.id }
                 })}
                 startIcon={<TrashIcon className="t-icon" />}
                 data-testid={TEST_IDS.removeRepoButtonModal}

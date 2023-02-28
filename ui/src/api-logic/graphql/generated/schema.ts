@@ -19899,6 +19899,13 @@ export type AddTokenMutationVariables = Exact<{
 
 export type AddTokenMutation = { addToken?: boolean | null };
 
+export type DeleteCredentialMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type DeleteCredentialMutation = { deleteServiceAuthCredential?: { deletedServiceAuthCredentialNodeId?: string | null } | null };
+
 export type AddGitSourceMutationVariables = Exact<{
   name: Scalars['String'];
   settings: Scalars['JSON'];
@@ -20047,10 +20054,12 @@ export type GetGitSourceQueryVariables = Exact<{
 
 export type GetGitSourceQuery = { provider?: { id: any, name: string, description?: string | null, vendor: string, settings: any, auth: { nodes: Array<{ id: any, type: string, credentials?: string | null, createdAt: any }> }, auto: { nodes: Array<{ id: any, settings: any, repos: { totalCount: number } }> }, manual: { totalCount: number, nodes: Array<{ id: any, repo: string, settings: any }> } } | null };
 
-export type GetRepoImportsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetRepoImportsQueryVariables = Exact<{
+  idProvider: Scalars['UUID'];
+}>;
 
 
-export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, lastImport?: any | null, importStatus?: string | null }> } | null };
+export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, lastImport?: any | null, importStatus?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repos: { totalCount: number } }> } | null };
 
 export type GetRepoImportQueryVariables = Exact<{
   id: Scalars['UUID'];

@@ -27,7 +27,7 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
   }, [name, description])
 
   return (
-    <div className='flex flex-col flex-1 overflow-hidden'>
+    <div className='flex flex-col flex-1 overflow-auto'>
       <Toolbar className='bg-white px-8 pt-4'>
         <Toolbar.Left>
           <EditableText
@@ -59,7 +59,7 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
           <Tabs.List className='border-b px-8'>
             <Tabs.Item>Overview</Tabs.Item>
           </Tabs.List>
-          <Tabs.Panels className="p-8 h-full bg-gray-50 overflow-auto">
+          <Tabs.Panels className="p-8 pb-16 bg-gray-50">
             <Tabs.Panel>
               <GitSourceOverviewTab />
             </Tabs.Panel>

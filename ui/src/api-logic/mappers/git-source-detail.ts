@@ -3,7 +3,7 @@ import { AuthDetail, GitSourceDetail, RepoAuto, RepoManual } from 'src/@types'
 import { DATE_FORMAT } from 'src/utils/constants'
 import { GetGitSourceQuery } from '../graphql/generated/schema'
 
-const mapToGitSourceDetail = (data: GetGitSourceQuery | undefined): GitSourceDetail => {
+const mapToGitSourceDetail = (data: GetGitSourceQuery | undefined, searchAuto?: string, searchManual?: string): GitSourceDetail => {
   const authData = data?.provider?.auth.nodes[0]
 
   const detail = {
@@ -28,7 +28,10 @@ const mapToGitSourceDetail = (data: GetGitSourceQuery | undefined): GitSourceDet
   }
 
   let totalAuto = 0
-  data?.provider?.auto.nodes.forEach((a) => {
+  let nodesAuto = data?.provider?.auto.nodes || []
+  if (searchAuto) nodesAuto = nodesAuto?.filter(n => n.settings.userOrOrg?.includes(searchAuto))
+
+  nodesAuto.forEach((a) => {
     const repo: RepoAuto = {
       id: a.id,
       settings: a.settings,
@@ -39,7 +42,9 @@ const mapToGitSourceDetail = (data: GetGitSourceQuery | undefined): GitSourceDet
     detail.auto.push(repo)
   })
 
-  data?.provider?.manual.nodes.forEach((m) => {
+  let nodesManual = data?.provider?.manual.nodes || []
+  if (searchManual) nodesManual = nodesManual?.filter(n => n.repo.includes(searchManual))
+  nodesManual.forEach((m) => {
     const repo: RepoManual = {
       id: m.id,
       repo: m.repo,

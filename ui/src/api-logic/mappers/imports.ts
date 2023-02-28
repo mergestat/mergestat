@@ -15,10 +15,13 @@ const mapToImportsData = (data: GetRepoImportsQuery | undefined): Array<RepoImpo
     const importInfo: RepoImportData = {
       id: imp.id,
       importDone: !!imp.lastImport,
-      type: imp.type,
-      source: imp.type === SYNC_REPO_METHOD.GH_USER ? imp.settings.user : imp.settings.org,
+      type: imp.settings.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org',
+      name: imp.settings.userOrOrg,
       lastSync: imp.lastImport ? imp.lastImport : '',
-      status: imp.importStatus as ImportStatusType
+      status: imp.importStatus as ImportStatusType,
+      totalRepos: imp.repos.totalCount,
+      vendor: imp.provider?.vendor || '',
+      vendorUrl: imp.provider?.settings.url
     }
     mappedData.push(importInfo)
   })

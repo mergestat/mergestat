@@ -1,15 +1,21 @@
-import { Alert, Button, Dropdown, Input, Menu } from '@mergestat/blocks'
+import { Alert, Button, Dropdown, Input, Menu, Panel } from '@mergestat/blocks'
 import { CaretDownIcon, PlusIcon } from '@mergestat/icons'
 import { useState } from 'react'
+import Loading from 'src/components/Loading'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
+import useRepoImports from 'src/views/hooks/useRepoImports'
 import useSyncTypes from 'src/views/hooks/useSyncTypes'
+import { FilterHeader } from 'src/views/shared/filter-header'
 import { AddRepoImportModal } from '../../../modals/add-repo-import'
+import { AutoImportTable } from '../components/auto-import-table'
 
 const ReposAuto: React.FC = () => {
   const { syncsTypesArray } = useSyncTypes()
   const [{ showAddRepoModal }] = useGitSourceDetailContext()
-  const { setImportAuto, setShowAddRepoModal } = useGitSourceDetailSetState()
+  const { setImportAuto, setShowAddRepoModal, setSearchImport } = useGitSourceDetailSetState()
+
+  const { loading, imports, records } = useRepoImports()
 
   const [importType, setImportType] = useState(SYNC_REPO_METHOD.GH_ORG)
   const [userOrOrg, setUserOrOrg] = useState('')
@@ -65,9 +71,21 @@ const ReposAuto: React.FC = () => {
         </div>
       </div>
 
-      <div>
+      {/** Auto Import Table */}
+      {records && <FilterHeader setSearch={setSearchImport} />}
 
-      </div>
+      {loading
+        ? <Loading />
+        : records
+          ? <AutoImportTable imports={imports} />
+          : <div className='bg-white p-6 pt-0'>
+            <Panel className='rounded-md shadow-sm'>
+              <Panel.Body className='p-12 m-auto'>
+                <span className='text-gray-500'>Enter GitHub organization or username</span>
+              </Panel.Body>
+            </Panel>
+          </div>
+      }
 
       {showAddRepoModal && <AddRepoImportModal />}
     </>
