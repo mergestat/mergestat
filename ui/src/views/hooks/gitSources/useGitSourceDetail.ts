@@ -7,7 +7,7 @@ import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state
 
 const useGitSourceDetail = (gitSourceId?: string | string[]) => {
   const { setLoading, setGsDetail, setIdProvider } = useGitSourceDetailSetState()
-  const [{ searchImport }] = useGitSourceDetailContext()
+  const [{ searchImport, searchManualImport }] = useGitSourceDetailContext()
 
   const { loading, data } = useQuery<GetGitSourceQuery>(GET_GIT_SOURCE, {
     variables: { id: gitSourceId },
@@ -15,10 +15,10 @@ const useGitSourceDetail = (gitSourceId?: string | string[]) => {
   })
 
   useEffect(() => {
-    setGsDetail(mapToGitSourceDetail(data, searchImport))
+    setGsDetail(mapToGitSourceDetail(data, searchImport, searchManualImport))
     setIdProvider(gitSourceId || '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, searchImport])
+  }, [data, searchImport, searchManualImport])
 
   useEffect(() => {
     setLoading(loading)

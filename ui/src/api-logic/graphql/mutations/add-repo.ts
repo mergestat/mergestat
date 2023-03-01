@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 const ADD_REPO = gql`
-  mutation addRepo($repo: String!, $provider: UUID!) {
-    createRepo(input: {repo: {repo: $repo, provider: $provider}}) {
+  mutation addRepo($repo: String!, $idProvider: UUID!) {
+    createRepo(input: {repo: {repo: $repo, provider: $idProvider}}) {
       repo {
         id
         repo

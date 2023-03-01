@@ -54,7 +54,7 @@ const mapToGitSourceDetail = (data: GetGitSourceQuery | undefined, searchAuto?: 
   })
 
   detail.totalAuto = totalAuto
-  detail.totalManual = data?.provider?.manual.totalCount || 0
+  detail.totalManual = nodesManual.length || 0
   detail.totalRepos = detail.totalAuto + detail.totalManual
 
   return detail

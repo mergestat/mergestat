@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-const GET_REPO_IMPORTS = gql`
+const GET_REPO_AUTO_IMPORTS = gql`
   query getRepoImports($idProvider: UUID!) {
     repoImports(orderBy: CREATED_AT_DESC, condition: {provider: $idProvider}) {
       totalCount
@@ -22,6 +22,41 @@ const GET_REPO_IMPORTS = gql`
     }
   }
 `
+
+const GET_REPO_MANUAL_IMPORTS = gql`
+  query getRepoManualImports($idProvider: UUID!, $search: String!, $first: Int, $offset: Int) {
+    repos(
+      orderBy: [CREATED_AT_DESC, REPO_DESC]
+      filter: {repo: {includes: $search}}
+      condition: {provider: $idProvider, repoImportId: null}
+      first: $first
+      offset: $offset
+    )
+      {
+      totalCount
+      nodes {
+        id
+        repo
+        settings
+        provider: providerByProvider {
+          id
+          name
+          vendor
+          settings
+        }
+      }
+    }
+  }
+`
+
+const GET_ALL_REPO_MANUAL_IMPORTS = gql`
+  query getAllRepoManualImports($idProvider: UUID!) {
+    repos(condition: {provider: $idProvider, repoImportId: null}) {
+      totalCount
+    }
+  }
+`
+
 const GET_REPO_IMPORT = gql`
   query getRepoImport($id: UUID!) {
     repoImport(id: $id) {
@@ -45,4 +80,4 @@ const GET_REPO_IMPORT = gql`
   }
 `
 
-export { GET_REPO_IMPORTS, GET_REPO_IMPORT }
+export { GET_REPO_AUTO_IMPORTS, GET_ALL_REPO_MANUAL_IMPORTS, GET_REPO_MANUAL_IMPORTS, GET_REPO_IMPORT }

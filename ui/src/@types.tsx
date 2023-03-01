@@ -142,6 +142,13 @@ export type SettingsDataType = {
 
 /** Repo Imports Data Props Type */
 
+export type RepoManualImportData = {
+  id: string
+  name: string
+  vendor: string
+  vendorUrl: string
+}
+
 export type RepoImportData = {
   id: string
   importDone: boolean

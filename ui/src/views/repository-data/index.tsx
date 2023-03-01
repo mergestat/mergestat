@@ -4,7 +4,6 @@ import React, { useEffect } from 'react'
 import { RepoSyncData } from 'src/@types'
 import { useRepositoriesContext } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
-import { AddRepositoryModal } from '../repositories/modals/add-repository-modal'
 import { RemoveRepositoryModal } from '../repositories/modals/remove-repository-modal'
 import { PageHeader, RepoSettings, SyncTypesTable } from './components'
 
@@ -14,7 +13,7 @@ type RepoDataViewProps = {
 }
 
 const RepoDataView = ({ data }: RepoDataViewProps) => {
-  const [{ showAddRepositoryModal, showRemoveRepositoryModal }] = useRepositoriesContext()
+  const [{ showRemoveRepositoryModal }] = useRepositoriesContext()
   const router = useRouter()
 
   useEffect(() => {
@@ -45,7 +44,6 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
           </Tabs.Panel>
         </Tabs.Panels>
       </Tabs.Group>
-      {showAddRepositoryModal && <AddRepositoryModal />}
       {showRemoveRepositoryModal && <RemoveRepositoryModal />}
     </>
   )

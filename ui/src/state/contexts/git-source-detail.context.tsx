@@ -1,17 +1,24 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
-import { GitSourceDetail, ImportSync, RepoImportData } from 'src/@types'
+import { GitSourceDetail, ImportSync, RepoImportData, RepoManualImportData } from 'src/@types'
 
 type GitSourceDetailContext = {
   loading: boolean
   idProvider: string | string[]
   gsDetail: GitSourceDetail
   searchImport: string
+  searchManualImport: string
   importAuto: ImportSync
   showAddRepoModal: boolean
   showAutoImportModal: boolean
   showRemoveImportModal: boolean
   importInfo: RepoImportData
+  repoInfo: RepoManualImportData
+  totalManualRepos: number
+  rowsManualRepos: number
+  pageManualRepos: number
+  reposToAdd: string[]
+  showBulk: boolean
 }
 
 type UseGitSourceDetailContext = [
@@ -24,11 +31,18 @@ const initialState: GitSourceDetailContext = {
   idProvider: '',
   gsDetail: {} as GitSourceDetail,
   searchImport: '',
+  searchManualImport: '',
   importAuto: {} as ImportSync,
   showAddRepoModal: false,
   showAutoImportModal: false,
   showRemoveImportModal: false,
-  importInfo: {} as RepoImportData
+  importInfo: {} as RepoImportData,
+  repoInfo: {} as RepoManualImportData,
+  totalManualRepos: 0,
+  rowsManualRepos: 20,
+  pageManualRepos: 0,
+  reposToAdd: [],
+  showBulk: false
 }
 
 function useGitSourceDetail(): UseGitSourceDetailContext {
@@ -81,6 +95,13 @@ function useGitSourceDetailSetState() {
     }))
   }
 
+  const setSearchManualImport = (searchManualImport: string) => {
+    setState(prev => ({
+      ...prev,
+      searchManualImport
+    }))
+  }
+
   const setImportAuto = (importAuto: ImportSync) => {
     setState(prev => ({
       ...prev,
@@ -116,17 +137,66 @@ function useGitSourceDetailSetState() {
     }))
   }
 
+  const setRepoInfo = (repoInfo: RepoManualImportData) => {
+    setState(prev => ({
+      ...prev,
+      repoInfo
+    }))
+  }
+
+  const setTotalManualRepos = (totalManualRepos: number) => {
+    setState(prev => ({
+      ...prev,
+      totalManualRepos
+    }))
+  }
+
+  const setRowsManualRepos = (rowsManualRepos: number) => {
+    setState(prev => ({
+      ...prev,
+      rowsManualRepos
+    }))
+  }
+
+  const setPageManualRepos = (pageManualRepos: number) => {
+    setState(prev => ({
+      ...prev,
+      pageManualRepos
+    }))
+  }
+
+  const setReposToAdd = (reposToAdd: string[]) => {
+    setState(prev => ({
+      ...prev,
+      reposToAdd
+    }))
+  }
+
+  const setShowBulk = (showBulk: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showBulk
+    }))
+  }
+
   return {
     _,
     setLoading,
     setIdProvider,
     setGsDetail,
     setSearchImport,
+    setSearchManualImport,
     setImportAuto,
     setShowAddRepoModal,
     setShowAutoImportModal,
     setShowRemoveImportModal,
-    setImportInfo
+    setImportInfo,
+    setRepoInfo,
+    setTotalManualRepos,
+    setRowsManualRepos,
+    setPageManualRepos,
+    setReposToAdd,
+    setShowBulk
   }
 }
 

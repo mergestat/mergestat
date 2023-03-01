@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Loading from 'src/components/Loading'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
-import useRepoImports from 'src/views/hooks/useRepoImports'
+import useRepoImports from 'src/views/hooks/gitSources/useRepoImports'
 import useSyncTypes from 'src/views/hooks/useSyncTypes'
 import { FilterHeader } from 'src/views/shared/filter-header'
 import { AddRepoImportModal } from '../../../modals/add-repo-import'
@@ -12,7 +12,7 @@ import { AutoImportTable } from '../components/auto-import-table'
 
 const ReposAuto: React.FC = () => {
   const { syncsTypesArray } = useSyncTypes()
-  const [{ showAddRepoModal }] = useGitSourceDetailContext()
+  const [{ showAddRepoModal, searchImport }] = useGitSourceDetailContext()
   const { setImportAuto, setShowAddRepoModal, setSearchImport } = useGitSourceDetailSetState()
 
   const { loading, imports, records } = useRepoImports()
@@ -72,7 +72,7 @@ const ReposAuto: React.FC = () => {
       </div>
 
       {/** Auto Import Table */}
-      {records && <FilterHeader setSearch={setSearchImport} />}
+      {records && <FilterHeader initValue={searchImport} setSearch={setSearchImport} />}
 
       {loading
         ? <Loading />

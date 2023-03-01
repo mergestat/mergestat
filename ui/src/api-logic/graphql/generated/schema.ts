@@ -19868,7 +19868,7 @@ export type YesOrNoFilter = {
 
 export type AddRepoMutationVariables = Exact<{
   repo: Scalars['String'];
-  provider: Scalars['UUID'];
+  idProvider: Scalars['UUID'];
 }>;
 
 
@@ -20060,6 +20060,23 @@ export type GetRepoImportsQueryVariables = Exact<{
 
 
 export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, lastImport?: any | null, importStatus?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repos: { totalCount: number } }> } | null };
+
+export type GetRepoManualImportsQueryVariables = Exact<{
+  idProvider: Scalars['UUID'];
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetRepoManualImportsQuery = { repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, settings: any, provider?: { id: any, name: string, vendor: string, settings: any } | null }> } | null };
+
+export type GetAllRepoManualImportsQueryVariables = Exact<{
+  idProvider: Scalars['UUID'];
+}>;
+
+
+export type GetAllRepoManualImportsQuery = { repos?: { totalCount: number } | null };
 
 export type GetRepoImportQueryVariables = Exact<{
   id: Scalars['UUID'];

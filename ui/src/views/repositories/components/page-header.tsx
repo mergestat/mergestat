@@ -1,11 +1,8 @@
-import { Button, Toolbar } from '@mergestat/blocks'
-import { PlusIcon } from '@mergestat/icons'
+import { Toolbar } from '@mergestat/blocks'
 import React from 'react'
-import { useRepositoriesSetState } from 'src/state/contexts/repositories.context'
 import useCrumbsInit from 'src/views/hooks/useCrumbsInit'
 
 export const PageHeader: React.FC = () => {
-  const { setShowAddRepositoryModal } = useRepositoriesSetState()
   useCrumbsInit()
 
   return (
@@ -16,17 +13,7 @@ export const PageHeader: React.FC = () => {
             Repos
           </div>
         </Toolbar.Left>
-        <Toolbar.Right>
-          <Button
-            startIcon={<PlusIcon className="t-icon" />}
-            onClick={() => setShowAddRepositoryModal(true)}
-            skin="primary"
-          >
-            Add Repos
-          </Button>
-        </Toolbar.Right>
       </Toolbar>
-
     </div>
   )
 }

@@ -1,6 +1,6 @@
-import { ImportStatusType, RepoImportData } from 'src/@types'
+import { ImportStatusType, RepoImportData, RepoManualImportData } from 'src/@types'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
-import { GetRepoImportsQuery } from '../graphql/generated/schema'
+import { GetRepoImportsQuery, GetRepoManualImportsQuery } from '../graphql/generated/schema'
 
 /**
  * Method which iterate each repo import and map it to RepoImportData to be shown in table
@@ -29,4 +29,25 @@ const mapToImportsData = (data: GetRepoImportsQuery | undefined): Array<RepoImpo
   return mappedData
 }
 
-export { mapToImportsData }
+/**
+ * Method which iterate each repo manual import and map it to RepoManualImportData to be shown in table
+ * @param data Repo manual import list that comes from data base in GetRepoManualImportsQuery format
+ * @returns Repo manual import list from data base mapped to RepoManualImportData list
+ */
+const mapToManualImportsData = (data: GetRepoManualImportsQuery | undefined): Array<RepoManualImportData> => {
+  const mappedData: Array<RepoManualImportData> = []
+
+  data?.repos?.nodes.forEach((repo) => {
+    const repoInfo: RepoManualImportData = {
+      id: repo.id,
+      name: repo.repo.split(`${repo.provider?.settings.url}/`)[1],
+      vendor: repo.provider?.vendor || '',
+      vendorUrl: repo.provider?.settings.url
+    }
+    mappedData.push(repoInfo)
+  })
+
+  return mappedData
+}
+
+export { mapToImportsData, mapToManualImportsData }

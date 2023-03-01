@@ -12,11 +12,10 @@ import useRepos from 'src/views/hooks/useRepos'
 import { EmptyData } from '../shared/empty-data'
 import { MetricNumber } from '../shared/metric-number'
 import { FilterHeader, PageHeader, RepositoriesTable } from './components'
-import { AddRepositoryModal } from './modals/add-repository-modal'
 import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
 const RepositoriesView: React.FC = () => {
-  const [{ showAddRepositoryModal, showRemoveRepositoryModal }] = useRepositoriesContext()
+  const [{ showRemoveRepositoryModal }] = useRepositoriesContext()
   const { loading, data, runningImports, failedImports, showReposTable } = useRepos()
   const { loadingAllRepos, allRepos, loadingAllEnabledRepos, enabledRepos, loadingSyncErrors, syncErrors } = useMetrics()
   const [repos, setRepos] = useState<Array<RepoDataPropsT>>()
@@ -115,7 +114,6 @@ const RepositoriesView: React.FC = () => {
       </div>
 
       {showRemoveRepositoryModal && <RemoveRepositoryModal />}
-      {showAddRepositoryModal && <AddRepositoryModal />}
     </>
   )
 }

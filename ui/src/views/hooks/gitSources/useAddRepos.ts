@@ -1,17 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ApolloError, useMutation } from '@apollo/client'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ADD_REPO } from 'src/api-logic/graphql/mutations/add-repo'
-import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
+import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 import { showErrorAlert, showSuccessAlert, showWarningAlert } from 'src/utils/alerts'
-import { REPOS_REFETCHES } from 'src/utils/constants'
 
 const useAddRepos = () => {
   const [addedSuccess, setAddedSuccess] = useState(0)
   const [addedWarning, setAddedWarning] = useState(0)
 
-  const { setShowAddRepositoryModal, setReposToAdd } = useRepositoriesSetState()
-  const [{ reposToAdd, csvText }] = useRepositoriesContext()
+  const [{ idProvider, reposToAdd }] = useGitSourceDetailContext()
+  const { setReposToAdd } = useGitSourceDetailSetState()
 
   const [addRepo] = useMutation(ADD_REPO, {
     onError: (error: ApolloError) => {
@@ -22,38 +21,33 @@ const useAddRepos = () => {
       setAddedSuccess(addedSuccess + 1)
     },
     awaitRefetchQueries: true,
-    refetchQueries: () => REPOS_REFETCHES
+    refetchQueries: () => ['getGitSource', 'getAllRepoManualImports', 'getRepoManualImports']
   })
 
-  /**
-   * Method to close repo addition modal
-   */
-  const closeModal = useCallback(() => {
-    setReposToAdd([])
-    setShowAddRepositoryModal(false)
-  }, [])
-
   useEffect(() => {
+    // TO-DO: It does not work all times because async executions. The better solution would be have the bulk creation on the backend.
     if (reposToAdd.length !== 0 && addedSuccess + addedWarning === reposToAdd.length) {
       addedSuccess > 0 && showSuccessAlert(`${addedSuccess} repo${addedSuccess > 1 ? 's' : ''} added`)
       addedWarning > 0 && showWarningAlert(`${addedWarning} repo${addedWarning > 1 ? 's' : ''} already exist${addedWarning === 1 ? 's' : ''}`)
-
+      setAddedWarning(0)
+      setAddedSuccess(0)
       setReposToAdd([])
-      closeModal()
     }
   }, [addedSuccess, addedWarning])
+
+  useEffect(() => {
+    add(reposToAdd)
+  }, [reposToAdd])
 
   /**
    * Method to record repos to database
    * @param repos Repositories to record
    */
   const add = (repos: string[]) => {
+    // TO-DO: Would be better to have the bulck creation on the backend.
     repos.forEach(repo => {
       addRepo({
-        variables: {
-          repo,
-          isGithub: repo.includes('github.com')
-        }
+        variables: { repo, idProvider }
       })
     })
   }
@@ -61,8 +55,8 @@ const useAddRepos = () => {
   /**
    * Method triggered when user is on CSV tab to add repos
    */
-  const addFromCSV = () => {
-    const lines = csvText.split(/\r?\n/)
+  const addFromCSV = (urls: string) => {
+    const lines = urls.split(/\r?\n/)
     const matrix = lines.map(line => line.split(',').map(ele => ele.trim()))
 
     let newRepos: string[] = []
@@ -73,20 +67,18 @@ const useAddRepos = () => {
     })
 
     setReposToAdd(newRepos)
-    add(newRepos)
   }
 
   /**
    * Method triggered when user is on URL tab to add repos
    */
-  const addFromURL = () => {
-    add(reposToAdd)
+  const addFromURL = (url: string) => {
+    setReposToAdd([url])
   }
 
   return {
     addFromURL,
-    addFromCSV,
-    closeModal
+    addFromCSV
   }
 }
 
