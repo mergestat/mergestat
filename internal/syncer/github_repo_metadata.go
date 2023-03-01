@@ -222,8 +222,7 @@ func (w *worker) getRepositoryInfo(ctx context.Context, ghToken string, currentR
 		err           error
 		repo          *github.Repository
 		latestRelease *github.RepositoryRelease
-		releases      []*github.RepositoryRelease
-		totalReleases []*github.RepositoryRelease
+		totalReleases int
 		resp          *github.Response
 	)
 
@@ -266,27 +265,12 @@ func (w *worker) getRepositoryInfo(ctx context.Context, ghToken string, currentR
 	helper.RestRatelimitHandler(ctx, resp, w.logger, queries.NewQuerier(w.db), true)
 
 	opt := &github.ListOptions{}
-	for {
 
-		if releases, resp, err = client.Repositories.ListReleases(ctx, repoOwner, repoName, opt); err != nil && resp.StatusCode != http.StatusNotFound {
-			return nil, nil, 0, err
-		}
-
-		totalReleases = append(totalReleases, releases...)
-
-		helper.RestRatelimitHandler(ctx, resp, w.logger, queries.NewQuerier(w.db), true)
-
-		if resp == nil {
-			break
-		}
-
-		if resp.NextPage == 0 {
-			break
-		}
-
-		opt.Page = resp.NextPage
-
+	if _, resp, err = client.Repositories.ListReleases(ctx, repoOwner, repoName, opt); err != nil && resp.StatusCode != http.StatusNotFound {
+		return nil, nil, 0, err
 	}
 
-	return repo, latestRelease, len(totalReleases), nil
+	totalReleases = resp.LastPage
+
+	return repo, latestRelease, totalReleases, nil
 }
