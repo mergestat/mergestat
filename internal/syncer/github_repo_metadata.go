@@ -83,11 +83,10 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	repoName := components[2]
 
 	// execute mergestat query
-	//var repoInfoJSON []byte
 	var repo *github.Repository
 	var latestRelease *github.RepositoryRelease
 	var releaseCount int
-	if repo, latestRelease, releaseCount, err = w.getRepository(ctx, ghToken, j.Repo); err != nil {
+	if repo, latestRelease, releaseCount, err = w.getRepositoryInfo(ctx, ghToken, j.Repo); err != nil {
 		return err
 	}
 
@@ -130,9 +129,9 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 		insertParams.Description = helper.StringToSqlNullString(repo.Description)
 	}
 
-	if repo.Organization.DiskUsage != nil {
-		diskUsage := int32(*repo.Organization.DiskUsage)
-		insertParams.DiskUsage = helper.Int32ToSqlNullInt32(&diskUsage)
+	if repo.Size != nil {
+		size := int32(*repo.Size)
+		insertParams.Size = helper.Int32ToSqlNullInt32(&size)
 	}
 
 	if repo.ForksCount != nil {
@@ -153,12 +152,8 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	}
 
 	if repo.MirrorURL != nil {
-		if repo.MirrorURL != nil {
-			isMirror := repo.MirrorURL == &j.Repo
-			insertParams.IsMirror = sql.NullBool{Bool: isMirror, Valid: true}
-		} else {
-			insertParams.IsMirror = sql.NullBool{}
-		}
+		insertParams.MirrorUrl = sql.NullString{String: *repo.MirrorURL, Valid: true}
+
 	}
 
 	if repo.Private != nil {
@@ -192,14 +187,7 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 		if repo.License.Name != nil {
 			insertParams.LicenseName = helper.StringToSqlNullString(repo.License.Name)
 		}
-		/*if repo.License.Nickname != nil {
-			insertParams.LicenseNickname = helper.StringToSqlNullString() *repo.License.Nickname, Valid: true}
-		}*/
 	}
-
-	/*if repo.OpenGraphImageUrl != nil {
-		insertParams.OpenGraphImageUrl = helper.StringToSqlNullString() *repo.OpenGraphImageUrl, Valid: true}
-	}*/
 
 	if repo.Language != nil {
 		insertParams.PrimaryLanguage = helper.StringToSqlNullString(repo.Language)
@@ -245,7 +233,6 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	}
 
 	// nightmare over..gotta be a better way than hand typing this
-
 	if err := w.db.WithTx(tx).InsertGitHubRepoInfo(ctx, insertParams); err != nil {
 		return err
 	}
@@ -264,7 +251,7 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	return tx.Commit(ctx)
 }
 
-func (w *worker) getRepository(ctx context.Context, ghToken string, currentRepo string) (*github.Repository, *github.RepositoryRelease, int, error) {
+func (w *worker) getRepositoryInfo(ctx context.Context, ghToken string, currentRepo string) (*github.Repository, *github.RepositoryRelease, int, error) {
 	var err error
 	var repo *github.Repository
 	var latestRelease *github.RepositoryRelease
