@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-github/v47/github"
+	"github.com/google/go-github/v50/github"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/mergestat/internal/db"

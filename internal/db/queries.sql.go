@@ -265,42 +265,45 @@ INSERT INTO public.github_repo_info (
     is_archived, is_disabled, is_mirror, is_private, total_issues_count, latest_release_author,
     latest_release_created_at, latest_release_name, latest_release_published_at, license_key,
     license_name, license_nickname, open_graph_image_url, primary_language, pushed_at, releases_count,
-    stargazers_count, updated_at, watchers_count
+    stargazers_count, updated_at, watchers_count,advanced_security,secret_scanning,secret_scanning_push_protection
 ) VALUES(
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
-    $23, $24, $25, $26, $27, $28
+    $23, $24, $25, $26, $27, $28,$29,$30,$31
 )
 `
 
 type InsertGitHubRepoInfoParams struct {
-	RepoID                   uuid.UUID
-	Owner                    string
-	Name                     string
-	CreatedAt                sql.NullTime
-	DefaultBranchName        sql.NullString
-	Description              sql.NullString
-	DiskUsage                sql.NullInt32
-	ForkCount                sql.NullInt32
-	HomepageUrl              sql.NullString
-	IsArchived               sql.NullBool
-	IsDisabled               sql.NullBool
-	IsMirror                 sql.NullBool
-	IsPrivate                sql.NullBool
-	TotalIssuesCount         sql.NullInt32
-	LatestReleaseAuthor      sql.NullString
-	LatestReleaseCreatedAt   sql.NullTime
-	LatestReleaseName        sql.NullString
-	LatestReleasePublishedAt sql.NullTime
-	LicenseKey               sql.NullString
-	LicenseName              sql.NullString
-	LicenseNickname          sql.NullString
-	OpenGraphImageUrl        sql.NullString
-	PrimaryLanguage          sql.NullString
-	PushedAt                 sql.NullTime
-	ReleasesCount            sql.NullInt32
-	StargazersCount          sql.NullInt32
-	UpdatedAt                sql.NullTime
-	WatchersCount            sql.NullInt32
+	RepoID                       uuid.UUID
+	Owner                        string
+	Name                         string
+	CreatedAt                    sql.NullTime
+	DefaultBranchName            sql.NullString
+	Description                  sql.NullString
+	DiskUsage                    sql.NullInt32
+	ForkCount                    sql.NullInt32
+	HomepageUrl                  sql.NullString
+	IsArchived                   sql.NullBool
+	IsDisabled                   sql.NullBool
+	IsMirror                     sql.NullBool
+	IsPrivate                    sql.NullBool
+	TotalIssuesCount             sql.NullInt32
+	LatestReleaseAuthor          sql.NullString
+	LatestReleaseCreatedAt       sql.NullTime
+	LatestReleaseName            sql.NullString
+	LatestReleasePublishedAt     sql.NullTime
+	LicenseKey                   sql.NullString
+	LicenseName                  sql.NullString
+	LicenseNickname              sql.NullString
+	OpenGraphImageUrl            sql.NullString
+	PrimaryLanguage              sql.NullString
+	PushedAt                     sql.NullTime
+	ReleasesCount                sql.NullInt32
+	StargazersCount              sql.NullInt32
+	UpdatedAt                    sql.NullTime
+	WatchersCount                sql.NullInt32
+	AdvancedSecurity             sql.NullString
+	SecretScanning               sql.NullString
+	SecretScanningPushProtection sql.NullString
 }
 
 func (q *Queries) InsertGitHubRepoInfo(ctx context.Context, arg InsertGitHubRepoInfoParams) error {
@@ -333,6 +336,9 @@ func (q *Queries) InsertGitHubRepoInfo(ctx context.Context, arg InsertGitHubRepo
 		arg.StargazersCount,
 		arg.UpdatedAt,
 		arg.WatchersCount,
+		arg.AdvancedSecurity,
+		arg.SecretScanning,
+		arg.SecretScanningPushProtection,
 	)
 	return err
 }

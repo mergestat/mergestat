@@ -76,10 +76,10 @@ INSERT INTO public.github_repo_info (
     is_archived, is_disabled, is_mirror, is_private, total_issues_count, latest_release_author,
     latest_release_created_at, latest_release_name, latest_release_published_at, license_key,
     license_name, license_nickname, open_graph_image_url, primary_language, pushed_at, releases_count,
-    stargazers_count, updated_at, watchers_count
+    stargazers_count, updated_at, watchers_count,advanced_security,secret_scanning,secret_scanning_push_protection
 ) VALUES(
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
-    $23, $24, $25, $26, $27, $28
+    $23, $24, $25, $26, $27, $28,$29,$30,$31
 );
 
 -- name: InsertSyncJobLog :exec

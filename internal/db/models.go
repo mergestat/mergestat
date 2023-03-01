@@ -510,7 +510,10 @@ type GithubRepoInfo struct {
 	// number of watchers associated to the repo
 	WatchersCount sql.NullInt32
 	// timestamp when record was synced into the MergeStat database
-	MergestatSyncedAt time.Time
+	MergestatSyncedAt            time.Time
+	AdvancedSecurity             sql.NullString
+	SecretScanning               sql.NullString
+	SecretScanningPushProtection sql.NullString
 }
 
 // stargazers of a GitHub repo
