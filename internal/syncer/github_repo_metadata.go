@@ -249,7 +249,9 @@ func (w *worker) getRepositoryInfo(ctx context.Context, ghToken string, currentR
 
 	var repoOwner, repoName string
 
-	repoOwner, repoName, err = helper.GetRepoOwnerAndRepoName(currentRepo)
+	if repoOwner, repoName, err = helper.GetRepoOwnerAndRepoName(currentRepo); err != nil {
+		return nil, nil, 0, err
+	}
 
 	if repo, _, err = client.Repositories.Get(ctx, repoOwner, repoName); err != nil {
 		return nil, nil, 0, err
