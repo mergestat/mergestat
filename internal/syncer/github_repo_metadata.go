@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 
 	"github.com/google/go-github/v50/github"
 	"github.com/jackc/pgx/v4"
@@ -17,41 +16,6 @@ import (
 	"github.com/mergestat/mergestat/queries"
 	"golang.org/x/oauth2"
 )
-
-const selectSingleGitHubRepo = `SELECT github_repo(?) AS repo`
-
-type githubRepoInfo struct {
-	CreatedAt         *time.Time `json:"createdAt"`
-	DefaultBranchName *string    `json:"defaultBranchName"`
-	Description       *string    `json:"description"`
-	DiskUsage         *int       `json:"diskUsage"`
-	ForkCount         *int       `json:"forkCount"`
-	HomepageUrl       *string    `json:"homepageURL"`
-	IsArchived        *bool      `json:"isArchived"`
-	IsDisabled        *bool      `json:"isDisabled"`
-	IsMirror          *bool      `json:"isMirror"`
-	IsPrivate         *bool      `json:"isPrivate"`
-	TotalIssuesCount  *int       `json:"totalIssuesCount"`
-	LatestRelease     *struct {
-		AuthorLogin *string    `json:"authorLogin"`
-		CreatedAt   *time.Time `json:"createdAt"`
-		Name        *string    `json:"name"`
-		PublishedAt *time.Time `json:"publishedAt"`
-	} `json:"latestRelease"`
-	License *struct {
-		Key      *string `json:"key"`
-		Name     *string `json:"name"`
-		Nickname *string `json:"nickname"`
-	} `json:"license"`
-	Name              *string    `json:"name"`
-	OpenGraphImageUrl *string    `json:"openGraphImageURL"`
-	PrimaryLanguage   *string    `json:"primaryLanguage"`
-	PushedAt          *time.Time `json:"pushedAt"`
-	ReleasesCount     *int       `json:"releasesCount"`
-	StargazersCount   *int       `json:"stargazersCount"`
-	UpdatedAt         *time.Time `json:"updatedAt"`
-	WatchersCount     *int       `json:"watchersCount"`
-}
 
 func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	var ghToken string
@@ -83,9 +47,11 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	repoName := components[2]
 
 	// execute mergestat query
-	var repo *github.Repository
-	var latestRelease *github.RepositoryRelease
-	var releaseCount int
+	var (
+		repo          *github.Repository
+		latestRelease *github.RepositoryRelease
+		releaseCount  int
+	)
 	if repo, latestRelease, releaseCount, err = w.getRepositoryInfo(ctx, ghToken, j.Repo); err != nil {
 		return err
 	}
@@ -105,7 +71,7 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	}()
 
 	// first, delete the prior repo info
-	if err := w.db.WithTx(tx).DeleteGitHubRepoInfo(ctx, j.RepoID); err != nil {
+	if err = w.db.WithTx(tx).DeleteGitHubRepoInfo(ctx, j.RepoID); err != nil {
 		return err
 	}
 
@@ -252,12 +218,14 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 }
 
 func (w *worker) getRepositoryInfo(ctx context.Context, ghToken string, currentRepo string) (*github.Repository, *github.RepositoryRelease, int, error) {
-	var err error
-	var repo *github.Repository
-	var latestRelease *github.RepositoryRelease
-	var releases []*github.RepositoryRelease
-	var totalReleases []*github.RepositoryRelease
-	var resp *github.Response
+	var (
+		err           error
+		repo          *github.Repository
+		latestRelease *github.RepositoryRelease
+		releases      []*github.RepositoryRelease
+		totalReleases []*github.RepositoryRelease
+		resp          *github.Response
+	)
 
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: ghToken},
@@ -279,7 +247,9 @@ func (w *worker) getRepositoryInfo(ctx context.Context, ghToken string, currentR
 		helper.RestRatelimitHandler(ctx, resp, w.logger, queries.NewQuerier(w.db), true)
 	}
 
-	repoOwner, repoName, err := helper.GetRepoOwnerAndRepoName(currentRepo)
+	var repoOwner, repoName string
+
+	repoOwner, repoName, err = helper.GetRepoOwnerAndRepoName(currentRepo)
 
 	if repo, _, err = client.Repositories.Get(ctx, repoOwner, repoName); err != nil {
 		return nil, nil, 0, err
@@ -311,9 +281,10 @@ func (w *worker) getRepositoryInfo(ctx context.Context, ghToken string, currentR
 		if resp.NextPage == 0 {
 			break
 		}
+
 		opt.Page = resp.NextPage
 
 	}
 
-	return repo, latestRelease, len(releases), nil
+	return repo, latestRelease, len(totalReleases), nil
 }
