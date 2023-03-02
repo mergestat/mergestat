@@ -1,9 +1,10 @@
-import { Button, ListItem, Panel } from '@mergestat/blocks'
+import { Button, ListItem } from '@mergestat/blocks'
 import { TrashIcon } from '@mergestat/icons'
 import React from 'react'
 import { RepoManualImportData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
+import { NoDataFound } from 'src/views/shared/no-data-found'
 import { RemoveManualImportModal } from '../../../modals/remove-manual-import'
 
 type ManualImportTableProps = {
@@ -23,15 +24,7 @@ export const ManualImportTable: React.FC<ManualImportTableProps> = ({ repos }: M
     <>
       <div className='flex flex-col flex-1'>
         {repos?.length < 1
-          ? <div className='flex justify-center py-5'>
-            <Panel className='rounded-md w-full shadow-sm mx-8'>
-              <Panel.Body className='p-0'>
-                <div className='flex justify-center items-center bg-white py-5'>
-                  Couldn&#39;t find any repo.
-                </div>
-              </Panel.Body>
-            </Panel>
-          </div>
+          ? <NoDataFound message='Couldn&#39;t find any repo.' />
           : <>
             <div className='flex flex-col min-w-0 bg-gray-50 h-full'>
               <div className='flex-1 overflow-x-auto overflow-y-hidden'>

@@ -14,7 +14,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
   const repoData: SyncTypeData = {
     repo: {
       id: data?.repo?.id,
-      name: data?.repo?.repo.replace(data?.repo?.provider?.settings?.url, '') || '',
+      name: data?.repo?.repo.replace(`${data?.repo?.provider?.settings?.url}/`, '') || '',
       provider: {
         id: data?.repo?.provider?.id,
         name: data?.repo?.provider?.name || '',

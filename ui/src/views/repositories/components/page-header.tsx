@@ -1,8 +1,11 @@
-import { Toolbar } from '@mergestat/blocks'
+import { Button, Toolbar } from '@mergestat/blocks'
+import { PlusIcon } from '@mergestat/icons'
+import { useRouter } from 'next/router'
 import React from 'react'
 import useCrumbsInit from 'src/views/hooks/useCrumbsInit'
 
 export const PageHeader: React.FC = () => {
+  const router = useRouter()
   useCrumbsInit()
 
   return (
@@ -13,6 +16,13 @@ export const PageHeader: React.FC = () => {
             Repos
           </div>
         </Toolbar.Left>
+        <Toolbar.Right>
+          <Button className='whitespace-nowrap'
+            label='Add Repos'
+            startIcon={<PlusIcon className='t-icon' />}
+            onClick={() => router.push('/repos/add-git-source')}
+          />
+        </Toolbar.Right>
       </Toolbar>
     </div>
   )

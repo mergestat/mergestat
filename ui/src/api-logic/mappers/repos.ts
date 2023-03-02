@@ -28,7 +28,7 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
     // Consolidated Repo info
     const repoInfo: RepoDataPropsT = {
       id: r?.id,
-      name: r?.repo.replace(r?.provider?.settings?.url, '') || '',
+      name: r?.repo.replace(`${r?.provider?.settings?.url}/`, '') || '',
       createdAt: new Date(r?.createdAt),
       autoImportFrom: r?.repoImport && `${r?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${r?.repoImport?.settings.userOrOrg}`,
       lastSync: '',

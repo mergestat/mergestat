@@ -1,11 +1,10 @@
 import { Tooltip } from '@mergestat/blocks'
 import { AutoImportIcon } from '@mergestat/icons'
-import { format } from 'date-fns'
 import Link from 'next/link'
 import React from 'react'
 import { ProviderT } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
-import { capitalize, getGitSourceIcon, getRelativeTime } from 'src/utils'
+import { capitalize, getGitSourceIcon } from 'src/utils'
 import { TEST_IDS } from 'src/utils/constants'
 
 export type RepositoryNameProps = {
@@ -32,15 +31,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
           </h4>
         </Link>
         <div className='flex items-center'>
-          <span className='pr-2 text-sm t-text-muted'>
-            <Tooltip
-              content={`Added ${format(props.createdAt, 'PPp')}`}
-              placement='bottom'
-            >
-              {getRelativeTime(props.createdAt)}
-            </Tooltip>
-          </span>
-          <div className='border-l border-semantic-border px-2'>
+          <div className='border-semantic-border px-2'>
             <Tooltip
               content={`${capitalize(props.provider.vendor)} repository`}
               placement='bottom'
@@ -50,9 +41,9 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
               </a>
             </Tooltip>
           </div>
-          <div className='border-l border-semantic-border px-2'>
-            <Link href='/repos/git-sources'>
-              <span className='cursor-pointer'>
+          <div className='border-semantic-border px-2'>
+            <Link href={`/repos/git-sources/${props.provider.id}`}>
+              <span className='cursor-pointer text-gray-400 border-b border-gray-300'>
                 {props.provider.name}
               </span>
             </Link>

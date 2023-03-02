@@ -1,8 +1,9 @@
-import { ListItem, Panel } from '@mergestat/blocks'
+import { ListItem } from '@mergestat/blocks'
 import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 import { GitSourceData } from 'src/@types'
 import { getGitSourceIcon } from 'src/utils'
+import { NoDataFound } from 'src/views/shared/no-data-found'
 
 type GitSourcesTableProps = PropsWithChildren<{
   gitSources: GitSourceData[]
@@ -14,15 +15,7 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
   return (
     <div className='flex flex-col flex-1'>
       {gitSources.length < 1
-        ? <div className='flex justify-center py-5'>
-          <Panel className='rounded-md w-full shadow-sm mx-8'>
-            <Panel.Body className='p-0'>
-              <div className='flex justify-center items-center bg-white py-5'>
-                Couldn&#39;t find any git source.
-              </div>
-            </Panel.Body>
-          </Panel>
-        </div>
+        ? <NoDataFound message='Couldn&#39;t find any git source.' />
         : <>
           <div className='flex flex-col min-w-0 bg-gray-50 h-full'>
             <div className='flex-1 overflow-x-auto overflow-y-hidden'>
