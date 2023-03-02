@@ -264,7 +264,7 @@ func (w *worker) getRepositoryInfo(ctx context.Context, ghToken string, currentR
 
 	helper.RestRatelimitHandler(ctx, resp, w.logger, queries.NewQuerier(w.db), true)
 
-	opt := &github.ListOptions{}
+	opt := &github.ListOptions{PerPage: 1}
 
 	if _, resp, err = client.Repositories.ListReleases(ctx, repoOwner, repoName, opt); err != nil && resp.StatusCode != http.StatusNotFound {
 		return nil, nil, 0, err
