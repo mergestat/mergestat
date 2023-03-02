@@ -85,7 +85,10 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, page])
 
-  const renderDataCell = (rowIndex: number, columnIndex: number) => <Cell>{result[rowIndex][columnIndex]}</Cell>
+  const renderDataCell = (rowIndex: number, columnIndex: number) => {
+    const cell = result[rowIndex][columnIndex]
+    return <Cell>{cell?.constructor === Object ? JSON.stringify(cell) : cell}</Cell>
+  }
 
   return (
     <>
