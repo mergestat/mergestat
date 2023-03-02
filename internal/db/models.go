@@ -466,7 +466,7 @@ type GithubRepoInfo struct {
 	// the description for the repo
 	Description sql.NullString
 	// the number of kilobytes on disk for the repo
-	DiskUsage sql.NullInt32
+	Size sql.NullInt32
 	// number of forks associated to the repo
 	ForkCount sql.NullInt32
 	// the GitHub homepage URL for the repo
@@ -476,7 +476,7 @@ type GithubRepoInfo struct {
 	// boolean to determine if the repo is disabled
 	IsDisabled sql.NullBool
 	// boolean to determine if the repo is a mirror
-	IsMirror sql.NullBool
+	MirrorUrl sql.NullString
 	// boolean to determine if the repo is private
 	IsPrivate sql.NullBool
 	// number of issues associated to the repo
@@ -493,10 +493,6 @@ type GithubRepoInfo struct {
 	LicenseKey sql.NullString
 	// the license name for the repo
 	LicenseName sql.NullString
-	// the license nickname for the repo
-	LicenseNickname sql.NullString
-	// the URL for the image used to represent this repository in Open Graph data
-	OpenGraphImageUrl sql.NullString
 	// the primary language for the repo
 	PrimaryLanguage sql.NullString
 	// timestamp of the latest push to the repo
@@ -511,6 +507,12 @@ type GithubRepoInfo struct {
 	WatchersCount sql.NullInt32
 	// timestamp when record was synced into the MergeStat database
 	MergestatSyncedAt time.Time
+	// advanced security availability
+	AdvancedSecurity sql.NullString
+	// secret scanning availability
+	SecretScanning sql.NullString
+	// secret scanning push protection availability
+	SecretScanningPushProtection sql.NullString
 }
 
 // stargazers of a GitHub repo

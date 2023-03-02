@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/cavaliergopher/grab/v3"
-	"github.com/google/go-github/v47/github"
+	"github.com/google/go-github/v50/github"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/mergestat/internal/pool"
