@@ -32,7 +32,7 @@ require (
 )
 
 require (
-	github.com/google/go-github/v50 v50.0.0 // indirect
+	github.com/google/go-github/v50 v50.1.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
