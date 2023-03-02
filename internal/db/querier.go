@@ -20,6 +20,7 @@ type Querier interface {
 	// This allows us to make sure all repo syncs complete before we reschedule a new batch.
 	// We have now also added a concept of type groups which allows us to apply this same logic but by each group type which is where the PARTITION BY clause comes into play
 	EnqueueAllSyncs(ctx context.Context) error
+	FetchContainerSync(ctx context.Context, id uuid.UUID) (FetchContainerSyncRow, error)
 	FetchGitHubToken(ctx context.Context, pgpSymDecrypt string) (string, error)
 	GetRepoById(ctx context.Context, id uuid.UUID) (Repo, error)
 	GetRepoIDsFromRepoImport(ctx context.Context, arg GetRepoIDsFromRepoImportParams) ([]uuid.UUID, error)

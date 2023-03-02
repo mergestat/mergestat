@@ -657,6 +657,36 @@ type GrypeRepoVulnerability struct {
 	Path interface{}
 }
 
+type MergestatContainerImage struct {
+	ID   uuid.UUID
+	Type string
+	Url  string
+}
+
+type MergestatContainerImageType struct {
+	Name        string
+	Displayname string
+	Description sql.NullString
+}
+
+type MergestatContainerSync struct {
+	ID      uuid.UUID
+	RepoID  uuid.UUID
+	ImageID uuid.UUID
+}
+
+type MergestatContainerSyncExecution struct {
+	SyncID    uuid.UUID
+	JobID     uuid.UUID
+	CreatedAt sql.NullTime
+}
+
+type MergestatContainerSyncSchedule struct {
+	ID        uuid.UUID
+	SyncID    uuid.UUID
+	CreatedAt sql.NullTime
+}
+
 type MergestatJob struct {
 	ID                uuid.UUID
 	Queue             string
