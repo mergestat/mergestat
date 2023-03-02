@@ -87,7 +87,7 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
 
   const renderDataCell = (rowIndex: number, columnIndex: number) => {
     const cell = result[rowIndex][columnIndex]
-    return <Cell>{cell?.constructor === Object ? JSON.stringify(cell) : cell}</Cell>
+    return <Cell>{typeof cell === 'string' || typeof cell === 'number' ? cell : JSON.stringify(cell)}</Cell>
   }
 
   return (
