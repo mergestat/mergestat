@@ -4,13 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	"github.com/google/go-github/v41/github"
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
-	"net/http"
 )
 
 type fetchFunc func(ctx context.Context, page int) ([]*github.Repository, *github.Response, error)
@@ -67,7 +68,7 @@ func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImp
 
 	var repoUrls = make([]string, len(repos))
 	for i, repo := range repos {
-		repoUrls[i] = *repo.URL
+		repoUrls[i] = fmt.Sprintf("https://github.com/%s/%s", *repo.Owner.Login, *repo.Name)
 	}
 
 	// remove any deleted repositories
