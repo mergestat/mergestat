@@ -16,7 +16,7 @@ const GitSourceStats: React.FC<GitSourceStatsProps> = ({ loading, totalAuto, tot
         <Stat.Left>
           <Stat.Label>Repos</Stat.Label>
           <Stat.Number>
-            <MetricNumber loading={loading} metric={totalRepos || 0} className='text-blue-600' />
+            <MetricNumber loading={loading} metric={totalRepos || 0} />
           </Stat.Number>
         </Stat.Left>
         <Stat.Right>

@@ -16,9 +16,11 @@ const GitSourceOverviewTab: React.FC = () => {
         totalRepos={totalRepos || 0}
       />
 
+      {/** Auth */}
       {vendor === VENDOR_TYPE.GITHUB && <GitHubAuth />}
       {vendor === VENDOR_TYPE.BITBUCKET && <BitbucketAuth />}
 
+      {/** Repo list */}
       <ReposAutoManual />
     </>
   )

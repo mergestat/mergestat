@@ -1,11 +1,11 @@
 import { Button, EditableText, Tabs, Toolbar } from '@mergestat/blocks'
-import { TrashIcon } from '@mergestat/icons'
-import { ChangeEvent, useEffect, useState } from 'react'
-import { useGitSourceDetailContext } from 'src/state/contexts/git-source-detail.context'
+import { ChangeEvent } from 'react'
 import { getGitSourceIcon } from 'src/utils'
 import useGitSourceCrumb from 'src/views/hooks/gitSources/useGitSourceCrumb'
 import useGitSourceDetail from 'src/views/hooks/gitSources/useGitSourceDetail'
+import useGitSourceUpdate from 'src/views/hooks/gitSources/useGitSourceUpdate'
 import GitSourceOverviewTab from './tabs/overview'
+import GitSourceSettingsTab from './tabs/settings'
 
 type GitSourceDetailView = {
   gitSourceId?: string | string[]
@@ -15,16 +15,7 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
   useGitSourceDetail(gitSourceId)
   useGitSourceCrumb()
 
-  const [{ gsDetail: { name, description, vendor } }] = useGitSourceDetailContext()
-
-  const [nameGS, setNameGS] = useState('')
-  const [descriptionGS, setDescriptionGS] = useState('')
-
-  useEffect(() => {
-    setNameGS(name || '')
-    setDescriptionGS(description || '')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, description])
+  const { vendor, nameGS, descriptionGS, setNameGS, setDescriptionGS, updateGitSource } = useGitSourceUpdate()
 
   return (
     <div className='flex flex-col flex-1 overflow-auto'>
@@ -46,10 +37,10 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
         </Toolbar.Left>
         <Toolbar.Right>
           <Button
-            skin='borderless-muted'
-            startIcon={<TrashIcon className='t-icon' />}
-            onClick={() => null}
-            isIconOnly
+            className='whitespace-nowrap justify-center'
+            label='Save'
+            skin="secondary"
+            onClick={updateGitSource}
           />
         </Toolbar.Right>
       </Toolbar>
@@ -58,10 +49,14 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
         <Tabs>
           <Tabs.List className='border-b px-8'>
             <Tabs.Item>Overview</Tabs.Item>
+            <Tabs.Item>Settings</Tabs.Item>
           </Tabs.List>
-          <Tabs.Panels className="p-8 pb-16 bg-gray-50">
+          <Tabs.Panels className="p-8 pb-16 bg-gray-50 h-full">
             <Tabs.Panel>
               <GitSourceOverviewTab />
+            </Tabs.Panel>
+            <Tabs.Panel>
+              <GitSourceSettingsTab />
             </Tabs.Panel>
           </Tabs.Panels>
         </Tabs>

@@ -12,6 +12,7 @@ type GitSourceDetailContext = {
   showAddRepoModal: boolean
   showAutoImportModal: boolean
   showRemoveImportModal: boolean
+  showRemoveGitSourceModal: boolean
   importInfo: RepoImportData
   repoInfo: RepoManualImportData
   totalManualRepos: number
@@ -36,6 +37,7 @@ const initialState: GitSourceDetailContext = {
   showAddRepoModal: false,
   showAutoImportModal: false,
   showRemoveImportModal: false,
+  showRemoveGitSourceModal: false,
   importInfo: {} as RepoImportData,
   repoInfo: {} as RepoManualImportData,
   totalManualRepos: 0,
@@ -130,6 +132,13 @@ function useGitSourceDetailSetState() {
     }))
   }
 
+  const setShowRemoveGitSourceModal = (show: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showRemoveGitSourceModal: show
+    }))
+  }
+
   const setImportInfo = (importInfo: RepoImportData) => {
     setState(prev => ({
       ...prev,
@@ -190,6 +199,7 @@ function useGitSourceDetailSetState() {
     setShowAddRepoModal,
     setShowAutoImportModal,
     setShowRemoveImportModal,
+    setShowRemoveGitSourceModal,
     setImportInfo,
     setRepoInfo,
     setTotalManualRepos,

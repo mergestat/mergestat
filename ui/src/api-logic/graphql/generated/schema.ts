@@ -19915,6 +19915,22 @@ export type AddGitSourceMutationVariables = Exact<{
 
 export type AddGitSourceMutation = { createProvider?: { provider?: { id: any, name: string } | null } | null };
 
+export type UpdateGitSourceMutationVariables = Exact<{
+  idProvider: Scalars['UUID'];
+  name: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateGitSourceMutation = { updateProvider?: { provider?: { id: any, name: string, description?: string | null } | null } | null };
+
+export type RemoveGitSourceMutationVariables = Exact<{
+  idProvider: Scalars['UUID'];
+}>;
+
+
+export type RemoveGitSourceMutation = { deleteProvider?: { deletedProviderNodeId?: string | null } | null };
+
 export type AddUserMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];

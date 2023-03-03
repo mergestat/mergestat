@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Alert, Button, HelpText, Input, Label, ListItem, Panel, RadioCard, Toolbar } from '@mergestat/blocks'
-import { BitbucketIcon, BranchIcon, ChevronRightIcon, GithubIcon, GitlabIcon, RepositoryIcon } from '@mergestat/icons'
+import { BranchIcon, ChevronRightIcon, GithubIcon, RepositoryIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { AddGitSourceMutation, GetGitSourcesQuery } from 'src/api-logic/graphql/generated/schema'
@@ -94,7 +94,7 @@ const AddSourceView: React.FC = () => {
           </Panel.Header>
           <Panel.Body className='p-6'>
             <div className=''>
-              <Label className='text-gray-500' aria-required>Get source name</Label>
+              <Label className='text-gray-500' aria-required>Git source name</Label>
               <Input
                 value={name}
                 variant={errorName ? 'error' : 'default'}
@@ -106,7 +106,7 @@ const AddSourceView: React.FC = () => {
             </div>
             <div className='mt-6'>
               <Label className='text-gray-500' aria-required>Choose provider</Label>
-              <div className='flex flex-wrap justify-between'>
+              <div className='flex flex-wrap space-x-6'>
                 <RadioCard
                   isSelected={vendor === VENDOR_TYPE.GITHUB}
                   label="GitHub"
@@ -114,7 +114,7 @@ const AddSourceView: React.FC = () => {
                   onChange={() => setVendor(VENDOR_TYPE.GITHUB)}
                   startIcon={<GithubIcon className="t-icon" />}
                 />
-                <RadioCard
+                {/** <RadioCard
                   isSelected={vendor === VENDOR_TYPE.BITBUCKET}
                   label="Bitbucket"
                   className='my-2 w-64'
@@ -127,7 +127,7 @@ const AddSourceView: React.FC = () => {
                   className='my-2 w-64'
                   onChange={() => setVendor(VENDOR_TYPE.GITLAB)}
                   startIcon={<GitlabIcon className="t-icon" />}
-                />
+              /> */}
                 <RadioCard
                   isSelected={vendor === VENDOR_TYPE.GIT}
                   label="Generic Git"
