@@ -2,10 +2,13 @@ package syncer
 
 import (
 	"bufio"
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -91,7 +94,6 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}
 
 	blamedLines := make([]*blameLine, 0)
-
 	iter, err := lstree.Exec(ctx, tmpPath, "HEAD", lstree.WithRecurse(true))
 	if err != nil {
 		return fmt.Errorf("git ls-tree error: %w", err)
@@ -110,7 +112,23 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		}
 	}
 
-	for _, o := range objects {
+	var fileObjects []string
+	if fileObjects, err = w.writeBlameObjectsToFile(objects, tmpPath); err != nil {
+		return err
+	}
+
+	// clearing objects of memory
+	objects = nil
+
+	for _, fo := range fileObjects {
+
+		fo += "}"
+		fo = strings.Trim(fo, ",")
+		fo = strings.Trim(fo, "]")
+		fo = strings.Trim(fo, "[")
+
+		var o lstree.Object
+		err := json.Unmarshal([]byte(fo), &o)
 		if o.Type != "blob" {
 			continue
 		}
@@ -245,4 +263,52 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	err = tx.Commit(ctx)
 
 	return err
+}
+
+func (w *worker) writeBlameObjectsToFile(objects []*lstree.Object, tmpPath string) ([]string, error) {
+	var (
+		// object file
+		of *os.File
+		// newly created file
+		f           *os.File
+		fileObjects []string
+		err         error
+	)
+
+	buffer := new(bytes.Buffer)
+	if err = json.NewEncoder(buffer).Encode(objects); err != nil {
+		return fileObjects, err
+	}
+
+	if f, err = ioutil.TempFile(tmpPath, "blame-objects-*.text"); err != nil {
+		return fileObjects, err
+	}
+
+	defer f.Close()
+
+	// writing objects into newly created file
+	if _, err = f.Write(buffer.Bytes()); err != nil {
+		return fileObjects, err
+	}
+	// opening the newly created file
+	if of, err = os.Open(f.Name()); err != nil {
+		return fileObjects, err
+	}
+
+	defer of.Close()
+
+	scanner := bufio.NewScanner(of)
+
+	for scanner.Scan() {
+
+		// scanning file to extract information
+		fileText := strings.TrimSpace(scanner.Text())
+		fileObjects = strings.Split(fileText, "}")
+	}
+
+	if err = scanner.Err(); err != nil {
+		return fileObjects, err
+	}
+
+	return fileObjects, nil
 }
