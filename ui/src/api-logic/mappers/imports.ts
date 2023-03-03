@@ -1,4 +1,5 @@
 import { ImportStatusType, RepoImportData, RepoManualImportData } from 'src/@types'
+import { getRepoFromUrl } from 'src/utils'
 import { SYNC_REPO_METHOD } from 'src/utils/constants'
 import { GetRepoImportsQuery, GetRepoManualImportsQuery } from '../graphql/generated/schema'
 
@@ -40,13 +41,12 @@ const mapToManualImportsData = (data: GetRepoManualImportsQuery | undefined): Ar
   data?.repos?.nodes.forEach((repo) => {
     const repoInfo: RepoManualImportData = {
       id: repo.id,
-      name: repo.repo.split(`${repo.provider?.settings.url}/`)[1],
+      name: getRepoFromUrl(repo.repo),
       vendor: repo.provider?.vendor || '',
       vendorUrl: repo.provider?.settings.url
     }
     mappedData.push(repoInfo)
   })
-
   return mappedData
 }
 
