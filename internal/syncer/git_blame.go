@@ -117,9 +117,6 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return err
 	}
 
-	// clearing objects of memory
-	objects = nil
-
 	for _, fo := range fileObjects {
 
 		fo += "}"
@@ -131,7 +128,7 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		}
 
 		var o lstree.Object
-		if err := json.Unmarshal([]byte(fo), &o); err != nil {
+		if err = json.Unmarshal([]byte(fo), &o); err != nil {
 			return err
 		}
 
