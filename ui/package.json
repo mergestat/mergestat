@@ -24,7 +24,7 @@
     "@mergestat/blocks": "1.5.53",
     "@mergestat/icons": "1.2.16",
     "@monaco-editor/react": "^4.4.6",
-    "@next/bundle-analyzer": "^12.1.4",
+    "@next/bundle-analyzer": "^12.3.4",
     "@tailwindcss/line-clamp": "^0.4.2",
     "apexcharts": "^3.36.3",
     "axios": "^0.27.2",
