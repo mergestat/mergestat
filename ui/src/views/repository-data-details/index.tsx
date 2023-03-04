@@ -6,7 +6,7 @@ import { SyncTypeData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { useGlobalSetState } from 'src/state/contexts'
-import { GITHUB_URL, SYNC_STATUS } from 'src/utils/constants'
+import { SYNC_STATUS } from 'src/utils/constants'
 import { RepoDataLogs, SyncSettings } from './components'
 
 const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow }) => {
@@ -25,9 +25,9 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
       },
       {
         text: repo.name,
-        startIcon: <RepoImage repoType={repo.type} orgName={repoOwnerName} size="6" />,
+        startIcon: <RepoImage vendor={repo.provider.vendor} vendorUrl={repo.provider.url} orgName={repoOwnerName} size="6" />,
         endIcon: (
-          <a target="_blank" href={repo.type === 'github' ? `${GITHUB_URL + repoOwnerName}/${repoName}` : repo.name} rel="noopener noreferrer">
+          <a target="_blank" href={repo.provider.vendor === 'github' ? `${repo.provider.url + repoOwnerName}/${repoName}` : repo.name} rel="noopener noreferrer">
             <ExternalLinkIcon className='t-icon t-icon-muted t-icon-small' />
           </a>
         ),

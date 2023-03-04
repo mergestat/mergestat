@@ -8,8 +8,6 @@ export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'gh-auto' | 'csv'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
-export type RepoType = 'github' | 'gitlab' | 'bitbucket' | 'other'
-
 export type UserTypeUI = 'Admin' | 'User' | 'Read Only' | 'Unknown'
 
 export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
@@ -46,12 +44,19 @@ export type RepoDataStatusT = {
   syncs?: Array<RepoSyncDataT>
 }
 
+export type ProviderT = {
+  id: string
+  name: string
+  vendor: string
+  url: string
+}
+
 export type RepoDataPropsT = {
   id: string
   name: string
   createdAt: Date
-  type: RepoType
-  autoImportFrom?: string
+  provider: ProviderT
+  autoImportFrom?: string | null
   tags: Array<{ title: string, checked: boolean }>
   lastSync: string
   status: Array<RepoDataStatusT>
@@ -90,10 +95,9 @@ export type RepoSyncDataType = {
 export type RepoSyncData = {
   id: string
   name: string
-  type: RepoType
-  gitHubPat: boolean
   tags: TagType[]
-  autoImportFrom?: string
+  provider: ProviderT
+  autoImportFrom?: string | null
   syncs?: Array<RepoSyncDataType>
 }
 
@@ -123,7 +127,7 @@ export type SyncTypeData = {
   repo: {
     id: string
     name: string
-    type: RepoType
+    provider: ProviderT
   }
   sync?: SyncTypeInfo
   logs?: Array<SyncLogsType>
@@ -138,13 +142,23 @@ export type SettingsDataType = {
 
 /** Repo Imports Data Props Type */
 
+export type RepoManualImportData = {
+  id: string
+  name: string
+  vendor: string
+  vendorUrl: string
+}
+
 export type RepoImportData = {
   id: string
   importDone: boolean
-  source: string
+  name: string
   type: string
   lastSync: string
   status: ImportStatusType
+  totalRepos: number
+  vendor: string
+  vendorUrl: string
 }
 
 export type SyncType = {
@@ -157,7 +171,7 @@ export type SyncType = {
 export type ImportSync = {
   name: string
   type: string
-  opened: boolean
+  opened?: boolean
   defaultSyncs: Array<SyncType>
 }
 
@@ -245,9 +259,58 @@ export interface ColumnInfo {
 /** Saved Queries */
 
 export type SavedQueryData = {
-  id: string;
-  createdAt?: string;
-  createdBy?: string | null | undefined;
-  name?: string | null | undefined;
-  description?: string | null | undefined;
+  id: string
+  createdAt?: string
+  createdBy?: string | null | undefined
+  name?: string | null | undefined
+  description?: string | null | undefined
+}
+
+/** Git Sources */
+
+export type GitSourceData = {
+  id: string
+  name: string
+  description?: string | null | undefined
+  createdAt: string
+  settings: JSON
+  vendor: string
+  reposByProvider: {
+    totalCount: number
+  }
+}
+
+export type AuthDetail = {
+  id?: string
+  type?: string
+  credentials?: string | null
+  createdAt?: string
+}
+
+export type RepoAuto = {
+  id: string
+  settings: JSON
+  totalRepos: number
+}
+
+export type RepoManual = {
+  id: string
+  repo: string
+  settings: JSON
+}
+
+export type GitSourceDetail = {
+  id: string
+  name: string
+  description?: string | null
+  vendor: string
+  settings: JSON
+
+  auth?: AuthDetail
+  auto: RepoAuto[]
+  manual: RepoManual[]
+
+  totalAuto: number
+  totalManual: number
+  totalRepos: number
 }

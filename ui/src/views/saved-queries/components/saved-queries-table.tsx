@@ -1,4 +1,4 @@
-import { Button, EditableText, Panel } from '@mergestat/blocks'
+import { Button, EditableText } from '@mergestat/blocks'
 import { TerminalIcon, TrashIcon } from '@mergestat/icons'
 import { format } from 'date-fns'
 import { useRouter } from 'next/router'
@@ -7,7 +7,7 @@ import { SavedQueryData } from 'src/@types'
 import { useSavedQuerySetState } from 'src/state/contexts/saved-query.context'
 import { DATE_FORMAT } from 'src/utils/constants'
 import useCurrentUser from 'src/views/hooks/useCurrentUser'
-import { FilterFooter } from './filter-footer'
+import { NoDataFound } from 'src/views/shared/no-data-found'
 
 type SavedQueriesTableProps = PropsWithChildren<{
   savedQueries: SavedQueryData[]
@@ -26,17 +26,9 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
   return (
     <div className='flex flex-col flex-1'>
       {savedQueries.length < 1
-        ? <div className='flex justify-center py-5'>
-          <Panel className='rounded-md w-full shadow-sm mx-8'>
-            <Panel.Body className='p-0'>
-              <div className='flex justify-center items-center bg-white py-5'>
-                Couldn&#39;t find any saved queries.
-              </div>
-            </Panel.Body>
-          </Panel>
-        </div>
+        ? <NoDataFound message='Couldn&#39;t find any saved queries.' />
         : <>
-          <div className='flex flex-col min-w-0 bg-white h-full'>
+          <div className='flex flex-col min-w-0 bg-gray-50 h-full'>
             <div className='flex-1 overflow-x-auto overflow-y-hidden'>
               <table className='t-table-default t-table-hover border-b'>
                 <thead>
@@ -88,7 +80,6 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
               </table>
             </div>
           </div>
-          <FilterFooter />
         </>
       }
     </div>

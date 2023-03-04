@@ -1,41 +1,26 @@
 import { Tooltip } from '@mergestat/blocks'
-import { AutoImportIcon, GithubIcon, RepositoryIcon } from '@mergestat/icons'
-import { format } from 'date-fns'
+import { AutoImportIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import React from 'react'
-import type { RepoType } from 'src/@types'
+import { ProviderT } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
-import { capitalize, getRelativeTime } from 'src/utils'
-import { GITHUB_URL, TEST_IDS } from 'src/utils/constants'
+import { capitalize, getGitSourceIcon } from 'src/utils'
+import { TEST_IDS } from 'src/utils/constants'
 
 export type RepositoryNameProps = {
   id: string
   name: string
-  type: RepoType
+  provider: ProviderT
   createdAt: Date
-  autoImportFrom?: string
+  autoImportFrom?: string | null
 }
 
 export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
-  const repoTypeIcon = () => {
-    switch (props.type) {
-      case 'gitlab':
-      case 'bitbucket':
-      case 'other':
-        return <RepositoryIcon className='t-icon t-icon-muted w-4' />
-      default:
-        return (
-          <a target='_blank' href={GITHUB_URL + props.name} rel='noopener noreferrer'>
-            <GithubIcon className='t-icon t-icon-muted w-4' />
-          </a>
-        )
-    }
-  }
-
   return (
     <div className='flex items-center gap-4 my-3'>
       <RepoImage
-        repoType={props.type}
+        vendor={props.provider.vendor}
+        vendorUrl={props.provider.url}
         orgName={props.name.split('/')[0]}
         size='10'
       />
@@ -46,21 +31,22 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
           </h4>
         </Link>
         <div className='flex items-center'>
-          <span className='pr-2 text-sm t-text-muted'>
+          <div className='border-semantic-border px-2'>
             <Tooltip
-              content={`Added ${format(props.createdAt, 'PPp')}`}
+              content={`${capitalize(props.provider.vendor)} repository`}
               placement='bottom'
             >
-              {getRelativeTime(props.createdAt)}
+              <a target='_blank' href={props.provider.url + props.name} rel='noopener noreferrer'>
+                {getGitSourceIcon(props.provider.vendor, 't-icon-muted w-4')}
+              </a>
             </Tooltip>
-          </span>
-          <div className='border-l border-semantic-border px-2'>
-            <Tooltip
-              content={`${capitalize(props.type)} repository`}
-              placement='bottom'
-            >
-              {repoTypeIcon()}
-            </Tooltip>
+          </div>
+          <div className='border-semantic-border px-2'>
+            <Link href={`/repos/git-sources/${props.provider.id}`}>
+              <span className='cursor-pointer text-gray-400 border-b border-gray-300'>
+                {props.provider.name}
+              </span>
+            </Link>
           </div>
           {props.autoImportFrom && (
             <div className='border-l border-semantic-border px-2'>
@@ -68,11 +54,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
                 content={`Auto imported from ${props.autoImportFrom}`}
                 placement='bottom'
               >
-                <Link href='/repos/repo-auto-imports'>
-                  <span className='cursor-pointer'>
-                    <AutoImportIcon className='t-icon t-icon-muted w-4' />
-                  </span>
-                </Link>
+                <AutoImportIcon className='t-icon t-icon-muted w-4' />
               </Tooltip>
             </div>
           )}

@@ -1,7 +1,7 @@
 import { differenceInMilliseconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, RepoSyncQueueW, SyncStatusDataT } from 'src/@types'
-import { getSimpleDurationTime, getSimpleDurationTimeSeconds, getStatus } from 'src/utils'
-import { GITHUB_URL, SYNC_REPO_METHOD, SYNC_STATUS } from 'src/utils/constants'
+import { getRepoFromUrl, getSimpleDurationTime, getSimpleDurationTimeSeconds, getStatus } from 'src/utils'
+import { SYNC_REPO_METHOD, SYNC_STATUS } from 'src/utils/constants'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
 /**
@@ -13,15 +13,15 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
   // General repo info
   const repoData: RepoSyncData = {
     id: data?.repo?.id,
-    name: data?.repo?.repo.replace(GITHUB_URL, '') || '',
-    type: data?.repo?.isGithub ? 'github' : 'other',
-    gitHubPat: (data?.serviceAuthCredentials?.totalCount && data?.serviceAuthCredentials?.totalCount > 0) || false,
+    name: getRepoFromUrl(data?.repo?.repo || ''),
     tags: data?.repo?.tags.map((t: string) => ({ title: t, checked: true })),
-    autoImportFrom: data?.repo?.repoImport
-      ? data?.repo?.repoImport?.type === SYNC_REPO_METHOD.GH_USER
-        ? `user: ${data?.repo?.repoImport?.settings.user}`
-        : `org: ${data?.repo?.repoImport?.settings.org}`
-      : undefined,
+    autoImportFrom: data?.repo?.repoImport && `${data?.repo?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${data?.repo?.repoImport?.settings.userOrOrg}`,
+    provider: {
+      id: data?.repo?.provider?.id,
+      name: data?.repo?.provider?.name || '',
+      vendor: data?.repo?.provider?.vendor || '',
+      url: data?.repo?.provider?.settings?.url,
+    },
   }
 
   const mappedData: Array<RepoSyncDataType> = []
