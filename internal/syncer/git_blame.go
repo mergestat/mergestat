@@ -126,9 +126,15 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		fo = strings.Trim(fo, ",")
 		fo = strings.Trim(fo, "]")
 		fo = strings.Trim(fo, "[")
+		if fo == "}" {
+			continue
+		}
 
 		var o lstree.Object
-		err := json.Unmarshal([]byte(fo), &o)
+		if err := json.Unmarshal([]byte(fo), &o); err != nil {
+			return err
+		}
+
 		if o.Type != "blob" {
 			continue
 		}
