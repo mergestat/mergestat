@@ -658,9 +658,12 @@ type GrypeRepoVulnerability struct {
 }
 
 type MergestatContainerImage struct {
-	ID   uuid.UUID
-	Type string
-	Url  string
+	ID         uuid.UUID
+	Type       string
+	Url        string
+	Name       string
+	Version    string
+	Parameters pgtype.JSONB
 }
 
 type MergestatContainerImageType struct {
@@ -670,9 +673,10 @@ type MergestatContainerImageType struct {
 }
 
 type MergestatContainerSync struct {
-	ID      uuid.UUID
-	RepoID  uuid.UUID
-	ImageID uuid.UUID
+	ID         uuid.UUID
+	RepoID     uuid.UUID
+	ImageID    uuid.UUID
+	Parameters pgtype.JSONB
 }
 
 type MergestatContainerSyncExecution struct {

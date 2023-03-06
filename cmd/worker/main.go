@@ -17,9 +17,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/mergestat/mergestat/internal/cron"
-	"github.com/mergestat/mergestat/internal/db"
-	"github.com/mergestat/mergestat/internal/helper"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/mergestat/internal/helper"
 	"github.com/mergestat/mergestat/internal/jobs/repo"
@@ -258,8 +255,8 @@ func main() {
 		),
 	)
 
-	var db *sqlx.DB
-	if db, err = sqlx.Open("sqlite3", ":memory:"); err != nil {
+	var embedded *sqlx.DB
+	if embedded, err = sqlx.Open("sqlite3", ":memory:"); err != nil {
 		logger.Err(err).Msgf("could not open mergestat db: %v", err)
 		os.Exit(1)
 	}
@@ -269,13 +266,13 @@ func main() {
 
 	// register job handlers for types implemented by this worker
 	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
-	_ = worker.Register("container/sync", podman.ContainerSync())
+	_ = worker.Register("container/sync", podman.ContainerSync(db.New(pool)))
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars
 	go scheduler.New(&logger, pool).Start(ctx, 1*time.Minute)
 	go timeout.New(&logger, pool).Start(ctx, time.Minute)
-	go syncer.New(pool, db, &logger, concurrency, 3*time.Second).Start(ctx)
+	go syncer.New(pool, embedded, &logger, concurrency, 3*time.Second).Start(ctx)
 
 	// run a basic cron every minute to schedule a repos/auto-import job
 	// these jobs are idempotent, and so, multiple instances can run at same time without conflict
@@ -285,8 +282,8 @@ func main() {
 		}
 	})
 
-	// run container sync scheduler every 5 minutes
-	go cron.ContainerSync(ctx, 5*time.Minute, upstream)
+	// run container sync scheduler every minute
+	go cron.ContainerSync(ctx, 1*time.Minute, upstream)
 
 	if os.Getenv("DEBUG") != "" {
 		go func() {

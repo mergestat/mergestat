@@ -4,6 +4,7 @@ package podman
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -43,7 +44,7 @@ func ContainerSync(querier *db.Queries) sqlq.Handler {
 			logger.Errorf("failed to fetch container sync: %s", err.Error())
 			return errors.Wrapf(err, "failed to fetch container sync")
 		}
-		logger.Infof("running sync %s", containerSync.ID)
+		logger.Debugf("running sync %s", containerSync.ID)
 
 		var repo db.Repo
 		if repo, err = querier.GetRepoById(ctx, containerSync.RepoID); err != nil {
@@ -67,7 +68,7 @@ func ContainerSync(querier *db.Queries) sqlq.Handler {
 		// used below to send stdout and stderr to job logs
 		infof, warnf := func(str string) { logger.Info(str) }, func(str string) { logger.Warn(str) }
 
-		var url = fmt.Sprintf("docker://%s", containerSync.ImageUrl)
+		var url = fmt.Sprintf("docker://%s:%s", containerSync.ImageUrl, containerSync.ImageVersion)
 		{ // pull the container image locally
 			logger.Infof("pulling image %s", url)
 			var pull = podman(ctx, "pull", url)
@@ -85,13 +86,42 @@ func ContainerSync(querier *db.Queries) sqlq.Handler {
 
 			wg.Wait()
 			if err = pull.Wait(); err != nil {
-				logger.Errorf("failed to execute image: %s", err.Error())
+				logger.Errorf("failed to pull image: %s", err.Error())
+				return errors.Wrapf(err, "failed to pull image")
 			}
 		}
 
 		{ // run the image locally
 			logger.Infof("running image %s", url)
-			var run = podman(ctx, "run", "--rm", "--quiet", "--pull", "never", "-v", fmt.Sprintf("%s:/src", tmpPath), "-w", "/src", url)
+
+			var environment = make(map[string]string)
+			environment["REPO_ID"] = containerSync.RepoID.String()
+
+			var env bytes.Buffer
+			for key, value := range environment {
+				_, _ = fmt.Fprintf(&env, "%s=%s\n", key, value)
+			}
+
+			var envFile string
+			if envFile, err = writeToTempFile(env.Bytes()); err != nil {
+				return errors.Wrapf(err, "failed to create file with environment variables")
+			}
+
+			var paramsFile string
+			if paramsFile, err = writeToTempFile(containerSync.Params.Bytes); err != nil {
+				return errors.Wrapf(err, "failed to create file with parameters")
+			}
+
+			var args []string
+			args = append(args, "run", "--rm", "--quiet")
+			args = append(args, "--pull", "never")                               // run never pulls an image!
+			args = append(args, "--env-file", envFile)                           // set environment variables from envFile
+			args = append(args, "-v", fmt.Sprintf("%s:/src", tmpPath))           // mount the cloned repository under /src
+			args = append(args, "-v", fmt.Sprintf("%s:/run/params", paramsFile)) // mount user supplied parameters under /run/params
+			args = append(args, "-w", "/src")                                    // set /src to be the working directory inside container
+			args = append(args, url)                                             // the url of the image to run
+
+			var run = podman(ctx, args...)
 			stdout, _ := run.StdoutPipe()
 			stderr, _ := run.StderrPipe()
 			if err = run.Start(); err != nil {
@@ -184,6 +214,21 @@ func clone(ctx context.Context, logger *sqlq.Logger, q *db.Queries, path string,
 		logger.Infof("finished git fetch successfully: %s", repo.Repo)
 	}
 	return nil
+}
+
+func writeToTempFile(data []byte) (_ string, err error) {
+	var tempFile *os.File
+	if tempFile, err = os.CreateTemp(os.TempDir(), "mergestat-*"); err != nil {
+		return "", err
+	}
+	defer tempFile.Close()
+
+	if _, err = io.Copy(tempFile, bytes.NewReader(data)); err != nil {
+		return "", err
+	}
+
+	return tempFile.Name(), tempFile.Close()
+
 }
 
 // NewContainerSync creates a new sqlq.JobDescription for the given sync id.
