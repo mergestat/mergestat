@@ -31,7 +31,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
           </h4>
         </Link>
         <div className='flex items-center'>
-          <div className='border-semantic-border px-2'>
+          <div className='flex items-center space-x-1.5 border-semantic-border pr-2'>
             <Tooltip
               content={`${capitalize(props.provider.vendor)} repository`}
               placement='bottom'
@@ -40,10 +40,8 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
                 {getGitSourceIcon(props.provider.vendor, 't-icon-muted w-4')}
               </a>
             </Tooltip>
-          </div>
-          <div className='border-semantic-border px-2'>
             <Link href={`/repos/git-sources/${props.provider.id}`}>
-              <span className='cursor-pointer text-gray-400 border-b border-gray-300'>
+              <span className='cursor-pointer text-sm t-text-muted border-b border-gray-300 whitespace-nowrap'>
                 {props.provider.name}
               </span>
             </Link>
