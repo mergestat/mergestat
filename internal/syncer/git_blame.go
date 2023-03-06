@@ -52,7 +52,7 @@ func (w *worker) sendBatchBlameLines(ctx context.Context, blameTmpPath string, t
 		}
 
 		if err != nil {
-			w.logger.Err(err).Msgf("%v", err)
+			w.logger.Err(err).Msgf("%w", err)
 			continue
 		}
 
