@@ -51,8 +51,6 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Settings'
           compact={false}
-          active={isSidebarActive(/^\/settings$/)}
-          onClick={() => push('/settings/github-authentication')}
           icon={<CogIcon className='t-icon' />}
           subNav={
             <>
