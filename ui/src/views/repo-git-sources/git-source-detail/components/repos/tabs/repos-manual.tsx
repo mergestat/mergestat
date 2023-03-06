@@ -32,7 +32,7 @@ const ReposManual: React.FC = () => {
     <>
       <div className='bg-white p-6'>
         <Alert type="default" className="bg-gray-50 mb-6">
-          Manual repos are added directly to this Git source.
+          Manual repos are added directly to this Git Source.
         </Alert>
 
         <Label>Repo url(s)</Label>

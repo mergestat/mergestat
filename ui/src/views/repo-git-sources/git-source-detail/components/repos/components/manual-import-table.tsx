@@ -42,7 +42,7 @@ export const ManualImportTable: React.FC<ManualImportTableProps> = ({ repos }: M
                         <td className='p-3'>
                           <ListItem key={`repo-manual-${index}`}
                             title={repo.name}
-                            startIcon={<RepoImage vendor={repo.vendor} vendorUrl={repo.vendorUrl} orgName={repo.name.split('/')[1]} size="10" />}
+                            startIcon={<RepoImage vendor={repo.vendor} vendorUrl={repo.vendorUrl} orgName={repo.name.split('/')[0]} size="10" />}
                           />
                         </td>
                         <td className='text-gray-500 p-3 pr-8'>
