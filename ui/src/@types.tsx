@@ -314,3 +314,20 @@ export type GitSourceDetail = {
   totalManual: number
   totalRepos: number
 }
+
+/** Schema */
+
+export type ColumnData = {
+  columnName: string | null,
+  columnDescription?: string | null
+}
+
+export type TableData = {
+  tableName: string | null
+  columns: ColumnData[]
+}
+
+export type SchemaData = {
+  schema: string | null
+  tables: TableData[]
+}

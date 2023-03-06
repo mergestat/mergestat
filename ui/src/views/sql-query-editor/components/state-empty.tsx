@@ -1,10 +1,10 @@
 import { Avatar } from '@mergestat/blocks'
 import { CircleInformationIcon, MinusIcon } from '@mergestat/icons'
-import { QueryResultProps } from 'src/@types'
+import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
 
 type QueryEditorEmptyProps = {
   executed: boolean
-  data: QueryResultProps | undefined
+  data: ExecuteSqlQuery | undefined
   children?: React.ReactNode
 }
 
@@ -13,10 +13,10 @@ const QueryEditorEmpty: React.FC<QueryEditorEmptyProps> = ({ executed, data }: Q
     if (!executed) {
       return 'Execute query to show results.'
     } else {
-      if (data?.rowCount && data.rowCount > 0) {
-        return `${data.rowCount} row${data.rowCount > 1 ? 's' : ''} impacted`
+      if (data?.execSQL.rowCount && data.execSQL.rowCount > 0) {
+        return `${data.execSQL.rowCount} row${data.execSQL.rowCount > 1 ? 's' : ''} impacted`
       } else {
-        return data?.columns && data.columns.length > 0 ? 'Empty result set (no rows returned).' : 'No rows impacted'
+        return data?.execSQL.columns && data.execSQL.columns.length > 0 ? 'Empty result set (no rows returned).' : 'No rows impacted'
       }
     }
   }

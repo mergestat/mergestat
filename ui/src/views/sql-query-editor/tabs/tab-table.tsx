@@ -1,12 +1,14 @@
-import { Alert, Button, Dropdown, Input, Label, Menu, Select, Toolbar } from '@mergestat/blocks'
+import { Alert, Button, Dropdown, Input, Label, Menu, Select, Toolbar, Tooltip } from '@mergestat/blocks'
 import { CaretDownIcon, ChevronLeftIcon, ChevronRightIcon, ClipboardIcon, DownloadIcon, SearchIcon } from '@mergestat/icons'
-import cx from 'classnames'
 import { debounce } from 'lodash'
 import Papa from 'papaparse'
 import { KeyboardEvent, useEffect, useState } from 'react'
 import { useQueryContext } from 'src/state/contexts'
 import { copy, filterByAllFields, getMaxPagination, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
+import { Table2, Column, Cell, SelectionModes } from '@blueprintjs/table'
+import '@blueprintjs/table/lib/css/table.css'
+import '@blueprintjs/popover2/lib/css/blueprint-popover2.css'
 
 type TabTableProps = {
   rowLimit: number
@@ -35,10 +37,6 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
       }
     }
     return value.toString()
-  }
-
-  const isSpecial = (value: string | number | boolean) => {
-    return value === null || typeof value === 'boolean'
   }
 
   const getText = (exportFormat: string) => {
@@ -87,13 +85,18 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, page])
 
+  const renderDataCell = (rowIndex: number, columnIndex: number) => {
+    const cell = result[rowIndex][columnIndex]
+    return <Cell>{typeof cell === 'string' || typeof cell === 'number' ? cell : JSON.stringify(cell)}</Cell>
+  }
+
   return (
     <>
       {/* Head section */}
-      <Toolbar className='bg-white h-16 flex w-full border-b px-5 py-4'>
+      <Toolbar className='bg-white h-14 flex w-full border-b px-8'>
         <Toolbar.Left>
           <Input
-            className='w-96'
+            className='sm_w-150'
             placeholder='Search...'
             startIcon={<SearchIcon className='t-icon' />}
             onChange={onChange}
@@ -102,48 +105,56 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
         </Toolbar.Left>
         <Toolbar.Right>
           <Toolbar.Item>
-            <Dropdown
-              trigger={
-                <Button label='Copy' skin='secondary'
-                  startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
-                  endIcon={<CaretDownIcon className='t-icon' />}
-                />
-              }
-              overlay={(close) => (
-                <Menu className='whitespace-nowrap w-full'>
-                  <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
-                    copyToClipboard(EXPORT_FORMAT.JSON)
-                    close()
-                  }} />
-                  <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
-                    copyToClipboard(EXPORT_FORMAT.CSV)
-                    close()
-                  }} />
-                </Menu>
-              )}
-            />
-          </Toolbar.Item>
-          <Toolbar.Item>
-            <Dropdown
-              trigger={
-                <Button label='Download' skin='secondary'
-                  startIcon={<DownloadIcon className='t-icon t-icon-heroicons-clipboard' />}
-                  endIcon={<CaretDownIcon className='t-icon' />}
-                />
-              }
-              overlay={(close) => (
-                <Menu className='whitespace-nowrap w-full'>
-                  <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
-                    exportData(EXPORT_FORMAT.JSON)
-                    close()
-                  }} />
-                  <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
-                    exportData(EXPORT_FORMAT.CSV)
-                    close()
-                  }} />
-                </Menu>
-              )}
-            />
+            <div className='t-button-toolbar'>
+              <Dropdown
+                disabled={!window.isSecureContext}
+                trigger={
+                  window.isSecureContext
+                    ? <Button label='Copy' skin='secondary' size='small'
+                        startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
+                        endIcon={<CaretDownIcon className='t-icon' />}
+                      />
+                    : <Tooltip content='Copy is only available on HTTPs connections'>
+                        <Button disabled label='Copy' skin='secondary' size='small'
+                          startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
+                          endIcon={<CaretDownIcon className='t-icon' />}
+                        />
+                      </Tooltip>
+                }
+                overlay={(close) => (
+                  <Menu className='whitespace-nowrap w-full'>
+                    <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
+                      copyToClipboard(EXPORT_FORMAT.JSON)
+                      close()
+                    }} />
+                    <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
+                      copyToClipboard(EXPORT_FORMAT.CSV)
+                      close()
+                    }} />
+                  </Menu>
+                )}
+              />
+              <Dropdown
+                trigger={
+                  <Button label='Download' skin='secondary' size='small'
+                    startIcon={<DownloadIcon className='t-icon t-icon-heroicons-clipboard' />}
+                    endIcon={<CaretDownIcon className='t-icon' />}
+                  />
+                }
+                overlay={(close) => (
+                  <Menu className='whitespace-nowrap w-full'>
+                    <Menu.Item text={EXPORT_FORMAT.JSON} onClick={() => {
+                      exportData(EXPORT_FORMAT.JSON)
+                      close()
+                    }} />
+                    <Menu.Item text={EXPORT_FORMAT.CSV} onClick={() => {
+                      exportData(EXPORT_FORMAT.CSV)
+                      close()
+                    }} />
+                  </Menu>
+                )}
+              />
+            </div>
           </Toolbar.Item>
         </Toolbar.Right>
       </Toolbar>
@@ -156,34 +167,22 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
           </Alert>
         )}
         <div className='overflow-auto w-full flex-1'>
-          <table className='t-table-default t-table-sticky-header t-table-nowrap t-table-bordered t-table-dense'>
-            <thead>
-              <tr className='bg-white'>
-                {data.columns && data.columns.length > 0 && data.columns.map((col, index) => (
-                  <th key={`th-record-${index}`} scope='col' className='whitespace-nowrap pr-6 pl-8'>
-                    <span className='mr-1'>{col.name}</span>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody className='bg-white'>
-              {result.map((record, indexRecord) => (
-                <tr key={`tr-record-${indexRecord}`}>
-                  {record.map((value, index) => (
-                    <td key={`td-record-${index}`} className='w-0 pl-8 max-w-xs truncate'>
-                      <span className={cx({ 'text-blue-700': isSpecial(value) })}>{getData(value)}</span>
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table2
+            enableGhostCells
+            numRows={result.length}
+            selectionModes={SelectionModes.COLUMNS_AND_CELLS}
+          >
+            {data.columns
+              ? data.columns.map((col, index) => (
+                <Column key={index} name={col.name.toString()} cellRenderer={renderDataCell}/>
+              ))
+              : []}
+          </Table2>
         </div>
       </div>
 
       {/* Footer section */}
-      <div className='bg-white overflow-auto flex h-16 flex-shrink-0 w-full border-t px-8'>
+      <div className='bg-white overflow-auto flex h-14 items-center flex-shrink-0 w-full border-t px-8'>
         <Toolbar className='t-toolbar flex-1 w-auto h-full space-x-4'>
           <Toolbar.Left className='space-x-3'>
             <div className='flex items-center'>

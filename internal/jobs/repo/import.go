@@ -20,6 +20,7 @@ func AutoImport(pool *pgxpool.Pool) sqlq.HandlerFunc {
 	return func(ctx context.Context, job *sqlq.Job) (err error) {
 		var l = zerolog.Ctx(ctx)
 		var logger = job.Logger()
+		var jobErrors error
 
 		// start sending periodic keep-alive pings!
 		go job.SendKeepAlive(ctx, job.KeepAlive-(5*time.Second)) //nolint:errcheck
@@ -37,12 +38,14 @@ func AutoImport(pool *pgxpool.Pool) sqlq.HandlerFunc {
 		for _, imp := range imports {
 			logger.Infof("executing import %s", imp.ID)
 			l.Info().Msgf("executing import %s", imp.ID)
-
 			var tx pgx.Tx // each import is executed within its own transaction
 			if tx, err = pool.Begin(ctx); err != nil {
 				return errors.Wrapf(err, "failed to start new database transaction")
 			}
-
+			var importStatus = db.UpdateImportStatusParams{Status: "RUNNING", ID: imp.ID}
+			if err = queries.UpdateImportStatus(ctx, importStatus); err != nil {
+				return errors.Wrapf(sqlq.ErrSkipRetry, "failed to update import status: %v", err)
+			}
 			// execute the import
 			// if the execution fails for some reason, only that import is marked as failed
 			// the job still continues executing.
@@ -60,17 +63,25 @@ func AutoImport(pool *pgxpool.Pool) sqlq.HandlerFunc {
 			if importError != nil {
 				logger.Warnf("import(%s) failed: %v", imp.ID, importError.Error())
 				l.Warn().Msgf("import(%s) failed: %v", imp.ID, importError.Error())
-				_ = tx.Rollback(ctx)
+
+				if err = tx.Rollback(ctx); err != nil {
+					jobErrors = errors.Wrap(err, "failed to rollback transaction")
+					return jobErrors
+				}
+
+				jobErrors = errors.Wrap(importError, "failed to handle import")
+
 			} else {
 				// if the import was successful, commit the changes
 				if err = tx.Commit(ctx); err != nil {
-					return errors.Wrapf(err, "failed to commit database transaction")
+					jobErrors = errors.Wrapf(err, "failed to commit database transaction")
+					return jobErrors
 				}
 				logger.Infof("import(%s) was successful", imp.ID)
 				l.Info().Msgf("import(%s) was successful", imp.ID)
 			}
 
-			var importStatus = db.UpdateImportStatusParams{Status: "SUCCESS", ID: imp.ID}
+			importStatus = db.UpdateImportStatusParams{Status: "SUCCESS", ID: imp.ID}
 			if importError != nil {
 				importStatus.Status, importStatus.Error = "FAILURE", importError.Error()
 			}
@@ -79,11 +90,11 @@ func AutoImport(pool *pgxpool.Pool) sqlq.HandlerFunc {
 			// this is so that even if the transaction is marked as errored, we could still go ahead and update
 			// the job status.
 			if err = queries.UpdateImportStatus(ctx, importStatus); err != nil {
-				return errors.Wrapf(sqlq.ErrSkipRetry, "failed to update import status: %v", err)
+				jobErrors = errors.Wrapf(sqlq.ErrSkipRetry, "failed to update import status: %v", err)
+				return jobErrors
 			}
 		}
-
-		return nil
+		return jobErrors
 	}
 }
 

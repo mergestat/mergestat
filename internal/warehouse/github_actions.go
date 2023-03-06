@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/google/go-github/v47/github"
+	"github.com/google/go-github/v50/github"
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
@@ -33,7 +33,7 @@ func (w *warehouse) GitHubActions(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return err
 	}
 
-	w.restRatelimitHandler(ctx, resp)
+	helper.RestRatelimitHandler(ctx, resp, w.logger, w.db, false)
 
 	w.logger.Info().Msgf("starting to retrieve all github actions from repo %s", repoName)
 
@@ -86,7 +86,7 @@ func (w *warehouse) handleWorkflows(ctx context.Context, owner, repo string, job
 			continue
 		}
 
-		w.restRatelimitHandler(ctx, resp)
+		helper.RestRatelimitHandler(ctx, resp, w.logger, w.db, false)
 
 		if *workflowsPage.TotalCount > 0 && len(workflowsPage.Workflows) > 0 {
 			if err := w.handleWorkflowsUpsert(ctx, workflowsPage.Workflows, repoID); err != nil {
@@ -189,7 +189,7 @@ func (w *warehouse) handleWorkflowRuns(ctx context.Context, owner, repo string, 
 				}
 			}
 
-			w.restRatelimitHandler(ctx, resp)
+			helper.RestRatelimitHandler(ctx, resp, w.logger, w.db, false)
 
 			if resp.NextPage == 0 {
 				break
@@ -269,7 +269,7 @@ func (w *warehouse) handleWorkflowRunsJobs(ctx context.Context, owner, repo stri
 				}
 			}
 
-			w.restRatelimitHandler(ctx, resp)
+			helper.RestRatelimitHandler(ctx, resp, w.logger, w.db, false)
 
 			if resp.NextPage == 0 {
 				break
@@ -343,7 +343,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 			}
 		}
 
-		w.restRatelimitHandler(ctx, resp)
+		helper.RestRatelimitHandler(ctx, resp, w.logger, w.db, false)
 
 		if err := w.handleWorkflowJobUpsert(ctx, workflowJob, log, repoID); err != nil {
 			return err

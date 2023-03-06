@@ -20153,6 +20153,13 @@ export type GetSavedQueryQueryVariables = Exact<{
 
 export type GetSavedQueryQuery = { savedQuery?: { createdAt?: any | null, createdBy?: string | null, name: string, description?: string | null, sql: string, metadata?: any | null } | null };
 
+export type GetSchemaQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['SqlIdentifier']>;
+}>;
+
+
+export type GetSchemaQuery = { schemaIntrospections?: { nodes: Array<{ schema?: any | null, tableName?: any | null, columnName?: any | null, columnDescription?: string | null }> } | null };
+
 export type GetSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];
   syncId: Scalars['UUID'];

@@ -18,8 +18,8 @@ services:
   worker:
     # NOTE: to opt out of basic image pull tracking, comment out the current image
     # and uncomment the next line (which will pull from Docker Hub directly).
-    # image: mergestat/worker:1.17.0-beta
-    image: images.mergestat.com/mergestat/worker:1.17.0-beta
+    # image: mergestat/worker:1.19.0-beta
+    image: images.mergestat.com/mergestat/worker:1.19.0-beta
     stop_grace_period: 10m
     restart: always
     depends_on:
@@ -50,8 +50,8 @@ services:
 
   graphql:
     # See NOTE above in worker service.
-    # image: mergestat/graphql:1.17.0-beta
-    image: images.mergestat.com/mergestat/graphql:1.17.0-beta
+    # image: mergestat/graphql:1.19.0-beta
+    image: images.mergestat.com/mergestat/graphql:1.19.0-beta
     restart: always
     depends_on:
       postgres:
@@ -94,8 +94,8 @@ services:
 
   ui:
     # See NOTE above in worker service.
-    # image: mergestat/console:1.17.0-beta
-    image: images.mergestat.com/mergestat/console:1.17.0-beta
+    # image: mergestat/console:1.19.0-beta
+    image: images.mergestat.com/mergestat/console:1.19.0-beta
     restart: always
     depends_on:
       - graphql

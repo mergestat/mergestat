@@ -23,12 +23,14 @@ FROM dequeued dq
 -- name: UpdateImportStatus :exec
 UPDATE mergestat.repo_imports SET import_status = @status::TEXT, import_error = @error::TEXT WHERE id = @ID;
 
+-- name: CheckRunningImps :one
+SELECT COUNT(*) FROM mergestat.repo_imports WHERE import_status = 'RUNNING';
+
 -- name: UpsertRepo :exec
-INSERT INTO public.repos (repo, repo_import_id, provider) VALUES($1, $2, $3)
+INSERT INTO public.repos (repo, repo_import_id, provider, tags) VALUES($1, $2, $3, $4)
 ON CONFLICT (repo, (ref IS NULL)) WHERE ref IS NULL
 DO UPDATE SET tags = (
-    SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $4) x LIMIT 1
-);
+  SELECT COALESCE(jsonb_agg(DISTINCT x), jsonb_build_array()) FROM jsonb_array_elements(repos.tags || $4) x LIMIT 1);
 
 -- name: MarkRepoImportAsUpdated :exec
 UPDATE mergestat.repo_imports SET last_import = now() WHERE id = $1;
@@ -71,14 +73,14 @@ DELETE FROM public.github_repo_info WHERE repo_id = $1;
 -- name: InsertGitHubRepoInfo :exec
 INSERT INTO public.github_repo_info (
     repo_id, owner, name,
-    created_at, default_branch_name, description, disk_usage, fork_count, homepage_url,
-    is_archived, is_disabled, is_mirror, is_private, total_issues_count, latest_release_author,
+    created_at, default_branch_name, description, size, fork_count, homepage_url,
+    is_archived, is_disabled, mirror_url, is_private, total_issues_count, latest_release_author,
     latest_release_created_at, latest_release_name, latest_release_published_at, license_key,
-    license_name, license_nickname, open_graph_image_url, primary_language, pushed_at, releases_count,
-    stargazers_count, updated_at, watchers_count
+    license_name, primary_language, pushed_at, releases_count,
+    stargazers_count, updated_at, watchers_count,advanced_security,secret_scanning,secret_scanning_push_protection
 ) VALUES(
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
-    $23, $24, $25, $26, $27, $28
+    $23, $24, $25, $26, $27, $28,$29
 );
 
 -- name: InsertSyncJobLog :exec

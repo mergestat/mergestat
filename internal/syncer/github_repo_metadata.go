@@ -3,51 +3,19 @@ package syncer
 import (
 	"context"
 	"database/sql"
-	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"net/url"
 	"strings"
-	"time"
 
+	"github.com/google/go-github/v50/github"
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
+	"github.com/mergestat/mergestat/queries"
+	"golang.org/x/oauth2"
 )
-
-const selectSingleGitHubRepo = `SELECT github_repo(?) AS repo`
-
-type githubRepoInfo struct {
-	CreatedAt         *time.Time `json:"createdAt"`
-	DefaultBranchName *string    `json:"defaultBranchName"`
-	Description       *string    `json:"description"`
-	DiskUsage         *int       `json:"diskUsage"`
-	ForkCount         *int       `json:"forkCount"`
-	HomepageUrl       *string    `json:"homepageURL"`
-	IsArchived        *bool      `json:"isArchived"`
-	IsDisabled        *bool      `json:"isDisabled"`
-	IsMirror          *bool      `json:"isMirror"`
-	IsPrivate         *bool      `json:"isPrivate"`
-	TotalIssuesCount  *int       `json:"totalIssuesCount"`
-	LatestRelease     *struct {
-		AuthorLogin *string    `json:"authorLogin"`
-		CreatedAt   *time.Time `json:"createdAt"`
-		Name        *string    `json:"name"`
-		PublishedAt *time.Time `json:"publishedAt"`
-	} `json:"latestRelease"`
-	License *struct {
-		Key      *string `json:"key"`
-		Name     *string `json:"name"`
-		Nickname *string `json:"nickname"`
-	} `json:"license"`
-	Name              *string    `json:"name"`
-	OpenGraphImageUrl *string    `json:"openGraphImageURL"`
-	PrimaryLanguage   *string    `json:"primaryLanguage"`
-	PushedAt          *time.Time `json:"pushedAt"`
-	ReleasesCount     *int       `json:"releasesCount"`
-	StargazersCount   *int       `json:"stargazersCount"`
-	UpdatedAt         *time.Time `json:"updatedAt"`
-	WatchersCount     *int       `json:"watchersCount"`
-}
 
 func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	var err error
@@ -79,13 +47,12 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	repoName := components[2]
 
 	// execute mergestat query
-	var repoInfoJSON []byte
-	if err := w.mergestat.QueryRowxContext(ctx, selectSingleGitHubRepo, fmt.Sprintf("%s/%s", repoOwner, repoName)).Scan(&repoInfoJSON); err != nil {
-		return err
-	}
-
-	var repoInfo githubRepoInfo
-	if err := json.Unmarshal(repoInfoJSON, &repoInfo); err != nil {
+	var (
+		repo          *github.Repository
+		latestRelease *github.RepositoryRelease
+		releaseCount  int
+	)
+	if repo, latestRelease, releaseCount, err = w.getRepositoryInfo(ctx, ghToken, j.Repo); err != nil {
 		return err
 	}
 
@@ -104,7 +71,7 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	}()
 
 	// first, delete the prior repo info
-	if err := w.db.WithTx(tx).DeleteGitHubRepoInfo(ctx, j.RepoID); err != nil {
+	if err = w.db.WithTx(tx).DeleteGitHubRepoInfo(ctx, j.RepoID); err != nil {
 		return err
 	}
 
@@ -116,106 +83,122 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 
 	// TODO(patrickdevivo) the following is a nightmare...there's gotta be a way to avoid
 	// typing this all out?
-	if repoInfo.CreatedAt != nil {
-		insertParams.CreatedAt = sql.NullTime{Time: *repoInfo.CreatedAt, Valid: true}
+	if repo.CreatedAt != nil {
+		insertParams.CreatedAt = helper.DateToSqlNullTime(&repo.CreatedAt.Time)
 	}
 
-	if repoInfo.DefaultBranchName != nil {
-		insertParams.DefaultBranchName = sql.NullString{String: *repoInfo.DefaultBranchName, Valid: true}
+	if repo.DefaultBranch != nil {
+		insertParams.DefaultBranchName = helper.StringToSqlNullString(repo.DefaultBranch)
 	}
 
-	if repoInfo.Description != nil {
-		insertParams.Description = sql.NullString{String: *repoInfo.Description, Valid: true}
+	if repo.Description != nil {
+		insertParams.Description = helper.StringToSqlNullString(repo.Description)
 	}
 
-	if repoInfo.DiskUsage != nil {
-		insertParams.DiskUsage = sql.NullInt32{Int32: int32(*repoInfo.DiskUsage), Valid: true}
+	if repo.Size != nil {
+		size := int32(*repo.Size)
+		insertParams.Size = helper.Int32ToSqlNullInt32(&size)
 	}
 
-	if repoInfo.ForkCount != nil {
-		insertParams.ForkCount = sql.NullInt32{Int32: int32(*repoInfo.ForkCount), Valid: true}
+	if repo.ForksCount != nil {
+		forksCount := int32(*repo.ForksCount)
+		insertParams.ForkCount = helper.Int32ToSqlNullInt32(&forksCount)
 	}
 
-	if repoInfo.HomepageUrl != nil {
-		insertParams.HomepageUrl = sql.NullString{String: *repoInfo.HomepageUrl, Valid: true}
+	if repo.Homepage != nil {
+		insertParams.HomepageUrl = helper.StringToSqlNullString(repo.Homepage)
 	}
 
-	if repoInfo.IsArchived != nil {
-		insertParams.IsArchived = sql.NullBool{Bool: *repoInfo.IsArchived, Valid: true}
+	if repo.Archived != nil {
+		insertParams.IsArchived = sql.NullBool{Bool: *repo.Archived, Valid: true}
 	}
 
-	if repoInfo.IsDisabled != nil {
-		insertParams.IsDisabled = sql.NullBool{Bool: *repoInfo.IsDisabled, Valid: true}
+	if repo.Disabled != nil {
+		insertParams.IsDisabled = sql.NullBool{Bool: *repo.Disabled, Valid: true}
 	}
 
-	if repoInfo.IsMirror != nil {
-		insertParams.IsMirror = sql.NullBool{Bool: *repoInfo.IsMirror, Valid: true}
+	if repo.MirrorURL != nil {
+		insertParams.MirrorUrl = sql.NullString{String: *repo.MirrorURL, Valid: true}
+
 	}
 
-	if repoInfo.IsPrivate != nil {
-		insertParams.IsPrivate = sql.NullBool{Bool: *repoInfo.IsPrivate, Valid: true}
+	if repo.Private != nil {
+		insertParams.IsPrivate = sql.NullBool{Bool: *repo.Private, Valid: true}
 	}
 
-	if repoInfo.TotalIssuesCount != nil {
-		insertParams.TotalIssuesCount = sql.NullInt32{Int32: int32(*repoInfo.TotalIssuesCount), Valid: true}
+	if repo.OpenIssuesCount != nil {
+		issuesCount := int32(*repo.OpenIssuesCount)
+		insertParams.TotalIssuesCount = helper.Int32ToSqlNullInt32(&issuesCount)
 	}
 
-	if repoInfo.LatestRelease != nil {
-		if repoInfo.LatestRelease.AuthorLogin != nil {
-			insertParams.LatestReleaseAuthor = sql.NullString{String: *repoInfo.LatestRelease.AuthorLogin, Valid: true}
+	if latestRelease != nil {
+		if latestRelease.Author.Login != nil {
+			insertParams.LatestReleaseAuthor = helper.StringToSqlNullString(latestRelease.Author.Login)
 		}
-		if repoInfo.LatestRelease.CreatedAt != nil {
-			insertParams.LatestReleaseCreatedAt = sql.NullTime{Time: *repoInfo.LatestRelease.CreatedAt, Valid: true}
+		if latestRelease.CreatedAt != nil {
+			insertParams.LatestReleaseCreatedAt = helper.DateToSqlNullTime(&latestRelease.CreatedAt.Time)
 		}
-		if repoInfo.LatestRelease.Name != nil {
-			insertParams.LatestReleaseName = sql.NullString{String: *repoInfo.LatestRelease.Name, Valid: true}
+		if latestRelease.Name != nil {
+			insertParams.LatestReleaseName = helper.StringToSqlNullString(latestRelease.Name)
 		}
-		if repoInfo.LatestRelease.PublishedAt != nil {
-			insertParams.LatestReleasePublishedAt = sql.NullTime{Time: *repoInfo.LatestRelease.PublishedAt, Valid: true}
-		}
-	}
-
-	if repoInfo.License != nil {
-		if repoInfo.License.Key != nil {
-			insertParams.LicenseKey = sql.NullString{String: *repoInfo.License.Key, Valid: true}
-		}
-		if repoInfo.License.Name != nil {
-			insertParams.LicenseName = sql.NullString{String: *repoInfo.License.Name, Valid: true}
-		}
-		if repoInfo.License.Nickname != nil {
-			insertParams.LicenseNickname = sql.NullString{String: *repoInfo.License.Nickname, Valid: true}
+		if latestRelease.PublishedAt != nil {
+			insertParams.LatestReleasePublishedAt = helper.DateToSqlNullTime(&latestRelease.PublishedAt.Time)
 		}
 	}
 
-	if repoInfo.OpenGraphImageUrl != nil {
-		insertParams.OpenGraphImageUrl = sql.NullString{String: *repoInfo.OpenGraphImageUrl, Valid: true}
+	if repo.License != nil {
+		if repo.License.Key != nil {
+			insertParams.LicenseKey = helper.StringToSqlNullString(repo.License.Key)
+		}
+		if repo.License.Name != nil {
+			insertParams.LicenseName = helper.StringToSqlNullString(repo.License.Name)
+		}
 	}
 
-	if repoInfo.PrimaryLanguage != nil {
-		insertParams.PrimaryLanguage = sql.NullString{String: *repoInfo.PrimaryLanguage, Valid: true}
+	if repo.Language != nil {
+		insertParams.PrimaryLanguage = helper.StringToSqlNullString(repo.Language)
 	}
 
-	if repoInfo.PushedAt != nil {
-		insertParams.PushedAt = sql.NullTime{Time: *repoInfo.PushedAt, Valid: true}
+	if repo.PushedAt != nil {
+		insertParams.PushedAt = helper.DateToSqlNullTime(&repo.PushedAt.Time)
 	}
 
-	if repoInfo.ReleasesCount != nil {
-		insertParams.ReleasesCount = sql.NullInt32{Int32: int32(*repoInfo.ReleasesCount), Valid: true}
+	if releaseCount > 0 {
+		releaseCountInt32 := int32(releaseCount)
+		insertParams.ReleasesCount = helper.Int32ToSqlNullInt32(&releaseCountInt32)
 	}
 
-	if repoInfo.StargazersCount != nil {
-		insertParams.StargazersCount = sql.NullInt32{Int32: int32(*repoInfo.StargazersCount), Valid: true}
+	if repo.StargazersCount != nil {
+		stargaers := int32(*repo.StargazersCount)
+		insertParams.StargazersCount = helper.Int32ToSqlNullInt32(&stargaers)
 	}
 
-	if repoInfo.UpdatedAt != nil {
-		insertParams.UpdatedAt = sql.NullTime{Time: *repoInfo.UpdatedAt, Valid: true}
+	if repo.UpdatedAt != nil {
+		insertParams.UpdatedAt = helper.DateToSqlNullTime(&repo.UpdatedAt.Time)
 	}
 
-	if repoInfo.WatchersCount != nil {
-		insertParams.WatchersCount = sql.NullInt32{Int32: int32(*repoInfo.WatchersCount), Valid: true}
+	if repo.WatchersCount != nil {
+		watchersCount := int32(*repo.WatchersCount)
+		insertParams.WatchersCount = helper.Int32ToSqlNullInt32(&watchersCount)
 	}
+	if repo.SecurityAndAnalysis != nil {
+		if repo.SecurityAndAnalysis.AdvancedSecurity != nil {
+			advancedSecurity := *repo.SecurityAndAnalysis.AdvancedSecurity.Status
+			insertParams.AdvancedSecurity = helper.StringToSqlNullString(&advancedSecurity)
+		}
+
+		if repo.SecurityAndAnalysis.SecretScanning != nil {
+			secretScanning := *repo.SecurityAndAnalysis.SecretScanning.Status
+			insertParams.SecretScanning = helper.StringToSqlNullString(&secretScanning)
+		}
+
+		if repo.SecurityAndAnalysis.SecretScanningPushProtection != nil {
+			secretScanningPushProtection := *repo.SecurityAndAnalysis.SecretScanningPushProtection.Status
+			insertParams.SecretScanningPushProtection = helper.StringToSqlNullString(&secretScanningPushProtection)
+		}
+	}
+
 	// nightmare over..gotta be a better way than hand typing this
-
 	if err := w.db.WithTx(tx).InsertGitHubRepoInfo(ctx, insertParams); err != nil {
 		return err
 	}
@@ -232,4 +215,62 @@ func (w *worker) handleGitHubRepoMetadata(ctx context.Context, j *db.DequeueSync
 	}
 
 	return tx.Commit(ctx)
+}
+
+func (w *worker) getRepositoryInfo(ctx context.Context, ghToken string, currentRepo string) (*github.Repository, *github.RepositoryRelease, int, error) {
+	var (
+		err           error
+		repo          *github.Repository
+		latestRelease *github.RepositoryRelease
+		totalReleases int
+		resp          *github.Response
+	)
+
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: ghToken},
+	)
+
+	tc := oauth2.NewClient(ctx, ts)
+	if len(ghToken) <= 0 {
+		tc = nil
+	}
+
+	client := github.NewClient(tc)
+
+	if len(ghToken) > 0 {
+		// we check the rate limit before any call to the GitHub API
+		if _, resp, err = client.RateLimits(ctx); err != nil {
+			return nil, nil, 0, err
+		}
+
+		helper.RestRatelimitHandler(ctx, resp, w.logger, queries.NewQuerier(w.db), true)
+	}
+
+	var repoOwner, repoName string
+
+	if repoOwner, repoName, err = helper.GetRepoOwnerAndRepoName(currentRepo); err != nil {
+		return nil, nil, 0, err
+	}
+
+	if repo, _, err = client.Repositories.Get(ctx, repoOwner, repoName); err != nil {
+		return nil, nil, 0, err
+	}
+
+	helper.RestRatelimitHandler(ctx, resp, w.logger, queries.NewQuerier(w.db), true)
+
+	if latestRelease, resp, err = client.Repositories.GetLatestRelease(ctx, repoOwner, repoName); err != nil && resp.StatusCode != http.StatusNotFound {
+		return nil, nil, 0, err
+	}
+
+	helper.RestRatelimitHandler(ctx, resp, w.logger, queries.NewQuerier(w.db), true)
+
+	opt := &github.ListOptions{PerPage: 1}
+
+	if _, resp, err = client.Repositories.ListReleases(ctx, repoOwner, repoName, opt); err != nil && resp.StatusCode != http.StatusNotFound {
+		return nil, nil, 0, err
+	}
+
+	totalReleases = resp.LastPage
+
+	return repo, latestRelease, totalReleases, nil
 }

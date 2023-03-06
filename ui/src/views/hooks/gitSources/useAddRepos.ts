@@ -15,10 +15,10 @@ const useAddRepos = () => {
   const [addRepo] = useMutation(ADD_REPO, {
     onError: (error: ApolloError) => {
       const message = error.message.includes('duplicate key value violates unique constraint')
-      message ? setAddedWarning(addedWarning + 1) : showErrorAlert(error.message)
+      message ? setAddedWarning(prevWarning => prevWarning + 1) : showErrorAlert(error.message)
     },
     onCompleted: () => {
-      setAddedSuccess(addedSuccess + 1)
+      setAddedSuccess(prevSuccess => prevSuccess + 1)
     },
     awaitRefetchQueries: true,
     refetchQueries: () => ['getGitSource', 'getAllRepoManualImports', 'getRepoManualImports']

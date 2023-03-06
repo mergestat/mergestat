@@ -11,6 +11,7 @@ import (
 )
 
 type Querier interface {
+	CheckRunningImps(ctx context.Context) (int64, error)
 	CleanOldRepoSyncQueue(ctx context.Context, dollar_1 int32) error
 	DeleteGitHubRepoInfo(ctx context.Context, repoID uuid.UUID) error
 	DeleteRemovedRepos(ctx context.Context, arg DeleteRemovedReposParams) error

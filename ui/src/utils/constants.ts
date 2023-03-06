@@ -97,7 +97,8 @@ export enum States {
   Loading = 'Loading',
   Filled = 'Filled',
   Canceled = 'Canceled',
-  Error = 'Error'
+  Error = 'Error',
+  Affected = 'Affected'
 }
 
 export enum EXPORT_FORMAT {

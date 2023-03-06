@@ -466,7 +466,7 @@ type GithubRepoInfo struct {
 	// the description for the repo
 	Description sql.NullString
 	// the number of kilobytes on disk for the repo
-	DiskUsage sql.NullInt32
+	Size sql.NullInt32
 	// number of forks associated to the repo
 	ForkCount sql.NullInt32
 	// the GitHub homepage URL for the repo
@@ -475,8 +475,6 @@ type GithubRepoInfo struct {
 	IsArchived sql.NullBool
 	// boolean to determine if the repo is disabled
 	IsDisabled sql.NullBool
-	// boolean to determine if the repo is a mirror
-	IsMirror sql.NullBool
 	// boolean to determine if the repo is private
 	IsPrivate sql.NullBool
 	// number of issues associated to the repo
@@ -493,10 +491,6 @@ type GithubRepoInfo struct {
 	LicenseKey sql.NullString
 	// the license name for the repo
 	LicenseName sql.NullString
-	// the license nickname for the repo
-	LicenseNickname sql.NullString
-	// the URL for the image used to represent this repository in Open Graph data
-	OpenGraphImageUrl sql.NullString
 	// the primary language for the repo
 	PrimaryLanguage sql.NullString
 	// timestamp of the latest push to the repo
@@ -511,6 +505,13 @@ type GithubRepoInfo struct {
 	WatchersCount sql.NullInt32
 	// timestamp when record was synced into the MergeStat database
 	MergestatSyncedAt time.Time
+	// advanced security availability
+	AdvancedSecurity sql.NullString
+	// secret scanning availability
+	SecretScanning sql.NullString
+	// secret scanning push protection availability
+	SecretScanningPushProtection sql.NullString
+	MirrorUrl                    sql.NullString
 }
 
 // stargazers of a GitHub repo
@@ -656,6 +657,37 @@ type GrypeRepoVulnerability struct {
 	Path interface{}
 }
 
+type MergestatJob struct {
+	ID                uuid.UUID
+	Queue             string
+	Type              string
+	Description       sql.NullString
+	DefaultParameters pgtype.JSONB
+	Results           pgtype.JSONB
+	Priority          sql.NullInt32
+	CreatedAt         sql.NullTime
+	ModifiedAt        sql.NullTime
+}
+
+type MergestatJobSchedule struct {
+	JobID      uuid.UUID
+	Schedule   sql.NullString
+	CreatedAt  sql.NullTime
+	ModifiedAt sql.NullTime
+}
+
+type MergestatJobType struct {
+	ID                uuid.UUID
+	Name              string
+	Queue             string
+	Description       sql.NullString
+	DefaultParameters pgtype.JSONB
+	Priority          sql.NullInt32
+	Schedule          sql.NullString
+	CreatedAt         sql.NullTime
+	ModifiedAt        sql.NullTime
+}
+
 type MergestatLatestRepoSync struct {
 	ID         int64
 	CreatedAt  time.Time
@@ -666,11 +698,12 @@ type MergestatLatestRepoSync struct {
 }
 
 type MergestatProvider struct {
-	ID        uuid.UUID
-	Name      string
-	Vendor    string
-	Settings  pgtype.JSONB
-	CreatedAt time.Time
+	ID          uuid.UUID
+	Name        string
+	Vendor      string
+	Settings    pgtype.JSONB
+	CreatedAt   time.Time
+	Description sql.NullString
 }
 
 type MergestatQueryHistory struct {
@@ -774,11 +807,11 @@ type MergestatSavedQuery struct {
 	// timestamp when query was created
 	CreatedAt sql.NullTime
 	// query name
-	Name sql.NullString
+	Name string
 	// query description
 	Description sql.NullString
 	// query sql
-	Sql sql.NullString
+	Sql string
 	// query metadata
 	Metadata pgtype.JSONB
 }
@@ -802,8 +835,8 @@ type MergestatServiceAuthCredential struct {
 	Type        string
 	Credentials []byte
 	Provider    uuid.UUID
-	Username    string
 	IsDefault   sql.NullBool
+	Username    []byte
 }
 
 type MergestatServiceAuthCredentialType struct {
@@ -827,7 +860,14 @@ type MergestatUserMgmtPgUser struct {
 
 type MergestatVendor struct {
 	Name        string
-	Displayname string
+	DisplayName string
+	Description sql.NullString
+	Type        string
+}
+
+type MergestatVendorType struct {
+	Name        string
+	DisplayName string
 	Description sql.NullString
 }
 

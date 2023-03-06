@@ -10,6 +10,7 @@ import QueryEditorEmpty from './components/state-empty'
 import QueryEditorError from './components/state-error'
 import QueryEditorFilled from './components/state-filled'
 import QueryEditorLoading from './components/state-loading'
+import QueryEditorRowsImpacted from './components/state-rows-affected'
 import { QuerySettingsModal } from './modals/query-setting'
 
 type QueryEditorProps = {
@@ -19,10 +20,9 @@ type QueryEditorProps = {
 
 const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorProps) => {
   const ROWS_LIMIT = 1000
-
   const {
     setQuery, setShowSettingsModal, setTitle, setDesc, executeSQLQuery, cancelSQLQuery,
-    expanded, dataQuery, showSettingsModal, state, rowLimitReached, executed, readOnly,
+    expanded, showSettingsModal, state, rowLimitReached, executed, readOnly,
     loading, error, query, data, time, title, desc
   } = useQueryEditor(ROWS_LIMIT)
 
@@ -61,7 +61,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
             }}
           />
 
-          <div className='flex items-center gap-x-7'>
+          <div className='flex items-center gap-x-6'>
             {!readOnly && !expanded && <div className='flex items-center'>
               <WarningFilledIcon className="t-icon t-icon-warning" />
               <Tooltip placement='bottom' offset={[0, 10]}
@@ -95,7 +95,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
                 />
                 : <Button
                   className='whitespace-nowrap justify-center'
-                  label='Save as new'
+                  label='Save As New'
                   skin="secondary"
                   onClick={addSavedQueryHandler}
                 />}
@@ -126,7 +126,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
         />}
 
         {/* Empty state */}
-        {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} data={dataQuery} />}
+        {!error && !loading && state === States.Empty && <QueryEditorEmpty executed={executed} data={data} />}
 
         {/* Canceled state */}
         {!error && !loading && state === States.Canceled && <QueryEditorCanceled />}
@@ -136,6 +136,10 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
 
         {/* Loading state */}
         {loading && <QueryEditorLoading />}
+
+        {!error && !loading && data?.execSQL.rows?.length === 0 && state === States.Affected && data.execSQL.rowCount &&
+          <QueryEditorRowsImpacted data={data} />
+        }
 
         {/* Filled state */}
         {!error && !loading && data && state === States.Filled &&

@@ -6,10 +6,9 @@ import (
 	"net/url"
 	"os"
 	"strconv"
-	"time"
 
 	"github.com/cavaliergopher/grab/v3"
-	"github.com/google/go-github/v47/github"
+	"github.com/google/go-github/v50/github"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/mergestat/internal/pool"
@@ -45,31 +44,6 @@ func New(ctx context.Context, db *db.Queries, pgpool *pgxpool.Pool, logger *zero
 		pool:         pool,
 		db:           queries,
 	}
-}
-
-func (w *warehouse) restRatelimitHandler(ctx context.Context, resp *github.Response) {
-	var remaining = resp.Rate.Remaining
-	var delay = 800 * time.Millisecond
-	var untilResetDur = time.Until(resp.Rate.Reset.Time)
-	secondsRemaining := untilResetDur.Seconds()
-
-	if remaining <= 400 {
-		delay = time.Duration(untilResetDur)
-		w.logger.Info().
-			Int("remaining", remaining).
-			Time("resets", resp.Rate.Reset.Time).
-			Str("until-reset", untilResetDur.String()).
-			Float64("delay-seconds", float64(delay)).
-			Msgf("received rate limit info from GitHub API: %d remaining in next %ds. Delaying %ss", remaining, int(secondsRemaining), strconv.FormatFloat(delay.Seconds(), 'f', 2, 64))
-
-	}
-
-	// Allow for shutdown during the delay
-	select {
-	case <-ctx.Done():
-	case <-time.After(delay):
-	}
-
 }
 
 func (w *warehouse) parseJobLogs(logsUrl *url.URL, filepathDir string, n int) (string, error) {

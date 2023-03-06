@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-github/v47/github"
+	"github.com/google/go-github/v50/github"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/mergestat/internal/db"
@@ -126,6 +126,8 @@ func TestWarehouseHandleWorkflowsOK(t *testing.T) {
 			}
 			gomock.InOrder(
 				mockedPool.EXPECT().CopyFrom(ctx, pgx.Identifier{"mergestat", "repo_sync_logs"}, []string{"log_type", "message", "repo_sync_queue_id"}, pgx.CopyFromRows(inputRuns)).Return(int64(0), nil).MaxTimes(5))
+
+			gomock.InOrder(mockedDb.EXPECT().CheckRunningImps(ctx))
 
 			// mocking batch logs values for jobs
 			getInputBatches = func(batch []*syncLog) [][]interface{} {
@@ -303,7 +305,8 @@ func TestWarehouseWorkflowRunsOK(t *testing.T) {
 					Headrepositoryurl: helper.StringToSqlNullString(workflowRunHeadRepoUrl),
 				}).Return(nil).MaxTimes(1),
 				mockedTx.EXPECT().Commit(ctx).Return(nil),
-				mockedTx.EXPECT().Rollback(ctx).Return(nil))
+				mockedTx.EXPECT().Rollback(ctx).Return(nil),
+				mockedDb.EXPECT().CheckRunningImps(ctx))
 
 		},
 	}}
@@ -420,7 +423,8 @@ func TestWarehouseWorkflowJobsOK(t *testing.T) {
 					Runnergroupname: helper.StringToSqlNullString(testJobs.RunnerGroupName),
 				}).Return(nil).MaxTimes(1),
 				mockedTx.EXPECT().Commit(ctx).Return(nil),
-				mockedTx.EXPECT().Rollback(ctx).Return(nil))
+				mockedTx.EXPECT().Rollback(ctx).Return(nil),
+				mockedDb.EXPECT().CheckRunningImps(ctx))
 		},
 		expectedErr: nil},
 	}
