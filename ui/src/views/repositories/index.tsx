@@ -113,9 +113,9 @@ const RepositoriesView: React.FC = () => {
             ? <RepositoriesTable repos={repos || []} />
             : <EmptyData message='No repos yet' icon={<RepositoryIcon className="t-icon" />} />
         }
-
-        {showReposTable && <FilterFooter total={totalRepos} rows={rowsRepos} page={pageRepos} setRows={setRowsRepos} setPage={setPageRepos} />}
       </div>
+
+      {showReposTable && <FilterFooter total={totalRepos} rows={rowsRepos} page={pageRepos} setRows={setRowsRepos} setPage={setPageRepos} />}
 
       {showRemoveRepositoryModal && <RemoveRepositoryModal />}
     </>

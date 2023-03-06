@@ -11,7 +11,7 @@ type GitSourceStatsProps = {
 
 const GitSourceStats: React.FC<GitSourceStatsProps> = ({ loading, totalAuto, totalManual, totalRepos }: GitSourceStatsProps) => {
   return (
-    <div className='md_grid md_grid-cols-3 gap-6 space-y-4 md_space-y-0 mb-8'>
+    <div className='md_grid md_grid-cols-3 gap-6 space-y-4 md_space-y-0 mb-6'>
       <Stat className='shadow-sm w-full'>
         <Stat.Left>
           <Stat.Label>Repos</Stat.Label>

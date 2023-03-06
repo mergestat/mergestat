@@ -20,7 +20,7 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
   return (
     <div className='flex flex-col flex-1 overflow-auto'>
       <Toolbar className='bg-white px-8 pt-4'>
-        <Toolbar.Left>
+        <Toolbar.Left className='flex-grow'>
           <EditableText
             className='flex-grow mr-5'
             icon={getGitSourceIcon(vendor || '')}
@@ -35,7 +35,7 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
             }}
           />
         </Toolbar.Left>
-        <Toolbar.Right>
+        <Toolbar.Right className='flex-none'>
           <Button
             className='whitespace-nowrap justify-center'
             label='Save'

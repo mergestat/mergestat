@@ -24,13 +24,13 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
   }
 
   return (
-    <div className='flex flex-col flex-1'>
+    <div className='flex flex-col flex-1 overflow-hidden'>
       {savedQueries.length < 1
         ? <NoDataFound message='Couldn&#39;t find any saved queries.' />
         : <>
           <div className='flex flex-col min-w-0 bg-gray-50 h-full'>
-            <div className='flex-1 overflow-x-auto overflow-y-hidden'>
-              <table className='t-table-default t-table-hover border-b'>
+            <div className='flex-1 overflow-auto'>
+              <table className='t-table-default t-table-sticky-header t-table-hover border-b'>
                 <thead>
                   <tr className='bg-white'>
                     <th scope='col' key='name' className='whitespace-nowrap'>Name</th>

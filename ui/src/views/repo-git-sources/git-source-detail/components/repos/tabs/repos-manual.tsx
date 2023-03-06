@@ -54,7 +54,7 @@ const ReposManual: React.FC = () => {
           <Button
             label='Add'
             disabled={showBulk ? !urls : !url}
-            className='whitespace-nowrap font-thin'
+            className='whitespace-nowrap'
             startIcon={<PlusIcon className='t-icon' />}
             onClick={addRepos}
           />
@@ -62,7 +62,8 @@ const ReposManual: React.FC = () => {
         <Button
           label={showBulk ? 'Hide bulk add' : 'Bulk add'}
           skin='borderless'
-          className='whitespace-nowrap font-thin text-blue-600'
+          size='small'
+          className='whitespace-nowrap text-blue-600'
           endIcon={showBulk ? <ChevronUpIcon className='t-icon' /> : <ChevronDownIcon className='t-icon' />}
           onClick={() => setShowBulk(!showBulk)}
         />

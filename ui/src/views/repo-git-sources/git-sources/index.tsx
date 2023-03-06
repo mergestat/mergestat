@@ -58,7 +58,7 @@ const GitSourcesView: React.FC = () => {
   return (
     <div className='flex flex-col flex-1 overflow-hidden'>
       {/* Header */}
-      <div className='bg-white h-16 w-full border-b px-8'>
+      <div className='bg-white h-16 w-full border-b px-8 flex-none'>
         <Toolbar className='h-full'>
           <Toolbar.Left>
             <h2 className='t-h2 mb-0'>Git Sources</h2>

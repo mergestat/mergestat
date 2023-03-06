@@ -8,7 +8,7 @@ const ReposAutoManual: React.FC = () => {
   const [{ gsDetail: { auto, totalManual, vendor } }] = useGitSourceDetailContext()
 
   return (
-    <Panel className='rounded-md shadow-sm m-auto mt-8'>
+    <Panel className='rounded-md shadow-sm m-auto mt-6'>
       <Panel.Header className='border-b-0 h-14'>
         <div className='w-full flex justify-between'>
           <h4 className='t-h4 mb-0'>Repos</h4>
