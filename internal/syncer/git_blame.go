@@ -34,50 +34,76 @@ func (w *worker) sendBatchBlameLines(ctx context.Context, blameTmpPath string, t
 	if f, err = os.Open(blameTmpPath); err != nil {
 		return 0, err
 	}
+
 	defer f.Close()
 
 	// Create a new JSON decoder for the f
-	decoder := json.NewDecoder(f)
-	inputs := make([][]interface{}, 0)
+	var (
+		decoder       = json.NewDecoder(f)
+		inputs        = make([][]interface{}, 0, 100)
+		insertedLines = 0
+		isEOF         = false
+	)
 
-	// Loop over the JSON data in chunks
+	// Using a double loop to walk through json file  until the len of inputs
+	// is equal to the capacity or is OEF, either will break inner loop and the outer
+	// loop copies batches of 100< items untils EOF is reached
 	for {
-		// Decode the next JSON value into a blameLine struct
-		var bl *blameLine
-		err = decoder.Decode(&bl)
 
-		// If we've reached the end of the file, break out of the loop
-		if err == io.EOF {
+		for {
+			// Decode the next JSON value into a blameLine struct
+			var bl *blameLine
+			err = decoder.Decode(&bl)
+
+			// If we've reached the end of the file, break out of the loop
+			// and set isEOF to true
+			if err == io.EOF {
+				isEOF = true
+				break
+			}
+
+			if err != nil {
+				return 0, err
+			}
+
+			var repoID uuid.UUID
+			var err error
+			if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
+				return 0, fmt.Errorf("uuid: %w", err)
+			}
+
+			// sanitize the line of null chars, similar to what's done in GIT_FILES syncer
+			var line interface{}
+			if bl.Line != nil && utf8.ValidString(*bl.Line) {
+				line = strings.ReplaceAll(*bl.Line, "\u0000", "")
+			} else {
+				line = nil
+			}
+
+			if len(inputs) == cap(inputs) {
+				break
+			}
+
+			input := []interface{}{repoID, bl.AuthorEmail, bl.AuthorName, bl.AuthorWhen, bl.CommitHash, bl.LineNo, line, bl.Path}
+			inputs = append(inputs, input)
+		}
+
+		if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_blame"}, []string{"repo_id", "author_email", "author_name", "author_when", "commit_hash", "line_no", "line", "path"}, pgx.CopyFromRows(inputs)); err != nil {
+			return 0, fmt.Errorf("tx copy from: %w", err)
+		}
+
+		insertedLines += len(inputs)
+
+		//cleaning slice and keeping capacity
+		inputs = inputs[:0]
+
+		// if we reach EOF we exit
+		if isEOF {
 			break
 		}
-
-		if err != nil {
-			return 0, err
-		}
-
-		var repoID uuid.UUID
-		var err error
-		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
-			return 0, fmt.Errorf("uuid: %w", err)
-		}
-
-		// sanitize the line of null chars, similar to what's done in GIT_FILES syncer
-		var line interface{}
-		if bl.Line != nil && utf8.ValidString(*bl.Line) {
-			line = strings.ReplaceAll(*bl.Line, "\u0000", "")
-		} else {
-			line = nil
-		}
-
-		input := []interface{}{repoID, bl.AuthorEmail, bl.AuthorName, bl.AuthorWhen, bl.CommitHash, bl.LineNo, line, bl.Path}
-		inputs = append(inputs, input)
-
 	}
 
-	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_blame"}, []string{"repo_id", "author_email", "author_name", "author_when", "commit_hash", "line_no", "line", "path"}, pgx.CopyFromRows(inputs)); err != nil {
-		return 0, fmt.Errorf("tx copy from: %w", err)
-	}
-	return len(inputs), nil
+	return insertedLines, nil
 }
 
 type blameLine struct {
