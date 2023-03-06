@@ -31,9 +31,9 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
     <div className='flex flex-col flex-1'>
       {repos.length < 1
         ? <NoDataFound message='Couldn&#39;t find any repositories.' />
-        : <div className='flex flex-col min-w-0 bg-white h-full'>
+        : <div className='flex flex-col min-w-0 h-full'>
           <div className='flex-1 overflow-x-auto overflow-y-hidden'>
-            <table data-testid={TEST_IDS.repoTableList} className='t-table-default t-table-hover'>
+            <table data-testid={TEST_IDS.repoTableList} className='t-table-default t-table-hover border-b'>
               <thead>
                 <tr className='bg-white'>
                   <th scope='col' key='name' className='whitespace-nowrap'>Repository</th>
