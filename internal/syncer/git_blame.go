@@ -37,8 +37,8 @@ func (w *worker) sendBatchBlameLines(ctx context.Context, blameTmpPath string, t
 
 	defer f.Close()
 
-	// Create a new JSON decoder for the f
 	var (
+		// Create a new JSON decoder for the f
 		decoder       = json.NewDecoder(f)
 		inputs        = make([][]interface{}, 0, 100)
 		insertedLines = 0
