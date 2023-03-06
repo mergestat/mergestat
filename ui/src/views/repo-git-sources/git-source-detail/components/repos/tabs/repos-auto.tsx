@@ -64,7 +64,7 @@ const ReposAuto: React.FC = () => {
           <Button
             label='Add'
             disabled={!userOrOrg}
-            className='whitespace-nowrap font-thin'
+            className='whitespace-nowrap'
             startIcon={<PlusIcon className='t-icon' />}
             onClick={addImport}
           />

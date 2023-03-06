@@ -31,11 +31,11 @@ const GitHubAuth: React.FC = () => {
         </div>
       </Panel.Header>
 
-      <Panel.Body className='p-8'>
+      <Panel.Body className='p-6'>
         {auth && <SettedAuth {...auth} />}
 
         {!auth && <>
-          <span className='mb-6 text-gray-500'>
+          <p className='mb-6 t-text-muted'>
             In order to access the GitHub API and any private GitHub
             repositories, we need to authenticate with{' '}
             <a
@@ -48,12 +48,12 @@ const GitHubAuth: React.FC = () => {
             </a>{' '}
             (PAT). Other authentication methods (such as an OAuth based
             flow) may become available in the future.
-          </span>
+          </p>
 
           <form className='mb-4'>
             <div className='flex flex-col mt-8 mb-5'>
               <Label>GitHub personal access token</Label>
-              <div className='flex space-x-3'>
+              <div className='flex space-x-2'>
                 <Input
                   className='max-w-lg'
                   data-testid={TEST_IDS.patInputText}
