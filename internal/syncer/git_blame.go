@@ -42,7 +42,7 @@ func (w *worker) sendBatchBlameLines(ctx context.Context, blameTmpPath string, t
 
 	// Loop over the JSON data in chunks
 	for {
-		// Decode the next JSON value into a Person struct
+		// Decode the next JSON value into a blameLine struct
 		var bl *blameLine
 		err = decoder.Decode(&bl)
 
