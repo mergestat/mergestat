@@ -93,7 +93,7 @@ export const AddRepoImportModal: React.FC = () => {
           <Toolbar.Right>
             <Toolbar.Item>
               <Button label='Cancel' className="my-3 mr-3" skin="secondary" onClick={close} />
-              <Button label='Add Repo' className="my-3" skin="primary" onClick={addImport} />
+              <Button label='Add Auto Import' className="my-3" skin="primary" onClick={addImport} />
             </Toolbar.Item>
           </Toolbar.Right>
         </Toolbar>
