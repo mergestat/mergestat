@@ -37,7 +37,7 @@ const GitHubAuth: React.FC = () => {
         {!auth && <>
           <p className='mb-6 t-text-muted'>
             In order to access the GitHub API and any private GitHub
-            repositories, we need to authenticate with{' '}
+            repos, we need to authenticate with{' '}
             <a
               target='_blank'
               href={LINKS_TO.createPAt}

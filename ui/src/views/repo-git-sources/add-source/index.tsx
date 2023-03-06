@@ -94,10 +94,11 @@ const AddSourceView: React.FC = () => {
           </Panel.Header>
           <Panel.Body className='p-6'>
             <div className=''>
-              <Label className='text-gray-500' aria-required>Git source name</Label>
+              <Label className='text-gray-500' aria-required>Git Source name</Label>
               <Input
                 value={name}
                 variant={errorName ? 'error' : 'default'}
+                placeholder='e.g. My GitHub Repos'
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
               />
               {errorName && (
@@ -169,7 +170,7 @@ const AddSourceView: React.FC = () => {
           </Panel.Header>
           <Panel.Body className='p-6'>
             <Alert type='default' theme='light' className='mb-6'>
-              <span>You already have these git sources configured, maybe pick up from one of them instead?</span>
+              <span>These Git Sources are already configured. Pick from these to add repos to an existing Git Source.</span>
             </Alert>
 
             <Panel className='rounded-md shadow-sm max-w-4xl m-auto'>

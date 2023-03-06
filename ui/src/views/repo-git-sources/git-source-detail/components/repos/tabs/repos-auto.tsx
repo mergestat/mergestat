@@ -31,7 +31,7 @@ const ReposAuto: React.FC = () => {
     <>
       <div className='bg-white p-6'>
         <Alert type="default" className="bg-gray-50 mb-6">
-          Automatic repo imports run on a schedule and bring in all repos from a Github organization or user.
+          Auto imports run on a schedule and bring in all repos from a GitHub organization or user.
         </Alert>
 
         <div className='flex items-center gap-2 mb-2'>

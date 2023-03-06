@@ -14,7 +14,7 @@ const GitSourceStats: React.FC<GitSourceStatsProps> = ({ loading, totalAuto, tot
     <div className='md_grid md_grid-cols-3 gap-6 space-y-4 md_space-y-0 mb-6'>
       <Stat className='shadow-sm w-full'>
         <Stat.Left>
-          <Stat.Label>Repos</Stat.Label>
+          <Stat.Label>Total repos</Stat.Label>
           <Stat.Number>
             <MetricNumber loading={loading} metric={totalRepos || 0} />
           </Stat.Number>
@@ -25,7 +25,7 @@ const GitSourceStats: React.FC<GitSourceStatsProps> = ({ loading, totalAuto, tot
       </Stat>
       <Stat className='shadow-sm w-full'>
         <Stat.Left>
-          <Stat.Label>Auto Imports</Stat.Label>
+          <Stat.Label>Repos from auto imports</Stat.Label>
           <Stat.Number>
             <MetricNumber loading={loading} metric={totalAuto || 0} />
           </Stat.Number>
@@ -36,7 +36,7 @@ const GitSourceStats: React.FC<GitSourceStatsProps> = ({ loading, totalAuto, tot
       </Stat>
       <Stat className='shadow-sm w-full'>
         <Stat.Left>
-          <Stat.Label>Manual Imports</Stat.Label>
+          <Stat.Label>Repos added manually</Stat.Label>
           <Stat.Number>
             <MetricNumber loading={loading} metric={totalManual || 0} />
           </Stat.Number>

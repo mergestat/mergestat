@@ -18,7 +18,7 @@ export const RemoveAuthModal: React.FC<RemoveAuthModalProps> = ({ id, setShowRem
 
   const [removeCredential] = useMutation(REMOVE_CREDENTIAL, {
     onCompleted: () => {
-      showSuccessAlert('Auth credential removed')
+      showSuccessAlert('Token removed')
       close()
     },
     awaitRefetchQueries: true,
@@ -31,7 +31,7 @@ export const RemoveAuthModal: React.FC<RemoveAuthModalProps> = ({ id, setShowRem
         <Toolbar className="h-16 px-6">
           <Toolbar.Left>
             <Toolbar.Item>
-              <Modal.Title>Remove Auth Credential</Modal.Title>
+              <Modal.Title>Remove Token</Modal.Title>
             </Toolbar.Item>
           </Toolbar.Left>
           <Toolbar.Right>
@@ -47,7 +47,7 @@ export const RemoveAuthModal: React.FC<RemoveAuthModalProps> = ({ id, setShowRem
       </Modal.Header>
       <Modal.Body>
         <div className='px-6 py-6'>
-          Are you sure you want to remove the setted credential?
+        Are you sure you want to remove this token?
         </div>
       </Modal.Body>
       <Modal.Footer>
@@ -70,7 +70,7 @@ export const RemoveAuthModal: React.FC<RemoveAuthModalProps> = ({ id, setShowRem
                 data-testid={TEST_IDS.removeRepoButtonModal}
                 className="my-3"
               >
-                Remove Auth
+                Remove Token
               </Button>
             </Toolbar.Item>
           </Toolbar.Right>

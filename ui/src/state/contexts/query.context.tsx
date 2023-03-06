@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from 'react'
 import { QueryResultProps, TabData } from 'src/@types'
 
 const initialSQL = `-- Run (read-only) queries directly against the Postgres database
--- For example, count commits by author across all repositories
+-- For example, count commits by author across all repos
 SELECT author_name, count(*) FROM git_commits GROUP BY author_name ORDER BY count(*) DESC
 `
 
