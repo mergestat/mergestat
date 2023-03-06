@@ -38,7 +38,7 @@ func (w *worker) sendBatchBlameLines(ctx context.Context, blameTmpPath string, t
 	defer f.Close()
 
 	var (
-		// Create a new JSON decoder for the f
+		// Create a new JSON decoder for the file
 		decoder       = json.NewDecoder(f)
 		inputs        = make([][]interface{}, 0, 100)
 		insertedLines = 0
@@ -47,7 +47,7 @@ func (w *worker) sendBatchBlameLines(ctx context.Context, blameTmpPath string, t
 
 	// Using a double loop to walk through json file  until the len of inputs
 	// is equal to the capacity or is OEF, either will break inner loop and the outer
-	// loop copies batches of 100< items untils EOF is reached
+	// loop copies batches of 100 or less items untils EOF is reached
 	for {
 
 		for {
