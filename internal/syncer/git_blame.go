@@ -2,7 +2,6 @@ package syncer
 
 import (
 	"bufio"
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -26,31 +25,60 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func (w *worker) sendBatchBlameLines(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*blameLine) error {
-	inputs := make([][]interface{}, 0, len(batch))
-	for _, l := range batch {
+func (w *worker) sendBatchBlameLines(ctx context.Context, blameTmpPath string, tx pgx.Tx, j *db.DequeueSyncJobRow) (int, error) {
+	var (
+		f   *os.File
+		err error
+	)
+
+	if f, err = os.Open(blameTmpPath); err != nil {
+		return 0, err
+	}
+	defer f.Close()
+
+	// Create a new JSON decoder for the f
+	decoder := json.NewDecoder(f)
+	inputs := make([][]interface{}, 0)
+
+	// Loop over the JSON data in chunks
+	for {
+		// Decode the next JSON value into a Person struct
+		var bl *blameLine
+		err = decoder.Decode(&bl)
+
+		// If we've reached the end of the file, break out of the loop
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			w.logger.Err(err).Msgf("%v", err)
+			continue
+		}
+
 		var repoID uuid.UUID
 		var err error
 		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
-			return fmt.Errorf("uuid: %w", err)
+			return 0, fmt.Errorf("uuid: %w", err)
 		}
 
 		// sanitize the line of null chars, similar to what's done in GIT_FILES syncer
 		var line interface{}
-		if l.Line != nil && utf8.ValidString(*l.Line) {
-			line = strings.ReplaceAll(*l.Line, "\u0000", "")
+		if bl.Line != nil && utf8.ValidString(*bl.Line) {
+			line = strings.ReplaceAll(*bl.Line, "\u0000", "")
 		} else {
 			line = nil
 		}
 
-		input := []interface{}{repoID, l.AuthorEmail, l.AuthorName, l.AuthorWhen, l.CommitHash, l.LineNo, line, l.Path}
+		input := []interface{}{repoID, bl.AuthorEmail, bl.AuthorName, bl.AuthorWhen, bl.CommitHash, bl.LineNo, line, bl.Path}
 		inputs = append(inputs, input)
+
 	}
 
 	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_blame"}, []string{"repo_id", "author_email", "author_name", "author_when", "commit_hash", "line_no", "line", "path"}, pgx.CopyFromRows(inputs)); err != nil {
-		return fmt.Errorf("tx copy from: %w", err)
+		return 0, fmt.Errorf("tx copy from: %w", err)
 	}
-	return nil
+	return len(inputs), nil
 }
 
 type blameLine struct {
@@ -93,7 +121,6 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		return fmt.Errorf("git clone: %w", err)
 	}
 
-	blamedLines := make([]*blameLine, 0)
 	iter, err := lstree.Exec(ctx, tmpPath, "HEAD", lstree.WithRecurse(true))
 	if err != nil {
 		return fmt.Errorf("git ls-tree error: %w", err)
@@ -112,26 +139,17 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 		}
 	}
 
-	var fileObjects []string
-	if fileObjects, err = w.writeBlameObjectsToFile(objects, tmpPath); err != nil {
+	// creating a tmp file to store blame objects
+	var file *os.File
+	if file, err = ioutil.TempFile(tmpPath, "blame-objects-*.json"); err != nil {
 		return err
 	}
 
-	for _, fo := range fileObjects {
+	defer file.Close()
 
-		fo += "}"
-		fo = strings.Trim(fo, ",")
-		fo = strings.Trim(fo, "]")
-		fo = strings.Trim(fo, "[")
-		if fo == "}" {
-			continue
-		}
+	encoder := json.NewEncoder(file)
 
-		var o lstree.Object
-		if err = json.Unmarshal([]byte(fo), &o); err != nil {
-			return err
-		}
-
+	for _, o := range objects {
 		if o.Type != "blob" {
 			continue
 		}
@@ -200,8 +218,7 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 
 		for lineIdx, blame := range res {
 			lineNo := lineIdx + 1
-
-			blamedLines = append(blamedLines, &blameLine{
+			blameline := &blameLine{
 				AuthorEmail: &blame.Author.Email,
 				AuthorName:  &blame.Author.Name,
 				AuthorWhen:  &blame.Author.When,
@@ -209,7 +226,12 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 				LineNo:      &lineNo,
 				Line:        &blame.Line,
 				Path:        &o.Path,
-			})
+			}
+
+			// encoding each blame line to a json file
+			if err = encoder.Encode(blameline); err != nil {
+				w.logger.Err(err).Msgf("%v", err)
+			}
 		}
 	}
 
@@ -237,17 +259,17 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	}}); err != nil {
 		return err
 	}
-
-	if err := w.sendBatchBlameLines(ctx, tx, j, blamedLines); err != nil {
+	var blamedLines int
+	if blamedLines, err = w.sendBatchBlameLines(ctx, file.Name(), tx, j); err != nil {
 		return fmt.Errorf("send batch blamed lines: %w", err)
 	}
 
-	l.Info().Msgf("sent batch of %d blamed lines", len(blamedLines))
+	l.Info().Msgf("sent batch of %d blamed lines", blamedLines)
 
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
 		RepoSyncQueueID: j.ID,
-		Message:         fmt.Sprintf("inserted %d row(s) into git_blame", len(blamedLines)),
+		Message:         fmt.Sprintf("inserted %d row(s) into git_blame", blamedLines),
 	}}); err != nil {
 		return err
 	}
@@ -266,52 +288,4 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 	err = tx.Commit(ctx)
 
 	return err
-}
-
-func (w *worker) writeBlameObjectsToFile(objects []*lstree.Object, tmpPath string) ([]string, error) {
-	var (
-		// object file
-		of *os.File
-		// newly created file
-		f           *os.File
-		fileObjects []string
-		err         error
-	)
-
-	buffer := new(bytes.Buffer)
-	if err = json.NewEncoder(buffer).Encode(objects); err != nil {
-		return fileObjects, err
-	}
-
-	if f, err = ioutil.TempFile(tmpPath, "blame-objects-*.text"); err != nil {
-		return fileObjects, err
-	}
-
-	defer f.Close()
-
-	// writing objects into newly created file
-	if _, err = f.Write(buffer.Bytes()); err != nil {
-		return fileObjects, err
-	}
-	// opening the newly created file
-	if of, err = os.Open(f.Name()); err != nil {
-		return fileObjects, err
-	}
-
-	defer of.Close()
-
-	scanner := bufio.NewScanner(of)
-
-	for scanner.Scan() {
-
-		// scanning file to extract information
-		fileText := strings.TrimSpace(scanner.Text())
-		fileObjects = strings.Split(fileText, "}")
-	}
-
-	if err = scanner.Err(); err != nil {
-		return fileObjects, err
-	}
-
-	return fileObjects, nil
 }
