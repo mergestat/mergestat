@@ -36,7 +36,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
               content={`${capitalize(props.provider.vendor)} repository`}
               placement='bottom'
             >
-              <a target='_blank' href={props.provider.url + props.name} rel='noopener noreferrer'>
+              <a target='_blank' href={`${props.provider.url}/${props.name}`} rel='noopener noreferrer'>
                 {getGitSourceIcon(props.provider.vendor, 't-icon-muted w-4')}
               </a>
             </Tooltip>
