@@ -7483,14 +7483,14 @@ export enum GithubPullRequestsOrderBy {
 export type GithubRepoInfo = Node & {
   /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
+  /** advanced security availability */
+  advancedSecurity?: Maybe<Scalars['String']>;
   /** timestamp of when the repo was created */
   createdAt?: Maybe<Scalars['Datetime']>;
   /** the name of the default branch for the repo */
   defaultBranchName?: Maybe<Scalars['String']>;
   /** the description for the repo */
   description?: Maybe<Scalars['String']>;
-  /** the number of kilobytes on disk for the repo */
-  diskUsage?: Maybe<Scalars['Int']>;
   /** number of forks associated to the repo */
   forkCount?: Maybe<Scalars['Int']>;
   /** the GitHub homepage URL for the repo */
@@ -7499,8 +7499,6 @@ export type GithubRepoInfo = Node & {
   isArchived?: Maybe<Scalars['Boolean']>;
   /** boolean to determine if the repo is disabled */
   isDisabled?: Maybe<Scalars['Boolean']>;
-  /** boolean to determine if the repo is a mirror */
-  isMirror?: Maybe<Scalars['Boolean']>;
   /** boolean to determine if the repo is private */
   isPrivate?: Maybe<Scalars['Boolean']>;
   /** the author of the latest release in the repo */
@@ -7515,14 +7513,11 @@ export type GithubRepoInfo = Node & {
   licenseKey?: Maybe<Scalars['String']>;
   /** the license name for the repo */
   licenseName?: Maybe<Scalars['String']>;
-  /** the license nickname for the repo */
-  licenseNickname?: Maybe<Scalars['String']>;
+  mirrorUrl?: Maybe<Scalars['String']>;
   /** the name of the repo */
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
-  /** the URL for the image used to represent this repository in Open Graph data */
-  openGraphImageUrl?: Maybe<Scalars['String']>;
   /** the user or organization that owns the repo */
   owner: Scalars['String'];
   /** the primary language for the repo */
@@ -7535,6 +7530,12 @@ export type GithubRepoInfo = Node & {
   repo?: Maybe<Repo>;
   /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** secret scanning availability */
+  secretScanning?: Maybe<Scalars['String']>;
+  /** secret scanning push protection availability */
+  secretScanningPushProtection?: Maybe<Scalars['String']>;
+  /** the number of kilobytes on disk for the repo */
+  size?: Maybe<Scalars['Int']>;
   /** number of stargazers associated to the repo */
   stargazersCount?: Maybe<Scalars['Int']>;
   /** number of issues associated to the repo */
@@ -7552,14 +7553,14 @@ export type GithubRepoInfo = Node & {
 export type GithubRepoInfoCondition = {
   /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `advancedSecurity` field. */
+  advancedSecurity?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `defaultBranchName` field. */
   defaultBranchName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `description` field. */
   description?: InputMaybe<Scalars['String']>;
-  /** Checks for equality with the object’s `diskUsage` field. */
-  diskUsage?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `forkCount` field. */
   forkCount?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `homepageUrl` field. */
@@ -7568,8 +7569,6 @@ export type GithubRepoInfoCondition = {
   isArchived?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `isDisabled` field. */
   isDisabled?: InputMaybe<Scalars['Boolean']>;
-  /** Checks for equality with the object’s `isMirror` field. */
-  isMirror?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `isPrivate` field. */
   isPrivate?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `latestReleaseAuthor` field. */
@@ -7584,12 +7583,10 @@ export type GithubRepoInfoCondition = {
   licenseKey?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `licenseName` field. */
   licenseName?: InputMaybe<Scalars['String']>;
-  /** Checks for equality with the object’s `licenseNickname` field. */
-  licenseNickname?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `mirrorUrl` field. */
+  mirrorUrl?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']>;
-  /** Checks for equality with the object’s `openGraphImageUrl` field. */
-  openGraphImageUrl?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `owner` field. */
   owner?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `primaryLanguage` field. */
@@ -7600,6 +7597,12 @@ export type GithubRepoInfoCondition = {
   releasesCount?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `repoId` field. */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `secretScanning` field. */
+  secretScanning?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `secretScanningPushProtection` field. */
+  secretScanningPushProtection?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `size` field. */
+  size?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `stargazersCount` field. */
   stargazersCount?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `totalIssuesCount` field. */
@@ -7614,6 +7617,8 @@ export type GithubRepoInfoCondition = {
 export type GithubRepoInfoFilter = {
   /** Filter by the object’s `_mergestatSyncedAt` field. */
   _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `advancedSecurity` field. */
+  advancedSecurity?: InputMaybe<StringFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<GithubRepoInfoFilter>>;
   /** Filter by the object’s `createdAt` field. */
@@ -7622,8 +7627,6 @@ export type GithubRepoInfoFilter = {
   defaultBranchName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `description` field. */
   description?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `diskUsage` field. */
-  diskUsage?: InputMaybe<IntFilter>;
   /** Filter by the object’s `forkCount` field. */
   forkCount?: InputMaybe<IntFilter>;
   /** Filter by the object’s `homepageUrl` field. */
@@ -7632,8 +7635,6 @@ export type GithubRepoInfoFilter = {
   isArchived?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `isDisabled` field. */
   isDisabled?: InputMaybe<BooleanFilter>;
-  /** Filter by the object’s `isMirror` field. */
-  isMirror?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `isPrivate` field. */
   isPrivate?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `latestReleaseAuthor` field. */
@@ -7648,14 +7649,12 @@ export type GithubRepoInfoFilter = {
   licenseKey?: InputMaybe<StringFilter>;
   /** Filter by the object’s `licenseName` field. */
   licenseName?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `licenseNickname` field. */
-  licenseNickname?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `mirrorUrl` field. */
+  mirrorUrl?: InputMaybe<StringFilter>;
   /** Filter by the object’s `name` field. */
   name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<GithubRepoInfoFilter>;
-  /** Filter by the object’s `openGraphImageUrl` field. */
-  openGraphImageUrl?: InputMaybe<StringFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<GithubRepoInfoFilter>>;
   /** Filter by the object’s `owner` field. */
@@ -7668,6 +7667,12 @@ export type GithubRepoInfoFilter = {
   releasesCount?: InputMaybe<IntFilter>;
   /** Filter by the object’s `repoId` field. */
   repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `secretScanning` field. */
+  secretScanning?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `secretScanningPushProtection` field. */
+  secretScanningPushProtection?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `size` field. */
+  size?: InputMaybe<IntFilter>;
   /** Filter by the object’s `stargazersCount` field. */
   stargazersCount?: InputMaybe<IntFilter>;
   /** Filter by the object’s `totalIssuesCount` field. */
@@ -7682,14 +7687,14 @@ export type GithubRepoInfoFilter = {
 export type GithubRepoInfoInput = {
   /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** advanced security availability */
+  advancedSecurity?: InputMaybe<Scalars['String']>;
   /** timestamp of when the repo was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** the name of the default branch for the repo */
   defaultBranchName?: InputMaybe<Scalars['String']>;
   /** the description for the repo */
   description?: InputMaybe<Scalars['String']>;
-  /** the number of kilobytes on disk for the repo */
-  diskUsage?: InputMaybe<Scalars['Int']>;
   /** number of forks associated to the repo */
   forkCount?: InputMaybe<Scalars['Int']>;
   /** the GitHub homepage URL for the repo */
@@ -7698,8 +7703,6 @@ export type GithubRepoInfoInput = {
   isArchived?: InputMaybe<Scalars['Boolean']>;
   /** boolean to determine if the repo is disabled */
   isDisabled?: InputMaybe<Scalars['Boolean']>;
-  /** boolean to determine if the repo is a mirror */
-  isMirror?: InputMaybe<Scalars['Boolean']>;
   /** boolean to determine if the repo is private */
   isPrivate?: InputMaybe<Scalars['Boolean']>;
   /** the author of the latest release in the repo */
@@ -7714,12 +7717,9 @@ export type GithubRepoInfoInput = {
   licenseKey?: InputMaybe<Scalars['String']>;
   /** the license name for the repo */
   licenseName?: InputMaybe<Scalars['String']>;
-  /** the license nickname for the repo */
-  licenseNickname?: InputMaybe<Scalars['String']>;
+  mirrorUrl?: InputMaybe<Scalars['String']>;
   /** the name of the repo */
   name: Scalars['String'];
-  /** the URL for the image used to represent this repository in Open Graph data */
-  openGraphImageUrl?: InputMaybe<Scalars['String']>;
   /** the user or organization that owns the repo */
   owner: Scalars['String'];
   /** the primary language for the repo */
@@ -7730,6 +7730,12 @@ export type GithubRepoInfoInput = {
   releasesCount?: InputMaybe<Scalars['Int']>;
   /** foreign key for public.repos.id */
   repoId: Scalars['UUID'];
+  /** secret scanning availability */
+  secretScanning?: InputMaybe<Scalars['String']>;
+  /** secret scanning push protection availability */
+  secretScanningPushProtection?: InputMaybe<Scalars['String']>;
+  /** the number of kilobytes on disk for the repo */
+  size?: InputMaybe<Scalars['Int']>;
   /** number of stargazers associated to the repo */
   stargazersCount?: InputMaybe<Scalars['Int']>;
   /** number of issues associated to the repo */
@@ -7744,14 +7750,14 @@ export type GithubRepoInfoInput = {
 export type GithubRepoInfoPatch = {
   /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** advanced security availability */
+  advancedSecurity?: InputMaybe<Scalars['String']>;
   /** timestamp of when the repo was created */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** the name of the default branch for the repo */
   defaultBranchName?: InputMaybe<Scalars['String']>;
   /** the description for the repo */
   description?: InputMaybe<Scalars['String']>;
-  /** the number of kilobytes on disk for the repo */
-  diskUsage?: InputMaybe<Scalars['Int']>;
   /** number of forks associated to the repo */
   forkCount?: InputMaybe<Scalars['Int']>;
   /** the GitHub homepage URL for the repo */
@@ -7760,8 +7766,6 @@ export type GithubRepoInfoPatch = {
   isArchived?: InputMaybe<Scalars['Boolean']>;
   /** boolean to determine if the repo is disabled */
   isDisabled?: InputMaybe<Scalars['Boolean']>;
-  /** boolean to determine if the repo is a mirror */
-  isMirror?: InputMaybe<Scalars['Boolean']>;
   /** boolean to determine if the repo is private */
   isPrivate?: InputMaybe<Scalars['Boolean']>;
   /** the author of the latest release in the repo */
@@ -7776,12 +7780,9 @@ export type GithubRepoInfoPatch = {
   licenseKey?: InputMaybe<Scalars['String']>;
   /** the license name for the repo */
   licenseName?: InputMaybe<Scalars['String']>;
-  /** the license nickname for the repo */
-  licenseNickname?: InputMaybe<Scalars['String']>;
+  mirrorUrl?: InputMaybe<Scalars['String']>;
   /** the name of the repo */
   name?: InputMaybe<Scalars['String']>;
-  /** the URL for the image used to represent this repository in Open Graph data */
-  openGraphImageUrl?: InputMaybe<Scalars['String']>;
   /** the user or organization that owns the repo */
   owner?: InputMaybe<Scalars['String']>;
   /** the primary language for the repo */
@@ -7792,6 +7793,12 @@ export type GithubRepoInfoPatch = {
   releasesCount?: InputMaybe<Scalars['Int']>;
   /** foreign key for public.repos.id */
   repoId?: InputMaybe<Scalars['UUID']>;
+  /** secret scanning availability */
+  secretScanning?: InputMaybe<Scalars['String']>;
+  /** secret scanning push protection availability */
+  secretScanningPushProtection?: InputMaybe<Scalars['String']>;
+  /** the number of kilobytes on disk for the repo */
+  size?: InputMaybe<Scalars['Int']>;
   /** number of stargazers associated to the repo */
   stargazersCount?: InputMaybe<Scalars['Int']>;
   /** number of issues associated to the repo */
@@ -7824,14 +7831,14 @@ export type GithubRepoInfosEdge = {
 
 /** Methods to use when ordering `GithubRepoInfo`. */
 export enum GithubRepoInfosOrderBy {
+  AdvancedSecurityAsc = 'ADVANCED_SECURITY_ASC',
+  AdvancedSecurityDesc = 'ADVANCED_SECURITY_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
   DefaultBranchNameAsc = 'DEFAULT_BRANCH_NAME_ASC',
   DefaultBranchNameDesc = 'DEFAULT_BRANCH_NAME_DESC',
   DescriptionAsc = 'DESCRIPTION_ASC',
   DescriptionDesc = 'DESCRIPTION_DESC',
-  DiskUsageAsc = 'DISK_USAGE_ASC',
-  DiskUsageDesc = 'DISK_USAGE_DESC',
   ForkCountAsc = 'FORK_COUNT_ASC',
   ForkCountDesc = 'FORK_COUNT_DESC',
   HomepageUrlAsc = 'HOMEPAGE_URL_ASC',
@@ -7840,8 +7847,6 @@ export enum GithubRepoInfosOrderBy {
   IsArchivedDesc = 'IS_ARCHIVED_DESC',
   IsDisabledAsc = 'IS_DISABLED_ASC',
   IsDisabledDesc = 'IS_DISABLED_DESC',
-  IsMirrorAsc = 'IS_MIRROR_ASC',
-  IsMirrorDesc = 'IS_MIRROR_DESC',
   IsPrivateAsc = 'IS_PRIVATE_ASC',
   IsPrivateDesc = 'IS_PRIVATE_DESC',
   LatestReleaseAuthorAsc = 'LATEST_RELEASE_AUTHOR_ASC',
@@ -7856,13 +7861,11 @@ export enum GithubRepoInfosOrderBy {
   LicenseKeyDesc = 'LICENSE_KEY_DESC',
   LicenseNameAsc = 'LICENSE_NAME_ASC',
   LicenseNameDesc = 'LICENSE_NAME_DESC',
-  LicenseNicknameAsc = 'LICENSE_NICKNAME_ASC',
-  LicenseNicknameDesc = 'LICENSE_NICKNAME_DESC',
+  MirrorUrlAsc = 'MIRROR_URL_ASC',
+  MirrorUrlDesc = 'MIRROR_URL_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
-  OpenGraphImageUrlAsc = 'OPEN_GRAPH_IMAGE_URL_ASC',
-  OpenGraphImageUrlDesc = 'OPEN_GRAPH_IMAGE_URL_DESC',
   OwnerAsc = 'OWNER_ASC',
   OwnerDesc = 'OWNER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
@@ -7875,6 +7878,12 @@ export enum GithubRepoInfosOrderBy {
   ReleasesCountDesc = 'RELEASES_COUNT_DESC',
   RepoIdAsc = 'REPO_ID_ASC',
   RepoIdDesc = 'REPO_ID_DESC',
+  SecretScanningAsc = 'SECRET_SCANNING_ASC',
+  SecretScanningDesc = 'SECRET_SCANNING_DESC',
+  SecretScanningPushProtectionAsc = 'SECRET_SCANNING_PUSH_PROTECTION_ASC',
+  SecretScanningPushProtectionDesc = 'SECRET_SCANNING_PUSH_PROTECTION_DESC',
+  SizeAsc = 'SIZE_ASC',
+  SizeDesc = 'SIZE_DESC',
   StargazersCountAsc = 'STARGAZERS_COUNT_ASC',
   StargazersCountDesc = 'STARGAZERS_COUNT_DESC',
   TotalIssuesCountAsc = 'TOTAL_ISSUES_COUNT_ASC',
