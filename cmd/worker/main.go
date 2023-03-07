@@ -215,7 +215,7 @@ func main() {
 
 		const fetchToken = `
 			SELECT credentials.token
-				FROM (SELECT * FROM mergestat.providers WHERE name = 'GitHub' AND vendor = 'github') AS provider,
+				FROM (SELECT * FROM mergestat.providers WHERE vendor = 'github') AS provider,
 					  mergestat.fetch_service_auth_credential(provider.id, 'GITHUB_PAT', $1) AS credentials`
 
 		var credentials []byte
