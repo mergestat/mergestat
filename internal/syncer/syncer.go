@@ -277,9 +277,14 @@ func (w *worker) clone(ctx context.Context, path string, job *db.DequeueSyncJobR
 		auth = &http.BasicAuth{Username: username, Password: token}
 	}
 
-	var target = filesystem.NewStorage(osfs.New(path), cache.NewObjectLRUDefault())
+	// fs and target are different! target is a subdirectory of fs. target stores git objects (like commits, etc.)
+	// whereas fs contains the working directory (a local checkout) of the cloned repository.
+	var fs = osfs.New(path)
+	var dotgit, _ = fs.Chroot(".git")
+	var target = filesystem.NewStorage(dotgit, cache.NewObjectLRUDefault())
+
 	var opts = &git.CloneOptions{URL: endpoint.String(), Auth: auth}
-	if _, err = git.CloneContext(ctx, target, nil, opts); err != nil {
+	if _, err = git.CloneContext(ctx, target, fs, opts); err != nil {
 		return errors.Wrapf(err, "failed to clone repository")
 	}
 
