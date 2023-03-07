@@ -4,6 +4,7 @@ import cx from 'classnames'
 import { useState } from 'react'
 import Loading from 'src/components/Loading'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
+import { getVendor } from 'src/utils'
 import { SYNC_REPO_METHOD, VENDOR_TYPE } from 'src/utils/constants'
 import useRepoImports from 'src/views/hooks/gitSources/useRepoImports'
 import useSyncTypes from 'src/views/hooks/useSyncTypes'
@@ -28,19 +29,11 @@ const ReposAuto: React.FC = () => {
     setShowAddRepoModal(true)
   }
 
-  const getVendor = () => {
-    return vendor === VENDOR_TYPE.BITBUCKET
-      ? 'Bitbucket'
-      : vendor === VENDOR_TYPE.GITHUB
-        ? 'GitHub'
-        : vendor === VENDOR_TYPE.GITLAB ? 'GitLab' : 'Git'
-  }
-
   return (
     <>
       <div className='bg-white p-6'>
         <Alert type="default" className="bg-gray-50 mb-6">
-          {`Auto imports run on a schedule and bring in all repos from a ${getVendor()} organization or user.`}
+          {`Auto imports run on a schedule and bring in all repos from a ${getVendor(vendor)} organization or user.`}
         </Alert>
 
         {vendor === VENDOR_TYPE.BITBUCKET && <Label className='text-gray-500'>Owner</Label>}
@@ -92,7 +85,7 @@ const ReposAuto: React.FC = () => {
             <Panel className='rounded-md shadow-sm'>
               <Panel.Body className='p-12 m-auto'>
                 <span className='text-gray-500'>
-                  {`Enter ${getVendor()} organization or username`}
+                  {`Enter ${getVendor(vendor)} organization or username`}
                 </span>
               </Panel.Body>
             </Panel>

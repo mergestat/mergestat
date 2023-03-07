@@ -241,3 +241,16 @@ export const getVendorProp = (vendor: string) => {
       ? 'userOrOrg'
       : vendor === VENDOR_TYPE.GITLAB ? 'userOrGroup' : ''
 }
+
+/**
+ * Method to get vendor name
+ * @param vendor Vendor to be evaluated
+ * @returns Vendor name
+ */
+export const getVendor = (vendor: string) => {
+  return vendor === VENDOR_TYPE.BITBUCKET
+    ? 'Bitbucket'
+    : vendor === VENDOR_TYPE.GITHUB
+      ? 'GitHub'
+      : vendor === VENDOR_TYPE.GITLAB ? 'GitLab' : 'Git'
+}
