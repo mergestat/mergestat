@@ -5,10 +5,11 @@ import React, { useCallback } from 'react'
 import { AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-repo'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 import { showSuccessAlert } from 'src/utils/alerts'
+import { VENDOR_TYPE } from 'src/utils/constants'
 
 export const AddRepoImportModal: React.FC = () => {
   const { setImportAuto, setShowAddRepoModal } = useGitSourceDetailSetState()
-  const [{ gsDetail: { id }, importAuto }] = useGitSourceDetailContext()
+  const [{ gsDetail: { id, vendor }, importAuto }] = useGitSourceDetailContext()
 
   const close = useCallback(() => {
     setShowAddRepoModal(false)
@@ -35,10 +36,19 @@ export const AddRepoImportModal: React.FC = () => {
 
   const addImport = () => {
     const defaultSyncs = importAuto.defaultSyncs.filter(ds => ds.checked).map(ds => ds.type)
-    const settings = {
-      type: importAuto.type,
-      userOrOrg: importAuto.name,
-      defaultSyncTypes: defaultSyncs
+    let settings
+
+    if (vendor === VENDOR_TYPE.BITBUCKET) {
+      settings = {
+        owner: importAuto.name,
+        defaultSyncTypes: defaultSyncs
+      }
+    } else {
+      settings = {
+        type: importAuto.type,
+        userOrOrg: importAuto.name,
+        defaultSyncTypes: defaultSyncs
+      }
     }
 
     autoImportRepos({ variables: { settings, provider: id } })

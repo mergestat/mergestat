@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Alert, Button, HelpText, Input, Label, ListItem, Panel, RadioCard, Toolbar } from '@mergestat/blocks'
-import { BranchIcon, ChevronRightIcon, GithubIcon, RepositoryIcon } from '@mergestat/icons'
+import { BitbucketIcon, BranchIcon, ChevronRightIcon, GithubIcon, RepositoryIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { AddGitSourceMutation, GetGitSourcesQuery } from 'src/api-logic/graphql/generated/schema'
@@ -119,14 +119,14 @@ const AddSourceView: React.FC = () => {
                     ? <div className='w-56 p-2'>Currently, only one GitHub Git Source is allowed at a time</div>
                     : undefined}
                 />
-                {/** <RadioCard
+                <RadioCard
                   isSelected={vendor === VENDOR_TYPE.BITBUCKET}
                   label="Bitbucket"
                   className='my-2 w-64'
                   onChange={() => setVendor(VENDOR_TYPE.BITBUCKET)}
                   startIcon={<BitbucketIcon className="t-icon" />}
                 />
-                <RadioCard
+                {/** <RadioCard
                   isSelected={vendor === VENDOR_TYPE.GITLAB}
                   label="Gitlab"
                   className='my-2 w-64'

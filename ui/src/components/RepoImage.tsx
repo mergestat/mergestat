@@ -3,6 +3,7 @@ import cx from 'classnames'
 import Image from 'next/image'
 import React from 'react'
 import { getGitSourceIcon } from 'src/utils'
+import { VENDOR_TYPE } from 'src/utils/constants'
 
 type RepoImagePropsT = {
   vendor: string
@@ -16,9 +17,9 @@ const RepoImage: React.FC<RepoImagePropsT> = ({ vendor, vendorUrl, orgName, size
     <ColoredBox
       size={size}
       skin="default"
-      className={cx({ 'border border-gray-200': vendor === 'github' })}
+      className={cx({ 'border border-gray-200': vendor === VENDOR_TYPE.GITHUB })}
     >
-      {vendor === 'github' && orgName
+      {vendor === VENDOR_TYPE.GITHUB && orgName
         ? <Image
           src={`${vendorUrl}/${orgName}.png?size=40`}
           width={40}

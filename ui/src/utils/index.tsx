@@ -228,3 +228,16 @@ export const getGitSourceIcon = (vendor: string, className?: string) => {
         ? <GitlabIcon className={`t-icon ${className}`} />
         : <BranchIcon className={`t-icon ${className}`} />
 }
+
+/**
+ * Method to get vendor property (user or org name)
+ * @param vendor Vendor to be evaluated
+ * @returns Vendor property
+ */
+export const getVendorProp = (vendor: string) => {
+  return vendor === VENDOR_TYPE.BITBUCKET
+    ? 'owner'
+    : vendor === VENDOR_TYPE.GITHUB
+      ? 'userOrOrg'
+      : vendor === VENDOR_TYPE.GITLAB ? 'userOrGroup' : ''
+}

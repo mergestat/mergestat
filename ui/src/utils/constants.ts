@@ -170,7 +170,7 @@ export enum VENDOR_TYPE {
 }
 
 export enum VENDOR_URL {
-  BITBUCKET = 'https://api.bitbucket.org',
+  BITBUCKET = 'https://bitbucket.org',
   GITLAB = 'https://gitlab.com',
   GITHUB = 'https://github.com'
 }
