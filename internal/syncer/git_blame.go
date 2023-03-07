@@ -35,7 +35,7 @@ func (w *worker) sendBatchBlameLines(ctx context.Context, blameTmpPath string, t
 		return 0, err
 	}
 
-	defer f.Close()
+	defer os.Remove(f.Name())
 
 	var (
 		// Create a new JSON decoder for the file
