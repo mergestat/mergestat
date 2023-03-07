@@ -3,6 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon, PlusIcon } from '@mergestat/icons'
 import { ChangeEvent, useState } from 'react'
 import Loading from 'src/components/Loading'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
+import { VENDOR_TYPE } from 'src/utils/constants'
 import useAddRepos from 'src/views/hooks/gitSources/useAddRepos'
 import useRepoManualImports from 'src/views/hooks/gitSources/useRepoManualImports'
 import { FilterFooter } from 'src/views/shared/filter-footer'
@@ -10,7 +11,7 @@ import { FilterHeader } from 'src/views/shared/filter-header'
 import { ManualImportTable } from '../components/manual-import-table'
 
 const ReposManual: React.FC = () => {
-  const [{ rowsManualRepos, pageManualRepos, totalManualRepos, searchManualImport, showBulk }] = useGitSourceDetailContext()
+  const [{ gsDetail: { vendor }, rowsManualRepos, pageManualRepos, totalManualRepos, searchManualImport, showBulk }] = useGitSourceDetailContext()
   const { setSearchManualImport, setRowsManualRepos, setPageManualRepos, setShowBulk } = useGitSourceDetailSetState()
   const { loading, repos, records } = useRepoManualImports()
   const { addFromURL, addFromCSV } = useAddRepos()
@@ -81,7 +82,10 @@ const ReposManual: React.FC = () => {
           : <div className='bg-white p-6 pt-0'>
             <Panel className='rounded-md shadow-sm'>
               <Panel.Body className='p-12 m-auto'>
-                <span className='text-gray-500'>Enter GitHub repo url</span>
+                <span className='text-gray-500'>
+                  {vendor === VENDOR_TYPE.GITHUB && 'Enter GitHub repo url'}
+                  {vendor === VENDOR_TYPE.GIT && 'Enter Git repo url'}
+                </span>
               </Panel.Body>
             </Panel>
           </div>
