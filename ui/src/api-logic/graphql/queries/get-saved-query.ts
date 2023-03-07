@@ -6,6 +6,7 @@ const GET_SAVED_QUERY_LIST = gql`
       totalCount
     }
     savedQueries(
+      orderBy:CREATED_AT_DESC,
       filter: {name: {includesInsensitive: $search}}
       first: $first
       offset: $offset
