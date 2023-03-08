@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -161,7 +160,7 @@ func (w *worker) handleGitBlame(ctx context.Context, j *db.DequeueSyncJobRow) er
 
 	// creating a tmp file to store blame objects
 	var file *os.File
-	if file, err = ioutil.TempFile(tmpPath, "blame-objects-*.json"); err != nil {
+	if file, err = os.CreateTemp(tmpPath, "blame-objects-*.json"); err != nil {
 		return err
 	}
 
