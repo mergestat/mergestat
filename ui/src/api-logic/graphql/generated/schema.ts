@@ -20070,7 +20070,7 @@ export type GetGitSourcesListQuery = { all?: { totalCount: number } | null, prov
 export type GetGitSourcesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetGitSourcesQuery = { providers?: { nodes: Array<{ id: any, name: string, description?: string | null, createdAt: any, settings: any, vendor: string }> } | null };
+export type GetGitSourcesQuery = { github?: { totalCount: number } | null, providers?: { nodes: Array<{ id: any, name: string, description?: string | null, createdAt: any, settings: any, vendor: string }> } | null };
 
 export type GetGitSourceQueryVariables = Exact<{
   id: Scalars['UUID'];

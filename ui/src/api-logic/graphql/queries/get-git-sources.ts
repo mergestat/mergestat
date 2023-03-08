@@ -28,6 +28,9 @@ const GET_GIT_SOURCES_LIST = gql`
 
 const GET_GIT_SOURCES = gql`
   query getGitSources {
+    github: providers(condition: {vendor: "github"}) {
+      totalCount
+    }
     providers {
       nodes {
         id
