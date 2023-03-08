@@ -90,7 +90,7 @@ const AddSourceView: React.FC = () => {
         {/* Panel: Add git surce */}
         <Panel className='rounded-md shadow-sm max-w-4xl m-auto'>
           <Panel.Header>
-            <h4 className='t-h4 mb-0 w-full'>Set up</h4>
+            <h4 className='t-h4 mb-0 w-full'>Add a Git Source</h4>
           </Panel.Header>
           <Panel.Body className='p-6'>
             <div className=''>
@@ -166,7 +166,7 @@ const AddSourceView: React.FC = () => {
         {/* Panel: List git surces */}
         <Panel className='rounded-md shadow-sm max-w-4xl m-auto'>
           <Panel.Header>
-            <h4 className='t-h4 mb-0 w-full'>Exisiting git sources</h4>
+            <h4 className='t-h4 mb-0 w-full'>Existing Git Sources</h4>
           </Panel.Header>
           <Panel.Body className='p-6'>
             <Alert type='default' theme='light' className='mb-6'>
