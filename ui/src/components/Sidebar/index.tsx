@@ -15,7 +15,7 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Repos'
           compact={false}
-          active={isSidebarActive(/^\/repos/) && !isSidebarActive(/^\/repos\/repo-auto-imports/)}
+          active={isSidebarActive(/^\/repos/) && !isSidebarActive(/^\/repos\/git-sources/)}
           icon={<RepositoryIcon className='t-icon' />}
           onClick={() => push('/repos')}
           subNav={
