@@ -49,13 +49,13 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
             className='flex-grow mr-5'
             icon={<TerminalIcon className="t-icon" />}
             title={{
-              placeholder: 'Untitled Saved Query',
+              placeholder: `${loading ? 'Loading' : 'Untitled Saved Query'}`,
               value: title,
               required: titleError,
               onChange: (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
             }}
             desc={{
-              placeholder: 'Enter a short description for this query (optional)',
+              placeholder: `${loading ? 'Loading' : 'Enter a short description for this query (optional)'}`,
               value: desc,
               onChange: (e: ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)
             }}
