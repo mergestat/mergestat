@@ -20,7 +20,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.7",
     "@apollo/react-testing": "^4.0.0",
-    "@mergestat/blocks": "^1.5.53",
+    "@mergestat/blocks": "^1.5.55",
     "@mergestat/icons": "1.2.17",
     "@blueprintjs/table": "^4.7.20",
     "@monaco-editor/react": "^4.4.6",

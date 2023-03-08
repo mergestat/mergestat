@@ -114,6 +114,10 @@ const AddSourceView: React.FC = () => {
                   className='my-2 w-64'
                   onChange={() => setVendor(VENDOR_TYPE.GITHUB)}
                   startIcon={<GithubIcon className="t-icon" />}
+                  disabled={!!(data?.github && data?.github?.totalCount > 0)}
+                  tooltip={(data?.github && data?.github?.totalCount > 0)
+                    ? <div className='w-56 p-2'>Currently, only one GitHub Git Source is allowed at a time</div>
+                    : undefined}
                 />
                 {/** <RadioCard
                   isSelected={vendor === VENDOR_TYPE.BITBUCKET}
@@ -155,46 +159,50 @@ const AddSourceView: React.FC = () => {
           </Panel.Footer>
         </Panel>
 
-        <div className='max-w-4xl m-auto'>
-          <div className='flex justify-center w-full my-6'>
-            <div className='h-0 border-gray-200 border-b-2 mt-3 flex-1'></div>
-            <span className='px-2'>Or</span>
-            <div className='h-0 border-gray-200 border-b-2 mt-3 flex-1'></div>
-          </div>
-        </div>
+        {data?.providers && data?.providers.nodes.length > 0 &&
+          <>
+            {/* Divider */}
+            <div className='max-w-4xl m-auto'>
+              <div className='flex justify-center w-full my-6'>
+                <div className='h-0 border-gray-200 border-b-2 mt-3 flex-1'></div>
+                <span className='px-2'>Or</span>
+                <div className='h-0 border-gray-200 border-b-2 mt-3 flex-1'></div>
+              </div>
+            </div>
 
-        {/* Panel: List git surces */}
-        <Panel className='rounded-md shadow-sm max-w-4xl m-auto'>
-          <Panel.Header>
-            <h4 className='t-h4 mb-0 w-full'>Existing Git Sources</h4>
-          </Panel.Header>
-          <Panel.Body className='p-6'>
-            <Alert type='default' theme='light' className='mb-6'>
-              <span>These Git Sources are already configured. Pick from these to add repos to an existing Git Source.</span>
-            </Alert>
-
+            {/* Panel: List git surces */}
             <Panel className='rounded-md shadow-sm max-w-4xl m-auto'>
-              <Panel.Body className='p-0'>
-                {loading
-                  ? <Loading />
-                  : data?.providers && data?.providers.nodes.map((provider, index) =>
-                    <ListItem key={`git-source-${index}`}
-                      title={provider.name}
-                      className={'px-4 py-2 border-b'}
-                      startIcon={getGitSourceIcon(provider.vendor)}
-                      action={
-                        <Button label='Go to git source' skin="borderless-muted"
-                          className='hover_text-blue-600 font-normal'
-                          endIcon={<ChevronRightIcon className="t-icon" />}
-                          onClick={() => router.push(`/repos/git-sources/${provider.id}`)}
+              <Panel.Header>
+                <h4 className='t-h4 mb-0 w-full'>Existing Git Sources</h4>
+              </Panel.Header>
+              <Panel.Body className='p-6'>
+                <Alert type='default' theme='light' className='mb-6'>
+                  <span>These Git Sources are already configured. Pick from these to add repos to an existing Git Source.</span>
+                </Alert>
+
+                <Panel className='rounded-md shadow-sm max-w-4xl m-auto'>
+                  <Panel.Body className='p-0'>
+                    {loading
+                      ? <Loading />
+                      : data?.providers && data?.providers.nodes.map((provider, index) =>
+                        <ListItem key={`git-source-${index}`}
+                          title={provider.name}
+                          className={'px-4 py-2 border-b'}
+                          startIcon={getGitSourceIcon(provider.vendor)}
+                          action={
+                            <Button label='Go to Git Source' skin="borderless-muted"
+                              className='hover_text-blue-600 font-normal'
+                              endIcon={<ChevronRightIcon className="t-icon" />}
+                              onClick={() => router.push(`/repos/git-sources/${provider.id}`)}
+                            />
+                          }
                         />
-                      }
-                    />
-                  )}
+                      )}
+                  </Panel.Body>
+                </Panel>
               </Panel.Body>
             </Panel>
-          </Panel.Body>
-        </Panel>
+          </>}
       </div>
     </div>
   )
