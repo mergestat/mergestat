@@ -190,7 +190,7 @@ const AddSourceView: React.FC = () => {
                           className={'px-4 py-2 border-b'}
                           startIcon={getGitSourceIcon(provider.vendor)}
                           action={
-                            <Button label='Go to git source' skin="borderless-muted"
+                            <Button label='Go to Git Source' skin="borderless-muted"
                               className='hover_text-blue-600 font-normal'
                               endIcon={<ChevronRightIcon className="t-icon" />}
                               onClick={() => router.push(`/repos/git-sources/${provider.id}`)}
