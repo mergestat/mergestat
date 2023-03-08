@@ -13,7 +13,6 @@ type RepoInfoT = {
 type RepositoriesContextT = {
   showOpenRepositoryModal: boolean
   showAutoImportModal: boolean
-  showAddRepositoryModal: boolean
   showRemoveRepositoryModal: boolean
   showRemoveImportModal: boolean
   search: string
@@ -37,7 +36,6 @@ type UseRepositoriesContextT = [
 const initialState: RepositoriesContextT = {
   showOpenRepositoryModal: false,
   showAutoImportModal: false,
-  showAddRepositoryModal: false,
   showRemoveRepositoryModal: false,
   showRemoveImportModal: false,
   search: '',
@@ -86,13 +84,6 @@ function useRepositoriesSetState() {
     setState(prev => ({
       ...prev,
       showAutoImportModal: show
-    }))
-  }
-
-  const setShowAddRepositoryModal = (show: boolean) => {
-    setState(prev => ({
-      ...prev,
-      showAddRepositoryModal: show
     }))
   }
 
@@ -199,7 +190,6 @@ function useRepositoriesSetState() {
     _,
     setShowOpenRepositoryModal,
     setShowAutoImportModal,
-    setShowAddRepositoryModal,
     setShowRemoveRepositoryModal,
     setShowRemoveImportModal,
     setSearch,

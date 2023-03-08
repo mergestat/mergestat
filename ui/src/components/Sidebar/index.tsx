@@ -19,10 +19,12 @@ const SidebarView: React.FC = () => {
           icon={<RepositoryIcon className='t-icon' />}
           onClick={() => push('/repos')}
           subNav={
-            <Sidebar.Item compact={false}
-              onClick={() => push('/repos/repo-auto-imports')}
-              active={isSidebarActive('/repos/repo-auto-imports')}
-              label='Auto Import' level='sub' />
+            <>
+              <Sidebar.Item compact={false}
+                onClick={() => push('/repos/git-sources')}
+                active={isSidebarActive('/repos/git-sources') || isSidebarActive('/repos/add-git-source')}
+                label='Git Sources' level='sub' />
+            </>
           }
         />
         <Sidebar.Item
@@ -49,15 +51,9 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Settings'
           compact={false}
-          active={isSidebarActive(/^\/settings$/)}
-          onClick={() => push('/settings/github-authentication')}
           icon={<CogIcon className='t-icon' />}
           subNav={
             <>
-              <Sidebar.Item compact={false}
-                active={isSidebarActive('/settings/github-authentication')}
-                onClick={() => push('/settings/github-authentication')}
-                label='GitHub Authentication' level='sub' />
               <Sidebar.Item compact={false}
                 active={isSidebarActive('/settings/user-management')}
                 onClick={() => push('/settings/user-management')}

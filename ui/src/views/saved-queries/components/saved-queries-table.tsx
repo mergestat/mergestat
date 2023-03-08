@@ -1,19 +1,20 @@
-import { Button, ColoredBox, Panel } from '@mergestat/blocks'
+import { Button, EditableText } from '@mergestat/blocks'
 import { TerminalIcon, TrashIcon } from '@mergestat/icons'
 import { format } from 'date-fns'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 import { SavedQueryData } from 'src/@types'
 import { useSavedQuerySetState } from 'src/state/contexts/saved-query.context'
 import { DATE_FORMAT } from 'src/utils/constants'
 import useCurrentUser from 'src/views/hooks/useCurrentUser'
-import { FilterFooter } from './filter-footer'
+import { NoDataFound } from 'src/views/shared/no-data-found'
 
 type SavedQueriesTableProps = PropsWithChildren<{
   savedQueries: SavedQueryData[]
 }>
 
 export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueries }: SavedQueriesTableProps) => {
+  const router = useRouter()
   const { data: userData } = useCurrentUser()
   const { setShowRemoveSQModal, setSqToRemove } = useSavedQuerySetState()
 
@@ -25,19 +26,11 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
   return (
     <div className='flex flex-col flex-1 overflow-hidden'>
       {savedQueries.length < 1
-        ? <div className='flex justify-center py-5'>
-          <Panel className='rounded-md w-full shadow-sm mx-8'>
-            <Panel.Body className='p-0'>
-              <div className='flex justify-center items-center bg-white py-5'>
-                Couldn&#39;t find any saved queries.
-              </div>
-            </Panel.Body>
-          </Panel>
-        </div>
+        ? <NoDataFound message='Couldn&#39;t find any saved queries.' />
         : <>
-          <div className='flex flex-col min-w-0 h-full overflow-hidden'>
+          <div className='flex flex-col min-w-0 bg-gray-50 h-full'>
             <div className='flex-1 overflow-auto'>
-              <table className='t-table-default t-table-hover t-table-sticky-header border-b'>
+              <table className='t-table-default t-table-sticky-header t-table-hover border-b'>
                 <thead>
                   <tr className='bg-white'>
                     <th scope='col' key='name' className='whitespace-nowrap'>Name</th>
@@ -51,26 +44,24 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
                   {savedQueries.map((query) => (
                     <tr key={query.id}>
                       <td>
-                        <div className='flex items-center gap-4 py-2'>
-                          <ColoredBox size='8'>
-                            <TerminalIcon className='t-icon t-icon-default' />
-                          </ColoredBox>
-                          <div>
-                            <Link href={`/queries/saved/${query.id}`}>
-                              <h4 className='font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600'>
-                                { query.name || '' }
-                              </h4>
-                            </Link>
-                            <p className="text-sm t-text-muted">
-                              { query.description || '' }
-                            </p>
-                          </div>
-                        </div>
+                        <EditableText
+                          className='flex-grow mr-5'
+                          icon={<TerminalIcon className="t-icon" />}
+                          title={{
+                            value: query.name || '',
+                            readOnly: true,
+                            onClick: () => router.push(`/queries/saved/${query.id}`)
+                          }}
+                          desc={{
+                            value: query.description || '',
+                            readOnly: true
+                          }}
+                        />
                       </td>
-                      <td className='text-gray-500 py-5 whitespace-nowrap'>
+                      <td className='text-gray-500 py-5'>
                         {query.createdAt ? format(new Date(query.createdAt?.toString()), DATE_FORMAT.D) : ''}
                       </td>
-                      <td className='text-gray-500 whitespace-nowrap'>
+                      <td className='text-gray-500'>
                         {query.createdBy}
                       </td>
                       <td className='text-gray-500 pl-4 pr-8'>
@@ -88,7 +79,6 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
                 </tbody>
               </table>
             </div>
-            <FilterFooter />
           </div>
         </>
       }

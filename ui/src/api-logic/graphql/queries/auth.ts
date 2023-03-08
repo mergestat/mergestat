@@ -17,15 +17,4 @@ const GET_DB_CONNECTION = gql`
   }
 `
 
-const GET_PAT = gql`
-  query getPAT {
-    serviceAuthCredentials {
-      totalCount
-    }
-    repos {
-      totalCount
-    }
-  }
-`
-
-export { CURRENT_USER, GET_DB_CONNECTION, GET_PAT }
+export { CURRENT_USER, GET_DB_CONNECTION }

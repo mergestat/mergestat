@@ -28,6 +28,7 @@ require (
 	github.com/prometheus/client_golang v1.14.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20221229060216-a8d4a561cc93
+	github.com/xanzy/go-gitlab v0.15.0
 	go.riyazali.net/sqlite v0.0.0-20221017074244-77a6464e0c2a
 	golang.org/x/oauth2 v0.3.0
 )
@@ -38,6 +39,7 @@ require (
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/pjbgf/sha1cd v0.2.3 // indirect
 	github.com/skeema/knownhosts v1.1.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
 )
 
 require (
@@ -56,7 +58,7 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-enry/go-oniguruma v1.2.1 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
-	github.com/go-git/go-billy/v5 v5.4.0 // indirect
+	github.com/go-git/go-billy/v5 v5.4.0
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect

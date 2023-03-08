@@ -91,18 +91,12 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		}
 	}()
 
-	var ghToken string
-	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
-		return err
-	}
-
-	var repo *libgit2.Repository
-	if err = w.cloneRepo(ctx, ghToken, j.Repo, tmpPath, true, j); err != nil {
+	if err = w.clone(ctx, tmpPath, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 
-	stats := make([]*commitStat, 0)
-
+	var stats = make([]*commitStat, 0)
+	var repo *libgit2.Repository
 	if repo, err = libgit2.OpenRepository(tmpPath); err != nil {
 		return err
 	}

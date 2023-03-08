@@ -12,12 +12,11 @@ import (
 
 // handleTrivyRepoScan executes `trivy repo {git-repo} -f json` for a repo
 // and inserts the output JSON into the DB
-func (w *worker) handleTrivyRepoScan(ctx context.Context, j *db.DequeueSyncJobRow) error {
+func (w *worker) handleTrivyRepoScan(ctx context.Context, j *db.DequeueSyncJobRow) (err error) {
 	l := w.loggerForJob(j)
 
 	var ghToken string
-	var err error
-	if ghToken, err = w.fetchGitHubTokenFromDB(ctx); err != nil {
+	if _, ghToken, err = w.fetchCredentials(ctx, j); err != nil {
 		return err
 	}
 

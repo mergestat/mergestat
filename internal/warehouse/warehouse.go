@@ -3,7 +3,6 @@ package warehouse
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"net/url"
 	"os"
 	"strconv"
@@ -57,7 +56,7 @@ func (w *warehouse) parseJobLogs(logsUrl *url.URL, filepathDir string, n int) (s
 		return "", err
 	}
 
-	if bytes, err = ioutil.ReadFile(filepath); err != nil {
+	if bytes, err = os.ReadFile(filepath); err != nil {
 		return "", fmt.Errorf("failed to read file: %s", filepath)
 	}
 

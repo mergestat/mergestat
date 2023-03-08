@@ -475,8 +475,6 @@ type GithubRepoInfo struct {
 	IsArchived sql.NullBool
 	// boolean to determine if the repo is disabled
 	IsDisabled sql.NullBool
-	// boolean to determine if the repo is a mirror
-	MirrorUrl sql.NullString
 	// boolean to determine if the repo is private
 	IsPrivate sql.NullBool
 	// number of issues associated to the repo
@@ -513,6 +511,7 @@ type GithubRepoInfo struct {
 	SecretScanning sql.NullString
 	// secret scanning push protection availability
 	SecretScanningPushProtection sql.NullString
+	MirrorUrl                    sql.NullString
 }
 
 // stargazers of a GitHub repo
@@ -698,6 +697,15 @@ type MergestatLatestRepoSync struct {
 	DoneAt     sql.NullTime
 }
 
+type MergestatProvider struct {
+	ID          uuid.UUID
+	Name        string
+	Vendor      string
+	Settings    pgtype.JSONB
+	CreatedAt   time.Time
+	Description sql.NullString
+}
+
 type MergestatQueryHistory struct {
 	ID    uuid.UUID
 	RunAt sql.NullTime
@@ -710,13 +718,13 @@ type MergestatRepoImport struct {
 	ID                  uuid.UUID
 	CreatedAt           time.Time
 	UpdatedAt           time.Time
-	Type                string
 	Settings            pgtype.JSONB
 	LastImport          sql.NullTime
 	ImportInterval      sql.NullString
 	LastImportStartedAt sql.NullTime
 	ImportStatus        sql.NullString
 	ImportError         sql.NullString
+	Provider            uuid.UUID
 }
 
 // Types of repo imports
@@ -826,6 +834,9 @@ type MergestatServiceAuthCredential struct {
 	UpdatedAt   time.Time
 	Type        string
 	Credentials []byte
+	Provider    uuid.UUID
+	IsDefault   sql.NullBool
+	Username    []byte
 }
 
 type MergestatServiceAuthCredentialType struct {
@@ -845,6 +856,19 @@ type MergestatUserMgmtPgUser struct {
 	Rolreplication sql.NullBool
 	Rolbypassrls   sql.NullBool
 	Memberof       interface{}
+}
+
+type MergestatVendor struct {
+	Name        string
+	DisplayName string
+	Description sql.NullString
+	Type        string
+}
+
+type MergestatVendorType struct {
+	Name        string
+	DisplayName string
+	Description sql.NullString
 }
 
 type OssfScorecardRepoCheckResult struct {
@@ -899,8 +923,6 @@ type Repo struct {
 	Repo string
 	// ref for the repo
 	Ref sql.NullString
-	// boolean to determine if the repo is in GitHub
-	IsGithub sql.NullBool
 	// timestamp of when the MergeStat repo entry was created
 	CreatedAt time.Time
 	// JSON settings for the repo
@@ -909,6 +931,7 @@ type Repo struct {
 	Tags pgtype.JSONB
 	// foreign key for mergestat.repo_imports.id
 	RepoImportID uuid.NullUUID
+	Provider     uuid.UUID
 }
 
 // MergeStat internal table to track schema migrations

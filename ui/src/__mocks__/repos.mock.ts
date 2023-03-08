@@ -1,15 +1,12 @@
 import { faker } from '@faker-js/faker'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
-import { GET_REPOS } from 'src/api-logic/graphql/queries/get-repos.query'
-import { SYNC_REPO_METHOD } from 'src/utils/constants'
+import { GET_REPOS } from 'src/api-logic/graphql/queries/get-repos'
 import { DynamicValues } from './constants.mock'
 
 export const mockRepoData: GetReposQuery = {
-  serviceAuthCredentials: {
-    totalCount: 1,
-  },
   repoImports: {
-    totalCount: 1
+    totalCount: 1,
+    nodes: []
   },
   repos: {
     totalCount: 2,
@@ -18,24 +15,19 @@ export const mockRepoData: GetReposQuery = {
         id: faker.datatype.uuid(),
         repo: 'https://github.com/angular/angular',
         createdAt: faker.date.recent(2),
-        isGithub: true,
         tags: [],
         repoImport: {
-          type: SYNC_REPO_METHOD.GH_USER,
           settings: { user: DynamicValues.autoImportUser }
         },
         repoSyncs: {
           totalCount: 0,
-          nodes: [
-
-          ],
+          nodes: []
         },
       },
       {
         id: faker.datatype.uuid(),
         repo: 'https://github.com/mergestat/mergestat-lite',
         createdAt: faker.date.recent(10),
-        isGithub: true,
         tags: [],
         repoImport: null,
         repoSyncs: {
@@ -48,9 +40,7 @@ export const mockRepoData: GetReposQuery = {
                 id: faker.random.numeric(4),
                 status: 'DONE',
                 createdAt: faker.date.recent(9),
-                repoSyncLogs: {
-                  totalCount: 0
-                }
+                warnings: { totalCount: 0 }
               },
             },
             {
@@ -60,9 +50,7 @@ export const mockRepoData: GetReposQuery = {
                 id: faker.random.numeric(4),
                 status: 'RUNNING',
                 createdAt: faker.date.recent(),
-                repoSyncLogs: {
-                  totalCount: 0
-                }
+                warnings: { totalCount: 0 }
               }
             },
             {
@@ -72,9 +60,7 @@ export const mockRepoData: GetReposQuery = {
                 id: faker.random.numeric(4),
                 status: 'DONE',
                 createdAt: faker.date.recent(8),
-                repoSyncLogs: {
-                  totalCount: 0
-                }
+                warnings: { totalCount: 0 }
               }
             },
             {
@@ -84,9 +70,7 @@ export const mockRepoData: GetReposQuery = {
                 id: faker.random.numeric(4),
                 status: 'DONE',
                 createdAt: faker.date.recent(7),
-                repoSyncLogs: {
-                  totalCount: 0
-                }
+                warnings: { totalCount: 0 }
               }
             },
             {
@@ -96,9 +80,7 @@ export const mockRepoData: GetReposQuery = {
                 id: faker.random.numeric(4),
                 status: 'DONE',
                 createdAt: faker.date.recent(6),
-                repoSyncLogs: {
-                  totalCount: 0
-                }
+                warnings: { totalCount: 0 }
               }
             }
           ],
@@ -109,9 +91,6 @@ export const mockRepoData: GetReposQuery = {
 }
 
 export const mockJustAngularRepo: GetReposQuery = {
-  serviceAuthCredentials: {
-    totalCount: 1,
-  },
   repoImports: null,
   repos: {
     totalCount: 2,
@@ -120,7 +99,6 @@ export const mockJustAngularRepo: GetReposQuery = {
         id: faker.datatype.uuid(),
         repo: 'https://github.com/angular/angular',
         createdAt: faker.date.recent(2),
-        isGithub: true,
         tags: [],
         repoImport: null,
         repoSyncs: {
@@ -135,26 +113,12 @@ export const mockJustAngularRepo: GetReposQuery = {
 }
 
 export const mockWithoutResult: GetReposQuery = {
-  serviceAuthCredentials: {
-    totalCount: 1,
-  },
   repoImports: null,
   repos: {
     totalCount: 0,
     nodes: []
   }
 }
-
-export const mockNoGitHubPat = (gitHubPat: boolean): GetReposQuery => ({
-  serviceAuthCredentials: {
-    totalCount: gitHubPat ? 1 : 0,
-  },
-  repoImports: null,
-  repos: {
-    totalCount: 0,
-    nodes: []
-  }
-})
 
 export const apolloMockReposWithData = {
   request: {
@@ -193,25 +157,5 @@ export const apolloMockReposEmpty = {
   },
   result: {
     data: undefined
-  }
-}
-
-export const apolloMockReposEmptyNoGitHubPat = {
-  request: {
-    query: GET_REPOS,
-    variables: { search: '', first: 20, offset: 0 }
-  },
-  result: {
-    data: mockNoGitHubPat(false)
-  }
-}
-
-export const apolloMockReposEmptyGitHubPat = {
-  request: {
-    query: GET_REPOS,
-    variables: { search: '', first: 20, offset: 0 }
-  },
-  result: {
-    data: mockNoGitHubPat(true)
   }
 }

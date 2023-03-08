@@ -8,14 +8,17 @@ const { ENCRYPTION_SECRET } = process.env
 // They are meant to be set by an operator for display in the /connect page of the UI
 const { DISPLAY_PG_HOSTNAME, DISPLAY_PG_PORT, DISPLAY_PG_DATABASE, DISPLAY_PG_USER } = process.env
 
-type ReplaceGitHubPATInput = {
-  pat: string
+type AddTokenInput = {
+  provider: string
+  type: string
+  username: string
+  token: string
 }
 
 module.exports = makeExtendSchemaPlugin({
   typeDefs: gql`
     extend type Mutation {
-      replaceGitHubPAT(pat: String!): Boolean
+      addToken(provider: UUID!, type: String!, username: String, token: String!): Boolean
     }
     extend type Query {
       databaseConnection: DisplayDatabaseConnection
@@ -29,24 +32,15 @@ module.exports = makeExtendSchemaPlugin({
   `,
   resolvers: {
     Mutation: {
-      async replaceGitHubPAT(_parent: any, args: ReplaceGitHubPATInput, context: { pgClient: Client }, _info: any) {
+      async addToken(_parent: any, args: AddTokenInput, context: { pgClient: Client }, _info: any) {
         try {
-          await context.pgClient.query('SAVEPOINT replaceGitHubPAT;')
-
-          // first delete all the existing PATs in the DB (for now, only allow one at a time)
-          // TODO(patrickdevivo) this may eventually make more sense to handle with unique constraints/indexes in the DB
-          // however the encryption adds a wrinkle to that
-          await context.pgClient.query("DELETE FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT'")
-          
-          // then do an insert using the add_service_auth_credential helper in the DB
-          await context.pgClient.query("SELECT mergestat.add_service_auth_credential('GITHUB_PAT', $1, $2)", [ args.pat, ENCRYPTION_SECRET ])
-
-          await context.pgClient.query('RELEASE SAVEPOINT replaceGitHubPAT;')
-        } catch (e) {
-          await context.pgClient.query('ROLLBACK TO SAVEPOINT replaceGitHubPAT;')
-          throw e
-        } finally {
+          await context.pgClient.query('SAVEPOINT add_token;')
+          await context.pgClient.query("SELECT mergestat.add_service_auth_credential($1, $2, $3, $4, $5)", [ args.provider, args.type, args.username, args.token, ENCRYPTION_SECRET ])
+          await context.pgClient.query('RELEASE SAVEPOINT add_token;')
           return true
+        } catch (e) {
+          await context.pgClient.query('ROLLBACK TO SAVEPOINT add_token;')
+          throw e
         }
       },
     },
