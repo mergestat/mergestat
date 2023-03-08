@@ -80,12 +80,12 @@ func (w *worker) sendBatchBlameLines(ctx context.Context, blameTmpPath string, t
 				line = nil
 			}
 
+			input := []interface{}{repoID, bl.AuthorEmail, bl.AuthorName, bl.AuthorWhen, bl.CommitHash, bl.LineNo, line, bl.Path}
+			inputs = append(inputs, input)
+
 			if len(inputs) == cap(inputs) {
 				break
 			}
-
-			input := []interface{}{repoID, bl.AuthorEmail, bl.AuthorName, bl.AuthorWhen, bl.CommitHash, bl.LineNo, line, bl.Path}
-			inputs = append(inputs, input)
 		}
 
 		if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_blame"}, []string{"repo_id", "author_email", "author_name", "author_when", "commit_hash", "line_no", "line", "path"}, pgx.CopyFromRows(inputs)); err != nil {
