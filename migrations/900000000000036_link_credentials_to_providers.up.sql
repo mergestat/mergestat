@@ -15,7 +15,7 @@ ADD COLUMN username TEXT NOT NULL DEFAULT '';
 UPDATE mergestat.service_auth_credentials creds
 SET provider = providers.id
 FROM mergestat.providers
-WHERE providers.name = 'GitHub' AND providers.vendor = 'github';
+WHERE providers.name = 'GitHub Repos' AND providers.vendor = 'github';
 
 -- make the column non-nullable so that tokens are always associated with a provider
 ALTER TABLE mergestat.service_auth_credentials

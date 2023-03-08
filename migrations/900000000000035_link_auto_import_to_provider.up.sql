@@ -15,9 +15,13 @@ ADD CONSTRAINT FK_providers_repo_imports_provider FOREIGN KEY (provider) REFEREN
 UPDATE mergestat.repo_imports
 SET provider = providers.id
 FROM mergestat.providers
-WHERE providers.name = 'GitHub' AND providers.vendor = 'github';
+WHERE providers.name = 'GitHub Repos' AND providers.vendor = 'github';
 
 ALTER TABLE mergestat.repo_imports
 ALTER COLUMN provider SET NOT NULL;
+
+--Update the values in the settings
+UPDATE mergestat.repo_imports SET settings = settings - 'user' || jsonb_build_object('userOrOrg', settings-> 'user') || jsonb_build_object('type', 'GITHUB_USER') WHERE settings ? 'user';
+UPDATE mergestat.repo_imports SET settings = settings - 'org' || jsonb_build_object('userOrOrg', settings-> 'org') || jsonb_build_object('type', 'GITHUB_ORG') WHERE settings ? 'org';
 
 COMMIT;
