@@ -3,8 +3,10 @@ package syncer
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/jackc/pgx/v4"
@@ -42,22 +44,71 @@ func gitFileModeObjectTypeFromUint16(mode uint16) GitFileModeObjectType {
 }
 
 // sendBatchCommitStats uses the pg COPY protocol to send a batch of commit stats
-func (w *worker) sendBatchCommitStats(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*commitStat) error {
-	inputs := make([][]interface{}, 0, len(batch))
-	for _, c := range batch {
-		var repoID uuid.UUID
-		var err error
-		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
-			return err
-		}
-		input := []interface{}{repoID, c.CommitHash.String, c.FilePath.String, c.Additions.Int64, c.Deletions.Int64, c.NewFileMode.String, c.OldFileMode.String}
-		inputs = append(inputs, input)
+func (w *worker) sendBatchCommitStats(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, statsTmpPath string) (int, error) {
+	var (
+		f   *os.File
+		err error
+	)
+
+	if f, err = os.Open(statsTmpPath); err != nil {
+		return 0, err
 	}
 
-	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_commit_stats"}, []string{"repo_id", "commit_hash", "file_path", "additions", "deletions", "old_file_mode", "new_file_mode"}, pgx.CopyFromRows(inputs)); err != nil {
-		return err
+	defer os.Remove(f.Name())
+	var (
+		decoder       = json.NewDecoder(f)
+		inputs        = make([][]interface{}, 0, 100)
+		insertedStats = 0
+		isEOF         = false
+		repoID        uuid.UUID
+	)
+
+	if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
+		return insertedStats, err
 	}
-	return nil
+
+	for {
+		for {
+			var stat commitStat
+
+			err = decoder.Decode(&stat)
+
+			// If we've reached the end of the file, break out of the loop
+			// and set isEOF to true
+			if err == io.EOF {
+				isEOF = true
+				break
+			}
+
+			if err != nil {
+				return insertedStats, err
+			}
+
+			input := []interface{}{repoID, stat.CommitHash.String, stat.FilePath.String, stat.Additions.Int64, stat.Deletions.Int64, stat.NewFileMode.String, stat.OldFileMode.String}
+			inputs = append(inputs, input)
+
+			if len(inputs) == cap(inputs) {
+				break
+			}
+
+		}
+
+		if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_commit_stats"}, []string{"repo_id", "commit_hash", "file_path", "additions", "deletions", "old_file_mode", "new_file_mode"}, pgx.CopyFromRows(inputs)); err != nil {
+			return insertedStats, err
+		}
+		insertedStats += len(inputs)
+
+		//cleaning slice and keeping capacity
+		inputs = inputs[:0]
+
+		// if we reach EOF we exit
+		if isEOF {
+			break
+		}
+
+	}
+
+	return insertedStats, nil
 }
 
 type commitStat struct {
@@ -95,7 +146,13 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		return fmt.Errorf("git clone: %w", err)
 	}
 
-	var stats = make([]*commitStat, 0)
+	var file *os.File
+	if file, err = os.CreateTemp(tmpPath, "commit-stats-objects-*.json"); err != nil {
+		return err
+	}
+
+	encoder := json.NewEncoder(file)
+
 	var repo *libgit2.Repository
 	if repo, err = libgit2.OpenRepository(tmpPath); err != nil {
 		return err
@@ -142,6 +199,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		if err != nil {
 			return false
 		}
+
 		defer func() {
 			if err := diff.Free(); err != nil {
 				w.logger.Err(err).Msgf("error freeing diff")
@@ -169,7 +227,10 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 				NewFileMode: sql.NullString{String: string(gitFileModeObjectTypeFromUint16(delta.NewFile.Mode)), Valid: true},
 			}
 
-			stats = append(stats, stat)
+			// encoding each commit stat object
+			if err = encoder.Encode(stat); err != nil {
+				return nil, err
+			}
 
 			return func(hunk libgit2.DiffHunk) (libgit2.DiffForEachLineCallback, error) {
 				return func(line libgit2.DiffLine) error {
@@ -217,17 +278,17 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 	}}); err != nil {
 		return err
 	}
-
-	if err := w.sendBatchCommitStats(ctx, tx, j, stats); err != nil {
+	var insertedStats int
+	if insertedStats, err = w.sendBatchCommitStats(ctx, tx, j, file.Name()); err != nil {
 		return nil
 	}
 
-	l.Info().Msgf("imported %d commit stats", len(stats))
+	l.Info().Msgf("imported %d commit stats", insertedStats)
 
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
 		RepoSyncQueueID: j.ID,
-		Message:         fmt.Sprintf("inserted %d row(s) into git_commit_stats", len(stats)),
+		Message:         fmt.Sprintf("inserted %d row(s) into git_commit_stats", insertedStats),
 	}}); err != nil {
 		return err
 	}
