@@ -29,7 +29,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20221229060216-a8d4a561cc93
 	github.com/xanzy/go-gitlab v0.15.0
-	go.riyazali.net/sqlite v0.0.0-20221017074244-77a6464e0c2a
+	go.riyazali.net/sqlite v0.0.0-20221229061135-0e640ca73f94
 	golang.org/x/oauth2 v0.3.0
 )
 
