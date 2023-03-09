@@ -20,7 +20,7 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
   const [{ dataQuery: data }] = useQueryContext()
 
   const [result, setResult] = useState<Array<Array<string | number | boolean>>>(data.rows || [])
-  const [rows, setRows] = useState<number>(20)
+  const [rows, setRows] = useState<number>(100)
   const [page, setPage] = useState<number>(0)
   const [total, setTotal] = useState<number>(data.rows?.length || 0)
   const [search, setSearch] = useState<string>('')
@@ -189,11 +189,12 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
               <Label className='mr-2 whitespace-nowrap' htmlFor='rowsPerPage'>
                 Rows per page
               </Label>
-              <Select id='rowsPerPage' className="w-20" defaultValue='20' onChange={e => setRows(+e.target.value)}>
-                <option value='10'>10</option>
-                <option value='20'>20</option>
+              <Select id='rowsPerPage' className="w-30" defaultValue='100' onChange={e => setRows(+e.target.value)}>
+                <option value='25'>25</option>
                 <option value='50'>50</option>
                 <option value='100'>100</option>
+                <option value='250'>250</option>
+                <option value='500'>500</option>
               </Select>
             </div>
           </Toolbar.Left>
