@@ -2,8 +2,8 @@ import { makeExtendSchemaPlugin, gql } from "graphile-utils"
 import Cursor from 'pg-cursor'
 import { Client, QueryResult } from 'pg'
 
-const DEFAULT_ROWS = 100
-const MAX_ROWS = 500
+const DEFAULT_ROWS = 1000
+const MAX_ROWS = 5000
 
 type ExecSQLInput = {
   query: string
