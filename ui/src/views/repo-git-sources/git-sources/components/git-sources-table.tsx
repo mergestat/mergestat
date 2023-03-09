@@ -34,6 +34,7 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                       <td>
                         <ListItem key={`git-source-${index}`}
                           title={gs.name}
+                          subline={gs.description || ''}
                           className={'px-4 py-2'}
                           startIcon={getGitSourceIcon(gs.vendor)}
                           onClick={() => router.push(`/repos/git-sources/${gs.id}`)}
