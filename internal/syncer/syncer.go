@@ -4,6 +4,9 @@ package syncer
 import (
 	"context"
 	"fmt"
+	"sync"
+	"time"
+
 	"github.com/go-git/go-billy/v5/osfs"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/cache"
@@ -12,8 +15,6 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/go-git/go-git/v5/storage/filesystem"
 	"github.com/pkg/errors"
-	"sync"
-	"time"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -274,6 +275,9 @@ func (w *worker) clone(ctx context.Context, path string, job *db.DequeueSyncJobR
 			return errors.Wrapf(err, "failed to parse ssh key")
 		}
 	} else if endpoint.Protocol == "http" || endpoint.Protocol == "https" || endpoint.Protocol == "git" {
+		if username == "" {
+			username = "git"
+		}
 		auth = &http.BasicAuth{Username: username, Password: token}
 	}
 
