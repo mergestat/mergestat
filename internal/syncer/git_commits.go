@@ -151,7 +151,7 @@ func (w *worker) collectCommits(ctx context.Context, tmpPath string) (string, er
 
 		// encode commit object to json file
 		if err = encoder.Encode(r); err != nil {
-			w.logger.Err(err).Msgf("%w", err)
+			w.logger.Err(err).Msgf("%v", err)
 			return false
 		}
 
