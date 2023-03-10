@@ -150,7 +150,10 @@ func (w *worker) collectCommits(ctx context.Context, tmpPath string) (string, er
 		r.Parents = sql.NullInt32{Int32: int32(c.ParentCount()), Valid: true}
 
 		// encode commit object to json file
-		encoder.Encode(r)
+		if err = encoder.Encode(r); err != nil {
+			w.logger.Err(err).Msgf("%w", err)
+			return false
+		}
 
 		return true
 	}); err != nil {
