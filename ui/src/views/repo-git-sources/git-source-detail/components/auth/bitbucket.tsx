@@ -3,6 +3,7 @@ import { CheckIcon } from '@mergestat/icons'
 import { ChangeEvent, useState } from 'react'
 import { useGitSourceDetailContext } from 'src/state/contexts/git-source-detail.context'
 import { showSuccessAlert } from 'src/utils/alerts'
+import { LINKS_TO } from 'src/utils/constants'
 import useCredentials from 'src/views/hooks/useCredentials'
 import SettedAuth from './setted-auth'
 
@@ -25,7 +26,7 @@ const BitbucketAuth: React.FC = () => {
           <h4 className='t-h4 mb-0'>Authentication</h4>
           {auth?.credentials &&
             <Badge
-              label='Token is set'
+              label='Authentication is set'
               endIcon={<CheckIcon className="t-icon" />}
               variant="success"
             />}
@@ -36,12 +37,27 @@ const BitbucketAuth: React.FC = () => {
         {auth && <SettedAuth {...auth} />}
 
         {!auth && <>
+          <p className='mb-6 t-text-muted'>
+            In order to access the Bitbucket API and any private Bitbucket repos,
+            we need to authenticate with an{' '}
+            <a
+              target='_blank'
+              href={LINKS_TO.createPASS}
+              className='t-link font-semibold'
+              rel='noopener noreferrer'
+            >
+              app password
+            </a>{' '}.
+            Other authentication methods may become available in the future.
+          </p>
+
           <form className='mb-4'>
             <Label>Bitbucket username</Label>
             <Input
               className='max-w-2xl'
               type='text'
               value={username}
+              placeholder="Enter your Bitbucket username"
               autoComplete='off'
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setUsername(e.target.value)
@@ -53,6 +69,7 @@ const BitbucketAuth: React.FC = () => {
               className='max-w-2xl'
               type='password'
               value={password}
+              placeholder="Enter your Bitbucket app password"
               autoComplete='off'
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setPassword(e.target.value)

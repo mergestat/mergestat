@@ -40,7 +40,7 @@ const GitHubAuth: React.FC = () => {
             repos, we need to authenticate with{' '}
             <a
               target='_blank'
-              href={LINKS_TO.createPAt}
+              href={LINKS_TO.createPAT}
               className='t-link font-semibold'
               rel='noopener noreferrer'
             >

@@ -50,7 +50,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
             <div className='border-l border-semantic-border px-2'>
               <Tooltip
                 content={`Auto imported from ${props.autoImportFrom}`}
-                placement='bottom'
+                placement='bottom' offset={[0, 10]}
               >
                 <AutoImportIcon className='t-icon t-icon-muted w-4' />
               </Tooltip>
