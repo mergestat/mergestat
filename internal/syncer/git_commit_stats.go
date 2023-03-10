@@ -215,22 +215,25 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 			return false
 		}
 
+		stat := &commitStat{
+			CommitHash: sql.NullString{String: c.Id().String(), Valid: true},
+		}
+
 		err = diff.ForEach(func(delta libgit2.DiffDelta, progress float64) (libgit2.DiffForEachHunkCallback, error) {
 			// TODO(patrickdevivo) should we also include the old file path? (delta.OldFile.Path)
 			// if so, we might want to change file_path column to new_file_path and add old_file_path
-			stat := &commitStat{
-				CommitHash:  sql.NullString{String: c.Id().String(), Valid: true},
-				FilePath:    sql.NullString{String: delta.NewFile.Path, Valid: true},
-				Additions:   sql.NullInt64{Int64: 0, Valid: true},
-				Deletions:   sql.NullInt64{Int64: 0, Valid: true},
-				OldFileMode: sql.NullString{String: string(gitFileModeObjectTypeFromUint16((delta.OldFile.Mode))), Valid: true},
-				NewFileMode: sql.NullString{String: string(gitFileModeObjectTypeFromUint16(delta.NewFile.Mode)), Valid: true},
+			//repo_id, file_path, commit_hash, new_file_mode
+			if len(stat.FilePath.String) > 0 && string(delta.NewFile.Path) != stat.FilePath.String && fmt.Sprint(delta.NewFile.Mode) != stat.NewFileMode.String {
+				if err = encoder.Encode(stat); err != nil {
+					return nil, err
+				}
 			}
 
-			// encoding each commit stat object
-			if err = encoder.Encode(stat); err != nil {
-				return nil, err
-			}
+			stat.Additions = sql.NullInt64{Int64: 0, Valid: true}
+			stat.Deletions = sql.NullInt64{Int64: 0, Valid: true}
+			stat.FilePath = sql.NullString{String: delta.NewFile.Path, Valid: true}
+			stat.OldFileMode = sql.NullString{String: string(gitFileModeObjectTypeFromUint16((delta.OldFile.Mode))), Valid: true}
+			stat.NewFileMode = sql.NullString{String: string(gitFileModeObjectTypeFromUint16(delta.NewFile.Mode)), Valid: true}
 
 			return func(hunk libgit2.DiffHunk) (libgit2.DiffForEachLineCallback, error) {
 				return func(line libgit2.DiffLine) error {
@@ -246,6 +249,11 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		}, libgit2.DiffDetailLines)
 		if err != nil {
 			w.logger.Err(err).Msgf("error iterating over diff")
+			return false
+		}
+		// encoding each commit stat object
+		if err = encoder.Encode(stat); err != nil {
+			w.logger.Err(err).Msgf("%w", err)
 			return false
 		}
 
