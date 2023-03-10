@@ -32,7 +32,7 @@ func ContainerSync(ctx context.Context, dur time.Duration, upstream *sql.DB) {
 		if tx, err = upstream.BeginTx(ctx, &sql.TxOptions{}); err != nil {
 			return err
 		}
-		defer tx.Rollback()
+		defer tx.Rollback() //nolint:errcheck
 
 		var syncs []uuid.UUID
 		var rows *sql.Rows

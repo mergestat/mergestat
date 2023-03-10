@@ -13,10 +13,10 @@ INSERT INTO mergestat.container_image_types(name, displayName, description) VALU
 -- Table: mergestat.container_image
 -- A registered image from a hosted container registry.
 CREATE TABLE mergestat.container_images (
-    id   UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- auto-generated unique identifier for this image
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- auto-generated unique identifier for this image
     name TEXT NOT NULL,                              -- user-provided name of the image
     type TEXT NOT NULL DEFAULT('docker'),            -- type of the container image
-    url  TEXT NOT NULL,                              -- full path the image
+    url TEXT NOT NULL,                              -- full path the image
     version TEXT NOT NULL DEFAULT ('latest'),        -- version of the image
     parameters JSONB NOT NULL DEFAULT '{}',          -- any user-defined parameters to pass to the container
 
@@ -27,10 +27,10 @@ CREATE TABLE mergestat.container_images (
 -- Table: mergestat.container_sync
 -- A sync defined for a repository that runs the linked container image.
 CREATE TABLE mergestat.container_syncs (
-    id           UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- auto-generated unique identifier for this sync
-    repo_id      UUID NOT NULL,
-    image_id     UUID NOT NULL,
-    parameters   JSONB NOT NULL DEFAULT '{}', -- overrides for user-defined parameters
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- auto-generated unique identifier for this sync
+    repo_id UUID NOT NULL,
+    image_id UUID NOT NULL,
+    parameters JSONB NOT NULL DEFAULT '{}', -- overrides for user-defined parameters
 
     CONSTRAINT FK_sync_repository FOREIGN KEY (repo_id) REFERENCES public.repos (id) ON DELETE CASCADE,
     CONSTRAINT FK_sync_container FOREIGN KEY (image_id) REFERENCES mergestat.container_images (id) ON DELETE CASCADE

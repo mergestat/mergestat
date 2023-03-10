@@ -31,7 +31,7 @@ import (
 func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 	return sqlq.HandlerFunc(func(ctx context.Context, job *sqlq.Job) (err error) {
 		var logger = job.Logger()
-		go job.SendKeepAlive(ctx, job.KeepAlive)
+		go job.SendKeepAlive(ctx, job.KeepAlive) //nolint:errcheck
 
 		var params struct{ ID uuid.UUID }
 		if err = json.Unmarshal(job.Parameters, &params); err != nil {
@@ -57,7 +57,7 @@ func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 			logger.Errorf("failed to create directory for cloning: %s", err.Error())
 			return errors.Wrapf(err, "failed to create directory")
 		}
-		defer cleanup()
+		defer cleanup() //nolint:errcheck
 
 		// execute the clone operation
 		if err = clone(ctx, logger, querier, tmpPath, repo); err != nil {
@@ -208,7 +208,7 @@ func clone(ctx context.Context, logger *sqlq.Logger, q *db.Queries, path string,
 	} else if errors.Is(err, git.ErrRepositoryNotExists) {
 		// repository doesn't exist locally! perform a fresh clone
 		var opts = &git.CloneOptions{URL: endpoint.String(), Auth: auth}
-		if repository, err = git.CloneContext(ctx, target, fs, opts); err != nil {
+		if _, err = git.CloneContext(ctx, target, fs, opts); err != nil {
 			logger.Errorf("failed to clone repository: %s", err.Error())
 			return errors.Wrapf(err, "failed to clone repository")
 		}
