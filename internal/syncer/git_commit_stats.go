@@ -225,7 +225,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 			// if so, we might want to change file_path column to new_file_path and add old_file_path
 
 			// verify that we are dealing with a completed new stat before appending to the json file
-			if len(stat.FilePath.String) > 0 && string(delta.NewFile.Path) != stat.FilePath.String && fmt.Sprint(delta.NewFile.Mode) != stat.NewFileMode.String && fmt.Sprint(delta.OldFile.Mode) != stat.OldFileMode.String {
+			if checkBeforeAppendingStat(stat, delta) {
 				if err = encoder.Encode(stat); err != nil {
 					return nil, err
 				}
@@ -311,4 +311,9 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 	err = tx.Commit(ctx)
 
 	return err
+}
+
+func checkBeforeAppendingStat(stat *commitStat, delta libgit2.DiffDelta) bool {
+	return len(stat.FilePath.String) > 0 && string(delta.NewFile.Path) != stat.FilePath.String &&
+		fmt.Sprint(delta.NewFile.Mode) != stat.NewFileMode.String && fmt.Sprint(delta.OldFile.Mode) != stat.OldFileMode.String
 }
