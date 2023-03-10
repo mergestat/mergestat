@@ -215,6 +215,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 			return false
 		}
 
+		// creates a stat for each commit hash
 		stat := &commitStat{
 			CommitHash: sql.NullString{String: c.Id().String(), Valid: true},
 		}
@@ -223,6 +224,7 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 			// TODO(patrickdevivo) should we also include the old file path? (delta.OldFile.Path)
 			// if so, we might want to change file_path column to new_file_path and add old_file_path
 
+			// verify that we are dealing with a completed new stat before appending to the json file
 			if len(stat.FilePath.String) > 0 && string(delta.NewFile.Path) != stat.FilePath.String && fmt.Sprint(delta.NewFile.Mode) != stat.NewFileMode.String && fmt.Sprint(delta.OldFile.Mode) != stat.OldFileMode.String {
 				if err = encoder.Encode(stat); err != nil {
 					return nil, err
