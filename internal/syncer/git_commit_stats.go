@@ -222,8 +222,8 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 		err = diff.ForEach(func(delta libgit2.DiffDelta, progress float64) (libgit2.DiffForEachHunkCallback, error) {
 			// TODO(patrickdevivo) should we also include the old file path? (delta.OldFile.Path)
 			// if so, we might want to change file_path column to new_file_path and add old_file_path
-			//repo_id, file_path, commit_hash, new_file_mode
-			if len(stat.FilePath.String) > 0 && string(delta.NewFile.Path) != stat.FilePath.String && fmt.Sprint(delta.NewFile.Mode) != stat.NewFileMode.String {
+
+			if len(stat.FilePath.String) > 0 && string(delta.NewFile.Path) != stat.FilePath.String && fmt.Sprint(delta.NewFile.Mode) != stat.NewFileMode.String && fmt.Sprint(delta.OldFile.Mode) != stat.OldFileMode.String {
 				if err = encoder.Encode(stat); err != nil {
 					return nil, err
 				}
@@ -251,12 +251,6 @@ func (w *worker) handleGitCommitStats(ctx context.Context, j *db.DequeueSyncJobR
 			w.logger.Err(err).Msgf("error iterating over diff")
 			return false
 		}
-		// encoding each commit stat object
-		if err = encoder.Encode(stat); err != nil {
-			w.logger.Err(err).Msgf("%w", err)
-			return false
-		}
-
 		return true
 	}); err != nil {
 		return err
