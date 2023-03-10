@@ -28,7 +28,7 @@ import (
 
 // ContainerSync implements a sqlq.Handler that utilizes a Container-based execution environment
 // to run user-provided, custom sync jobs.
-func ContainerSync(querier *db.Queries) sqlq.Handler {
+func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 	return sqlq.HandlerFunc(func(ctx context.Context, job *sqlq.Job) (err error) {
 		var logger = job.Logger()
 		go job.SendKeepAlive(ctx, job.KeepAlive)
@@ -94,8 +94,17 @@ func ContainerSync(querier *db.Queries) sqlq.Handler {
 		{ // run the image locally
 			logger.Infof("running image %s", url)
 
+			var username, token string
+			if username, token, err = querier.FetchCredential(ctx, repo.Provider); err != nil {
+				return err
+			}
+
 			var environment = make(map[string]string)
-			environment["REPO_ID"] = containerSync.RepoID.String()
+			environment["MERGESTAT_REPO_ID"] = repo.ID.String()
+			environment["MERGESTAT_POSTGRES_URL"] = postgresUrl
+			environment["MERGESTAT_PROVIDER_ID"] = repo.Provider.String()
+			environment["MERGESTAT_AUTH_USERNAME"] = username
+			environment["MERGESTAT_AUTH_TOKEN"] = token
 
 			var env bytes.Buffer
 			for key, value := range environment {
