@@ -89,7 +89,8 @@ export enum COOKIE {
 }
 
 export const LINKS_TO = {
-  createPAt: 'https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic',
+  createPAT: 'https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic',
+  createPASS: 'https://support.atlassian.com/bitbucket-cloud/docs/create-an-app-password/'
 }
 
 export enum States {
@@ -170,7 +171,7 @@ export enum VENDOR_TYPE {
 }
 
 export enum VENDOR_URL {
-  BITBUCKET = 'https://api.bitbucket.org',
+  BITBUCKET = 'https://bitbucket.org',
   GITLAB = 'https://gitlab.com',
   GITHUB = 'https://github.com'
 }

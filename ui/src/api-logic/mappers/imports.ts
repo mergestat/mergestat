@@ -1,6 +1,6 @@
 import { ImportStatusType, RepoImportData, RepoManualImportData } from 'src/@types'
-import { getRepoFromUrl } from 'src/utils'
-import { SYNC_REPO_METHOD } from 'src/utils/constants'
+import { getRepoFromUrl, getVendorProp } from 'src/utils'
+import { SYNC_REPO_METHOD, VENDOR_TYPE } from 'src/utils/constants'
 import { GetRepoImportsQuery, GetRepoManualImportsQuery } from '../graphql/generated/schema'
 
 /**
@@ -16,8 +16,8 @@ const mapToImportsData = (data: GetRepoImportsQuery | undefined): Array<RepoImpo
     const importInfo: RepoImportData = {
       id: imp.id,
       importDone: !!imp.lastImport,
-      type: imp.settings.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org',
-      name: imp.settings.userOrOrg,
+      type: imp.provider?.vendor === VENDOR_TYPE.GITHUB ? (imp.settings.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org') : '',
+      name: imp.settings[getVendorProp(imp.provider?.vendor || '')],
       lastSync: imp.lastImport ? imp.lastImport : '',
       status: imp.importStatus as ImportStatusType,
       totalRepos: imp.repos.totalCount,

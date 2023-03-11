@@ -2,8 +2,8 @@
 import { gql } from '@apollo/client'
 
 const ADD_CREDENTIAL = gql`
-  mutation addToken($provider: UUID!, $token: String!, $type: String!) {
-    addToken(provider: $provider, token: $token, type: $type, username: "mergestat-dummy-username")
+  mutation addToken($provider: UUID!, $token: String!, $type: String!, $username: String = "") {
+    addToken(provider: $provider, token: $token, type: $type, username: $username)
   }
 `
 

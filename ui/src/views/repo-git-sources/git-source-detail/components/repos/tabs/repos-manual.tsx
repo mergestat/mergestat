@@ -3,7 +3,8 @@ import { ChevronDownIcon, ChevronUpIcon, PlusIcon } from '@mergestat/icons'
 import { ChangeEvent, useState } from 'react'
 import Loading from 'src/components/Loading'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
-import { VENDOR_TYPE } from 'src/utils/constants'
+import { getVendor } from 'src/utils'
+import { VENDOR_TYPE, VENDOR_URL } from 'src/utils/constants'
 import useAddRepos from 'src/views/hooks/gitSources/useAddRepos'
 import useRepoManualImports from 'src/views/hooks/gitSources/useRepoManualImports'
 import { FilterFooter } from 'src/views/shared/filter-footer'
@@ -29,6 +30,14 @@ const ReposManual: React.FC = () => {
     }
   }
 
+  const getVendorUrl = () => {
+    return vendor === VENDOR_TYPE.BITBUCKET
+      ? VENDOR_URL.BITBUCKET
+      : vendor === VENDOR_TYPE.GITHUB
+        ? VENDOR_URL.GITHUB
+        : vendor === VENDOR_TYPE.GITLAB ? VENDOR_URL.GITLAB : VENDOR_URL.GITHUB
+  }
+
   return (
     <>
       <div className='bg-white p-6'>
@@ -48,7 +57,7 @@ const ReposManual: React.FC = () => {
                 type='text'
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="https://github.com/owner/repo"
+                placeholder={`${getVendorUrl()}/owner/repo`}
                 onKeyPress={(e) => (e.key === 'Enter' && addFromURL(url))}
               />}
           </div>
@@ -82,10 +91,7 @@ const ReposManual: React.FC = () => {
           : <div className='bg-white p-6 pt-0'>
             <Panel className='rounded-md shadow-sm'>
               <Panel.Body className='p-12 m-auto'>
-                <span className='text-gray-500'>
-                  {vendor === VENDOR_TYPE.GITHUB && 'Enter GitHub repo url'}
-                  {vendor === VENDOR_TYPE.GIT && 'Enter Git repo url'}
-                </span>
+                <span className='text-gray-500'>{`Enter ${getVendor(vendor)} repo url`}</span>
               </Panel.Body>
             </Panel>
           </div>

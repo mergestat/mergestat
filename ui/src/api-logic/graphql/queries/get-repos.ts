@@ -36,6 +36,12 @@ const GET_REPOS = gql`
         id
         settings
         importError
+        provider: providerByProvider {
+          id
+          name
+          vendor
+          settings
+        }
       }
     }
     repos(

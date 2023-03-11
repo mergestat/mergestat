@@ -1,6 +1,6 @@
 import { RepoDataPropsT, RepoDataStatusT, RepoSyncStateT } from 'src/@types'
 import { getRepoFromUrl, getStatus } from 'src/utils'
-import { SYNC_REPO_METHOD } from 'src/utils/constants'
+import { SYNC_REPO_METHOD, VENDOR_TYPE } from 'src/utils/constants'
 import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
 
 interface SyncTypeFlatten {
@@ -30,7 +30,10 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
       id: r?.id,
       name: getRepoFromUrl(r?.repo || ''),
       createdAt: new Date(r?.createdAt),
-      autoImportFrom: r?.repoImport && `${r?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${r?.repoImport?.settings.userOrOrg}`,
+      autoImportFrom: r?.repoImport &&
+        (r?.provider?.vendor === VENDOR_TYPE.GITHUB)
+        ? `${r?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${r?.repoImport?.settings.userOrOrg}`
+        : (r?.provider?.vendor === VENDOR_TYPE.BITBUCKET) ? `${r?.repoImport?.settings.owner}` : undefined,
       lastSync: '',
       provider: {
         id: r?.provider?.id,

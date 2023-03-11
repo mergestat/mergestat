@@ -13,6 +13,8 @@ import (
 )
 
 func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
+	var emptyTags = []byte("[]") // bitbucket doesn't support tags
+
 	var username, password string
 	if username, password, err = qry.FetchCredential(ctx, imp.Provider); err != nil {
 		return err
@@ -67,7 +69,7 @@ func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.ListRepo
 		var params = db.UpsertRepoParams{
 			Repo:         repo.Links.HTML.Href,
 			RepoImportID: uuid.NullUUID{Valid: true, UUID: imp.ID},
-			Tags:         pgtype.JSONB{Status: pgtype.Null},
+			Tags:         pgtype.JSONB{Status: pgtype.Present, Bytes: emptyTags},
 			Provider:     imp.Provider,
 		}
 		if err = qry.UpsertRepo(ctx, params); err != nil {

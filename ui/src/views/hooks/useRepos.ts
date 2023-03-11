@@ -4,7 +4,8 @@ import { AutoImportData } from 'src/@types'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_REPOS } from 'src/api-logic/graphql/queries/get-repos'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
-import { SYNC_REPO_METHOD } from 'src/utils/constants'
+import { getVendorProp } from 'src/utils'
+import { SYNC_REPO_METHOD, VENDOR_TYPE } from 'src/utils/constants'
 
 const useRepos = () => {
   const [runningImports, setRunningImports] = useState<AutoImportData[]>([])
@@ -26,15 +27,15 @@ const useRepos = () => {
 
     setFailedImports(data?.repoImports?.nodes?.filter(imp => imp.importError !== null && (imp.importError as string) !== '').map(imp => ({
       id: imp.id,
-      name: imp.settings.userOrOrg,
-      type: imp.settings.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org',
+      name: imp.settings[getVendorProp(imp.provider?.vendor || '')],
+      type: imp.provider?.vendor === VENDOR_TYPE.GITHUB ? (imp.settings.type === SYNC_REPO_METHOD.GH_USER ? '(GitHub user)' : '(GitHub org)') : '',
       error: imp.importError
     })) || [])
 
     setRunningImports(data?.repoImports?.nodes?.filter(imp => imp.importError === null || (imp.importError as string) === '').map(imp => ({
       id: imp.id,
-      name: imp.settings.userOrOrg,
-      type: imp.settings.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org'
+      name: imp.settings[getVendorProp(imp.provider?.vendor || '')],
+      type: imp.provider?.vendor === VENDOR_TYPE.GITHUB ? (imp.settings.type === SYNC_REPO_METHOD.GH_USER ? '(GitHub user)' : '(GitHub org)') : '',
     })) || [])
 
     setTotalRepos(data?.repos?.totalCount || 0)

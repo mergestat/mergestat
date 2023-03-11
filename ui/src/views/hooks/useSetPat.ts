@@ -1,24 +1,19 @@
-import { useMutation } from '@apollo/client'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { AuthDetail } from 'src/@types'
 import { validateGtihubToken } from 'src/api-logic/axios/api'
-import { ADD_CREDENTIAL } from 'src/api-logic/graphql/mutations/auth-credentials'
 import { validateGitHubPAT } from 'src/utils'
 import { showSuccessAlert } from 'src/utils/alerts'
+import useCredentials from './useCredentials'
 
 const useSetPat = (idProvider: string, auth?: AuthDetail) => {
   const [showValidation, setShowValidation] = useState(false)
   const [isTokenValid, setIsTokenValid] = useState(false)
   const [pat, setPAT] = useState<string>('')
 
-  const [addCredential] = useMutation(ADD_CREDENTIAL, {
-    onCompleted: () => {
-      showSuccessAlert('GitHub access token saved')
-      setShowValidation(false)
-      setPAT('')
-    },
-    awaitRefetchQueries: true,
-    refetchQueries: () => ['getGitSource']
+  const { addCredential } = useCredentials(() => {
+    showSuccessAlert('GitHub access token saved')
+    setShowValidation(false)
+    setPAT('')
   })
 
   useEffect(() => {
@@ -59,7 +54,8 @@ const useSetPat = (idProvider: string, auth?: AuthDetail) => {
         variables: {
           provider: idProvider,
           token: pat,
-          type: 'GITHUB_PAT'
+          type: 'GITHUB_PAT',
+          username: 'github'
         }
       })
     } else {
