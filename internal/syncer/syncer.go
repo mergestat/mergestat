@@ -278,7 +278,10 @@ func (w *worker) clone(ctx context.Context, path string, job *db.DequeueSyncJobR
 		if username == "" {
 			username = "git"
 		}
-		auth = &http.BasicAuth{Username: username, Password: token}
+
+		if token != "" {
+			auth = &http.BasicAuth{Username: username, Password: token}
+		}
 	}
 
 	// fs and target are different! target is a subdirectory of fs. target stores git objects (like commits, etc.)
