@@ -24,7 +24,7 @@ export const ManualImportTable: React.FC<ManualImportTableProps> = ({ repos }: M
     <>
       <div className='flex flex-col flex-1'>
         {repos?.length < 1
-          ? <NoDataFound message='Couldn&#39;t find any repo.' />
+          ? <NoDataFound message='Couldn&#39;t find any repos.' />
           : <>
             <div className='flex flex-col min-w-0 bg-gray-50 h-full'>
               <div className='flex-1 overflow-x-auto overflow-y-hidden'>
