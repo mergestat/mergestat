@@ -41,6 +41,15 @@ export function validateGitHubPAT(token: string) {
 }
 
 /**
+ * Method to validate given token is a right GitLab PAT
+ * @param token Token string to validate
+ * @returns true if token is a right GitLab PAT, otherwise return false
+ */
+export function validateGitLabPAT(token: string) {
+  return /^glpat-[a-zA-Z0-9]{36}$/ig.test(token)
+}
+
+/**
  * Method to capitalize first letter of each word of given phrase
  * @param phrase Phrase to capitalize
  * @returns Given phrase capitalized

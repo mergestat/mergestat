@@ -1,17 +1,17 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { AuthDetail } from 'src/@types'
-import { validateGtihubToken } from 'src/api-logic/axios/api'
-import { validateGitHubPAT } from 'src/utils'
+import { validateToken } from 'src/api-logic/axios/api'
+import { validateGitHubPAT, validateGitLabPAT } from 'src/utils'
 import { showSuccessAlert } from 'src/utils/alerts'
 import useCredentials from './useCredentials'
 
-const useSetPat = (idProvider: string, auth?: AuthDetail) => {
+const useSetPat = (idProvider: string, auth?: AuthDetail, isGithub = true) => {
   const [showValidation, setShowValidation] = useState(false)
   const [isTokenValid, setIsTokenValid] = useState(false)
   const [pat, setPAT] = useState<string>('')
 
   const { addCredential } = useCredentials(() => {
-    showSuccessAlert('GitHub access token saved')
+    showSuccessAlert(`${isGithub ? 'GitHub' : 'GitLab'} access token saved`)
     setShowValidation(false)
     setPAT('')
   })
@@ -27,12 +27,17 @@ const useSetPat = (idProvider: string, auth?: AuthDetail) => {
   }
 
   /**
-   * Method to validate token with correct structure and login against GitHub API
+   * Method to validate token with correct structure and login against GitHub API or GitLab API
    * @returns true if token is right, otherwise return false
    */
   const isARightToken = async () => {
-    const isRigthGitHubToken = await validateGtihubToken(pat)
-    return validateGitHubPAT(pat) && isRigthGitHubToken
+    const isRigthToken = await validateToken(pat, isGithub)
+
+    if (isGithub) {
+      return validateGitHubPAT(pat) && isRigthToken
+    } else {
+      return validateGitLabPAT(pat) && isRigthToken
+    }
   }
 
   /**
@@ -54,8 +59,8 @@ const useSetPat = (idProvider: string, auth?: AuthDetail) => {
         variables: {
           provider: idProvider,
           token: pat,
-          type: 'GITHUB_PAT',
-          username: 'github'
+          type: isGithub ? 'GITHUB_PAT' : 'GITLAB_PAT',
+          username: isGithub ? 'github' : 'gitlab'
         }
       })
     } else {

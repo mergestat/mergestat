@@ -15,14 +15,18 @@ const handleAxiosError = (error: AxiosError) => {
 }
 
 /**
- * Method to try to login against Github to validate token
+ * Method to try to login against Github or Gitlab to validate token
  * @param pat Token to validate
+ * @param isGithub Is Github or Gitlab
  * @returns true if token is right, otherwise return false
  */
-export const validateGtihubToken = async (pat: string) => {
+export const validateToken = async (pat: string, isGithub: boolean) => {
   try {
-    const response = await axios.post(API.GITHUB_GRAPHQL,
-      { query: 'query { viewer { login }}' },
+    const url = isGithub ? API.GITHUB_GRAPHQL : API.GITLAB_GRAPHQL
+    const query = isGithub ? 'query { viewer { login }}' : 'query { currentUser { name }}'
+
+    const response = await axios.post(url,
+      { query },
       { headers: { Authorization: `Bearer ${pat}` } }
     )
     return response.status === 200

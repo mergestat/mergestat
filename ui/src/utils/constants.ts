@@ -7,6 +7,7 @@ export const DATE_FORMAT = {
 
 export const API = {
   GITHUB_GRAPHQL: 'https://api.github.com/graphql',
+  GITLAB_GRAPHQL: 'https://gitlab.com/api/graphql',
 }
 
 export const MERGESTAT_TITLE = '- MergeStat'
@@ -89,7 +90,8 @@ export enum COOKIE {
 }
 
 export const LINKS_TO = {
-  createPAT: 'https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic',
+  createGithubPAT: 'https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic',
+  createGitlabPAT: 'https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token',
   createPASS: 'https://support.atlassian.com/bitbucket-cloud/docs/create-an-app-password/'
 }
 
