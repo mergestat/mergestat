@@ -16,7 +16,9 @@ const mapToImportsData = (data: GetRepoImportsQuery | undefined): Array<RepoImpo
     const importInfo: RepoImportData = {
       id: imp.id,
       importDone: !!imp.lastImport,
-      type: imp.provider?.vendor === VENDOR_TYPE.GITHUB ? (imp.settings.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org') : '',
+      type: imp.provider?.vendor === VENDOR_TYPE.GITHUB
+        ? (imp.settings.type === SYNC_REPO_METHOD.GH_USER ? 'GitHub user' : 'GitHub org')
+        : imp.provider?.vendor === VENDOR_TYPE.GITLAB ? (imp.settings.type === SYNC_REPO_METHOD.GL_USER ? 'GitLab user' : 'GitLab group') : '',
       name: imp.settings[getVendorProp(imp.provider?.vendor || '')],
       lastSync: imp.lastImport ? imp.lastImport : '',
       status: imp.importStatus as ImportStatusType,

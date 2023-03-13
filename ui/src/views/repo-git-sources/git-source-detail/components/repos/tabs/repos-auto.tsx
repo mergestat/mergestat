@@ -1,7 +1,7 @@
 import { Alert, Button, Dropdown, Input, Label, Menu, Panel } from '@mergestat/blocks'
 import { CaretDownIcon, PlusIcon } from '@mergestat/icons'
 import cx from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Loading from 'src/components/Loading'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 import { capitalize, getVendor, getVendorLabelType } from 'src/utils'
@@ -19,15 +19,19 @@ const ReposAuto: React.FC = () => {
 
   const { loading, imports, records } = useRepoImports()
 
-  const [importType, setImportType] = useState(SYNC_REPO_METHOD.GH_ORG)
+  const [importType, setImportType] = useState('')
   const [userOrOrg, setUserOrOrg] = useState('')
 
   const addImport = () => {
     setImportAuto({ name: userOrOrg, type: importType, defaultSyncs: syncsTypesArray })
-    setImportType(SYNC_REPO_METHOD.GH_ORG)
+    setImportType(vendor === VENDOR_TYPE.GITHUB ? SYNC_REPO_METHOD.GH_ORG : SYNC_REPO_METHOD.GL_GROUP)
     setUserOrOrg('')
     setShowAddRepoModal(true)
   }
+
+  useEffect(() => {
+    setImportType(vendor === VENDOR_TYPE.GITHUB ? SYNC_REPO_METHOD.GH_ORG : SYNC_REPO_METHOD.GL_GROUP)
+  }, [vendor])
 
   return (
     <>
