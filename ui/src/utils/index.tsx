@@ -1,6 +1,6 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { BitbucketIcon, BranchIcon, GithubIcon, GitlabIcon } from '@mergestat/icons'
-import { formatDistance, formatDuration, intervalToDuration } from 'date-fns'
+import { formatDistance, formatDuration, intervalToDuration, differenceInMilliseconds } from 'date-fns'
 import { RepoSyncQueueW, RepoSyncStateT, UserTypeUI } from 'src/@types'
 import { showSuccessAlert } from './alerts'
 import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI, VENDOR_TYPE } from './constants'
@@ -74,7 +74,16 @@ export function simplifyTime(time: string) {
  * @returns Abbreviated duration time (e.g.: '1h 2m 3s', '2m 3s')
  */
 export function getSimpleDurationTime(start: Date, end: Date): string {
-  const duration = simplifyTime(formatDuration(intervalToDuration({ start, end })))
+  // IntervalToDuration check ups to seconds, to check for milliseconds differences
+  // we need to check our selves.
+  let duration = simplifyTime(formatDuration(intervalToDuration({ start, end })))
+
+  // we check for milliseconds difference here
+  // and append an 's' if exits any difference
+  if (!duration) {
+    const difference = (differenceInMilliseconds(end, start) / 1000).toFixed(2)
+    duration = difference ? difference.toString().concat('s') : ''
+  }
   return duration !== '' ? duration : '-'
 }
 
