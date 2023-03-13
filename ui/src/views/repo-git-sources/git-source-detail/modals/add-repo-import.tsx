@@ -43,6 +43,12 @@ export const AddRepoImportModal: React.FC = () => {
         owner: importAuto.name,
         defaultSyncTypes: defaultSyncs
       }
+    } else if (vendor === VENDOR_TYPE.GITLAB) {
+      settings = {
+        type: importAuto.type,
+        userOrGroup: importAuto.name,
+        defaultSyncTypes: defaultSyncs
+      }
     } else {
       settings = {
         type: importAuto.type,

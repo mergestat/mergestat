@@ -15,10 +15,13 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     id: data?.repo?.id,
     name: getRepoFromUrl(data?.repo?.repo || ''),
     tags: data?.repo?.tags.map((t: string) => ({ title: t, checked: true })),
-    autoImportFrom: data?.repo?.repoImport &&
-      (data?.repo?.provider?.vendor === VENDOR_TYPE.GITHUB)
-      ? `${data?.repo?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${data?.repo?.repoImport?.settings.userOrOrg}`
-      : (data?.repo?.provider?.vendor === VENDOR_TYPE.BITBUCKET) ? `${data?.repo?.repoImport?.settings.owner}` : undefined,
+    autoImportFrom: data?.repo?.repoImport && (
+      data?.repo?.provider?.vendor === VENDOR_TYPE.GITHUB
+        ? `${data?.repo?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${data?.repo?.repoImport?.settings.userOrOrg}`
+        : data?.repo?.provider?.vendor === VENDOR_TYPE.GITLAB
+          ? `${data?.repo?.repoImport?.settings.type === SYNC_REPO_METHOD.GL_USER ? 'user' : 'group'}: ${data?.repo?.repoImport?.settings.userOrGroup}`
+          : data?.repo?.provider?.vendor === VENDOR_TYPE.BITBUCKET ? `${data?.repo?.repoImport?.settings.owner}` : undefined
+    ),
     provider: {
       id: data?.repo?.provider?.id,
       name: data?.repo?.provider?.name || '',

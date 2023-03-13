@@ -73,6 +73,8 @@ export enum ADD_REPO {
 export enum SYNC_REPO_METHOD {
   GH_ORG = 'GITHUB_ORG',
   GH_USER = 'GITHUB_USER',
+  GL_GROUP = 'GITLAB_GROUP',
+  GL_USER = 'GITLAB_USER',
 }
 
 export enum SYNC_STATUS {

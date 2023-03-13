@@ -46,7 +46,7 @@ export function validateGitHubPAT(token: string) {
  * @returns true if token is a right GitLab PAT, otherwise return false
  */
 export function validateGitLabPAT(token: string) {
-  return /^glpat-[a-zA-Z0-9]{36}$/ig.test(token)
+  return /^glpat-[0-9a-zA-Z_-]{20}$/ig.test(token)
 }
 
 /**
@@ -262,4 +262,13 @@ export const getVendor = (vendor: string) => {
     : vendor === VENDOR_TYPE.GITHUB
       ? 'GitHub'
       : vendor === VENDOR_TYPE.GITLAB ? 'GitLab' : 'Git'
+}
+
+/**
+ * Method to get vendor label type
+ * @param vendor Vendor to be evaluated
+ * @returns Vendor label type
+ */
+export const getVendorLabelType = (vendor: string) => {
+  return (vendor === VENDOR_TYPE.GITHUB || vendor === VENDOR_TYPE.BITBUCKET) ? 'organization' : 'group'
 }

@@ -4,7 +4,7 @@ import cx from 'classnames'
 import { useState } from 'react'
 import Loading from 'src/components/Loading'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
-import { getVendor } from 'src/utils'
+import { capitalize, getVendor, getVendorLabelType } from 'src/utils'
 import { SYNC_REPO_METHOD, VENDOR_TYPE } from 'src/utils/constants'
 import useRepoImports from 'src/views/hooks/gitSources/useRepoImports'
 import useSyncTypes from 'src/views/hooks/useSyncTypes'
@@ -33,7 +33,7 @@ const ReposAuto: React.FC = () => {
     <>
       <div className='bg-white p-6'>
         <Alert type="default" className="bg-gray-50 mb-6">
-          {`Auto imports run on a schedule and bring in all repos from a ${getVendor(vendor)} organization or user.`}
+          {`Auto imports run on a schedule and bring in all repos from a ${getVendor(vendor)} ${getVendorLabelType(vendor)} or user.`}
         </Alert>
 
         {vendor === VENDOR_TYPE.BITBUCKET && <Label className='text-gray-500'>Owner</Label>}
@@ -42,16 +42,23 @@ const ReposAuto: React.FC = () => {
             {vendor !== VENDOR_TYPE.BITBUCKET && <Dropdown
               alignEnd
               trigger={
-                <Button
-                  label={importType === SYNC_REPO_METHOD.GH_ORG ? 'Organization' : 'User'}
+                <Button isBlockBetween
+                  label={(importType === SYNC_REPO_METHOD.GH_ORG || importType === SYNC_REPO_METHOD.GL_GROUP) ? capitalize(getVendorLabelType(vendor)) : 'User'}
                   endIcon={<CaretDownIcon className='t-icon' />}
+                  className='w-40'
                   skin='secondary'
                 />
               }
-              overlay={() => (
+              overlay={(close) => (
                 <Menu className='whitespace-nowrap w-full'>
-                  <Menu.Item text='Organization' onClick={() => setImportType(SYNC_REPO_METHOD.GH_ORG)} />
-                  <Menu.Item text='User' onClick={() => setImportType(SYNC_REPO_METHOD.GH_USER)} />
+                  <Menu.Item text={capitalize(getVendorLabelType(vendor))} onClick={() => {
+                    vendor === VENDOR_TYPE.GITHUB ? setImportType(SYNC_REPO_METHOD.GH_ORG) : setImportType(SYNC_REPO_METHOD.GL_GROUP)
+                    close()
+                  }} />
+                  <Menu.Item text='User' onClick={() => {
+                    vendor === VENDOR_TYPE.GITHUB ? setImportType(SYNC_REPO_METHOD.GH_USER) : setImportType(SYNC_REPO_METHOD.GL_USER)
+                    close()
+                  }} />
                 </Menu>
               )}
             />}
@@ -60,7 +67,7 @@ const ReposAuto: React.FC = () => {
               type='text'
               value={userOrOrg}
               onChange={(e) => setUserOrOrg(e.target.value)}
-              placeholder={vendor !== VENDOR_TYPE.BITBUCKET ? (importType === SYNC_REPO_METHOD.GH_ORG ? 'organization-name' : 'user-name') : 'user or organization'}
+              placeholder={vendor !== VENDOR_TYPE.BITBUCKET ? ((importType === SYNC_REPO_METHOD.GH_ORG || importType === SYNC_REPO_METHOD.GL_GROUP) ? `${getVendorLabelType(vendor)}-name` : 'user-name') : 'user or organization'}
               onKeyPress={(e) => (e.key === 'Enter' && addImport())}
             />
           </div>

@@ -30,10 +30,13 @@ const mapToRepoData = (data: GetReposQuery | undefined): Array<RepoDataPropsT> =
       id: r?.id,
       name: getRepoFromUrl(r?.repo || ''),
       createdAt: new Date(r?.createdAt),
-      autoImportFrom: r?.repoImport &&
-        (r?.provider?.vendor === VENDOR_TYPE.GITHUB)
-        ? `${r?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${r?.repoImport?.settings.userOrOrg}`
-        : (r?.provider?.vendor === VENDOR_TYPE.BITBUCKET) ? `${r?.repoImport?.settings.owner}` : undefined,
+      autoImportFrom: r?.repoImport && (
+        r?.provider?.vendor === VENDOR_TYPE.GITHUB
+          ? `${r?.repoImport?.settings.type === SYNC_REPO_METHOD.GH_USER ? 'user' : 'org'}: ${r?.repoImport?.settings.userOrOrg}`
+          : r?.provider?.vendor === VENDOR_TYPE.GITLAB
+            ? `${r?.repoImport?.settings.type === SYNC_REPO_METHOD.GL_USER ? 'user' : 'group'}: ${r?.repoImport?.settings.userOrGroup}`
+            : r?.provider?.vendor === VENDOR_TYPE.BITBUCKET ? `${r?.repoImport?.settings.owner}` : undefined
+      ),
       lastSync: '',
       provider: {
         id: r?.provider?.id,

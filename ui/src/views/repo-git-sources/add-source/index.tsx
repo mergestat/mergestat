@@ -126,13 +126,13 @@ const AddSourceView: React.FC = () => {
                   onChange={() => setVendor(VENDOR_TYPE.BITBUCKET)}
                   startIcon={<BitbucketIcon className="t-icon" />}
                 />
-                {<RadioCard
+                <RadioCard
                   isSelected={vendor === VENDOR_TYPE.GITLAB}
-                  label="Gitlab"
+                  label="GitLab"
                   className='my-2 w-64'
                   onChange={() => setVendor(VENDOR_TYPE.GITLAB)}
                   startIcon={<GitlabIcon className="t-icon" />}
-                />}
+                />
                 <RadioCard
                   isSelected={vendor === VENDOR_TYPE.GIT}
                   label="Generic Git"
