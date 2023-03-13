@@ -1,6 +1,6 @@
 import { differenceInMilliseconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, RepoSyncQueueW, SyncStatusDataT } from 'src/@types'
-import { getRepoFromUrl, getSimpleDurationTime, getSimpleDurationTimeSeconds, getStatus } from 'src/utils'
+import { getExternalRepoLink, getRepoFromUrl, getSimpleDurationTime, getSimpleDurationTimeSeconds, getStatus } from 'src/utils'
 import { SYNC_REPO_METHOD, SYNC_STATUS, VENDOR_TYPE } from 'src/utils/constants'
 import { GetRepoSyncsQuery } from '../graphql/generated/schema'
 
@@ -14,6 +14,7 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
   const repoData: RepoSyncData = {
     id: data?.repo?.id,
     name: getRepoFromUrl(data?.repo?.repo || ''),
+    externalRepoLink: getExternalRepoLink(data?.repo?.repo),
     tags: data?.repo?.tags.map((t: string) => ({ title: t, checked: true })),
     autoImportFrom: data?.repo?.repoImport && (
       data?.repo?.provider?.vendor === VENDOR_TYPE.GITHUB

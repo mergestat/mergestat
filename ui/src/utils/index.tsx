@@ -272,3 +272,12 @@ export const getVendor = (vendor: string) => {
 export const getVendorLabelType = (vendor: string) => {
   return (vendor === VENDOR_TYPE.GITHUB || vendor === VENDOR_TYPE.BITBUCKET) ? 'organization' : 'group'
 }
+
+/**
+ * Method to check if repo start with http
+ * @param repo Repo url to validate
+ * @returns same url repo if it stats with http, otherwise returns undefined
+ */
+export function getExternalRepoLink(repo?: string) {
+  return repo && /^http/ig.test(repo) ? repo : undefined
+}

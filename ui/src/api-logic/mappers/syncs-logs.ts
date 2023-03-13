@@ -1,6 +1,6 @@
 import { format, lightFormat } from 'date-fns'
 import { RepoSyncQueueW, SyncLogsType, SyncTypeData } from 'src/@types'
-import { getRepoFromUrl, getSimpleDurationTime, getStatus } from 'src/utils'
+import { getExternalRepoLink, getRepoFromUrl, getSimpleDurationTime, getStatus } from 'src/utils'
 import { DATE_FORMAT, SYNC_STATUS } from 'src/utils/constants'
 import { GetSyncHistoryLogsQuery } from '../graphql/generated/schema'
 
@@ -15,6 +15,7 @@ const mapToSyncLogsData = (data: GetSyncHistoryLogsQuery | undefined): SyncTypeD
     repo: {
       id: data?.repo?.id,
       name: getRepoFromUrl(data?.repo?.repo || ''),
+      externalRepoLink: getExternalRepoLink(data?.repo?.repo),
       provider: {
         id: data?.repo?.provider?.id,
         name: data?.repo?.provider?.name || '',

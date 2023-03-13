@@ -8,14 +8,14 @@ interface PageHeaderProps {
   name: string
   vendor: string
   vendorUrl?: string
+  externalRepoLink?: string
 }
 
-export const PageHeader = ({ name, vendor, vendorUrl }: PageHeaderProps) => {
+export const PageHeader = ({ name, vendor, vendorUrl, externalRepoLink }: PageHeaderProps) => {
   const router = useRouter()
   const { setCrumbs } = useGlobalSetState()
 
   const repoOwnerName = name.split('/')[0]
-  const repoName = name.split('/')[1]
 
   useEffect(() => {
     const crumbs = [
@@ -36,9 +36,9 @@ export const PageHeader = ({ name, vendor, vendorUrl }: PageHeaderProps) => {
         <div className="text-xl font-semibold flex items-center space-x-1">
           <RepoImage vendor={vendor} vendorUrl={vendorUrl} orgName={repoOwnerName} />
           <span className='pl-1'>{name}</span>
-          <a target='_blank' href={vendor === 'github' ? `${vendorUrl + repoOwnerName}/${repoName}` : name} rel='noopener noreferrer'>
+          {externalRepoLink && <a target='_blank' href={externalRepoLink} rel='noopener noreferrer'>
             <ExternalLinkIcon className='t-icon t-icon-muted t-icon-small' />
-          </a>
+          </a>}
         </div>
       </div>
     </div>
