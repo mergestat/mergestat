@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphile_utils_1 = require("graphile-utils");
 const pg_cursor_1 = __importDefault(require("pg-cursor"));
-const DEFAULT_ROWS = 100;
-const MAX_ROWS = 500;
+const DEFAULT_ROWS = 1000;
+const MAX_ROWS = 5000;
 module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
     typeDefs: (0, graphile_utils_1.gql) `
     input ExecSQLInput {

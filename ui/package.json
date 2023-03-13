@@ -94,6 +94,6 @@
     "react-is": ">= 16.8.0",
     "react-shallow-renderer": "^16.15.0",
     "tailwindcss": "^2.2.19",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   }
 }

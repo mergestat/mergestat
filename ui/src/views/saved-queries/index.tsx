@@ -61,7 +61,6 @@ const SavedQueryList: React.FC = () => {
 
       {/* Body */}
       {records && <FilterHeader setSearch={setSearch} />}
-
       {loading
         ? <Loading />
         : records

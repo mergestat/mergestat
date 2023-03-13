@@ -20431,6 +20431,7 @@ export type AddTokenMutationVariables = Exact<{
   provider: Scalars['UUID'];
   token: Scalars['String'];
   type: Scalars['String'];
+  username?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -20672,7 +20673,7 @@ export type GetReposQueryVariables = Exact<{
 }>;
 
 
-export type GetReposQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, importError?: string | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null, warnings: { totalCount: number } } | null }> } }> } | null };
+export type GetReposQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, importError?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null, warnings: { totalCount: number } } | null }> } }> } | null };
 
 export type GetSavedQueryListQueryVariables = Exact<{
   search: Scalars['String'];

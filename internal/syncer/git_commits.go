@@ -3,8 +3,10 @@ package syncer
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/jackc/pgx/v4"
@@ -15,26 +17,73 @@ import (
 )
 
 // sendBatchCommits uses the pg COPY protocol to send a batch of commits
-func (w *worker) sendBatchCommits(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, batch []*commit) error {
-	inputs := make([][]interface{}, 0, len(batch))
-	for _, c := range batch {
-		var repoID uuid.UUID
-		var err error
-		if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
-			return err
-		}
-		input := []interface{}{repoID, c.Hash.String, c.Message.String,
-			c.AuthorName.String, c.AuthorEmail.String, c.AuthorWhen.Time,
-			c.CommitterName.String, c.CommitterEmail.String, c.CommitterWhen.Time,
-			c.Parents.Int32,
-		}
-		inputs = append(inputs, input)
+func (w *worker) sendBatchCommits(ctx context.Context, tx pgx.Tx, j *db.DequeueSyncJobRow, jsonTmpPath string) (int, error) {
+	var (
+		f   *os.File
+		err error
+	)
+
+	if f, err = os.Open(jsonTmpPath); err != nil {
+		return 0, err
 	}
 
-	if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_commits"}, []string{"repo_id", "hash", "message", "author_name", "author_email", "author_when", "committer_name", "committer_email", "committer_when", "parents"}, pgx.CopyFromRows(inputs)); err != nil {
-		return err
+	// making sure we remove file after operation
+	defer os.Remove(f.Name())
+
+	var (
+		inputs          = make([][]interface{}, 0, 100)
+		insertedCommits = 0
+		isEOF           = false
+		repoID          uuid.UUID
+		decoder         = json.NewDecoder(f)
+	)
+
+	if repoID, err = uuid.FromString(j.RepoID.String()); err != nil {
+		return 0, err
 	}
-	return nil
+	for {
+		for {
+
+			var c commit
+			err = decoder.Decode(&c)
+
+			// If we've reached the end of the file, break out of the loop
+			// and set isEOF to true
+			if err == io.EOF {
+				isEOF = true
+				break
+			}
+
+			if err != nil {
+				return insertedCommits, err
+			}
+
+			input := []interface{}{repoID, c.Hash.String, c.Message.String,
+				c.AuthorName.String, c.AuthorEmail.String, c.AuthorWhen.Time,
+				c.CommitterName.String, c.CommitterEmail.String, c.CommitterWhen.Time,
+				c.Parents.Int32,
+			}
+			inputs = append(inputs, input)
+
+			if len(inputs) == cap(inputs) {
+				break
+			}
+		}
+		if _, err := tx.CopyFrom(ctx, pgx.Identifier{"git_commits"}, []string{"repo_id", "hash", "message", "author_name", "author_email", "author_when", "committer_name", "committer_email", "committer_when", "parents"}, pgx.CopyFromRows(inputs)); err != nil {
+			return 0, err
+		}
+		insertedCommits += len(inputs)
+
+		//cleaning slice and keeping capacity
+		inputs = inputs[:0]
+
+		// if we reach EOF we exit
+		if isEOF {
+			break
+		}
+	}
+
+	return insertedCommits, nil
 }
 
 type commit struct {
@@ -50,25 +99,33 @@ type commit struct {
 }
 
 // collectCommits retrieves all the commits for a given repository and returns them as a slice
-func (w *worker) collectCommits(ctx context.Context, repoPath string) ([]*commit, error) {
+func (w *worker) collectCommits(ctx context.Context, tmpPath string) (string, error) {
 	var err error
 	var repo *libgit2.Repository
-	commits := make([]*commit, 0)
 
-	if repo, err = libgit2.OpenRepository(repoPath); err != nil {
-		return nil, err
+	var f *os.File
+	if f, err = os.CreateTemp(tmpPath, "commits-objects-*.json"); err != nil {
+		return "", err
+	}
+
+	defer f.Close()
+
+	encoder := json.NewEncoder(f)
+
+	if repo, err = libgit2.OpenRepository(tmpPath); err != nil {
+		return "", err
 	}
 
 	defer repo.Free()
 
 	walk, err := repo.Walk()
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	defer walk.Free()
 
 	if err := walk.PushHead(); err != nil {
-		return nil, err
+		return "", err
 	}
 
 	if err := walk.Iterate(func(c *libgit2.Commit) bool {
@@ -92,14 +149,18 @@ func (w *worker) collectCommits(ctx context.Context, repoPath string) ([]*commit
 		r.CommitterWhen = sql.NullTime{Time: c.Committer().When, Valid: true}
 		r.Parents = sql.NullInt32{Int32: int32(c.ParentCount()), Valid: true}
 
-		commits = append(commits, &r)
+		// encode commit object to json file
+		if err = encoder.Encode(r); err != nil {
+			w.logger.Err(err).Msgf("%v", err)
+			return false
+		}
 
 		return true
 	}); err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return commits, nil
+	return f.Name(), nil
 }
 
 func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) error {
@@ -113,7 +174,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
-	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
+	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
@@ -127,7 +188,7 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 		return fmt.Errorf("git clone: %w", err)
 	}
 
-	commits, err := w.collectCommits(ctx, tmpPath)
+	jsonTmpPath, err := w.collectCommits(ctx, tmpPath)
 	if err != nil {
 		return err
 	}
@@ -156,17 +217,17 @@ func (w *worker) handleGitCommits(ctx context.Context, j *db.DequeueSyncJobRow) 
 	}}); err != nil {
 		return err
 	}
-
-	if err := w.sendBatchCommits(ctx, tx, j, commits); err != nil {
+	var insertedCommits int
+	if insertedCommits, err = w.sendBatchCommits(ctx, tx, j, jsonTmpPath); err != nil {
 		return err
 	}
 
-	l.Info().Msgf("sent batch of %d commits", len(commits))
+	l.Info().Msgf("sent batch of %d commits", insertedCommits)
 
 	if err := w.sendBatchLogMessages(ctx, []*syncLog{{
 		Type:            SyncLogTypeInfo,
 		RepoSyncQueueID: j.ID,
-		Message:         fmt.Sprintf("inserted %d row(s) into git_commits", len(commits)),
+		Message:         fmt.Sprintf("inserted %d row(s) into git_commits", insertedCommits),
 	}}); err != nil {
 		return err
 	}

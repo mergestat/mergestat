@@ -290,7 +290,7 @@ func (w *warehouse) handleWorkflowJobLogs(ctx context.Context, owner, repo strin
 	var err error
 	var log string
 	// we create a  tmp dir to store all downloaded files into it
-	filepath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_WORKFLOW_LOGS_PATH"), "mergestat-logs-")
+	filepath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_WORKFLOW_LOGS_PATH"), "mergestat-logs-*")
 	if err != nil {
 		return err
 	}
