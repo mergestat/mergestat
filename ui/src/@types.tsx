@@ -95,6 +95,7 @@ export type RepoSyncDataType = {
 export type RepoSyncData = {
   id: string
   name: string
+  externalRepoLink?: string
   tags: TagType[]
   provider: ProviderT
   autoImportFrom?: string | null
@@ -127,6 +128,7 @@ export type SyncTypeData = {
   repo: {
     id: string
     name: string
+    externalRepoLink?: string
     provider: ProviderT
   }
   sync?: SyncTypeInfo

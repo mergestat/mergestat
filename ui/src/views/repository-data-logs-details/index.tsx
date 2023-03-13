@@ -14,7 +14,6 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
   const router = useRouter()
   const logInfo: SyncLogsType | undefined = logs && logs.length > 0 ? logs[0] : undefined
   const repoOwnerName = repo.name.split('/')[0]
-  const repoName = repo.name.split('/')[1]
 
   const { setCrumbs } = useGlobalSetState()
 
@@ -28,10 +27,11 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
       {
         text: repo.name,
         startIcon: <RepoImage vendor={repo.provider.vendor} vendorUrl={repo.provider.url} orgName={repoOwnerName} size="6" />,
-        endIcon: (
-          <a target="_blank" href={repo.provider.vendor === 'github' ? `${repo.provider.url + repoOwnerName}/${repoName}` : repo.name} rel="noopener noreferrer">
+        endIcon: (repo.externalRepoLink
+          ? <a target="_blank" href={repo.externalRepoLink} rel="noopener noreferrer">
             <ExternalLinkIcon className='t-icon t-icon-muted t-icon-small' />
           </a>
+          : undefined
         ),
         onClick: () => router.push(`/repos/${repo.id}`),
       },

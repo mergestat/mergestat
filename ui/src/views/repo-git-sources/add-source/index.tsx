@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Alert, Button, HelpText, Input, Label, ListItem, Panel, RadioCard, Toolbar } from '@mergestat/blocks'
-import { BitbucketIcon, BranchIcon, ChevronRightIcon, GithubIcon, RepositoryIcon } from '@mergestat/icons'
+import { BitbucketIcon, BranchIcon, ChevronRightIcon, GithubIcon, GitlabIcon, RepositoryIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { AddGitSourceMutation, GetGitSourcesQuery } from 'src/api-logic/graphql/generated/schema'
@@ -107,7 +107,7 @@ const AddSourceView: React.FC = () => {
             </div>
             <div className='mt-6'>
               <Label className='text-gray-500' aria-required>Choose provider</Label>
-              <div className='flex flex-wrap space-x-6'>
+              <div className='flex flex-wrap justify-between'>
                 <RadioCard
                   isSelected={vendor === VENDOR_TYPE.GITHUB}
                   label="GitHub"
@@ -126,13 +126,13 @@ const AddSourceView: React.FC = () => {
                   onChange={() => setVendor(VENDOR_TYPE.BITBUCKET)}
                   startIcon={<BitbucketIcon className="t-icon" />}
                 />
-                {/** <RadioCard
+                <RadioCard
                   isSelected={vendor === VENDOR_TYPE.GITLAB}
-                  label="Gitlab"
+                  label="GitLab"
                   className='my-2 w-64'
                   onChange={() => setVendor(VENDOR_TYPE.GITLAB)}
                   startIcon={<GitlabIcon className="t-icon" />}
-              /> */}
+                />
                 <RadioCard
                   isSelected={vendor === VENDOR_TYPE.GIT}
                   label="Generic Git"

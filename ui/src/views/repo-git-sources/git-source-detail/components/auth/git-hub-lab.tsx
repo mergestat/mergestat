@@ -1,12 +1,12 @@
 import { Badge, Button, Input, Label, Panel } from '@mergestat/blocks'
 import { CheckIcon, CircleCheckFilledIcon, CircleWarningFilledIcon } from '@mergestat/icons'
 import { useGitSourceDetailContext } from 'src/state/contexts/git-source-detail.context'
-import { LINKS_TO, TEST_IDS } from 'src/utils/constants'
+import { LINKS_TO, TEST_IDS, VENDOR_TYPE } from 'src/utils/constants'
 import useSetPat from 'src/views/hooks/useSetPat'
 import SettedAuth from './setted-auth'
 
-const GitHubAuth: React.FC = () => {
-  const [{ gsDetail: { id, auth } }] = useGitSourceDetailContext()
+const GitHubOrLabAuth: React.FC = () => {
+  const [{ gsDetail: { id, auth, vendor } }] = useGitSourceDetailContext()
 
   const {
     pat,
@@ -15,7 +15,7 @@ const GitHubAuth: React.FC = () => {
     validatePAT,
     changeToken,
     handleSavePAT,
-  } = useSetPat(id, auth)
+  } = useSetPat(id, auth, vendor === VENDOR_TYPE.GITHUB)
 
   return (
     <Panel className='rounded-md shadow-sm m-auto'>
@@ -35,29 +35,45 @@ const GitHubAuth: React.FC = () => {
         {auth && <SettedAuth {...auth} />}
 
         {!auth && <>
-          <p className='mb-6 t-text-muted'>
-            In order to access the GitHub API and any private GitHub
-            repos, we need to authenticate with{' '}
-            <a
-              target='_blank'
-              href={LINKS_TO.createPAT}
-              className='t-link font-semibold'
-              rel='noopener noreferrer'
-            >
-              a (classic) personal access token
-            </a>{' '}
-            (PAT). Other authentication methods (such as an OAuth based
-            flow) may become available in the future.
-          </p>
+          {vendor === VENDOR_TYPE.GITHUB &&
+            <p className='mb-6 t-text-muted'>
+              In order to access the GitHub API and any private GitHub
+              repos, we need to authenticate with{' '}
+              <a
+                target='_blank'
+                href={LINKS_TO.createGithubPAT}
+                className='t-link font-semibold'
+                rel='noopener noreferrer'
+              >
+                a (classic) personal access token
+              </a>{' '}
+              (PAT). Other authentication methods (such as an OAuth based
+              flow) may become available in the future.
+            </p>}
+
+          {vendor === VENDOR_TYPE.GITLAB &&
+            <p className='mb-6 t-text-muted'>
+              In order to access the GitLab API and any private GitLab repositories,
+              we need to authenticate with an{' '}
+              <a
+                target='_blank'
+                href={LINKS_TO.createGitlabPAT}
+                className='t-link font-semibold'
+                rel='noopener noreferrer'
+              >
+                API Access Token
+              </a>.{' '}
+            </p>}
 
           <form className='mb-4'>
             <div className='flex flex-col mt-8 mb-5'>
-              <Label>GitHub personal access token</Label>
+              {vendor === VENDOR_TYPE.GITHUB && <Label>GitHub personal access token</Label>}
+              {vendor === VENDOR_TYPE.GITLAB && <Label>API Access Token</Label>}
               <div className='flex space-x-2'>
                 <Input
                   className='max-w-lg'
                   data-testid={TEST_IDS.patInputText}
-                  placeholder='ghp_s0mEsecReTt0k3n'
+                  placeholder={vendor === VENDOR_TYPE.GITHUB ? 'ghp_s0mEsecReTt0k3n' : 'glpat-s0mEsecReTt0k3n'}
                   type='password'
                   autoComplete='off'
                   value={pat}
@@ -105,4 +121,4 @@ const GitHubAuth: React.FC = () => {
   )
 }
 
-export default GitHubAuth
+export default GitHubOrLabAuth

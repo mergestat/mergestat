@@ -1,7 +1,7 @@
 import { useGitSourceDetailContext } from 'src/state/contexts/git-source-detail.context'
 import { VENDOR_TYPE } from 'src/utils/constants'
 import BitbucketAuth from '../components/auth/bitbucket'
-import GitHubAuth from '../components/auth/github'
+import GitHubOrLabAuth from '../components/auth/git-hub-lab'
 import ReposAutoManual from '../components/repos'
 import GitSourceStats from '../components/stats'
 
@@ -17,7 +17,7 @@ const GitSourceOverviewTab: React.FC = () => {
       />
 
       {/** Auth */}
-      {vendor === VENDOR_TYPE.GITHUB && <GitHubAuth />}
+      {(vendor === VENDOR_TYPE.GITHUB || vendor === VENDOR_TYPE.GITLAB) && <GitHubOrLabAuth />}
       {vendor === VENDOR_TYPE.BITBUCKET && <BitbucketAuth />}
 
       {/** Repo list */}

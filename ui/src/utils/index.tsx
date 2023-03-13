@@ -41,6 +41,15 @@ export function validateGitHubPAT(token: string) {
 }
 
 /**
+ * Method to validate given token is a right GitLab PAT
+ * @param token Token string to validate
+ * @returns true if token is a right GitLab PAT, otherwise return false
+ */
+export function validateGitLabPAT(token: string) {
+  return /^glpat-[0-9a-zA-Z_-]{20}$/ig.test(token)
+}
+
+/**
  * Method to capitalize first letter of each word of given phrase
  * @param phrase Phrase to capitalize
  * @returns Given phrase capitalized
@@ -262,4 +271,22 @@ export const getVendor = (vendor: string) => {
     : vendor === VENDOR_TYPE.GITHUB
       ? 'GitHub'
       : vendor === VENDOR_TYPE.GITLAB ? 'GitLab' : 'Git'
+}
+
+/**
+ * Method to get vendor label type
+ * @param vendor Vendor to be evaluated
+ * @returns Vendor label type
+ */
+export const getVendorLabelType = (vendor: string) => {
+  return (vendor === VENDOR_TYPE.GITHUB || vendor === VENDOR_TYPE.BITBUCKET) ? 'organization' : 'group'
+}
+
+/**
+ * Method to check if repo start with http
+ * @param repo Repo url to validate
+ * @returns same url repo if it stats with http, otherwise returns undefined
+ */
+export function getExternalRepoLink(repo?: string) {
+  return repo && /^http/ig.test(repo) ? repo : undefined
 }

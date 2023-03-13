@@ -7,6 +7,14 @@ import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/conte
 import { getVendorProp } from 'src/utils'
 import { SYNC_REPO_METHOD, VENDOR_TYPE } from 'src/utils/constants'
 
+const getLabelType = (vendor: string, type: string) => {
+  return vendor === VENDOR_TYPE.GITHUB
+    ? (type === SYNC_REPO_METHOD.GH_USER ? '(GitHub user)' : '(GitHub org)')
+    : vendor === VENDOR_TYPE.GITLAB
+      ? (type === SYNC_REPO_METHOD.GL_USER ? '(GitLab user)' : '(GitLab group)')
+      : vendor === VENDOR_TYPE.BITBUCKET ? '(Bitbucket owner)' : ''
+}
+
 const useRepos = () => {
   const [runningImports, setRunningImports] = useState<AutoImportData[]>([])
   const [failedImports, setFailedImports] = useState<AutoImportData[]>([])
@@ -28,14 +36,14 @@ const useRepos = () => {
     setFailedImports(data?.repoImports?.nodes?.filter(imp => imp.importError !== null && (imp.importError as string) !== '').map(imp => ({
       id: imp.id,
       name: imp.settings[getVendorProp(imp.provider?.vendor || '')],
-      type: imp.provider?.vendor === VENDOR_TYPE.GITHUB ? (imp.settings.type === SYNC_REPO_METHOD.GH_USER ? '(GitHub user)' : '(GitHub org)') : '',
+      type: getLabelType(imp.provider?.vendor || '', imp.settings.type),
       error: imp.importError
     })) || [])
 
     setRunningImports(data?.repoImports?.nodes?.filter(imp => imp.importError === null || (imp.importError as string) === '').map(imp => ({
       id: imp.id,
       name: imp.settings[getVendorProp(imp.provider?.vendor || '')],
-      type: imp.provider?.vendor === VENDOR_TYPE.GITHUB ? (imp.settings.type === SYNC_REPO_METHOD.GH_USER ? '(GitHub user)' : '(GitHub org)') : '',
+      type: getLabelType(imp.provider?.vendor || '', imp.settings.type),
     })) || [])
 
     setTotalRepos(data?.repos?.totalCount || 0)
