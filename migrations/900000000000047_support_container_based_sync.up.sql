@@ -1,6 +1,12 @@
 -- SQL migration to add support for Container-based syncs
 BEGIN;
 
+-- Remove the jobs table setup previously, as they won't be used anymore.
+-- They conflict with the new job table setup (naming conflicts in Graphile types).
+DROP TABLE IF EXISTS mergestat.jobs CASCADE;
+DROP TABLE IF EXISTS mergestat.job_types CASCADE;
+DROP TABLE IF EXISTS mergestat.job_schedules CASCADE;
+
 -- Table: mergestat.container_image_type
 -- Enumeration containing valid image types that we can pull and use.
 CREATE TABLE mergestat.container_image_types (name TEXT PRIMARY KEY, displayName TEXT NOT NULL, description TEXT);
@@ -77,7 +83,5 @@ SELECT
     FROM jsonb_each(a) e1(ka, va)
     FULL JOIN jsonb_each(b) e2(kb, vb) ON ka = kb
 $$;
-
-COMMENT ON TABLE "mergestat"."jobs" IS E'@name mergestatJobs';
 
 COMMIT;
