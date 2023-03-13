@@ -78,4 +78,6 @@ SELECT
     FULL JOIN jsonb_each(b) e2(kb, vb) ON ka = kb
 $$;
 
+COMMENT ON TABLE "mergestat"."jobs" IS E'@name mergestatJobs';
+
 COMMIT;
