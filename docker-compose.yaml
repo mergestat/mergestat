@@ -20,6 +20,7 @@ services:
     # and uncomment the next line (which will pull from Docker Hub directly).
     # image: mergestat/worker:1.21.0-beta
     image: images.mergestat.com/mergestat/worker:1.21.0-beta
+    privileged: true
     stop_grace_period: 10m
     restart: always
     depends_on:
