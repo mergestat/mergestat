@@ -17,7 +17,7 @@ import (
 func (w *worker) handleGitleaksRepoScan(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
+	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
