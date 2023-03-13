@@ -3,13 +3,14 @@ package repo
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+	"net/http"
+	"strings"
+
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/pkg/errors"
 	"github.com/xanzy/go-gitlab"
-	"net/http"
 )
 
 func handleGitlabImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
@@ -55,7 +56,7 @@ func handleGitlabImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImp
 
 	var repoUrls = make([]string, len(repos))
 	for i, repo := range repos {
-		repoUrls[i] = repo.HTTPURLToRepo
+		repoUrls[i] = strings.TrimSuffix(repo.HTTPURLToRepo, ".git")
 	}
 
 	// remove any deleted repositories
@@ -78,7 +79,7 @@ func handleGitlabImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImp
 	for _, repo := range repos {
 		var topics, _ = json.Marshal(repo.TagList)
 		var opts = db.UpsertRepoParams{
-			Repo:         fmt.Sprintf("https://gitlab.com/%s/%s", repo.Namespace.FullPath, repo.Name),
+			Repo:         strings.TrimSuffix(repo.HTTPURLToRepo, ".git"),
 			RepoImportID: uuid.NullUUID{Valid: true, UUID: imp.ID},
 			Tags:         pgtype.JSONB{Status: pgtype.Present, Bytes: topics},
 			Provider:     imp.Provider,
