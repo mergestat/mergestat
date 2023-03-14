@@ -65,7 +65,7 @@ const GET_REPOS = gql`
           vendor
           settings
         }
-        repoSyncs(orderBy: SYNC_TYPE_ASC, condition:{scheduleEnabled:true}) {
+        repoSyncs(orderBy: SYNC_TYPE_ASC,filter:{lastCompletedRepoSyncQueueId:{isNull:false}}) {
           totalCount
           nodes {
             id
