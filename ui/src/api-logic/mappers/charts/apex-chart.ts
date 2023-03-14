@@ -23,13 +23,13 @@ export const mapToApexChart = ({ data, serie, xAxis, yAxis }: MapApexParams) => 
     data.rows && data.rows.forEach(row => {
       const foundSerie = serie ? serieList.find(s => s.name === row[serieIndex]) : serieList[0]
       const item = {
-        x: (row[xIndex]).toString(),
-        y: (row[yIndex]).toString()
+        x: (row[xIndex])?.toString(),
+        y: (row[yIndex])?.toString()
       }
 
       if (!foundSerie) { // If not exists, create a serie
         const newSerie = {
-          name: (row[serieIndex]).toString(),
+          name: (row[serieIndex])?.toString(),
           data: [item]
         }
         serieList = [...serieList, newSerie]
