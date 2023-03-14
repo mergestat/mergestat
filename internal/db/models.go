@@ -657,35 +657,38 @@ type GrypeRepoVulnerability struct {
 	Path interface{}
 }
 
-type MergestatJob struct {
-	ID                uuid.UUID
-	Queue             string
-	Type              string
-	Description       sql.NullString
-	DefaultParameters pgtype.JSONB
-	Results           pgtype.JSONB
-	Priority          sql.NullInt32
-	CreatedAt         sql.NullTime
-	ModifiedAt        sql.NullTime
+type MergestatContainerImage struct {
+	ID         uuid.UUID
+	Name       string
+	Type       string
+	Url        string
+	Version    string
+	Parameters pgtype.JSONB
 }
 
-type MergestatJobSchedule struct {
-	JobID      uuid.UUID
-	Schedule   sql.NullString
-	CreatedAt  sql.NullTime
-	ModifiedAt sql.NullTime
+type MergestatContainerImageType struct {
+	Name        string
+	Displayname string
+	Description sql.NullString
 }
 
-type MergestatJobType struct {
-	ID                uuid.UUID
-	Name              string
-	Queue             string
-	Description       sql.NullString
-	DefaultParameters pgtype.JSONB
-	Priority          sql.NullInt32
-	Schedule          sql.NullString
-	CreatedAt         sql.NullTime
-	ModifiedAt        sql.NullTime
+type MergestatContainerSync struct {
+	ID         uuid.UUID
+	RepoID     uuid.UUID
+	ImageID    uuid.UUID
+	Parameters pgtype.JSONB
+}
+
+type MergestatContainerSyncExecution struct {
+	SyncID    uuid.UUID
+	JobID     uuid.UUID
+	CreatedAt sql.NullTime
+}
+
+type MergestatContainerSyncSchedule struct {
+	ID        uuid.UUID
+	SyncID    uuid.UUID
+	CreatedAt sql.NullTime
 }
 
 type MergestatLatestRepoSync struct {

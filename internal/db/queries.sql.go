@@ -168,6 +168,37 @@ func (q *Queries) EnqueueAllSyncs(ctx context.Context) error {
 	return err
 }
 
+const fetchContainerSync = `-- name: FetchContainerSync :one
+SELECT sync.id, sync.repo_id,
+    image.type AS image_type, image.url AS image_url, image.version AS image_version,
+    jsonb_recursive_merge(image.parameters, sync.parameters) AS params
+FROM mergestat.container_syncs sync, mergestat.container_images image, public.repos repo
+    WHERE image.id = sync.image_id AND repo.id = sync.repo_id AND sync.id = $1
+`
+
+type FetchContainerSyncRow struct {
+	ID           uuid.UUID
+	RepoID       uuid.UUID
+	ImageType    string
+	ImageUrl     string
+	ImageVersion string
+	Params       pgtype.JSONB
+}
+
+func (q *Queries) FetchContainerSync(ctx context.Context, id uuid.UUID) (FetchContainerSyncRow, error) {
+	row := q.db.QueryRow(ctx, fetchContainerSync, id)
+	var i FetchContainerSyncRow
+	err := row.Scan(
+		&i.ID,
+		&i.RepoID,
+		&i.ImageType,
+		&i.ImageUrl,
+		&i.ImageVersion,
+		&i.Params,
+	)
+	return i, err
+}
+
 const fetchGitHubToken = `-- name: FetchGitHubToken :one
 SELECT pgp_sym_decrypt(credentials, $1) FROM mergestat.service_auth_credentials WHERE type = 'GITHUB_PAT' ORDER BY created_at DESC LIMIT 1
 `

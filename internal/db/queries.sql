@@ -395,3 +395,10 @@ FROM t;
 
 -- name: GetRepoById :one
 SELECT * FROM public.repos WHERE id = @id;
+
+-- name: FetchContainerSync :one
+SELECT sync.id, sync.repo_id,
+    image.type AS image_type, image.url AS image_url, image.version AS image_version,
+    jsonb_recursive_merge(image.parameters, sync.parameters) AS params
+FROM mergestat.container_syncs sync, mergestat.container_images image, public.repos repo
+    WHERE image.id = sync.image_id AND repo.id = sync.repo_id AND sync.id = @id;

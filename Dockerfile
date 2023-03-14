@@ -14,7 +14,7 @@ PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ mak
 FROM zricethezav/gitleaks:v8.15.3 AS gitleaks
 
 FROM alpine:3.16
-RUN set -x && apk add --no-cache curl postgresql-client ca-certificates git go
+RUN apk upgrade && apk add --no-cache curl postgresql-client ca-certificates git go podman fuse-overlayfs
 
 # copy over migrations
 RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.1/migrate.linux-amd64.tar.gz | tar xvz
@@ -53,4 +53,12 @@ RUN chmod +x scorecard-linux-amd64 && cp scorecard-linux-amd64 /usr/local/bin/sc
 EXPOSE 8080
 
 COPY --from=builder /src/.build/worker /worker
+
+RUN addgroup --gid 1002 mergestat; \
+    adduser -Ds /bin/sh -G mergestat --uid 1001 mergestat; \
+    echo mergestat:10000:5000 > /etc/subuid; \
+    echo mergestat:10000:5000 > /etc/subgid;
+
+USER mergestat
+
 ENTRYPOINT [ "/worker" ]

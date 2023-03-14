@@ -124,6 +124,21 @@ func (mr *MockQuerierMockRecorder) EnqueueAllSyncs(ctx interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EnqueueAllSyncs", reflect.TypeOf((*MockQuerier)(nil).EnqueueAllSyncs), ctx)
 }
 
+// FetchContainerSync mocks base method.
+func (m *MockQuerier) FetchContainerSync(ctx context.Context, id uuid.UUID) (db.FetchContainerSyncRow, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FetchContainerSync", ctx, id)
+	ret0, _ := ret[0].(db.FetchContainerSyncRow)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FetchContainerSync indicates an expected call of FetchContainerSync.
+func (mr *MockQuerierMockRecorder) FetchContainerSync(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchContainerSync", reflect.TypeOf((*MockQuerier)(nil).FetchContainerSync), ctx, id)
+}
+
 // FetchGitHubToken mocks base method.
 func (m *MockQuerier) FetchGitHubToken(ctx context.Context, pgpSymDecrypt string) (string, error) {
 	m.ctrl.T.Helper()
