@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/mergestat/mergestat/internal/db"
@@ -38,7 +39,8 @@ func (w *worker) handleGitleaksRepoScan(ctx context.Context, j *db.DequeueSyncJo
 		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
-	cmd := exec.CommandContext(ctx, "gitleaks", "detect", "-s", tmpPath, "-f", "json", "-r", "_mergestat_gitleaks_scan_results.json", "--exit-code", "0")
+	cmd := exec.CommandContext(ctx, "gitleaks", "detect", "-f", "json", "-r", "_mergestat_gitleaks_scan_results.json", "--exit-code", "0")
+	cmd.Dir = tmpPath
 
 	if err = cmd.Run(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
@@ -48,7 +50,7 @@ func (w *worker) handleGitleaksRepoScan(ctx context.Context, j *db.DequeueSyncJo
 	}
 
 	var output []byte
-	if output, err = os.ReadFile("_mergestat_gitleaks_scan_results.json"); err != nil {
+	if output, err = os.ReadFile(filepath.Join(tmpPath, "_mergestat_gitleaks_scan_results.json")); err != nil {
 		return fmt.Errorf("reading gitleaks scan results: %w", err)
 	}
 

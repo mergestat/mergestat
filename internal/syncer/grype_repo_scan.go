@@ -26,7 +26,7 @@ func (w *worker) handleGrypeRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 		}
 	}()
 
-	if err = w.clone(ctx, j.Repo, j); err != nil {
+	if err = w.clone(ctx, tmpPath, j); err != nil {
 		return fmt.Errorf("git clone: %w", err)
 	}
 
