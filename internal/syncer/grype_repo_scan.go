@@ -38,7 +38,7 @@ func (w *worker) handleGrypeRepoScan(ctx context.Context, j *db.DequeueSyncJobRo
 	}
 
 	var jsonFile = "_mergestat_grype_scan_results.json"
-	cmd := exec.CommandContext(ctx, "grype", tmpPath, "-o", "json", "--file", jsonFile)
+	cmd := exec.CommandContext(ctx, "grype", ".", "-o", "json", "--file", jsonFile)
 	cmd.Dir = tmpPath
 
 	if err = cmd.Run(); err != nil {
