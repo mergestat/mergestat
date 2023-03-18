@@ -16,7 +16,7 @@ const SidebarView: React.FC = () => {
           label='Repos'
           compact={false}
           active={isSidebarActive(/^\/repos/) && !isSidebarActive(/^\/repos\/git-sources/) && !isSidebarActive(/^\/repos\/add-git-source/)}
-          defaultOpen={isSidebarActive(/^\/repos/)}
+          open={isSidebarActive(/^\/repos/)}
           icon={<RepositoryIcon className='t-icon' />}
           onClick={() => push('/repos')}
           subNav={
@@ -32,7 +32,7 @@ const SidebarView: React.FC = () => {
           label='Queries'
           compact={false}
           active={isSidebarActive(/^\/queries$/)}
-          defaultOpen={isSidebarActive(/^\/queries/)}
+          open={isSidebarActive(/^\/queries/)}
           onClick={() => push('/queries')}
           icon={<TerminalIcon className='t-icon' />}
           subNav={
@@ -53,7 +53,7 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Settings'
           compact={false}
-          defaultOpen={isSidebarActive(/^\/settings/)}
+          open={isSidebarActive(/^\/settings/)}
           icon={<CogIcon className='t-icon' />}
           subNav={
             <>

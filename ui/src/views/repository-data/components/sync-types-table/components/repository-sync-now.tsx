@@ -30,9 +30,10 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, sy
 
   return (
     <Button
+      isIconOnly
+      skin="borderless"
       className="flex items-center float-right whitespace-nowrap"
       disabled={status === SYNC_STATUS.queued || status === SYNC_STATUS.running}
-      skin="secondary"
       data-testid={TEST_IDS.syncsTypesSyncNowButton}
       startIcon={status === SYNC_STATUS.queued
         ? <ClockIcon className='t-icon t-icon-muted' />
@@ -40,10 +41,7 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, sy
           ? <Spinner size='sm' className='mr-2' />
           : <RefreshIcon className="t-icon t-icon-default" />
       }
-      size="small"
       onClick={syncNowHandler}
-    >
-      {status === SYNC_STATUS.running ? 'Syncing...' : 'Sync Now'}
-    </Button>
+    />
   )
 }

@@ -1,7 +1,26 @@
 import { gql } from '@apollo/client'
 
+const GET_REPO_DATA = gql`
+  query getRepoData($id: UUID!) {
+    repo(id: $id) {
+      id
+      repo
+      tags
+      repoImport {
+        settings
+      }
+      provider: providerByProvider {
+        id
+        name
+        vendor
+        settings
+      }
+    }
+  }
+`
+
 const GET_REPO_SYNCS = gql`
-  query getRepoSyncs($id: UUID!) {
+  query getRepoSyncs($id: UUID!, $search: String!, $first: Int, $offset: Int) {
     repo(id: $id) {
       id
       repo
@@ -35,7 +54,20 @@ const GET_REPO_SYNCS = gql`
         }
       }
     }
-    repoSyncTypes {
+    allSyncTypes: repoSyncTypes {
+      totalCount
+    }
+    repoSyncTypes(
+      filter: {
+        or: [
+          {type: {includesInsensitive: $search}},
+          {description: {includesInsensitive: $search}}
+        ]
+      }
+      first: $first
+      offset: $offset
+    ) {
+      totalCount
       nodes {
         type
         description
@@ -50,6 +82,7 @@ const GET_REPO_SYNCS = gql`
     }
   }
 `
+
 const GET_SYNC_TYPES = gql`
   query getSyncTypes {
     repoSyncTypes {
@@ -67,4 +100,4 @@ const GET_SYNC_TYPES = gql`
   }
 `
 
-export { GET_REPO_SYNCS, GET_SYNC_TYPES }
+export { GET_REPO_DATA, GET_REPO_SYNCS, GET_SYNC_TYPES }

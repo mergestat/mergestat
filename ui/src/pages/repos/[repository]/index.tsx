@@ -1,12 +1,11 @@
 import Head from 'next/head'
 import { Fragment } from 'react'
 import Loading from 'src/components/Loading'
-import { RepositoriesProvider } from 'src/state/contexts'
-import useSyncs from 'src/views/hooks/useSyncs'
+import useRepoData from 'src/views/hooks/repoSyncs/useRepoData'
 import RepoDataView from 'src/views/repository-data'
 
 const RepoDetailsPage = () => {
-  const { loading, repo, title } = useSyncs()
+  const { loading, repo, title } = useRepoData()
 
   return (
     <Fragment>
@@ -15,9 +14,8 @@ const RepoDetailsPage = () => {
       </Head>
       {loading
         ? <Loading />
-        : <RepositoriesProvider>
-          <RepoDataView data={repo} />
-        </RepositoriesProvider>}
+        : <RepoDataView data={repo} />
+      }
     </Fragment>
   )
 }

@@ -19,7 +19,7 @@ const useRepos = () => {
   const [runningImports, setRunningImports] = useState<AutoImportData[]>([])
   const [failedImports, setFailedImports] = useState<AutoImportData[]>([])
   const [{ search, rowsRepos, pageRepos, showReposTable }] = useRepositoriesContext()
-  const { setTotalRepos } = useRepositoriesSetState()
+  const { setTotalRepos, setPageRepos } = useRepositoriesSetState()
   const { setShowReposTable } = useRepositoriesSetState()
 
   const { loading, error, data, refetch } = useQuery<GetReposQuery>(GET_REPOS, {
@@ -55,7 +55,9 @@ const useRepos = () => {
   }, [loading, error, validateData])
 
   useEffect(() => {
+    search && setPageRepos(0)
     refetch({ search, first: rowsRepos, offset: (pageRepos * rowsRepos) })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetch, search, rowsRepos, pageRepos])
 
   return { showReposTable, loading, data, runningImports, failedImports, refetch }
