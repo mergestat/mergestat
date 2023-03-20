@@ -8,7 +8,7 @@ import { showSuccessAlert } from 'src/utils/alerts'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useSyncNow from 'src/views/hooks/useSyncNow'
 import { NoDataFound } from 'src/views/shared/no-data-found'
-import { RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions, RepoSyncTypeDesc } from './components'
+import { RepositorySyncNow, RepositorySyncStatus, RepoSyncTypeDesc } from './components'
 
 type SyncTypesTableProps = PropsWithChildren<{
   repoId: string
@@ -95,7 +95,7 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ repoId, syncs }:
                             syncTypeGroup={sync.data.typeGroup}
                             syncStatus={sync.status.syncState}
                           />
-                          <RepositoryTableRowOptions />
+                          {/* <RepositoryTableRowOptions /> */}
                         </div>
                       </div>
                     </td>

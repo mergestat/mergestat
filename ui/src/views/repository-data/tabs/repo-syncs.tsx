@@ -19,15 +19,15 @@ export const RepoSyncs: React.FC = () => {
       <div className='flex flex-col h-full'>
         <div className='flex-1 overflow-auto'>
           {records && <div className='flex'>
-            <FilterHeader setSearch={setSearch} inputClass='lg_w-4/6' />
-            <div className='flex px-5 items-center'>
+            <FilterHeader setSearch={setSearch} />
+            {/* <div className='flex px-5 items-center'>
               <Button className='whitespace-nowrap'
                 skin="secondary"
                 label='Manage Syncs'
                 startIcon={<CogIcon className="t-icon" />}
                 onClick={() => null}
               />
-            </div>
+            </div> */}
           </div>}
 
           {loading
