@@ -9,8 +9,8 @@ import { formatTimeExecution } from 'src/utils'
 import { States } from 'src/utils/constants'
 
 const useQueryEditor = (rowsLimit: number) => {
-  const [{ query, readOnly, expanded, dataQuery, projection, showSettingsModal }] = useQueryContext()
-  const { setQuery, setDataQuery, setProjection, setTabs, setActiveTab, setShowSettingsModal } = useQuerySetState()
+  const [{ query, readOnly, expanded, dataQuery, projection, showSettingsModal, showQueryHistoryModal }] = useQueryContext()
+  const { setQuery, setDataQuery, setProjection, setTabs, setActiveTab, setShowSettingsModal, setShowQueryHistoryModal } = useQuerySetState()
   const dispatch = useQueryTabsDispatch()
 
   const [state, setState] = useState<States>(States.Empty)
@@ -92,6 +92,7 @@ const useQueryEditor = (rowsLimit: number) => {
   return {
     setQuery,
     setShowSettingsModal,
+    setShowQueryHistoryModal,
     setTitle,
     setDesc,
     executeSQLQuery,
@@ -99,6 +100,7 @@ const useQueryEditor = (rowsLimit: number) => {
     expanded,
     dataQuery,
     showSettingsModal,
+    showQueryHistoryModal,
     state,
     rowLimitReached,
     executed,

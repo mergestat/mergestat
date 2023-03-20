@@ -20608,6 +20608,11 @@ export type GetGitSourceQueryVariables = Exact<{
 
 export type GetGitSourceQuery = { provider?: { id: any, name: string, description?: string | null, vendor: string, settings: any, auth: { nodes: Array<{ id: any, type: string, credentials?: string | null, createdAt: any }> }, auto: { nodes: Array<{ id: any, settings: any, repos: { totalCount: number } }> }, manual: { totalCount: number, nodes: Array<{ id: any, repo: string, settings: any }> } } | null };
 
+export type GetQueryHistoryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetQueryHistoryQuery = { queryHistories?: { nodes: Array<{ id: any, runAt?: any | null, runBy: string, query: string }> } | null };
+
 export type GetRepoImportsQueryVariables = Exact<{
   idProvider: Scalars['UUID'];
 }>;

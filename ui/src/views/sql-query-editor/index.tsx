@@ -12,6 +12,7 @@ import QueryEditorFilled from './components/state-filled'
 import QueryEditorLoading from './components/state-loading'
 import QueryEditorRowsImpacted from './components/state-rows-affected'
 import { QuerySettingsModal } from './modals/query-setting'
+import { QueryHistoryModal } from './modals/query-history'
 
 type QueryEditorProps = {
   savedQueryId?: string | string[]
@@ -21,8 +22,8 @@ type QueryEditorProps = {
 const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorProps) => {
   const ROWS_LIMIT = 1000
   const {
-    setQuery, setShowSettingsModal, setTitle, setDesc, executeSQLQuery, cancelSQLQuery,
-    expanded, showSettingsModal, state, rowLimitReached, executed, readOnly,
+    setQuery, setShowSettingsModal, setShowQueryHistoryModal, setTitle, setDesc, executeSQLQuery, cancelSQLQuery,
+    expanded, showSettingsModal, showQueryHistoryModal, state, rowLimitReached, executed, readOnly,
     loading, error, query, data, time, title, desc
   } = useQueryEditor(ROWS_LIMIT)
 
@@ -77,13 +78,11 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
               onClick={() => setShowSettingsModal(true)}
             />
 
-            <Tooltip content='Query history coming soon' placement='bottom' offset={[0, 10]}>
-              <Button isIconOnly disabled
-                skin='borderless-muted'
-                startIcon={<ClockHistoryIcon className='t-icon' />}
-                onClick={() => null}
-              />
-            </Tooltip>
+            <Button isIconOnly
+              skin='borderless-muted'
+              startIcon={<ClockHistoryIcon className='t-icon' />}
+              onClick={() => setShowQueryHistoryModal(true)}
+            />
 
             <div className='flex gap-x-2'>
               {savedQueryId
@@ -148,6 +147,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
       </div>
 
       {showSettingsModal && <QuerySettingsModal />}
+      {showQueryHistoryModal && <QueryHistoryModal />}
     </>
   )
 }
