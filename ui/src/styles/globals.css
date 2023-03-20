@@ -58,6 +58,15 @@
            cursor-pointer;
 }
 
+.t-vertical-nav-item-active {
+  @apply border-l-4
+         border-blue-500
+}
+
+.t-vertical-nav-item-active > a > span > div > p {
+  @apply text-blue-500
+}
+
 .t-table-bordered tr:last-child td {
   @apply  border-r
           border-l
