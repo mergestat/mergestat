@@ -338,6 +338,7 @@ export type SchemaData = {
 export type ContainerSyncData = {
   id: string
   name: string
+  description?: string | null
   url: string
   version: string
   type: string

@@ -44,14 +44,14 @@ export const ContainerSyncsTable: React.FC<ContainerSyncsTableProps> = ({ contai
                       <td className='w-4/6'>
                         <ListItem key={`container-sync-${index}`}
                           title={cs.name}
-                          subline={''}
+                          subline={cs.description || ''}
                           className={'px-4 py-2'}
                           startIcon={<TableIcon className='t-icon' />}
                           onClick={() => null}
                         />
                       </td>
                       <td className='text-gray-500 py-5'>
-                        <span className='ml-1'>{ }</span>
+                        <span className='ml-1'></span>
                       </td>
                       <td className='text-gray-500 py-5'>
                         <span className='ml-1'>{cs.repos.totalCount}</span>

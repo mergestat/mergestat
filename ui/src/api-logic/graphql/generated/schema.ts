@@ -227,6 +227,7 @@ export type ContainerImage = Node & {
   containerImageTypeByType?: Maybe<ContainerImageType>;
   /** Reads and enables pagination through a set of `ContainerSync`. */
   containerSyncsByImageId: ContainerSyncsConnection;
+  description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -254,6 +255,8 @@ export type ContainerImageContainerSyncsByImageIdArgs = {
  * tested for equality and combined with a logical ‘and.’
  */
 export type ContainerImageCondition = {
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `name` field. */
@@ -272,6 +275,8 @@ export type ContainerImageCondition = {
 export type ContainerImageFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<ContainerImageFilter>>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `name` field. */
@@ -292,6 +297,7 @@ export type ContainerImageFilter = {
 
 /** An input for mutations affecting `ContainerImage` */
 export type ContainerImageInput = {
+  description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   name: Scalars['String'];
   parameters?: InputMaybe<Scalars['JSON']>;
@@ -302,6 +308,7 @@ export type ContainerImageInput = {
 
 /** Represents an update to a `ContainerImage`. Fields that are set will be updated. */
 export type ContainerImagePatch = {
+  description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   name?: InputMaybe<Scalars['String']>;
   parameters?: InputMaybe<Scalars['JSON']>;
@@ -314,7 +321,7 @@ export type ContainerImageType = Node & {
   /** Reads and enables pagination through a set of `ContainerImage`. */
   containerImagesByType: ContainerImagesConnection;
   description?: Maybe<Scalars['String']>;
-  displayname: Scalars['String'];
+  displayName: Scalars['String'];
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -339,8 +346,8 @@ export type ContainerImageTypeContainerImagesByTypeArgs = {
 export type ContainerImageTypeCondition = {
   /** Checks for equality with the object’s `description` field. */
   description?: InputMaybe<Scalars['String']>;
-  /** Checks for equality with the object’s `displayname` field. */
-  displayname?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `displayName` field. */
+  displayName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']>;
 };
@@ -351,8 +358,8 @@ export type ContainerImageTypeFilter = {
   and?: InputMaybe<Array<ContainerImageTypeFilter>>;
   /** Filter by the object’s `description` field. */
   description?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `displayname` field. */
-  displayname?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `displayName` field. */
+  displayName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `name` field. */
   name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
@@ -364,14 +371,14 @@ export type ContainerImageTypeFilter = {
 /** An input for mutations affecting `ContainerImageType` */
 export type ContainerImageTypeInput = {
   description?: InputMaybe<Scalars['String']>;
-  displayname: Scalars['String'];
+  displayName: Scalars['String'];
   name: Scalars['String'];
 };
 
 /** Represents an update to a `ContainerImageType`. Fields that are set will be updated. */
 export type ContainerImageTypePatch = {
   description?: InputMaybe<Scalars['String']>;
-  displayname?: InputMaybe<Scalars['String']>;
+  displayName?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
 };
 
@@ -399,8 +406,8 @@ export type ContainerImageTypesEdge = {
 export enum ContainerImageTypesOrderBy {
   DescriptionAsc = 'DESCRIPTION_ASC',
   DescriptionDesc = 'DESCRIPTION_DESC',
-  DisplaynameAsc = 'DISPLAYNAME_ASC',
-  DisplaynameDesc = 'DISPLAYNAME_DESC',
+  DisplayNameAsc = 'DISPLAY_NAME_ASC',
+  DisplayNameDesc = 'DISPLAY_NAME_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
@@ -430,6 +437,8 @@ export type ContainerImagesEdge = {
 
 /** Methods to use when ordering `ContainerImage`. */
 export enum ContainerImagesOrderBy {
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   NameAsc = 'NAME_ASC',
@@ -21789,6 +21798,22 @@ export type RemoveUserMutationVariables = Exact<{
 
 export type RemoveUserMutation = { userMgmtRemoveUser?: { clientMutationId?: string | null, integer?: number | null } | null };
 
+export type AddRepoSyncMutationVariables = Exact<{
+  name: Scalars['String'];
+  url: Scalars['String'];
+  version: Scalars['String'];
+}>;
+
+
+export type AddRepoSyncMutation = { createContainerImage?: { containerImage?: { id: any, name: string } | null } | null };
+
+export type RemoveRepoSyncMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveRepoSyncMutation = { deleteContainerImage?: { deletedContainerImageNodeId?: string | null } | null };
+
 export type RemoveRepoMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -21941,7 +21966,7 @@ export type GetContainerSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetContainerSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, url: string, version: string, type: string, parameters: any, repos: { totalCount: number } }> } | null };
+export type GetContainerSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, url: string, version: string, type: string, parameters: any, repos: { totalCount: number } }> } | null };
 
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
