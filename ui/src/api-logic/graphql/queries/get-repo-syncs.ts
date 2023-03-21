@@ -19,6 +19,36 @@ const GET_REPO_DATA = gql`
   }
 `
 
+const GET_CONTAINER_SYNCS = gql`
+  query getContainerSyncs($search: String!, $first: Int, $offset: Int) {
+    all: containerImages {
+      totalCount
+    }
+    containerImages(
+      filter: {
+        or: [
+          {name: {includesInsensitive: $search}}
+        ]
+      }
+      first: $first
+      offset: $offset
+    ) {
+      totalCount
+      nodes {
+        id
+        name
+        url
+        version
+        type
+        parameters
+        repos: containerSyncsByImageId {
+          totalCount
+        }
+      }
+    }
+  }
+`
+
 const GET_REPO_SYNCS = gql`
   query getRepoSyncs($id: UUID!, $search: String!, $first: Int, $offset: Int) {
     repo(id: $id) {
@@ -100,4 +130,4 @@ const GET_SYNC_TYPES = gql`
   }
 `
 
-export { GET_REPO_DATA, GET_REPO_SYNCS, GET_SYNC_TYPES }
+export { GET_REPO_DATA, GET_CONTAINER_SYNCS, GET_REPO_SYNCS, GET_SYNC_TYPES }

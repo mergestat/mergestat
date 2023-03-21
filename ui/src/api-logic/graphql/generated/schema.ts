@@ -21934,6 +21934,15 @@ export type GetRepoDataQueryVariables = Exact<{
 
 export type GetRepoDataQuery = { repo?: { id: any, repo: string, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null };
 
+export type GetContainerSyncsQueryVariables = Exact<{
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetContainerSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, url: string, version: string, type: string, parameters: any, repos: { totalCount: number } }> } | null };
+
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
   search: Scalars['String'];
