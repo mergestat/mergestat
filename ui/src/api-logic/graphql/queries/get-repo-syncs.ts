@@ -37,6 +37,7 @@ const GET_CONTAINER_SYNCS = gql`
       nodes {
         id
         name
+        description
         url
         version
         type
