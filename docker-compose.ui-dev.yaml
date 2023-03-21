@@ -15,7 +15,7 @@ services:
       - "--schema"
       - "mergestat,sqlq,public"
       - "--append-plugins"
-      - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/exec-sql/index.js,/graphql/service-credentials/index.js"
+      - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/container-sync-jobs/index.js,/graphql/exec-sql/index.js,/graphql/service-credentials/index.js"
       - "-o"
       - "--subscriptions"
       - "--watch"
