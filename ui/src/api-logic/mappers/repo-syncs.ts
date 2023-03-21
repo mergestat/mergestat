@@ -2,14 +2,14 @@ import { differenceInMilliseconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, RepoSyncQueueW, SyncStatusDataT } from 'src/@types'
 import { getExternalRepoLink, getRepoFromUrl, getSimpleDurationTime, getSimpleDurationTimeSeconds, getStatus } from 'src/utils'
 import { SYNC_REPO_METHOD, SYNC_STATUS, VENDOR_TYPE } from 'src/utils/constants'
-import { GetRepoSyncsQuery } from '../graphql/generated/schema'
+import { GetRepoDataQuery, GetRepoSyncsQuery } from '../graphql/generated/schema'
 
 /**
- * Method which iterate each sync and map it to RepoSyncDataType to be shown in table
- * @param data Sync list that comes from data base in GetRepoSyncsQuery format
- * @returns RepoSyncData with syncs info and its RepoSyncDataType info by each sync
+ * Method to get Repo data into RepoSyncData
+ * @param data Repo data that comes from data base in GetRepoDataQuery format
+ * @returns RepoSyncData with the Repo data
  */
-const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
+const mapToRepoData = (data: GetRepoDataQuery | undefined): RepoSyncData => {
   // General repo info
   const repoData: RepoSyncData = {
     id: data?.repo?.id,
@@ -31,7 +31,16 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
     },
   }
 
-  const mappedData: Array<RepoSyncDataType> = []
+  return repoData
+}
+
+/**
+ * Method which iterate each sync and map it to RepoSyncDataType to be shown in table
+ * @param data Sync list that comes from data base in GetRepoSyncsQuery format
+ * @returns RepoSyncData with syncs info and its RepoSyncDataType info by each sync
+ */
+const mapToRepoSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncDataType[] => {
+  const syncsData: Array<RepoSyncDataType> = []
 
   data?.repoSyncTypes?.nodes.forEach((st) => {
     // 1. Find sync type data
@@ -80,11 +89,10 @@ const mapToSyncsData = (data: GetRepoSyncsQuery | undefined): RepoSyncData => {
       syncData.avgRunningTime = getSimpleDurationTimeSeconds(avg / 1000)
     }
 
-    mappedData.push(syncData)
+    syncsData.push(syncData)
   })
 
-  repoData.syncs = mappedData
-  return repoData
+  return syncsData
 }
 
-export { mapToSyncsData }
+export { mapToRepoData, mapToRepoSyncsData }

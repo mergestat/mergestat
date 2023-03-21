@@ -8,6 +8,7 @@ import { UPDATE_AUTO_IMPORT_REPOS } from 'src/api-logic/graphql/mutations/add-re
 import { GET_REPO_IMPORT } from 'src/api-logic/graphql/queries/get-repo-imports'
 import Loading from 'src/components/Loading'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
+import { getVendorProp } from 'src/utils'
 import { showSuccessAlert } from 'src/utils/alerts'
 
 export const UpdateAutoImportModal: React.FC = () => {
@@ -64,7 +65,7 @@ export const UpdateAutoImportModal: React.FC = () => {
         <Toolbar className="h-16 px-6">
           <Toolbar.Left>
             <Toolbar.Item>
-              <Modal.Title>Edit default syncs ({data?.repoImport?.settings.userOrOrg})</Modal.Title>
+              <Modal.Title>Edit default syncs ({data?.repoImport?.settings[getVendorProp(importInfo.vendor)]})</Modal.Title>
             </Toolbar.Item>
           </Toolbar.Left>
           <Toolbar.Right>

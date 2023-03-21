@@ -99,7 +99,6 @@ export type RepoSyncData = {
   tags: TagType[]
   provider: ProviderT
   autoImportFrom?: string | null
-  syncs?: Array<RepoSyncDataType>
 }
 
 /** Repository Data Logs Type */
