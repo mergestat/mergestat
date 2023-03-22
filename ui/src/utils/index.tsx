@@ -1,6 +1,6 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { BitbucketIcon, BranchIcon, GithubIcon, GitlabIcon } from '@mergestat/icons'
-import { formatDistance, formatDuration, intervalToDuration, differenceInMilliseconds } from 'date-fns'
+import { differenceInMilliseconds, formatDistance, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncQueueW, RepoSyncStateT, UserTypeUI } from 'src/@types'
 import { showSuccessAlert } from './alerts'
 import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI, VENDOR_TYPE } from './constants'
@@ -289,4 +289,18 @@ export const getVendorLabelType = (vendor: string) => {
  */
 export function getExternalRepoLink(repo?: string) {
   return repo && /^http/ig.test(repo) ? repo : undefined
+}
+
+/**
+ * Method to check if given string is a valid JSON
+ * @param str Given string to validate
+ * @returns true if it is a valid JSON, otherwise return false
+ */
+export function isJSONValid(str: string) {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
 }

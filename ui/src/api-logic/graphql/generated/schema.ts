@@ -21959,6 +21959,13 @@ export type GetRepoDataQueryVariables = Exact<{
 
 export type GetRepoDataQuery = { repo?: { id: any, repo: string, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null };
 
+export type GetContainerSyncQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetContainerSyncQuery = { containerImage?: { id: any, name: string, description?: string | null, type: string, url: string, version: string, parameters: any, repos: { totalCount: number } } | null };
+
 export type GetContainerSyncsQueryVariables = Exact<{
   search: Scalars['String'];
   first?: InputMaybe<Scalars['Int']>;

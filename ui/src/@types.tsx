@@ -333,7 +333,7 @@ export type SchemaData = {
   tables: TableData[]
 }
 
-/** Repo syncs */
+/** Repo syncs (Container Syncs) */
 
 export type ContainerSyncData = {
   id: string
@@ -346,4 +346,16 @@ export type ContainerSyncData = {
   repos: {
     totalCount: number
   }
+}
+
+export type ContainerSyncDetail = {
+  id: string
+  name: string
+  description?: string | null
+  type: string
+  url: string
+  version: string
+  parameters: JSON
+
+  totalRepos: number
 }

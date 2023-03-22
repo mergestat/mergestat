@@ -47,7 +47,7 @@ export const ContainerSyncsTable: React.FC<ContainerSyncsTableProps> = ({ contai
                           subline={cs.description || ''}
                           className={'px-4 py-2'}
                           startIcon={<TableIcon className='t-icon' />}
-                          onClick={() => null}
+                          onClick={() => router.push(`/repos/repo-syncs/${cs.id}`)}
                         />
                       </td>
                       <td className='text-gray-500 py-5'>
