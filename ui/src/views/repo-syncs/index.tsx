@@ -9,7 +9,7 @@ import { useContainerSyncsContext, useContainerSyncsSetState, useGlobalSetState 
 import { EmptyData } from 'src/views/shared/empty-data'
 import { FilterFooter } from 'src/views/shared/filter-footer'
 import { FilterHeader } from 'src/views/shared/filter-header'
-import { GetContainerSyncsQuery } from '../../api-logic/graphql/generated/schema'
+import { GetContainerImagesQuery } from '../../api-logic/graphql/generated/schema'
 import { AddContainerSyncModal } from './components/add-container-sync'
 import { ContainerSyncsTable } from './components/container-syncs-table'
 import { RemoveContainerSyncModal } from './modals/remove-container-sync'
@@ -24,7 +24,7 @@ const ContainerSyncsView: React.FC = () => {
   const [pageLoaded, setPageLoaded] = useState(false)
   const [records, setRecords] = useState(false)
 
-  const { loading, data, refetch } = useQuery<GetContainerSyncsQuery>(GET_CONTAINER_IMAGES, {
+  const { loading, data, refetch } = useQuery<GetContainerImagesQuery>(GET_CONTAINER_IMAGES, {
     variables: { search, first: rows, offset: (page * rows) },
     fetchPolicy: 'no-cache'
   })
