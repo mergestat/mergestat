@@ -2,7 +2,9 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Fragment } from 'react'
+import { ContainerSyncDetailProvider } from 'src/state/contexts/container-sync-detail.context'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
+import RepoSyncDetailView from 'src/views/repo-sync-detail'
 
 const RepoSyncPage: NextPage = () => {
   const router = useRouter()
@@ -15,6 +17,9 @@ const RepoSyncPage: NextPage = () => {
       <Head>
         <title>{title}</title>
       </Head>
+      <ContainerSyncDetailProvider>
+        <RepoSyncDetailView containerSyncId={repoSyncId} />
+      </ContainerSyncDetailProvider>
     </Fragment>
   )
 }
