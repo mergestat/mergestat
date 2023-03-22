@@ -3,7 +3,7 @@ import { MinusIcon } from '@mergestat/icons'
 import type { RepoDataStatusT, RepoSyncStateT } from 'src/@types'
 import { RelativeTimeText } from 'src/components/Fields/relative-time-text'
 import { SYNC_STATUS } from 'src/utils/constants'
-import { RepoDataDropDown } from 'src/views/repositories/drop-downs'
+import { RepoDataDropDown } from 'src/views/repos/drop-downs'
 
 export type RepositoryStatusProps = {
   idRepo: string

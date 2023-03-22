@@ -7,7 +7,7 @@ import { GET_LOGS_OF_A_SYNC } from 'src/api-logic/graphql/queries/get-sync-histo
 import { mapToSyncLogsData } from 'src/api-logic/mappers/syncs-logs'
 import Loading from 'src/components/Loading'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
-import RepoDataLogsDetailsView from 'src/views/repository-data-logs-details'
+import RepoDataLogsDetailsView from 'src/views/repo-data/repository-data-logs-details'
 
 const LogsDetailsPage = () => {
   const router = useRouter()

@@ -1,14 +1,14 @@
 import { useQuery } from '@apollo/client'
 import { useEffect } from 'react'
-import { GET_CONTAINER_SYNC } from 'src/api-logic/graphql/queries/get-repo-syncs'
+import { GET_CONTAINER_IMAGE } from 'src/api-logic/graphql/queries/get-repo-syncs'
 import { mapToContainerSyncDetail } from 'src/api-logic/mappers/container-sync-detail'
 import { useContainerSyncDetailSetState } from 'src/state/contexts/container-sync-detail.context'
-import { GetContainerSyncQuery } from '../../../api-logic/graphql/generated/schema'
+import { GetContainerImageQuery } from '../../../api-logic/graphql/generated/schema'
 
 const useRepoSyncDetail = (containerSyncId?: string | string[]) => {
   const { setLoading, setContainerSyncDetail, setIdContainerSync } = useContainerSyncDetailSetState()
 
-  const { loading, data } = useQuery<GetContainerSyncQuery>(GET_CONTAINER_SYNC, {
+  const { loading, data } = useQuery<GetContainerImageQuery>(GET_CONTAINER_IMAGE, {
     variables: { id: containerSyncId },
     fetchPolicy: 'no-cache',
   })

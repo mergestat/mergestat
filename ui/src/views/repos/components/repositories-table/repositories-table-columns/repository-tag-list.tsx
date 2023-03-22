@@ -1,7 +1,7 @@
 import { Badge } from '@mergestat/blocks'
 import React from 'react'
 import { TagType } from 'src/@types'
-import { EditTagsListDropDown } from 'src/views/repositories/drop-downs'
+import { EditTagsListDropDown } from 'src/views/repos/drop-downs'
 
 type RepositoryTagItemProps = TagType
 

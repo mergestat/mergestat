@@ -3,10 +3,10 @@ import { Button, Input, Label, Modal, Toolbar } from '@mergestat/blocks'
 import { XIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React, { ChangeEvent, useCallback, useState } from 'react'
-import { AddRepoSyncMutation } from 'src/api-logic/graphql/generated/schema'
-import { ADD_CONTAINER_SYNC } from 'src/api-logic/graphql/mutations/repo-syncs'
+import { ADD_CONTAINER_IMAGE } from 'src/api-logic/graphql/mutations/repo-syncs'
 import { useContainerSyncsSetState } from 'src/state/contexts'
 import { showSuccessAlert } from 'src/utils/alerts'
+import { AddContainerImageMutation } from '../../../api-logic/graphql/generated/schema'
 
 export const AddContainerSyncModal: React.FC = () => {
   const { setShowAddContainerSyncModal } = useContainerSyncsSetState()
@@ -20,14 +20,14 @@ export const AddContainerSyncModal: React.FC = () => {
     setShowAddContainerSyncModal(false)
   }, [setShowAddContainerSyncModal])
 
-  const [addRepoSync] = useMutation(ADD_CONTAINER_SYNC, {
-    onCompleted: (data: AddRepoSyncMutation) => {
+  const [addCI] = useMutation(ADD_CONTAINER_IMAGE, {
+    onCompleted: (data: AddContainerImageMutation) => {
       close()
       router.push(`/repos/repo-syncs/${data.createContainerImage?.containerImage?.id}`)
       showSuccessAlert('Repo sync added')
     },
     awaitRefetchQueries: true,
-    refetchQueries: () => ['getContainerSyncs']
+    refetchQueries: () => ['getContainerImages']
   })
 
   return (
@@ -113,7 +113,7 @@ export const AddContainerSyncModal: React.FC = () => {
                 className="my-3"
                 skin="primary"
                 disabled={!name || !url || !version}
-                onClick={() => addRepoSync({
+                onClick={() => addCI({
                   variables: { name, url, version }
                 })}
               />

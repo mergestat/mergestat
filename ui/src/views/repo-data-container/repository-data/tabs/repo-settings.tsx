@@ -5,7 +5,7 @@ import { TagType } from 'src/@types'
 import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { TEST_IDS } from 'src/utils/constants'
 import useTags from 'src/views/hooks/useTags'
-import { RemoveRepositoryModal } from 'src/views/repositories/modals/remove-repository-modal'
+import { RemoveRepositoryModal } from 'src/views/repos/modals/remove-repository-modal'
 
 type RepoSettingsProps = {
   id: string

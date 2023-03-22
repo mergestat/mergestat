@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import { Button, Modal, Toolbar } from '@mergestat/blocks'
 import { TrashIcon, XIcon } from '@mergestat/icons'
 import React, { useCallback } from 'react'
-import { REMOVE_CONTAINER_SYNC } from 'src/api-logic/graphql/mutations/repo-syncs'
+import { REMOVE_CONTAINER_IMAGE } from 'src/api-logic/graphql/mutations/repo-syncs'
 import { useContainerSyncsContext, useContainerSyncsSetState } from 'src/state/contexts'
 import { showSuccessAlert } from 'src/utils/alerts'
 
@@ -14,13 +14,13 @@ export const RemoveContainerSyncModal: React.FC = () => {
     setShowRemoveContainerSyncModal(false)
   }, [setShowRemoveContainerSyncModal])
 
-  const [removeRepo] = useMutation(REMOVE_CONTAINER_SYNC, {
+  const [removeCI] = useMutation(REMOVE_CONTAINER_IMAGE, {
     onCompleted: () => {
       showSuccessAlert('Repo Sync removed successfully')
       close()
     },
     awaitRefetchQueries: true,
-    refetchQueries: () => ['getContainerSyncs']
+    refetchQueries: () => ['getContainerImages']
   })
 
   return (
@@ -61,7 +61,7 @@ export const RemoveContainerSyncModal: React.FC = () => {
               </Button>
               <Button
                 skin="danger"
-                onClick={() => removeRepo({
+                onClick={() => removeCI({
                   variables: { id: containerSyncToRemove?.id }
                 })}
                 startIcon={<TrashIcon className="t-icon" />}

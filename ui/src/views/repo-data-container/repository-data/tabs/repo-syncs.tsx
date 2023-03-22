@@ -1,9 +1,10 @@
 import { Button } from '@mergestat/blocks'
 import { CogIcon, TableIcon } from '@mergestat/icons'
+import { useRouter } from 'next/router'
 import React from 'react'
 import Loading from 'src/components/Loading'
 import { useRepoSyncsContext, useRepoSyncsSetState } from 'src/state/contexts/repo-syncs.context'
-import useRepoSyncs from 'src/views/hooks/repoSyncs/useRepoSyncs'
+import useRepoContainerSyncs from 'src/views/hooks/repoContainerSyncs/useRepoContainerSyncs'
 import { EmptyData } from 'src/views/shared/empty-data'
 import { FilterFooter } from 'src/views/shared/filter-footer'
 import { FilterHeader } from 'src/views/shared/filter-header'
@@ -12,7 +13,8 @@ import { SyncTypesTable } from '../components'
 export const RepoSyncs: React.FC = () => {
   const [{ rows, page, total }] = useRepoSyncsContext()
   const { setSearch, setRows, setPage } = useRepoSyncsSetState()
-  const { loading, records, repoId, syncs } = useRepoSyncs()
+  const { loading, records, repoId, syncs } = useRepoContainerSyncs()
+  const router = useRouter()
 
   return (
     <>
@@ -20,14 +22,14 @@ export const RepoSyncs: React.FC = () => {
         <div className='flex-1 overflow-auto'>
           {records && <div className='flex'>
             <FilterHeader setSearch={setSearch} />
-            {/* <div className='flex px-5 items-center'>
+            <div className='flex px-5 items-center'>
               <Button className='whitespace-nowrap'
                 skin="secondary"
                 label='Manage Syncs'
                 startIcon={<CogIcon className="t-icon" />}
-                onClick={() => null}
+                onClick={() => router.push('/repos/repo-syncs')}
               />
-            </div> */}
+            </div>
           </div>}
 
           {loading
@@ -42,7 +44,7 @@ export const RepoSyncs: React.FC = () => {
                     skin="borderless"
                     label='Manage Syncs'
                     startIcon={<CogIcon className="t-icon" />}
-                    onClick={() => null}
+                    onClick={() => router.push('/repos/repo-syncs')}
                   />
                 }
               />

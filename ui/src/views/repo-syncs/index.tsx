@@ -3,7 +3,7 @@ import { Button, Toolbar } from '@mergestat/blocks'
 import { PlusIcon, RepositoryIcon, TableIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { GET_CONTAINER_SYNCS } from 'src/api-logic/graphql/queries/get-repo-syncs'
+import { GET_CONTAINER_IMAGES } from 'src/api-logic/graphql/queries/get-repo-syncs'
 import Loading from 'src/components/Loading'
 import { useContainerSyncsContext, useContainerSyncsSetState, useGlobalSetState } from 'src/state/contexts'
 import { EmptyData } from 'src/views/shared/empty-data'
@@ -24,7 +24,7 @@ const ContainerSyncsView: React.FC = () => {
   const [pageLoaded, setPageLoaded] = useState(false)
   const [records, setRecords] = useState(false)
 
-  const { loading, data, refetch } = useQuery<GetContainerSyncsQuery>(GET_CONTAINER_SYNCS, {
+  const { loading, data, refetch } = useQuery<GetContainerSyncsQuery>(GET_CONTAINER_IMAGES, {
     variables: { search, first: rows, offset: (page * rows) },
     fetchPolicy: 'no-cache'
   })
