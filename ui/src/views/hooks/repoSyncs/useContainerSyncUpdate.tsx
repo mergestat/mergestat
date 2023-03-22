@@ -8,10 +8,10 @@ const useContainerSyncUpdate = () => {
   const [nameCS, setNameCS] = useState('')
   const [descriptionCS, setDescriptionCS] = useState('')
 
-  const { updateCS } = useUpdateCS()
+  const { updateCI } = useUpdateCS()
 
   const updateCSNameDesc = () => {
-    updateCS({
+    updateCI({
       variables: { id: idContainerSync, name: nameCS, description: descriptionCS }
     })
   }

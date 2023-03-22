@@ -8,7 +8,7 @@ import useUpdateCS from 'src/views/hooks/repoSyncs/useUpdateCS'
 
 const SettingsCS: React.FC = () => {
   const [{ idContainerSync, containerSyncDetail }] = useContainerSyncDetailContext()
-  const { updateCS } = useUpdateCS()
+  const { updateCI } = useUpdateCS()
 
   const [url, setUrl] = useState('')
   const [version, setVersion] = useState('')
@@ -25,7 +25,7 @@ const SettingsCS: React.FC = () => {
   const saveSttings = () => {
     const jsonValid = isJSONValid(parameters)
     if (jsonValid) {
-      updateCS({
+      updateCI({
         variables: { id: idContainerSync, url, version, parameters: JSON.parse(parameters) }
       })
     } else {

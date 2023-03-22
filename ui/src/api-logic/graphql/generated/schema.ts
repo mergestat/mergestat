@@ -21798,21 +21798,33 @@ export type RemoveUserMutationVariables = Exact<{
 
 export type RemoveUserMutation = { userMgmtRemoveUser?: { clientMutationId?: string | null, integer?: number | null } | null };
 
-export type AddRepoSyncMutationVariables = Exact<{
+export type AddContainerImageMutationVariables = Exact<{
   name: Scalars['String'];
   url: Scalars['String'];
   version: Scalars['String'];
 }>;
 
 
-export type AddRepoSyncMutation = { createContainerImage?: { containerImage?: { id: any, name: string } | null } | null };
+export type AddContainerImageMutation = { createContainerImage?: { containerImage?: { id: any, name: string } | null } | null };
 
-export type RemoveRepoSyncMutationVariables = Exact<{
+export type UpdateContainerImageMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['String']>;
+  parameters?: InputMaybe<Scalars['JSON']>;
+}>;
+
+
+export type UpdateContainerImageMutation = { updateContainerImage?: { containerImage?: { id: any, name: string, description?: string | null, url: string, version: string, parameters: any } | null } | null };
+
+export type RemoveContainerImageMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type RemoveRepoSyncMutation = { deleteContainerImage?: { deletedContainerImageNodeId?: string | null } | null };
+export type RemoveContainerImageMutation = { deleteContainerImage?: { deletedContainerImageNodeId?: string | null } | null };
 
 export type RemoveRepoMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -21959,21 +21971,30 @@ export type GetRepoDataQueryVariables = Exact<{
 
 export type GetRepoDataQuery = { repo?: { id: any, repo: string, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null };
 
-export type GetContainerSyncQueryVariables = Exact<{
+export type GetContainerImageQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetContainerSyncQuery = { containerImage?: { id: any, name: string, description?: string | null, type: string, url: string, version: string, parameters: any, repos: { totalCount: number } } | null };
+export type GetContainerImageQuery = { containerImage?: { id: any, name: string, description?: string | null, type: string, url: string, version: string, parameters: any, repos: { totalCount: number } } | null };
 
-export type GetContainerSyncsQueryVariables = Exact<{
+export type GetContainerImagesQueryVariables = Exact<{
   search: Scalars['String'];
   first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetContainerSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, url: string, version: string, type: string, parameters: any, repos: { totalCount: number } }> } | null };
+export type GetContainerImagesQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, url: string, version: string, type: string, parameters: any, repos: { totalCount: number } }> } | null };
+
+export type GetContainerSyncsQueryVariables = Exact<{
+  id: Scalars['UUID'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetContainerSyncsQuery = { all?: { totalCount: number } | null, containerSyncs?: { totalCount: number, nodes: Array<{ id: any, image?: { id: any, name: string, description?: string | null } | null }> } | null };
 
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];

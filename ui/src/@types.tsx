@@ -359,3 +359,19 @@ export type ContainerSyncDetail = {
 
   totalRepos: number
 }
+
+export type RepoContainerSyncData = {
+  image: {
+    id: string
+    title: string
+    brief: string
+    scheduleEnabled: boolean
+    labels?: string[]
+  }
+  latestRun: string
+  avgRunningTime: string
+  status: {
+    data?: SyncStatusDataT[]
+    syncState: RepoSyncStateT
+  }
+}

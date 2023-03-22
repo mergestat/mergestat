@@ -1,17 +1,17 @@
 import { useMutation } from '@apollo/client'
-import { UPDATE_CONTAINER_SYNC } from 'src/api-logic/graphql/mutations/repo-syncs'
+import { UPDATE_CONTAINER_IMAGE } from 'src/api-logic/graphql/mutations/repo-syncs'
 import { showSuccessAlert } from 'src/utils/alerts'
 
 const useUpdateCS = () => {
-  const [updateCS] = useMutation(UPDATE_CONTAINER_SYNC, {
+  const [updateCI] = useMutation(UPDATE_CONTAINER_IMAGE, {
     onCompleted: () => {
       showSuccessAlert('Repo sync updated')
     },
     awaitRefetchQueries: true,
-    refetchQueries: () => ['getContainerSync']
+    refetchQueries: () => ['getContainerImage']
   })
 
-  return { updateCS }
+  return { updateCI }
 }
 
 export default useUpdateCS
