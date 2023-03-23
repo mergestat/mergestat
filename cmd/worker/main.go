@@ -261,8 +261,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	var queues = []sqlq.Queue{"default"}
-	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{Queues: queues})
+	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{})
 
 	// register job handlers for types implemented by this worker
 	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
