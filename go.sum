@@ -914,8 +914,8 @@ github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b h1:iKHgNnVLgSzw
 github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
 github.com/mergestat/mergestat-lite v0.5.10 h1:3KBUQoRwC27bLHLXUWU7UDjP9IBtumb4vE44bZ3H9Ls=
 github.com/mergestat/mergestat-lite v0.5.10/go.mod h1:tQYFBsEpWDfJ37DQIh3I9ZC2qmVpES9mtJPMDUG64zM=
-github.com/mergestat/sqlq v0.0.0-20230220180215-4d3d6bf73f52 h1:FZhGK0maKd6B0g13U7K+swRRihx8XIvI3+QFmcPVIOE=
-github.com/mergestat/sqlq v0.0.0-20230220180215-4d3d6bf73f52/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
+github.com/mergestat/sqlq v0.0.0-20230323084545-995fa18efd8d h1:hn5Wj5oQKRe2AU0e5y4DQThBribpe0BYYtfiedkys1I=
+github.com/mergestat/sqlq v0.0.0-20230323084545-995fa18efd8d/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
 github.com/mergestat/timediff v0.0.3 h1:ucCNh4/ZrTPjFZ081PccNbhx9spymCJkFxSzgVuPU+Y=
 github.com/mergestat/timediff v0.0.3/go.mod h1:yvMUaRu2oetc+9IbPLYBJviz6sA7xz8OXMDfhBl7YSI=
 github.com/miekg/dns v1.0.14/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
