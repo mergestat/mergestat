@@ -8,6 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"os"
+	"os/exec"
+	"sync"
+
 	"github.com/go-git/go-billy/v5/osfs"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/cache"
@@ -20,10 +25,6 @@ import (
 	"github.com/mergestat/mergestat/internal/helper"
 	"github.com/mergestat/sqlq"
 	"github.com/pkg/errors"
-	"io"
-	"os"
-	"os/exec"
-	"sync"
 )
 
 // ContainerSync implements a sqlq.Handler that utilizes a Container-based execution environment
@@ -128,6 +129,7 @@ func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 			args = append(args, "-v", fmt.Sprintf("%s:/src", tmpPath))           // mount the cloned repository under /src
 			args = append(args, "-v", fmt.Sprintf("%s:/run/params", paramsFile)) // mount user supplied parameters under /run/params
 			args = append(args, "-w", "/src")                                    // set /src to be the working directory inside container
+			args = append(args, "--network", "host")                             // use host networking
 			args = append(args, url)                                             // the url of the image to run
 
 			var run = podman(ctx, args...)
