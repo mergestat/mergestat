@@ -1,17 +1,17 @@
 import { format, lightFormat } from 'date-fns'
-import { ContainerSyncLogData, SyncLogsType } from 'src/@types'
+import { ContainerBasicData, ContainerSyncLogData, SyncLogsType } from 'src/@types'
 import { getExternalRepoLink, getRepoFromUrl, getSimpleDurationTime, mapToContainerSyncState } from 'src/utils'
 import { DATE_FORMAT, SYNC_STATUS } from 'src/utils/constants'
-import { GetContainerSyncHistoryLogsQuery } from '../../graphql/generated/schema'
+import { GetContainerBasicDataQuery, GetContainerSyncHistoryLogsQuery, GetLogsOfContainerSyncQuery } from '../../graphql/generated/schema'
 
 /**
- * Method which iterate each sync and map it to ContainerSyncLogData to be shown in table
- * @param data Sync list that comes from data base in GetContainerSyncHistoryLogsQuery format
- * @returns ContainerSyncLogData with syncs info and its SyncLogsType info by each sync
+ * Method to get basic data into ContainerBasicData
+ * @param data Basic container data in GetContainerBasicDataQuery format
+ * @returns ContainerBasicData with repo and sync info
  */
-const mapToContainerSyncLogsData = (data: GetContainerSyncHistoryLogsQuery | undefined): ContainerSyncLogData => {
+const mapToContainerBasicData = (data: GetContainerBasicDataQuery | undefined): ContainerBasicData => {
   // General repo info
-  const repoData: ContainerSyncLogData = {
+  const basicData: ContainerBasicData = {
     repo: {
       id: data?.repo?.id,
       name: getRepoFromUrl(data?.repo?.repo || ''),
@@ -22,17 +22,33 @@ const mapToContainerSyncLogsData = (data: GetContainerSyncHistoryLogsQuery | und
         vendor: data?.repo?.provider?.vendor || '',
         url: data?.repo?.provider?.settings?.url,
       },
+    },
+    sync: {
+      name: data?.repo?.containerSyncs.nodes[0]?.image?.name || ''
     }
   }
+  return basicData
+}
+
+/**
+ * Method which iterate each sync and map it to ContainerSyncLogData to be shown in table
+ * @param data Sync list that comes from data base in GetContainerSyncHistoryLogsQuery format
+ * @returns ContainerSyncLogData with syncs info and its SyncLogsType info by each sync
+ */
+const mapToContainerSyncLogsData = (data: GetContainerSyncHistoryLogsQuery | GetLogsOfContainerSyncQuery | undefined): ContainerSyncLogData => {
+  const repoData: ContainerSyncLogData = {}
 
   // 1. Get Sync general info
   data?.repo?.containerSyncs.nodes.forEach((cs) => {
     repoData.sync = {
       id: cs.id,
+      imageId: cs?.image?.id,
       name: cs?.image?.name || '',
       description: cs?.image?.description || '',
+      parameters: cs.parameters,
       scheduleId: cs?.schedule.nodes[0]?.id,
       syncState: cs?.executions.nodes.length !== 0 ? mapToContainerSyncState(cs?.executions.nodes[0].job?.status) : SYNC_STATUS.empty,
+      totalExecutions: cs?.executions.totalCount
     }
 
     // 2. Get logs data of the sync
@@ -60,4 +76,4 @@ const mapToContainerSyncLogsData = (data: GetContainerSyncHistoryLogsQuery | und
   return repoData
 }
 
-export { mapToContainerSyncLogsData }
+export { mapToContainerBasicData, mapToContainerSyncLogsData }

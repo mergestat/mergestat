@@ -75,11 +75,30 @@ const ENABLE_CONTAINER_SYNC = gql`
   }
 `
 
+const SYNC_NOW_CONTAINER = gql`
+  mutation syncNowContainer($sync: UUID!) {
+    syncNow(sync: $sync)
+  }
+`
+
+const UPDATE_CONTAINER_SYNC = gql`
+  mutation undateContainerSync($id: UUID!, $parameters: JSON!) {
+    updateContainerSync(input: {patch: {parameters: $parameters}, id: $id}) {
+      containerSync {
+        id
+        parameters
+      }
+    }
+  }
+`
+
 export {
   SYNC_NOW,
   ADD_SYNC_TYPE,
   UPDATE_SCHEDULE,
   ADD_CONTAINER_SYNC_SCHEDULE,
   REMOVE_CONTAINER_SYNC_SCHEDULE,
-  ENABLE_CONTAINER_SYNC
+  ENABLE_CONTAINER_SYNC,
+  SYNC_NOW_CONTAINER,
+  UPDATE_CONTAINER_SYNC
 }

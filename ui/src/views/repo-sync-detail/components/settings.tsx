@@ -4,11 +4,11 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { useContainerSyncDetailContext } from 'src/state/contexts/container-sync-detail.context'
 import { isJSONValid } from 'src/utils'
 import { showErrorAlert } from 'src/utils/alerts'
-import useUpdateCS from 'src/views/hooks/repoSyncs/useUpdateCS'
+import useUpdateCI from 'src/views/hooks/repoSyncs/useUpdateCI'
 
 const SettingsCS: React.FC = () => {
   const [{ idContainerSync, containerSyncDetail }] = useContainerSyncDetailContext()
-  const { updateCI } = useUpdateCS()
+  const { updateCI } = useUpdateCI()
 
   const [url, setUrl] = useState('')
   const [version, setVersion] = useState('')

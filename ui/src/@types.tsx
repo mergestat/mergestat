@@ -395,20 +395,30 @@ export type RepoContainerSyncData = {
 
 export type ContainerSyncInfo = {
   id: string
+  imageId: string
   name: string
   description: string
+  parameters: JSON
   scheduleId: string
   syncState: RepoSyncStateT
+  totalExecutions: number
 }
 
 export type ContainerSyncLogData = {
-  repo: {
-    id: string
-    name: string
-    externalRepoLink?: string
-    provider: ProviderT
-  }
   sync?: ContainerSyncInfo
   logs?: SyncLogsType[]
-  syncNow?: () => void
+}
+
+export type RepoBasicData = {
+  id: string
+  name: string
+  externalRepoLink?: string
+  provider: ProviderT
+}
+
+export type ContainerBasicData = {
+  repo: RepoBasicData
+  sync: {
+    name: string
+  }
 }
