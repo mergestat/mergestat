@@ -20,12 +20,18 @@
 }
 */
 
+.t-master-detail-list {
+  @apply bg-gray-50;
+}
+
 .t-master-detail-item {
   @apply px-6
          text-left
          bg-white
          text-gray-900
          py-4
+         border-b
+         border-gray-150
          w-full
          hover_bg-gray-50;
 }
