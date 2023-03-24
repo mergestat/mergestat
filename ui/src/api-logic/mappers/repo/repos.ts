@@ -1,7 +1,7 @@
 import { RepoDataPropsT, RepoDataStatusT, RepoSyncStateT } from 'src/@types'
 import { getRepoFromUrl, getStatus } from 'src/utils'
 import { SYNC_REPO_METHOD, VENDOR_TYPE } from 'src/utils/constants'
-import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../graphql/generated/schema'
+import { GetReposQuery, Repo, RepoSync, RepoSyncQueue } from '../../graphql/generated/schema'
 
 interface SyncTypeFlatten {
   idType: string

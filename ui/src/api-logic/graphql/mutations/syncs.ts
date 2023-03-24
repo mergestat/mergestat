@@ -42,4 +42,28 @@ const UPDATE_SCHEDULE = gql`
   }
 `
 
-export { SYNC_NOW, ADD_SYNC_TYPE, UPDATE_SCHEDULE }
+const ADD_CONTAINER_SYNC_SCHEDULE = gql`
+  mutation addContainerSyncSchedule($syncId: UUID!) {
+    createContainerSyncSchedule(input: {containerSyncSchedule: {syncId: $syncId}}) {
+      containerSyncSchedule {
+        id
+      }
+    }
+  }
+`
+
+const REMOVE_CONTAINER_SYNC_SCHEDULE = gql`
+  mutation removeContainerSyncSchedule($id: UUID!) {
+    deleteContainerSyncSchedule(input: {id: $id}) {
+      deletedContainerSyncScheduleNodeId
+    }
+  }
+`
+
+export {
+  SYNC_NOW,
+  ADD_SYNC_TYPE,
+  UPDATE_SCHEDULE,
+  ADD_CONTAINER_SYNC_SCHEDULE,
+  REMOVE_CONTAINER_SYNC_SCHEDULE
+}

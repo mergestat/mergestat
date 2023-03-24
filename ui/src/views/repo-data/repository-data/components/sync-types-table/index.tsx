@@ -58,7 +58,7 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ repoId, syncs }:
                     </td>
 
                     <td className='text-gray-500 h-20'>
-                      <RelativeTimeField date={sync.latestRun} syncData={sync} styles={'t-text-muted whitespace-nowrap'} />
+                      <RelativeTimeField date={sync.latestRun} syncStatus={sync.status.syncState} styles={'t-text-muted whitespace-nowrap'} />
                     </td>
 
                     <td className='text-gray-500 h-20'>

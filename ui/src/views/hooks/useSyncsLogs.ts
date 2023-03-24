@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { SyncTypeData } from 'src/@types'
 import { GET_SYNC_HISTORY_LOGS } from 'src/api-logic/graphql/queries/get-sync-history-logs'
-import { mapToSyncLogsData } from 'src/api-logic/mappers/syncs-logs'
+import { mapToSyncLogsData } from 'src/api-logic/mappers/repo/syncs-logs'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
 import useSyncNow from './useSyncNow'
 

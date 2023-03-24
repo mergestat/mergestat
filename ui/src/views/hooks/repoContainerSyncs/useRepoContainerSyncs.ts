@@ -1,8 +1,9 @@
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { RepoContainerSyncData } from 'src/@types'
 import { GET_CONTAINER_SYNCS } from 'src/api-logic/graphql/queries/get-repo-syncs'
-import { mapToRepoContainerSyncsData } from 'src/api-logic/mappers/repo-container-syncs'
+import { mapToRepoContainerSyncsData } from 'src/api-logic/mappers/repo-container/repo-container-syncs'
 import { useRepoSyncsContext, useRepoSyncsSetState } from 'src/state/contexts/repo-syncs.context'
 import { GetContainerSyncsQuery } from '../../../api-logic/graphql/generated/schema'
 
@@ -15,17 +16,17 @@ const useRepoContainerSyncs = () => {
 
   const [pageLoaded, setPageLoaded] = useState(false)
   const [records, setRecords] = useState(false)
+  const [syncs, setSyncs] = useState<RepoContainerSyncData[]>([])
 
   const { loading, data, refetch } = useQuery<GetContainerSyncsQuery>(GET_CONTAINER_SYNCS, {
-    variables: { id: repository, first: rows, offset: (page * rows) },
+    variables: { id: repository, search, first: rows, offset: (page * rows) },
     fetchPolicy: 'no-cache',
     pollInterval: 5000,
   })
 
-  const syncs = mapToRepoContainerSyncsData(data)
-
   useEffect(() => {
-    setTotal(data?.containerSyncs?.totalCount || 0)
+    setSyncs(mapToRepoContainerSyncsData(data))
+    setTotal(data?.containerImages?.totalCount || 0)
 
     if (!pageLoaded && data?.all) {
       setRecords(data?.all?.totalCount > 0)
@@ -40,7 +41,7 @@ const useRepoContainerSyncs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetch, search, rows, page])
 
-  return { loading, records, repoId: `${repository}`, syncs }
+  return { loading, records, syncs }
 }
 
 export default useRepoContainerSyncs

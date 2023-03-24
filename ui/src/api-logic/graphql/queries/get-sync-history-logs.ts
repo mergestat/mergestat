@@ -94,4 +94,131 @@ const GET_LOGS_OF_A_SYNC = gql`
   }
 `
 
-export { GET_SYNC_HISTORY_LOGS, GET_LOGS_OF_A_SYNC }
+const GET_CONTAINER_SYNC_HISTORY_LOGS = gql`
+  query getContainerSyncHistoryLogs($repoId: UUID!, $syncId: UUID!) {
+    repo(id: $repoId) {
+      id
+      repo
+      provider: providerByProvider {
+        id
+        name
+        vendor
+        settings
+      }
+      containerSyncs(condition: {id: $syncId}) {
+        nodes {
+          id
+          parameters
+          image {
+            id
+            name
+            description
+          }
+          repo {
+            id
+          }
+          schedule: containerSyncSchedulesBySyncId {
+            nodes {
+              id
+            }
+          }
+          executions: containerSyncExecutionsBySyncId(first: 50, orderBy: CREATED_AT_DESC) {
+            nodes {
+              job {
+                id
+                status
+                queue
+                createdAt
+                startedAt
+                completedAt
+                errors: jobLogsByJob(condition: {level: ERROR}) {
+                  totalCount
+                }
+                warnings: jobLogsByJob(condition: {level: WARN}) {
+                  totalCount
+                }
+                logs: jobLogsByJob(orderBy: LOGGED_AT_ASC) {
+                  totalCount
+                  nodes {
+                    id
+                    level
+                    message
+                    loggedAt
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+const GET_LOGS_OF_A_CONTAINER_SYNC = gql`
+  query getLogsOfContainerSync($repoId: UUID!, $syncId: UUID!, , $jobId: UUID!) {
+    repo(id: $repoId) {
+      id
+      repo
+      provider: providerByProvider {
+        id
+        name
+        vendor
+        settings
+      }
+      containerSyncs(condition: {id: $syncId}) {
+        nodes {
+          id
+          parameters
+          image {
+            id
+            name
+            description
+          }
+          repo {
+            id
+          }
+          schedule: containerSyncSchedulesBySyncId {
+            nodes {
+              id
+            }
+          }
+          executions: containerSyncExecutionsBySyncId(condition: {jobId: $jobId}) {
+            nodes {
+              job {
+                id
+                status
+                queue
+                createdAt
+                startedAt
+                completedAt
+                errors: jobLogsByJob(condition: {level: ERROR}) {
+                  totalCount
+                }
+                warnings: jobLogsByJob(condition: {level: WARN}) {
+                  totalCount
+                }
+                logs: jobLogsByJob(orderBy: LOGGED_AT_ASC) {
+                  totalCount
+                  nodes {
+                    id
+                    level
+                    message
+                    loggedAt
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export {
+  GET_SYNC_HISTORY_LOGS,
+  GET_LOGS_OF_A_SYNC,
+  GET_CONTAINER_SYNC_HISTORY_LOGS,
+  GET_LOGS_OF_A_CONTAINER_SYNC
+}

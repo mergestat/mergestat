@@ -2,14 +2,14 @@ import { Button, Spinner, Tabs, Toolbar } from '@mergestat/blocks'
 import { ClockIcon, ExternalLinkIcon, RefreshIcon, RepositoryIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { SyncTypeData } from 'src/@types'
+import { ContainerSyncLogData } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { useGlobalSetState } from 'src/state/contexts'
 import { SYNC_STATUS } from 'src/utils/constants'
 import { RepoDataLogs, SyncSettings } from './components'
 
-const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow }) => {
+const RepoDataTypeView: React.FC<ContainerSyncLogData> = ({ repo, sync, logs, syncNow }) => {
   const router = useRouter()
   const repoOwnerName = repo.name.split('/')[0]
 
@@ -31,7 +31,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
           </a>
           : undefined
         ),
-        onClick: () => router.push(`/repos/${repo.id}`),
+        onClick: () => router.push(`/repos/${repo.id}/container-syncs`),
       },
     ]
 
@@ -47,7 +47,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
             <Toolbar.Item>
               <div className="text-xl font-semibold flex items-center space-x-1">
                 <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />
-                <span className='pl-1'>{sync?.title || ''}</span>
+                <span className='pl-1'>{sync?.name || ''}</span>
               </div>
             </Toolbar.Item>
           </Toolbar.Left>

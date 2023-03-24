@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 import { AuthDetail, GitSourceDetail, RepoAuto, RepoManual } from 'src/@types'
 import { DATE_FORMAT } from 'src/utils/constants'
-import { GetGitSourceQuery } from '../graphql/generated/schema'
+import { GetGitSourceQuery } from '../../graphql/generated/schema'
 
 const mapToGitSourceDetail = (data: GetGitSourceQuery | undefined, searchAuto?: string, searchManual?: string): GitSourceDetail => {
   const authData = data?.provider?.auth.nodes[0]

@@ -2,7 +2,7 @@ import { differenceInMilliseconds } from 'date-fns'
 import { RepoSyncData, RepoSyncDataType, RepoSyncQueueW, SyncStatusDataT } from 'src/@types'
 import { getExternalRepoLink, getRepoFromUrl, getSimpleDurationTime, getSimpleDurationTimeSeconds, getStatus } from 'src/utils'
 import { SYNC_REPO_METHOD, SYNC_STATUS, VENDOR_TYPE } from 'src/utils/constants'
-import { GetRepoDataQuery, GetRepoSyncsQuery } from '../graphql/generated/schema'
+import { GetRepoDataQuery, GetRepoSyncsQuery } from '../../graphql/generated/schema'
 
 /**
  * Method to get Repo data into RepoSyncData

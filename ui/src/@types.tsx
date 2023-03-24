@@ -360,18 +360,54 @@ export type ContainerSyncDetail = {
   totalRepos: number
 }
 
+export type JobData = {
+  id: string
+  repoId: string
+  syncId: string
+  runningTime: number
+  runningTimeReadable: string
+  status: string
+  doneAt?: Date
+}
+
 export type RepoContainerSyncData = {
+  repo: {
+    id: string
+  }
+  sync: {
+    id: string
+    scheduleId: string
+    labels?: string[]
+  }
   image: {
     id: string
-    title: string
-    brief: string
-    scheduleEnabled: boolean
-    labels?: string[]
+    name: string
+    description: string
   }
   latestRun: string
   avgRunningTime: string
   status: {
-    data?: SyncStatusDataT[]
+    data?: JobData[]
     syncState: RepoSyncStateT
   }
+}
+
+export type ContainerSyncInfo = {
+  id: string
+  name: string
+  description: string
+  scheduleId: string
+  syncState: RepoSyncStateT
+}
+
+export type ContainerSyncLogData = {
+  repo: {
+    id: string
+    name: string
+    externalRepoLink?: string
+    provider: ProviderT
+  }
+  sync?: ContainerSyncInfo
+  logs?: SyncLogsType[]
+  syncNow?: () => void
 }

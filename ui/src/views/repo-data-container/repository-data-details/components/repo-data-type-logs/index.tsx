@@ -1,10 +1,10 @@
 import { Panel } from '@mergestat/blocks'
 import Link from 'next/link'
-import { SyncLogsType, SyncTypeInfo } from 'src/@types'
+import { ContainerSyncInfo, SyncLogsType } from 'src/@types'
 import { LogsTable } from './logs-table'
 
 interface RepoDataLogsProps {
-  syncData?: SyncTypeInfo
+  syncData?: ContainerSyncInfo
   logs?: Array<SyncLogsType>
 }
 
@@ -14,10 +14,10 @@ export const RepoDataLogs = ({ syncData, logs }: RepoDataLogsProps) => {
       <Panel className='shadow-sm mb-8'>
         <Panel.Body>
           <h4 className='t-h4 mb-2'>
-            {syncData?.title}
+            {syncData?.name}
           </h4>
           <p className='t-text-muted mb-4'>
-            {syncData?.brief}
+            {syncData?.description}
           </p>
           <Link href='https://docs.mergestat.com/'>
             <a target='_blank' href='https://docs.mergestat.com/' rel='noopener noreferrer' className="t-button t-button-borderless">

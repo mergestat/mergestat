@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { GetRepoDataQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_REPO_DATA } from 'src/api-logic/graphql/queries/get-repo-syncs'
-import { mapToRepoData } from 'src/api-logic/mappers/repo-syncs'
+import { mapToRepoData } from 'src/api-logic/mappers/repo/repo-syncs'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
 
 const useRepoData = () => {
