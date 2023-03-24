@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client'
-import { AddSyncTypeMutation } from 'src/api-logic/graphql/generated/schema'
-import { ADD_CONTAINER_SYNC_SCHEDULE, ADD_SYNC_TYPE, REMOVE_CONTAINER_SYNC_SCHEDULE, SYNC_NOW } from 'src/api-logic/graphql/mutations/syncs'
+import { AddSyncTypeMutation, EnableContainerSyncMutation } from 'src/api-logic/graphql/generated/schema'
+import { ADD_CONTAINER_SYNC_SCHEDULE, ADD_SYNC_TYPE, ENABLE_CONTAINER_SYNC, REMOVE_CONTAINER_SYNC_SCHEDULE, SYNC_NOW } from 'src/api-logic/graphql/mutations/syncs'
 import { showSuccessAlert } from 'src/utils/alerts'
 
 const useContainerSyncNow = (refetch: string, schedule = false) => {
@@ -42,7 +42,19 @@ const useContainerSyncNow = (refetch: string, schedule = false) => {
     refetchQueries: () => [refetch]
   })
 
-  return { syncNow, addSyncType, addSchedule, removeSchedule }
+  const [enableContainerSync] = useMutation(ENABLE_CONTAINER_SYNC, {
+    onCompleted: (data: EnableContainerSyncMutation) => {
+      addSchedule({
+        variables: { syncId: data.createContainerSync?.containerSync?.id }
+      })
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => {
+      return schedule ? [refetch] : []
+    }
+  })
+
+  return { syncNow, addSyncType, addSchedule, removeSchedule, enableContainerSync }
 }
 
 export default useContainerSyncNow

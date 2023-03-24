@@ -7,9 +7,10 @@ import { GetContainerSyncsQuery, JobStates } from '../../graphql/generated/schem
 /**
  * Method which iterate each sync and map it to RepoContainerSyncData to be shown in table
  * @param data Sync list that comes from data base in GetContainerSyncsQuery format
+ * @param repoId Repo id to list its container syncs
  * @returns RepoSyncData with syncs info and its RepoContainerSyncData info by each sync
  */
-const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined): RepoContainerSyncData[] => {
+const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, repoId: string): RepoContainerSyncData[] => {
   const syncsData: Array<RepoContainerSyncData> = []
 
   // 0. Iterate over images (container_images)
@@ -19,8 +20,9 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined): 
 
     // 2. Get sync info
     const sync: RepoContainerSyncData = {
+      order: 0,
       repo: {
-        id: syncData?.repo?.id
+        id: repoId
       },
       sync: {
         id: syncData?.id,
@@ -28,7 +30,7 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined): 
         labels: []
       },
       image: {
-        id: syncData?.image?.id,
+        id: im.id,
         name: im?.name || '',
         description: im.description || ''
       },
@@ -56,6 +58,8 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined): 
       if (jobData.status === JobStates.Success) {
         succeededSyncs = [...succeededSyncs, jobData.runningTime]
       }
+
+      sync.order = 1
       sync.status.data?.push(jobData)
     })
 
@@ -67,7 +71,7 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined): 
     syncsData.push(sync)
   })
 
-  return syncsData
+  return syncsData.sort((a, b) => b.order - a.order)
 }
 
 export { mapToRepoContainerSyncsData }

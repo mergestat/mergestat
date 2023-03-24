@@ -21916,6 +21916,14 @@ export type RemoveContainerSyncScheduleMutationVariables = Exact<{
 
 export type RemoveContainerSyncScheduleMutation = { deleteContainerSyncSchedule?: { deletedContainerSyncScheduleNodeId?: string | null } | null };
 
+export type EnableContainerSyncMutationVariables = Exact<{
+  repoId: Scalars['UUID'];
+  imageId: Scalars['UUID'];
+}>;
+
+
+export type EnableContainerSyncMutation = { createContainerSync?: { containerSync?: { id: any, image?: { name: string } | null } | null } | null };
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
