@@ -15,7 +15,7 @@ type SyncTypesTableProps = PropsWithChildren<{
 
 export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTypesTableProps) => {
   const id = useId()
-  const { addSchedule, removeSchedule } = useContainerSyncNow('getContainerSyncs', true)
+  const { addSchedule, removeSchedule, enableContainerSync } = useContainerSyncNow('getContainerSyncs', true)
 
   return (
     <div className='flex flex-col flex-1 overflow-hidden'>
@@ -23,7 +23,7 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
         ? <NoDataFound message='Couldn&#39;t find any repo sync.' />
         : <div className='flex flex-col min-w-0 bg-white h-full'>
           <div className='flex-1 overflow-x-auto overflow-y-hidden'>
-            <table className='t-table-default t-table-hover'>
+            <table className='t-table-default t-table-hover border-b'>
               <thead>
                 <tr className='bg-white'>
                   <th scope='col' key='syncStateIcon' className='whitespace-nowrap w-0'>Status</th>
@@ -38,7 +38,10 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
 
               <tbody className='bg-white'>
                 {syncs.map((sync, index) => (
-                  <tr data-testid={TEST_IDS.syncsTypesRow} key={sync.image.id ?? `${id}-${index}`}>
+                  <tr data-testid={TEST_IDS.syncsTypesRow}
+                    key={sync.image.id ?? `${id}-${index}`}
+                    className={sync.status.syncState === SYNC_STATUS.empty ? 't-table-row-muted' : ''}
+                  >
                     <td className='w-0 h-20 p-0'>
                       <div className={cx('h-full flex justify-center items-center', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
                         <RepoSyncIcon type={sync.status.syncState} className='my-auto' />
@@ -75,7 +78,9 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
                           onChange={() => {
                             sync.sync.scheduleId
                               ? removeSchedule({ variables: { id: sync.sync.scheduleId } })
-                              : addSchedule({ variables: { syncId: sync.sync.id } })
+                              : sync.sync.id
+                                ? addSchedule({ variables: { syncId: sync.sync.id } })
+                                : enableContainerSync({ variables: { repoId: sync.repo.id, imageId: sync.image.id } })
                           }}
                         />
                       </div>

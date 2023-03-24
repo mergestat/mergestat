@@ -25,7 +25,7 @@ const useRepoContainerSyncs = () => {
   })
 
   useEffect(() => {
-    setSyncs(mapToRepoContainerSyncsData(data))
+    setSyncs(mapToRepoContainerSyncsData(data, `${repository}`))
     setTotal(data?.containerImages?.totalCount || 0)
 
     if (!pageLoaded && data?.all) {

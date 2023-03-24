@@ -60,10 +60,26 @@ const REMOVE_CONTAINER_SYNC_SCHEDULE = gql`
   }
 `
 
+const ENABLE_CONTAINER_SYNC = gql`
+  mutation enableContainerSync($repoId: UUID!, $imageId: UUID!) {
+    createContainerSync(
+      input: {containerSync: {repoId: $repoId, imageId: $imageId}}
+    ) {
+      containerSync {
+        id
+        image {
+          name
+        }
+      }
+    }
+  }
+`
+
 export {
   SYNC_NOW,
   ADD_SYNC_TYPE,
   UPDATE_SCHEDULE,
   ADD_CONTAINER_SYNC_SCHEDULE,
-  REMOVE_CONTAINER_SYNC_SCHEDULE
+  REMOVE_CONTAINER_SYNC_SCHEDULE,
+  ENABLE_CONTAINER_SYNC
 }
