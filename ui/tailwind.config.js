@@ -24,6 +24,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['"Inter UI"', 'ui-sans-serif', 'system-ui'],
+        display: ['"Cal Sans"'],
         mono: ['Monaco', 'ui-monospace', 'SFMono-Regular'],
       },
       gridTemplateRows: {
@@ -66,8 +67,12 @@ module.exports = {
       lime: colors.lime,
       red: colors.red,
       blue: colors.sky,
+      indigo: colors.indigo,
       yellow: colors.amber,
       white: colors.white,
+      purple: colors.purple,
+      teal: colors.teal,
+      pink: colors.pink
     },
   },
   variants: {
