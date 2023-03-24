@@ -1,72 +1,68 @@
+import { useQuery } from '@apollo/client'
 import { LogBox, Panel } from '@mergestat/blocks'
-import { ExternalLinkIcon, RepositoryIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
-import { ContainerSyncLogData, SyncLogsType } from 'src/@types'
-import RepoImage from 'src/components/RepoImage'
+import { useEffect, useState } from 'react'
+import { ContainerSyncLogData, RepoBasicData, SyncLogsType } from 'src/@types'
+import { GET_LOGS_OF_A_CONTAINER_SYNC } from 'src/api-logic/graphql/queries/get-sync-history-logs'
+import { mapToContainerSyncLogsData } from 'src/api-logic/mappers/repo-container/container-syncs-logs'
+import Loading from 'src/components/Loading'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { useGlobalSetState } from 'src/state/contexts'
 import { copyArrayToClipboard } from 'src/utils'
 import { SYNC_STATUS } from 'src/utils/constants'
+import useContainerSyncLogsCrumb from 'src/views/hooks/repoContainerSyncs/useContainerSyncLogsCrumb'
+import { GetLogsOfContainerSyncQuery } from '../../../api-logic/graphql/generated/schema'
 import { LogsInfo } from './components'
 
-const RepoDataLogsDetailsView: React.FC<ContainerSyncLogData> = ({ repo, sync, logs }) => {
-  const router = useRouter()
-  const logInfo: SyncLogsType | undefined = logs && logs.length > 0 ? logs[0] : undefined
-  const repoOwnerName = repo.name.split('/')[0]
+type RepoDataLogsDetailsViewProps = {
+  repo: RepoBasicData
+}
 
-  const { setCrumbs } = useGlobalSetState()
+const RepoDataLogsDetailsView: React.FC<RepoDataLogsDetailsViewProps> = ({ repo }: RepoDataLogsDetailsViewProps) => {
+  const router = useRouter()
+  const { repository, syncId, jobId } = router.query
+
+  const [logInfo, setLogInfo] = useState<SyncLogsType>()
+
+  const { loading, data } = useQuery<GetLogsOfContainerSyncQuery>(GET_LOGS_OF_A_CONTAINER_SYNC, {
+    variables: { repoId: repository, syncId, jobId },
+    fetchPolicy: 'no-cache',
+    pollInterval: 5000,
+  })
+
+  const repoData: ContainerSyncLogData = mapToContainerSyncLogsData(data)
+
+  useContainerSyncLogsCrumb(repo, repoData?.sync, data)
 
   useEffect(() => {
-    const crumbs = [
-      {
-        text: 'Repos',
-        startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
-      },
-      {
-        text: repo.name,
-        startIcon: <RepoImage vendor={repo.provider.vendor} vendorUrl={repo.provider.url} orgName={repoOwnerName} size="6" />,
-        endIcon: (repo.externalRepoLink
-          ? <a target="_blank" href={repo.externalRepoLink} rel="noopener noreferrer">
-            <ExternalLinkIcon className='t-icon t-icon-muted t-icon-small' />
-          </a>
-          : undefined
-        ),
-        onClick: () => router.push(`/repos/${repo.id}/container-syncs`),
-      },
-      {
-        text: sync?.name || '',
-        startIcon: <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />,
-        onClick: () => router.push(`/repos/${repo.id}/container-syncs/${sync?.id}`),
-      },
-    ]
-
-    setCrumbs(crumbs)
+    repoData && setLogInfo(repoData.logs && repoData.logs.length > 0 ? repoData.logs[0] : undefined)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [data])
 
   return (
     <>
-      <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
-        <div className="text-xl font-semibold flex items-center space-x-1">
-          <RepoSyncIcon type={logInfo?.syncType || SYNC_STATUS.empty} />
-          <span className='pl-1'>{logInfo?.syncStartText || ''}</span>
-        </div>
-      </div>
+      {loading
+        ? <Loading />
+        : <>
+          <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
+            <div className="text-xl font-semibold flex items-center space-x-1">
+              <RepoSyncIcon type={logInfo?.syncType || SYNC_STATUS.empty} />
+              <span className='pl-1'>{logInfo?.syncStartText || ''}</span>
+            </div>
+          </div>
 
-      <div className="flex-1 overflow-auto p-8 space-y-8">
-        <LogsInfo id={logInfo?.id || ''} syncStart={logInfo?.syncStart || ''} duration={logInfo?.duration || ''} />
-        {logInfo?.logs?.length
-          ? <LogBox logs={logInfo?.logs || []} onCopy={() => copyArrayToClipboard(logInfo?.logs)} />
-          : (
-            <Panel>
-              <Panel.Body className="flex items-center justify-center py-8">
-                <span className='t-text-muted text-sm'>No log entries yet</span>
-              </Panel.Body>
-            </Panel>)}
-      </div>
-    </>
+          <div className="flex-1 overflow-auto p-8 space-y-8">
+            <LogsInfo id={logInfo?.id || ''} syncStart={logInfo?.syncStart || ''} duration={logInfo?.duration || ''} />
+            {logInfo?.logs?.length
+              ? <LogBox logs={logInfo?.logs || []} onCopy={() => copyArrayToClipboard(logInfo?.logs)} />
+              : (
+                <Panel>
+                  <Panel.Body className="flex items-center justify-center py-8">
+                    <span className='t-text-muted text-sm'>No log entries yet</span>
+                  </Panel.Body>
+                </Panel>)}
+          </div>
+        </>
+      }</>
   )
 }
 

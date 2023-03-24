@@ -3,23 +3,20 @@ import { ClockIcon, RefreshIcon } from '@mergestat/icons'
 import React, { useEffect, useState } from 'react'
 import { RepoSyncStateT } from 'src/@types'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
-import useSyncNow from 'src/views/hooks/useSyncNow'
+import useContainerSyncNow from 'src/views/hooks/repoContainerSyncs/useContainerSyncNow'
 
 export type RepositorySyncNowProps = {
-  repoId: string
-  syncType: string
-  syncTypeId: string
-  syncTypeGroup: string
+  syncId: string
   syncStatus: RepoSyncStateT
 }
 
-export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ repoId, syncType, syncTypeId, syncTypeGroup, syncStatus }) => {
-  const { syncNow, addSyncType } = useSyncNow('getRepoSyncs')
+export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ syncId, syncStatus }) => {
+  const { syncNow } = useContainerSyncNow('getContainerSyncs')
   const [status, setStatus] = useState(syncStatus)
 
   const syncNowHandler = () => {
     setStatus(SYNC_STATUS.queued)
-    syncTypeId ? syncNow({ variables: { syncId: syncTypeId, typeGroup: syncTypeGroup } }) : addSyncType({ variables: { repoId, syncType } })
+    syncNow({ variables: { sync: syncId } })
   }
 
   useEffect(() => {

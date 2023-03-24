@@ -49,7 +49,7 @@ const GET_SYNC_HISTORY_LOGS = gql`
 `
 
 const GET_LOGS_OF_A_SYNC = gql`
-  query getLogsOfSync($repoId: UUID!, $syncId: UUID!, , $logId: BigInt!) {
+  query getLogsOfSync($repoId: UUID!, $syncId: UUID!, $logId: BigInt!) {
     repo(id: $repoId) {
       id
       repo
@@ -94,8 +94,8 @@ const GET_LOGS_OF_A_SYNC = gql`
   }
 `
 
-const GET_CONTAINER_SYNC_HISTORY_LOGS = gql`
-  query getContainerSyncHistoryLogs($repoId: UUID!, $syncId: UUID!) {
+const GET_CONTAINER_BASIC_DATA = gql`
+  query getContainerBasicData($repoId: UUID!, $syncId: UUID!) {
     repo(id: $repoId) {
       id
       repo
@@ -105,6 +105,24 @@ const GET_CONTAINER_SYNC_HISTORY_LOGS = gql`
         vendor
         settings
       }
+      containerSyncs(condition: {id: $syncId}) {
+        nodes {
+          image {
+            id
+            name
+            description
+          }
+        }
+      }
+    }
+  }
+`
+
+const GET_CONTAINER_SYNC_HISTORY_LOGS = gql`
+  query getContainerSyncHistoryLogs($repoId: UUID!, $syncId: UUID!, $first: Int, $offset: Int) {
+    repo(id: $repoId) {
+      id
+      repo
       containerSyncs(condition: {id: $syncId}) {
         nodes {
           id
@@ -122,7 +140,8 @@ const GET_CONTAINER_SYNC_HISTORY_LOGS = gql`
               id
             }
           }
-          executions: containerSyncExecutionsBySyncId(first: 50, orderBy: CREATED_AT_DESC) {
+          executions: containerSyncExecutionsBySyncId(first: $first, offset: $offset, orderBy: CREATED_AT_DESC) {
+            totalCount
             nodes {
               job {
                 id
@@ -156,16 +175,10 @@ const GET_CONTAINER_SYNC_HISTORY_LOGS = gql`
 `
 
 const GET_LOGS_OF_A_CONTAINER_SYNC = gql`
-  query getLogsOfContainerSync($repoId: UUID!, $syncId: UUID!, , $jobId: UUID!) {
+  query getLogsOfContainerSync($repoId: UUID!, $syncId: UUID!, $jobId: UUID!) {
     repo(id: $repoId) {
       id
       repo
-      provider: providerByProvider {
-        id
-        name
-        vendor
-        settings
-      }
       containerSyncs(condition: {id: $syncId}) {
         nodes {
           id
@@ -184,6 +197,7 @@ const GET_LOGS_OF_A_CONTAINER_SYNC = gql`
             }
           }
           executions: containerSyncExecutionsBySyncId(condition: {jobId: $jobId}) {
+            totalCount
             nodes {
               job {
                 id
@@ -219,6 +233,7 @@ const GET_LOGS_OF_A_CONTAINER_SYNC = gql`
 export {
   GET_SYNC_HISTORY_LOGS,
   GET_LOGS_OF_A_SYNC,
+  GET_CONTAINER_BASIC_DATA,
   GET_CONTAINER_SYNC_HISTORY_LOGS,
   GET_LOGS_OF_A_CONTAINER_SYNC
 }

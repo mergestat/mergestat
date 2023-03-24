@@ -7,7 +7,7 @@ import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useContainerSyncNow from 'src/views/hooks/repoContainerSyncs/useContainerSyncNow'
 import { NoDataFound } from 'src/views/shared/no-data-found'
-import { RepositorySyncStatus, RepositoryTableRowOptions, RepoSyncTypeDesc } from './components'
+import { RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions, RepoSyncTypeDesc } from './components'
 
 type SyncTypesTableProps = PropsWithChildren<{
   syncs: RepoContainerSyncData[]
@@ -15,7 +15,7 @@ type SyncTypesTableProps = PropsWithChildren<{
 
 export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTypesTableProps) => {
   const id = useId()
-  const { addSchedule, removeSchedule, enableContainerSync } = useContainerSyncNow('getContainerSyncs', true)
+  const { addSchedule, removeSchedule, enableContainerSync } = useContainerSyncNow('getContainerSyncs')
 
   return (
     <div className='flex flex-col flex-1 overflow-hidden'>
@@ -88,13 +88,12 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
                     <td className='w-0'>
                       <div className={cx('h-full flex', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
                         <div className='t-button-toolbar gap-4'>
-                          {/* <RepositorySyncNow
-                            repoId={repoId}
-                            syncType={sync.data.type}
-                            syncTypeId={sync.image.id}
-                            syncTypeGroup={sync.data.typeGroup}
-                            syncStatus={sync.status.syncState}
-                          /> */}
+                          <div className='w-5'>
+                            {sync.sync.id && <RepositorySyncNow
+                              syncId={sync.sync.id}
+                              syncStatus={sync.status.syncState}
+                            />}
+                          </div>
                           <RepositoryTableRowOptions imageId={sync.image.id} />
                         </div>
                       </div>

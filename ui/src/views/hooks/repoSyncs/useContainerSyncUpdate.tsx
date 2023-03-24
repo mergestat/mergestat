@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useContainerSyncDetailContext } from 'src/state/contexts/container-sync-detail.context'
-import useUpdateCS from './useUpdateCS'
+import useUpdateCI from './useUpdateCI'
 
 const useContainerSyncUpdate = () => {
   const [{ idContainerSync, containerSyncDetail: { name, description } }] = useContainerSyncDetailContext()
@@ -8,7 +8,7 @@ const useContainerSyncUpdate = () => {
   const [nameCS, setNameCS] = useState('')
   const [descriptionCS, setDescriptionCS] = useState('')
 
-  const { updateCI } = useUpdateCS()
+  const { updateCI } = useUpdateCI()
 
   const updateCSNameDesc = () => {
     updateCI({
