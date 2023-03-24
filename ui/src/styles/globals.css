@@ -40,7 +40,7 @@
   @apply font-medium
          text-gray-600
          text-sm
-         mb-1;
+         mb-2;
 }
 
 .t-master-detail-item-preview {
