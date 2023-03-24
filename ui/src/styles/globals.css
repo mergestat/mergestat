@@ -20,14 +20,9 @@
 }
 */
 
-.t-master-detail-list {
-  @apply bg-gray-50;
-}
 .t-master-detail-item {
   @apply px-6
          text-left
-         border-b
-         border-gray-150
          bg-white
          text-gray-900
          py-4
@@ -43,7 +38,7 @@
 
 .t-master-detail-item-title {
   @apply font-medium
-         text-gray-900
+         text-gray-600
          text-sm
          mb-1;
 }
