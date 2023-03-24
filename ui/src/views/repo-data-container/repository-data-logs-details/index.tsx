@@ -2,7 +2,7 @@ import { LogBox, Panel } from '@mergestat/blocks'
 import { ExternalLinkIcon, RepositoryIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { SyncLogsType, SyncTypeData } from 'src/@types'
+import { ContainerSyncLogData, SyncLogsType } from 'src/@types'
 import RepoImage from 'src/components/RepoImage'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { useGlobalSetState } from 'src/state/contexts'
@@ -10,7 +10,7 @@ import { copyArrayToClipboard } from 'src/utils'
 import { SYNC_STATUS } from 'src/utils/constants'
 import { LogsInfo } from './components'
 
-const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) => {
+const RepoDataLogsDetailsView: React.FC<ContainerSyncLogData> = ({ repo, sync, logs }) => {
   const router = useRouter()
   const logInfo: SyncLogsType | undefined = logs && logs.length > 0 ? logs[0] : undefined
   const repoOwnerName = repo.name.split('/')[0]
@@ -33,12 +33,12 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
           </a>
           : undefined
         ),
-        onClick: () => router.push(`/repos/${repo.id}`),
+        onClick: () => router.push(`/repos/${repo.id}/container-syncs`),
       },
       {
-        text: sync?.title || '',
+        text: sync?.name || '',
         startIcon: <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />,
-        onClick: () => router.push(`/repos/${repo.id}/${sync?.id}`),
+        onClick: () => router.push(`/repos/${repo.id}/container-syncs/${sync?.id}`),
       },
     ]
 

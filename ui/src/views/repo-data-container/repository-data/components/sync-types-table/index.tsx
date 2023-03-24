@@ -1,20 +1,21 @@
+import { Toggle } from '@mergestat/blocks'
 import cx from 'classnames'
 import React, { PropsWithChildren, useId } from 'react'
 import { RepoContainerSyncData } from 'src/@types'
+import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
-import useSyncNow from 'src/views/hooks/useSyncNow'
+import useContainerSyncNow from 'src/views/hooks/repoContainerSyncs/useContainerSyncNow'
 import { NoDataFound } from 'src/views/shared/no-data-found'
 import { RepositorySyncStatus, RepositoryTableRowOptions, RepoSyncTypeDesc } from './components'
 
 type SyncTypesTableProps = PropsWithChildren<{
-  repoId: string
   syncs: RepoContainerSyncData[]
 }>
 
-export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ repoId, syncs }: SyncTypesTableProps) => {
+export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTypesTableProps) => {
   const id = useId()
-  const { updateSchedule, addSyncType } = useSyncNow('getRepoSyncs', true)
+  const { addSchedule, removeSchedule } = useContainerSyncNow('getContainerSyncs', true)
 
   return (
     <div className='flex flex-col flex-1 overflow-hidden'>
@@ -46,16 +47,16 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ repoId, syncs }:
 
                     <td className='min-w-sm h-20'>
                       <RepoSyncTypeDesc
-                        id={sync.image.id}
-                        title={sync.image.title}
-                        brief={sync.image.brief}
-                        labels={sync.image.labels}
+                        id={sync.sync.id}
+                        title={sync.image.name}
+                        brief={sync.image.description}
+                        labels={sync.sync.labels}
                         disabled={sync.status.syncState === SYNC_STATUS.disabled}
                       />
                     </td>
 
                     <td className='text-gray-500 h-20'>
-                      {/* <RelativeTimeField date={sync.latestRun} syncData={sync} styles={'t-text-muted whitespace-nowrap'} /> */}
+                      <RelativeTimeField date={sync.latestRun} syncStatus={sync.status.syncState} styles={'t-text-muted whitespace-nowrap'} />
                     </td>
 
                     <td className='text-gray-500 h-20'>
@@ -65,21 +66,18 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ repoId, syncs }:
                     </td>
 
                     <td className='text-gray-500 h-20'>
-                      <RepositorySyncStatus
-                        data={sync.status.data}
-                      />
+                      <RepositorySyncStatus data={sync.status.data} />
                     </td>
                     <td className='w-0'>
                       <div className='flex items-center justify-center'>
-                        {/* <Toggle
-                          isChecked={sync.data.scheduleEnabled}
+                        <Toggle
+                          isChecked={!!sync.sync.scheduleId}
                           onChange={() => {
-                            showSuccessAlert(`Sync schedule turned ${sync.data.scheduleEnabled ? 'off' : 'on'}`)
-                            sync.data.id
-                              ? updateSchedule({ variables: { syncId: sync.data.id, schedule: !sync.data.scheduleEnabled } })
-                              : addSyncType({ variables: { repoId, syncType: sync.data.type, schedule: true } })
+                            sync.sync.scheduleId
+                              ? removeSchedule({ variables: { id: sync.sync.scheduleId } })
+                              : addSchedule({ variables: { syncId: sync.sync.id } })
                           }}
-                        /> */}
+                        />
                       </div>
                     </td>
                     <td className='w-0'>

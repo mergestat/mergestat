@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { GetRepoSyncsQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_REPO_SYNCS } from 'src/api-logic/graphql/queries/get-repo-syncs'
-import { mapToRepoSyncsData } from 'src/api-logic/mappers/repo-syncs'
+import { mapToRepoSyncsData } from 'src/api-logic/mappers/repo/repo-syncs'
 import { useRepoSyncsContext, useRepoSyncsSetState } from 'src/state/contexts/repo-syncs.context'
 
 const useRepoSyncs = () => {

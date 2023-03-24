@@ -2,7 +2,7 @@ import { format, lightFormat } from 'date-fns'
 import { RepoSyncQueueW, SyncLogsType, SyncTypeData } from 'src/@types'
 import { getExternalRepoLink, getRepoFromUrl, getSimpleDurationTime, getStatus } from 'src/utils'
 import { DATE_FORMAT, SYNC_STATUS } from 'src/utils/constants'
-import { GetSyncHistoryLogsQuery } from '../graphql/generated/schema'
+import { GetSyncHistoryLogsQuery } from '../../graphql/generated/schema'
 
 /**
  * Method which iterate each sync and map it to SyncTypeData to be shown in table

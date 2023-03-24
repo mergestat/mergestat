@@ -1,5 +1,5 @@
-import { ContainerSyncDetail } from '../../@types'
-import { GetContainerImageQuery } from '../graphql/generated/schema'
+import { ContainerSyncDetail } from '../../../@types'
+import { GetContainerImageQuery } from '../../graphql/generated/schema'
 
 const mapToContainerSyncDetail = (data: GetContainerImageQuery | undefined): ContainerSyncDetail => {
   const detail: ContainerSyncDetail = {

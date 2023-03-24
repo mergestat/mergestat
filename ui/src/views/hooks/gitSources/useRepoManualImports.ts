@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { RepoManualImportData } from 'src/@types'
 import { GetAllRepoManualImportsQuery, GetRepoManualImportsQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_ALL_REPO_MANUAL_IMPORTS, GET_REPO_MANUAL_IMPORTS } from 'src/api-logic/graphql/queries/get-repo-imports'
-import { mapToManualImportsData } from 'src/api-logic/mappers/imports'
+import { mapToManualImportsData } from 'src/api-logic/mappers/git-sources/imports'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 
 const useRepoManualImports = () => {

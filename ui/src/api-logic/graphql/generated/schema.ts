@@ -21902,6 +21902,20 @@ export type ScheduleMutationVariables = Exact<{
 
 export type ScheduleMutation = { updateRepoSync?: { repoSync?: { id: any, syncType: string, scheduleEnabled: boolean } | null } | null };
 
+export type AddContainerSyncScheduleMutationVariables = Exact<{
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type AddContainerSyncScheduleMutation = { createContainerSyncSchedule?: { containerSyncSchedule?: { id: any } | null } | null };
+
+export type RemoveContainerSyncScheduleMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveContainerSyncScheduleMutation = { deleteContainerSyncSchedule?: { deletedContainerSyncScheduleNodeId?: string | null } | null };
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -21989,12 +22003,13 @@ export type GetContainerImagesQuery = { all?: { totalCount: number } | null, con
 
 export type GetContainerSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
+  search: Scalars['String'];
   first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetContainerSyncsQuery = { all?: { totalCount: number } | null, containerSyncs?: { totalCount: number, nodes: Array<{ id: any, image?: { id: any, name: string, description?: string | null } | null }> } | null };
+export type GetContainerSyncsQuery = { containerSyncs?: { nodes: Array<{ id: any, parameters: any, image?: { id: any } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null } | null }> } }> } | null, all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
 
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -22074,6 +22089,23 @@ export type GetLogsOfSyncQueryVariables = Exact<{
 
 
 export type GetLogsOfSyncQuery = { repo?: { id: any, repo: string, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string, description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number }, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+
+export type GetContainerSyncHistoryLogsQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type GetContainerSyncHistoryLogsQuery = { repo?: { id: any, repo: string, provider?: { id: any, name: string, vendor: string, settings: any } | null, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
+
+export type GetLogsOfContainerSyncQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+  jobId: Scalars['UUID'];
+}>;
+
+
+export type GetLogsOfContainerSyncQuery = { repo?: { id: any, repo: string, provider?: { id: any, name: string, vendor: string, settings: any } | null, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
 
 export type GetUsersQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;

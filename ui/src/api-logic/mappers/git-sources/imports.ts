@@ -1,7 +1,7 @@
 import { ImportStatusType, RepoImportData, RepoManualImportData } from 'src/@types'
 import { getRepoFromUrl, getVendorProp } from 'src/utils'
 import { SYNC_REPO_METHOD, VENDOR_TYPE } from 'src/utils/constants'
-import { GetRepoImportsQuery, GetRepoManualImportsQuery } from '../graphql/generated/schema'
+import { GetRepoImportsQuery, GetRepoManualImportsQuery } from '../../graphql/generated/schema'
 
 /**
  * Method which iterate each repo import and map it to RepoImportData to be shown in table

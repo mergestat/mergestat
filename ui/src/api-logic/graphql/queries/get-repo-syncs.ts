@@ -68,19 +68,56 @@ const GET_CONTAINER_IMAGES = gql`
 `
 
 const GET_CONTAINER_SYNCS = gql`
-  query getContainerSyncs($id: UUID!, $first: Int, $offset: Int) {
-    all: containerSyncs {
+  query getContainerSyncs($id: UUID!, $search: String!, $first: Int, $offset: Int) {
+    containerSyncs(condition: {repoId: $id}) {
+      nodes {
+        id
+        parameters
+        image {
+          id
+        }
+        repo {
+          id
+        }
+        schedule: containerSyncSchedulesBySyncId {
+          nodes {
+            id
+          }
+        }
+        executions: containerSyncExecutionsBySyncId(
+          first: 15,
+          orderBy: CREATED_AT_DESC
+        ) {
+          nodes {
+            job {
+              id
+              status
+              queue
+              createdAt
+              startedAt
+              completedAt
+            }
+          }
+        }
+      }
+    }
+    all: containerImages {
       totalCount
     }
-    containerSyncs(condition: {repoId: $id}, first: $first, offset: $offset) {
+    containerImages(
+      filter: {
+        or: [
+          {name: {includesInsensitive: $search}}
+        ]
+      }
+      first: $first
+      offset: $offset
+    ) {
       totalCount
       nodes {
         id
-        image {
-          id
-          name
-          description
-        }
+        name
+        description
       }
     }
   }

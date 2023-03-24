@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRouter } from 'next/router'
 import React, { CSSProperties, Fragment, useRef, useState } from 'react'
-import type { SyncStatusDataT } from 'src/@types'
+import type { JobData } from 'src/@types'
 
 import { SYNC_STATUS } from 'src/utils/constants'
 
 type RepositorySyncStatusProps = {
-  data?: SyncStatusDataT[]
+  data?: JobData[]
   width?: number
   height?: number
   barWidth?: number
@@ -37,7 +37,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 ) => {
   const tooltipRef = useRef<HTMLDivElement>(null)
   const [displayTooltip, setDisplayTooltip] = useState(false)
-  const [tooltipData, setTooltipData] = useState<SyncStatusDataT | null>(null)
+  const [tooltipData, setTooltipData] = useState<JobData | null>(null)
   const [eventPosition, setEventPosition] = useState<PositionType | null>(null)
   const [activeBar, setActiveBar] = useState<number | null>(null)
 
@@ -53,10 +53,10 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     { length: 15 },
     (x, i) => (i in data)
       ? data[i]
-      : { id: '', repoId: '', syncTypeId: '', runningTime: 3, runningTimeReadable: '', status: SYNC_STATUS.empty, doneAt: undefined }
+      : { id: '', repoId: '', syncId: '', runningTime: 3, runningTimeReadable: '', status: SYNC_STATUS.empty, doneAt: undefined }
   )
 
-  const valueArray = chartArray.map((d: SyncStatusDataT) => d.runningTime)
+  const valueArray = chartArray.map((d: JobData) => d.runningTime)
   const points = dataToPoints({ data: valueArray, limit, width, margin })
 
   const strokeWidth: number = 1 * ((style && style.strokeWidth ? +style.strokeWidth : 0) || 0)
@@ -82,8 +82,8 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     }
   }
 
-  const onBarClick = (p: SyncStatusDataT) => {
-    router.push(`/repos/${p.repoId}/${p.syncTypeId}/${p.id}`)
+  const onBarClick = (p: JobData) => {
+    router.push(`/repos/${p.repoId}/container-syncs/${p.syncId}/${p.id}`)
   }
 
   return (

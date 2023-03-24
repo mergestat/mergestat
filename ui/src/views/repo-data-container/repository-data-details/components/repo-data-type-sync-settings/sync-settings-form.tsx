@@ -1,13 +1,10 @@
 import { Label, Panel, Toggle } from '@mergestat/blocks'
 import React, { PropsWithChildren } from 'react'
 import Loading from 'src/components/Loading'
-import useSyncsLogs from 'src/views/hooks/useSyncsLogs'
-import { showErrorAlert, showSuccessAlert } from 'src/utils/alerts'
-import { ApolloError } from '@apollo/client'
-import { ScheduleMutation } from 'src/api-logic/graphql/generated/schema'
+import useContainerSyncsLogs from 'src/views/hooks/repoContainerSyncs/useContainerSyncsLogs'
 
 export const SyncSettingsForm = () => {
-  const { loading, repoData, syncTypeId, updateSchedule } = useSyncsLogs()
+  const { loading, repoData, syncId, addSchedule, removeSchedule } = useContainerSyncsLogs()
 
   return (
     <>
@@ -23,16 +20,12 @@ export const SyncSettingsForm = () => {
                 <Label className='text-gray-600 font-medium'>Schedule</Label>
                 <div className="w-64 flex gap-2 items-center">
                   <Toggle
-                    isChecked={repoData.sync?.scheduleEnabled || false}
-                    onChange={() => updateSchedule({
-                      variables: { syncId: syncTypeId, schedule: !repoData.sync?.scheduleEnabled },
-                      onCompleted(data: ScheduleMutation) {
-                        showSuccessAlert(`Schedule ${data.updateRepoSync?.repoSync?.scheduleEnabled ? 'enabled' : 'disabled'}`)
-                      },
-                      onError(error: ApolloError) {
-                        showErrorAlert(error.message)
-                      },
-                    })}
+                    isChecked={!!repoData.sync?.scheduleId}
+                    onChange={() => {
+                      repoData.sync?.scheduleId
+                        ? removeSchedule({ variables: { id: repoData.sync?.scheduleId } })
+                        : addSchedule({ variables: { syncId } })
+                    }}
                   />
                   <span className="t-text-default">Enable</span>
                 </div>

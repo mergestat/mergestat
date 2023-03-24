@@ -13,7 +13,7 @@ import { SyncTypesTable } from '../components'
 export const RepoSyncs: React.FC = () => {
   const [{ rows, page, total }] = useRepoSyncsContext()
   const { setSearch, setRows, setPage } = useRepoSyncsSetState()
-  const { loading, records, repoId, syncs } = useRepoContainerSyncs()
+  const { loading, records, syncs } = useRepoContainerSyncs()
   const router = useRouter()
 
   return (
@@ -35,7 +35,7 @@ export const RepoSyncs: React.FC = () => {
           {loading
             ? <Loading />
             : records
-              ? <SyncTypesTable repoId={repoId} syncs={syncs || []} />
+              ? <SyncTypesTable syncs={syncs || []} />
               : <EmptyData
                 message='No repo syncs yet'
                 icon={<TableIcon className="t-icon" />}

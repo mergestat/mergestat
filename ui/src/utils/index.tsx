@@ -2,6 +2,7 @@ import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { BitbucketIcon, BranchIcon, GithubIcon, GitlabIcon } from '@mergestat/icons'
 import { differenceInMilliseconds, formatDistance, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncQueueW, RepoSyncStateT, UserTypeUI } from 'src/@types'
+import { JobStates } from 'src/api-logic/graphql/generated/schema'
 import { showSuccessAlert } from './alerts'
 import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI, VENDOR_TYPE } from './constants'
 
@@ -139,6 +140,26 @@ export const getStatus = (syncQueue: RepoSyncQueueW): RepoSyncStateT => {
   // TODO: Should we extend the schema to have a new property 'hasWarning'
   const status = syncQueue?.hasError ? 'ERROR' : syncQueue?.warnings?.totalCount && syncQueue?.warnings?.totalCount > 0 ? 'WARNING' : syncQueue?.status
   return mapToRepoSyncStateT(status)
+}
+
+/**
+ * Method to map data base status to table status
+ * @param status Data base status
+ * @returns Table status (RepoSyncStateT)
+ */
+export function mapToContainerSyncState(status?: JobStates): RepoSyncStateT {
+  switch (status) {
+    case JobStates.Success:
+      return SYNC_STATUS.succeeded
+    case JobStates.Running:
+      return SYNC_STATUS.running
+    case JobStates.Pending:
+      return SYNC_STATUS.queued
+    case JobStates.Errored:
+      return SYNC_STATUS.error
+    default:
+      return SYNC_STATUS.empty
+  }
 }
 
 /**
