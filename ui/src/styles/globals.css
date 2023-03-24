@@ -20,109 +20,59 @@
 }
 */
 
-
-/* TODO(emily): fix override max-h-full class in t-modal styles in blocks */
-.t-modal {
-  max-height: calc(100vh - 4.8rem);
+.t-master-detail-list {
+  @apply bg-gray-50;
+}
+.t-master-detail-item {
+  @apply px-6
+         text-left
+         border-b
+         border-gray-150
+         bg-white
+         text-gray-900
+         py-4
+         w-full
+         hover_bg-gray-50;
 }
 
-/* TODO(emily): add button styles to blocks */
-.t-nav {
-  @apply h-auto;
+.t-master-detail-item-active {
+  @apply relative
+         bg-gray-50
+         py-4;
 }
 
-.t-nav-item {
-  @apply h-11;
+.t-master-detail-item-title {
+  @apply font-medium
+         text-gray-900
+         text-sm
+         mb-1;
 }
 
-.t-nav > * + * {
-  @apply ml-3
+.t-master-detail-item-preview {
+  @apply font-mono
+         text-xs
+         text-gray-450;
 }
 
-.t-nav-item > a,
-.t-nav-item > button {
-    @apply px-3
-           border-0
-           rounded-md
-           bg-transparent
-           gap-3
-           font-medium
-           inline-flex
-           items-center
-           h-full
-           focus_outline-none
-           focus_ring-2
-           ring-inset
-           focus_ring-blue-500
-           hover_bg-gray-600
-           cursor-pointer;
+.t-master-detail-item-active .t-master-detail-item-title {
+  @apply text-blue-600;
 }
 
-.t-vertical-nav-item-active {
-  @apply border-l-4
-         border-blue-500
+.t-master-detail-item-active:after {
+  content: "";
+  @apply left-0
+         top-0
+         w-1
+         h-full
+         absolute
+         bg-blue-500;
 }
 
-.t-vertical-nav-item-active > a > span > div > p {
-  @apply text-blue-500
-}
-
-.t-table-bordered tr:last-child td {
-  @apply  border-r
-          border-l
-          border-b;
-}
-
-/* TODO(emily) re-add missing resizer styles to blocks */
-.t-resizer {
-  cursor: row-resize;
-  @apply w-full;
-}
-
-
-/* TODO(emily) adjust styles in blocks */
-.t-button-toolbar {
-  @apply space-x-3;
-}
-
-/* TODO(emily) update classname */
-.t-radio-card.t-radio-card-selected {
-  @apply bg-blue-50
-         text-blue-600
-         ring-1
-         ring-inset
-         ring-blue-500
-         border-blue-500
-         hover_from-blue-100
-         hover_to-blue-100;
-}
-
-/* TODO(emily) review avatar setup */
-.t-avatar {
-  @apply bg-gray-100;
-}
-
-.t-avatar-dark {
-  @apply bg-gray-500;
-}
-
-.t-avatar-primary {
-  @apply bg-blue-600;
-}
-
-.t-avatar-xl .t-icon {
-    @apply w-6
-           h-6;
-}
-
-/* TODO(emily) fix modal position jump on smaller screens */
-.t-modal {
-  @apply align-middle;
-}
-
-/* TODO(emily) fix tabs spacing in blocks */
-.t-tab {
-  @apply mb-0;
+pre[class*="language-"]::selection,
+pre[class*="language-"] ::selection,
+code[class*="language-"]::selection,
+code[class*="language-"] ::selection {
+  @apply bg-gray-200;
 }
 
 .apexcharts-tooltip {
