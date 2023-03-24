@@ -69,7 +69,7 @@ export const QueryHistoryModal: React.FC = () => {
                   </p>
                 </div>
               : <>
-              <div className='w-1/3 border-r flex flex-col overflow-hidden'>
+              <div className='w-1/3 border-r flex flex-col overflow-hidden h-720'>
                 <div className='t-master-detail-list flex-1 overflow-auto'>
                   {queryHistory?.map((history) => (
                   <button
