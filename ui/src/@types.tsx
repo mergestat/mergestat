@@ -316,6 +316,13 @@ export type GitSourceDetail = {
   totalRepos: number
 }
 
+export type DefaultRepoSync = {
+  id: string
+  name: string
+  description?: string | null
+  enabled: boolean
+}
+
 /** Schema */
 
 export type ColumnData = {
