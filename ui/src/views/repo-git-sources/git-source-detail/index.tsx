@@ -18,7 +18,7 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
   const { vendor, nameGS, descriptionGS, setNameGS, setDescriptionGS, updateGitSource } = useGitSourceUpdate()
 
   return (
-    <div className='flex flex-col flex-1 overflow-auto'>
+    <div className='flex flex-col'>
       <Toolbar className='bg-white px-8 pt-4'>
         <Toolbar.Left className='flex-grow'>
           <EditableText
@@ -45,17 +45,23 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
         </Toolbar.Right>
       </Toolbar>
 
-      <div className="flex-1 w-full bg-white">
+      <div className='flex flex-col flex-1'>
         <Tabs>
-          <Tabs.List className='border-b px-8'>
+          <Tabs.List className='border-b px-8 bg-white'>
             <Tabs.Item>Overview</Tabs.Item>
+            {/* <Tabs.Item>Default Repo Syncs</Tabs.Item> */}
             <Tabs.Item>Settings</Tabs.Item>
           </Tabs.List>
-          <Tabs.Panels className="p-8 pb-16 bg-gray-50 h-full">
-            <Tabs.Panel>
+          <Tabs.Panels className="bg-gray-50 flex-1">
+            <Tabs.Panel className='p-8'>
               <GitSourceOverviewTab />
             </Tabs.Panel>
-            <Tabs.Panel>
+            {/* <Tabs.Panel className='p-0 h-full flex flex-col'>
+              <DefaultRepoSyncsProvider>
+                <DefaultRepoSyncs />
+              </DefaultRepoSyncsProvider>
+            </Tabs.Panel> */}
+            <Tabs.Panel className='p-8'>
               <GitSourceSettingsTab />
             </Tabs.Panel>
           </Tabs.Panels>
