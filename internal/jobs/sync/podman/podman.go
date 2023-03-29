@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"sync"
+	"time"
 
 	"github.com/go-git/go-billy/v5/osfs"
 	"github.com/go-git/go-git/v5"
@@ -32,7 +33,7 @@ import (
 func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 	return sqlq.HandlerFunc(func(ctx context.Context, job *sqlq.Job) (err error) {
 		var logger = job.Logger()
-		go job.SendKeepAlive(ctx, job.KeepAlive) //nolint:errcheck
+		go job.SendKeepAlive(ctx, job.KeepAlive-2*time.Second) //nolint:errcheck
 
 		var params struct{ ID uuid.UUID }
 		if err = json.Unmarshal(job.Parameters, &params); err != nil {

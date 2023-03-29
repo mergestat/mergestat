@@ -21,15 +21,19 @@ func ContainerSync(ctx context.Context, dur time.Duration, upstream *sql.DB) {
 	}
 
 	const listSyncsQuery = `
-SELECT DISTINCT ON (syncs.id) syncs.id, (image.queue || '-' || repo.provider) AS queue
-	FROM mergestat.container_sync_schedules schd, mergestat.container_syncs syncs
-		INNER JOIN mergestat.container_images image ON image.id = syncs.image_id
-		INNER JOIN public.repos repo ON repo.id = syncs.repo_id
-		
-		LEFT OUTER JOIN mergestat.container_sync_executions exec ON exec.sync_id = syncs.id
-		LEFT OUTER JOIN sqlq.jobs job ON job.id = exec.job_id
-WHERE syncs.id = schd.sync_id AND (job.status IS NULL OR job.status NOT IN ('pending', 'running'))
-ORDER BY syncs.id, exec.created_at;`
+WITH schedules(id, queue, job, status) AS (
+	SELECT DISTINCT ON (syncs.id) syncs.id, (image.queue || '-' || repo.provider) AS queue, exec.job_id, job.status
+		FROM mergestat.container_sync_schedules schd, mergestat.container_syncs syncs
+			INNER JOIN mergestat.container_images image ON image.id = syncs.image_id
+			INNER JOIN public.repos repo ON repo.id = syncs.repo_id
+			
+			LEFT OUTER JOIN mergestat.container_sync_executions exec ON exec.sync_id = syncs.id
+			LEFT OUTER JOIN sqlq.jobs job ON job.id = exec.job_id
+	WHERE syncs.id = schd.sync_id
+	ORDER BY syncs.id, exec.created_at DESC
+)
+SELECT id, queue FROM schedules
+	WHERE (status IS NULL OR status NOT IN ('pending', 'running'));`
 
 	const createExecutionQuery = "INSERT INTO mergestat.container_sync_executions (sync_id, job_id) VALUES ($1, $2)"
 
