@@ -149,6 +149,7 @@ func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 			wg.Wait()
 			if err = run.Wait(); err != nil {
 				logger.Errorf("failed to run image: %s", err.Error())
+				return errors.Wrapf(err, "failed to run image")
 			}
 		}
 
