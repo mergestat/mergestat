@@ -45,7 +45,7 @@ const SettingsCS: React.FC = () => {
       <Panel.Body className='p-6'>
         <div className='flex space-x-4'>
           <div className='flex-1'>
-            <Label aria-required>Docker image URL</Label>
+            <Label aria-required>Container image URL</Label>
             <Input
               type='text'
               value={url}

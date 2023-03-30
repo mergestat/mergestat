@@ -71,7 +71,7 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
     syncsData.push(sync)
   })
 
-  return syncsData.sort((a, b) => b.order - a.order)
+  return syncsData
 }
 
 export { mapToRepoContainerSyncsData }
