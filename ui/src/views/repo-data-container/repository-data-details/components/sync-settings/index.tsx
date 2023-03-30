@@ -1,6 +1,7 @@
-import { Button, CodeBox, Label, Panel, Spinner, Toggle, Toolbar } from '@mergestat/blocks'
+import { Button, Label, Panel, Spinner, Toggle, Toolbar } from '@mergestat/blocks'
 import { ChevronDownIcon, ChevronUpIcon, ClockIcon, RefreshIcon } from '@mergestat/icons'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import Editor from '@monaco-editor/react'
+import React, { useEffect, useState } from 'react'
 import { ContainerSyncInfo } from 'src/@types'
 import { isJSONValid, stringifyJsonCode } from 'src/utils'
 import { showErrorAlert } from 'src/utils/alerts'
@@ -87,12 +88,21 @@ export const SyncSettings: React.FC<SyncSettingsProps> = ({ sync, addSchedule, r
           />
           {openParams &&
             <>
-              <CodeBox
-                className="h-60 my-2 text-gray-500"
-                language='json'
-                value={parameters}
-                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setParameters(e.target.value)}
-              />
+              <div className='w-full h-40 my-2 px-1 border rounded-md'>
+                <Editor
+                  className='text-sm font-mono'
+                  value={parameters}
+                  language='json'
+                  onChange={(text: string | undefined) => setParameters(text || '')}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    scrollbar: {
+                      vertical: 'auto',
+                    },
+                  }}
+                />
+              </div>
               <p className='text-gray-400'>Override the default configuration by adding custom parameters in JSON format.</p>
             </>
           }
