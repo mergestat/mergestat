@@ -48,7 +48,7 @@ const RepoSyncDetailView: React.FC<RepoSyncDetailView> = ({ containerSyncId }: R
         </Toolbar.Right>
       </Toolbar>
 
-      <div className="flex-1 w-full p-8 pb-16 bg-gray-50 h-full">
+      <div className="flex-1 w-full p-8 pb-16 mb-8 bg-gray-50 h-full">
         <ContainerSyncStats loading={loading}
           totalRepos={totalRepos || 0}
           totalErrors={0}

@@ -1,5 +1,6 @@
-import { Button, CodeBox, Input, Label, Panel } from '@mergestat/blocks'
+import { Button, Input, Label, Panel } from '@mergestat/blocks'
 import { ChevronDownIcon, ChevronUpIcon } from '@mergestat/icons'
+import Editor from '@monaco-editor/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useContainerSyncDetailContext } from 'src/state/contexts/container-sync-detail.context'
 import { isJSONValid, stringifyJsonCode } from 'src/utils'
@@ -54,7 +55,6 @@ const SettingsCS: React.FC = () => {
                 setUrl(e.target.value)
               }}
             />
-
           </div>
           <div>
             <Label aria-required>Version</Label>
@@ -81,12 +81,21 @@ const SettingsCS: React.FC = () => {
           />
           {openParams &&
             <>
-              <CodeBox
-                className="h-60 my-2 text-gray-500"
-                language='json'
-                value={parameters}
-                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setParameters(e.target.value)}
-              />
+              <div className='w-full h-40 my-2 px-1 border rounded-md'>
+                <Editor
+                  className='text-sm font-mono'
+                  value={parameters}
+                  language='json'
+                  onChange={(text: string | undefined) => setParameters(text || '')}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    scrollbar: {
+                      vertical: 'auto',
+                    },
+                  }}
+                />
+              </div>
               <p className='text-gray-400'>Override the default configuration by adding custom parameters in JSON format.</p>
             </>
           }
