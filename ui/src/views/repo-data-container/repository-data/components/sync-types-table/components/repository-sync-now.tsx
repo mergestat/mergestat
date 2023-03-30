@@ -7,16 +7,23 @@ import useContainerSyncNow from 'src/views/hooks/repoContainerSyncs/useContainer
 
 export type RepositorySyncNowProps = {
   syncId: string
+  repoId: string
+  imageId: string
   syncStatus: RepoSyncStateT
 }
 
-export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ syncId, syncStatus }) => {
-  const { syncNow } = useContainerSyncNow('getContainerSyncs')
+export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ syncId, repoId, imageId, syncStatus }) => {
+  const { syncNow, enableCSAndSync } = useContainerSyncNow('getContainerSyncs')
   const [status, setStatus] = useState(syncStatus)
 
   const syncNowHandler = () => {
     setStatus(SYNC_STATUS.queued)
     syncNow({ variables: { sync: syncId } })
+  }
+
+  const enableSyncNowHandler = () => {
+    setStatus(SYNC_STATUS.queued)
+    enableCSAndSync({ variables: { repoId, imageId } })
   }
 
   useEffect(() => {
@@ -38,7 +45,9 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ syncId, sy
           ? <Spinner size='sm' className='mr-2' />
           : <RefreshIcon className="t-icon t-icon-default" />
       }
-      onClick={syncNowHandler}
+      onClick={() => {
+        syncId ? syncNowHandler() : enableSyncNowHandler()
+      }}
     />
   )
 }

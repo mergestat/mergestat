@@ -15,7 +15,7 @@ type SyncTypesTableProps = PropsWithChildren<{
 
 export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTypesTableProps) => {
   const id = useId()
-  const { addSchedule, removeSchedule, enableContainerSync } = useContainerSyncNow('getContainerSyncs')
+  const { addSchedule, removeSchedule, enableCSAndSchedule } = useContainerSyncNow('getContainerSyncs')
 
   return (
     <div className='flex flex-col flex-1 overflow-hidden'>
@@ -80,7 +80,7 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
                               ? removeSchedule({ variables: { id: sync.sync.scheduleId } })
                               : sync.sync.id
                                 ? addSchedule({ variables: { syncId: sync.sync.id } })
-                                : enableContainerSync({ variables: { repoId: sync.repo.id, imageId: sync.image.id } })
+                                : enableCSAndSchedule({ variables: { repoId: sync.repo.id, imageId: sync.image.id } })
                           }}
                         />
                       </div>
@@ -89,10 +89,12 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
                       <div className={cx('h-full flex', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
                         <div className='t-button-toolbar gap-4'>
                           <div className='w-5'>
-                            {sync.sync.id && <RepositorySyncNow
+                            <RepositorySyncNow
                               syncId={sync.sync.id}
+                              repoId={sync.repo.id}
+                              imageId={sync.image.id}
                               syncStatus={sync.status.syncState}
-                            />}
+                            />
                           </div>
                           <RepositoryTableRowOptions imageId={sync.image.id} />
                         </div>

@@ -25,7 +25,7 @@ const useContainerSyncNow = (refetch: string) => {
     refetchQueries: () => [refetch]
   })
 
-  const [enableContainerSync] = useMutation(ENABLE_CONTAINER_SYNC, {
+  const [enableCSAndSchedule] = useMutation(ENABLE_CONTAINER_SYNC, {
     onCompleted: (data: EnableContainerSyncMutation) => {
       addSchedule({
         variables: { syncId: data.createContainerSync?.containerSync?.id }
@@ -35,7 +35,17 @@ const useContainerSyncNow = (refetch: string) => {
     refetchQueries: () => [refetch]
   })
 
-  return { syncNow, addSchedule, removeSchedule, enableContainerSync }
+  const [enableCSAndSync] = useMutation(ENABLE_CONTAINER_SYNC, {
+    onCompleted: (data: EnableContainerSyncMutation) => {
+      syncNow({
+        variables: { sync: data.createContainerSync?.containerSync?.id }
+      })
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => [refetch]
+  })
+
+  return { syncNow, addSchedule, removeSchedule, enableCSAndSchedule, enableCSAndSync }
 }
 
 export default useContainerSyncNow
