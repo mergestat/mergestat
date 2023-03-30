@@ -18,7 +18,7 @@ export const DefaultRepoSyncs: React.FC = () => {
 
   return (
     <>
-      <div className='py-6 pl-8 pr-5 '>
+      <div className='py-6 pl-8 pr-5'>
         <Alert type='default' theme='light' className='bg-gray-100'>
           Default syncs are automatically enabled for all repos inside the git source. You can always override them on a per-repo basis. Learn more.{' '}
           <a className='font-medium cursor-pointer text-blue-600' target='_blank' rel='noreferrer' href='https://docs.mergestat.com/mergestat/setup/repo-auto-imports'>Learn more</a>

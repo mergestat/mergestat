@@ -18,7 +18,7 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
   const { vendor, nameGS, descriptionGS, setNameGS, setDescriptionGS, updateGitSource } = useGitSourceUpdate()
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col h-full overflow-auto'>
       <Toolbar className='bg-white px-8 pt-4'>
         <Toolbar.Left className='flex-grow'>
           <EditableText
