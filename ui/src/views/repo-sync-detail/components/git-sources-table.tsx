@@ -2,12 +2,13 @@ import { Button, Dropdown, ListItem, Menu } from '@mergestat/blocks'
 import { DotsHorizontalIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { GitSourceData } from 'src/@types'
 import { useContainerSyncDetailSetState } from 'src/state/contexts/container-sync-detail.context'
 import { getGitSourceIcon } from 'src/utils'
 import { NoDataFound } from 'src/views/shared/no-data-found'
 
 type GitSourcesTableProps = {
-  gitSources: any[]
+  gitSources: GitSourceData[]
 }
 
 export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: GitSourcesTableProps) => {
@@ -41,7 +42,6 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                             subline={gs.description || ''}
                             className={'px-4 py-2'}
                             startIcon={getGitSourceIcon(gs.vendor)}
-                            onClick={() => router.push(`/repos/git-sources/${gs.id}`)}
                           />
                         </td>
                         <td className='p-3 text-gray-400'>
@@ -68,7 +68,7 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                                 />
                                 <Menu.Item
                                   text="Edit Git source"
-                                  onClick={close}
+                                  onClick={() => router.push(`/repos/git-sources/${gs.id}`)}
                                 />
                               </Menu>
                             )}
