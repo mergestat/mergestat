@@ -1,8 +1,8 @@
-import { Button, Label, Panel, Spinner, Textarea, Toggle, Toolbar } from '@mergestat/blocks'
+import { Button, CodeBox, Label, Panel, Spinner, Toggle, Toolbar } from '@mergestat/blocks'
 import { ChevronDownIcon, ChevronUpIcon, ClockIcon, RefreshIcon } from '@mergestat/icons'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { ContainerSyncInfo } from 'src/@types'
-import { isJSONValid } from 'src/utils'
+import { isJSONValid, stringifyJsonCode } from 'src/utils'
 import { showErrorAlert } from 'src/utils/alerts'
 import { SYNC_STATUS } from 'src/utils/constants'
 import useUpdateCS from 'src/views/hooks/repoContainerSyncs/useUpdateCS'
@@ -20,7 +20,7 @@ export const SyncSettings: React.FC<SyncSettingsProps> = ({ sync, addSchedule, r
   const { updateCS } = useUpdateCS()
 
   useEffect(() => {
-    setParameters(JSON.stringify(sync?.parameters, null, 2) || '')
+    setParameters(stringifyJsonCode(sync?.parameters) || '')
   }, [sync])
 
   const saveSttings = () => {
@@ -87,7 +87,10 @@ export const SyncSettings: React.FC<SyncSettingsProps> = ({ sync, addSchedule, r
           />
           {openParams &&
             <>
-              <Textarea className="h-60 mt-2 text-gray-500" value={parameters}
+              <CodeBox
+                className="h-60 my-2 text-gray-500"
+                language='json'
+                value={parameters}
                 onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setParameters(e.target.value)}
               />
               <p className='text-gray-400'>Override the default configuration by adding custom parameters in JSON format.</p>

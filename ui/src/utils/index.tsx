@@ -325,3 +325,16 @@ export function isJSONValid(str: string) {
   }
   return true
 }
+
+/**
+ * Method to format a Json code with identation
+ * @param code Code to process
+ * @returns Json code formated with identation
+ */
+export function stringifyJsonCode(code?: JSON) {
+  return code && JSON.stringify(code, (k, v) => {
+    if (v instanceof Array) { return JSON.stringify(v, null, 1).replace(/\n/g, '') }
+    return v
+    // eslint-disable-next-line no-useless-escape
+  }, 2).replace(/\"\[ /g, '[').replace(/\]\"/g, ']')
+}

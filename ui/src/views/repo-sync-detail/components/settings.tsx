@@ -1,8 +1,8 @@
-import { Button, Input, Label, Panel, Textarea } from '@mergestat/blocks'
+import { Button, CodeBox, Input, Label, Panel } from '@mergestat/blocks'
 import { ChevronDownIcon, ChevronUpIcon } from '@mergestat/icons'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useContainerSyncDetailContext } from 'src/state/contexts/container-sync-detail.context'
-import { isJSONValid } from 'src/utils'
+import { isJSONValid, stringifyJsonCode } from 'src/utils'
 import { showErrorAlert } from 'src/utils/alerts'
 import useUpdateCI from 'src/views/hooks/repoSyncs/useUpdateCI'
 
@@ -19,7 +19,7 @@ const SettingsCS: React.FC = () => {
     const { url, version, parameters } = containerSyncDetail
     setUrl(url || '')
     setVersion(version || '')
-    setParameters(JSON.stringify(parameters, null, 2) || '')
+    setParameters(stringifyJsonCode(parameters) || '')
   }, [containerSyncDetail])
 
   const saveSttings = () => {
@@ -81,7 +81,10 @@ const SettingsCS: React.FC = () => {
           />
           {openParams &&
             <>
-              <Textarea className="h-60 mt-2 text-gray-500" value={parameters}
+              <CodeBox
+                className="h-60 my-2 text-gray-500"
+                language='json'
+                value={parameters}
                 onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setParameters(e.target.value)}
               />
               <p className='text-gray-400'>Override the default configuration by adding custom parameters in JSON format.</p>
