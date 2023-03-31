@@ -5,10 +5,11 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/mergestat/sqlq"
 	"github.com/rs/zerolog"
-	"time"
 )
 
 // AutoImport provides a cron function that periodically schedules execution
@@ -45,7 +46,11 @@ FROM dequeued dq
 		if tx, err = upstream.BeginTx(ctx, &sql.TxOptions{}); err != nil {
 			return err
 		}
-		defer tx.Rollback()
+		defer func() {
+			if rbErr := tx.Rollback(); rbErr != nil {
+				log.Err(rbErr).Msg("failed to rollback transaction")
+			}
+		}()
 
 		// fetch a list of all configured imports that are due now
 		var rows *sql.Rows
