@@ -9,7 +9,7 @@ services:
       - 5433:5433
     command:
       - "--connection"
-      - "postgres://postgres:password@postgres:5432/postgres?sslmode=disable"
+      - "postgres://postgres:${POSTGRES_PASSWORD:-password}@postgres:5432/postgres?sslmode=disable"
       - "--port"
       - "5433"
       - "--schema"
@@ -28,10 +28,10 @@ services:
       - "--allow-explain"
       - "--enable-query-batching"
       - "--legacy-relations=omit"
-      - "--jwt-secret=secret"
+      - "--jwt-secret=${JWT_SECRET:-secret}"
       - "--default-role=mergestat_anonymous"
     environment:
-      ENCRYPTION_SECRET: password
+      ENCRYPTION_SECRET: ${ENCRYPTION_SECRET:-password}
       DISPLAY_PG_HOSTNAME: localhost
       DISPLAY_PG_PORT: 5432
       DISPLAY_PG_DATABASE: postgres
