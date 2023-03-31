@@ -12,7 +12,7 @@ import (
 	"net/http"
 )
 
-func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
+func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.FetchImportJobRow) (err error) {
 	var emptyTags = []byte("[]") // bitbucket doesn't support tags
 
 	var username, password string

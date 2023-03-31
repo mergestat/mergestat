@@ -23,7 +23,6 @@ import (
 	"github.com/mergestat/mergestat/internal/syncer"
 	"github.com/mergestat/mergestat/internal/timeout"
 	"github.com/mergestat/mergestat/queries"
-	"github.com/mergestat/sqlq"
 	"github.com/mergestat/sqlq/runtime/embed"
 	"github.com/mergestat/sqlq/schema"
 
@@ -275,11 +274,7 @@ func main() {
 
 	// run a basic cron every minute to schedule a repos/auto-import job
 	// these jobs are idempotent, and so, multiple instances can run at same time without conflict
-	go cron.Basic(ctx, 1*time.Minute, func() {
-		if _, err := sqlq.Enqueue(upstream, "default", sqlq.NewJobDesc("repos/auto-import")); err != nil {
-			logger.Err(err).Msg("failed to enqueue repo sync job")
-		}
-	})
+	go cron.AutoImport(ctx, 15*time.Second, upstream)
 
 	// run container sync scheduler every minute
 	go cron.ContainerSync(ctx, 1*time.Minute, upstream)

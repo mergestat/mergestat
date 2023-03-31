@@ -16,7 +16,7 @@ import (
 
 type fetchFunc func(ctx context.Context, page int) ([]*github.Repository, *github.Response, error)
 
-func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
+func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.FetchImportJobRow) (err error) {
 	var token string
 	if _, token, err = qry.FetchCredential(ctx, imp.Provider); err != nil {
 		return err

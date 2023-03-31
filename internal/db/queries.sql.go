@@ -210,6 +210,39 @@ func (q *Queries) FetchGitHubToken(ctx context.Context, pgpSymDecrypt string) (s
 	return pgp_sym_decrypt, err
 }
 
+const fetchImportJob = `-- name: FetchImportJob :one
+SELECT dq.id, dq.created_at, dq.updated_at, dq.settings, dq.provider, pr.settings AS provider_settings, vd.name AS vendor_name
+FROM mergestat.repo_imports AS dq
+    INNER JOIN mergestat.providers pr ON pr.id = dq.provider
+    INNER JOIN mergestat.vendors vd ON vd.name = pr.vendor
+WHERE dq.id = $1
+`
+
+type FetchImportJobRow struct {
+	ID               uuid.UUID
+	CreatedAt        time.Time
+	UpdatedAt        time.Time
+	Settings         pgtype.JSONB
+	Provider         uuid.UUID
+	ProviderSettings pgtype.JSONB
+	VendorName       string
+}
+
+func (q *Queries) FetchImportJob(ctx context.Context, id uuid.UUID) (FetchImportJobRow, error) {
+	row := q.db.QueryRow(ctx, fetchImportJob, id)
+	var i FetchImportJobRow
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Settings,
+		&i.Provider,
+		&i.ProviderSettings,
+		&i.VendorName,
+	)
+	return i, err
+}
+
 const getRepoById = `-- name: GetRepoById :one
 SELECT id, repo, ref, created_at, settings, tags, repo_import_id, provider FROM public.repos WHERE id = $1
 `
