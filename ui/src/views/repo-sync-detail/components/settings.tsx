@@ -96,7 +96,7 @@ const SettingsCS: React.FC = () => {
                   }}
                 />
               </div>
-              <p className='text-gray-400'>Override the default configuration by adding custom parameters in JSON format.</p>
+              <p className='text-gray-400'>Override the default configuration by adding custom parameters as JSON.</p>
             </>
           }
         </div>
