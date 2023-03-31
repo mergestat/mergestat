@@ -665,6 +665,7 @@ type MergestatContainerImage struct {
 	Version     string
 	Parameters  pgtype.JSONB
 	Description sql.NullString
+	Queue       string
 }
 
 type MergestatContainerImageType struct {

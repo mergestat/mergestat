@@ -22,6 +22,7 @@ type Querier interface {
 	EnqueueAllSyncs(ctx context.Context) error
 	FetchContainerSync(ctx context.Context, id uuid.UUID) (FetchContainerSyncRow, error)
 	FetchGitHubToken(ctx context.Context, pgpSymDecrypt string) (string, error)
+	FetchImportJob(ctx context.Context, id uuid.UUID) (FetchImportJobRow, error)
 	GetRepoById(ctx context.Context, id uuid.UUID) (Repo, error)
 	GetRepoIDsFromRepoImport(ctx context.Context, arg GetRepoIDsFromRepoImportParams) ([]uuid.UUID, error)
 	GetRepoImportByID(ctx context.Context, id uuid.UUID) (MergestatRepoImport, error)
