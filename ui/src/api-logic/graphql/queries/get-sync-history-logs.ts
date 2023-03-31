@@ -156,7 +156,7 @@ const GET_CONTAINER_SYNC_HISTORY_LOGS = gql`
                 warnings: jobLogsByJob(condition: {level: WARN}) {
                   totalCount
                 }
-                logs: jobLogsByJob(orderBy: LOGGED_AT_ASC) {
+                logs: jobLogsByJob(orderBy: [LOGGED_AT_ASC, POSITION_ASC]) {
                   totalCount
                   nodes {
                     id
@@ -212,7 +212,7 @@ const GET_LOGS_OF_A_CONTAINER_SYNC = gql`
                 warnings: jobLogsByJob(condition: {level: WARN}) {
                   totalCount
                 }
-                logs: jobLogsByJob(orderBy: LOGGED_AT_ASC) {
+                logs: jobLogsByJob(orderBy: [LOGGED_AT_ASC, POSITION_ASC]) {
                   totalCount
                   nodes {
                     id

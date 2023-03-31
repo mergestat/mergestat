@@ -10113,6 +10113,7 @@ export type JobLog = Node & {
   message?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  position: Scalars['Int'];
 };
 
 /** A condition to be used against `JobLog` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -10127,6 +10128,8 @@ export type JobLogCondition = {
   loggedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `message` field. */
   message?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `position` field. */
+  position?: InputMaybe<Scalars['Int']>;
 };
 
 /** A filter to be used against `JobLog` object types. All fields are combined with a logical ‘and.’ */
@@ -10147,6 +10150,8 @@ export type JobLogFilter = {
   not?: InputMaybe<JobLogFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<JobLogFilter>>;
+  /** Filter by the object’s `position` field. */
+  position?: InputMaybe<IntFilter>;
 };
 
 /** An input for mutations affecting `JobLog` */
@@ -10156,6 +10161,7 @@ export type JobLogInput = {
   level?: InputMaybe<LogLevel>;
   loggedAt?: InputMaybe<Scalars['Datetime']>;
   message?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
 };
 
 /** Represents an update to a `JobLog`. Fields that are set will be updated. */
@@ -10165,6 +10171,7 @@ export type JobLogPatch = {
   level?: InputMaybe<LogLevel>;
   loggedAt?: InputMaybe<Scalars['Datetime']>;
   message?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
 };
 
 /** A connection to a list of `JobLog` values. */
@@ -10200,6 +10207,8 @@ export enum JobLogsOrderBy {
   MessageAsc = 'MESSAGE_ASC',
   MessageDesc = 'MESSAGE_DESC',
   Natural = 'NATURAL',
+  PositionAsc = 'POSITION_ASC',
+  PositionDesc = 'POSITION_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
@@ -21819,6 +21828,7 @@ export type AddContainerImageMutationVariables = Exact<{
   name: Scalars['String'];
   url: Scalars['String'];
   version: Scalars['String'];
+  queue?: InputMaybe<Scalars['String']>;
 }>;
 
 
