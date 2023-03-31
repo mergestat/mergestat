@@ -20,6 +20,10 @@ export const AddContainerSyncModal: React.FC = () => {
     setShowAddContainerSyncModal(false)
   }, [setShowAddContainerSyncModal])
 
+  const getQueueField = () => {
+    return url && /-github-/ig.test(url) ? 'github' : undefined
+  }
+
   const [addCI] = useMutation(ADD_CONTAINER_IMAGE, {
     onCompleted: (data: AddContainerImageMutation) => {
       close()
@@ -115,7 +119,7 @@ export const AddContainerSyncModal: React.FC = () => {
                 skin="primary"
                 disabled={!name || !url || !version}
                 onClick={() => addCI({
-                  variables: { name, url, version }
+                  variables: { name, url, version, queue: getQueueField() }
                 })}
               />
             </Toolbar.Item>

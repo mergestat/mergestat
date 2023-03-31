@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client'
 
 const ADD_CONTAINER_IMAGE = gql`
-  mutation addContainerImage($name: String!, $url: String!, $version: String!) {
+  mutation addContainerImage($name: String!, $url: String!, $version: String!, $queue: String) {
     createContainerImage(
-      input: {containerImage: {name: $name, url: $url, version: $version}}
+      input: {containerImage: {name: $name, url: $url, version: $version, queue: $queue}}
     ) {
       containerImage {
         id
