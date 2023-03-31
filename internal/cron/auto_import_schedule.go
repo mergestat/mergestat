@@ -47,7 +47,7 @@ FROM dequeued dq
 			return err
 		}
 		defer func() {
-			if rbErr := tx.Rollback(); rbErr != nil {
+			if rbErr := tx.Rollback(); rbErr != nil && rbErr != sql.ErrTxDone {
 				log.Err(rbErr).Msg("failed to rollback transaction")
 			}
 		}()
