@@ -378,7 +378,6 @@ export type JobData = {
 }
 
 export type RepoContainerSyncData = {
-  order: number
   repo: {
     id: string
   }

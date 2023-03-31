@@ -45,7 +45,7 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                           />
                         </td>
                         <td className='p-3 text-gray-400'>
-                          {'0/50'}
+                          {`0/${gs.reposByProvider.totalCount}`}
                         </td>
                         <td className='p-3'>
                           <Button skin='secondary'

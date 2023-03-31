@@ -20,7 +20,6 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
 
     // 2. Get sync info
     const sync: RepoContainerSyncData = {
-      order: 0,
       repo: {
         id: repoId
       },
@@ -59,7 +58,6 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
         succeededSyncs = [...succeededSyncs, jobData.runningTime]
       }
 
-      sync.order = 1
       sync.status.data?.push(jobData)
     })
 
@@ -71,7 +69,7 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
     syncsData.push(sync)
   })
 
-  return syncsData
+  return syncsData.sort((a, b) => a.image.name.localeCompare(b.image.name))
 }
 
 export { mapToRepoContainerSyncsData }
