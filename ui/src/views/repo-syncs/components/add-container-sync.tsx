@@ -53,13 +53,14 @@ export const AddContainerSyncModal: React.FC = () => {
       <Modal.Body>
         <div className='p-8'>
           <p className='mb-6 t-text-muted'>
-            A repo sync is a set of steps that retrieve data from sources related to git repositories and synchronizes it into a datastore, allowing for downstream querying and operationalization.
+            A repo sync is executed as a container image. You can add a sync by referencing a container image URL.
           </p>
           <p className='mb-6 t-text-muted'>
-            Repo syncs can be added by adding a reference to a container image URL that contains the configuration. You can override these parameters and enable the sync for repos once the sync is added.
+            You can override parameters and enable the sync for repos once the sync is added.
             {' '}
+            {/* TODO(patrickdevivo) update the documentation link */}
             <a target='_blank' className='t-link'
-              rel='noopener noreferrer' href='/' >
+              rel='noopener noreferrer' href='https://docs.mergestat.com/' >
               Learn more
             </a>
           </p>
