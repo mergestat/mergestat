@@ -81,4 +81,28 @@ const GET_GIT_SOURCE = gql`
   }
 `
 
-export { GET_GIT_SOURCES_LIST, GET_GIT_SOURCES, GET_GIT_SOURCE }
+const GET_DEFAULT_REPO_SYNCS = gql`
+  query getDefaultRepoSyncs($search: String!, $first: Int, $offset: Int) {
+    all: containerImages {
+      totalCount
+    }
+    containerImages(
+      filter: {
+        or: [
+          {name: {includesInsensitive: $search}}
+        ]
+      }
+      first: $first
+      offset: $offset
+    ) {
+      totalCount
+      nodes {
+        id
+        name
+        description
+      }
+    }
+  }
+`
+
+export { GET_GIT_SOURCES_LIST, GET_GIT_SOURCES, GET_GIT_SOURCE, GET_DEFAULT_REPO_SYNCS }

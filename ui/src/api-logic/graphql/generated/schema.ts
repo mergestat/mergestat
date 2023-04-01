@@ -227,11 +227,13 @@ export type ContainerImage = Node & {
   containerImageTypeByType?: Maybe<ContainerImageType>;
   /** Reads and enables pagination through a set of `ContainerSync`. */
   containerSyncsByImageId: ContainerSyncsConnection;
+  description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   parameters: Scalars['JSON'];
+  queue: Scalars['String'];
   type: Scalars['String'];
   url: Scalars['String'];
   version: Scalars['String'];
@@ -254,12 +256,16 @@ export type ContainerImageContainerSyncsByImageIdArgs = {
  * tested for equality and combined with a logical ‘and.’
  */
 export type ContainerImageCondition = {
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `parameters` field. */
   parameters?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `queue` field. */
+  queue?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `url` field. */
@@ -272,6 +278,8 @@ export type ContainerImageCondition = {
 export type ContainerImageFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<ContainerImageFilter>>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `name` field. */
@@ -282,6 +290,8 @@ export type ContainerImageFilter = {
   or?: InputMaybe<Array<ContainerImageFilter>>;
   /** Filter by the object’s `parameters` field. */
   parameters?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `queue` field. */
+  queue?: InputMaybe<StringFilter>;
   /** Filter by the object’s `type` field. */
   type?: InputMaybe<StringFilter>;
   /** Filter by the object’s `url` field. */
@@ -292,9 +302,11 @@ export type ContainerImageFilter = {
 
 /** An input for mutations affecting `ContainerImage` */
 export type ContainerImageInput = {
+  description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   name: Scalars['String'];
   parameters?: InputMaybe<Scalars['JSON']>;
+  queue?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   url: Scalars['String'];
   version?: InputMaybe<Scalars['String']>;
@@ -302,9 +314,11 @@ export type ContainerImageInput = {
 
 /** Represents an update to a `ContainerImage`. Fields that are set will be updated. */
 export type ContainerImagePatch = {
+  description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   name?: InputMaybe<Scalars['String']>;
   parameters?: InputMaybe<Scalars['JSON']>;
+  queue?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   url?: InputMaybe<Scalars['String']>;
   version?: InputMaybe<Scalars['String']>;
@@ -314,7 +328,7 @@ export type ContainerImageType = Node & {
   /** Reads and enables pagination through a set of `ContainerImage`. */
   containerImagesByType: ContainerImagesConnection;
   description?: Maybe<Scalars['String']>;
-  displayname: Scalars['String'];
+  displayName: Scalars['String'];
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -339,8 +353,8 @@ export type ContainerImageTypeContainerImagesByTypeArgs = {
 export type ContainerImageTypeCondition = {
   /** Checks for equality with the object’s `description` field. */
   description?: InputMaybe<Scalars['String']>;
-  /** Checks for equality with the object’s `displayname` field. */
-  displayname?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `displayName` field. */
+  displayName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']>;
 };
@@ -351,8 +365,8 @@ export type ContainerImageTypeFilter = {
   and?: InputMaybe<Array<ContainerImageTypeFilter>>;
   /** Filter by the object’s `description` field. */
   description?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `displayname` field. */
-  displayname?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `displayName` field. */
+  displayName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `name` field. */
   name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
@@ -364,14 +378,14 @@ export type ContainerImageTypeFilter = {
 /** An input for mutations affecting `ContainerImageType` */
 export type ContainerImageTypeInput = {
   description?: InputMaybe<Scalars['String']>;
-  displayname: Scalars['String'];
+  displayName: Scalars['String'];
   name: Scalars['String'];
 };
 
 /** Represents an update to a `ContainerImageType`. Fields that are set will be updated. */
 export type ContainerImageTypePatch = {
   description?: InputMaybe<Scalars['String']>;
-  displayname?: InputMaybe<Scalars['String']>;
+  displayName?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
 };
 
@@ -399,8 +413,8 @@ export type ContainerImageTypesEdge = {
 export enum ContainerImageTypesOrderBy {
   DescriptionAsc = 'DESCRIPTION_ASC',
   DescriptionDesc = 'DESCRIPTION_DESC',
-  DisplaynameAsc = 'DISPLAYNAME_ASC',
-  DisplaynameDesc = 'DISPLAYNAME_DESC',
+  DisplayNameAsc = 'DISPLAY_NAME_ASC',
+  DisplayNameDesc = 'DISPLAY_NAME_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
@@ -430,6 +444,8 @@ export type ContainerImagesEdge = {
 
 /** Methods to use when ordering `ContainerImage`. */
 export enum ContainerImagesOrderBy {
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   NameAsc = 'NAME_ASC',
@@ -439,6 +455,8 @@ export enum ContainerImagesOrderBy {
   ParametersDesc = 'PARAMETERS_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  QueueAsc = 'QUEUE_ASC',
+  QueueDesc = 'QUEUE_DESC',
   TypeAsc = 'TYPE_ASC',
   TypeDesc = 'TYPE_DESC',
   UrlAsc = 'URL_ASC',
@@ -10095,6 +10113,7 @@ export type JobLog = Node & {
   message?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  position: Scalars['Int'];
 };
 
 /** A condition to be used against `JobLog` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -10109,6 +10128,8 @@ export type JobLogCondition = {
   loggedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `message` field. */
   message?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `position` field. */
+  position?: InputMaybe<Scalars['Int']>;
 };
 
 /** A filter to be used against `JobLog` object types. All fields are combined with a logical ‘and.’ */
@@ -10129,6 +10150,8 @@ export type JobLogFilter = {
   not?: InputMaybe<JobLogFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<JobLogFilter>>;
+  /** Filter by the object’s `position` field. */
+  position?: InputMaybe<IntFilter>;
 };
 
 /** An input for mutations affecting `JobLog` */
@@ -10138,6 +10161,7 @@ export type JobLogInput = {
   level?: InputMaybe<LogLevel>;
   loggedAt?: InputMaybe<Scalars['Datetime']>;
   message?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
 };
 
 /** Represents an update to a `JobLog`. Fields that are set will be updated. */
@@ -10147,6 +10171,7 @@ export type JobLogPatch = {
   level?: InputMaybe<LogLevel>;
   loggedAt?: InputMaybe<Scalars['Datetime']>;
   message?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
 };
 
 /** A connection to a list of `JobLog` values. */
@@ -10182,6 +10207,8 @@ export enum JobLogsOrderBy {
   MessageAsc = 'MESSAGE_ASC',
   MessageDesc = 'MESSAGE_DESC',
   Natural = 'NATURAL',
+  PositionAsc = 'POSITION_ASC',
+  PositionDesc = 'POSITION_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
@@ -11003,6 +11030,7 @@ export type Mutation = {
   reap?: Maybe<ReapPayload>;
   setSyncJobStatus?: Maybe<SetSyncJobStatusPayload>;
   simpleRepoSyncQueueCleanup?: Maybe<SimpleRepoSyncQueueCleanupPayload>;
+  syncNow?: Maybe<Scalars['Boolean']>;
   /** Updates a single `ContainerImage` using a unique key and a patch. */
   updateContainerImage?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImage` using its globally unique id and a patch. */
@@ -12270,6 +12298,13 @@ export type MutationSetSyncJobStatusArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationSimpleRepoSyncQueueCleanupArgs = {
   input: SimpleRepoSyncQueueCleanupInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationSyncNowArgs = {
+  queue?: InputMaybe<Scalars['String']>;
+  sync: Scalars['UUID'];
 };
 
 
@@ -21789,6 +21824,35 @@ export type RemoveUserMutationVariables = Exact<{
 
 export type RemoveUserMutation = { userMgmtRemoveUser?: { clientMutationId?: string | null, integer?: number | null } | null };
 
+export type AddContainerImageMutationVariables = Exact<{
+  name: Scalars['String'];
+  url: Scalars['String'];
+  version: Scalars['String'];
+  queue?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type AddContainerImageMutation = { createContainerImage?: { containerImage?: { id: any, name: string } | null } | null };
+
+export type UpdateContainerImageMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['String']>;
+  parameters?: InputMaybe<Scalars['JSON']>;
+}>;
+
+
+export type UpdateContainerImageMutation = { updateContainerImage?: { containerImage?: { id: any, name: string, description?: string | null, url: string, version: string, parameters: any } | null } | null };
+
+export type RemoveContainerImageMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveContainerImageMutation = { deleteContainerImage?: { deletedContainerImageNodeId?: string | null } | null };
+
 export type RemoveRepoMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -21865,6 +21929,43 @@ export type ScheduleMutationVariables = Exact<{
 
 export type ScheduleMutation = { updateRepoSync?: { repoSync?: { id: any, syncType: string, scheduleEnabled: boolean } | null } | null };
 
+export type AddContainerSyncScheduleMutationVariables = Exact<{
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type AddContainerSyncScheduleMutation = { createContainerSyncSchedule?: { containerSyncSchedule?: { id: any } | null } | null };
+
+export type RemoveContainerSyncScheduleMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveContainerSyncScheduleMutation = { deleteContainerSyncSchedule?: { deletedContainerSyncScheduleNodeId?: string | null } | null };
+
+export type EnableContainerSyncMutationVariables = Exact<{
+  repoId: Scalars['UUID'];
+  imageId: Scalars['UUID'];
+}>;
+
+
+export type EnableContainerSyncMutation = { createContainerSync?: { containerSync?: { id: any, image?: { name: string } | null } | null } | null };
+
+export type SyncNowContainerMutationVariables = Exact<{
+  sync: Scalars['UUID'];
+}>;
+
+
+export type SyncNowContainerMutation = { syncNow?: boolean | null };
+
+export type UndateContainerSyncMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  parameters: Scalars['JSON'];
+}>;
+
+
+export type UndateContainerSyncMutation = { updateContainerSync?: { containerSync?: { id: any, parameters: any } | null } | null };
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -21895,6 +21996,15 @@ export type GetGitSourceQueryVariables = Exact<{
 
 
 export type GetGitSourceQuery = { provider?: { id: any, name: string, description?: string | null, vendor: string, settings: any, auth: { nodes: Array<{ id: any, type: string, credentials?: string | null, createdAt: any }> }, auto: { nodes: Array<{ id: any, settings: any, repos: { totalCount: number } }> }, manual: { totalCount: number, nodes: Array<{ id: any, repo: string, settings: any }> } } | null };
+
+export type GetDefaultRepoSyncsQueryVariables = Exact<{
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetDefaultRepoSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
 
 export type GetRepoImportsQueryVariables = Exact<{
   idProvider: Scalars['UUID'];
@@ -21933,6 +22043,32 @@ export type GetRepoDataQueryVariables = Exact<{
 
 
 export type GetRepoDataQuery = { repo?: { id: any, repo: string, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null };
+
+export type GetContainerImageQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetContainerImageQuery = { containerImage?: { id: any, name: string, description?: string | null, type: string, url: string, version: string, parameters: any, repos: { totalCount: number } } | null };
+
+export type GetContainerImagesQueryVariables = Exact<{
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetContainerImagesQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, url: string, version: string, type: string, parameters: any, repos: { totalCount: number } }> } | null };
+
+export type GetContainerSyncsQueryVariables = Exact<{
+  id: Scalars['UUID'];
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetContainerSyncsQuery = { containerSyncs?: { nodes: Array<{ id: any, parameters: any, image?: { id: any } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null } | null }> } }> } | null, all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
 
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -22012,6 +22148,33 @@ export type GetLogsOfSyncQueryVariables = Exact<{
 
 
 export type GetLogsOfSyncQuery = { repo?: { id: any, repo: string, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string, description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number }, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+
+export type GetContainerBasicDataQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type GetContainerBasicDataQuery = { repo?: { id: any, repo: string, provider?: { id: any, name: string, vendor: string, settings: any } | null, containerSyncs: { nodes: Array<{ image?: { id: any, name: string, description?: string | null } | null }> } } | null };
+
+export type GetContainerSyncHistoryLogsQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetContainerSyncHistoryLogsQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { totalCount: number, nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
+
+export type GetLogsOfContainerSyncQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+  jobId: Scalars['UUID'];
+}>;
+
+
+export type GetLogsOfContainerSyncQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { totalCount: number, nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
 
 export type GetUsersQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;

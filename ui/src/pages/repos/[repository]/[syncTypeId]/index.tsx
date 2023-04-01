@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Fragment } from 'react'
 import Loading from 'src/components/Loading'
 import useSyncsLogs from 'src/views/hooks/useSyncsLogs'
-import RepoDataTypeView from 'src/views/repository-data-details'
+import RepoDataTypeView from 'src/views/repo-data/repository-data-details'
 
 const DataTypePage = () => {
   const { loading, repoData, title, syncTypeId, syncNow } = useSyncsLogs(true)

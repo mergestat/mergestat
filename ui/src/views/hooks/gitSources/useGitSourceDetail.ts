@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { useEffect } from 'react'
 import { GetGitSourceQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_GIT_SOURCE } from 'src/api-logic/graphql/queries/get-git-sources'
-import { mapToGitSourceDetail } from 'src/api-logic/mappers/git-source-detail'
+import { mapToGitSourceDetail } from 'src/api-logic/mappers/git-sources/git-source-detail'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 
 const useGitSourceDetail = (gitSourceId?: string | string[]) => {

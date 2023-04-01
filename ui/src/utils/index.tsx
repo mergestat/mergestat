@@ -1,7 +1,8 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { BitbucketIcon, BranchIcon, GithubIcon, GitlabIcon } from '@mergestat/icons'
-import { formatDistance, formatDuration, intervalToDuration, differenceInMilliseconds } from 'date-fns'
+import { differenceInMilliseconds, formatDistance, formatDuration, intervalToDuration } from 'date-fns'
 import { RepoSyncQueueW, RepoSyncStateT, UserTypeUI } from 'src/@types'
+import { JobStates } from 'src/api-logic/graphql/generated/schema'
 import { showSuccessAlert } from './alerts'
 import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI, VENDOR_TYPE } from './constants'
 
@@ -139,6 +140,26 @@ export const getStatus = (syncQueue: RepoSyncQueueW): RepoSyncStateT => {
   // TODO: Should we extend the schema to have a new property 'hasWarning'
   const status = syncQueue?.hasError ? 'ERROR' : syncQueue?.warnings?.totalCount && syncQueue?.warnings?.totalCount > 0 ? 'WARNING' : syncQueue?.status
   return mapToRepoSyncStateT(status)
+}
+
+/**
+ * Method to map data base status to table status
+ * @param status Data base status
+ * @returns Table status (RepoSyncStateT)
+ */
+export function mapToContainerSyncState(status?: JobStates): RepoSyncStateT {
+  switch (status) {
+    case JobStates.Success:
+      return SYNC_STATUS.succeeded
+    case JobStates.Running:
+      return SYNC_STATUS.running
+    case JobStates.Pending:
+      return SYNC_STATUS.queued
+    case JobStates.Errored:
+      return SYNC_STATUS.error
+    default:
+      return SYNC_STATUS.empty
+  }
 }
 
 /**
@@ -289,4 +310,31 @@ export const getVendorLabelType = (vendor: string) => {
  */
 export function getExternalRepoLink(repo?: string) {
   return repo && /^http/ig.test(repo) ? repo : undefined
+}
+
+/**
+ * Method to check if given string is a valid JSON
+ * @param str Given string to validate
+ * @returns true if it is a valid JSON, otherwise return false
+ */
+export function isJSONValid(str: string) {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
+}
+
+/**
+ * Method to format a Json code with identation
+ * @param code Code to process
+ * @returns Json code formated with identation
+ */
+export function stringifyJsonCode(code?: JSON) {
+  return code && JSON.stringify(code, (k, v) => {
+    if (v instanceof Array) { return JSON.stringify(v, null, 1).replace(/\n/g, '') }
+    return v
+    // eslint-disable-next-line no-useless-escape
+  }, 2).replace(/\"\[ /g, '[').replace(/\]\"/g, ']')
 }
