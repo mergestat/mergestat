@@ -131,6 +131,7 @@ func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 
 			var environment = make(map[string]string)
 			environment["MERGESTAT_REPO_ID"] = repo.ID.String()
+			environment["MERGESTAT_REPO_URL"] = repo.Repo
 			environment["MERGESTAT_POSTGRES_URL"] = postgresUrl
 			environment["MERGESTAT_PROVIDER_ID"] = repo.Provider.String()
 			environment["MERGESTAT_AUTH_USERNAME"] = username
