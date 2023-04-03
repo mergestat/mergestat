@@ -9,6 +9,7 @@ const GET_REPO_AUTO_IMPORTS = gql`
         settings
         lastImport
         importStatus
+        importError
         provider: providerByProvider {
           id
           name

@@ -24,7 +24,8 @@ const mapToImportsData = (data: GetRepoImportsQuery | undefined): Array<RepoImpo
       status: imp.importStatus as ImportStatusType,
       totalRepos: imp.repos.totalCount,
       vendor: imp.provider?.vendor || '',
-      vendorUrl: imp.provider?.settings.url
+      vendorUrl: imp.provider?.settings.url,
+      importError: imp.importError
     }
     mappedData.push(importInfo)
   })
