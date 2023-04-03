@@ -22011,7 +22011,7 @@ export type GetRepoImportsQueryVariables = Exact<{
 }>;
 
 
-export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, lastImport?: any | null, importStatus?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repos: { totalCount: number } }> } | null };
+export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, lastImport?: any | null, importStatus?: string | null, importError?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repos: { totalCount: number } }> } | null };
 
 export type GetRepoManualImportsQueryVariables = Exact<{
   idProvider: Scalars['UUID'];

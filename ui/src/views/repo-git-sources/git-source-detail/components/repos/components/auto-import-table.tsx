@@ -1,4 +1,4 @@
-import { Button, ListItem } from '@mergestat/blocks'
+import { Button, ListItem, Tooltip } from '@mergestat/blocks'
 import { CircleCheckFilledIcon, CircleErrorFilledIcon, ClockIcon, TrashIcon } from '@mergestat/icons'
 import React from 'react'
 import { RepoImportData } from 'src/@types'
@@ -27,6 +27,14 @@ export const AutoImportTable: React.FC<AutoImportTableProps> = ({ imports }: Aut
     setShowAutoImportModal(true)
   }
 
+  const getIconStatus = (status: string) => (
+    status === IMPORT_STATUS_TYPE.SUCCESS
+      ? <CircleCheckFilledIcon className="t-icon t-icon-success m-auto" />
+      : status === IMPORT_STATUS_TYPE.FAILURE
+        ? <CircleErrorFilledIcon className="t-icon t-icon-danger m-auto" />
+        : <ClockIcon className='t-icon t-icon-muted m-auto' />
+  )
+
   return (
     <>
       <div className='flex flex-col flex-1'>
@@ -49,12 +57,10 @@ export const AutoImportTable: React.FC<AutoImportTableProps> = ({ imports }: Aut
                     {imports.map((imp, index) => (
                       <tr key={imp.id}>
                         <td className='p-3 pl-8 pr-4 w-0'>
-                          {imp.status === IMPORT_STATUS_TYPE.SUCCESS
-                            ? <CircleCheckFilledIcon className="t-icon t-icon-success m-auto" />
-                            : imp.status === IMPORT_STATUS_TYPE.FAILURE
-                              ? <CircleErrorFilledIcon className="t-icon t-icon-danger m-auto" />
-                              : <ClockIcon className='t-icon t-icon-muted m-auto' />
-                          }
+                          {imp.importError && <Tooltip content={imp.importError} placement='bottom'>
+                            {getIconStatus(imp.status)}
+                          </Tooltip>}
+                          {!imp.importError && getIconStatus(imp.status)}
                         </td>
                         <td className='p-3'>
                           <ListItem key={`auto-import-${index}`}

@@ -160,6 +160,7 @@ export type RepoImportData = {
   totalRepos: number
   vendor: string
   vendorUrl: string
+  importError?: string | null
 }
 
 export type SyncType = {
