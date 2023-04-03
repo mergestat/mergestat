@@ -104,7 +104,7 @@ func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 		}
 
 		// create a new temporary location to clone the repository (unless opted-out; if opted-out the directory will be empty)
-		tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-")
+		tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
 		if err != nil {
 			logger.Errorf("failed to create directory for cloning: %s", err.Error())
 			return errors.Wrapf(err, "failed to create directory")
