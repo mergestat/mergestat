@@ -10,7 +10,7 @@ const SidebarView: React.FC = () => {
 
   return (
     <Sidebar compact={false} dark={true} collapsible={true} className='flex-none'>
-      <Sidebar.Header />
+      <Sidebar.Header onClick={() => push('/repos')} />
       <Sidebar.Main>
         <Sidebar.Item
           label='Repos'
