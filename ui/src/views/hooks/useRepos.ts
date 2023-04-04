@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { AutoImportData } from 'src/@types'
 import { GetReposQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_REPOS } from 'src/api-logic/graphql/queries/get-repos'
-import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
+import { useGlobalContext, useGlobalSetState, useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
 import { getVendorProp } from 'src/utils'
 import { SYNC_REPO_METHOD, VENDOR_TYPE } from 'src/utils/constants'
 
@@ -18,12 +18,13 @@ const getLabelType = (vendor: string, type: string) => {
 const useRepos = () => {
   const [runningImports, setRunningImports] = useState<AutoImportData[]>([])
   const [failedImports, setFailedImports] = useState<AutoImportData[]>([])
-  const [{ search, rowsRepos, pageRepos, showReposTable }] = useRepositoriesContext()
-  const { setTotalRepos, setPageRepos } = useRepositoriesSetState()
+  const [{ showReposTable }] = useRepositoriesContext()
+  const [{ reposFilter: { search, total, rows, page } }] = useGlobalContext()
+  const { setTotalRepos, setPageRepos } = useGlobalSetState()
   const { setShowReposTable } = useRepositoriesSetState()
 
   const { loading, error, data, refetch } = useQuery<GetReposQuery>(GET_REPOS, {
-    variables: { search, first: rowsRepos, offset: (pageRepos * rowsRepos) },
+    variables: { search, first: rows, offset: (page * rows) },
     fetchPolicy: 'no-cache',
     pollInterval: 5000,
   })
@@ -55,10 +56,17 @@ const useRepos = () => {
   }, [loading, error, validateData])
 
   useEffect(() => {
-    search && setPageRepos(0)
-    refetch({ search, first: rowsRepos, offset: (pageRepos * rowsRepos) })
+    (page * rows) + 1 > total && setPageRepos(0)
+    refetch({ search, first: rows, offset: (page * rows) })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refetch, search, rowsRepos, pageRepos])
+  }, [refetch, search, rows, page])
+
+  useEffect(() => {
+    if (total) {
+      (page * rows) + 1 > total && setPageRepos(0)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [total])
 
   return { showReposTable, loading, data, runningImports, failedImports, refetch }
 }

@@ -7,8 +7,8 @@ import { mapToManualImportsData } from 'src/api-logic/mappers/git-sources/import
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 
 const useRepoManualImports = () => {
-  const [{ idProvider, searchManualImport, rowsManualRepos, pageManualRepos }] = useGitSourceDetailContext()
-  const { setTotalManualRepos } = useGitSourceDetailSetState()
+  const [{ idProvider, searchManualImport, rowsManualRepos, pageManualRepos, totalManualRepos }] = useGitSourceDetailContext()
+  const { setTotalManualRepos, setPageManualRepos } = useGitSourceDetailSetState()
 
   const [repos, setRepos] = useState<RepoManualImportData[]>([])
   const [records, setRecords] = useState<boolean>(false)
@@ -37,6 +37,13 @@ const useRepoManualImports = () => {
     refetch({ idProvider, search: searchManualImport, first: rowsManualRepos, offset: (pageManualRepos * rowsManualRepos) })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchManualImport, rowsManualRepos, pageManualRepos])
+
+  useEffect(() => {
+    if (totalManualRepos) {
+      (pageManualRepos * rowsManualRepos) + 1 > totalManualRepos && setPageManualRepos(0)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalManualRepos])
 
   return { loading, repos, records }
 }

@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react'
 import { RepoDataPropsT } from 'src/@types'
 import { mapToRepoData } from 'src/api-logic/mappers/repo/repos'
 import Loading from 'src/components/Loading'
-import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts/repositories.context'
+import { useGlobalContext, useGlobalSetState } from 'src/state/contexts'
+import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
 import useMetrics from 'src/views/hooks/useMetrics'
 import useRepos from 'src/views/hooks/useRepos'
 import { EmptyData } from '../shared/empty-data'
@@ -17,8 +18,9 @@ import { PageHeader, RepositoriesTable } from './components'
 import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
 const RepositoriesView: React.FC = () => {
-  const { setSearch, setRowsRepos, setPageRepos } = useRepositoriesSetState()
-  const [{ showRemoveRepositoryModal, totalRepos, rowsRepos, pageRepos }] = useRepositoriesContext()
+  const { setSearchRepos, setRowsRepos, setPageRepos } = useGlobalSetState()
+  const [{ showRemoveRepositoryModal }] = useRepositoriesContext()
+  const [{ reposFilter: { search, total, rows, page } }] = useGlobalContext()
   const { loading, data, runningImports, failedImports, showReposTable } = useRepos()
   const { loadingAllRepos, allRepos, loadingAllEnabledRepos, enabledRepos, loadingSyncErrors, syncErrors } = useMetrics()
   const [repos, setRepos] = useState<Array<RepoDataPropsT>>()
@@ -105,7 +107,7 @@ const RepositoriesView: React.FC = () => {
           }
         </div>
 
-        {showReposTable && <div className='border-t pt-3'><FilterHeader setSearch={setSearch} /></div>}
+        {showReposTable && <div className='border-t pt-3'><FilterHeader initValue={search} setSearch={setSearchRepos} /></div>}
 
         {loading
           ? <Loading />
@@ -115,7 +117,7 @@ const RepositoriesView: React.FC = () => {
         }
       </div>
 
-      {showReposTable && <FilterFooter total={totalRepos} rows={rowsRepos} page={pageRepos} setRows={setRowsRepos} setPage={setPageRepos} />}
+      {showReposTable && <FilterFooter total={total} rows={rows} page={page} setRows={setRowsRepos} setPage={setPageRepos} />}
 
       {showRemoveRepositoryModal && <RemoveRepositoryModal />}
     </>

@@ -37,10 +37,16 @@ const SavedQueryList: React.FC = () => {
   }, [data])
 
   useEffect(() => {
-    search && setPage(0)
     refetch({ search, first: rows, offset: (page * rows) })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetch, search, rows, page])
+
+  useEffect(() => {
+    if (total) {
+      (page * rows) + 1 > total && setPage(0)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [total])
 
   const gotToQueryEditor = () => {
     router.push('/queries')
