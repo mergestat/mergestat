@@ -29,6 +29,13 @@ export type CrumbData = {
   onClick?: () => void
 }
 
+export type TableFilter = {
+  search: string
+  total: number,
+  rows: number,
+  page: number,
+}
+
 /** Repositories Data Props Type */
 
 export type RepoSyncDataT = {

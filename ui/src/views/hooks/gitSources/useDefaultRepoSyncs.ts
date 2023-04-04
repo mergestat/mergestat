@@ -10,7 +10,7 @@ const useDefaultRepoSyncs = () => {
   // const router = useRouter()
   // const { gitSourceId } = router.query
 
-  const [{ search, rows, page }] = useDefaultRepoSyncsContext()
+  const [{ search, rows, page, total }] = useDefaultRepoSyncsContext()
   const { setTotal, setPage } = useDefaultRepoSyncsSetState()
 
   const [pageLoaded, setPageLoaded] = useState(false)
@@ -34,10 +34,16 @@ const useDefaultRepoSyncs = () => {
   }, [data])
 
   useEffect(() => {
-    search && setPage(0)
     refetch({ search, first: rows, offset: (page * rows) })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetch, search, rows, page])
+
+  useEffect(() => {
+    if (total) {
+      (page * rows) + 1 > total && setPage(0)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [total])
 
   return { loading, records, defaultSyncs }
 }

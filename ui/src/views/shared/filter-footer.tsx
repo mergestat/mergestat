@@ -25,7 +25,7 @@ export const FilterFooter: React.FC<FilterFooterProps> = ({ total, rows, page, s
                 <Select
                   id='resultsPerPage'
                   className="w-20"
-                  defaultValue='20'
+                  value={rows}
                   onChange={e => {
                     setPage(0)
                     setRows(+e.target.value)

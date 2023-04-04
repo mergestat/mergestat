@@ -1,9 +1,10 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
-import { CrumbData } from 'src/@types'
+import { CrumbData, TableFilter } from 'src/@types'
 
 type GlobalContextT = {
   crumbs: CrumbData[]
+  reposFilter: TableFilter
 }
 
 type UseGlobalContextT = [
@@ -13,6 +14,7 @@ type UseGlobalContextT = [
 
 const initialState: GlobalContextT = {
   crumbs: [],
+  reposFilter: { search: '', total: 0, rows: 20, page: 0 } as TableFilter
 }
 
 function useGlobalEditor(): UseGlobalContextT {
@@ -44,9 +46,53 @@ function useGlobalSetState() {
     }))
   }
 
+  const setSearchRepos = (search: string) => {
+    setState(prev => ({
+      ...prev,
+      reposFilter: {
+        ...prev.reposFilter,
+        search
+      }
+    }))
+  }
+
+  const setRowsRepos = (rows: number) => {
+    setState(prev => ({
+      ...prev,
+      reposFilter: {
+        ...prev.reposFilter,
+        rows
+      }
+    }))
+  }
+
+  const setPageRepos = (page: number) => {
+    setState(prev => ({
+      ...prev,
+      reposFilter: {
+        ...prev.reposFilter,
+        page
+      }
+    }))
+  }
+
+  const setTotalRepos = (total: number) => {
+    setState(prev => ({
+      ...prev,
+      reposFilter: {
+        ...prev.reposFilter,
+        total
+      }
+    }))
+  }
+
   return {
     _,
     setCrumbs,
+    setSearchRepos,
+    setRowsRepos,
+    setPageRepos,
+    setTotalRepos
   }
 }
 

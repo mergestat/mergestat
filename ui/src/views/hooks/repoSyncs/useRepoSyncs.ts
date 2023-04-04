@@ -10,7 +10,7 @@ const useRepoSyncs = () => {
   const router = useRouter()
   const { repository } = router.query
 
-  const [{ search, rows, page }] = useRepoSyncsContext()
+  const [{ search, rows, page, total }] = useRepoSyncsContext()
   const { setTotal, setPage } = useRepoSyncsSetState()
 
   const [pageLoaded, setPageLoaded] = useState(false)
@@ -35,10 +35,16 @@ const useRepoSyncs = () => {
   }, [data])
 
   useEffect(() => {
-    search && setPage(0)
     refetch({ id: repository, search, first: rows, offset: (page * rows) })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetch, search, rows, page])
+
+  useEffect(() => {
+    if (total) {
+      (page * rows) + 1 > total && setPage(0)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [total])
 
   return { loading, records, repoId: `${repository}`, syncs }
 }
