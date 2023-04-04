@@ -7,6 +7,7 @@
         "build": "tsc"
     },
     "dependencies": {
+        "bluebird": "^3.7.2",
         "graphile-utils": "^4.12.3"
     },
     "devDependencies": {
