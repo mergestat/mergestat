@@ -3,13 +3,14 @@ import {Client} from 'pg'
 import * as bluebird from 'bluebird';
 
 type SyncNowInput = { sync: String, queue?: String }
-type BulkEnableInput = { image: String, provider: String }
+type BulkSyncInput = { image: String, provider: String }
 
 module.exports = makeExtendSchemaPlugin({
   typeDefs: gql`
     extend type Mutation { 
       syncNow(sync: UUID!, queue: String): Boolean 
       bulkEnableSync(image: UUID!, provider: UUID!): Boolean
+      bulkDisableSync(image: UUID!, provider: UUID!): Boolean
     }
   `,
 
@@ -47,7 +48,7 @@ module.exports = makeExtendSchemaPlugin({
         }
       },
 
-      async bulkEnableSync(_parent: any, args: BulkEnableInput, context: { pgClient: Client }, _info: any) {
+      async bulkEnableSync(_parent: any, args: BulkSyncInput, context: { pgClient: Client }, _info: any) {
         const {pgClient: pg} = context;
 
         await pg.query("SAVEPOINT bulk_enable_sync");
@@ -71,6 +72,23 @@ module.exports = makeExtendSchemaPlugin({
           throw e;
         } finally {
           await pg.query("RELEASE SAVEPOINT bulk_enable_sync");
+        }
+      },
+
+      async bulkDisableSync(_parent: any, args: BulkSyncInput, context: { pgClient: Client }, _info: any) {
+        const {pgClient: pg} = context;
+
+        await pg.query("SAVEPOINT bulk_disable_sync");
+        try {
+          await pg.query(`DELETE FROM mergestat.container_syncs WHERE image_id = $1 AND repo_id IN (SELECT id FROM public.repos WHERE provider = $2)`,
+              [args.image, args.provider]);
+
+          return true
+        } catch (e) {
+          await pg.query("ROLLBACK TO SAVEPOINT bulk_disable_sync");
+          throw e;
+        } finally {
+          await pg.query("RELEASE SAVEPOINT bulk_disable_sync");
         }
       }
     },
