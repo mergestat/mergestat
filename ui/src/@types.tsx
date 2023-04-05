@@ -29,6 +29,13 @@ export type CrumbData = {
   onClick?: () => void
 }
 
+export type TableFilter = {
+  search: string
+  total: number,
+  rows: number,
+  page: number,
+}
+
 /** Repositories Data Props Type */
 
 export type RepoSyncDataT = {
@@ -99,7 +106,6 @@ export type RepoSyncData = {
   tags: TagType[]
   provider: ProviderT
   autoImportFrom?: string | null
-  syncs?: Array<RepoSyncDataType>
 }
 
 /** Repository Data Logs Type */
@@ -161,6 +167,7 @@ export type RepoImportData = {
   totalRepos: number
   vendor: string
   vendorUrl: string
+  importError?: string | null
 }
 
 export type SyncType = {
@@ -326,6 +333,13 @@ export type GitSourceDetail = {
   totalRepos: number
 }
 
+export type DefaultRepoSync = {
+  id: string
+  name: string
+  description?: string | null
+  enabled: boolean
+}
+
 /** Schema */
 
 export type ColumnData = {
@@ -341,4 +355,93 @@ export type TableData = {
 export type SchemaData = {
   schema: string | null
   tables: TableData[]
+}
+
+/** Repo syncs (Container Syncs) */
+
+export type ContainerSyncData = {
+  id: string
+  name: string
+  description?: string | null
+  url: string
+  version: string
+  type: string
+  parameters: JSON
+  repos: {
+    totalCount: number
+  }
+}
+
+export type ContainerSyncDetail = {
+  id: string
+  name: string
+  description?: string | null
+  type: string
+  url: string
+  version: string
+  parameters: JSON
+
+  totalRepos: number
+}
+
+export type JobData = {
+  id: string
+  repoId: string
+  syncId: string
+  runningTime: number
+  runningTimeReadable: string
+  status: string
+  doneAt?: Date
+}
+
+export type RepoContainerSyncData = {
+  repo: {
+    id: string
+  }
+  sync: {
+    id: string
+    scheduleId: string
+    labels?: string[]
+  }
+  image: {
+    id: string
+    name: string
+    description: string
+  }
+  latestRun: string
+  avgRunningTime: string
+  status: {
+    data?: JobData[]
+    syncState: RepoSyncStateT
+  }
+}
+
+export type ContainerSyncInfo = {
+  id: string
+  imageId: string
+  name: string
+  description: string
+  parameters: JSON
+  scheduleId: string
+  syncState: RepoSyncStateT
+  totalExecutions: number
+}
+
+export type ContainerSyncLogData = {
+  sync?: ContainerSyncInfo
+  logs?: SyncLogsType[]
+}
+
+export type RepoBasicData = {
+  id: string
+  name: string
+  externalRepoLink?: string
+  provider: ProviderT
+}
+
+export type ContainerBasicData = {
+  repo: RepoBasicData
+  sync: {
+    name: string
+  }
 }

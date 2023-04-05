@@ -19,7 +19,7 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
   const { data: userData } = useCurrentUser()
   const [titleError, setTitleError] = useState<boolean>(false)
 
-  const [getSavedQuery, { data }] = useLazyQuery<GetSavedQueryQuery>(GET_SAVED_QUERY, { fetchPolicy: 'no-cache' })
+  const [getSavedQuery, { loading, data }] = useLazyQuery<GetSavedQueryQuery>(GET_SAVED_QUERY, { fetchPolicy: 'no-cache' })
 
   useEffect(() => {
     savedQueryId && getSavedQuery({ variables: { id: savedQueryId } })
@@ -71,7 +71,14 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
     }
   }
 
-  return { savedQuery: data?.savedQuery, titleError, setTitleError, addSavedQueryHandler, updateSavedQueryHandler }
+  return {
+    loadingSQ: loading,
+    savedQuery: data?.savedQuery,
+    titleError,
+    setTitleError,
+    addSavedQueryHandler,
+    updateSavedQueryHandler
+  }
 }
 
 export default useSavedQuery

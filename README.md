@@ -48,3 +48,5 @@ docker-compose down
 ```
 docker volume rm mergestat_db_data
 ```
+
+<img referrerpolicy="no-referrer-when-downgrade" src="https://static.scarf.sh/a.png?x-pxid=31b68c46-eba1-48b1-a5a8-1898f268e866" />

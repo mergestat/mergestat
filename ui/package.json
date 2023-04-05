@@ -20,8 +20,8 @@
   "dependencies": {
     "@apollo/client": "^3.7.7",
     "@apollo/react-testing": "^4.0.0",
-    "@mergestat/blocks": "^1.5.56",
-    "@mergestat/icons": "1.2.17",
+    "@mergestat/blocks": "^1.5.78",
+    "@mergestat/icons": "1.2.18",
     "@blueprintjs/table": "^4.7.20",
     "@monaco-editor/react": "^4.4.6",
     "@next/bundle-analyzer": "^12.3.4",
@@ -52,9 +52,9 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",
-    "@graphql-codegen/cli": "2.16.4",
-    "@graphql-codegen/typescript": "2.8.7",
-    "@graphql-codegen/typescript-operations": "2.5.12",
+    "@graphql-codegen/cli": "2.16.5",
+    "@graphql-codegen/typescript": "2.8.8",
+    "@graphql-codegen/typescript-operations": "2.5.13",
     "@graphql-codegen/typescript-react-apollo": "3.3.7",
     "@next/eslint-plugin-next": "^12.1.6",
     "@tailwindcss/typography": "^0.4.1",

@@ -402,3 +402,10 @@ SELECT sync.id, sync.repo_id,
     jsonb_recursive_merge(image.parameters, sync.parameters) AS params
 FROM mergestat.container_syncs sync, mergestat.container_images image, public.repos repo
     WHERE image.id = sync.image_id AND repo.id = sync.repo_id AND sync.id = @id;
+
+-- name: FetchImportJob :one
+SELECT dq.id, dq.created_at, dq.updated_at, dq.settings, dq.provider, pr.settings AS provider_settings, vd.name AS vendor_name
+FROM mergestat.repo_imports AS dq
+    INNER JOIN mergestat.providers pr ON pr.id = dq.provider
+    INNER JOIN mergestat.vendors vd ON vd.name = pr.vendor
+WHERE dq.id = @id;

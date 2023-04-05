@@ -13,13 +13,13 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
 
   worker:
     # NOTE: to opt out of basic image pull tracking, comment out the current image
     # and uncomment the next line (which will pull from Docker Hub directly).
-    # image: mergestat/worker:1.22.1-beta
-    image: images.mergestat.com/mergestat/worker:1.22.1-beta
+    # image: mergestat/worker:1.22.4-beta
+    image: images.mergestat.com/mergestat/worker:1.22.4-beta
     privileged: true
     stop_grace_period: 10m
     restart: always
@@ -32,10 +32,10 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
+      POSTGRES_CONNECTION: postgres://postgres:${POSTGRES_PASSWORD:-password}@postgres:5432/postgres?sslmode=disable
       CONCURRENCY: 5
       GITHUB_RATE_LIMIT: 1/2
-      ENCRYPTION_SECRET: password
+      ENCRYPTION_SECRET: ${ENCRYPTION_SECRET:-password}
       LOG_LEVEL: debug
       DEBUG: 1
       PRETTY_LOGS: 1
@@ -51,8 +51,8 @@ services:
 
   graphql:
     # See NOTE above in worker service.
-    # image: mergestat/graphql:1.22.1-beta
-    image: images.mergestat.com/mergestat/graphql:1.22.1-beta
+    # image: mergestat/graphql:1.22.4-beta
+    image: images.mergestat.com/mergestat/graphql:1.22.4-beta
     restart: always
     depends_on:
       postgres:
@@ -66,13 +66,13 @@ services:
       - 5433:5433
     command:
       - "--connection"
-      - "postgres://postgres:password@postgres:5432/postgres?sslmode=disable"
+      - "postgres://postgres:${POSTGRES_PASSWORD:-password}@postgres:5432/postgres?sslmode=disable"
       - "--port"
       - "5433"
       - "--schema"
-      - "mergestat,public"
+      - "mergestat,sqlq,public"
       - "--append-plugins"
-      - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/exec-sql/index.js,/graphql/service-credentials/index.js"
+      - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/container-sync-jobs/index.js,/graphql/exec-sql/index.js,/graphql/service-credentials/index.js"
       - "-o"
       - "--subscriptions"
       - "--retry-on-init-fail"
@@ -84,10 +84,10 @@ services:
       - "--enable-query-batching"
       - "--disable-query-log"
       - "--legacy-relations=omit"
-      - "--jwt-secret=secret"
+      - "--jwt-secret=${JWT_SECRET:-secret}"
       - "--default-role=mergestat_anonymous"
     environment:
-      ENCRYPTION_SECRET: password
+      ENCRYPTION_SECRET: ${ENCRYPTION_SECRET:-password}
       DISPLAY_PG_HOSTNAME: localhost
       DISPLAY_PG_PORT: 5432
       DISPLAY_PG_DATABASE: postgres
@@ -95,8 +95,8 @@ services:
 
   ui:
     # See NOTE above in worker service.
-    # image: mergestat/console:1.22.1-beta
-    image: images.mergestat.com/mergestat/console:1.22.1-beta
+    # image: mergestat/console:1.22.4-beta
+    image: images.mergestat.com/mergestat/console:1.22.4-beta
     restart: always
     depends_on:
       - graphql
@@ -104,8 +104,8 @@ services:
       - 3300:3000
     environment:
       POSTGRAPHILE_API: http://graphql:5433/graphql
-      POSTGRES_CONNECTION: postgres://postgres:password@postgres:5432/postgres?sslmode=disable
-      JWT_SECRET: secret # should match - "--jwt-secret=secret" flag in graphql service
+      POSTGRES_CONNECTION: postgres://postgres:${POSTGRES_PASSWORD:-password}@postgres:5432/postgres?sslmode=disable
+      JWT_SECRET: ${JWT_SECRET:-secret} # should match - "--jwt-secret=secret" flag in graphql service
       INSECURE_SESSION_COOKIE: 1
     labels:
       shipyard.route: '/'
@@ -116,7 +116,7 @@ services:
     environment:
       PGHOST: postgres
       PGUSER: postgres
-      PGPASSWORD: password
+      PGPASSWORD: ${POSTGRES_PASSWORD:-password}
       PGDATABASE: postgres
     ports:
       - 3000:3000

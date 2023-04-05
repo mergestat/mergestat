@@ -53,7 +53,15 @@ const GitSourcesView: React.FC = () => {
 
   useEffect(() => {
     refetch({ search, first: rows, offset: (page * rows) })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetch, search, rows, page])
+
+  useEffect(() => {
+    if (total) {
+      (page * rows) + 1 > total && setPage(0)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [total])
 
   return (
     <div className='flex flex-col flex-1 overflow-hidden'>

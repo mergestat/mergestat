@@ -27,7 +27,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
     loading, error, query, data, time, title, desc
   } = useQueryEditor(ROWS_LIMIT)
 
-  const { savedQuery, titleError, setTitleError, addSavedQueryHandler, updateSavedQueryHandler } = useSavedQuery({ savedQueryId, title, desc, query })
+  const { loadingSQ, savedQuery, titleError, setTitleError, addSavedQueryHandler, updateSavedQueryHandler } = useSavedQuery({ savedQueryId, title, desc, query })
 
   useEffect(() => {
     setTitle(savedQuery?.name || '')
@@ -50,13 +50,13 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
             className='flex-grow mr-5'
             icon={<TerminalIcon className="t-icon" />}
             title={{
-              placeholder: `${!query ? 'Loading...' : 'Untitled Saved Query'}`,
+              placeholder: `${loadingSQ ? 'Loading...' : 'Untitled Saved Query'}`,
               value: title,
               required: titleError,
               onChange: (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)
             }}
             desc={{
-              placeholder: `${!query ? 'Loading...' : 'Enter a short description for this query (optional)'}`,
+              placeholder: `${loadingSQ ? 'Loading...' : 'Enter a short description for this query (optional)'}`,
               value: desc,
               onChange: (e: ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)
             }}

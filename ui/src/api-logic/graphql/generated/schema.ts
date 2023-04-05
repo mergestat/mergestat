@@ -73,6 +73,28 @@ export type BooleanFilter = {
   notIn?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
+/** All input for the `cancellingJob` mutation. */
+export type CancellingJobInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  jobId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `cancellingJob` mutation. */
+export type CancellingJobPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  jobStates?: Maybe<JobStates>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** A filter to be used against CardinalNumber fields. All fields are combined with a logical ‘and.’ */
 export type CardinalNumberFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -177,16 +199,41 @@ export type CharacterDataFilter = {
   startsWithInsensitive?: InputMaybe<Scalars['CharacterData']>;
 };
 
+/** All input for the `checkJobStatus` mutation. */
+export type CheckJobStatusInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  jobId?: InputMaybe<Scalars['UUID']>;
+  state?: InputMaybe<JobStates>;
+};
+
+/** The output of our `checkJobStatus` mutation. */
+export type CheckJobStatusPayload = {
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 export type ContainerImage = Node & {
   /** Reads a single `ContainerImageType` that is related to this `ContainerImage`. */
   containerImageTypeByType?: Maybe<ContainerImageType>;
   /** Reads and enables pagination through a set of `ContainerSync`. */
   containerSyncsByImageId: ContainerSyncsConnection;
+  description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   parameters: Scalars['JSON'];
+  queue: Scalars['String'];
   type: Scalars['String'];
   url: Scalars['String'];
   version: Scalars['String'];
@@ -209,12 +256,16 @@ export type ContainerImageContainerSyncsByImageIdArgs = {
  * tested for equality and combined with a logical ‘and.’
  */
 export type ContainerImageCondition = {
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `parameters` field. */
   parameters?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `queue` field. */
+  queue?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `type` field. */
   type?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `url` field. */
@@ -227,6 +278,8 @@ export type ContainerImageCondition = {
 export type ContainerImageFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<ContainerImageFilter>>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `name` field. */
@@ -237,6 +290,8 @@ export type ContainerImageFilter = {
   or?: InputMaybe<Array<ContainerImageFilter>>;
   /** Filter by the object’s `parameters` field. */
   parameters?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `queue` field. */
+  queue?: InputMaybe<StringFilter>;
   /** Filter by the object’s `type` field. */
   type?: InputMaybe<StringFilter>;
   /** Filter by the object’s `url` field. */
@@ -247,9 +302,11 @@ export type ContainerImageFilter = {
 
 /** An input for mutations affecting `ContainerImage` */
 export type ContainerImageInput = {
+  description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   name: Scalars['String'];
   parameters?: InputMaybe<Scalars['JSON']>;
+  queue?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   url: Scalars['String'];
   version?: InputMaybe<Scalars['String']>;
@@ -257,9 +314,11 @@ export type ContainerImageInput = {
 
 /** Represents an update to a `ContainerImage`. Fields that are set will be updated. */
 export type ContainerImagePatch = {
+  description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   name?: InputMaybe<Scalars['String']>;
   parameters?: InputMaybe<Scalars['JSON']>;
+  queue?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   url?: InputMaybe<Scalars['String']>;
   version?: InputMaybe<Scalars['String']>;
@@ -269,7 +328,7 @@ export type ContainerImageType = Node & {
   /** Reads and enables pagination through a set of `ContainerImage`. */
   containerImagesByType: ContainerImagesConnection;
   description?: Maybe<Scalars['String']>;
-  displayname: Scalars['String'];
+  displayName: Scalars['String'];
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -294,8 +353,8 @@ export type ContainerImageTypeContainerImagesByTypeArgs = {
 export type ContainerImageTypeCondition = {
   /** Checks for equality with the object’s `description` field. */
   description?: InputMaybe<Scalars['String']>;
-  /** Checks for equality with the object’s `displayname` field. */
-  displayname?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `displayName` field. */
+  displayName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']>;
 };
@@ -306,8 +365,8 @@ export type ContainerImageTypeFilter = {
   and?: InputMaybe<Array<ContainerImageTypeFilter>>;
   /** Filter by the object’s `description` field. */
   description?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `displayname` field. */
-  displayname?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `displayName` field. */
+  displayName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `name` field. */
   name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
@@ -319,14 +378,14 @@ export type ContainerImageTypeFilter = {
 /** An input for mutations affecting `ContainerImageType` */
 export type ContainerImageTypeInput = {
   description?: InputMaybe<Scalars['String']>;
-  displayname: Scalars['String'];
+  displayName: Scalars['String'];
   name: Scalars['String'];
 };
 
 /** Represents an update to a `ContainerImageType`. Fields that are set will be updated. */
 export type ContainerImageTypePatch = {
   description?: InputMaybe<Scalars['String']>;
-  displayname?: InputMaybe<Scalars['String']>;
+  displayName?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
 };
 
@@ -354,8 +413,8 @@ export type ContainerImageTypesEdge = {
 export enum ContainerImageTypesOrderBy {
   DescriptionAsc = 'DESCRIPTION_ASC',
   DescriptionDesc = 'DESCRIPTION_DESC',
-  DisplaynameAsc = 'DISPLAYNAME_ASC',
-  DisplaynameDesc = 'DISPLAYNAME_DESC',
+  DisplayNameAsc = 'DISPLAY_NAME_ASC',
+  DisplayNameDesc = 'DISPLAY_NAME_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
@@ -385,6 +444,8 @@ export type ContainerImagesEdge = {
 
 /** Methods to use when ordering `ContainerImage`. */
 export enum ContainerImagesOrderBy {
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   NameAsc = 'NAME_ASC',
@@ -394,6 +455,8 @@ export enum ContainerImagesOrderBy {
   ParametersDesc = 'PARAMETERS_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  QueueAsc = 'QUEUE_ASC',
+  QueueDesc = 'QUEUE_DESC',
   TypeAsc = 'TYPE_ASC',
   TypeDesc = 'TYPE_DESC',
   UrlAsc = 'URL_ASC',
@@ -460,6 +523,8 @@ export type ContainerSyncCondition = {
 
 export type ContainerSyncExecution = {
   createdAt?: Maybe<Scalars['Datetime']>;
+  /** Reads a single `Job` that is related to this `ContainerSyncExecution`. */
+  job?: Maybe<Job>;
   jobId: Scalars['UUID'];
   /** Reads a single `ContainerSync` that is related to this `ContainerSyncExecution`. */
   sync?: Maybe<ContainerSync>;
@@ -776,6 +841,8 @@ export type CreateContainerSyncExecutionPayload = {
   containerSyncExecution?: Maybe<ContainerSyncExecution>;
   /** An edge for our `ContainerSyncExecution`. May be used by Relay 1. */
   containerSyncExecutionEdge?: Maybe<ContainerSyncExecutionsEdge>;
+  /** Reads a single `Job` that is related to this `ContainerSyncExecution`. */
+  job?: Maybe<Job>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   /** Reads a single `ContainerSync` that is related to this `ContainerSyncExecution`. */
@@ -1534,6 +1601,74 @@ export type CreateGrypeRepoScanPayloadGrypeRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GrypeRepoScansOrderBy>>;
 };
 
+/** All input for the create `Job` mutation. */
+export type CreateJobInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `Job` to be created by this mutation. */
+  job: JobInput;
+};
+
+/** All input for the create `JobLog` mutation. */
+export type CreateJobLogInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `JobLog` to be created by this mutation. */
+  jobLog: JobLogInput;
+};
+
+/** The output of our create `JobLog` mutation. */
+export type CreateJobLogPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Job` that is related to this `JobLog`. */
+  jobByJob?: Maybe<Job>;
+  /** The `JobLog` that was created by this mutation. */
+  jobLog?: Maybe<JobLog>;
+  /** An edge for our `JobLog`. May be used by Relay 1. */
+  jobLogEdge?: Maybe<JobLogsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `JobLog` mutation. */
+export type CreateJobLogPayloadJobLogEdgeArgs = {
+  orderBy?: InputMaybe<Array<JobLogsOrderBy>>;
+};
+
+/** The output of our create `Job` mutation. */
+export type CreateJobPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Job` that was created by this mutation. */
+  job?: Maybe<Job>;
+  /** An edge for our `Job`. May be used by Relay 1. */
+  jobEdge?: Maybe<JobsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Queue` that is related to this `Job`. */
+  queueByQueue?: Maybe<Queue>;
+};
+
+
+/** The output of our create `Job` mutation. */
+export type CreateJobPayloadJobEdgeArgs = {
+  orderBy?: InputMaybe<Array<JobsOrderBy>>;
+};
+
 /** All input for the create `LabelAssociation` mutation. */
 export type CreateLabelAssociationInput = {
   /**
@@ -1732,6 +1867,38 @@ export type CreateQueryHistoryPayload = {
 /** The output of our create `QueryHistory` mutation. */
 export type CreateQueryHistoryPayloadQueryHistoryEdgeArgs = {
   orderBy?: InputMaybe<Array<QueryHistoriesOrderBy>>;
+};
+
+/** All input for the create `Queue` mutation. */
+export type CreateQueueInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `Queue` to be created by this mutation. */
+  queue: QueueInput;
+};
+
+/** The output of our create `Queue` mutation. */
+export type CreateQueuePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Queue` that was created by this mutation. */
+  queue?: Maybe<Queue>;
+  /** An edge for our `Queue`. May be used by Relay 1. */
+  queueEdge?: Maybe<QueuesEdge>;
+};
+
+
+/** The output of our create `Queue` mutation. */
+export type CreateQueuePayloadQueueEdgeArgs = {
+  orderBy?: InputMaybe<Array<QueuesOrderBy>>;
 };
 
 /** All input for the create `RepoImport` mutation. */
@@ -3546,6 +3713,96 @@ export type DeleteGrypeRepoScanPayloadGrypeRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GrypeRepoScansOrderBy>>;
 };
 
+/** All input for the `deleteJobByNodeId` mutation. */
+export type DeleteJobByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Job` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteJob` mutation. */
+export type DeleteJobInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** All input for the `deleteJobLogByNodeId` mutation. */
+export type DeleteJobLogByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `JobLog` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteJobLog` mutation. */
+export type DeleteJobLogInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `JobLog` mutation. */
+export type DeleteJobLogPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedJobLogNodeId?: Maybe<Scalars['ID']>;
+  /** Reads a single `Job` that is related to this `JobLog`. */
+  jobByJob?: Maybe<Job>;
+  /** The `JobLog` that was deleted by this mutation. */
+  jobLog?: Maybe<JobLog>;
+  /** An edge for our `JobLog`. May be used by Relay 1. */
+  jobLogEdge?: Maybe<JobLogsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `JobLog` mutation. */
+export type DeleteJobLogPayloadJobLogEdgeArgs = {
+  orderBy?: InputMaybe<Array<JobLogsOrderBy>>;
+};
+
+/** The output of our delete `Job` mutation. */
+export type DeleteJobPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedJobNodeId?: Maybe<Scalars['ID']>;
+  /** The `Job` that was deleted by this mutation. */
+  job?: Maybe<Job>;
+  /** An edge for our `Job`. May be used by Relay 1. */
+  jobEdge?: Maybe<JobsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Queue` that is related to this `Job`. */
+  queueByQueue?: Maybe<Queue>;
+};
+
+
+/** The output of our delete `Job` mutation. */
+export type DeleteJobPayloadJobEdgeArgs = {
+  orderBy?: InputMaybe<Array<JobsOrderBy>>;
+};
+
 /** All input for the `deleteLabelAssociationByLabelAndRepoSyncType` mutation. */
 export type DeleteLabelAssociationByLabelAndRepoSyncTypeInput = {
   /**
@@ -3768,6 +4025,49 @@ export type DeleteQueryHistoryPayload = {
 /** The output of our delete `QueryHistory` mutation. */
 export type DeleteQueryHistoryPayloadQueryHistoryEdgeArgs = {
   orderBy?: InputMaybe<Array<QueryHistoriesOrderBy>>;
+};
+
+/** All input for the `deleteQueueByNodeId` mutation. */
+export type DeleteQueueByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Queue` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteQueue` mutation. */
+export type DeleteQueueInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+/** The output of our delete `Queue` mutation. */
+export type DeleteQueuePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedQueueNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Queue` that was deleted by this mutation. */
+  queue?: Maybe<Queue>;
+  /** An edge for our `Queue`. May be used by Relay 1. */
+  queueEdge?: Maybe<QueuesEdge>;
+};
+
+
+/** The output of our delete `Queue` mutation. */
+export type DeleteQueuePayloadQueueEdgeArgs = {
+  orderBy?: InputMaybe<Array<QueuesOrderBy>>;
 };
 
 /** All input for the `deleteRepoByNodeId` mutation. */
@@ -4732,6 +5032,29 @@ export type DeleteYelpDetectSecretsRepoScanPayload = {
 /** The output of our delete `YelpDetectSecretsRepoScan` mutation. */
 export type DeleteYelpDetectSecretsRepoScanPayloadYelpDetectSecretsRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<YelpDetectSecretsRepoScansOrderBy>>;
+};
+
+/** All input for the `dequeueJob` mutation. */
+export type DequeueJobInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  jobtypes?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  queues?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+/** The output of our `dequeueJob` mutation. */
+export type DequeueJobPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  jobs?: Maybe<Array<Job>>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 export type DisplayDatabaseConnection = {
@@ -9625,6 +9948,388 @@ export type JsonFilter = {
   notIn?: InputMaybe<Array<Scalars['JSON']>>;
 };
 
+export type Job = Node & {
+  attempt?: Maybe<Scalars['Int']>;
+  completedAt?: Maybe<Scalars['Datetime']>;
+  /** Reads and enables pagination through a set of `ContainerSyncExecution`. */
+  containerSyncExecutions: ContainerSyncExecutionsConnection;
+  createdAt: Scalars['Datetime'];
+  id: Scalars['UUID'];
+  /** Reads and enables pagination through a set of `JobLog`. */
+  jobLogsByJob: JobLogsConnection;
+  keepaliveInterval: Scalars['BigInt'];
+  lastKeepalive?: Maybe<Scalars['Datetime']>;
+  lastQueuedAt: Scalars['Datetime'];
+  maxRetries?: Maybe<Scalars['Int']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  parameters?: Maybe<Scalars['JSON']>;
+  priority: Scalars['Int'];
+  queue: Scalars['String'];
+  /** Reads a single `Queue` that is related to this `Job`. */
+  queueByQueue?: Maybe<Queue>;
+  result?: Maybe<Scalars['JSON']>;
+  retentionTtl: Scalars['BigInt'];
+  runAfter?: Maybe<Scalars['BigInt']>;
+  startedAt?: Maybe<Scalars['Datetime']>;
+  status: JobStates;
+  typename: Scalars['String'];
+};
+
+
+export type JobContainerSyncExecutionsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<ContainerSyncExecutionCondition>;
+  filter?: InputMaybe<ContainerSyncExecutionFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ContainerSyncExecutionsOrderBy>>;
+};
+
+
+export type JobJobLogsByJobArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<JobLogCondition>;
+  filter?: InputMaybe<JobLogFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<JobLogsOrderBy>>;
+};
+
+/** A condition to be used against `Job` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type JobCondition = {
+  /** Checks for equality with the object’s `attempt` field. */
+  attempt?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `completedAt` field. */
+  completedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `keepaliveInterval` field. */
+  keepaliveInterval?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `lastKeepalive` field. */
+  lastKeepalive?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `lastQueuedAt` field. */
+  lastQueuedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `maxRetries` field. */
+  maxRetries?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `parameters` field. */
+  parameters?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `priority` field. */
+  priority?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `queue` field. */
+  queue?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `result` field. */
+  result?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `retentionTtl` field. */
+  retentionTtl?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `runAfter` field. */
+  runAfter?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `startedAt` field. */
+  startedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<JobStates>;
+  /** Checks for equality with the object’s `typename` field. */
+  typename?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `Job` object types. All fields are combined with a logical ‘and.’ */
+export type JobFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<JobFilter>>;
+  /** Filter by the object’s `attempt` field. */
+  attempt?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `completedAt` field. */
+  completedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `keepaliveInterval` field. */
+  keepaliveInterval?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `lastKeepalive` field. */
+  lastKeepalive?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `lastQueuedAt` field. */
+  lastQueuedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `maxRetries` field. */
+  maxRetries?: InputMaybe<IntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<JobFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<JobFilter>>;
+  /** Filter by the object’s `parameters` field. */
+  parameters?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `priority` field. */
+  priority?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `queue` field. */
+  queue?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `result` field. */
+  result?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `retentionTtl` field. */
+  retentionTtl?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `runAfter` field. */
+  runAfter?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `startedAt` field. */
+  startedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<JobStatesFilter>;
+  /** Filter by the object’s `typename` field. */
+  typename?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `Job` */
+export type JobInput = {
+  attempt?: InputMaybe<Scalars['Int']>;
+  completedAt?: InputMaybe<Scalars['Datetime']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  keepaliveInterval?: InputMaybe<Scalars['BigInt']>;
+  lastKeepalive?: InputMaybe<Scalars['Datetime']>;
+  lastQueuedAt?: InputMaybe<Scalars['Datetime']>;
+  maxRetries?: InputMaybe<Scalars['Int']>;
+  parameters?: InputMaybe<Scalars['JSON']>;
+  priority?: InputMaybe<Scalars['Int']>;
+  queue: Scalars['String'];
+  result?: InputMaybe<Scalars['JSON']>;
+  retentionTtl?: InputMaybe<Scalars['BigInt']>;
+  runAfter?: InputMaybe<Scalars['BigInt']>;
+  startedAt?: InputMaybe<Scalars['Datetime']>;
+  status?: InputMaybe<JobStates>;
+  typename: Scalars['String'];
+};
+
+export type JobLog = Node & {
+  id: Scalars['UUID'];
+  job: Scalars['UUID'];
+  /** Reads a single `Job` that is related to this `JobLog`. */
+  jobByJob?: Maybe<Job>;
+  level?: Maybe<LogLevel>;
+  loggedAt?: Maybe<Scalars['Datetime']>;
+  message?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  position: Scalars['Int'];
+};
+
+/** A condition to be used against `JobLog` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type JobLogCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `job` field. */
+  job?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `level` field. */
+  level?: InputMaybe<LogLevel>;
+  /** Checks for equality with the object’s `loggedAt` field. */
+  loggedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `message` field. */
+  message?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `position` field. */
+  position?: InputMaybe<Scalars['Int']>;
+};
+
+/** A filter to be used against `JobLog` object types. All fields are combined with a logical ‘and.’ */
+export type JobLogFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<JobLogFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `job` field. */
+  job?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `level` field. */
+  level?: InputMaybe<LogLevelFilter>;
+  /** Filter by the object’s `loggedAt` field. */
+  loggedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `message` field. */
+  message?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<JobLogFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<JobLogFilter>>;
+  /** Filter by the object’s `position` field. */
+  position?: InputMaybe<IntFilter>;
+};
+
+/** An input for mutations affecting `JobLog` */
+export type JobLogInput = {
+  id?: InputMaybe<Scalars['UUID']>;
+  job?: InputMaybe<Scalars['UUID']>;
+  level?: InputMaybe<LogLevel>;
+  loggedAt?: InputMaybe<Scalars['Datetime']>;
+  message?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
+};
+
+/** Represents an update to a `JobLog`. Fields that are set will be updated. */
+export type JobLogPatch = {
+  id?: InputMaybe<Scalars['UUID']>;
+  job?: InputMaybe<Scalars['UUID']>;
+  level?: InputMaybe<LogLevel>;
+  loggedAt?: InputMaybe<Scalars['Datetime']>;
+  message?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
+};
+
+/** A connection to a list of `JobLog` values. */
+export type JobLogsConnection = {
+  /** A list of edges which contains the `JobLog` and cursor to aid in pagination. */
+  edges: Array<JobLogsEdge>;
+  /** A list of `JobLog` objects. */
+  nodes: Array<JobLog>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `JobLog` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `JobLog` edge in the connection. */
+export type JobLogsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `JobLog` at the end of the edge. */
+  node: JobLog;
+};
+
+/** Methods to use when ordering `JobLog`. */
+export enum JobLogsOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  JobAsc = 'JOB_ASC',
+  JobDesc = 'JOB_DESC',
+  LevelAsc = 'LEVEL_ASC',
+  LevelDesc = 'LEVEL_DESC',
+  LoggedAtAsc = 'LOGGED_AT_ASC',
+  LoggedAtDesc = 'LOGGED_AT_DESC',
+  MessageAsc = 'MESSAGE_ASC',
+  MessageDesc = 'MESSAGE_DESC',
+  Natural = 'NATURAL',
+  PositionAsc = 'POSITION_ASC',
+  PositionDesc = 'POSITION_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
+/** Represents an update to a `Job`. Fields that are set will be updated. */
+export type JobPatch = {
+  attempt?: InputMaybe<Scalars['Int']>;
+  completedAt?: InputMaybe<Scalars['Datetime']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  keepaliveInterval?: InputMaybe<Scalars['BigInt']>;
+  lastKeepalive?: InputMaybe<Scalars['Datetime']>;
+  lastQueuedAt?: InputMaybe<Scalars['Datetime']>;
+  maxRetries?: InputMaybe<Scalars['Int']>;
+  parameters?: InputMaybe<Scalars['JSON']>;
+  priority?: InputMaybe<Scalars['Int']>;
+  queue?: InputMaybe<Scalars['String']>;
+  result?: InputMaybe<Scalars['JSON']>;
+  retentionTtl?: InputMaybe<Scalars['BigInt']>;
+  runAfter?: InputMaybe<Scalars['BigInt']>;
+  startedAt?: InputMaybe<Scalars['Datetime']>;
+  status?: InputMaybe<JobStates>;
+  typename?: InputMaybe<Scalars['String']>;
+};
+
+export enum JobStates {
+  Cancelled = 'CANCELLED',
+  Cancelling = 'CANCELLING',
+  Errored = 'ERRORED',
+  Pending = 'PENDING',
+  Running = 'RUNNING',
+  Success = 'SUCCESS'
+}
+
+/** A filter to be used against JobStates fields. All fields are combined with a logical ‘and.’ */
+export type JobStatesFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<JobStates>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<JobStates>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<JobStates>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<JobStates>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<JobStates>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<JobStates>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<JobStates>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<JobStates>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<JobStates>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<JobStates>>;
+};
+
+/** A connection to a list of `Job` values. */
+export type JobsConnection = {
+  /** A list of edges which contains the `Job` and cursor to aid in pagination. */
+  edges: Array<JobsEdge>;
+  /** A list of `Job` objects. */
+  nodes: Array<Job>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Job` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `Job` edge in the connection. */
+export type JobsEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `Job` at the end of the edge. */
+  node: Job;
+};
+
+/** Methods to use when ordering `Job`. */
+export enum JobsOrderBy {
+  AttemptAsc = 'ATTEMPT_ASC',
+  AttemptDesc = 'ATTEMPT_DESC',
+  CompletedAtAsc = 'COMPLETED_AT_ASC',
+  CompletedAtDesc = 'COMPLETED_AT_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  KeepaliveIntervalAsc = 'KEEPALIVE_INTERVAL_ASC',
+  KeepaliveIntervalDesc = 'KEEPALIVE_INTERVAL_DESC',
+  LastKeepaliveAsc = 'LAST_KEEPALIVE_ASC',
+  LastKeepaliveDesc = 'LAST_KEEPALIVE_DESC',
+  LastQueuedAtAsc = 'LAST_QUEUED_AT_ASC',
+  LastQueuedAtDesc = 'LAST_QUEUED_AT_DESC',
+  MaxRetriesAsc = 'MAX_RETRIES_ASC',
+  MaxRetriesDesc = 'MAX_RETRIES_DESC',
+  Natural = 'NATURAL',
+  ParametersAsc = 'PARAMETERS_ASC',
+  ParametersDesc = 'PARAMETERS_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PriorityAsc = 'PRIORITY_ASC',
+  PriorityDesc = 'PRIORITY_DESC',
+  QueueAsc = 'QUEUE_ASC',
+  QueueDesc = 'QUEUE_DESC',
+  ResultAsc = 'RESULT_ASC',
+  ResultDesc = 'RESULT_DESC',
+  RetentionTtlAsc = 'RETENTION_TTL_ASC',
+  RetentionTtlDesc = 'RETENTION_TTL_DESC',
+  RunAfterAsc = 'RUN_AFTER_ASC',
+  RunAfterDesc = 'RUN_AFTER_DESC',
+  StartedAtAsc = 'STARTED_AT_ASC',
+  StartedAtDesc = 'STARTED_AT_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  TypenameAsc = 'TYPENAME_ASC',
+  TypenameDesc = 'TYPENAME_DESC'
+}
+
 /** All input for the `jsonbRecursiveMerge` mutation. */
 export type JsonbRecursiveMergeInput = {
   a?: InputMaybe<Scalars['JSON']>;
@@ -9905,9 +10610,92 @@ export enum LatestRepoSyncsOrderBy {
   StatusDesc = 'STATUS_DESC'
 }
 
+export enum LogLevel {
+  Debug = 'DEBUG',
+  Error = 'ERROR',
+  Info = 'INFO',
+  Warn = 'WARN'
+}
+
+/** A filter to be used against LogLevel fields. All fields are combined with a logical ‘and.’ */
+export type LogLevelFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<LogLevel>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<LogLevel>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<LogLevel>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<LogLevel>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<LogLevel>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<LogLevel>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<LogLevel>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<LogLevel>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<LogLevel>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<LogLevel>>;
+};
+
+/** All input for the `markFailed` mutation. */
+export type MarkFailedInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  expectedstate?: InputMaybe<JobStates>;
+  id?: InputMaybe<Scalars['UUID']>;
+  retry?: InputMaybe<Scalars['Boolean']>;
+  runAfter?: InputMaybe<Scalars['BigInt']>;
+};
+
+/** The output of our `markFailed` mutation. */
+export type MarkFailedPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  jobs?: Maybe<Array<Job>>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+/** All input for the `markSuccess` mutation. */
+export type MarkSuccessInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  expectedstate?: InputMaybe<JobStates>;
+  id?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `markSuccess` mutation. */
+export type MarkSuccessPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  jobs?: Maybe<Array<Job>>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   addToken?: Maybe<Scalars['Boolean']>;
+  cancellingJob?: Maybe<CancellingJobPayload>;
+  checkJobStatus?: Maybe<CheckJobStatusPayload>;
   /** Creates a single `ContainerImage`. */
   createContainerImage?: Maybe<CreateContainerImagePayload>;
   /** Creates a single `ContainerImageType`. */
@@ -9958,6 +10746,10 @@ export type Mutation = {
   createGosecRepoScan?: Maybe<CreateGosecRepoScanPayload>;
   /** Creates a single `GrypeRepoScan`. */
   createGrypeRepoScan?: Maybe<CreateGrypeRepoScanPayload>;
+  /** Creates a single `Job`. */
+  createJob?: Maybe<CreateJobPayload>;
+  /** Creates a single `JobLog`. */
+  createJobLog?: Maybe<CreateJobLogPayload>;
   /** Creates a single `Label`. */
   createLabel?: Maybe<CreateLabelPayload>;
   /** Creates a single `LabelAssociation`. */
@@ -9970,6 +10762,8 @@ export type Mutation = {
   createProvider?: Maybe<CreateProviderPayload>;
   /** Creates a single `QueryHistory`. */
   createQueryHistory?: Maybe<CreateQueryHistoryPayload>;
+  /** Creates a single `Queue`. */
+  createQueue?: Maybe<CreateQueuePayload>;
   /** Creates a single `Repo`. */
   createRepo?: Maybe<CreateRepoPayload>;
   /** Creates a single `RepoImport`. */
@@ -10108,6 +10902,14 @@ export type Mutation = {
   deleteGrypeRepoScan?: Maybe<DeleteGrypeRepoScanPayload>;
   /** Deletes a single `GrypeRepoScan` using its globally unique id. */
   deleteGrypeRepoScanByNodeId?: Maybe<DeleteGrypeRepoScanPayload>;
+  /** Deletes a single `Job` using a unique key. */
+  deleteJob?: Maybe<DeleteJobPayload>;
+  /** Deletes a single `Job` using its globally unique id. */
+  deleteJobByNodeId?: Maybe<DeleteJobPayload>;
+  /** Deletes a single `JobLog` using a unique key. */
+  deleteJobLog?: Maybe<DeleteJobLogPayload>;
+  /** Deletes a single `JobLog` using its globally unique id. */
+  deleteJobLogByNodeId?: Maybe<DeleteJobLogPayload>;
   /** Deletes a single `Label` using a unique key. */
   deleteLabel?: Maybe<DeleteLabelPayload>;
   /** Deletes a single `LabelAssociation` using a unique key. */
@@ -10128,6 +10930,10 @@ export type Mutation = {
   deleteQueryHistory?: Maybe<DeleteQueryHistoryPayload>;
   /** Deletes a single `QueryHistory` using its globally unique id. */
   deleteQueryHistoryByNodeId?: Maybe<DeleteQueryHistoryPayload>;
+  /** Deletes a single `Queue` using a unique key. */
+  deleteQueue?: Maybe<DeleteQueuePayload>;
+  /** Deletes a single `Queue` using its globally unique id. */
+  deleteQueueByNodeId?: Maybe<DeleteQueuePayload>;
   /** Deletes a single `Repo` using a unique key. */
   deleteRepo?: Maybe<DeleteRepoPayload>;
   /** Deletes a single `Repo` using its globally unique id. */
@@ -10216,10 +11022,15 @@ export type Mutation = {
   deleteYelpDetectSecretsRepoScan?: Maybe<DeleteYelpDetectSecretsRepoScanPayload>;
   /** Deletes a single `YelpDetectSecretsRepoScan` using its globally unique id. */
   deleteYelpDetectSecretsRepoScanByNodeId?: Maybe<DeleteYelpDetectSecretsRepoScanPayload>;
+  dequeueJob?: Maybe<DequeueJobPayload>;
   fetchServiceAuthCredential?: Maybe<FetchServiceAuthCredentialPayload>;
   jsonbRecursiveMerge?: Maybe<JsonbRecursiveMergePayload>;
+  markFailed?: Maybe<MarkFailedPayload>;
+  markSuccess?: Maybe<MarkSuccessPayload>;
+  reap?: Maybe<ReapPayload>;
   setSyncJobStatus?: Maybe<SetSyncJobStatusPayload>;
   simpleRepoSyncQueueCleanup?: Maybe<SimpleRepoSyncQueueCleanupPayload>;
+  syncNow?: Maybe<Scalars['Boolean']>;
   /** Updates a single `ContainerImage` using a unique key and a patch. */
   updateContainerImage?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImage` using its globally unique id and a patch. */
@@ -10316,6 +11127,14 @@ export type Mutation = {
   updateGrypeRepoScan?: Maybe<UpdateGrypeRepoScanPayload>;
   /** Updates a single `GrypeRepoScan` using its globally unique id and a patch. */
   updateGrypeRepoScanByNodeId?: Maybe<UpdateGrypeRepoScanPayload>;
+  /** Updates a single `Job` using a unique key and a patch. */
+  updateJob?: Maybe<UpdateJobPayload>;
+  /** Updates a single `Job` using its globally unique id and a patch. */
+  updateJobByNodeId?: Maybe<UpdateJobPayload>;
+  /** Updates a single `JobLog` using a unique key and a patch. */
+  updateJobLog?: Maybe<UpdateJobLogPayload>;
+  /** Updates a single `JobLog` using its globally unique id and a patch. */
+  updateJobLogByNodeId?: Maybe<UpdateJobLogPayload>;
   /** Updates a single `Label` using a unique key and a patch. */
   updateLabel?: Maybe<UpdateLabelPayload>;
   /** Updates a single `LabelAssociation` using a unique key and a patch. */
@@ -10336,6 +11155,10 @@ export type Mutation = {
   updateQueryHistory?: Maybe<UpdateQueryHistoryPayload>;
   /** Updates a single `QueryHistory` using its globally unique id and a patch. */
   updateQueryHistoryByNodeId?: Maybe<UpdateQueryHistoryPayload>;
+  /** Updates a single `Queue` using a unique key and a patch. */
+  updateQueue?: Maybe<UpdateQueuePayload>;
+  /** Updates a single `Queue` using its globally unique id and a patch. */
+  updateQueueByNodeId?: Maybe<UpdateQueuePayload>;
   /** Updates a single `Repo` using a unique key and a patch. */
   updateRepo?: Maybe<UpdateRepoPayload>;
   /** Updates a single `Repo` using its globally unique id and a patch. */
@@ -10437,6 +11260,18 @@ export type MutationAddTokenArgs = {
   token: Scalars['String'];
   type: Scalars['String'];
   username?: InputMaybe<Scalars['String']>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCancellingJobArgs = {
+  input: CancellingJobInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCheckJobStatusArgs = {
+  input: CheckJobStatusInput;
 };
 
 
@@ -10591,6 +11426,18 @@ export type MutationCreateGrypeRepoScanArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateJobArgs = {
+  input: CreateJobInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateJobLogArgs = {
+  input: CreateJobLogInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateLabelArgs = {
   input: CreateLabelInput;
 };
@@ -10623,6 +11470,12 @@ export type MutationCreateProviderArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateQueryHistoryArgs = {
   input: CreateQueryHistoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateQueueArgs = {
+  input: CreateQueueInput;
 };
 
 
@@ -11041,6 +11894,30 @@ export type MutationDeleteGrypeRepoScanByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteJobArgs = {
+  input: DeleteJobInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteJobByNodeIdArgs = {
+  input: DeleteJobByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteJobLogArgs = {
+  input: DeleteJobLogInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteJobLogByNodeIdArgs = {
+  input: DeleteJobLogByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteLabelArgs = {
   input: DeleteLabelInput;
 };
@@ -11097,6 +11974,18 @@ export type MutationDeleteQueryHistoryArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteQueryHistoryByNodeIdArgs = {
   input: DeleteQueryHistoryByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteQueueArgs = {
+  input: DeleteQueueInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteQueueByNodeIdArgs = {
+  input: DeleteQueueByNodeIdInput;
 };
 
 
@@ -11365,6 +12254,12 @@ export type MutationDeleteYelpDetectSecretsRepoScanByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDequeueJobArgs = {
+  input: DequeueJobInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationFetchServiceAuthCredentialArgs = {
   input: FetchServiceAuthCredentialInput;
 };
@@ -11377,6 +12272,24 @@ export type MutationJsonbRecursiveMergeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationMarkFailedArgs = {
+  input: MarkFailedInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationMarkSuccessArgs = {
+  input: MarkSuccessInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationReapArgs = {
+  input: ReapInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationSetSyncJobStatusArgs = {
   input: SetSyncJobStatusInput;
 };
@@ -11385,6 +12298,13 @@ export type MutationSetSyncJobStatusArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationSimpleRepoSyncQueueCleanupArgs = {
   input: SimpleRepoSyncQueueCleanupInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationSyncNowArgs = {
+  queue?: InputMaybe<Scalars['String']>;
+  sync: Scalars['UUID'];
 };
 
 
@@ -11677,6 +12597,30 @@ export type MutationUpdateGrypeRepoScanByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateJobArgs = {
+  input: UpdateJobInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateJobByNodeIdArgs = {
+  input: UpdateJobByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateJobLogArgs = {
+  input: UpdateJobLogInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateJobLogByNodeIdArgs = {
+  input: UpdateJobLogByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateLabelArgs = {
   input: UpdateLabelInput;
 };
@@ -11733,6 +12677,18 @@ export type MutationUpdateQueryHistoryArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateQueryHistoryByNodeIdArgs = {
   input: UpdateQueryHistoryByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateQueueArgs = {
+  input: UpdateQueueInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateQueueByNodeIdArgs = {
+  input: UpdateQueueByNodeIdInput;
 };
 
 
@@ -12643,6 +13599,16 @@ export type Query = Node & {
   grypeRepoScans?: Maybe<GrypeRepoScansConnection>;
   /** Reads and enables pagination through a set of `GrypeRepoVulnerability`. */
   grypeRepoVulnerabilities?: Maybe<GrypeRepoVulnerabilitiesConnection>;
+  job?: Maybe<Job>;
+  /** Reads a single `Job` using its globally unique `ID`. */
+  jobByNodeId?: Maybe<Job>;
+  jobLog?: Maybe<JobLog>;
+  /** Reads a single `JobLog` using its globally unique `ID`. */
+  jobLogByNodeId?: Maybe<JobLog>;
+  /** Reads and enables pagination through a set of `JobLog`. */
+  jobLogs?: Maybe<JobLogsConnection>;
+  /** Reads and enables pagination through a set of `Job`. */
+  jobs?: Maybe<JobsConnection>;
   label?: Maybe<Label>;
   labelAssociationByLabelAndRepoSyncType?: Maybe<LabelAssociation>;
   /** Reads and enables pagination through a set of `LabelAssociation`. */
@@ -12654,7 +13620,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<ContainerImage | ContainerImageType | ContainerSync | ContainerSyncSchedule | GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GitRemote | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | GosecRepoScan | GrypeRepoScan | Label | OssfScorecardRepoScan | Provider | Query | QueryHistory | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SavedQuery | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SqlqMigration | SyftRepoScan | TrivyRepoScan | Vendor | VendorType | YelpDetectSecretsRepoScan>;
+  node?: Maybe<ContainerImage | ContainerImageType | ContainerSync | ContainerSyncSchedule | GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GitRemote | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | GosecRepoScan | GrypeRepoScan | Job | JobLog | Label | OssfScorecardRepoScan | Provider | Query | QueryHistory | Queue | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SavedQuery | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SqlqMigration | SyftRepoScan | TrivyRepoScan | Vendor | VendorType | YelpDetectSecretsRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `OssfScorecardRepoCheckResult`. */
@@ -12682,6 +13648,11 @@ export type Query = Node & {
   queryHistory?: Maybe<QueryHistory>;
   /** Reads a single `QueryHistory` using its globally unique `ID`. */
   queryHistoryByNodeId?: Maybe<QueryHistory>;
+  queue?: Maybe<Queue>;
+  /** Reads a single `Queue` using its globally unique `ID`. */
+  queueByNodeId?: Maybe<Queue>;
+  /** Reads and enables pagination through a set of `Queue`. */
+  queues?: Maybe<QueuesConnection>;
   repo?: Maybe<Repo>;
   /** Reads a single `Repo` using its globally unique `ID`. */
   repoByNodeId?: Maybe<Repo>;
@@ -13479,6 +14450,56 @@ export type QueryGrypeRepoVulnerabilitiesArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryJobArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryJobByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryJobLogArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryJobLogByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryJobLogsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<JobLogCondition>;
+  filter?: InputMaybe<JobLogFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<JobLogsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryJobsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<JobCondition>;
+  filter?: InputMaybe<JobFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<JobsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryLabelArgs = {
   label: Scalars['String'];
 };
@@ -13646,6 +14667,31 @@ export type QueryQueryHistoryArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryQueryHistoryByNodeIdArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryQueueArgs = {
+  name: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryQueueByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryQueuesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<QueueCondition>;
+  filter?: InputMaybe<QueueFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<QueuesOrderBy>>;
 };
 
 
@@ -14342,6 +15388,141 @@ export type QueryHistoryPatch = {
   query?: InputMaybe<Scalars['String']>;
   runAt?: InputMaybe<Scalars['Datetime']>;
   runBy?: InputMaybe<Scalars['String']>;
+};
+
+export type Queue = Node & {
+  concurrency?: Maybe<Scalars['Int']>;
+  createdAt: Scalars['Datetime'];
+  description?: Maybe<Scalars['String']>;
+  /** Reads and enables pagination through a set of `Job`. */
+  jobsByQueue: JobsConnection;
+  name: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  priority: Scalars['Int'];
+};
+
+
+export type QueueJobsByQueueArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<JobCondition>;
+  filter?: InputMaybe<JobFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<JobsOrderBy>>;
+};
+
+/** A condition to be used against `Queue` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type QueueCondition = {
+  /** Checks for equality with the object’s `concurrency` field. */
+  concurrency?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `priority` field. */
+  priority?: InputMaybe<Scalars['Int']>;
+};
+
+/** A filter to be used against `Queue` object types. All fields are combined with a logical ‘and.’ */
+export type QueueFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<QueueFilter>>;
+  /** Filter by the object’s `concurrency` field. */
+  concurrency?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<QueueFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<QueueFilter>>;
+  /** Filter by the object’s `priority` field. */
+  priority?: InputMaybe<IntFilter>;
+};
+
+/** An input for mutations affecting `Queue` */
+export type QueueInput = {
+  concurrency?: InputMaybe<Scalars['Int']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  description?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  priority?: InputMaybe<Scalars['Int']>;
+};
+
+/** Represents an update to a `Queue`. Fields that are set will be updated. */
+export type QueuePatch = {
+  concurrency?: InputMaybe<Scalars['Int']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  description?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  priority?: InputMaybe<Scalars['Int']>;
+};
+
+/** A connection to a list of `Queue` values. */
+export type QueuesConnection = {
+  /** A list of edges which contains the `Queue` and cursor to aid in pagination. */
+  edges: Array<QueuesEdge>;
+  /** A list of `Queue` objects. */
+  nodes: Array<Queue>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Queue` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `Queue` edge in the connection. */
+export type QueuesEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `Queue` at the end of the edge. */
+  node: Queue;
+};
+
+/** Methods to use when ordering `Queue`. */
+export enum QueuesOrderBy {
+  ConcurrencyAsc = 'CONCURRENCY_ASC',
+  ConcurrencyDesc = 'CONCURRENCY_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PriorityAsc = 'PRIORITY_ASC',
+  PriorityDesc = 'PRIORITY_DESC'
+}
+
+/** All input for the `reap` mutation. */
+export type ReapInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  queues?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+/** The output of our `reap` mutation. */
+export type ReapPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  integer?: Maybe<Scalars['Int']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 /** git repositories to track */
@@ -18428,6 +19609,102 @@ export type UpdateGrypeRepoScanPayloadGrypeRepoScanEdgeArgs = {
   orderBy?: InputMaybe<Array<GrypeRepoScansOrderBy>>;
 };
 
+/** All input for the `updateJobByNodeId` mutation. */
+export type UpdateJobByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Job` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `Job` being updated. */
+  patch: JobPatch;
+};
+
+/** All input for the `updateJob` mutation. */
+export type UpdateJobInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `Job` being updated. */
+  patch: JobPatch;
+};
+
+/** All input for the `updateJobLogByNodeId` mutation. */
+export type UpdateJobLogByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `JobLog` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `JobLog` being updated. */
+  patch: JobLogPatch;
+};
+
+/** All input for the `updateJobLog` mutation. */
+export type UpdateJobLogInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `JobLog` being updated. */
+  patch: JobLogPatch;
+};
+
+/** The output of our update `JobLog` mutation. */
+export type UpdateJobLogPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Job` that is related to this `JobLog`. */
+  jobByJob?: Maybe<Job>;
+  /** The `JobLog` that was updated by this mutation. */
+  jobLog?: Maybe<JobLog>;
+  /** An edge for our `JobLog`. May be used by Relay 1. */
+  jobLogEdge?: Maybe<JobLogsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `JobLog` mutation. */
+export type UpdateJobLogPayloadJobLogEdgeArgs = {
+  orderBy?: InputMaybe<Array<JobLogsOrderBy>>;
+};
+
+/** The output of our update `Job` mutation. */
+export type UpdateJobPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Job` that was updated by this mutation. */
+  job?: Maybe<Job>;
+  /** An edge for our `Job`. May be used by Relay 1. */
+  jobEdge?: Maybe<JobsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Queue` that is related to this `Job`. */
+  queueByQueue?: Maybe<Queue>;
+};
+
+
+/** The output of our update `Job` mutation. */
+export type UpdateJobPayloadJobEdgeArgs = {
+  orderBy?: InputMaybe<Array<JobsOrderBy>>;
+};
+
 /** All input for the `updateLabelAssociationByLabelAndRepoSyncType` mutation. */
 export type UpdateLabelAssociationByLabelAndRepoSyncTypeInput = {
   /**
@@ -18665,6 +19942,52 @@ export type UpdateQueryHistoryPayload = {
 /** The output of our update `QueryHistory` mutation. */
 export type UpdateQueryHistoryPayloadQueryHistoryEdgeArgs = {
   orderBy?: InputMaybe<Array<QueryHistoriesOrderBy>>;
+};
+
+/** All input for the `updateQueueByNodeId` mutation. */
+export type UpdateQueueByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Queue` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `Queue` being updated. */
+  patch: QueuePatch;
+};
+
+/** All input for the `updateQueue` mutation. */
+export type UpdateQueueInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  /** An object where the defined keys will be set on the `Queue` being updated. */
+  patch: QueuePatch;
+};
+
+/** The output of our update `Queue` mutation. */
+export type UpdateQueuePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Queue` that was updated by this mutation. */
+  queue?: Maybe<Queue>;
+  /** An edge for our `Queue`. May be used by Relay 1. */
+  queueEdge?: Maybe<QueuesEdge>;
+};
+
+
+/** The output of our update `Queue` mutation. */
+export type UpdateQueuePayloadQueueEdgeArgs = {
+  orderBy?: InputMaybe<Array<QueuesOrderBy>>;
 };
 
 /** All input for the `updateRepoByNodeId` mutation. */
@@ -20501,6 +21824,35 @@ export type RemoveUserMutationVariables = Exact<{
 
 export type RemoveUserMutation = { userMgmtRemoveUser?: { clientMutationId?: string | null, integer?: number | null } | null };
 
+export type AddContainerImageMutationVariables = Exact<{
+  name: Scalars['String'];
+  url: Scalars['String'];
+  version: Scalars['String'];
+  queue?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type AddContainerImageMutation = { createContainerImage?: { containerImage?: { id: any, name: string } | null } | null };
+
+export type UpdateContainerImageMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  version?: InputMaybe<Scalars['String']>;
+  parameters?: InputMaybe<Scalars['JSON']>;
+}>;
+
+
+export type UpdateContainerImageMutation = { updateContainerImage?: { containerImage?: { id: any, name: string, description?: string | null, url: string, version: string, parameters: any } | null } | null };
+
+export type RemoveContainerImageMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveContainerImageMutation = { deleteContainerImage?: { deletedContainerImageNodeId?: string | null } | null };
+
 export type RemoveRepoMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -20577,6 +21929,43 @@ export type ScheduleMutationVariables = Exact<{
 
 export type ScheduleMutation = { updateRepoSync?: { repoSync?: { id: any, syncType: string, scheduleEnabled: boolean } | null } | null };
 
+export type AddContainerSyncScheduleMutationVariables = Exact<{
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type AddContainerSyncScheduleMutation = { createContainerSyncSchedule?: { containerSyncSchedule?: { id: any } | null } | null };
+
+export type RemoveContainerSyncScheduleMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveContainerSyncScheduleMutation = { deleteContainerSyncSchedule?: { deletedContainerSyncScheduleNodeId?: string | null } | null };
+
+export type EnableContainerSyncMutationVariables = Exact<{
+  repoId: Scalars['UUID'];
+  imageId: Scalars['UUID'];
+}>;
+
+
+export type EnableContainerSyncMutation = { createContainerSync?: { containerSync?: { id: any, image?: { name: string } | null } | null } | null };
+
+export type SyncNowContainerMutationVariables = Exact<{
+  sync: Scalars['UUID'];
+}>;
+
+
+export type SyncNowContainerMutation = { syncNow?: boolean | null };
+
+export type UndateContainerSyncMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  parameters: Scalars['JSON'];
+}>;
+
+
+export type UndateContainerSyncMutation = { updateContainerSync?: { containerSync?: { id: any, parameters: any } | null } | null };
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -20608,17 +21997,12 @@ export type GetGitSourceQueryVariables = Exact<{
 
 export type GetGitSourceQuery = { provider?: { id: any, name: string, description?: string | null, vendor: string, settings: any, auth: { nodes: Array<{ id: any, type: string, credentials?: string | null, createdAt: any }> }, auto: { nodes: Array<{ id: any, settings: any, repos: { totalCount: number } }> }, manual: { totalCount: number, nodes: Array<{ id: any, repo: string, settings: any }> } } | null };
 
-export type GetQueryHistoryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetQueryHistoryQuery = { queryHistories?: { nodes: Array<{ id: any, runAt?: any | null, runBy: string, query: string }> } | null };
-
 export type GetRepoImportsQueryVariables = Exact<{
   idProvider: Scalars['UUID'];
 }>;
 
 
-export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, lastImport?: any | null, importStatus?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repos: { totalCount: number } }> } | null };
+export type GetRepoImportsQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, lastImport?: any | null, importStatus?: string | null, importError?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repos: { totalCount: number } }> } | null };
 
 export type GetRepoManualImportsQueryVariables = Exact<{
   idProvider: Scalars['UUID'];
@@ -20644,12 +22028,48 @@ export type GetRepoImportQueryVariables = Exact<{
 
 export type GetRepoImportQuery = { repoImport?: { id: any, lastImport?: any | null, settings: any, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
 
-export type GetRepoSyncsQueryVariables = Exact<{
+export type GetRepoDataQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetRepoSyncsQuery = { repo?: { id: any, repo: string, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, scheduleEnabled: boolean, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number } }> } }> } } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string, typeGroup: string, labels: { nodes: Array<{ label: string }> } }> } | null };
+export type GetRepoDataQuery = { repo?: { id: any, repo: string, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null };
+
+export type GetContainerImageQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetContainerImageQuery = { containerImage?: { id: any, name: string, description?: string | null, type: string, url: string, version: string, parameters: any, repos: { totalCount: number } } | null };
+
+export type GetContainerImagesQueryVariables = Exact<{
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetContainerImagesQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, url: string, version: string, type: string, parameters: any, repos: { totalCount: number } }> } | null };
+
+export type GetContainerSyncsQueryVariables = Exact<{
+  id: Scalars['UUID'];
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetContainerSyncsQuery = { containerSyncs?: { nodes: Array<{ id: any, parameters: any, image?: { id: any } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null } | null }> } }> } | null, all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
+
+export type GetRepoSyncsQueryVariables = Exact<{
+  id: Scalars['UUID'];
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetRepoSyncsQuery = { repo?: { id: any, repo: string, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, scheduleEnabled: boolean, repoSyncQueues: { nodes: Array<{ id: any, status: string, startedAt?: any | null, doneAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number } }> } }> } } | null, allSyncTypes?: { totalCount: number } | null, repoSyncTypes?: { totalCount: number, nodes: Array<{ type: string, description?: string | null, shortName: string, typeGroup: string, labels: { nodes: Array<{ label: string }> } }> } | null };
 
 export type GetSyncTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -20719,6 +22139,33 @@ export type GetLogsOfSyncQueryVariables = Exact<{
 
 
 export type GetLogsOfSyncQuery = { repo?: { id: any, repo: string, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string, description?: string | null } | null, repoSyncQueues: { nodes: Array<{ id: any, status: string, createdAt: any, doneAt?: any | null, startedAt?: any | null, hasError?: boolean | null, warnings: { totalCount: number }, repoSyncLogs: { totalCount: number, nodes: Array<{ logType: string, message: string, createdAt: any }> } }> } }> } } | null };
+
+export type GetContainerBasicDataQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type GetContainerBasicDataQuery = { repo?: { id: any, repo: string, provider?: { id: any, name: string, vendor: string, settings: any } | null, containerSyncs: { nodes: Array<{ image?: { id: any, name: string, description?: string | null } | null }> } } | null };
+
+export type GetContainerSyncHistoryLogsQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetContainerSyncHistoryLogsQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { totalCount: number, nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
+
+export type GetLogsOfContainerSyncQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+  jobId: Scalars['UUID'];
+}>;
+
+
+export type GetLogsOfContainerSyncQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { totalCount: number, nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
 
 export type GetUsersQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;

@@ -9,6 +9,9 @@ RUN cd exec-sql && npm i && npm run build
 COPY service-credentials/ /graphql/service-credentials
 RUN cd service-credentials && npm i && npm run build
 
+COPY container-sync-jobs/ /graphql/container-sync-jobs
+RUN cd container-sync-jobs && npm i && npm run build
+
 # Install PostGraphile and PostGraphile connection filter plugin
 RUN npm install -g postgraphile
 RUN npm install -g postgraphile-plugin-connection-filter

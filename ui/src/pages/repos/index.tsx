@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { Fragment } from 'react'
 import { RepositoriesProvider } from 'src/state/contexts'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
-import RepositoriesView from 'src/views/repositories'
+import RepositoriesView from 'src/views/repos'
 
 const ReposPage: NextPage = () => {
   const title = `Repos ${MERGESTAT_TITLE}`

@@ -13,7 +13,7 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func handleGitlabImport(ctx context.Context, qry *db.Queries, imp db.ListRepoImportsDueForImportRow) (err error) {
+func handleGitlabImport(ctx context.Context, qry *db.Queries, imp db.FetchImportJobRow) (err error) {
 	var token string
 	if _, token, err = qry.FetchCredential(ctx, imp.Provider); err != nil {
 		return err
