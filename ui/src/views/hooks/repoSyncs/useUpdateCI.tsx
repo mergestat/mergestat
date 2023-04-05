@@ -8,7 +8,7 @@ const useUpdateCI = () => {
       showSuccessAlert('Repo sync updated')
     },
     awaitRefetchQueries: true,
-    refetchQueries: () => ['getContainerImage']
+    refetchQueries: () => ['getContainerImage', 'getGitSourcesListCS']
   })
 
   return { updateCI }

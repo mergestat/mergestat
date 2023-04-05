@@ -3,7 +3,9 @@ import { Button, Toolbar } from '@mergestat/blocks'
 import { PlusIcon, RepositoryIcon, TableIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { ContainerImageData } from 'src/@types'
 import { GET_CONTAINER_IMAGES } from 'src/api-logic/graphql/queries/get-repo-syncs'
+import { mapToContainerSyncList } from 'src/api-logic/mappers/repo-container/container-sync'
 import Loading from 'src/components/Loading'
 import { useContainerSyncsContext, useContainerSyncsSetState, useGlobalSetState } from 'src/state/contexts'
 import { EmptyData } from 'src/views/shared/empty-data'
@@ -23,6 +25,7 @@ const ContainerSyncsView: React.FC = () => {
 
   const [pageLoaded, setPageLoaded] = useState(false)
   const [records, setRecords] = useState(false)
+  const [containerImages, setContainerImages] = useState<ContainerImageData[]>([])
 
   const { loading, data, refetch } = useQuery<GetContainerImagesQuery>(GET_CONTAINER_IMAGES, {
     variables: { search, first: rows, offset: (page * rows) },
@@ -44,6 +47,7 @@ const ContainerSyncsView: React.FC = () => {
 
   useEffect(() => {
     setTotal(data?.containerImages?.totalCount || 0)
+    setContainerImages(mapToContainerSyncList(data))
 
     if (!pageLoaded && data?.all) {
       setRecords(data?.all?.totalCount > 0)
@@ -95,7 +99,7 @@ const ContainerSyncsView: React.FC = () => {
         {loading
           ? <Loading />
           : records
-            ? <ContainerSyncsTable containerSyncs={data?.containerImages ? data?.containerImages.nodes : []} />
+            ? <ContainerSyncsTable containerImages={containerImages} />
             : <EmptyData message='No repo syncs yet' icon={<TableIcon className="t-icon" />} />
         }
         {records && <FilterFooter total={total} rows={rows} page={page} setRows={setRows} setPage={setPage} />}

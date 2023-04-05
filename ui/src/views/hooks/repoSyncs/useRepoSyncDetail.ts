@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { useEffect } from 'react'
 import { GET_CONTAINER_IMAGE } from 'src/api-logic/graphql/queries/get-repo-syncs'
-import { mapToContainerSyncDetail } from 'src/api-logic/mappers/repo-container/container-sync-detail'
+import { mapToContainerSyncDetail } from 'src/api-logic/mappers/repo-container/container-sync'
 import { useContainerSyncDetailSetState } from 'src/state/contexts/container-sync-detail.context'
 import { GetContainerImageQuery } from '../../../api-logic/graphql/generated/schema'
 

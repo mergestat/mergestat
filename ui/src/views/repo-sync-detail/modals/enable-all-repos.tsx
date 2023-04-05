@@ -1,15 +1,33 @@
+import { useMutation } from '@apollo/client'
 import { Alert, Button, Modal, Toolbar } from '@mergestat/blocks'
 import { ChevronRightIcon, XIcon } from '@mergestat/icons'
+import { useRouter } from 'next/router'
 import React, { useCallback } from 'react'
+import { ENABLE_CONTAINER_SYNC_FOR_ALL } from 'src/api-logic/graphql/mutations/syncs'
 import { useContainerSyncDetailContext, useContainerSyncDetailSetState } from 'src/state/contexts/container-sync-detail.context'
+import { showSuccessAlert } from 'src/utils/alerts'
 
 export const EnableAllReposModal: React.FC = () => {
-  const [{ gitSourceToEnable, containerSyncDetail: { name } }] = useContainerSyncDetailContext()
+  const router = useRouter()
+
+  const [{
+    idContainerSync,
+    gitSourceToEnable: { id, name: nameGitSource },
+    containerSyncDetail: { name: nameImage }
+  }] = useContainerSyncDetailContext()
   const { setShowEnableAllReposModal } = useContainerSyncDetailSetState()
 
   const close = useCallback(() => {
     setShowEnableAllReposModal(false)
   }, [setShowEnableAllReposModal])
+
+  const [enableForAll] = useMutation(ENABLE_CONTAINER_SYNC_FOR_ALL, {
+    onCompleted: () => {
+      showSuccessAlert(`${nameImage} enabled for all repos in ${nameGitSource}`)
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => ['getContainerImage', 'getGitSourcesListCS']
+  })
 
   return (
     <Modal open onClose={close}>
@@ -33,8 +51,8 @@ export const EnableAllReposModal: React.FC = () => {
       </Modal.Header>
       <Modal.Body className='p-6'>
         <div>
-          Do you want to enable the scheduling of <strong className="font-semibold text-gray-800">{name}</strong>{' '}
-          for all 50 repos inside the <strong className="font-semibold text-gray-800">{gitSourceToEnable.name}</strong> git source?
+          Do you want to enable the scheduling of <strong className="font-semibold text-gray-800">{nameImage}</strong>{' '}
+          for all 50 repos inside the <strong className="font-semibold text-gray-800">{nameGitSource}</strong> git source?
         </div>
 
         <Alert type='default' theme='light' className='mt-6'>
@@ -45,7 +63,7 @@ export const EnableAllReposModal: React.FC = () => {
             size='small'
             className='whitespace-nowrap text-blue-600 mt-2'
             endIcon={<ChevronRightIcon className='t-icon' />}
-            onClick={() => null}
+            onClick={() => router.push('/repos/git-sources')}
           />
         </Alert>
       </Modal.Body>
@@ -62,7 +80,10 @@ export const EnableAllReposModal: React.FC = () => {
               </Button>
               <Button
                 skin="primary"
-                onClick={() => null}
+                onClick={() => {
+                  enableForAll({ variables: { imageId: idContainerSync, providerId: id } })
+                  close()
+                }}
                 className="my-3"
               >
                 Enable For All

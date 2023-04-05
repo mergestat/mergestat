@@ -30,7 +30,11 @@ const GET_CONTAINER_IMAGE = gql`
       version
       parameters
       repos: containerSyncsByImageId {
-        totalCount
+        nodes {
+          scheduled: containerSyncSchedulesBySyncId {
+            totalCount
+          }
+        }
       }
     }
   }
@@ -60,7 +64,11 @@ const GET_CONTAINER_IMAGES = gql`
         type
         parameters
         repos: containerSyncsByImageId {
-          totalCount
+          nodes {
+            scheduled: containerSyncSchedulesBySyncId {
+              totalCount
+            }
+          }
         }
       }
     }

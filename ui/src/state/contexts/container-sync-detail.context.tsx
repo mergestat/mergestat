@@ -1,12 +1,12 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
-import { ContainerSyncDetail, GitSourceData } from 'src/@types'
+import { ContainerSyncDetail, GitSourceCSData } from 'src/@types'
 
 type ContainerSyncDetailContext = {
   loading: boolean
   idContainerSync: string | string[]
   containerSyncDetail: ContainerSyncDetail
-  gitSourceToEnable: GitSourceData
+  gitSourceToEnable: GitSourceCSData
   showEnableAllReposModal: boolean
 }
 
@@ -19,7 +19,7 @@ const initialState: ContainerSyncDetailContext = {
   loading: false,
   idContainerSync: '',
   containerSyncDetail: {} as ContainerSyncDetail,
-  gitSourceToEnable: {} as GitSourceData,
+  gitSourceToEnable: {} as GitSourceCSData,
   showEnableAllReposModal: false
 }
 
@@ -66,7 +66,7 @@ function useContainerSyncDetailSetState() {
     }))
   }
 
-  const setGitSourceToEnable = (gitSourceToEnable: GitSourceData) => {
+  const setGitSourceToEnable = (gitSourceToEnable: GitSourceCSData) => {
     setState(prev => ({
       ...prev,
       gitSourceToEnable

@@ -2,23 +2,30 @@ import { useQuery } from '@apollo/client'
 import { Panel } from '@mergestat/blocks'
 import cx from 'classnames'
 import { useEffect, useState } from 'react'
-import { GetGitSourcesListQuery } from 'src/api-logic/graphql/generated/schema'
-import { GET_GIT_SOURCES_LIST } from 'src/api-logic/graphql/queries/get-git-sources'
+import { GitSourceCSData } from 'src/@types'
+import { GetGitSourcesListCsQuery } from 'src/api-logic/graphql/generated/schema'
+import { GET_GIT_SOURCES_LIST_CS } from 'src/api-logic/graphql/queries/get-git-sources'
+import { mapToGitSourceCS } from 'src/api-logic/mappers/repo-container/git-sources-cs'
 import Loading from 'src/components/Loading'
 import { useContainerSyncDetailContext } from 'src/state/contexts/container-sync-detail.context'
 import { FilterHeader } from 'src/views/shared/filter-header'
 import { EnableAllReposModal } from '../modals/enable-all-repos'
 import { GitSourcesTable } from './git-sources-table'
 
-const GitSourcesContainer: React.FC = () => {
+type GitSourcesContainerProps = {
+  containerSyncId?: string | string[]
+}
+
+const GitSourcesContainer: React.FC<GitSourcesContainerProps> = ({ containerSyncId }: GitSourcesContainerProps) => {
   const [{ showEnableAllReposModal }] = useContainerSyncDetailContext()
 
   const [pageLoaded, setPageLoaded] = useState(false)
   const [records, setRecords] = useState(true)
   const [search, setSearch] = useState('')
+  const [gitSources, setGitSources] = useState<GitSourceCSData[]>([])
 
-  const { loading, data, refetch } = useQuery<GetGitSourcesListQuery>(GET_GIT_SOURCES_LIST, {
-    variables: { search },
+  const { loading, data, refetch } = useQuery<GetGitSourcesListCsQuery>(GET_GIT_SOURCES_LIST_CS, {
+    variables: { search, imageId: containerSyncId },
     fetchPolicy: 'no-cache'
   })
 
@@ -27,6 +34,7 @@ const GitSourcesContainer: React.FC = () => {
       setRecords(data?.all?.totalCount > 0)
       setPageLoaded(true)
     }
+    setGitSources(mapToGitSourceCS(data))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
@@ -50,7 +58,7 @@ const GitSourcesContainer: React.FC = () => {
           {loading
             ? <Loading />
             : records
-              ? <GitSourcesTable gitSources={data?.providers ? data?.providers.nodes : []} />
+              ? <GitSourcesTable gitSources={gitSources} />
               : <div className='flex justify-center bg-white p-6'>
                 <span className='text-gray-500'>No repos yet.</span>
               </div>

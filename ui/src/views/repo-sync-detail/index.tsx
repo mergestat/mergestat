@@ -55,7 +55,7 @@ const RepoSyncDetailView: React.FC<RepoSyncDetailView> = ({ containerSyncId }: R
           meanRunningTime={'0s'}
         />
         <SettingsCS />
-        <GitSourcesContainer />
+        <GitSourcesContainer containerSyncId={containerSyncId} />
       </div>
     </div>
   )
