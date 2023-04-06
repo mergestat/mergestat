@@ -48,7 +48,7 @@ const GitSourcesContainer: React.FC<GitSourcesContainerProps> = ({ containerSync
       <Panel className='rounded-md shadow-sm m-auto mt-8'>
         <Panel.Header>
           <div className='w-full flex justify-between'>
-            <h4 className='t-h4 mb-0'>Git Sources</h4>
+            <h3 className='t-panel-title'>Git Sources</h3>
           </div>
         </Panel.Header>
 
@@ -60,7 +60,7 @@ const GitSourcesContainer: React.FC<GitSourcesContainerProps> = ({ containerSync
             : records
               ? <GitSourcesTable gitSources={gitSources} />
               : <div className='flex justify-center bg-white p-6'>
-                <span className='text-gray-500'>No repos yet.</span>
+                <span className='t-text-muted'>No repos yet.</span>
               </div>
           }
         </Panel.Body>

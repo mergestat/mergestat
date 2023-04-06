@@ -48,19 +48,20 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                   <tbody className='bg-white'>
                     {gitSources.map((gs, index) => (
                       <tr key={gs.id}>
-                        <td className='p-3 pl-8 pr-4 w-0'>
+                        <td className='w-0 h-20'>
                           <ListItem key={`git-source-${index}`}
                             title={gs.name}
                             subline={gs.description || ''}
-                            className={'px-4 py-2'}
+                            className={'py-2'}
                             startIcon={getGitSourceIcon(gs.vendor)}
                           />
                         </td>
-                        <td className='p-3 text-gray-400'>
+                        <td className='t-text-muted'>
                           {`${gs.totalEnabledRepos}/${gs.totalRepos}`}
                         </td>
-                        <td className='p-3'>
+                        <td>
                           <Button skin='secondary'
+                            size='small'
                             label='Enable For All'
                             disabled={gs.totalEnabledRepos === gs.totalRepos}
                             onClick={() => {
@@ -69,27 +70,29 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                             }}
                           />
                         </td>
-                        <td className='text-gray-500 p-3 pr-8'>
-                          <Dropdown
-                            alignEnd
-                            trigger={<Button skin="borderless-muted" startIcon={<DotsHorizontalIcon className="t-icon" />} isIconOnly />}
-                            overlay={(close) => (
-                              <Menu className='whitespace-nowrap'>
-                                <Menu.Item
-                                  text="Disable For All"
-                                  disabled={gs.totalRepos === 0}
-                                  onClick={() => {
-                                    disableForAll({ variables: { imageId: idContainerSync, providerId: gs.id } })
-                                    close()
-                                  }}
-                                />
-                                <Menu.Item
-                                  text="Edit Git source"
-                                  onClick={() => router.push(`/repos/git-sources/${gs.id}`)}
-                                />
-                              </Menu>
-                            )}
-                          />
+                        <td>
+                          <div className='t-button-toolbar'>
+                            <Dropdown
+                              alignEnd
+                              trigger={<Button skin="borderless-muted" startIcon={<DotsHorizontalIcon className="t-icon" />} isIconOnly />}
+                              overlay={(close) => (
+                                <Menu className='whitespace-nowrap'>
+                                  <Menu.Item
+                                    text="Disable For All"
+                                    disabled={gs.totalRepos === 0}
+                                    onClick={() => {
+                                      disableForAll({ variables: { imageId: idContainerSync, providerId: gs.id } })
+                                      close()
+                                    }}
+                                  />
+                                  <Menu.Item
+                                    text="Edit Git source"
+                                    onClick={() => router.push(`/repos/git-sources/${gs.id}`)}
+                                  />
+                                </Menu>
+                              )}
+                            />
+                          </div>
                         </td>
                       </tr>
                     ))}
