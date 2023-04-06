@@ -33,11 +33,11 @@ export const LogsTable: React.FC<LogsTableProps> = ({ logs }: LogsTableProps) =>
   }
 
   return (
-    <div className='flex flex-col flex-1 overflow-hidden'>
+    <div className='flex flex-col flex-1'>
       {data.length < 1
         ? <NoDataFound message='Couldn&#39;t find any sync history.' />
         : <div className='flex flex-col min-w-0 bg-gray-50 h-full'>
-          <div className='flex-1 overflow-auto'>
+          <div className='flex-1 overflow-x-auto overflow-y-hidden'>
             <table className='t-table-default t-table-sticky-header t-table-hover border-b'>
               <thead>
                 <tr className='bg-white'>
