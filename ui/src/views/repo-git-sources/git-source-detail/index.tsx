@@ -18,7 +18,7 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
   const { vendor, nameGS, descriptionGS, setNameGS, setDescriptionGS, updateGitSource } = useGitSourceUpdate()
 
   return (
-    <div className='flex flex-col h-full overflow-auto'>
+    <div className='flex flex-col h-full overflow-hidden'>
       <Toolbar className='bg-white px-8 pt-4'>
         <Toolbar.Left className='flex-grow'>
           <EditableText
@@ -45,14 +45,14 @@ const GitSourceDetailView: React.FC<GitSourceDetailView> = ({ gitSourceId }: Git
         </Toolbar.Right>
       </Toolbar>
 
-      <div className='flex flex-col flex-1'>
+      <div className='flex flex-col flex-1 overflow-hidden'>
         <Tabs>
           <Tabs.List className='border-b px-8 bg-white'>
             <Tabs.Item>Overview</Tabs.Item>
             {/* <Tabs.Item>Default Repo Syncs</Tabs.Item> */}
             <Tabs.Item>Settings</Tabs.Item>
           </Tabs.List>
-          <Tabs.Panels className="bg-gray-50 flex-1">
+          <Tabs.Panels className="bg-gray-50 flex-1 overflow-auto">
             <Tabs.Panel className='p-8'>
               <GitSourceOverviewTab />
             </Tabs.Panel>
