@@ -275,6 +275,15 @@ export type SavedQueryData = {
   description?: string | null | undefined
 }
 
+/** Query History */
+
+export type QueryHistoryData = {
+  id: string;
+  runAt?: Date;
+  runBy: string;
+  query: string;
+}
+
 /** Git Sources */
 
 export type GitSourceData = {
