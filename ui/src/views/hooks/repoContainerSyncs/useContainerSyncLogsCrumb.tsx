@@ -17,7 +17,7 @@ const useContainerSyncLogsCrumb = (repo: RepoBasicData, sync?: ContainerSyncInfo
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
+        onClick: () => router.push('/repos-containers'),
       },
       {
         text: repo.name,
@@ -28,12 +28,12 @@ const useContainerSyncLogsCrumb = (repo: RepoBasicData, sync?: ContainerSyncInfo
           </a>
           : undefined
         ),
-        onClick: () => router.push(`/repos/${repo.id}/container-syncs`),
+        onClick: () => router.push(`/repos-containers/${repo.id}`),
       },
       {
         text: sync?.name || '',
         startIcon: <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />,
-        onClick: () => router.push(`/repos/${repo.id}/container-syncs/${sync?.id}`),
+        onClick: () => router.push(`/repos-containers/${repo.id}/${sync?.id}`),
       },
     ]
 
