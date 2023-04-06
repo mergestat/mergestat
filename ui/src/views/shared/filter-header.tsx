@@ -14,7 +14,7 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({ initValue = '', inpu
   const onChange = debounce((e) => setSearch(e.target.value), 300)
 
   return (
-    <div className='px-8 py-3 w-full flex'>
+    <div className='px-8 py-3 w-full flex h-16'>
       <div className='flex-1 overflow-x-auto overflow-y-hidden'>
         <Input placeholder="Search..."
           startIcon={<SearchIcon className="t-icon t-icon-muted" />}

@@ -10,7 +10,7 @@ export const NoDataFound: React.FC<NoDataFoundProps> = ({ message }: NoDataFound
     <div className='flex justify-center py-5'>
       <Panel className='rounded-md w-full shadow-sm mx-8'>
         <Panel.Body className='p-0'>
-          <div className='flex justify-center items-center bg-white py-5'>
+          <div className='flex justify-center items-center bg-white py-5 text-sm t-text-muted'>
             {message}
           </div>
         </Panel.Body>
