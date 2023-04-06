@@ -15,10 +15,10 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({ initValue = '', inpu
 
   return (
     <div className='px-8 py-3 w-full flex h-16'>
-      <div className='flex-1 overflow-x-auto overflow-y-hidden'>
+      <div className='flex-1 flex items-center overflow-x-auto overflow-y-hidden'>
         <Input placeholder="Search..."
           startIcon={<SearchIcon className="t-icon t-icon-muted" />}
-          className={cx('lg_w-3/6', inputClass)}
+          className={cx('w-full lg_w-3/6', inputClass)}
           defaultValue={initValue}
           onChange={onChange}
           onKeyUp={(e: KeyboardEvent<HTMLInputElement>) => (e.key === 'Enter' && setSearch((e.target as HTMLInputElement).value))}

@@ -62,6 +62,7 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                         <td>
                           <Button skin='secondary'
                             size='small'
+                            className='whitespace-nowrap'
                             label='Enable For All'
                             disabled={gs.totalEnabledRepos === gs.totalRepos}
                             onClick={() => {

@@ -1,6 +1,5 @@
-import { Button, ListItem, Toolbar } from '@mergestat/blocks'
-import { PencilIcon } from '@mergestat/icons'
-import { useRouter } from 'next/router'
+import { Button, Spinner, Toolbar } from '@mergestat/blocks'
+import { ClockIcon, RefreshIcon } from '@mergestat/icons'
 import React from 'react'
 import { ContainerBasicData } from 'src/@types'
 import Loading from 'src/components/Loading'
@@ -13,7 +12,6 @@ import { SyncSettings } from './components'
 import { LogsTable } from './components/logs-table'
 
 const ContainerSyncsDataView: React.FC<ContainerBasicData> = ({ repo }) => {
-  const router = useRouter()
   useContainerSyncCrumb(repo)
 
   const {
@@ -23,43 +21,51 @@ const ContainerSyncsDataView: React.FC<ContainerBasicData> = ({ repo }) => {
 
   return (
     <>
-      {loading
-        ? <Loading />
-        : <>
-          <div className="bg-white">
-            <Toolbar className="px-8 py-4 border-b">
-              <Toolbar.Left>
-                <Toolbar.Item>
-                  <div className='flex items-center'>
-                    <div className='ml-2 mr-6'>
+      <div className='flex flex-col flex-1 overflow-hidden'>
+        {loading
+          ? <Loading />
+          : <>
+            <div className="bg-white">
+              <Toolbar className="px-8 py-4 border-b">
+                <Toolbar.Left>
+                  <Toolbar.Item>
+                    <div className='flex items-center space-x-5'>
                       <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />
+                      <div className='space-y-1'>
+                        <h3 className='t-h2 mb-0'>{sync?.name || ''}</h3>
+                        <p className='t-text-muted text-sm'>{sync?.description}</p>
+                      </div>
                     </div>
-                    <ListItem
-                      title={sync?.name || ''}
-                      subline={sync?.description}
+                  </Toolbar.Item>
+                </Toolbar.Left>
+                <Toolbar.Right>
+                  <Toolbar.Item>
+                      <Button
+                      className="ml-3"
+                      label='Sync Now'
+                      startIcon={sync?.syncState === SYNC_STATUS.queued
+                        ? <ClockIcon className='t-icon' />
+                        : sync?.syncState === SYNC_STATUS.running
+                          ? <Spinner size='sm' className='mr-2' />
+                          : <RefreshIcon className="t-icon" />
+                      }
+                      disabled={sync?.syncState === SYNC_STATUS.queued || sync?.syncState === SYNC_STATUS.running}
+                      onClick={() => syncNow({ variables: { sync: `${sync?.id}` } })}
                     />
-                  </div>
-                </Toolbar.Item>
-              </Toolbar.Left>
-              <Toolbar.Right>
-                <Toolbar.Item>
-                  <Button
-                    label='Edit Sync'
-                    skin='secondary'
-                    startIcon={<PencilIcon className='t-icon' />}
-                    onClick={() => router.push(`/repos/repo-syncs/${sync?.imageId}`)}
-                  />
-                </Toolbar.Item>
-              </Toolbar.Right>
-            </Toolbar>
-          </div>
+                  </Toolbar.Item>
+                </Toolbar.Right>
+              </Toolbar>
+            </div>
 
-          <SyncSettings sync={sync} addSchedule={addSchedule} removeSchedule={removeSchedule} syncNow={syncNow} />
+            <div className='flex-1 w-full overflow-auto'>
+              <SyncSettings sync={sync} addSchedule={addSchedule} removeSchedule={removeSchedule} syncNow={syncNow} />
+              <LogsTable logs={logs || []} />
+            </div>
 
-          <LogsTable logs={logs || []} />
-          <FilterFooter total={total} rows={rows} page={page} setRows={setRows} setPage={setPage} />
-        </>
-      }
+            <FilterFooter total={total} rows={rows} page={page} setRows={setRows} setPage={setPage} />
+          </>
+        }
+      </div>
     </>
   )
 }

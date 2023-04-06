@@ -23,7 +23,7 @@ const BitbucketAuth: React.FC = () => {
     <Panel className='rounded-md shadow-sm m-auto'>
       <Panel.Header>
         <div className='w-full flex justify-between'>
-          <h4 className='t-h4 mb-0'>Authentication</h4>
+          <h4 className='t-panel-title'>Authentication</h4>
           {auth?.credentials &&
             <Badge
               label='Authentication is set'

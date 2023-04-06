@@ -1,20 +1,19 @@
-import { Button, EditableText } from '@mergestat/blocks'
+import { Button, ColoredBox } from '@mergestat/blocks'
 import { TerminalIcon, TrashIcon } from '@mergestat/icons'
 import { format } from 'date-fns'
-import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 import { SavedQueryData } from 'src/@types'
 import { useSavedQuerySetState } from 'src/state/contexts/saved-query.context'
 import { DATE_FORMAT } from 'src/utils/constants'
 import useCurrentUser from 'src/views/hooks/useCurrentUser'
 import { NoDataFound } from 'src/views/shared/no-data-found'
+import Link from 'next/link'
 
 type SavedQueriesTableProps = PropsWithChildren<{
   savedQueries: SavedQueryData[]
 }>
 
 export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueries }: SavedQueriesTableProps) => {
-  const router = useRouter()
   const { data: userData } = useCurrentUser()
   const { setShowRemoveSQModal, setSqToRemove } = useSavedQuerySetState()
 
@@ -44,19 +43,17 @@ export const SavedQueriesTable: React.FC<SavedQueriesTableProps> = ({ savedQueri
                   {savedQueries.map((query) => (
                     <tr key={query.id}>
                       <td>
-                        <EditableText
-                          className='flex-grow mr-5'
-                          icon={<TerminalIcon className="t-icon" />}
-                          title={{
-                            value: query.name || '',
-                            readOnly: true,
-                            onClick: () => router.push(`/queries/saved/${query.id}`)
-                          }}
-                          desc={{
-                            value: query.description || '',
-                            readOnly: true
-                          }}
-                        />
+                      <div className='flex items-center space-x-4'>
+                        <ColoredBox size='9'>
+                          <TerminalIcon className='t-icon' />
+                        </ColoredBox>
+                        <div className='space-y-0.5'>
+                          <Link href={`/queries/saved/${query.id}`}>
+                            <h4 className="font-medium t-text-default cursor-pointer hover_text-blue-600">{query.name || ''}</h4>
+                          </Link>
+                          <p className='t-text-muted text-sm'>{query.description || ''}</p>
+                        </div>
+                      </div>
                       </td>
                       <td className='text-gray-500 py-5'>
                         {query.createdAt ? format(new Date(query.createdAt?.toString()), DATE_FORMAT.D) : ''}
