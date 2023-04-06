@@ -31,7 +31,6 @@ export const ContainerSyncsTable: React.FC<ContainerSyncsTableProps> = ({ contai
                 <thead>
                   <tr className='bg-white'>
                     <th scope='col' key='name' className='whitespace-nowrap'>Name</th>
-                    <th scope='col' key='git-sources' className='whitespace-nowrap'>Git Sources</th>
                     <th scope='col' key='repos' className='whitespace-nowrap'>Repos</th>
                     <th scope='col' key='version' className='whitespace-nowrap'>Version</th>
                     <th scope='col' key='remove' className='whitespace-nowrap px-4'></th>
@@ -41,25 +40,21 @@ export const ContainerSyncsTable: React.FC<ContainerSyncsTableProps> = ({ contai
                 <tbody className='bg-white'>
                   {containerImages.map((ci, index) => (
                     <tr key={ci.id}>
-                      <td className='w-4/6'>
+                      <td className='w-4/6 h-20'>
                         <ListItem key={`container-sync-${index}`}
                           title={ci.name}
                           subline={ci.description || ''}
-                          className={'px-4 py-2'}
                           startIcon={<TableIcon className='t-icon' />}
                           onClick={() => router.push(`/repos/repo-syncs/${ci.id}`)}
                         />
                       </td>
-                      <td className='text-gray-500 py-5'>
-                        <span className='ml-1'>{ci.totalGitSources}</span>
+                      <td className='t-text-muted'>
+                        {ci.totalRepos}
                       </td>
-                      <td className='text-gray-500 py-5'>
-                        <span className='ml-1'>{ci.totalRepos}</span>
+                      <td className='t-text-muted'>
+                        {ci.version}
                       </td>
-                      <td className='text-gray-500 py-5'>
-                        <span className='ml-1'>{ci.version}</span>
-                      </td>
-                      <td className='text-gray-500 pl-4 pr-8'>
+                      <td>
                         <div className='t-button-toolbar'>
                           <Button skin="borderless-muted"
                             startIcon={<TrashIcon className="t-icon" />}
