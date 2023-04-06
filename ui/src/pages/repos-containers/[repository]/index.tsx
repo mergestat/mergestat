@@ -4,7 +4,7 @@ import Loading from 'src/components/Loading'
 import useRepoData from 'src/views/hooks/repoSyncs/useRepoData'
 import RepoDataView from 'src/views/repo-data-container/repository-data'
 
-const RepoDetailsContainersPage = () => {
+const RepoDetailsPage = () => {
   const { loading, repo, title } = useRepoData()
 
   return (
@@ -20,4 +20,4 @@ const RepoDetailsContainersPage = () => {
   )
 }
 
-export default RepoDetailsContainersPage
+export default RepoDetailsPage
