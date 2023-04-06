@@ -15,7 +15,7 @@ const ContainerSyncStats: React.FC<ContainerSyncStatsProps> = ({ loading, totalR
     <div className='md_grid md_grid-cols-3 gap-6 space-y-4 md_space-y-0 mb-6'>
       <Stat className='shadow-sm w-full'>
         <Stat.Left>
-          <Stat.Label>Associated repos</Stat.Label>
+          <Stat.Label>Repos</Stat.Label>
           <Stat.Number>
             <MetricNumber loading={loading} metric={totalRepos || 0} />
           </Stat.Number>

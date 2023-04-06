@@ -26,6 +26,38 @@ const GET_GIT_SOURCES_LIST = gql`
   }
 `
 
+const GET_GIT_SOURCES_LIST_CS = gql`
+  query getGitSourcesListCS($search: String!, $imageId: UUID!) {
+    providers(filter: {name: {includesInsensitive: $search}}) {
+      totalCount
+      nodes {
+        id
+        name
+        description
+        createdAt
+        settings
+        vendor
+        reposByProvider {
+          totalCount
+        }
+      }
+    }
+    all: providers {
+      totalCount
+    }
+    containerSyncs(condition: {imageId: $imageId}) {
+      nodes {
+        repo {
+          provider
+        }
+        scheduled: containerSyncSchedulesBySyncId {
+          totalCount
+        }
+      }
+    }
+  }
+`
+
 const GET_GIT_SOURCES = gql`
   query getGitSources {
     github: providers(condition: {vendor: "github"}) {
@@ -87,11 +119,7 @@ const GET_DEFAULT_REPO_SYNCS = gql`
       totalCount
     }
     containerImages(
-      filter: {
-        or: [
-          {name: {includesInsensitive: $search}}
-        ]
-      }
+      filter: {or: [{name: {includesInsensitive: $search}}]}
       first: $first
       offset: $offset
     ) {
@@ -100,9 +128,25 @@ const GET_DEFAULT_REPO_SYNCS = gql`
         id
         name
         description
+        containerSyncs: containerSyncsByImageId {
+          nodes {
+            repo {
+              provider
+            }
+            scheduled: containerSyncSchedulesBySyncId {
+              totalCount
+            }
+          }
+        }
       }
     }
   }
 `
 
-export { GET_GIT_SOURCES_LIST, GET_GIT_SOURCES, GET_GIT_SOURCE, GET_DEFAULT_REPO_SYNCS }
+export {
+  GET_GIT_SOURCES_LIST,
+  GET_GIT_SOURCES_LIST_CS,
+  GET_GIT_SOURCES,
+  GET_GIT_SOURCE,
+  GET_DEFAULT_REPO_SYNCS
+}

@@ -1,19 +1,31 @@
+import { useMutation } from '@apollo/client'
 import { Button, Dropdown, ListItem, Menu } from '@mergestat/blocks'
 import { DotsHorizontalIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { GitSourceData } from 'src/@types'
-import { useContainerSyncDetailSetState } from 'src/state/contexts/container-sync-detail.context'
+import { GitSourceCSData } from 'src/@types'
+import { DISABLE_CONTAINER_SYNC_FOR_ALL } from 'src/api-logic/graphql/mutations/syncs'
+import { useContainerSyncDetailContext, useContainerSyncDetailSetState } from 'src/state/contexts/container-sync-detail.context'
 import { getGitSourceIcon } from 'src/utils'
+import { showSuccessAlert } from 'src/utils/alerts'
 import { NoDataFound } from 'src/views/shared/no-data-found'
 
 type GitSourcesTableProps = {
-  gitSources: GitSourceData[]
+  gitSources: GitSourceCSData[]
 }
 
 export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: GitSourcesTableProps) => {
   const router = useRouter()
+  const [{ idContainerSync }] = useContainerSyncDetailContext()
   const { setGitSourceToEnable, setShowEnableAllReposModal } = useContainerSyncDetailSetState()
+
+  const [disableForAll] = useMutation(DISABLE_CONTAINER_SYNC_FOR_ALL, {
+    onCompleted: () => {
+      showSuccessAlert('Disabled for all')
+    },
+    awaitRefetchQueries: true,
+    refetchQueries: () => ['getContainerImage', 'getGitSourcesListCS']
+  })
 
   return (
     <>
@@ -45,11 +57,12 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                           />
                         </td>
                         <td className='p-3 text-gray-400'>
-                          {`0/${gs.reposByProvider.totalCount}`}
+                          {`${gs.totalEnabledRepos}/${gs.totalRepos}`}
                         </td>
                         <td className='p-3'>
                           <Button skin='secondary'
                             label='Enable For All'
+                            disabled={gs.totalEnabledRepos === gs.totalRepos}
                             onClick={() => {
                               setGitSourceToEnable(gs)
                               setShowEnableAllReposModal(true)
@@ -64,7 +77,11 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                               <Menu className='whitespace-nowrap'>
                                 <Menu.Item
                                   text="Disable For All"
-                                  onClick={close}
+                                  disabled={gs.totalRepos === 0}
+                                  onClick={() => {
+                                    disableForAll({ variables: { imageId: idContainerSync, providerId: gs.id } })
+                                    close()
+                                  }}
                                 />
                                 <Menu.Item
                                   text="Edit Git source"

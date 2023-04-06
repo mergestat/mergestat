@@ -22015,6 +22015,22 @@ export type EnableContainerSyncMutationVariables = Exact<{
 
 export type EnableContainerSyncMutation = { createContainerSync?: { containerSync?: { id: any, image?: { name: string } | null } | null } | null };
 
+export type EnableCsForAllMutationVariables = Exact<{
+  imageId: Scalars['UUID'];
+  providerId: Scalars['UUID'];
+}>;
+
+
+export type EnableCsForAllMutation = { bulkEnableSync?: boolean | null };
+
+export type DisableCsForAllMutationVariables = Exact<{
+  imageId: Scalars['UUID'];
+  providerId: Scalars['UUID'];
+}>;
+
+
+export type DisableCsForAllMutation = { bulkDisableSync?: boolean | null };
+
 export type SyncNowContainerMutationVariables = Exact<{
   sync: Scalars['UUID'];
 }>;
@@ -22049,6 +22065,14 @@ export type GetGitSourcesListQueryVariables = Exact<{
 
 export type GetGitSourcesListQuery = { all?: { totalCount: number } | null, providers?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, createdAt: any, settings: any, vendor: string, reposByProvider: { totalCount: number } }> } | null };
 
+export type GetGitSourcesListCsQueryVariables = Exact<{
+  search: Scalars['String'];
+  imageId: Scalars['UUID'];
+}>;
+
+
+export type GetGitSourcesListCsQuery = { providers?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, createdAt: any, settings: any, vendor: string, reposByProvider: { totalCount: number } }> } | null, all?: { totalCount: number } | null, containerSyncs?: { nodes: Array<{ repo?: { provider: any } | null, scheduled: { totalCount: number } }> } | null };
+
 export type GetGitSourcesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -22068,7 +22092,7 @@ export type GetDefaultRepoSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetDefaultRepoSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
+export type GetDefaultRepoSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, containerSyncs: { nodes: Array<{ repo?: { provider: any } | null, scheduled: { totalCount: number } }> } }> } | null };
 
 export type GetQueryHistoryQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -22118,7 +22142,7 @@ export type GetContainerImageQueryVariables = Exact<{
 }>;
 
 
-export type GetContainerImageQuery = { containerImage?: { id: any, name: string, description?: string | null, type: string, url: string, version: string, parameters: any, repos: { totalCount: number } } | null };
+export type GetContainerImageQuery = { containerImage?: { id: any, name: string, description?: string | null, type: string, url: string, version: string, parameters: any, repos: { nodes: Array<{ scheduled: { totalCount: number } }> } } | null };
 
 export type GetContainerImagesQueryVariables = Exact<{
   search: Scalars['String'];
@@ -22127,7 +22151,7 @@ export type GetContainerImagesQueryVariables = Exact<{
 }>;
 
 
-export type GetContainerImagesQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, url: string, version: string, type: string, parameters: any, repos: { totalCount: number } }> } | null };
+export type GetContainerImagesQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, url: string, version: string, type: string, parameters: any, repos: { nodes: Array<{ scheduled: { totalCount: number } }> } }> } | null };
 
 export type GetContainerSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];

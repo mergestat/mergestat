@@ -298,6 +298,17 @@ export type GitSourceData = {
   }
 }
 
+export type GitSourceCSData = {
+  id: string
+  name: string
+  description?: string | null | undefined
+  createdAt: string
+  settings: JSON
+  vendor: string
+  totalRepos: number
+  totalEnabledRepos: number
+}
+
 export type AuthDetail = {
   id?: string
   type?: string
@@ -359,17 +370,13 @@ export type SchemaData = {
 
 /** Repo syncs (Container Syncs) */
 
-export type ContainerSyncData = {
+export type ContainerImageData = {
   id: string
   name: string
   description?: string | null
-  url: string
   version: string
-  type: string
-  parameters: JSON
-  repos: {
-    totalCount: number
-  }
+  totalGitSources?: number
+  totalRepos: number
 }
 
 export type ContainerSyncDetail = {
@@ -380,7 +387,6 @@ export type ContainerSyncDetail = {
   url: string
   version: string
   parameters: JSON
-
   totalRepos: number
 }
 

@@ -1,13 +1,13 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
-import { ContainerSyncData } from '../../@types'
+import { ContainerImageData } from '../../@types'
 
 type ContainerSyncsContext = {
   search: string
   total: number
   rows: number
   page: number
-  containerSyncToRemove: ContainerSyncData | null
+  containerSyncToRemove: ContainerImageData | null
   showRemoveContainerSyncModal: boolean
   showAddContainerSyncModal: boolean
 }
@@ -77,7 +77,7 @@ function useContainerSyncsSetState() {
     }))
   }
 
-  const setContainerSyncToRemove = (containerSyncToRemove: ContainerSyncData) => {
+  const setContainerSyncToRemove = (containerSyncToRemove: ContainerImageData) => {
     setState(prev => ({
       ...prev,
       containerSyncToRemove

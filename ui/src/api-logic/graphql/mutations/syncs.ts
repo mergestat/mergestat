@@ -75,6 +75,18 @@ const ENABLE_CONTAINER_SYNC = gql`
   }
 `
 
+const ENABLE_CONTAINER_SYNC_FOR_ALL = gql`
+  mutation enableCSForAll($imageId: UUID!, $providerId: UUID!) {
+    bulkEnableSync(image: $imageId, provider: $providerId)
+  }
+`
+
+const DISABLE_CONTAINER_SYNC_FOR_ALL = gql`
+  mutation disableCSForAll($imageId: UUID!, $providerId: UUID!) {
+    bulkDisableSync(image: $imageId, provider: $providerId)
+  }
+`
+
 const SYNC_NOW_CONTAINER = gql`
   mutation syncNowContainer($sync: UUID!) {
     syncNow(sync: $sync)
@@ -99,6 +111,8 @@ export {
   ADD_CONTAINER_SYNC_SCHEDULE,
   REMOVE_CONTAINER_SYNC_SCHEDULE,
   ENABLE_CONTAINER_SYNC,
+  ENABLE_CONTAINER_SYNC_FOR_ALL,
+  DISABLE_CONTAINER_SYNC_FOR_ALL,
   SYNC_NOW_CONTAINER,
   UPDATE_CONTAINER_SYNC
 }
