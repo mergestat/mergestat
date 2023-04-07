@@ -145,7 +145,7 @@ const SQLEditorSection: React.FC<SQLEditorSectionProps> = ({ onEnterKey }: SQLEd
       >
         <div className='w-3/4 h-full'>
           <Editor
-            className='text-sm font-mono'
+            className='text-sm font-mono py-3'
             value={query}
             language='sql'
             onChange={(text: string | undefined) => setQuery(text || '')}

@@ -85,3 +85,7 @@ code[class*="language-"] ::selection {
   width: 20px !important;
   height: 20px !important;
 }
+
+.t-tab {
+  @apply py-3;
+}

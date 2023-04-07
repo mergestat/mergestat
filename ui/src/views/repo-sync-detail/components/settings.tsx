@@ -82,7 +82,7 @@ const SettingsCS: React.FC = () => {
 
             {openParams &&
               <>
-                <div className='w-full h-40 my-2 px-1 border rounded-md mt-2'>
+                <div className='w-full h-40 py-3 border rounded-md mt-2'>
                   <Editor
                     className='text-sm font-mono'
                     value={parameters}

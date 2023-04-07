@@ -49,19 +49,18 @@ export const EnableAllReposModal: React.FC = () => {
           </Toolbar.Right>
         </Toolbar>
       </Modal.Header>
-      <Modal.Body className='p-6'>
+      <Modal.Body className='p-6 space-y-6'>
         <div>
           Do you want to enable the scheduling of <strong className="font-semibold text-gray-800">{nameImage}</strong>{' '}
           for all 50 repos inside the <strong className="font-semibold text-gray-800">{nameGitSource}</strong> git source?
         </div>
 
-        <Alert type='default' theme='light' className='mt-6'>
-          <p>You can enable the scheduling by default for all repos inside a git source in the Git Source settings.</p>
+        <Alert type='default' theme='light'>
+          <p className='mb-4'>You can enable the scheduling by default for all repos inside a git source in the Git Source settings.</p>
           <Button
             label='Manage Git Source'
             skin='borderless'
-            size='small'
-            className='whitespace-nowrap text-blue-600 mt-2'
+            className='whitespace-nowrap text-blue-600'
             endIcon={<ChevronRightIcon className='t-icon' />}
             onClick={() => router.push('/repos/git-sources')}
           />
