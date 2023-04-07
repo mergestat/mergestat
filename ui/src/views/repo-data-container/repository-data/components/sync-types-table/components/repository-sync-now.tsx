@@ -1,5 +1,5 @@
-import { Button, Spinner } from '@mergestat/blocks'
-import { ClockIcon, RefreshIcon } from '@mergestat/icons'
+import { Button } from '@mergestat/blocks'
+import { RefreshIcon } from '@mergestat/icons'
 import React, { useEffect, useState } from 'react'
 import { RepoSyncStateT } from 'src/@types'
 import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
@@ -39,12 +39,7 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ syncId, re
       className="flex items-center float-right whitespace-nowrap"
       disabled={status === SYNC_STATUS.queued || status === SYNC_STATUS.running}
       data-testid={TEST_IDS.syncsTypesSyncNowButton}
-      startIcon={status === SYNC_STATUS.queued
-        ? <ClockIcon className='t-icon t-icon-muted' />
-        : status === SYNC_STATUS.running
-          ? <Spinner size='sm' className='mr-2' />
-          : <RefreshIcon className="t-icon t-icon-default" />
-      }
+      startIcon={<RefreshIcon className="t-icon" />}
       onClick={() => {
         syncId ? syncNowHandler() : enableSyncNowHandler()
       }}

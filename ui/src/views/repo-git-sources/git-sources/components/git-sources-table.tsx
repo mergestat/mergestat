@@ -31,19 +31,18 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                 <tbody className='bg-white'>
                   {gitSources.map((gs, index) => (
                     <tr key={gs.id}>
-                      <td>
+                      <td className='h-20'>
                         <ListItem key={`git-source-${index}`}
                           title={gs.name}
                           subline={gs.description || ''}
-                          className={'px-4 py-2'}
                           startIcon={getGitSourceIcon(gs.vendor)}
                           onClick={() => router.push(`/repos/git-sources/${gs.id}`)}
                         />
                       </td>
-                      <td className='text-gray-500 py-5'>
+                      <td className='t-text-muted'>
                         <span className='ml-1'>{gs.reposByProvider.totalCount}</span>
                       </td>
-                      <td className='text-gray-500 pl-4 pr-8'>
+                      <td className='t-text-muted'>
                         <div className='t-button-toolbar'>
                         </div>
                       </td>

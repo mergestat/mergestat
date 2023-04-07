@@ -89,3 +89,10 @@ code[class*="language-"] ::selection {
 .t-tab {
   @apply py-3;
 }
+
+.t-button-borderless[disabled],
+.t-button-borderless-muted {
+  @apply  text-gray-400
+          pointer-events-none
+          cursor-not-allowed;
+}

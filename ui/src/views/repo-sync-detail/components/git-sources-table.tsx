@@ -54,6 +54,7 @@ export const GitSourcesTable: React.FC<GitSourcesTableProps> = ({ gitSources }: 
                             subline={gs.description || ''}
                             className={'py-2'}
                             startIcon={getGitSourceIcon(gs.vendor)}
+                            onClick={() => router.push(`/repos/git-sources/${gs.id}`)}
                           />
                         </td>
                         <td className='t-text-muted'>

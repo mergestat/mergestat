@@ -6,12 +6,15 @@ import RepoImage from 'src/components/RepoImage'
 import { useGitSourceDetailContext, useGitSourceDetailSetState } from 'src/state/contexts/git-source-detail.context'
 import { NoDataFound } from 'src/views/shared/no-data-found'
 import { RemoveManualImportModal } from '../../../modals/remove-manual-import'
+import { useRouter } from 'next/router'
 
 type ManualImportTableProps = {
   repos: RepoManualImportData[]
 }
 
 export const ManualImportTable: React.FC<ManualImportTableProps> = ({ repos }: ManualImportTableProps) => {
+  const router = useRouter()
+
   const { setShowRemoveImportModal, setRepoInfo } = useGitSourceDetailSetState()
   const [{ showRemoveImportModal }] = useGitSourceDetailContext()
 
@@ -43,6 +46,7 @@ export const ManualImportTable: React.FC<ManualImportTableProps> = ({ repos }: M
                           <ListItem key={`repo-manual-${index}`}
                             title={repo.name}
                             startIcon={<RepoImage vendor={repo.vendor} vendorUrl={repo.vendorUrl} orgName={repo.name.split('/')[0]} size="10" />}
+                            onClick={() => router.push(`/repos/${repo.id}`)}
                           />
                         </td>
                         <td className='text-gray-500 p-3 pr-8'>
