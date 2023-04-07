@@ -90,7 +90,7 @@ const AddSourceView: React.FC = () => {
         {/* Panel: Add git surce */}
         <Panel className='rounded-md shadow-sm max-w-4xl m-auto'>
           <Panel.Header>
-            <h4 className='t-h4 mb-0 w-full'>Add a Git Source</h4>
+            <h4 className='t-panel-title w-full'>Add a Git Source</h4>
           </Panel.Header>
           <Panel.Body className='p-6'>
             <div className=''>
@@ -173,7 +173,7 @@ const AddSourceView: React.FC = () => {
             {/* Panel: List git surces */}
             <Panel className='rounded-md shadow-sm max-w-4xl m-auto'>
               <Panel.Header>
-                <h4 className='t-h4 mb-0 w-full'>Existing Git Sources</h4>
+                <h4 className='t-panel-title w-full'>Existing Git Sources</h4>
               </Panel.Header>
               <Panel.Body className='p-6'>
                 <Alert type='default' theme='light' className='mb-6'>
@@ -187,7 +187,7 @@ const AddSourceView: React.FC = () => {
                       : data?.providers && data?.providers.nodes.map((provider, index) =>
                         <ListItem key={`git-source-${index}`}
                           title={provider.name}
-                          className={'px-4 py-2 border-b'}
+                          className={'px-4 h-20 border-b'}
                           startIcon={getGitSourceIcon(provider.vendor)}
                           action={
                             <Button label='Go to Git Source' skin="borderless-muted"
