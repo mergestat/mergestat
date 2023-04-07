@@ -56,13 +56,13 @@ export const AutoImportTable: React.FC<AutoImportTableProps> = ({ imports }: Aut
                   <tbody className='bg-white'>
                     {imports.map((imp, index) => (
                       <tr key={imp.id}>
-                        <td className='p-3 pl-8 pr-4 w-0'>
+                        <td className='w-0 h-20'>
                           {imp.importError && <Tooltip content={imp.importError} placement='bottom'>
                             {getIconStatus(imp.status)}
                           </Tooltip>}
                           {!imp.importError && getIconStatus(imp.status)}
                         </td>
-                        <td className='p-3'>
+                        <td>
                           <ListItem key={`auto-import-${index}`}
                             title={imp.name}
                             subline={imp.type}
@@ -70,10 +70,10 @@ export const AutoImportTable: React.FC<AutoImportTableProps> = ({ imports }: Aut
                             onClick={() => prepareToEdit(imp)}
                           />
                         </td>
-                        <td className='text-gray-500 p-3'>
+                        <td className='t-text-muted'>
                           {imp.totalRepos}
                         </td>
-                        <td className='text-gray-500 p-3 pr-8'>
+                        <td className='t-text-muted'>
                           <div className='t-button-toolbar'>
                             <Button isIconOnly
                               skin="borderless-muted"

@@ -90,7 +90,7 @@ export const QueryHistoryModal: React.FC = () => {
             <div className='w-2/3 flex flex-col overflow-hidden h-720'>
               <div className='flex-none flex justify-between items-center h-14 w-full border-b px-8'>
                 <div className='flex items-center space-x-3'>
-                  <ColoredBox size='8'><ClockHistoryIcon className='t-icon'/></ColoredBox>
+                  <ColoredBox size='9'><ClockHistoryIcon className='t-icon'/></ColoredBox>
                   <p className='t-h4 mb-0'>
                     {active?.runAt?.toDateString() || ''}
                   </p>

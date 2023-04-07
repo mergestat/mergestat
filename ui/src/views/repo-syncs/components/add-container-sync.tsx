@@ -55,7 +55,7 @@ export const AddContainerSyncModal: React.FC = () => {
         </Toolbar>
       </Modal.Header>
       <Modal.Body>
-        <div className='p-8'>
+        <div className='p-6'>
           <p className='mb-6 t-text-muted'>
             A repo sync is executed as a container image. You can add a sync by referencing a container image URL.
           </p>

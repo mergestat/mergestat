@@ -31,7 +31,7 @@ export const PageHeader = ({ name, vendor, vendorUrl, externalRepoLink }: PageHe
   }, [])
 
   return (
-    <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
+    <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-gray-200">
       <div className="flex items-center space-x-1">
         <div className="text-xl font-semibold flex items-center space-x-1">
           <RepoImage vendor={vendor} vendorUrl={vendorUrl} orgName={repoOwnerName} />

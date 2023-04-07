@@ -21,7 +21,7 @@ const RepoSyncDetailView: React.FC<RepoSyncDetailView> = ({ containerSyncId }: R
   const { nameCS, descriptionCS, setNameCS, setDescriptionCS, updateCSNameDesc } = useContainerSyncUpdate()
 
   return (
-    <div className='flex flex-col flex-1 overflow-auto'>
+    <div className='flex flex-col flex-1 overflow-hidden'>
       <Toolbar className='bg-white border-b px-8 py-2'>
         <Toolbar.Left className='flex-grow'>
           <EditableText
@@ -48,7 +48,7 @@ const RepoSyncDetailView: React.FC<RepoSyncDetailView> = ({ containerSyncId }: R
         </Toolbar.Right>
       </Toolbar>
 
-      <div className="flex-1 w-full p-8 pb-16 mb-8 bg-gray-50 h-full">
+      <div className="flex-1 space-y-6 w-full p-8 bg-gray-50 overflow-auto">
         <ContainerSyncStats loading={loading}
           totalRepos={totalRepos || 0}
           totalErrors={0}

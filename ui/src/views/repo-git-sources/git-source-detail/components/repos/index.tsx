@@ -11,7 +11,7 @@ const ReposAutoManual: React.FC = () => {
     <Panel className='rounded-md shadow-sm m-auto mt-6'>
       <Panel.Header className='border-b-0 h-14'>
         <div className='w-full flex justify-between'>
-          <h4 className='t-h4 mb-0'>Repos</h4>
+          <h4 className='t-panel-title'>Repos</h4>
         </div>
       </Panel.Header>
 
