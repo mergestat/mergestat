@@ -37,7 +37,7 @@ type gosecIssue struct {
 func (w *worker) handleGosecRepoScan(ctx context.Context, j *db.DequeueSyncJobRow) error {
 	l := w.loggerForJob(j)
 
-	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
+	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), fmt.Sprintf("mergestat-repo-%s-*", j.RepoID.String()))
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
