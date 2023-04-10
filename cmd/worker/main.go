@@ -5,8 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/mergestat/mergestat/internal/cron"
-	"github.com/mergestat/mergestat/internal/jobs/sync/podman"
 	"net/http"
 	_ "net/http/pprof"
 	"net/url"
@@ -17,9 +15,11 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/mergestat/mergestat/internal/cron"
 	"github.com/mergestat/mergestat/internal/db"
 	"github.com/mergestat/mergestat/internal/helper"
 	"github.com/mergestat/mergestat/internal/jobs/repo"
+	"github.com/mergestat/mergestat/internal/jobs/sync/podman"
 	"github.com/mergestat/mergestat/internal/syncer"
 	"github.com/mergestat/mergestat/internal/timeout"
 	"github.com/mergestat/mergestat/queries"
@@ -264,7 +264,7 @@ func main() {
 
 	// register job handlers for types implemented by this worker
 	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
-	_ = worker.Register("container/sync", podman.ContainerSync(postgresConnection, db.New(pool)))
+	_ = worker.Register("container/sync", podman.ContainerSync(postgresConnection, &logger, db.New(pool)))
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars

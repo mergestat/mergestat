@@ -8,7 +8,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/mergestat/mergestat/internal/helper"
 	"io"
 	"os"
 	"os/exec"
@@ -24,18 +23,27 @@ import (
 	"github.com/go-git/go-git/v5/storage/filesystem"
 	"github.com/google/uuid"
 	"github.com/mergestat/mergestat/internal/db"
+	"github.com/mergestat/mergestat/internal/helper"
 	"github.com/mergestat/sqlq"
 	"github.com/pkg/errors"
+	"github.com/rs/zerolog"
 )
 
 // ContainerSync implements a sqlq.Handler that utilizes a Container-based execution environment
 // to run user-provided, custom sync jobs.
-func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
+func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db.Queries) sqlq.Handler {
 	type ImageMetadata = struct{ Labels map[string]string } // used to un-marshal output from podman-image-inspect
 
 	return sqlq.HandlerFunc(func(ctx context.Context, job *sqlq.Job) (err error) {
 		var logger = job.Logger()
 		go job.SendKeepAlive(ctx, job.KeepAlive-2*time.Second) //nolint:errcheck
+
+		l := workerLogger.With().
+			Str("job-id", job.ID.String()).
+			Str("queue", string(job.Queue)).
+			Logger()
+
+		l.Info().Msg("starting job")
 
 		var params struct{ ID uuid.UUID }
 		if err = json.Unmarshal(job.Parameters, &params); err != nil {
@@ -103,24 +111,6 @@ func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 			}
 		}
 
-		// create a new temporary location to clone the repository (unless opted-out; if opted-out the directory will be empty)
-		tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
-		if err != nil {
-			logger.Errorf("failed to create directory for cloning: %s", err.Error())
-			return errors.Wrapf(err, "failed to create directory")
-		}
-		defer cleanup() //nolint:errcheck
-
-		// unless opted-out by setting com.mergestat.sync.clone to never, we perform a full clone
-		if opt := metadata[0].Labels["com.mergestat.sync.clone"]; opt != "never" {
-			if err = clone(ctx, logger, querier, tmpPath, repo); err != nil { // execute the clone operation
-				logger.Errorf("failed to clone: %s", err.Error())
-				return errors.Wrapf(err, "failed to clone")
-			}
-		} else {
-			logger.Infof("skipping cloning repository")
-		}
-
 		{ // run the image locally
 			logger.Infof("running image %s", url)
 
@@ -136,6 +126,7 @@ func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 			environment["MERGESTAT_PROVIDER_ID"] = repo.Provider.String()
 			environment["MERGESTAT_AUTH_USERNAME"] = username
 			environment["MERGESTAT_AUTH_TOKEN"] = token
+			environment["MERGESTAT_PARAMS"] = string(containerSync.Params.Bytes)
 
 			var env bytes.Buffer
 			for key, value := range environment {
@@ -146,21 +137,41 @@ func ContainerSync(postgresUrl string, querier *db.Queries) sqlq.Handler {
 			if envFile, err = writeToTempFile(env.Bytes()); err != nil {
 				return errors.Wrapf(err, "failed to create file with environment variables")
 			}
-
-			var paramsFile string
-			if paramsFile, err = writeToTempFile(containerSync.Params.Bytes); err != nil {
-				return errors.Wrapf(err, "failed to create file with parameters")
-			}
+			defer func() {
+				if err := os.Remove(envFile); err != nil {
+					workerLogger.Err(err).Msg("failed to remove temporary file")
+				}
+			}()
 
 			var args []string
-			args = append(args, "run", "--rm", "--quiet")
-			args = append(args, "--pull", "never")                               // run never pulls an image!
-			args = append(args, "--env-file", envFile)                           // set environment variables from envFile
-			args = append(args, "-v", fmt.Sprintf("%s:/src", tmpPath))           // mount the cloned repository under /src
-			args = append(args, "-v", fmt.Sprintf("%s:/run/params", paramsFile)) // mount user supplied parameters under /run/params
-			args = append(args, "-w", "/src")                                    // set /src to be the working directory inside container
-			args = append(args, "--network", "host")                             // use host networking
-			args = append(args, url)                                             // the url of the image to run
+			args = append(args, "run", "--quiet")
+			args = append(args, "--pull", "never")     // run never pulls an image!
+			args = append(args, "--env-file", envFile) // set environment variables from envFile
+			args = append(args, "--network", "host")   // use host networking
+
+			// if opted-in by setting com.mergestat.sync.clone to true, we perform a full clone
+			// of the repository to a temporary directory and mount that directory into the container
+			if opt := metadata[0].Labels["com.mergestat.sync.clone"]; opt == "true" {
+				var tmpPath string
+				// var cleanup func() error
+				// create a new temporary location to clone the repository
+				tmpPath, _, err = helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
+				if err != nil {
+					logger.Errorf("failed to create directory for cloning: %s", err.Error())
+					return errors.Wrapf(err, "failed to create directory")
+				}
+				// defer cleanup() //nolint:errcheck
+
+				if err = clone(ctx, logger, querier, tmpPath, repo); err != nil { // execute the clone operation
+					logger.Errorf("failed to clone: %s", err.Error())
+					return errors.Wrapf(err, "failed to clone")
+				}
+
+				logger.Infof("cloned repository to %s and mounting it at /mergestat/repo", tmpPath)
+				args = append(args, "-v", fmt.Sprintf("%s:/mergestat/repo", tmpPath)) // mount the cloned repository under /mergestat/repo
+			}
+
+			args = append(args, url) // the url of the image to run
 
 			var run = podman(ctx, args...)
 			stdout, _ := run.StdoutPipe()
