@@ -43,8 +43,6 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 			Str("queue", string(job.Queue)).
 			Logger()
 
-		l.Info().Msg("starting job")
-
 		var params struct{ ID uuid.UUID }
 		if err = json.Unmarshal(job.Parameters, &params); err != nil {
 			logger.Errorf("failed to unmarshal params: %s", err.Error())
@@ -56,6 +54,9 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 			logger.Errorf("failed to fetch container sync: %s", err.Error())
 			return errors.Wrapf(err, "failed to fetch container sync")
 		}
+
+		// one goes to the worker log, the other to the DB
+		l.Debug().Msgf("running sync %s", containerSync.ID)
 		logger.Debugf("running sync %s", containerSync.ID)
 
 		var repo db.Repo
@@ -64,7 +65,7 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 		}
 
 		// used below to send stdout and stderr to job logs
-		infof, warnf := func(str string) { logger.Info(str) }, func(str string) { logger.Warn(str) }
+		infof, debugf := func(str string) { logger.Info(str) }, func(str string) { logger.Debug(str) }
 
 		var image = fmt.Sprintf("%s:%s", containerSync.ImageUrl, containerSync.ImageVersion)
 		var url = fmt.Sprintf("docker://%s", image)
@@ -81,7 +82,7 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 			var wg sync.WaitGroup
 			wg.Add(2)
 			go func() { defer wg.Done(); log(infof, stdout) }()
-			go func() { defer wg.Done(); log(warnf, stderr) }()
+			go func() { defer wg.Done(); log(debugf, stderr) }()
 
 			wg.Wait()
 			if err = pull.Wait(); err != nil {
@@ -112,6 +113,7 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 		}
 
 		{ // run the image locally
+			l.Info().Msgf("running image %s", url)
 			logger.Infof("running image %s", url)
 
 			var username, token string
@@ -144,7 +146,7 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 			}()
 
 			var args []string
-			args = append(args, "run", "--quiet")
+			args = append(args, "run", "--quiet", "--rm")
 			args = append(args, "--pull", "never")     // run never pulls an image!
 			args = append(args, "--env-file", envFile) // set environment variables from envFile
 			args = append(args, "--network", "host")   // use host networking
@@ -153,20 +155,21 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 			// of the repository to a temporary directory and mount that directory into the container
 			if opt := metadata[0].Labels["com.mergestat.sync.clone"]; opt == "true" {
 				var tmpPath string
-				// var cleanup func() error
+				var cleanup func() error
 				// create a new temporary location to clone the repository
-				tmpPath, _, err = helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
+				tmpPath, cleanup, err = helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
 				if err != nil {
 					logger.Errorf("failed to create directory for cloning: %s", err.Error())
 					return errors.Wrapf(err, "failed to create directory")
 				}
-				// defer cleanup() //nolint:errcheck
+				defer cleanup() //nolint:errcheck
 
 				if err = clone(ctx, logger, querier, tmpPath, repo); err != nil { // execute the clone operation
 					logger.Errorf("failed to clone: %s", err.Error())
 					return errors.Wrapf(err, "failed to clone")
 				}
 
+				// TODO(patrickdevivo) we could use `com.mergestat.sync.clonePath` to specify a path to mount the repo into once cloned.
 				logger.Infof("cloned repository to %s and mounting it at /mergestat/repo", tmpPath)
 				args = append(args, "-v", fmt.Sprintf("%s:/mergestat/repo", tmpPath)) // mount the cloned repository under /mergestat/repo
 			}
@@ -184,7 +187,7 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 			var wg sync.WaitGroup
 			wg.Add(2)
 			go func() { defer wg.Done(); log(infof, stdout) }()
-			go func() { defer wg.Done(); log(warnf, stderr) }()
+			go func() { defer wg.Done(); log(debugf, stderr) }()
 
 			wg.Wait()
 			if err = run.Wait(); err != nil {
