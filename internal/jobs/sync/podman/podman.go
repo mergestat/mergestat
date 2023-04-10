@@ -157,7 +157,7 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 				var tmpPath string
 				var cleanup func() error
 				// create a new temporary location to clone the repository
-				tmpPath, cleanup, err = helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
+				tmpPath, cleanup, err = helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), fmt.Sprintf("mergestat-repo-%s-*", repo.ID.String()))
 				if err != nil {
 					logger.Errorf("failed to create directory for cloning: %s", err.Error())
 					return errors.Wrapf(err, "failed to create directory")
