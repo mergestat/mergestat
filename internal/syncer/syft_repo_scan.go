@@ -25,7 +25,7 @@ func (w *worker) handleSyftRepoScan(ctx context.Context, j *db.DequeueSyncJobRow
 		return fmt.Errorf("send batch log messages: %w", err)
 	}
 
-	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), "mergestat-repo-*")
+	tmpPath, cleanup, err := helper.CreateTempDir(os.Getenv("GIT_CLONE_PATH"), fmt.Sprintf("mergestat-repo-%s-*", j.RepoID.String()))
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
 	}
