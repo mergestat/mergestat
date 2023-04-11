@@ -23,7 +23,7 @@ const AutoImportDetailView: React.FC = () => {
   return (
     <>
       <div className='flex flex-col h-full overflow-hidden'>
-        <div className='bg-white h-20 w-full border-b px-8'>
+        <div className='bg-white py-3 w-full border-b px-8'>
           <Toolbar className='h-full'>
             <Toolbar.Left>
               <div className='flex items-center space-x-4'>
