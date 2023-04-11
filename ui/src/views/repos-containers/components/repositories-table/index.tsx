@@ -2,15 +2,15 @@ import { Badge, Button } from '@mergestat/blocks'
 import { ChevronRightIcon, CircleInformationFilledIcon, SumIcon, TrashIcon } from '@mergestat/icons'
 import Link from 'next/link'
 import React, { PropsWithChildren } from 'react'
-import type { RepoDataPropsT } from 'src/@types'
+import type { RepoContainerData } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
-import { useRepositoriesSetState } from 'src/state/contexts'
-import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
+import { useRepoContainersSetState } from 'src/state/contexts/repo-containers.context'
+import { SYNC_CONTAINER_STATUS, TEST_IDS } from 'src/utils/constants'
 import { NoDataFound } from 'src/views/shared/no-data-found'
 import { RepositoryName, RepositoryStatus } from './repositories-table-columns'
 
 type RepositoriesTableProps = PropsWithChildren<{
-  repos: Array<RepoDataPropsT>
+  repos: RepoContainerData[]
 }>
 
 export type RowLinkProps = {
@@ -19,7 +19,7 @@ export type RowLinkProps = {
 }
 
 export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: RepositoriesTableProps) => {
-  const { setShowRemoveRepositoryModal, setRepoToRemove, setReposQuantity } = useRepositoriesSetState()
+  const { setShowRemoveRepositoryModal, setRepoToRemove, setReposQuantity } = useRepoContainersSetState()
 
   const prepareToRemove = (id: string, name: string, autoImported: boolean) => {
     setReposQuantity(repos.length)
@@ -39,7 +39,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
                   <th scope='col' key='name' className='whitespace-nowrap'>Repository</th>
                   <th scope='col' key='last' className='whitespace-nowrap'>Last sync</th>
                   <th scope='col' key='total' className='whitespace-nowrap w-0 text-center'>Total</th>
-                  <th scope='col' key='queued' className='whitespace-nowrap w-0 text-center'>Queued</th>
+                  <th scope='col' key='pending' className='whitespace-nowrap w-0 text-center'>Pending</th>
                   <th scope='col' key='running' className='whitespace-nowrap w-0 text-center'>Running</th>
                   <th scope='col' key='warning' className='whitespace-nowrap w-0 text-center'>Warning</th>
                   <th scope='col' key='error' className='whitespace-nowrap w-0 text-center'>Error</th>
@@ -50,7 +50,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
 
               <tbody className='bg-white'>
                 {repos.map((repo) => (
-                  <tr key={repo.id} className={!repo.status.length ? 't-table-row-muted' : ''}>
+                  <tr key={repo.id} className={repo.stats.syncCount === 0 ? 't-table-row-muted' : ''}>
                     <td className=''>
                       <RepositoryName
                         id={repo.id}
@@ -61,15 +61,15 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
                       />
                     </td>
 
-                    {repo.status.length
+                    {repo.stats.syncCount > 0
                       ? <>
                         <td className='h-20'>
-                          <RelativeTimeField date={repo.lastSync} styles={'t-text-muted whitespace-nowrap'} />
+                          <RelativeTimeField date={repo.stats.lastSyncTime} styles={'t-text-muted whitespace-nowrap'} />
                         </td>
                         <td className='h-20 w-0'>
                           <div className='flex items-center justify-center'>
                             <Badge
-                              label={(repo.status.reduce((sum, { count }) => sum + count, 0).toString())}
+                              label={`${repo.stats.syncCount}`}
                               startIcon={<SumIcon className='t-icon t-icon-muted' />}
                             />
                           </div>
@@ -77,45 +77,45 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
                         <td className='h-20 text-center'>
                           <div className='flex items-center justify-center'>
                             <RepositoryStatus
-                              idRepo={repo.id}
-                              status={repo.status}
-                              type={SYNC_STATUS.queued}
+                              repoId={repo.id}
+                              status={SYNC_CONTAINER_STATUS.pending}
+                              count={repo.stats.pending}
                             />
                           </div>
                         </td>
                         <td className='h-20 text-center'>
                           <div className='flex items-center justify-center'>
                             <RepositoryStatus
-                              idRepo={repo.id}
-                              status={repo.status}
-                              type={SYNC_STATUS.running}
+                              repoId={repo.id}
+                              status={SYNC_CONTAINER_STATUS.running}
+                              count={repo.stats.running}
                             />
                           </div>
                         </td>
                         <td className='h-20 text-center'>
                           <div className='flex items-center justify-center'>
                             <RepositoryStatus
-                              idRepo={repo.id}
-                              status={repo.status}
-                              type={SYNC_STATUS.warning}
+                              repoId={repo.id}
+                              status={SYNC_CONTAINER_STATUS.warning}
+                              count={repo.stats.warning}
                             />
                           </div>
                         </td>
                         <td className='h-20 text-center'>
                           <div className='flex items-center justify-center'>
                             <RepositoryStatus
-                              idRepo={repo.id}
-                              status={repo.status}
-                              type={SYNC_STATUS.error}
+                              repoId={repo.id}
+                              status={SYNC_CONTAINER_STATUS.errored}
+                              count={repo.stats.error}
                             />
                           </div>
                         </td>
                         <td className='h-20 text-center'>
                           <div className='flex items-center justify-center'>
                             <RepositoryStatus
-                              idRepo={repo.id}
-                              status={repo.status}
-                              type={SYNC_STATUS.succeeded}
+                              repoId={repo.id}
+                              status={SYNC_CONTAINER_STATUS.success}
+                              count={repo.stats.success}
                             />
                           </div>
                         </td>

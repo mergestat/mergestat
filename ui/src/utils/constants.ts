@@ -87,6 +87,14 @@ export enum SYNC_STATUS {
   empty = 'empty'
 }
 
+export enum SYNC_CONTAINER_STATUS {
+  errored = 'errored',
+  pending = 'pending',
+  running = 'running',
+  success = 'success',
+  warning = 'warning',
+}
+
 export enum COOKIE {
   jwt = 'jwt'
 }
@@ -112,6 +120,8 @@ export enum EXPORT_FORMAT {
 }
 
 export const REPOS_REFETCHES = ['getRepos', 'getRepoTotalCount', 'getAllEnabledRepos', 'getSyncErrors']
+
+export const REPOS_CONTAINERS_REFETCHES = ['getReposContainers', 'getRepoTotalCount', 'getAllEnabledRepos', 'getSyncErrors']
 
 export enum USER_TYPE_UI {
   ADMIN = 'Admin',

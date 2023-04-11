@@ -4,13 +4,13 @@ import { TrashIcon, XIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React, { useCallback } from 'react'
 import { REMOVE_REPO } from 'src/api-logic/graphql/mutations/repos'
-import { useRepositoriesContext, useRepositoriesSetState } from 'src/state/contexts'
+import { useRepoContainersContext, useRepoContainersSetState } from 'src/state/contexts/repo-containers.context'
 import { showSuccessAlert } from 'src/utils/alerts'
-import { REPOS_REFETCHES, TEST_IDS } from 'src/utils/constants'
+import { REPOS_CONTAINERS_REFETCHES, TEST_IDS } from 'src/utils/constants'
 
 export const RemoveRepositoryModal: React.FC = () => {
-  const [{ repoToRemove, reposQuantity }] = useRepositoriesContext()
-  const { setShowRemoveRepositoryModal, setShowReposTable } = useRepositoriesSetState()
+  const [{ repoToRemove, reposQuantity }] = useRepoContainersContext()
+  const { setShowRemoveRepositoryModal, setShowReposTable } = useRepoContainersSetState()
   const router = useRouter()
 
   const close = useCallback(() => {
@@ -27,7 +27,7 @@ export const RemoveRepositoryModal: React.FC = () => {
       close()
     },
     awaitRefetchQueries: true,
-    refetchQueries: () => REPOS_REFETCHES
+    refetchQueries: () => REPOS_CONTAINERS_REFETCHES
   })
 
   return (
