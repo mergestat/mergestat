@@ -47,7 +47,7 @@ const AutoImportDetailView: React.FC = () => {
           </div>
           {!isEmpty && <div className='flex'>
             <FilterHeader setSearch={setSearch} />
-            <div className='flex px-5 items-center'>
+            <div className='flex pr-8 items-center'>
               <Button className='whitespace-nowrap'
                 skin="secondary"
                 label='Manage Syncs'
