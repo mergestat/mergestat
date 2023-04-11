@@ -39,6 +39,7 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
     extend type Mutation { 
       syncNow(sync: UUID!, queue: String): Boolean 
       bulkEnableSync(image: UUID!, provider: UUID!): Boolean
+      bulkDisableSync(image: UUID!, provider: UUID!): Boolean
     }
   `,
     resolvers: {
@@ -88,7 +89,7 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                         // we iterate over each repository, creating a sync and a schedule
                         yield bluebird.mapSeries(repos, (repo) => __awaiter(this, void 0, void 0, function* () {
                             const { rows: syncs } = yield pg.query(createSync, [repo.id, args.image]);
-                            yield pg.query('INSERT INTO mergestat.container_sync_schedules (sync_id) VALUES ($1)', [syncs[0].id]);
+                            yield pg.query('INSERT INTO mergestat.container_sync_schedules (sync_id) VALUES ($1) ON CONFLICT DO NOTHING', [syncs[0].id]);
                         }));
                         return true;
                     }
@@ -98,6 +99,23 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
                     }
                     finally {
                         yield pg.query("RELEASE SAVEPOINT bulk_enable_sync");
+                    }
+                });
+            },
+            bulkDisableSync(_parent, args, context, _info) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    const { pgClient: pg } = context;
+                    yield pg.query("SAVEPOINT bulk_disable_sync");
+                    try {
+                        yield pg.query(`DELETE FROM mergestat.container_sync_schedules WHERE sync_id IN (SELECT id FROM mergestat.container_syncs WHERE image_id = $1 AND repo_id IN (SELECT id FROM public.repos WHERE provider = $2))`, [args.image, args.provider]);
+                        return true;
+                    }
+                    catch (e) {
+                        yield pg.query("ROLLBACK TO SAVEPOINT bulk_disable_sync");
+                        throw e;
+                    }
+                    finally {
+                        yield pg.query("RELEASE SAVEPOINT bulk_disable_sync");
                     }
                 });
             }
