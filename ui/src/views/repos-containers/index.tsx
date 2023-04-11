@@ -3,13 +3,13 @@ import { CircleErrorFilledIcon, CircleErrorIcon, RepositoryIcon, TableIcon } fro
 import cx from 'classnames'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { RepoDataPropsT } from 'src/@types'
-import { mapToRepoData } from 'src/api-logic/mappers/repo/repos'
+import { RepoContainerData } from 'src/@types'
+import { mapToRepoData } from 'src/api-logic/mappers/repo/repos-containers'
 import Loading from 'src/components/Loading'
 import { useGlobalContext, useGlobalSetState } from 'src/state/contexts'
-import { useRepositoriesContext } from 'src/state/contexts/repositories.context'
-import useMetrics from 'src/views/hooks/useMetrics'
-import useRepos from 'src/views/hooks/useRepos'
+import { useRepoContainersContext } from 'src/state/contexts/repo-containers.context'
+import useMetrics from '../hooks/repoContainers/useMetrics'
+import useRepos from '../hooks/repoContainers/useRepos'
 import { EmptyData } from '../shared/empty-data'
 import { FilterFooter } from '../shared/filter-footer'
 import { FilterHeader } from '../shared/filter-header'
@@ -19,11 +19,11 @@ import { RemoveRepositoryModal } from './modals/remove-repository-modal'
 
 const RepositoriesView: React.FC = () => {
   const { setSearchRepos, setRowsRepos, setPageRepos } = useGlobalSetState()
-  const [{ showRemoveRepositoryModal }] = useRepositoriesContext()
+  const [{ showRemoveRepositoryModal }] = useRepoContainersContext()
   const [{ reposFilter: { search, total, rows, page } }] = useGlobalContext()
   const { loading, data, runningImports, failedImports, showReposTable } = useRepos()
   const { loadingAllRepos, allRepos, loadingAllEnabledRepos, enabledRepos, loadingSyncErrors, syncErrors } = useMetrics()
-  const [repos, setRepos] = useState<Array<RepoDataPropsT>>()
+  const [repos, setRepos] = useState<RepoContainerData[]>()
 
   useEffect(() => {
     setRepos(mapToRepoData(data))

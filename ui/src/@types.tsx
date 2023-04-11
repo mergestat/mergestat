@@ -4,6 +4,8 @@ import { RepoSyncQueue } from './api-logic/graphql/generated/schema'
 
 export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'warning' | 'error' | 'empty'
 
+export type RepoContainerSyncState = 'errored' | 'pending' | 'running' | 'success' | 'warning'
+
 export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'gh-auto' | 'csv'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
@@ -67,6 +69,26 @@ export type RepoDataPropsT = {
   tags: Array<{ title: string, checked: boolean }>
   lastSync: string
   status: Array<RepoDataStatusT>
+}
+
+export type RepoStats = {
+  error: number,
+  pending: number,
+  running: number,
+  success: number,
+  warning: number,
+  syncCount: number,
+  lastSyncTime: string
+}
+
+export type RepoContainerData = {
+  id: string
+  name: string
+  createdAt: Date
+  provider: ProviderT
+  autoImportFrom?: string | null
+  tags: Array<{ title: string, checked: boolean }>
+  stats: RepoStats
 }
 
 /** Repository Data Props Type */
@@ -278,10 +300,10 @@ export type SavedQueryData = {
 /** Query History */
 
 export type QueryHistoryData = {
-  id: string;
-  runAt?: Date;
-  runBy: string;
-  query: string;
+  id: string
+  runAt?: Date
+  runBy: string
+  query: string
 }
 
 /** Git Sources */

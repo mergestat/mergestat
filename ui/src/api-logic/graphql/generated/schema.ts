@@ -13554,6 +13554,9 @@ export type Query = Node & {
   currentMergeStatUser?: Maybe<Scalars['String']>;
   databaseConnection?: Maybe<DisplayDatabaseConnection>;
   execSQL: ExecSqlResult;
+  getRepoStats?: Maybe<Scalars['JSON']>;
+  getReposPageHeaderStats?: Maybe<Scalars['JSON']>;
+  getReposSyncsByStatus?: Maybe<Scalars['JSON']>;
   gitBlame?: Maybe<GitBlame>;
   /** Reads a single `GitBlame` using its globally unique `ID`. */
   gitBlameByNodeId?: Maybe<GitBlame>;
@@ -13961,6 +13964,19 @@ export type QueryContainerSyncsArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryExecSqlArgs = {
   input: ExecSqlInput;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGetRepoStatsArgs = {
+  repoIdParam?: InputMaybe<Scalars['UUID']>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGetReposSyncsByStatusArgs = {
+  repoIdParam?: InputMaybe<Scalars['UUID']>;
+  statusParam?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -15660,6 +15676,7 @@ export type Repo = Node & {
   repoSyncs: RepoSyncsConnection;
   /** JSON settings for the repo */
   settings: Scalars['JSON'];
+  stats?: Maybe<Scalars['JSON']>;
   /** Reads a single `SyftRepoScan` that is related to this `Repo`. */
   syftRepoScan?: Maybe<SyftRepoScan>;
   /** array of tags for the repo for topics in GitHub as well as tags added in MergeStat */
@@ -15907,6 +15924,8 @@ export type RepoFilter = {
   repoImportId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `settings` field. */
   settings?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `stats` field. */
+  stats?: InputMaybe<JsonFilter>;
   /** Filter by the object’s `tags` field. */
   tags?: InputMaybe<JsonFilter>;
 };
@@ -22234,6 +22253,28 @@ export type GetReposQueryVariables = Exact<{
 
 
 export type GetReposQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, importError?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null, warnings: { totalCount: number } } | null }> } }> } | null };
+
+export type GetContainerSyncErrorsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetContainerSyncErrorsQuery = { getReposPageHeaderStats?: any | null };
+
+export type GetReposContainersQueryVariables = Exact<{
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetReposContainersQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, importError?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, tags: any, stats?: any | null, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null }> } | null };
+
+export type GetContainerSyncsByStatusQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  status: Scalars['String'];
+}>;
+
+
+export type GetContainerSyncsByStatusQuery = { getReposSyncsByStatus?: any | null };
 
 export type GetSavedQueryListQueryVariables = Exact<{
   search: Scalars['String'];
