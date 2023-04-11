@@ -1,42 +1,24 @@
 import { Badge } from '@mergestat/blocks'
 import { MinusIcon } from '@mergestat/icons'
-import type { RepoDataStatusT, RepoSyncStateT } from 'src/@types'
-import { RelativeTimeText } from 'src/components/Fields/relative-time-text'
-import { SYNC_STATUS } from 'src/utils/constants'
-import { RepoDataDropDown } from 'src/views/repos/drop-downs'
+import type { RepoContainerSyncState } from 'src/@types'
+import { JobsDropDown } from 'src/views/repos-containers/drop-downs'
 
 export type RepositoryStatusProps = {
-  idRepo: string
-  status: Array<RepoDataStatusT>
-  type: RepoSyncStateT
+  repoId: string
+  status: RepoContainerSyncState
+  count: number
 }
 
-const getLastSync = (type: RepoSyncStateT, lastSync: string) => {
-  return type === SYNC_STATUS.running ? SYNC_STATUS.running : type === SYNC_STATUS.queued ? SYNC_STATUS.queued : lastSync ? <RelativeTimeText date={lastSync} prefix='Last sync' /> : ''
-}
-
-export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ idRepo, status, type }: RepositoryStatusProps) => {
-  const filteredArray = status.filter((item) => item.type === type)
-
+export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ repoId, status, count }: RepositoryStatusProps) => {
   return (
     <>
-      {filteredArray.length > 0
-        ? filteredArray.map((item, index) => (
-          <RepoDataDropDown
-            key={`repo-status-${index}`}
-            status={item.type}
-            data={item.syncs?.map((sync) => ({
-              url: `/repos/${idRepo}/${sync.idType}/${sync.idLastSync}`,
-              title: sync.type,
-              lastSync: getLastSync(item.type, sync.lastSync),
-            })) || []}
-          />
-        ))
-        : <Badge
+      {count === 0 &&
+        <Badge
           label="0"
           startIcon={<MinusIcon className="t-icon t-icon-muted" />}
-        />
-      }
+        />}
+
+      {count > 0 && <JobsDropDown status={status} repoId={repoId} count={count} />}
     </>
   )
 }
