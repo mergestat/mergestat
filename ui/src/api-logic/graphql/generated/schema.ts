@@ -474,6 +474,7 @@ export type ContainerSync = Node & {
   /** Reads a single `ContainerImage` that is related to this `ContainerSync`. */
   image?: Maybe<ContainerImage>;
   imageId: Scalars['UUID'];
+  latestSyncRuns?: Maybe<Scalars['JSON']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   parameters: Scalars['JSON'];
@@ -606,6 +607,8 @@ export type ContainerSyncFilter = {
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `imageId` field. */
   imageId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `latestSyncRuns` field. */
+  latestSyncRuns?: InputMaybe<JsonFilter>;
   /** Negates the expression. */
   not?: InputMaybe<ContainerSyncFilter>;
   /** Checks for any expressions in this list. */
@@ -13539,7 +13542,6 @@ export type Query = Node & {
   currentMergeStatUser?: Maybe<Scalars['String']>;
   databaseConnection?: Maybe<DisplayDatabaseConnection>;
   execSQL: ExecSqlResult;
-  getRepoStats?: Maybe<Scalars['JSON']>;
   getReposPageHeaderStats?: Maybe<Scalars['JSON']>;
   getReposSyncsByStatus?: Maybe<Scalars['JSON']>;
   gitBlame?: Maybe<GitBlame>;
@@ -13943,12 +13945,6 @@ export type QueryContainerSyncsArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryExecSqlArgs = {
   input: ExecSqlInput;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGetRepoStatsArgs = {
-  repoIdParam?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -22180,7 +22176,7 @@ export type GetContainerSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetContainerSyncsQuery = { containerSyncs?: { nodes: Array<{ id: any, parameters: any, image?: { id: any } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null } | null }> } }> } | null, all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
+export type GetContainerSyncsQuery = { containerSyncs?: { nodes: Array<{ id: any, parameters: any, latestSyncRuns?: any | null, image?: { id: any } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> } }> } | null, all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
 
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -22221,10 +22217,10 @@ export type GetReposQueryVariables = Exact<{
 
 export type GetReposQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, importError?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null, warnings: { totalCount: number } } | null }> } }> } | null };
 
-export type GetContainerSyncErrorsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetContainerSyncStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetContainerSyncErrorsQuery = { getReposPageHeaderStats?: any | null };
+export type GetContainerSyncStatsQuery = { getReposPageHeaderStats?: any | null };
 
 export type GetReposContainersQueryVariables = Exact<{
   search: Scalars['String'];

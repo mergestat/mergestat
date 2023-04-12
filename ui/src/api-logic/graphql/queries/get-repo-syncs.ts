@@ -92,21 +92,7 @@ const GET_CONTAINER_SYNCS = gql`
             id
           }
         }
-        executions: containerSyncExecutionsBySyncId(
-          first: 15,
-          orderBy: CREATED_AT_DESC
-        ) {
-          nodes {
-            job {
-              id
-              status
-              queue
-              createdAt
-              startedAt
-              completedAt
-            }
-          }
-        }
+        latestSyncRuns
       }
     }
     all: containerImages {

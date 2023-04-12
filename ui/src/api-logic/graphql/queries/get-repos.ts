@@ -90,8 +90,8 @@ const GET_REPOS = gql`
   }
 `
 
-const GET_CONTAINER_SYNC_ERRORS = gql`
-  query getContainerSyncErrors {
+const GET_CONTAINER_SYNC_STATS = gql`
+  query getContainerSyncStats {
     getReposPageHeaderStats
   }
 `
@@ -149,7 +149,7 @@ export {
   GET_REPO_TOTAL_COUNT,
   GET_ALL_ENABLED_REPOS,
   GET_SYNC_ERRORS, GET_REPOS,
-  GET_CONTAINER_SYNC_ERRORS,
+  GET_CONTAINER_SYNC_STATS,
   GET_REPOS_CONTAINERS,
   GET_CONTAINERS_SYNCS_BY_STATUS
 }

@@ -93,6 +93,7 @@ export enum SYNC_CONTAINER_STATUS {
   running = 'running',
   success = 'success',
   warning = 'warning',
+  empty = 'empty'
 }
 
 export enum COOKIE {

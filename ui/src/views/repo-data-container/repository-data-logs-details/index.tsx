@@ -2,14 +2,14 @@ import { useQuery } from '@apollo/client'
 import { LogBox, Panel } from '@mergestat/blocks'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { ContainerSyncLogData, RepoBasicData, SyncLogsType } from 'src/@types'
+import { ContainerSyncLogData, RepoBasicData, SyncContainerLogsType } from 'src/@types'
 import { GET_LOGS_OF_A_CONTAINER_SYNC } from 'src/api-logic/graphql/queries/get-sync-history-logs'
 import { mapToContainerSyncLogsData } from 'src/api-logic/mappers/repo-container/container-syncs-logs'
 import Loading from 'src/components/Loading'
-import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { copyArrayToClipboard } from 'src/utils'
 import { SYNC_STATUS } from 'src/utils/constants'
 import useContainerSyncLogsCrumb from 'src/views/hooks/repoContainerSyncs/useContainerSyncLogsCrumb'
+import { RepoContainerSyncIcon } from 'src/views/repos-containers/components/repo-container-sync-icon'
 import { GetLogsOfContainerSyncQuery } from '../../../api-logic/graphql/generated/schema'
 import { LogsInfo } from './components'
 
@@ -21,7 +21,7 @@ const RepoDataLogsDetailsView: React.FC<RepoDataLogsDetailsViewProps> = ({ repo 
   const router = useRouter()
   const { repository, syncId, jobId } = router.query
 
-  const [logInfo, setLogInfo] = useState<SyncLogsType>()
+  const [logInfo, setLogInfo] = useState<SyncContainerLogsType>()
 
   const { loading, data } = useQuery<GetLogsOfContainerSyncQuery>(GET_LOGS_OF_A_CONTAINER_SYNC, {
     variables: { repoId: repository, syncId, jobId },
@@ -45,7 +45,7 @@ const RepoDataLogsDetailsView: React.FC<RepoDataLogsDetailsViewProps> = ({ repo 
         : <>
           <div className="bg-white h-16 w-full flex justify-between px-8 items-center border-b border-gray-200">
             <div className="text-xl font-semibold flex items-center space-x-1">
-              <RepoSyncIcon type={logInfo?.syncType || SYNC_STATUS.empty} />
+              <RepoContainerSyncIcon type={logInfo?.syncType || SYNC_STATUS.empty} />
               <span className='pl-1'>{logInfo?.syncStartText || ''}</span>
             </div>
           </div>
