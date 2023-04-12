@@ -3,10 +3,10 @@ import { ClockIcon, RefreshIcon } from '@mergestat/icons'
 import React from 'react'
 import { ContainerBasicData } from 'src/@types'
 import Loading from 'src/components/Loading'
-import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { SYNC_STATUS } from 'src/utils/constants'
+import { SYNC_CONTAINER_STATUS, SYNC_STATUS } from 'src/utils/constants'
 import useContainerSyncCrumb from 'src/views/hooks/repoContainerSyncs/useContainerSyncCrumb'
 import useContainerSyncsLogs from 'src/views/hooks/repoContainerSyncs/useContainerSyncsLogs'
+import { RepoContainerSyncIcon } from 'src/views/repos-containers/components/repo-container-sync-icon'
 import { FilterFooter } from 'src/views/shared/filter-footer'
 import { SyncSettings } from './components'
 import { LogsTable } from './components/logs-table'
@@ -30,7 +30,7 @@ const ContainerSyncsDataView: React.FC<ContainerBasicData> = ({ repo }) => {
                 <Toolbar.Left>
                   <Toolbar.Item>
                     <div className='flex items-center space-x-5'>
-                      <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />
+                      <RepoContainerSyncIcon type={sync?.syncState || SYNC_CONTAINER_STATUS.empty} />
                       <div className='space-y-1'>
                         <h3 className='t-h2 mb-0'>{sync?.name || ''}</h3>
                         <p className='t-text-muted text-sm'>{sync?.description}</p>
@@ -40,16 +40,16 @@ const ContainerSyncsDataView: React.FC<ContainerBasicData> = ({ repo }) => {
                 </Toolbar.Left>
                 <Toolbar.Right>
                   <Toolbar.Item>
-                      <Button
+                    <Button
                       className="ml-3"
                       label='Sync Now'
-                      startIcon={sync?.syncState === SYNC_STATUS.queued
+                      startIcon={sync?.syncState === SYNC_CONTAINER_STATUS.pending
                         ? <ClockIcon className='t-icon' />
                         : sync?.syncState === SYNC_STATUS.running
                           ? <Spinner size='sm' className='mr-2' />
                           : <RefreshIcon className="t-icon" />
                       }
-                      disabled={sync?.syncState === SYNC_STATUS.queued || sync?.syncState === SYNC_STATUS.running}
+                      disabled={sync?.syncState === SYNC_CONTAINER_STATUS.pending || sync?.syncState === SYNC_CONTAINER_STATUS.running}
                       onClick={() => syncNow({ variables: { sync: `${sync?.id}` } })}
                     />
                   </Toolbar.Item>

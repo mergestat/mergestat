@@ -1,7 +1,7 @@
 import { format, lightFormat } from 'date-fns'
-import { ContainerBasicData, ContainerSyncLogData, SyncLogsType } from 'src/@types'
+import { ContainerBasicData, ContainerSyncLogData, SyncContainerLogsType } from 'src/@types'
 import { getExternalRepoLink, getRepoFromUrl, getSimpleDurationTime, mapToContainerSyncState } from 'src/utils'
-import { DATE_FORMAT, SYNC_STATUS } from 'src/utils/constants'
+import { DATE_FORMAT, SYNC_CONTAINER_STATUS } from 'src/utils/constants'
 import { GetContainerBasicDataQuery, GetContainerSyncHistoryLogsQuery, GetLogsOfContainerSyncQuery } from '../../graphql/generated/schema'
 
 /**
@@ -47,15 +47,15 @@ const mapToContainerSyncLogsData = (data: GetContainerSyncHistoryLogsQuery | Get
       description: cs?.image?.description || '',
       parameters: cs.parameters,
       scheduleId: cs?.schedule.nodes[0]?.id,
-      syncState: cs?.executions.nodes.length !== 0 ? mapToContainerSyncState(cs?.executions.nodes[0].job?.status) : SYNC_STATUS.empty,
+      syncState: cs?.executions.nodes.length !== 0 ? mapToContainerSyncState(cs?.executions.nodes[0].job?.status) : SYNC_CONTAINER_STATUS.empty,
       totalExecutions: cs?.executions.totalCount
     }
 
     // 2. Get logs data of the sync
-    const logsData: Array<SyncLogsType> = []
+    const logsData: SyncContainerLogsType[] = []
 
     cs?.executions.nodes.forEach((ex) => {
-      const logData: SyncLogsType = {
+      const logData: SyncContainerLogsType = {
         id: ex.job?.id,
         title: cs?.image?.name || '',
         syncType: mapToContainerSyncState(ex.job?.status),

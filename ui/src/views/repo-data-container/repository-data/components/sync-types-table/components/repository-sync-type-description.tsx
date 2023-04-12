@@ -1,6 +1,5 @@
 import { Badge, ColoredBox } from '@mergestat/blocks'
 import { TableIcon } from '@mergestat/icons'
-import cx from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -9,7 +8,6 @@ export type RepoSyncTypeDescProps = {
   id: string
   title: string
   brief?: string
-  disabled?: boolean
   labels?: string[]
 }
 
@@ -35,7 +33,7 @@ export const RepoSyncTypeDesc: React.FC<RepoSyncTypeDescProps> = (props) => {
         <TableIcon className='t-icon' />
       </ColoredBox>
 
-      <div className={cx('flex flex-col justify-center items-start h-full', { 'bg-gray-50': props.disabled })}>
+      <div className='flex flex-col justify-center items-start h-full'>
         {props.id
           ? <Link href={`/repos-containers/${repository}/${props.id}`}>
             <h4 className="font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600">

@@ -22,7 +22,7 @@ const RepositoriesView: React.FC = () => {
   const [{ showRemoveRepositoryModal }] = useRepoContainersContext()
   const [{ reposFilter: { search, total, rows, page } }] = useGlobalContext()
   const { loading, data, runningImports, failedImports, showReposTable } = useRepos()
-  const { loadingAllRepos, allRepos, loadingAllEnabledRepos, enabledRepos, loadingSyncErrors, syncErrors } = useMetrics()
+  const { loadingStats, stats } = useMetrics()
   const [repos, setRepos] = useState<RepoContainerData[]>()
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const RepositoriesView: React.FC = () => {
                 <Stat.Left>
                   <Stat.Label>Total repos</Stat.Label>
                   <Stat.Number>
-                    <MetricNumber loading={loadingAllRepos} metric={allRepos || 0} />
+                    <MetricNumber loading={loadingStats} metric={stats?.repo_count || 0} />
                   </Stat.Number>
                 </Stat.Left>
                 <Stat.Right>
@@ -82,7 +82,7 @@ const RepositoriesView: React.FC = () => {
                 <Stat.Left>
                   <Stat.Label>Total repo syncs</Stat.Label>
                   <Stat.Number>
-                    <MetricNumber loading={loadingAllEnabledRepos} metric={enabledRepos || 0} />
+                    <MetricNumber loading={loadingStats} metric={stats?.repo_sync_count || 0} />
                   </Stat.Number>
                 </Stat.Left>
                 <Stat.Right>
@@ -94,8 +94,8 @@ const RepositoriesView: React.FC = () => {
                   <Stat.Label>Total syncs with errors</Stat.Label>
                   <Stat.Number>
                     <div className='flex space-x-1.5 items-center'>
-                      {syncErrors > 0 && <CircleErrorFilledIcon className='t-icon t-icon-danger' />}
-                      <MetricNumber loading={loadingSyncErrors} metric={syncErrors || 0} />
+                      {stats?.syncs_with_error_count > 0 && <CircleErrorFilledIcon className='t-icon t-icon-danger' />}
+                      <MetricNumber loading={loadingStats} metric={stats?.syncs_with_error_count || 0} />
                     </div>
                   </Stat.Number>
                 </Stat.Left>
