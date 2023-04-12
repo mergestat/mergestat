@@ -51,6 +51,12 @@ func (s *scheduler) Start(ctx context.Context, interval time.Duration) {
 			} else {
 				s.logger.Info().Msgf("successfully removed repo sync jobs older than %d days", retentionPeriodDays)
 			}
+
+			if err := s.db.CleanOldJobs(ctx, int32(retentionPeriodDays)); err != nil {
+				s.logger.Err(err).Msg("encountered error cleaning sqlq logs")
+			} else {
+				s.logger.Info().Msgf("successfully removed sqlq jobs older than %d days", retentionPeriodDays)
+			}
 		}
 	}
 	exec()

@@ -150,6 +150,9 @@ DELETE FROM public.repos WHERE repo_import_id = $1::uuid AND NOT(repo = ANY($2::
 -- name: CleanOldRepoSyncQueue :exec
 SELECT mergestat.simple_repo_sync_queue_cleanup($1::INTEGER);
 
+-- name: CleanOldJobs :exec
+SELECT mergestat.simple_sqlq_cleanup($1::INTEGER);
+
 -- name: GetRepoIDsFromRepoImport :many
 SELECT id FROM public.repos WHERE repo_import_id = @importID::uuid AND repo = ANY(@reposUrls::TEXT[])
 ;

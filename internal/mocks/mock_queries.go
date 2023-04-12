@@ -53,6 +53,20 @@ func (mr *MockQuerierMockRecorder) CheckRunningImps(ctx interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckRunningImps", reflect.TypeOf((*MockQuerier)(nil).CheckRunningImps), ctx)
 }
 
+// CleanOldJobs mocks base method.
+func (m *MockQuerier) CleanOldJobs(ctx context.Context, dollar_1 int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CleanOldJobs", ctx, dollar_1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CleanOldJobs indicates an expected call of CleanOldJobs.
+func (mr *MockQuerierMockRecorder) CleanOldJobs(ctx, dollar_1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CleanOldJobs", reflect.TypeOf((*MockQuerier)(nil).CleanOldJobs), ctx, dollar_1)
+}
+
 // CleanOldRepoSyncQueue mocks base method.
 func (m *MockQuerier) CleanOldRepoSyncQueue(ctx context.Context, dollar_1 int32) error {
 	m.ctrl.T.Helper()
