@@ -113,7 +113,7 @@ BEGIN
             j.completed_at AS sync_last_completed_at,
             (SELECT COUNT(1) FROM sqlq.job_logs WHERE sqlq.job_logs.job = j.id AND level = 'warn') warning_count,
             (SELECT COUNT(1) FROM sqlq.job_logs WHERE sqlq.job_logs.job = j.id AND level = 'error') error_count
-        FROM mergestat.container_syncs
+        FROM mergestat.container_syncs cs
         LEFT JOIN mergestat.container_sync_schedules css ON css.sync_id = cs.id
         INNER JOIN mergestat.container_sync_executions cse ON cs.id = cse.sync_id
         INNER JOIN mergestat.container_images ci ON cs.image_id = ci.id
