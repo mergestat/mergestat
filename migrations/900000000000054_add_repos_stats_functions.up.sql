@@ -1,5 +1,6 @@
 BEGIN;
 
+--https://www.graphile.org/postgraphile/custom-queries/
 CREATE OR REPLACE FUNCTION mergestat.get_repos_page_header_stats()
 RETURNS JSONB
 LANGUAGE PLPGSQL STABLE
@@ -34,6 +35,7 @@ BEGIN
     RETURN response;
 END; $$;
 
+--https://www.graphile.org/postgraphile/computed-columns/
 CREATE OR REPLACE FUNCTION public.repos_stats(repos REPOS)
 RETURNS JSONB
 LANGUAGE PLPGSQL STABLE
@@ -50,8 +52,7 @@ BEGIN
             j.completed_at AS sync_last_completed_at,
             (SELECT COUNT(1) FROM sqlq.job_logs WHERE sqlq.job_logs.job = j.id AND level = 'warn') warning_count,
             (SELECT COUNT(1) FROM sqlq.job_logs WHERE sqlq.job_logs.job = j.id AND level = 'error') error_count
-        FROM mergestat.container_sync_schedules css 
-        INNER JOIN mergestat.container_syncs cs ON css.sync_id = cs.id
+        FROM mergestat.container_syncs cs
         INNER JOIN mergestat.container_sync_executions cse ON cs.id = cse.sync_id
         INNER JOIN mergestat.container_images ci ON cs.image_id = ci.id
         INNER JOIN sqlq.jobs j ON cse.job_id = j.id
@@ -65,31 +66,37 @@ BEGIN
             j.id AS job_id,
             j.status,
             j.completed_at AS sync_last_completed_at
-        FROM mergestat.container_sync_schedules css 
-        INNER JOIN mergestat.container_syncs cs ON css.sync_id = cs.id
-        LEFT JOIN mergestat.container_sync_executions cse ON cs.id = cse.sync_id
-        LEFT JOIN mergestat.container_images ci ON cs.image_id = ci.id
-        LEFT JOIN sqlq.jobs j ON cse.job_id = j.id AND j.status IN ('pending','running')
+        FROM mergestat.container_syncs cs
+        INNER JOIN mergestat.container_sync_executions cse ON cs.id = cse.sync_id
+        INNER JOIN mergestat.container_images ci ON cs.image_id = ci.id
+        INNER JOIN sqlq.jobs j ON cse.job_id = j.id AND j.status IN ('pending','running')
         WHERE cs.repo_id = repos.id
         ORDER BY cs.id, j.created_at DESC
+    ),
+    scheduled_syncs AS(
+        SELECT COUNT(DISTINCT css.id) as sync_count
+        FROM mergestat.container_sync_schedules css 
+        INNER JOIN mergestat.container_syncs cs ON css.sync_id = cs.id
+        WHERE cs.repo_id = repos.id
     )
     SELECT 
         (ROW_TO_JSON(t)::JSONB)
     INTO response
     FROM (
         SELECT
-            (SELECT COUNT(1) from current_syncs) AS sync_count,
+            (SELECT sync_count from scheduled_syncs) AS sync_count,
             (SELECT MAX(sync_last_completed_at) FROM last_completed_syncs) AS last_sync_time,
             (SELECT COUNT(1) FROM current_syncs WHERE status = 'running') AS running,
             (SELECT COUNT(1) FROM current_syncs WHERE status = 'pending') AS pending,
             (SELECT COUNT(1) FROM last_completed_syncs WHERE status = 'errored' OR error_count > 0) AS error,
-            (SELECT COUNT(1) FROM last_completed_syncs WHERE status = 'success') AS success,
-            (SELECT COUNT(1) FROM last_completed_syncs WHERE warning_count > 0) AS warning
+            (SELECT COUNT(1) FROM last_completed_syncs WHERE status = 'success' AND error_count = 0 AND warning_count = 0) AS success,
+            (SELECT COUNT(1) FROM last_completed_syncs WHERE warning_count > 0 AND status = 'success' AND error_count = 0) AS warning
     )t;
 
     RETURN response;
 END; $$;
 
+----https://www.graphile.org/postgraphile/custom-queries/
 CREATE OR REPLACE FUNCTION mergestat.get_repos_syncs_by_status(repo_id_param UUID, status_param TEXT)
 RETURNS JSONB
 LANGUAGE PLPGSQL STABLE
@@ -106,8 +113,8 @@ BEGIN
             j.completed_at AS sync_last_completed_at,
             (SELECT COUNT(1) FROM sqlq.job_logs WHERE sqlq.job_logs.job = j.id AND level = 'warn') warning_count,
             (SELECT COUNT(1) FROM sqlq.job_logs WHERE sqlq.job_logs.job = j.id AND level = 'error') error_count
-        FROM mergestat.container_sync_schedules css 
-        INNER JOIN mergestat.container_syncs cs ON css.sync_id = cs.id
+        FROM mergestat.container_syncs
+        LEFT JOIN mergestat.container_sync_schedules css ON css.sync_id = cs.id
         INNER JOIN mergestat.container_sync_executions cse ON cs.id = cse.sync_id
         INNER JOIN mergestat.container_images ci ON cs.image_id = ci.id
         INNER JOIN sqlq.jobs j ON cse.job_id = j.id
@@ -150,6 +157,7 @@ BEGIN
     RETURN response;
 END; $$;
 
+--https://www.graphile.org/postgraphile/computed-columns/
 CREATE OR REPLACE FUNCTION mergestat.container_syncs_latest_sync_runs(container_syncs mergestat.CONTAINER_SYNCS)
 RETURNS JSONB
 LANGUAGE PLPGSQL STABLE
