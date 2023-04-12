@@ -1,4 +1,4 @@
-import { JobSyncRun, RepoContainerSyncData, RepoContainerSyncState } from 'src/@types'
+import { JobData, JobSyncRun, RepoContainerSyncData, RepoContainerSyncState } from 'src/@types'
 import { getSimpleDurationTimeMilliseconds } from 'src/utils'
 import { SYNC_CONTAINER_STATUS } from 'src/utils/constants'
 import { GetContainerSyncsQuery } from '../../graphql/generated/schema'
@@ -36,16 +36,19 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
       },
       latestRun: latestRuns && (latestRuns[keysJobs[0]].completed_at ?? latestRuns[keysJobs[1]]?.completed_at),
       avgRunningTime: '-',
+      avgTotalSyncs: 0,
       syncState: latestRuns ? latestRuns[keysJobs[0]].status as RepoContainerSyncState : SYNC_CONTAINER_STATUS.empty,
       latestRuns: latestRuns
-        ? Object.entries(latestRuns).map(([jobId, jobData]) => ({
-          id: jobId,
-          repoId,
-          syncId: syncData?.id,
-          runningTime: jobData.duration_ms,
-          status: jobData.status,
-          doneAt: new Date(jobData.completed_at)
-        }))
+        ? getLatestRunOrdered(
+          Object.entries(latestRuns).map(([jobId, jobData]) => ({
+            id: jobId,
+            repoId,
+            syncId: syncData?.id,
+            runningTime: jobData.duration_ms,
+            status: jobData.status,
+            doneAt: jobData.completed_at ? new Date(jobData.completed_at) : undefined
+          }))
+        )
         : []
     }
 
@@ -54,6 +57,7 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
 
       if (jobsDurations.length > 0) {
         const avg = jobsDurations.reduce((prev, cur) => (cur += prev), 0) / jobsDurations.length
+        sync.avgTotalSyncs = jobsDurations.length
         sync.avgRunningTime = getSimpleDurationTimeMilliseconds(avg)
       }
     }
@@ -62,6 +66,12 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
   })
 
   return syncsData.sort((a, b) => a.image.name.localeCompare(b.image.name))
+}
+
+const getLatestRunOrdered = (latestRuns: JobData[]): JobData[] => {
+  const runningJob = latestRuns.find(job => !job.doneAt)
+  const completedJobs = latestRuns.filter(job => job.doneAt).sort((a, b) => ((a.doneAt ? a.doneAt.getTime() : new Date().getTime()) - (b.doneAt ? b.doneAt.getTime() : new Date().getTime())))
+  return runningJob ? [...completedJobs, runningJob] : completedJobs
 }
 
 export { mapToRepoContainerSyncsData }

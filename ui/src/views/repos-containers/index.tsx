@@ -80,7 +80,7 @@ const RepositoriesView: React.FC = () => {
               </Stat>
               <Stat className='shadow-sm w-full'>
                 <Stat.Left>
-                  <Stat.Label>Total repo syncs</Stat.Label>
+                  <Stat.Label>Scheduled repo syncs</Stat.Label>
                   <Stat.Number>
                     <MetricNumber loading={loadingStats} metric={stats?.repo_sync_count || 0} />
                   </Stat.Number>
