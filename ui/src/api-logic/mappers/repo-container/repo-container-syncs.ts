@@ -1,8 +1,7 @@
-import { differenceInMilliseconds } from 'date-fns'
-import { JobData, RepoContainerSyncData } from 'src/@types'
-import { getSimpleDurationTime, getSimpleDurationTimeSeconds, mapToContainerSyncState } from 'src/utils'
-import { SYNC_STATUS } from 'src/utils/constants'
-import { GetContainerSyncsQuery, JobStates } from '../../graphql/generated/schema'
+import { JobSyncRun, RepoContainerSyncData, RepoContainerSyncState } from 'src/@types'
+import { getSimpleDurationTimeMilliseconds } from 'src/utils'
+import { SYNC_CONTAINER_STATUS } from 'src/utils/constants'
+import { GetContainerSyncsQuery } from '../../graphql/generated/schema'
 
 /**
  * Method which iterate each sync and map it to RepoContainerSyncData to be shown in table
@@ -17,6 +16,8 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
   data?.containerImages?.nodes.forEach((im) => {
     // 1. Find sync data (container_syncs)
     const syncData = data?.containerSyncs?.nodes.find(sd => sd.image?.id === im.id)
+    const latestRuns = syncData?.latestSyncRuns as JobSyncRun
+    const keysJobs = latestRuns && Object.keys(latestRuns)
 
     // 2. Get sync info
     const sync: RepoContainerSyncData = {
@@ -33,37 +34,28 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
         name: im?.name || '',
         description: im.description || ''
       },
-      latestRun: syncData?.executions.nodes[0]?.job?.completedAt ?? syncData?.executions.nodes[1]?.job?.completedAt,
+      latestRun: latestRuns && (latestRuns[keysJobs[0]].completed_at ?? latestRuns[keysJobs[1]]?.completed_at),
       avgRunningTime: '-',
-      status: {
-        data: [],
-        syncState: syncData?.executions.nodes.length !== 0 ? mapToContainerSyncState(syncData?.executions.nodes[0].job?.status) : SYNC_STATUS.empty,
-      }
+      syncState: latestRuns ? latestRuns[keysJobs[0]].status as RepoContainerSyncState : SYNC_CONTAINER_STATUS.empty,
+      latestRuns: latestRuns
+        ? Object.entries(latestRuns).map(([jobId, jobData]) => ({
+          id: jobId,
+          repoId,
+          syncId: syncData?.id,
+          runningTime: jobData.duration_ms,
+          status: jobData.status,
+          doneAt: new Date(jobData.completed_at)
+        }))
+        : []
     }
 
-    // 3. Get status data of a sync (container_sync_executions)
-    let succeededSyncs: number[] = []
-    syncData?.executions.nodes.forEach((ex) => {
-      const jobData: JobData = {
-        id: ex.job?.id,
-        repoId: syncData.repo?.id,
-        syncId: syncData.id,
-        status: mapToContainerSyncState(ex.job?.status),
-        runningTime: ex?.job?.completedAt ? differenceInMilliseconds(new Date(ex?.job?.completedAt), new Date(ex?.job?.startedAt)) : 0,
-        runningTimeReadable: ex?.job?.completedAt ? getSimpleDurationTime(new Date(ex?.job?.startedAt), new Date(ex?.job?.completedAt)) : ex?.job?.startedAt ? SYNC_STATUS.running : SYNC_STATUS.queued,
-        doneAt: ex?.job?.completedAt ?? new Date(ex?.job?.completedAt)
+    if (latestRuns) {
+      const jobsDurations = Object.entries(latestRuns).filter(job => job[1].status === SYNC_CONTAINER_STATUS.success).map(job => job[1].duration_ms)
+
+      if (jobsDurations.length > 0) {
+        const avg = jobsDurations.reduce((prev, cur) => (cur += prev), 0) / jobsDurations.length
+        sync.avgRunningTime = getSimpleDurationTimeMilliseconds(avg)
       }
-
-      if (jobData.status === JobStates.Success) {
-        succeededSyncs = [...succeededSyncs, jobData.runningTime]
-      }
-
-      sync.status.data?.push(jobData)
-    })
-
-    if (succeededSyncs.length > 0) {
-      const avg = succeededSyncs.reduce((prev, cur) => (cur += prev)) / succeededSyncs.length
-      sync.avgRunningTime = getSimpleDurationTimeSeconds(avg / 1000)
     }
 
     syncsData.push(sync)

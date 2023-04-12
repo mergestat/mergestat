@@ -90,21 +90,7 @@ const GET_CONTAINER_SYNCS = gql`
         schedule: containerSyncScheduleBySyncId {
           id
         }
-        executions: containerSyncExecutionsBySyncId(
-          first: 15,
-          orderBy: CREATED_AT_DESC
-        ) {
-          nodes {
-            job {
-              id
-              status
-              queue
-              createdAt
-              startedAt
-              completedAt
-            }
-          }
-        }
+        latestSyncRuns
       }
     }
     all: containerImages {

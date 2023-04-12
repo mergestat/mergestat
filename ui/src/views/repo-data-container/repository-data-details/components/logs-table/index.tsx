@@ -1,18 +1,18 @@
 import { LogBox } from '@mergestat/blocks'
 import { CaretDownIcon, CaretRightIcon } from '@mergestat/icons'
 import React, { Fragment, useEffect, useState } from 'react'
-import { SyncLogsType } from 'src/@types'
+import { SyncContainerLogsType } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 import { copyArrayToClipboard } from 'src/utils'
 import { NoDataFound } from 'src/views/shared/no-data-found'
 import { SyncType } from './components'
 
 interface LogsTableProps {
-  logs: Array<SyncLogsType>
+  logs: SyncContainerLogsType[]
   children?: React.ReactNode
 }
 
-const remap = (logs: Array<SyncLogsType>, previousData?: Array<SyncLogsType>): Array<SyncLogsType> => {
+const remap = (logs: SyncContainerLogsType[], previousData?: SyncContainerLogsType[]): SyncContainerLogsType[] => {
   return logs.map((log) => ({
     ...log,
     ...{ collapsed: previousData ? previousData.find(d => d.id === log.id)?.collapsed : false },

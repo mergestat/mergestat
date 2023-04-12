@@ -1,13 +1,12 @@
 import { Toggle } from '@mergestat/blocks'
-import cx from 'classnames'
 import React, { PropsWithChildren, useId } from 'react'
 import { RepoContainerSyncData } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
-import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
-import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
+import { SYNC_CONTAINER_STATUS, TEST_IDS } from 'src/utils/constants'
 import useContainerSyncNow from 'src/views/hooks/repoContainerSyncs/useContainerSyncNow'
+import { RepoContainerSyncIcon } from 'src/views/repos-containers/components/repo-container-sync-icon'
 import { NoDataFound } from 'src/views/shared/no-data-found'
-import { RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions, RepoSyncTypeDesc } from './components'
+import { RepoSyncTypeDesc, RepositorySyncNow, RepositorySyncStatus, RepositoryTableRowOptions } from './components'
 
 type SyncTypesTableProps = PropsWithChildren<{
   syncs: RepoContainerSyncData[]
@@ -40,11 +39,11 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
                 {syncs.map((sync, index) => (
                   <tr data-testid={TEST_IDS.syncsTypesRow}
                     key={sync.image.id ?? `${id}-${index}`}
-                    className={sync.status.syncState === SYNC_STATUS.empty ? 't-table-row-muted' : ''}
+                    className={sync.syncState === SYNC_CONTAINER_STATUS.empty ? 't-table-row-muted' : ''}
                   >
                     <td className='w-0 h-20 p-0'>
-                      <div className={cx('h-full flex justify-center items-center', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
-                        <RepoSyncIcon type={sync.status.syncState} className='my-auto' />
+                      <div className='h-full flex justify-center items-center'>
+                        <RepoContainerSyncIcon type={sync.syncState} className='my-auto' />
                       </div>
                     </td>
 
@@ -54,12 +53,11 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
                         title={sync.image.name}
                         brief={sync.image.description}
                         labels={sync.sync.labels}
-                        disabled={sync.status.syncState === SYNC_STATUS.disabled}
                       />
                     </td>
 
                     <td className='text-gray-500 h-20'>
-                      <RelativeTimeField date={sync.latestRun} syncStatus={sync.status.syncState} styles={'t-text-muted whitespace-nowrap'} />
+                      <RelativeTimeField date={sync.latestRun} syncStatus={sync.syncState} styles={'t-text-muted whitespace-nowrap'} />
                     </td>
 
                     <td className='text-gray-500 h-20'>
@@ -69,7 +67,7 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
                     </td>
 
                     <td className='text-gray-500 h-20'>
-                      <RepositorySyncStatus data={sync.status.data} />
+                      <RepositorySyncStatus data={sync.latestRuns} />
                     </td>
                     <td className='w-0'>
                       <div className='flex items-center justify-center'>
@@ -86,14 +84,14 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
                       </div>
                     </td>
                     <td className='w-0'>
-                      <div className={cx('h-full flex', { 'bg-gray-50': sync.status.syncState === SYNC_STATUS.disabled })}>
+                      <div className='h-full flex'>
                         <div className='t-button-toolbar gap-4'>
                           <div className='w-5'>
                             <RepositorySyncNow
                               syncId={sync.sync.id}
                               repoId={sync.repo.id}
                               imageId={sync.image.id}
-                              syncStatus={sync.status.syncState}
+                              syncStatus={sync.syncState}
                             />
                           </div>
                           <RepositoryTableRowOptions imageId={sync.image.id} />
