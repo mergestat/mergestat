@@ -1,4 +1,4 @@
-import { Toggle } from '@mergestat/blocks'
+import { Toggle, Tooltip } from '@mergestat/blocks'
 import React, { PropsWithChildren, useId } from 'react'
 import { RepoContainerSyncData } from 'src/@types'
 import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
@@ -62,7 +62,14 @@ export const SyncTypesTable: React.FC<SyncTypesTableProps> = ({ syncs }: SyncTyp
 
                     <td className='text-gray-500 h-20'>
                       <div className='t-text-muted'>
-                        {sync.avgRunningTime}
+                        {sync.avgRunningTime === '-' && sync.avgRunningTime}
+                        {sync.avgRunningTime !== '-' &&
+                          <Tooltip placement='right' offset={[0, 10]}
+                            content={<div className='w-40 font-thin pb-1'>
+                              {`Mean running time of the last ${sync.avgTotalSyncs} successful syncs`}
+                            </div>}>
+                            {sync.avgRunningTime}
+                          </Tooltip>}
                       </div>
                     </td>
 

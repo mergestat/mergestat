@@ -446,6 +446,7 @@ export type RepoContainerSyncData = {
     description: string
   }
   latestRun: string
+  avgTotalSyncs: number
   avgRunningTime: string
   syncState: RepoContainerSyncState
   latestRuns: JobData[]
