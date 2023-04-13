@@ -4,9 +4,9 @@ import { useEffect } from 'react'
 import { ContainerSyncInfo, RepoBasicData } from 'src/@types'
 import { GetLogsOfContainerSyncQuery } from 'src/api-logic/graphql/generated/schema'
 import RepoImage from 'src/components/RepoImage'
-import { RepoSyncIcon } from 'src/components/RepoSyncIcon'
 import { useGlobalSetState } from 'src/state/contexts'
 import { SYNC_STATUS } from 'src/utils/constants'
+import { RepoContainerSyncIcon } from 'src/views/repos-containers/components/repo-container-sync-icon'
 
 const useContainerSyncLogsCrumb = (repo: RepoBasicData, sync?: ContainerSyncInfo, data?: GetLogsOfContainerSyncQuery) => {
   const router = useRouter()
@@ -17,7 +17,7 @@ const useContainerSyncLogsCrumb = (repo: RepoBasicData, sync?: ContainerSyncInfo
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
+        onClick: () => router.push('/repos-containers'),
       },
       {
         text: repo.name,
@@ -28,12 +28,12 @@ const useContainerSyncLogsCrumb = (repo: RepoBasicData, sync?: ContainerSyncInfo
           </a>
           : undefined
         ),
-        onClick: () => router.push(`/repos/${repo.id}/container-syncs`),
+        onClick: () => router.push(`/repos-containers/${repo.id}`),
       },
       {
         text: sync?.name || '',
-        startIcon: <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />,
-        onClick: () => router.push(`/repos/${repo.id}/container-syncs/${sync?.id}`),
+        startIcon: <RepoContainerSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />,
+        onClick: () => router.push(`/repos-containers/${repo.id}/${sync?.id}`),
       },
     ]
 

@@ -89,4 +89,67 @@ const GET_REPOS = gql`
     }
   }
 `
-export { GET_REPO_TOTAL_COUNT, GET_ALL_ENABLED_REPOS, GET_SYNC_ERRORS, GET_REPOS }
+
+const GET_CONTAINER_SYNC_STATS = gql`
+  query getContainerSyncStats {
+    getReposPageHeaderStats
+  }
+`
+
+const GET_REPOS_CONTAINERS = gql`
+  query getReposContainers($search: String!, $first: Int, $offset: Int) {
+    repoImports(filter: {lastImport: {isNull: true}}) {
+      totalCount
+      nodes {
+        id
+        settings
+        importError
+        provider: providerByProvider {
+          id
+          name
+          vendor
+          settings
+        }
+      }
+    }
+    repos(
+      orderBy: [CREATED_AT_DESC, REPO_DESC]
+      filter: {repo: {includes: $search}}
+      first: $first
+      offset: $offset
+    ) {
+      totalCount
+      nodes {
+        id
+        repo
+        createdAt
+        tags
+        stats
+        repoImport {
+          settings
+        }
+        provider: providerByProvider {
+          id
+          name
+          vendor
+          settings
+        }
+      }
+    }
+  }
+`
+
+const GET_CONTAINERS_SYNCS_BY_STATUS = gql`
+  query getContainerSyncsByStatus($repoId: UUID!, $status: String!) {
+    getReposSyncsByStatus(repoIdParam: $repoId, statusParam: $status)
+  }
+`
+
+export {
+  GET_REPO_TOTAL_COUNT,
+  GET_ALL_ENABLED_REPOS,
+  GET_SYNC_ERRORS, GET_REPOS,
+  GET_CONTAINER_SYNC_STATS,
+  GET_REPOS_CONTAINERS,
+  GET_CONTAINERS_SYNCS_BY_STATUS
+}

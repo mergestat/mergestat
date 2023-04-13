@@ -1,8 +1,8 @@
 import { format, lightFormat } from 'date-fns'
-import { ContainerBasicData, ContainerSyncLogData, SyncLogsType } from 'src/@types'
+import { ContainerBasicData, ContainerSyncInfo, ContainerSyncLogData, SyncContainerLogsType } from 'src/@types'
 import { getExternalRepoLink, getRepoFromUrl, getSimpleDurationTime, mapToContainerSyncState } from 'src/utils'
-import { DATE_FORMAT, SYNC_STATUS } from 'src/utils/constants'
-import { GetContainerBasicDataQuery, GetContainerSyncHistoryLogsQuery, GetLogsOfContainerSyncQuery } from '../../graphql/generated/schema'
+import { DATE_FORMAT, SYNC_CONTAINER_STATUS } from 'src/utils/constants'
+import { GetContainerBasicDataQuery, GetContainerSyncGeneralDataQuery, GetContainerSyncHistoryLogsQuery, GetLogsOfContainerSyncQuery } from '../../graphql/generated/schema'
 
 /**
  * Method to get basic data into ContainerBasicData
@@ -31,6 +31,28 @@ const mapToContainerBasicData = (data: GetContainerBasicDataQuery | undefined): 
 }
 
 /**
+ * Method which iterate each sync and map it to ContainerSyncInfo to be shown in table
+ * @param data Sync list that comes from data base in GetContainerSyncGeneralDataQuery format
+ * @returns ContainerSyncInfo with syncs info
+ */
+const mapToContainerSyncGeneralData = (data: GetContainerSyncGeneralDataQuery | undefined): ContainerSyncInfo => {
+  let generalData = {} as ContainerSyncInfo
+
+  data?.repo?.containerSyncs.nodes.forEach((cs) => {
+    generalData = {
+      id: cs.id,
+      imageId: cs?.image?.id,
+      name: cs?.image?.name || '',
+      description: cs?.image?.description || '',
+      parameters: cs.parameters,
+      scheduleId: cs?.schedule?.id,
+    }
+  })
+
+  return generalData
+}
+
+/**
  * Method which iterate each sync and map it to ContainerSyncLogData to be shown in table
  * @param data Sync list that comes from data base in GetContainerSyncHistoryLogsQuery format
  * @returns ContainerSyncLogData with syncs info and its SyncLogsType info by each sync
@@ -47,15 +69,15 @@ const mapToContainerSyncLogsData = (data: GetContainerSyncHistoryLogsQuery | Get
       description: cs?.image?.description || '',
       parameters: cs.parameters,
       scheduleId: cs?.schedule?.id,
-      syncState: cs?.executions.nodes.length !== 0 ? mapToContainerSyncState(cs?.executions.nodes[0].job?.status) : SYNC_STATUS.empty,
+      syncState: cs?.executions.nodes.length !== 0 ? mapToContainerSyncState(cs?.executions.nodes[0].job?.status) : SYNC_CONTAINER_STATUS.empty,
       totalExecutions: cs?.executions.totalCount
     }
 
     // 2. Get logs data of the sync
-    const logsData: Array<SyncLogsType> = []
+    const logsData: SyncContainerLogsType[] = []
 
     cs?.executions.nodes.forEach((ex) => {
-      const logData: SyncLogsType = {
+      const logData: SyncContainerLogsType = {
         id: ex.job?.id,
         title: cs?.image?.name || '',
         syncType: mapToContainerSyncState(ex.job?.status),
@@ -76,4 +98,4 @@ const mapToContainerSyncLogsData = (data: GetContainerSyncHistoryLogsQuery | Get
   return repoData
 }
 
-export { mapToContainerBasicData, mapToContainerSyncLogsData }
+export { mapToContainerBasicData, mapToContainerSyncGeneralData, mapToContainerSyncLogsData }

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React, { CSSProperties, Fragment, useRef, useState } from 'react'
 import type { JobData } from 'src/@types'
 
-import { SYNC_STATUS } from 'src/utils/constants'
+import { SYNC_CONTAINER_STATUS, SYNC_STATUS } from 'src/utils/constants'
 
 type RepositorySyncStatusProps = {
   data?: JobData[]
@@ -69,13 +69,13 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
 
   const statusColor = (status: string) => {
     switch (status) {
-      case SYNC_STATUS.empty:
+      case SYNC_CONTAINER_STATUS.empty:
         return '#E5E7EB'
-      case SYNC_STATUS.succeeded:
+      case SYNC_CONTAINER_STATUS.success:
         return '#6EE7B7'
-      case SYNC_STATUS.warning:
+      case SYNC_CONTAINER_STATUS.warning:
         return '#F59E09'
-      case SYNC_STATUS.error:
+      case SYNC_CONTAINER_STATUS.errored:
         return '#FB7185'
       default:
         return '#7DD3FC'
@@ -83,7 +83,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   }
 
   const onBarClick = (p: JobData) => {
-    router.push(`/repos/${p.repoId}/container-syncs/${p.syncId}/${p.id}`)
+    router.push(`/repos-containers/${p.repoId}/${p.syncId}/${p.id}`)
   }
 
   return (

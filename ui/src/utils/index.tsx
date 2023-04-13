@@ -1,10 +1,10 @@
 import { CHECKBOX_STATES } from '@mergestat/blocks'
 import { BitbucketIcon, BranchIcon, GithubIcon, GitlabIcon } from '@mergestat/icons'
 import { differenceInMilliseconds, formatDistance, formatDuration, intervalToDuration } from 'date-fns'
-import { RepoSyncQueueW, RepoSyncStateT, UserTypeUI } from 'src/@types'
+import { RepoContainerSyncState, RepoSyncQueueW, RepoSyncStateT, UserTypeUI } from 'src/@types'
 import { JobStates } from 'src/api-logic/graphql/generated/schema'
 import { showSuccessAlert } from './alerts'
-import { SYNC_STATUS, USER_TYPE, USER_TYPE_UI, VENDOR_TYPE } from './constants'
+import { SYNC_CONTAINER_STATUS, SYNC_STATUS, USER_TYPE, USER_TYPE_UI, VENDOR_TYPE } from './constants'
 
 export function checkRepoValidate(repo: string, checkDomain = true) {
   return checkDomain
@@ -108,6 +108,16 @@ export function getSimpleDurationTimeSeconds(seconds: number) {
 }
 
 /**
+ * Method to get duration time abbreviated given time in milliseconds
+ * @param seconds Milliseconds to evaluate
+ * @returns Abbreviated duration time (e.g.: '1h 2m 3s', '2m 3s')
+ */
+export function getSimpleDurationTimeMilliseconds(millis: number) {
+  const duration = simplifyTime(formatDuration(intervalToDuration({ start: 0, end: millis })))
+  return duration !== '' ? duration : '-'
+}
+
+/**
  * Method to map data base status to table status
  * @param status Data base status
  * @returns Table status (RepoSyncStateT)
@@ -145,20 +155,20 @@ export const getStatus = (syncQueue: RepoSyncQueueW): RepoSyncStateT => {
 /**
  * Method to map data base status to table status
  * @param status Data base status
- * @returns Table status (RepoSyncStateT)
+ * @returns Table status (RepoContainerSyncState)
  */
-export function mapToContainerSyncState(status?: JobStates): RepoSyncStateT {
+export function mapToContainerSyncState(status?: JobStates): RepoContainerSyncState {
   switch (status) {
     case JobStates.Success:
-      return SYNC_STATUS.succeeded
+      return SYNC_CONTAINER_STATUS.success
     case JobStates.Running:
-      return SYNC_STATUS.running
+      return SYNC_CONTAINER_STATUS.running
     case JobStates.Pending:
-      return SYNC_STATUS.queued
+      return SYNC_CONTAINER_STATUS.pending
     case JobStates.Errored:
-      return SYNC_STATUS.error
+      return SYNC_CONTAINER_STATUS.errored
     default:
-      return SYNC_STATUS.empty
+      return SYNC_CONTAINER_STATUS.empty
   }
 }
 

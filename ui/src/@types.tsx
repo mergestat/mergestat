@@ -4,6 +4,8 @@ import { RepoSyncQueue } from './api-logic/graphql/generated/schema'
 
 export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'warning' | 'error' | 'empty'
 
+export type RepoContainerSyncState = 'errored' | 'pending' | 'running' | 'success' | 'warning' | 'empty'
+
 export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'gh-auto' | 'csv'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
@@ -67,6 +69,26 @@ export type RepoDataPropsT = {
   tags: Array<{ title: string, checked: boolean }>
   lastSync: string
   status: Array<RepoDataStatusT>
+}
+
+export type RepoStats = {
+  error: number,
+  pending: number,
+  running: number,
+  success: number,
+  warning: number,
+  syncCount: number,
+  lastSyncTime: string
+}
+
+export type RepoContainerData = {
+  id: string
+  name: string
+  createdAt: Date
+  provider: ProviderT
+  autoImportFrom?: string | null
+  tags: Array<{ title: string, checked: boolean }>
+  stats: RepoStats
 }
 
 /** Repository Data Props Type */
@@ -278,10 +300,10 @@ export type SavedQueryData = {
 /** Query History */
 
 export type QueryHistoryData = {
-  id: string;
-  runAt?: Date;
-  runBy: string;
-  query: string;
+  id: string
+  runAt?: Date
+  runBy: string
+  query: string
 }
 
 /** Git Sources */
@@ -395,9 +417,18 @@ export type JobData = {
   repoId: string
   syncId: string
   runningTime: number
-  runningTimeReadable: string
+  runningTimeReadable?: string
   status: string
   doneAt?: Date
+}
+
+export interface JobSyncRun {
+  [key: string]: {
+    status: string,
+    started_at: string,
+    duration_ms: number,
+    completed_at: string
+  }
 }
 
 export type RepoContainerSyncData = {
@@ -415,11 +446,10 @@ export type RepoContainerSyncData = {
     description: string
   }
   latestRun: string
+  avgTotalSyncs: number
   avgRunningTime: string
-  status: {
-    data?: JobData[]
-    syncState: RepoSyncStateT
-  }
+  syncState: RepoContainerSyncState
+  latestRuns: JobData[]
 }
 
 export type ContainerSyncInfo = {
@@ -429,13 +459,25 @@ export type ContainerSyncInfo = {
   description: string
   parameters: JSON
   scheduleId: string
-  syncState: RepoSyncStateT
-  totalExecutions: number
+  syncState?: RepoContainerSyncState
+  totalExecutions?: number
+}
+
+export type SyncContainerLogsType = {
+  id: string
+  title: string
+  syncType: RepoContainerSyncState
+  records?: number
+  duration?: string
+  syncStart: string
+  syncStartText: string
+  collapsed?: boolean
+  logs?: string[]
 }
 
 export type ContainerSyncLogData = {
   sync?: ContainerSyncInfo
-  logs?: SyncLogsType[]
+  logs?: SyncContainerLogsType[]
 }
 
 export type RepoBasicData = {

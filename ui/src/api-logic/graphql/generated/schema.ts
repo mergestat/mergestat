@@ -474,6 +474,7 @@ export type ContainerSync = Node & {
   /** Reads a single `ContainerImage` that is related to this `ContainerSync`. */
   image?: Maybe<ContainerImage>;
   imageId: Scalars['UUID'];
+  latestSyncRuns?: Maybe<Scalars['JSON']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   parameters: Scalars['JSON'];
@@ -594,6 +595,8 @@ export type ContainerSyncFilter = {
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `imageId` field. */
   imageId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `latestSyncRuns` field. */
+  latestSyncRuns?: InputMaybe<JsonFilter>;
   /** Negates the expression. */
   not?: InputMaybe<ContainerSyncFilter>;
   /** Checks for any expressions in this list. */
@@ -11045,6 +11048,7 @@ export type Mutation = {
   reap?: Maybe<ReapPayload>;
   setSyncJobStatus?: Maybe<SetSyncJobStatusPayload>;
   simpleRepoSyncQueueCleanup?: Maybe<SimpleRepoSyncQueueCleanupPayload>;
+  simpleSqlqCleanup?: Maybe<SimpleSqlqCleanupPayload>;
   syncNow?: Maybe<Scalars['Boolean']>;
   /** Updates a single `ContainerImage` using a unique key and a patch. */
   updateContainerImage?: Maybe<UpdateContainerImagePayload>;
@@ -12347,6 +12351,12 @@ export type MutationSimpleRepoSyncQueueCleanupArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationSimpleSqlqCleanupArgs = {
+  input: SimpleSqlqCleanupInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationSyncNowArgs = {
   queue?: InputMaybe<Scalars['String']>;
   sync: Scalars['UUID'];
@@ -13554,6 +13564,8 @@ export type Query = Node & {
   currentMergeStatUser?: Maybe<Scalars['String']>;
   databaseConnection?: Maybe<DisplayDatabaseConnection>;
   execSQL: ExecSqlResult;
+  getReposPageHeaderStats?: Maybe<Scalars['JSON']>;
+  getReposSyncsByStatus?: Maybe<Scalars['JSON']>;
   gitBlame?: Maybe<GitBlame>;
   /** Reads a single `GitBlame` using its globally unique `ID`. */
   gitBlameByNodeId?: Maybe<GitBlame>;
@@ -13961,6 +13973,13 @@ export type QueryContainerSyncsArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryExecSqlArgs = {
   input: ExecSqlInput;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGetReposSyncsByStatusArgs = {
+  repoIdParam?: InputMaybe<Scalars['UUID']>;
+  statusParam?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -15660,6 +15679,7 @@ export type Repo = Node & {
   repoSyncs: RepoSyncsConnection;
   /** JSON settings for the repo */
   settings: Scalars['JSON'];
+  stats?: Maybe<Scalars['JSON']>;
   /** Reads a single `SyftRepoScan` that is related to this `Repo`. */
   syftRepoScan?: Maybe<SyftRepoScan>;
   /** array of tags for the repo for topics in GitHub as well as tags added in MergeStat */
@@ -15907,6 +15927,8 @@ export type RepoFilter = {
   repoImportId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `settings` field. */
   settings?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `stats` field. */
+  stats?: InputMaybe<JsonFilter>;
   /** Filter by the object’s `tags` field. */
   tags?: InputMaybe<JsonFilter>;
 };
@@ -17728,6 +17750,28 @@ export type SimpleRepoSyncQueueCleanupInput = {
 
 /** The output of our `simpleRepoSyncQueueCleanup` mutation. */
 export type SimpleRepoSyncQueueCleanupPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  integer?: Maybe<Scalars['Int']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+/** All input for the `simpleSqlqCleanup` mutation. */
+export type SimpleSqlqCleanupInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  daysToRetainParam?: InputMaybe<Scalars['Int']>;
+};
+
+/** The output of our `simpleSqlqCleanup` mutation. */
+export type SimpleSqlqCleanupPayload = {
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -22194,7 +22238,7 @@ export type GetContainerSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetContainerSyncsQuery = { containerSyncs?: { nodes: Array<{ id: any, parameters: any, image?: { id: any } | null, repo?: { id: any } | null, schedule?: { id: any } | null, executions: { nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null } | null }> } }> } | null, all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
+export type GetContainerSyncsQuery = { containerSyncs?: { nodes: Array<{ id: any, parameters: any, latestSyncRuns?: any | null, image?: { id: any } | null, repo?: { id: any } | null, schedule?: { id: any } | null }> } | null, all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
 
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -22234,6 +22278,28 @@ export type GetReposQueryVariables = Exact<{
 
 
 export type GetReposQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, importError?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, tags: any, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null, repoSyncs: { totalCount: number, nodes: Array<{ id: any, syncType: string, repoSyncTypeBySyncType?: { shortName: string } | null, lastCompletedRepoSyncQueue?: { id: any, status: string, doneAt?: any | null, createdAt: any, hasError?: boolean | null, warnings: { totalCount: number } } | null }> } }> } | null };
+
+export type GetContainerSyncStatsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetContainerSyncStatsQuery = { getReposPageHeaderStats?: any | null };
+
+export type GetReposContainersQueryVariables = Exact<{
+  search: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetReposContainersQuery = { repoImports?: { totalCount: number, nodes: Array<{ id: any, settings: any, importError?: string | null, provider?: { id: any, name: string, vendor: string, settings: any } | null }> } | null, repos?: { totalCount: number, nodes: Array<{ id: any, repo: string, createdAt: any, tags: any, stats?: any | null, repoImport?: { settings: any } | null, provider?: { id: any, name: string, vendor: string, settings: any } | null }> } | null };
+
+export type GetContainerSyncsByStatusQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  status: Scalars['String'];
+}>;
+
+
+export type GetContainerSyncsByStatusQuery = { getReposSyncsByStatus?: any | null };
 
 export type GetSavedQueryListQueryVariables = Exact<{
   search: Scalars['String'];
@@ -22282,6 +22348,14 @@ export type GetContainerBasicDataQueryVariables = Exact<{
 
 
 export type GetContainerBasicDataQuery = { repo?: { id: any, repo: string, provider?: { id: any, name: string, vendor: string, settings: any } | null, containerSyncs: { nodes: Array<{ image?: { id: any, name: string, description?: string | null } | null }> } } | null };
+
+export type GetContainerSyncGeneralDataQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type GetContainerSyncGeneralDataQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule?: { id: any } | null }> } } | null };
 
 export type GetContainerSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];

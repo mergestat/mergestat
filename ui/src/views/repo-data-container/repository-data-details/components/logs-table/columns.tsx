@@ -1,4 +1,4 @@
-import type { RepoSyncStateT, SyncLogsType } from 'src/@types'
+import type { RepoContainerSyncState, SyncLogsType } from 'src/@types'
 import { SyncType } from './components'
 
 export const columns: Array<Record<string, unknown>> = [
@@ -7,7 +7,7 @@ export const columns: Array<Record<string, unknown>> = [
     className: 'py-3',
     dataIndex: 'syncType',
     key: 'syncType',
-    render: (syncType: RepoSyncStateT, data: SyncLogsType) => (
+    render: (syncType: RepoContainerSyncState, data: SyncLogsType) => (
       <SyncType id={data.id} syncType={syncType} />
     )
   },

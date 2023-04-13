@@ -1,15 +1,15 @@
 import { Button } from '@mergestat/blocks'
 import { RefreshIcon } from '@mergestat/icons'
 import React, { useEffect, useState } from 'react'
-import { RepoSyncStateT } from 'src/@types'
-import { SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
+import { RepoContainerSyncState } from 'src/@types'
+import { SYNC_CONTAINER_STATUS, SYNC_STATUS, TEST_IDS } from 'src/utils/constants'
 import useContainerSyncNow from 'src/views/hooks/repoContainerSyncs/useContainerSyncNow'
 
 export type RepositorySyncNowProps = {
   syncId: string
   repoId: string
   imageId: string
-  syncStatus: RepoSyncStateT
+  syncStatus: RepoContainerSyncState
 }
 
 export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ syncId, repoId, imageId, syncStatus }) => {
@@ -17,12 +17,12 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ syncId, re
   const [status, setStatus] = useState(syncStatus)
 
   const syncNowHandler = () => {
-    setStatus(SYNC_STATUS.queued)
+    setStatus(SYNC_CONTAINER_STATUS.pending)
     syncNow({ variables: { sync: syncId } })
   }
 
   const enableSyncNowHandler = () => {
-    setStatus(SYNC_STATUS.queued)
+    setStatus(SYNC_CONTAINER_STATUS.pending)
     enableCSAndSync({ variables: { repoId, imageId } })
   }
 
@@ -30,14 +30,12 @@ export const RepositorySyncNow: React.FC<RepositorySyncNowProps> = ({ syncId, re
     setStatus(syncStatus)
   }, [syncStatus])
 
-  if (status === SYNC_STATUS.disabled) return <div className='h-full bg-gray-50' />
-
   return (
     <Button
       isIconOnly
       skin="borderless-muted"
       className="flex items-center float-right whitespace-nowrap"
-      disabled={status === SYNC_STATUS.queued || status === SYNC_STATUS.running}
+      disabled={status === SYNC_CONTAINER_STATUS.pending || status === SYNC_STATUS.running}
       data-testid={TEST_IDS.syncsTypesSyncNowButton}
       startIcon={<RefreshIcon className="t-icon" />}
       onClick={() => {
