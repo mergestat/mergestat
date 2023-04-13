@@ -46,7 +46,7 @@ const mapToContainerSyncLogsData = (data: GetContainerSyncHistoryLogsQuery | Get
       name: cs?.image?.name || '',
       description: cs?.image?.description || '',
       parameters: cs.parameters,
-      scheduleId: cs?.schedule.nodes[0]?.id,
+      scheduleId: cs?.schedule?.id,
       syncState: cs?.executions.nodes.length !== 0 ? mapToContainerSyncState(cs?.executions.nodes[0].job?.status) : SYNC_STATUS.empty,
       totalExecutions: cs?.executions.totalCount
     }

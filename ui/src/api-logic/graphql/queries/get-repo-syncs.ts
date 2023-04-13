@@ -31,8 +31,8 @@ const GET_CONTAINER_IMAGE = gql`
       parameters
       repos: containerSyncsByImageId {
         nodes {
-          scheduled: containerSyncSchedulesBySyncId {
-            totalCount
+          scheduled: containerSyncScheduleBySyncId {
+            id
           }
         }
       }
@@ -65,8 +65,8 @@ const GET_CONTAINER_IMAGES = gql`
         parameters
         repos: containerSyncsByImageId {
           nodes {
-            scheduled: containerSyncSchedulesBySyncId {
-              totalCount
+            scheduled: containerSyncScheduleBySyncId {
+              id
             }
           }
         }
@@ -87,10 +87,8 @@ const GET_CONTAINER_SYNCS = gql`
         repo {
           id
         }
-        schedule: containerSyncSchedulesBySyncId {
-          nodes {
-            id
-          }
+        schedule: containerSyncScheduleBySyncId {
+          id
         }
         executions: containerSyncExecutionsBySyncId(
           first: 15,

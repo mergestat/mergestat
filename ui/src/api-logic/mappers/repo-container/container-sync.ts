@@ -10,7 +10,7 @@ const mapToContainerSyncList = (data: GetContainerImagesQuery | undefined): Cont
       name: im.name,
       description: im.description,
       version: im.version,
-      totalRepos: im.repos.nodes.filter(cs => cs.scheduled.totalCount > 0).length || 0
+      totalRepos: im.repos.nodes.filter(cs => cs.scheduled).length || 0
     }
     containerImages.push(ci)
   })
@@ -27,7 +27,7 @@ const mapToContainerSyncDetail = (data: GetContainerImageQuery | undefined): Con
     url: data?.containerImage?.url || '',
     version: data?.containerImage?.version || '',
     parameters: data?.containerImage?.parameters,
-    totalRepos: data?.containerImage?.repos.nodes.filter(cs => cs.scheduled.totalCount > 0).length || 0
+    totalRepos: data?.containerImage?.repos.nodes.filter(cs => cs.scheduled).length || 0
   }
 
   return detail

@@ -135,10 +135,8 @@ const GET_CONTAINER_SYNC_HISTORY_LOGS = gql`
           repo {
             id
           }
-          schedule: containerSyncSchedulesBySyncId {
-            nodes {
-              id
-            }
+          schedule: containerSyncScheduleBySyncId {
+            id
           }
           executions: containerSyncExecutionsBySyncId(first: $first, offset: $offset, orderBy: CREATED_AT_DESC) {
             totalCount
@@ -191,10 +189,8 @@ const GET_LOGS_OF_A_CONTAINER_SYNC = gql`
           repo {
             id
           }
-          schedule: containerSyncSchedulesBySyncId {
-            nodes {
-              id
-            }
+          schedule: containerSyncScheduleBySyncId {
+            id
           }
           executions: containerSyncExecutionsBySyncId(condition: {jobId: $jobId}) {
             totalCount

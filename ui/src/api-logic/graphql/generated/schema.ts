@@ -468,8 +468,8 @@ export enum ContainerImagesOrderBy {
 export type ContainerSync = Node & {
   /** Reads and enables pagination through a set of `ContainerSyncExecution`. */
   containerSyncExecutionsBySyncId: ContainerSyncExecutionsConnection;
-  /** Reads and enables pagination through a set of `ContainerSyncSchedule`. */
-  containerSyncSchedulesBySyncId: ContainerSyncSchedulesConnection;
+  /** Reads a single `ContainerSyncSchedule` that is related to this `ContainerSync`. */
+  containerSyncScheduleBySyncId?: Maybe<ContainerSyncSchedule>;
   id: Scalars['UUID'];
   /** Reads a single `ContainerImage` that is related to this `ContainerSync`. */
   image?: Maybe<ContainerImage>;
@@ -492,18 +492,6 @@ export type ContainerSyncContainerSyncExecutionsBySyncIdArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<ContainerSyncExecutionsOrderBy>>;
-};
-
-
-export type ContainerSyncContainerSyncSchedulesBySyncIdArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<ContainerSyncScheduleCondition>;
-  filter?: InputMaybe<ContainerSyncScheduleFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<ContainerSyncSchedulesOrderBy>>;
 };
 
 /**
@@ -2790,6 +2778,16 @@ export type DeleteContainerSyncScheduleByNodeIdInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `ContainerSyncSchedule` to be deleted. */
   nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteContainerSyncScheduleBySyncId` mutation. */
+export type DeleteContainerSyncScheduleBySyncIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  syncId: Scalars['UUID'];
 };
 
 /** All input for the `deleteContainerSyncSchedule` mutation. */
@@ -10837,6 +10835,8 @@ export type Mutation = {
   deleteContainerSyncSchedule?: Maybe<DeleteContainerSyncSchedulePayload>;
   /** Deletes a single `ContainerSyncSchedule` using its globally unique id. */
   deleteContainerSyncScheduleByNodeId?: Maybe<DeleteContainerSyncSchedulePayload>;
+  /** Deletes a single `ContainerSyncSchedule` using a unique key. */
+  deleteContainerSyncScheduleBySyncId?: Maybe<DeleteContainerSyncSchedulePayload>;
   /** Deletes a single `GitBlame` using a unique key. */
   deleteGitBlame?: Maybe<DeleteGitBlamePayload>;
   /** Deletes a single `GitBlame` using its globally unique id. */
@@ -11064,6 +11064,8 @@ export type Mutation = {
   updateContainerSyncSchedule?: Maybe<UpdateContainerSyncSchedulePayload>;
   /** Updates a single `ContainerSyncSchedule` using its globally unique id and a patch. */
   updateContainerSyncScheduleByNodeId?: Maybe<UpdateContainerSyncSchedulePayload>;
+  /** Updates a single `ContainerSyncSchedule` using a unique key and a patch. */
+  updateContainerSyncScheduleBySyncId?: Maybe<UpdateContainerSyncSchedulePayload>;
   /** Updates a single `GitBlame` using a unique key and a patch. */
   updateGitBlame?: Maybe<UpdateGitBlamePayload>;
   /** Updates a single `GitBlame` using its globally unique id and a patch. */
@@ -11687,6 +11689,12 @@ export type MutationDeleteContainerSyncScheduleArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteContainerSyncScheduleByNodeIdArgs = {
   input: DeleteContainerSyncScheduleByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteContainerSyncScheduleBySyncIdArgs = {
+  input: DeleteContainerSyncScheduleBySyncIdInput;
 };
 
 
@@ -12396,6 +12404,12 @@ export type MutationUpdateContainerSyncScheduleArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateContainerSyncScheduleByNodeIdArgs = {
   input: UpdateContainerSyncScheduleByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateContainerSyncScheduleBySyncIdArgs = {
+  input: UpdateContainerSyncScheduleBySyncIdInput;
 };
 
 
@@ -13532,6 +13546,7 @@ export type Query = Node & {
   containerSyncSchedule?: Maybe<ContainerSyncSchedule>;
   /** Reads a single `ContainerSyncSchedule` using its globally unique `ID`. */
   containerSyncScheduleByNodeId?: Maybe<ContainerSyncSchedule>;
+  containerSyncScheduleBySyncId?: Maybe<ContainerSyncSchedule>;
   /** Reads and enables pagination through a set of `ContainerSyncSchedule`. */
   containerSyncSchedules?: Maybe<ContainerSyncSchedulesConnection>;
   /** Reads and enables pagination through a set of `ContainerSync`. */
@@ -13908,6 +13923,12 @@ export type QueryContainerSyncScheduleArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryContainerSyncScheduleByNodeIdArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryContainerSyncScheduleBySyncIdArgs = {
+  syncId: Scalars['UUID'];
 };
 
 
@@ -18678,6 +18699,18 @@ export type UpdateContainerSyncScheduleByNodeIdInput = {
   patch: ContainerSyncSchedulePatch;
 };
 
+/** All input for the `updateContainerSyncScheduleBySyncId` mutation. */
+export type UpdateContainerSyncScheduleBySyncIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `ContainerSyncSchedule` being updated. */
+  patch: ContainerSyncSchedulePatch;
+  syncId: Scalars['UUID'];
+};
+
 /** All input for the `updateContainerSyncSchedule` mutation. */
 export type UpdateContainerSyncScheduleInput = {
   /**
@@ -22071,7 +22104,7 @@ export type GetGitSourcesListCsQueryVariables = Exact<{
 }>;
 
 
-export type GetGitSourcesListCsQuery = { providers?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, createdAt: any, settings: any, vendor: string, reposByProvider: { totalCount: number } }> } | null, all?: { totalCount: number } | null, containerSyncs?: { nodes: Array<{ repo?: { provider: any } | null, scheduled: { totalCount: number } }> } | null };
+export type GetGitSourcesListCsQuery = { providers?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, createdAt: any, settings: any, vendor: string, reposByProvider: { totalCount: number } }> } | null, all?: { totalCount: number } | null, containerSyncs?: { nodes: Array<{ repo?: { provider: any } | null, scheduled?: { id: any } | null }> } | null };
 
 export type GetGitSourcesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -22092,7 +22125,7 @@ export type GetDefaultRepoSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetDefaultRepoSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, containerSyncs: { nodes: Array<{ repo?: { provider: any } | null, scheduled: { totalCount: number } }> } }> } | null };
+export type GetDefaultRepoSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, containerSyncs: { nodes: Array<{ repo?: { provider: any } | null, scheduled?: { id: any } | null }> } }> } | null };
 
 export type GetQueryHistoryQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -22142,7 +22175,7 @@ export type GetContainerImageQueryVariables = Exact<{
 }>;
 
 
-export type GetContainerImageQuery = { containerImage?: { id: any, name: string, description?: string | null, type: string, url: string, version: string, parameters: any, repos: { nodes: Array<{ scheduled: { totalCount: number } }> } } | null };
+export type GetContainerImageQuery = { containerImage?: { id: any, name: string, description?: string | null, type: string, url: string, version: string, parameters: any, repos: { nodes: Array<{ scheduled?: { id: any } | null }> } } | null };
 
 export type GetContainerImagesQueryVariables = Exact<{
   search: Scalars['String'];
@@ -22151,7 +22184,7 @@ export type GetContainerImagesQueryVariables = Exact<{
 }>;
 
 
-export type GetContainerImagesQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, url: string, version: string, type: string, parameters: any, repos: { nodes: Array<{ scheduled: { totalCount: number } }> } }> } | null };
+export type GetContainerImagesQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, url: string, version: string, type: string, parameters: any, repos: { nodes: Array<{ scheduled?: { id: any } | null }> } }> } | null };
 
 export type GetContainerSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -22161,7 +22194,7 @@ export type GetContainerSyncsQueryVariables = Exact<{
 }>;
 
 
-export type GetContainerSyncsQuery = { containerSyncs?: { nodes: Array<{ id: any, parameters: any, image?: { id: any } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null } | null }> } }> } | null, all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
+export type GetContainerSyncsQuery = { containerSyncs?: { nodes: Array<{ id: any, parameters: any, image?: { id: any } | null, repo?: { id: any } | null, schedule?: { id: any } | null, executions: { nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null } | null }> } }> } | null, all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
 
 export type GetRepoSyncsQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -22258,7 +22291,7 @@ export type GetContainerSyncHistoryLogsQueryVariables = Exact<{
 }>;
 
 
-export type GetContainerSyncHistoryLogsQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { totalCount: number, nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
+export type GetContainerSyncHistoryLogsQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule?: { id: any } | null, executions: { totalCount: number, nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
 
 export type GetLogsOfContainerSyncQueryVariables = Exact<{
   repoId: Scalars['UUID'];
@@ -22267,7 +22300,7 @@ export type GetLogsOfContainerSyncQueryVariables = Exact<{
 }>;
 
 
-export type GetLogsOfContainerSyncQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule: { nodes: Array<{ id: any }> }, executions: { totalCount: number, nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
+export type GetLogsOfContainerSyncQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule?: { id: any } | null, executions: { totalCount: number, nodes: Array<{ job?: { id: any, status: JobStates, queue: string, createdAt: any, startedAt?: any | null, completedAt?: any | null, errors: { totalCount: number }, warnings: { totalCount: number }, logs: { totalCount: number, nodes: Array<{ id: any, level?: LogLevel | null, message?: string | null, loggedAt?: any | null }> } } | null }> } }> } } | null };
 
 export type GetUsersQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;

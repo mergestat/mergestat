@@ -50,8 +50,8 @@ const GET_GIT_SOURCES_LIST_CS = gql`
         repo {
           provider
         }
-        scheduled: containerSyncSchedulesBySyncId {
-          totalCount
+        scheduled: containerSyncScheduleBySyncId {
+          id
         }
       }
     }
@@ -133,8 +133,8 @@ const GET_DEFAULT_REPO_SYNCS = gql`
             repo {
               provider
             }
-            scheduled: containerSyncSchedulesBySyncId {
-              totalCount
+            scheduled: containerSyncScheduleBySyncId {
+              id
             }
           }
         }

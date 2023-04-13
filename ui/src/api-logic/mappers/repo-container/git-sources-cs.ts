@@ -13,7 +13,7 @@ const mapToGitSourceCS = (data: GetGitSourcesListCsQuery | undefined): GitSource
       settings: p.settings,
       vendor: p.vendor,
       totalRepos: p.reposByProvider.totalCount,
-      totalEnabledRepos: data?.containerSyncs?.nodes.filter(cs => cs.scheduled.totalCount > 0 && cs.repo?.provider === p.id).length || 0
+      totalEnabledRepos: data?.containerSyncs?.nodes.filter(cs => cs.scheduled && cs.repo?.provider === p.id).length || 0
     }
     gitSourcesCS.push(provider)
   })
