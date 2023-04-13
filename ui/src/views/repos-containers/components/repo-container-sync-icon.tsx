@@ -43,7 +43,7 @@ export const RepoContainerSyncIcon = ({ type, className = '' }: RepoContainerSyn
       break
     case SYNC_CONTAINER_STATUS.running:
       text = 'Sync is currently running'
-      icon = <Spinner size="sm" className={className} />
+      icon = <div className='flex items-center'><Spinner size="sm" className={className} /></div>
       break
     default:
       text = 'No sync history'
