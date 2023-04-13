@@ -132,7 +132,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
           preserveAspectRatio={preserveAspectRatio}
         >
           <g transform="scale(1,-1)">
-            {[...points].map((p, i) => {
+            {[...points].reverse().map((p, i) => {
               const id = 'round-corner_' + i
               const x = p.x - (barLineWidth + strokeWidth) / 2
               const y = -height

@@ -70,8 +70,8 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
 
 const getLatestRunOrdered = (latestRuns: JobData[]): JobData[] => {
   const runningJob = latestRuns.find(job => !job.doneAt)
-  const completedJobs = latestRuns.filter(job => job.doneAt).sort((a, b) => ((a.doneAt ? a.doneAt.getTime() : new Date().getTime()) - (b.doneAt ? b.doneAt.getTime() : new Date().getTime())))
-  return runningJob ? [...completedJobs, runningJob] : completedJobs
+  const completedJobs = latestRuns.filter(job => job.doneAt).sort((a, b) => ((b.doneAt ? b.doneAt.getTime() : new Date().getTime()) - (a.doneAt ? a.doneAt.getTime() : new Date().getTime())))
+  return runningJob ? [runningJob, ...completedJobs] : completedJobs
 }
 
 export { mapToRepoContainerSyncsData }
