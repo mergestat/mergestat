@@ -64,7 +64,7 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
 
               <tbody className='bg-white'>
                 {repos.map((repo) => (
-                  <tr key={repo.id} className={repo.stats.syncCount === 0 ? 't-table-row-muted' : ''}>
+                  <tr key={repo.id} className={statsAreAllZeros(repo.stats) ? 't-table-row-muted' : ''}>
                     <td className=''>
                       <RepositoryName
                         id={repo.id}
