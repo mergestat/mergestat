@@ -22349,6 +22349,14 @@ export type GetContainerBasicDataQueryVariables = Exact<{
 
 export type GetContainerBasicDataQuery = { repo?: { id: any, repo: string, provider?: { id: any, name: string, vendor: string, settings: any } | null, containerSyncs: { nodes: Array<{ image?: { id: any, name: string, description?: string | null } | null }> } } | null };
 
+export type GetContainerSyncGeneralDataQueryVariables = Exact<{
+  repoId: Scalars['UUID'];
+  syncId: Scalars['UUID'];
+}>;
+
+
+export type GetContainerSyncGeneralDataQuery = { repo?: { id: any, repo: string, containerSyncs: { nodes: Array<{ id: any, parameters: any, image?: { id: any, name: string, description?: string | null } | null, repo?: { id: any } | null, schedule?: { id: any } | null }> } } | null };
+
 export type GetContainerSyncHistoryLogsQueryVariables = Exact<{
   repoId: Scalars['UUID'];
   syncId: Scalars['UUID'];

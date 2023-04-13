@@ -459,8 +459,8 @@ export type ContainerSyncInfo = {
   description: string
   parameters: JSON
   scheduleId: string
-  syncState: RepoContainerSyncState
-  totalExecutions: number
+  syncState?: RepoContainerSyncState
+  totalExecutions?: number
 }
 
 export type SyncContainerLogsType = {

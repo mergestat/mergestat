@@ -118,6 +118,32 @@ const GET_CONTAINER_BASIC_DATA = gql`
   }
 `
 
+const GET_CONTAINER_SYNC_GENERAL_DATA = gql`
+  query getContainerSyncGeneralData($repoId: UUID!, $syncId: UUID!) {
+    repo(id: $repoId) {
+      id
+      repo
+      containerSyncs(condition: {id: $syncId}) {
+        nodes {
+          id
+          parameters
+          image {
+            id
+            name
+            description
+          }
+          repo {
+            id
+          }
+          schedule: containerSyncScheduleBySyncId {
+            id
+          }
+        }
+      }
+    }
+  }
+`
+
 const GET_CONTAINER_SYNC_HISTORY_LOGS = gql`
   query getContainerSyncHistoryLogs($repoId: UUID!, $syncId: UUID!, $first: Int, $offset: Int) {
     repo(id: $repoId) {
@@ -230,6 +256,7 @@ export {
   GET_SYNC_HISTORY_LOGS,
   GET_LOGS_OF_A_SYNC,
   GET_CONTAINER_BASIC_DATA,
+  GET_CONTAINER_SYNC_GENERAL_DATA,
   GET_CONTAINER_SYNC_HISTORY_LOGS,
   GET_LOGS_OF_A_CONTAINER_SYNC
 }

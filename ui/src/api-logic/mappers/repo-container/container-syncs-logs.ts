@@ -1,8 +1,8 @@
 import { format, lightFormat } from 'date-fns'
-import { ContainerBasicData, ContainerSyncLogData, SyncContainerLogsType } from 'src/@types'
+import { ContainerBasicData, ContainerSyncInfo, ContainerSyncLogData, SyncContainerLogsType } from 'src/@types'
 import { getExternalRepoLink, getRepoFromUrl, getSimpleDurationTime, mapToContainerSyncState } from 'src/utils'
 import { DATE_FORMAT, SYNC_CONTAINER_STATUS } from 'src/utils/constants'
-import { GetContainerBasicDataQuery, GetContainerSyncHistoryLogsQuery, GetLogsOfContainerSyncQuery } from '../../graphql/generated/schema'
+import { GetContainerBasicDataQuery, GetContainerSyncGeneralDataQuery, GetContainerSyncHistoryLogsQuery, GetLogsOfContainerSyncQuery } from '../../graphql/generated/schema'
 
 /**
  * Method to get basic data into ContainerBasicData
@@ -28,6 +28,28 @@ const mapToContainerBasicData = (data: GetContainerBasicDataQuery | undefined): 
     }
   }
   return basicData
+}
+
+/**
+ * Method which iterate each sync and map it to ContainerSyncInfo to be shown in table
+ * @param data Sync list that comes from data base in GetContainerSyncGeneralDataQuery format
+ * @returns ContainerSyncInfo with syncs info
+ */
+const mapToContainerSyncGeneralData = (data: GetContainerSyncGeneralDataQuery | undefined): ContainerSyncInfo => {
+  let generalData = {} as ContainerSyncInfo
+
+  data?.repo?.containerSyncs.nodes.forEach((cs) => {
+    generalData = {
+      id: cs.id,
+      imageId: cs?.image?.id,
+      name: cs?.image?.name || '',
+      description: cs?.image?.description || '',
+      parameters: cs.parameters,
+      scheduleId: cs?.schedule?.id,
+    }
+  })
+
+  return generalData
 }
 
 /**
@@ -76,4 +98,4 @@ const mapToContainerSyncLogsData = (data: GetContainerSyncHistoryLogsQuery | Get
   return repoData
 }
 
-export { mapToContainerBasicData, mapToContainerSyncLogsData }
+export { mapToContainerBasicData, mapToContainerSyncGeneralData, mapToContainerSyncLogsData }

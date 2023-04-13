@@ -15,14 +15,14 @@ const ContainerSyncsDataView: React.FC<ContainerBasicData> = ({ repo }) => {
   useContainerSyncCrumb(repo)
 
   const {
-    loading, repoData: { sync, logs }, addSchedule, removeSchedule, syncNow,
+    loadingGeneralInfo, loadingLogs, statusSync, repoData, syncInfo, addSchedule, removeSchedule, syncNow,
     rows, page, total, setRows, setPage
   } = useContainerSyncsLogs()
 
   return (
     <>
       <div className='flex flex-col flex-1 overflow-hidden'>
-        {loading
+        {loadingGeneralInfo || loadingLogs
           ? <Loading />
           : <>
             <div className="bg-white">
@@ -30,10 +30,10 @@ const ContainerSyncsDataView: React.FC<ContainerBasicData> = ({ repo }) => {
                 <Toolbar.Left>
                   <Toolbar.Item>
                     <div className='flex items-center space-x-5'>
-                      <RepoContainerSyncIcon type={sync?.syncState || SYNC_CONTAINER_STATUS.empty} />
+                      <RepoContainerSyncIcon type={statusSync || SYNC_CONTAINER_STATUS.empty} />
                       <div className='space-y-1'>
-                        <h3 className='t-h2 mb-0'>{sync?.name || ''}</h3>
-                        <p className='t-text-muted text-sm'>{sync?.description}</p>
+                        <h3 className='t-h2 mb-0'>{syncInfo?.name || ''}</h3>
+                        <p className='t-text-muted text-sm'>{syncInfo?.description}</p>
                       </div>
                     </div>
                   </Toolbar.Item>
@@ -43,14 +43,14 @@ const ContainerSyncsDataView: React.FC<ContainerBasicData> = ({ repo }) => {
                     <Button
                       className="ml-3"
                       label='Sync Now'
-                      startIcon={sync?.syncState === SYNC_CONTAINER_STATUS.pending
+                      startIcon={statusSync === SYNC_CONTAINER_STATUS.pending
                         ? <ClockIcon className='t-icon' />
-                        : sync?.syncState === SYNC_STATUS.running
+                        : statusSync === SYNC_STATUS.running
                           ? <Spinner size='sm' className='mr-2' />
                           : <RefreshIcon className="t-icon" />
                       }
-                      disabled={sync?.syncState === SYNC_CONTAINER_STATUS.pending || sync?.syncState === SYNC_CONTAINER_STATUS.running}
-                      onClick={() => syncNow({ variables: { sync: `${sync?.id}` } })}
+                      disabled={statusSync === SYNC_CONTAINER_STATUS.pending || statusSync === SYNC_CONTAINER_STATUS.running}
+                      onClick={() => syncNow({ variables: { sync: `${syncInfo?.id}` } })}
                     />
                   </Toolbar.Item>
                 </Toolbar.Right>
@@ -58,8 +58,8 @@ const ContainerSyncsDataView: React.FC<ContainerBasicData> = ({ repo }) => {
             </div>
 
             <div className='flex-1 w-full overflow-auto'>
-              <SyncSettings sync={sync} addSchedule={addSchedule} removeSchedule={removeSchedule} syncNow={syncNow} />
-              <LogsTable logs={logs || []} />
+              <SyncSettings sync={syncInfo} addSchedule={addSchedule} removeSchedule={removeSchedule} syncNow={syncNow} />
+              <LogsTable logs={repoData?.logs || []} />
             </div>
 
             <FilterFooter total={total} rows={rows} page={page} setRows={setRows} setPage={setPage} />
