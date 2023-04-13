@@ -63,7 +63,7 @@ module.exports = makeExtendSchemaPlugin({
           // we iterate over each repository, creating a sync and a schedule
           await bluebird.mapSeries(repos, async repo => {
             const {rows: syncs} = await pg.query(createSync, [repo.id, args.image]);
-            await pg.query('INSERT INTO mergestat.container_sync_schedules (sync_id) VALUES ($1)', [syncs[0].id]);
+            await pg.query('INSERT INTO mergestat.container_sync_schedules (sync_id) VALUES ($1) ON CONFLICT DO NOTHING', [syncs[0].id]);
           })
 
           return true
@@ -80,7 +80,7 @@ module.exports = makeExtendSchemaPlugin({
 
         await pg.query("SAVEPOINT bulk_disable_sync");
         try {
-          await pg.query(`DELETE FROM mergestat.container_syncs WHERE image_id = $1 AND repo_id IN (SELECT id FROM public.repos WHERE provider = $2)`,
+          await pg.query(`DELETE FROM mergestat.container_sync_schedules WHERE sync_id IN (SELECT id FROM mergestat.container_syncs WHERE image_id = $1 AND repo_id IN (SELECT id FROM public.repos WHERE provider = $2))`,
               [args.image, args.provider]);
 
           return true

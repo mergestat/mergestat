@@ -25,7 +25,7 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
       },
       sync: {
         id: syncData?.id,
-        scheduleId: syncData?.schedule.nodes[0]?.id,
+        scheduleId: syncData?.schedule?.id,
         labels: []
       },
       image: {
