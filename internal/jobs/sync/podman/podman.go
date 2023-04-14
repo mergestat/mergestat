@@ -151,6 +151,13 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 			args = append(args, "--env-file", envFile) // set environment variables from envFile
 			args = append(args, "--network", "host")   // use host networking
 
+			var tmpDir string
+			if tmpDir, err = os.MkdirTemp("", ""); err != nil {
+				return errors.Wrapf(err, "failed to create temporary directory")
+			}
+
+			args = append(args, "--volume", fmt.Sprintf("%s:/tmp", tmpDir))
+
 			// if opted-in by setting com.mergestat.sync.clone to true, we perform a full clone
 			// of the repository to a temporary directory and mount that directory into the container
 			if opt := metadata[0].Labels["com.mergestat.sync.clone"]; opt == "true" {
