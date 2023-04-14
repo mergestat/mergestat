@@ -7,7 +7,7 @@ BEGIN;
 ALTER TABLE mergestat.container_sync_schedules
 ADD CONSTRAINT unique_container_sync_schedule UNIQUE (sync_id);
 
-CREATE OR REPLACE FUNCTION mergestat.container_sync_now(container_sync_id UUID)
+CREATE OR REPLACE FUNCTION mergestat.container_sync_now_new(container_sync_id UUID)
 RETURNS BOOLEAN
 LANGUAGE PLPGSQL VOLATILE
 AS $$
