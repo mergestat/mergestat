@@ -24,7 +24,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/libgit2/git2go/v33 v33.0.9
 	github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b
-	github.com/mergestat/sqlq v0.0.0-20230331125326-29bd1e5a434e
+	github.com/mergestat/sqlq v0.0.0-20230414231219-7f18f23fdb8f
 	github.com/prometheus/client_golang v1.14.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20221229060216-a8d4a561cc93
@@ -87,11 +87,11 @@ require (
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
-	golang.org/x/crypto v0.7.0 // indirect
+	golang.org/x/crypto v0.8.0 // indirect
 	golang.org/x/mod v0.8.0 // indirect
-	golang.org/x/net v0.8.0 // indirect
-	golang.org/x/sys v0.6.0 // indirect
-	golang.org/x/text v0.8.0 // indirect
+	golang.org/x/net v0.9.0 // indirect
+	golang.org/x/sys v0.7.0 // indirect
+	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
