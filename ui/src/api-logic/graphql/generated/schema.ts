@@ -11049,7 +11049,7 @@ export type Mutation = {
   setSyncJobStatus?: Maybe<SetSyncJobStatusPayload>;
   simpleRepoSyncQueueCleanup?: Maybe<SimpleRepoSyncQueueCleanupPayload>;
   simpleSqlqCleanup?: Maybe<SimpleSqlqCleanupPayload>;
-  syncNow?: Maybe<Scalars['Boolean']>;
+  syncNow?: Maybe<SyncNowPayload>;
   /** Updates a single `ContainerImage` using a unique key and a patch. */
   updateContainerImage?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImage` using its globally unique id and a patch. */
@@ -12358,8 +12358,7 @@ export type MutationSimpleSqlqCleanupArgs = {
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationSyncNowArgs = {
-  queue?: InputMaybe<Scalars['String']>;
-  sync: Scalars['UUID'];
+  input: SyncNowInput;
 };
 
 
@@ -18309,6 +18308,28 @@ export enum SyftRepoScansOrderBy {
   MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
 }
 
+/** All input for the `syncNow` mutation. */
+export type SyncNowInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  containerSyncId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `syncNow` mutation. */
+export type SyncNowPayload = {
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** Trivy repo scans */
 export type TrivyRepoScan = Node & {
   /** timestamp when record was synced into the MergeStat database */
@@ -22113,7 +22134,7 @@ export type SyncNowContainerMutationVariables = Exact<{
 }>;
 
 
-export type SyncNowContainerMutation = { syncNow?: boolean | null };
+export type SyncNowContainerMutation = { syncNow?: { boolean?: boolean | null } | null };
 
 export type UndateContainerSyncMutationVariables = Exact<{
   id: Scalars['UUID'];
