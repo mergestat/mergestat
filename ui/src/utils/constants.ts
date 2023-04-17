@@ -143,8 +143,8 @@ export enum IMPORT_STATUS_TYPE {
 }
 
 export enum TAB_TYPE {
-  LINE = 'LINE',
-  BAR = 'BAR',
+  LINE = 'line',
+  BAR = 'bar',
   SINGLE_METRIC = 'SINGLE_METRIC'
 }
 

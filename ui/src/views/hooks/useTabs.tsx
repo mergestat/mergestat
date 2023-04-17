@@ -38,14 +38,14 @@ const useTabs = (rowLimit: number, rowLimitReached: boolean) => {
         return {
           tabId,
           title: <><ChartBarIcon className='t-icon' /> <span className='ml-2'>Bar chart</span></>,
-          content: <TabChart chartType='bar' />,
+          content: <TabChart chartType={TAB_TYPE.BAR} />,
           closable: true
         }
       case TAB_TYPE.LINE:
         return {
           tabId,
           title: <><ChartLineIcon className='t-icon' /> <span className='ml-2'>Line chart</span></>,
-          content: <TabChart chartType='line' />,
+          content: <TabChart chartType={TAB_TYPE.LINE} />,
           closable: true
         }
       default:
