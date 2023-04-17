@@ -89,7 +89,9 @@ const DISABLE_CONTAINER_SYNC_FOR_ALL = gql`
 
 const SYNC_NOW_CONTAINER = gql`
   mutation syncNowContainer($sync: UUID!) {
-    syncNow(sync: $sync)
+    syncNow(input: {containerSyncId: $sync}) {
+      boolean
+    }
   }
 `
 

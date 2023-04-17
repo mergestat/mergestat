@@ -260,7 +260,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{})
+	var worker, _ = embed.NewWorker(upstream, embed.WorkerConfig{
+		Concurrency: concurrency,
+	})
 
 	// register job handlers for types implemented by this worker
 	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
