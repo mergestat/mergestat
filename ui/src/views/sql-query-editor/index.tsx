@@ -27,7 +27,8 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
     loading, error, query, data, time, title, desc
   } = useQueryEditor(ROWS_LIMIT)
 
-  const { loadingSQ, savedQuery, titleError, setTitleError, addSavedQueryHandler, updateSavedQueryHandler } = useSavedQuery({ savedQueryId, title, desc, query })
+  const saveChartMetadata = state === States.Filled
+  const { loadingSQ, savedQuery, titleError, setTitleError, addSavedQueryHandler, updateSavedQueryHandler } = useSavedQuery({ savedQueryId, title, desc, query, saveChartMetadata })
 
   useEffect(() => {
     setTitle(savedQuery?.name || '')

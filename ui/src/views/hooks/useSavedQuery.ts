@@ -14,9 +14,10 @@ type useSavedQueryProps = {
   title?: string
   desc?: string
   query?: string
+  saveChartMetadata?: boolean
 }
 
-const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps) => {
+const useSavedQuery = ({ savedQueryId, title, desc, query, saveChartMetadata }: useSavedQueryProps) => {
   const router = useRouter()
   const { data: userData } = useCurrentUser()
   const [titleError, setTitleError] = useState<boolean>(false)
@@ -45,6 +46,8 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
   })
 
   const chartsMetadata = useMemo(() => {
+    if (!saveChartMetadata) return data?.savedQuery?.metadata?.charts
+
     const tabIds = tabs.map(({ tabId }) => tabId)
     const chartsData = tabIds.map((id) => tabsState[id]).filter(isChartData)
 
@@ -52,7 +55,7 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
       const { xAxis, xAxisType, yAxis, chartType, serie } = chart
       return { xAxis, xAxisType, yAxis, chartType, serie }
     })
-  }, [tabs, tabsState])
+  }, [saveChartMetadata, data, tabs, tabsState])
 
   const addSavedQueryHandler = () => {
     if (title) {
