@@ -9,22 +9,29 @@ import TabChart from '../sql-query-editor/tabs/tab-chart'
 import TabSingleMetric from '../sql-query-editor/tabs/tab-single-metric'
 import TabTable from '../sql-query-editor/tabs/tab-table'
 
-const useTabs = (rowLimit: number, rowLimitReached: boolean) => {
+const useTabs = (rowLimit: number, rowLimitReached: boolean, charts: ChartData[]) => {
   const [{ expanded, activeTab, tabs }] = useQueryContext()
   const { setExpanded, setActiveTab, setTabs } = useQuerySetState()
   const dispatch = useQueryTabsDispatch()
 
   useEffect(() => {
-    if (tabs.length === 0) {
-      setTabs([
-        {
-          tabId: uuidv4(),
-          title: <><TableIcon className='t-icon' /> <span className='ml-2'>Table</span></>,
-          content: <TabTable rowLimit={rowLimit} rowLimitReached={rowLimitReached} />
-        }
-      ])
+    const tableTab = {
+      tabId: uuidv4(),
+      title: <><TableIcon className='t-icon' /> <span className='ml-2'>Table</span></>,
+      content: <TabTable rowLimit={rowLimit} rowLimitReached={rowLimitReached} />
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    let tabData = [tableTab]
+
+    charts.forEach((chartData) => {
+      const { chartType } = chartData
+      const id = uuidv4()
+
+      dispatch({ tab: id, payload: chartData })
+      tabData = [...tabData, getTabData(chartType, id)]
+    })
+    setTabs(tabData)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

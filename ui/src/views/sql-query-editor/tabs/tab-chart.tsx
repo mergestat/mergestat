@@ -23,7 +23,11 @@ const TabChart: React.FC<TabChartProps> = ({ tabId = '', chartType }: TabChartPr
 
   const { serie, xAxis, yAxis, xAxisType, options, series } = (tabsState[tabId] as ChartData)
 
-  const setState = (payload: ChartData) => dispatch({ tab: tabId, payload })
+  const setState = (payload: Omit<ChartData, 'chartType'>, type?: string) => {
+    const tabChart = type ?? chartType
+    const tabData = { ...payload, chartType: tabChart }
+    dispatch({ tab: tabId, payload: tabData })
+  }
 
   useEffect(() => {
     if (xAxis && yAxis) {

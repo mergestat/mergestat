@@ -142,7 +142,7 @@ const QueryEditor: React.FC<QueryEditorProps> = ({ savedQueryId }: QueryEditorPr
 
         {/* Filled state */}
         {!error && !loading && data && state === States.Filled &&
-          <QueryEditorFilled rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} time={time} />
+          <QueryEditorFilled charts={savedQuery?.metadata?.charts ?? []} rowLimit={ROWS_LIMIT} rowLimitReached={rowLimitReached} time={time} />
         }
       </div>
 

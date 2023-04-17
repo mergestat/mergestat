@@ -255,6 +255,7 @@ export type ChartData = {
   yAxis?: string
   options?: ApexOptions
   series?: ApexSerie[]
+  chartType: string
 }
 
 export type SingleMetricData = {
@@ -273,6 +274,11 @@ export type ActionType = {
 
 export type TabsState = {
   [key: string]: SingleMetricData | ChartData
+}
+
+export function isChartData(maybeChart: SingleMetricData | ChartData | undefined): maybeChart is ChartData {
+  if (maybeChart === undefined) return false
+  return (maybeChart as ChartData).xAxis !== undefined
 }
 
 export interface TabData {
