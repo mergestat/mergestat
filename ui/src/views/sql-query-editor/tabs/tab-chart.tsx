@@ -32,7 +32,7 @@ const TabChart: React.FC<TabChartProps> = ({ tabId = '', chartType }: TabChartPr
   useEffect(() => {
     if (xAxis && yAxis) {
       const series = mapToApexChart({ data, serie, xAxis, yAxis })
-      setState({ series })
+      setState({ series, serie })
 
       const typeX = xAxisType === XAXIS_TYPE_LABEL.DATE
         ? XAXIS_TYPE.DATETIME

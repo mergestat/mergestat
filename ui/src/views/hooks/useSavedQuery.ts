@@ -49,8 +49,8 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
     const chartsData = tabIds.map((id) => tabsState[id]).filter(isChartData)
 
     return chartsData.map((chart) => {
-      const { xAxis, xAxisType, yAxis, chartType } = chart
-      return { xAxis, xAxisType, yAxis, chartType }
+      const { xAxis, xAxisType, yAxis, chartType, serie } = chart
+      return { xAxis, xAxisType, yAxis, chartType, serie }
     })
   }, [tabs, tabsState])
 
