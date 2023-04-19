@@ -17,6 +17,7 @@ type Querier interface {
 	DeleteGitHubRepoInfo(ctx context.Context, repoID uuid.UUID) error
 	DeleteRemovedRepos(ctx context.Context, arg DeleteRemovedReposParams) error
 	DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
+	EnableContainerSync(ctx context.Context, arg EnableContainerSyncParams) error
 	// We use a CTE here to retrieve all the repo_sync_jobs that were previously enqueued, to make sure that we *do not* re-enqueue anything new until the previously enqueued jobs are *completed*.
 	// This allows us to make sure all repo syncs complete before we reschedule a new batch.
 	// We have now also added a concept of type groups which allows us to apply this same logic but by each group type which is where the PARTITION BY clause comes into play

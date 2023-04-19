@@ -3,13 +3,14 @@ package repo
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
 	"github.com/mergestat/mergestat/internal/db"
 	bitbucket "github.com/mergestat/mergestat/internal/vendors/bitbucket/client"
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
-	"net/http"
 )
 
 func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.FetchImportJobRow) (err error) {
@@ -29,9 +30,10 @@ func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.FetchImp
 	}
 
 	var settings struct {
-		Owner              string   `json:"owner"`
-		RemoveDeletedRepos bool     `json:"removeDeletedRepos"`
-		DefaultSyncTypes   []string `json:"defaultSyncTypes"`
+		Owner                  string      `json:"owner"`
+		RemoveDeletedRepos     bool        `json:"removeDeletedRepos"`
+		DefaultSyncTypes       []string    `json:"defaultSyncTypes"`
+		DefaultContainerImages []uuid.UUID `json:"defaultContainerImages"`
 	}
 
 	if err = json.Unmarshal(imp.Settings.Bytes, &settings); err != nil {
@@ -101,6 +103,28 @@ func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.FetchImp
 		// enqueue all newly added syncs
 		if err = qry.EnqueueAllSyncs(ctx); err != nil {
 			return errors.Wrapf(err, "failed to enable default sync")
+		}
+	}
+
+	// (optional) configure default container images
+	if len(settings.DefaultContainerImages) > 0 {
+		// batch is a collection of newly added repositories
+		var batch = difference(existing, repoUrls)
+
+		// convert batch into a collection of repo ids
+		var ids []uuid.UUID
+		if ids, err = qry.GetRepoIDsFromRepoImport(ctx, db.GetRepoIDsFromRepoImportParams{Importid: imp.ID, Reposurls: batch}); err != nil {
+			return errors.Wrapf(err, "failed to enable default container sync")
+		}
+
+		// for each new repo, enable the provided container syncs
+		for _, id := range ids {
+			for _, containerImageID := range settings.DefaultContainerImages {
+				var params = db.EnableContainerSyncParams{Repoid: id, Containerimageid: containerImageID}
+				if err = qry.EnableContainerSync(ctx, params); err != nil {
+					return errors.Wrapf(err, "failed to enable default container sync")
+				}
+			}
 		}
 	}
 
