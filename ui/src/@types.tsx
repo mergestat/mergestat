@@ -430,6 +430,7 @@ export type JobData = {
   id: string
   repoId: string
   syncId: string
+  durationMs: number
   runningTime: number
   runningTimeReadable?: string
   status: string
