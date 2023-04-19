@@ -1,9 +1,9 @@
 import { Button, EditableText, Tabs, Toolbar } from '@mergestat/blocks'
 import { ChangeEvent } from 'react'
 import { getGitSourceIcon } from 'src/utils'
-import useGitSourceCrumb from 'src/views/hooks/gitSources/useGitSourceCrumb'
 import useGitSourceDetail from 'src/views/hooks/gitSources/useGitSourceDetail'
 import useGitSourceUpdate from 'src/views/hooks/gitSources/useGitSourceUpdate'
+import useGitSourceCrumb from 'src/views/hooks/gitSourcesContainers/useGitSourceCrumb'
 import GitSourceOverviewTab from './tabs/overview'
 import GitSourceSettingsTab from './tabs/settings'
 

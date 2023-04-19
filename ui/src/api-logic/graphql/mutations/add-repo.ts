@@ -32,4 +32,29 @@ const UPDATE_AUTO_IMPORT_REPOS = gql`
   }
 `
 
-export { ADD_REPO, AUTO_IMPORT_REPOS, UPDATE_AUTO_IMPORT_REPOS }
+const AUTO_IMPORT_REPOS_CONTAINER = gql`
+  mutation addRepoImportContainer($providerId: UUID!, $importType: String!, $importTypeName: String!, $defaultContainerImageIds: [UUID]!) {
+    addRepoImport(
+      input: {providerId: $providerId, importType: $importType, importTypeName: $importTypeName, defaultContainerImageIds: $defaultContainerImageIds}
+    ) {
+      boolean
+    }
+  }
+`
+
+const UPDATE_AUTO_IMPORT_REPOS_CONTAINER = gql`
+  mutation updateRepoImportContainer($repoImportId: UUID!, $defaultContainerImageIds: [UUID]!) {
+    updateRepoImportDefaultContainerImages(
+      input: {repoImportId: $repoImportId, defaultContainerImageIds: $defaultContainerImageIds}
+    ) {
+      boolean
+    }
+  }
+`
+
+export {
+  ADD_REPO, AUTO_IMPORT_REPOS,
+  UPDATE_AUTO_IMPORT_REPOS,
+  AUTO_IMPORT_REPOS_CONTAINER,
+  UPDATE_AUTO_IMPORT_REPOS_CONTAINER
+}

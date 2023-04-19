@@ -21,6 +21,127 @@ export type Scalars = {
   YesOrNo: any;
 };
 
+/** All input for the `addRepoImport` mutation. */
+export type AddRepoImportInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  defaultContainerImageIds?: InputMaybe<Array<InputMaybe<Scalars['UUID']>>>;
+  importType?: InputMaybe<Scalars['String']>;
+  importTypeName?: InputMaybe<Scalars['String']>;
+  providerId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `addRepoImport` mutation. */
+export type AddRepoImportPayload = {
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+/** Bearer repo scans */
+export type BearerRepoScan = Node & {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt: Scalars['Datetime'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `Repo` that is related to this `BearerRepoScan`. */
+  repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON results from Bearer repo scan */
+  results: Scalars['JSON'];
+};
+
+/**
+ * A condition to be used against `BearerRepoScan` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type BearerRepoScanCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `results` field. */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A filter to be used against `BearerRepoScan` object types. All fields are combined with a logical ‘and.’ */
+export type BearerRepoScanFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<BearerRepoScanFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<BearerRepoScanFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<BearerRepoScanFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `results` field. */
+  results?: InputMaybe<JsonFilter>;
+};
+
+/** An input for mutations affecting `BearerRepoScan` */
+export type BearerRepoScanInput = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+  /** JSON results from Bearer repo scan */
+  results: Scalars['JSON'];
+};
+
+/** Represents an update to a `BearerRepoScan`. Fields that are set will be updated. */
+export type BearerRepoScanPatch = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** foreign key for public.repos.id */
+  repoId?: InputMaybe<Scalars['UUID']>;
+  /** JSON results from Bearer repo scan */
+  results?: InputMaybe<Scalars['JSON']>;
+};
+
+/** A connection to a list of `BearerRepoScan` values. */
+export type BearerRepoScansConnection = {
+  /** A list of edges which contains the `BearerRepoScan` and cursor to aid in pagination. */
+  edges: Array<BearerRepoScansEdge>;
+  /** A list of `BearerRepoScan` objects. */
+  nodes: Array<BearerRepoScan>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `BearerRepoScan` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `BearerRepoScan` edge in the connection. */
+export type BearerRepoScansEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `BearerRepoScan` at the end of the edge. */
+  node: BearerRepoScan;
+};
+
+/** Methods to use when ordering `BearerRepoScan`. */
+export enum BearerRepoScansOrderBy {
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  ResultsAsc = 'RESULTS_ASC',
+  ResultsDesc = 'RESULTS_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
 /** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
 export type BigIntFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -743,6 +864,40 @@ export enum ContainerSyncsOrderBy {
   RepoIdAsc = 'REPO_ID_ASC',
   RepoIdDesc = 'REPO_ID_DESC'
 }
+
+/** All input for the create `BearerRepoScan` mutation. */
+export type CreateBearerRepoScanInput = {
+  /** The `BearerRepoScan` to be created by this mutation. */
+  bearerRepoScan: BearerRepoScanInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our create `BearerRepoScan` mutation. */
+export type CreateBearerRepoScanPayload = {
+  /** The `BearerRepoScan` that was created by this mutation. */
+  bearerRepoScan?: Maybe<BearerRepoScan>;
+  /** An edge for our `BearerRepoScan`. May be used by Relay 1. */
+  bearerRepoScanEdge?: Maybe<BearerRepoScansEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `BearerRepoScan`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our create `BearerRepoScan` mutation. */
+export type CreateBearerRepoScanPayloadBearerRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<BearerRepoScansOrderBy>>;
+};
 
 /** All input for the create `ContainerImage` mutation. */
 export type CreateContainerImageInput = {
@@ -2624,6 +2779,52 @@ export type DatetimeFilter = {
   notEqualTo?: InputMaybe<Scalars['Datetime']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['Datetime']>>;
+};
+
+/** All input for the `deleteBearerRepoScanByNodeId` mutation. */
+export type DeleteBearerRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `BearerRepoScan` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteBearerRepoScan` mutation. */
+export type DeleteBearerRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `BearerRepoScan` mutation. */
+export type DeleteBearerRepoScanPayload = {
+  /** The `BearerRepoScan` that was deleted by this mutation. */
+  bearerRepoScan?: Maybe<BearerRepoScan>;
+  /** An edge for our `BearerRepoScan`. May be used by Relay 1. */
+  bearerRepoScanEdge?: Maybe<BearerRepoScansEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedBearerRepoScanNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `BearerRepoScan`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our delete `BearerRepoScan` mutation. */
+export type DeleteBearerRepoScanPayloadBearerRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<BearerRepoScansOrderBy>>;
 };
 
 /** All input for the `deleteContainerImageByNodeId` mutation. */
@@ -5074,6 +5275,29 @@ export type DisplayDatabaseConnection = {
   host?: Maybe<Scalars['String']>;
   port?: Maybe<Scalars['Int']>;
   user?: Maybe<Scalars['String']>;
+};
+
+/** All input for the `enableContainerSync` mutation. */
+export type EnableContainerSyncInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  containerImageId?: InputMaybe<Scalars['UUID']>;
+  repoIdParam?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `enableContainerSync` mutation. */
+export type EnableContainerSyncPayload = {
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 export type ExecSqlInput = {
@@ -10705,11 +10929,14 @@ export type MarkSuccessPayload = {
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
+  addRepoImport?: Maybe<AddRepoImportPayload>;
   addToken?: Maybe<Scalars['Boolean']>;
   bulkDisableSync?: Maybe<Scalars['Boolean']>;
   bulkEnableSync?: Maybe<Scalars['Boolean']>;
   cancellingJob?: Maybe<CancellingJobPayload>;
   checkJobStatus?: Maybe<CheckJobStatusPayload>;
+  /** Creates a single `BearerRepoScan`. */
+  createBearerRepoScan?: Maybe<CreateBearerRepoScanPayload>;
   /** Creates a single `ContainerImage`. */
   createContainerImage?: Maybe<CreateContainerImagePayload>;
   /** Creates a single `ContainerImageType`. */
@@ -10820,6 +11047,10 @@ export type Mutation = {
   createVendorType?: Maybe<CreateVendorTypePayload>;
   /** Creates a single `YelpDetectSecretsRepoScan`. */
   createYelpDetectSecretsRepoScan?: Maybe<CreateYelpDetectSecretsRepoScanPayload>;
+  /** Deletes a single `BearerRepoScan` using a unique key. */
+  deleteBearerRepoScan?: Maybe<DeleteBearerRepoScanPayload>;
+  /** Deletes a single `BearerRepoScan` using its globally unique id. */
+  deleteBearerRepoScanByNodeId?: Maybe<DeleteBearerRepoScanPayload>;
   /** Deletes a single `ContainerImage` using a unique key. */
   deleteContainerImage?: Maybe<DeleteContainerImagePayload>;
   /** Deletes a single `ContainerImage` using its globally unique id. */
@@ -11041,6 +11272,7 @@ export type Mutation = {
   /** Deletes a single `YelpDetectSecretsRepoScan` using its globally unique id. */
   deleteYelpDetectSecretsRepoScanByNodeId?: Maybe<DeleteYelpDetectSecretsRepoScanPayload>;
   dequeueJob?: Maybe<DequeueJobPayload>;
+  enableContainerSync?: Maybe<EnableContainerSyncPayload>;
   fetchServiceAuthCredential?: Maybe<FetchServiceAuthCredentialPayload>;
   jsonbRecursiveMerge?: Maybe<JsonbRecursiveMergePayload>;
   markFailed?: Maybe<MarkFailedPayload>;
@@ -11050,6 +11282,10 @@ export type Mutation = {
   simpleRepoSyncQueueCleanup?: Maybe<SimpleRepoSyncQueueCleanupPayload>;
   simpleSqlqCleanup?: Maybe<SimpleSqlqCleanupPayload>;
   syncNow?: Maybe<SyncNowPayload>;
+  /** Updates a single `BearerRepoScan` using a unique key and a patch. */
+  updateBearerRepoScan?: Maybe<UpdateBearerRepoScanPayload>;
+  /** Updates a single `BearerRepoScan` using its globally unique id and a patch. */
+  updateBearerRepoScanByNodeId?: Maybe<UpdateBearerRepoScanPayload>;
   /** Updates a single `ContainerImage` using a unique key and a patch. */
   updateContainerImage?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImage` using its globally unique id and a patch. */
@@ -11190,6 +11426,7 @@ export type Mutation = {
   updateRepoImport?: Maybe<UpdateRepoImportPayload>;
   /** Updates a single `RepoImport` using its globally unique id and a patch. */
   updateRepoImportByNodeId?: Maybe<UpdateRepoImportPayload>;
+  updateRepoImportDefaultContainerImages?: Maybe<UpdateRepoImportDefaultContainerImagesPayload>;
   /** Updates a single `RepoImportType` using a unique key and a patch. */
   updateRepoImportType?: Maybe<UpdateRepoImportTypePayload>;
   /** Updates a single `RepoImportType` using its globally unique id and a patch. */
@@ -11278,6 +11515,12 @@ export type Mutation = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationAddRepoImportArgs = {
+  input: AddRepoImportInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationAddTokenArgs = {
   provider: Scalars['UUID'];
   token: Scalars['String'];
@@ -11309,6 +11552,12 @@ export type MutationCancellingJobArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCheckJobStatusArgs = {
   input: CheckJobStatusInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateBearerRepoScanArgs = {
+  input: CreateBearerRepoScanInput;
 };
 
 
@@ -11639,6 +11888,18 @@ export type MutationCreateVendorTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateYelpDetectSecretsRepoScanArgs = {
   input: CreateYelpDetectSecretsRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteBearerRepoScanArgs = {
+  input: DeleteBearerRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteBearerRepoScanByNodeIdArgs = {
+  input: DeleteBearerRepoScanByNodeIdInput;
 };
 
 
@@ -12309,6 +12570,12 @@ export type MutationDequeueJobArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationEnableContainerSyncArgs = {
+  input: EnableContainerSyncInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationFetchServiceAuthCredentialArgs = {
   input: FetchServiceAuthCredentialInput;
 };
@@ -12359,6 +12626,18 @@ export type MutationSimpleSqlqCleanupArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationSyncNowArgs = {
   input: SyncNowInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateBearerRepoScanArgs = {
+  input: UpdateBearerRepoScanInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateBearerRepoScanByNodeIdArgs = {
+  input: UpdateBearerRepoScanByNodeIdInput;
 };
 
 
@@ -12779,6 +13058,12 @@ export type MutationUpdateRepoImportArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRepoImportByNodeIdArgs = {
   input: UpdateRepoImportByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepoImportDefaultContainerImagesArgs = {
+  input: UpdateRepoImportDefaultContainerImagesInput;
 };
 
 
@@ -13536,6 +13821,11 @@ export enum ProvidersOrderBy {
 
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
+  bearerRepoScan?: Maybe<BearerRepoScan>;
+  /** Reads a single `BearerRepoScan` using its globally unique `ID`. */
+  bearerRepoScanByNodeId?: Maybe<BearerRepoScan>;
+  /** Reads and enables pagination through a set of `BearerRepoScan`. */
+  bearerRepoScans?: Maybe<BearerRepoScansConnection>;
   containerImage?: Maybe<ContainerImage>;
   /** Reads a single `ContainerImage` using its globally unique `ID`. */
   containerImageByNodeId?: Maybe<ContainerImage>;
@@ -13690,7 +13980,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<ContainerImage | ContainerImageType | ContainerSync | ContainerSyncSchedule | GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GitRemote | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | GosecRepoScan | GrypeRepoScan | Job | JobLog | Label | OssfScorecardRepoScan | Provider | Query | QueryHistory | Queue | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SavedQuery | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SqlqMigration | SyftRepoScan | TrivyRepoScan | Vendor | VendorType | YelpDetectSecretsRepoScan>;
+  node?: Maybe<BearerRepoScan | ContainerImage | ContainerImageType | ContainerSync | ContainerSyncSchedule | GitBlame | GitCommit | GitCommitStat | GitFile | GitRef | GitRemote | GithubActionsWorkflow | GithubActionsWorkflowRun | GithubActionsWorkflowRunJob | GithubIssue | GithubPullRequest | GithubPullRequestCommit | GithubPullRequestReview | GithubRepoInfo | GithubStargazer | GitleaksRepoScan | GosecRepoScan | GrypeRepoScan | Job | JobLog | Label | OssfScorecardRepoScan | Provider | Query | QueryHistory | Queue | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SavedQuery | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SqlqMigration | SyftRepoScan | TrivyRepoScan | Vendor | VendorType | YelpDetectSecretsRepoScan>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `OssfScorecardRepoCheckResult`. */
@@ -13840,6 +14130,31 @@ export type Query = Node & {
   yelpDetectSecretsRepoScanByNodeId?: Maybe<YelpDetectSecretsRepoScan>;
   /** Reads and enables pagination through a set of `YelpDetectSecretsRepoScan`. */
   yelpDetectSecretsRepoScans?: Maybe<YelpDetectSecretsRepoScansConnection>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryBearerRepoScanArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryBearerRepoScanByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryBearerRepoScansArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<BearerRepoScanCondition>;
+  filter?: InputMaybe<BearerRepoScanFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<BearerRepoScansOrderBy>>;
 };
 
 
@@ -15617,6 +15932,8 @@ export type ReapPayload = {
 
 /** git repositories to track */
 export type Repo = Node & {
+  /** Reads a single `BearerRepoScan` that is related to this `Repo`. */
+  bearerRepoScan?: Maybe<BearerRepoScan>;
   /** Reads and enables pagination through a set of `ContainerSync`. */
   containerSyncs: ContainerSyncsConnection;
   /** timestamp of when the MergeStat repo entry was created */
@@ -18594,6 +18911,55 @@ export type UuidFilter = {
   notIn?: InputMaybe<Array<Scalars['UUID']>>;
 };
 
+/** All input for the `updateBearerRepoScanByNodeId` mutation. */
+export type UpdateBearerRepoScanByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `BearerRepoScan` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `BearerRepoScan` being updated. */
+  patch: BearerRepoScanPatch;
+};
+
+/** All input for the `updateBearerRepoScan` mutation. */
+export type UpdateBearerRepoScanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `BearerRepoScan` being updated. */
+  patch: BearerRepoScanPatch;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `BearerRepoScan` mutation. */
+export type UpdateBearerRepoScanPayload = {
+  /** The `BearerRepoScan` that was updated by this mutation. */
+  bearerRepoScan?: Maybe<BearerRepoScan>;
+  /** An edge for our `BearerRepoScan`. May be used by Relay 1. */
+  bearerRepoScanEdge?: Maybe<BearerRepoScansEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `BearerRepoScan`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our update `BearerRepoScan` mutation. */
+export type UpdateBearerRepoScanPayloadBearerRepoScanEdgeArgs = {
+  orderBy?: InputMaybe<Array<BearerRepoScansOrderBy>>;
+};
+
 /** All input for the `updateContainerImageByNodeId` mutation. */
 export type UpdateContainerImageByNodeIdInput = {
   /**
@@ -20176,6 +20542,29 @@ export type UpdateRepoImportByNodeIdInput = {
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `RepoImport` being updated. */
   patch: RepoImportPatch;
+};
+
+/** All input for the `updateRepoImportDefaultContainerImages` mutation. */
+export type UpdateRepoImportDefaultContainerImagesInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  defaultContainerImageIds?: InputMaybe<Array<InputMaybe<Scalars['UUID']>>>;
+  repoImportId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `updateRepoImportDefaultContainerImages` mutation. */
+export type UpdateRepoImportDefaultContainerImagesPayload = {
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 /** All input for the `updateRepoImport` mutation. */
@@ -21912,6 +22301,24 @@ export type UpdateRepoImportMutationVariables = Exact<{
 
 export type UpdateRepoImportMutation = { updateRepoImport?: { repoImport?: { id: any, settings: any } | null } | null };
 
+export type AddRepoImportContainerMutationVariables = Exact<{
+  providerId: Scalars['UUID'];
+  importType: Scalars['String'];
+  importTypeName: Scalars['String'];
+  defaultContainerImageIds: Array<InputMaybe<Scalars['UUID']>> | InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type AddRepoImportContainerMutation = { addRepoImport?: { boolean?: boolean | null } | null };
+
+export type UpdateRepoImportContainerMutationVariables = Exact<{
+  repoImportId: Scalars['UUID'];
+  defaultContainerImageIds: Array<InputMaybe<Scalars['UUID']>> | InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type UpdateRepoImportContainerMutation = { updateRepoImportDefaultContainerImages?: { boolean?: boolean | null } | null };
+
 export type AddTokenMutationVariables = Exact<{
   provider: Scalars['UUID'];
   token: Scalars['String'];
@@ -22232,6 +22639,13 @@ export type GetRepoImportQueryVariables = Exact<{
 
 
 export type GetRepoImportQuery = { repoImport?: { id: any, lastImport?: any | null, settings: any, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
+
+export type GetRepoImportContainerQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetRepoImportContainerQuery = { repoImport?: { id: any, lastImport?: any | null, settings: any, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
 
 export type GetRepoDataQueryVariables = Exact<{
   id: Scalars['UUID'];
