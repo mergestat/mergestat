@@ -1,6 +1,6 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
-import { GitSourceDetail, ImportSync, RepoImportData, RepoManualImportData } from 'src/@types'
+import { GitSourceDetail, ImportContainerImage, ImportSync, RepoImportData, RepoManualImportData } from 'src/@types'
 
 type GitSourceDetailContext = {
   loading: boolean
@@ -9,6 +9,7 @@ type GitSourceDetailContext = {
   searchImport: string
   searchManualImport: string
   importAuto: ImportSync
+  importAutoContainer: ImportContainerImage
   showAddRepoModal: boolean
   showAutoImportModal: boolean
   showRemoveImportModal: boolean
@@ -34,6 +35,7 @@ const initialState: GitSourceDetailContext = {
   searchImport: '',
   searchManualImport: '',
   importAuto: {} as ImportSync,
+  importAutoContainer: {} as ImportContainerImage,
   showAddRepoModal: false,
   showAutoImportModal: false,
   showRemoveImportModal: false,
@@ -108,6 +110,13 @@ function useGitSourceDetailSetState() {
     setState(prev => ({
       ...prev,
       importAuto
+    }))
+  }
+
+  const setImportAutoContainer = (importAutoContainer: ImportContainerImage) => {
+    setState(prev => ({
+      ...prev,
+      importAutoContainer
     }))
   }
 
@@ -196,6 +205,7 @@ function useGitSourceDetailSetState() {
     setSearchImport,
     setSearchManualImport,
     setImportAuto,
+    setImportAutoContainer,
     setShowAddRepoModal,
     setShowAutoImportModal,
     setShowRemoveImportModal,

@@ -199,6 +199,20 @@ export type SyncType = {
   checked: boolean
 }
 
+export type ContainerImage = {
+  id: string
+  description: string | null | undefined
+  name: string
+  checked: boolean
+}
+
+export type ImportContainerImage = {
+  name: string
+  type: string
+  opened?: boolean
+  defaultSyncs: Array<ContainerImage>
+}
+
 export type ImportSync = {
   name: string
   type: string

@@ -22192,6 +22192,11 @@ export type GetDefaultRepoSyncsQueryVariables = Exact<{
 
 export type GetDefaultRepoSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, containerSyncs: { nodes: Array<{ repo?: { provider: any } | null, scheduled?: { id: any } | null }> } }> } | null };
 
+export type GetAllContainerImagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllContainerImagesQuery = { containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
+
 export type GetQueryHistoryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
