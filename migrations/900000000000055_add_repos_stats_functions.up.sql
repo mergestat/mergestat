@@ -171,6 +171,7 @@ BEGIN
             ci.name AS container_image_name,
             j.id AS job_id,
             j.status,
+            j.created_at,
             j.started_at,
             j.completed_at,
             (SELECT COUNT(1) FROM sqlq.job_logs WHERE sqlq.job_logs.job = j.id AND level = 'warn') warning_count,
@@ -180,14 +181,14 @@ BEGIN
         INNER JOIN mergestat.container_images ci ON cs.image_id = ci.id
         INNER JOIN sqlq.jobs j ON cse.job_id = j.id
         WHERE cs.id = container_syncs.id
-        ORDER BY cs.id, j.completed_at DESC
+        ORDER BY cs.id, j.created_at DESC
         LIMIT 15
     )
     SELECT 
         JSONB_OBJECT_AGG(job_id, TO_JSONB(t) - 'job_id')
     INTO response
     FROM (
-        SELECT job_id, started_at, completed_at, ((EXTRACT('epoch' FROM completed_at)-EXTRACT('epoch' FROM started_at))*1000)::INTEGER AS duration_ms, status FROM last_completed_syncs    
+        SELECT job_id, created_at, started_at, completed_at, ((EXTRACT('epoch' FROM completed_at)-EXTRACT('epoch' FROM started_at))*1000)::INTEGER AS duration_ms, status FROM last_completed_syncs    
     )t;
 
     RETURN response;
