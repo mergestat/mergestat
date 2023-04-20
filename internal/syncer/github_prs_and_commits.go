@@ -123,6 +123,10 @@ func (w *worker) handleGitHubRepoPRsAndCommits(ctx context.Context, j *db.Dequeu
 		if err != nil {
 			return fmt.Errorf("marshal labels: %w", err)
 		}
+		var headRepositoryName *string
+		if fetchedPR.Head.Repo != nil {
+			headRepositoryName = fetchedPR.Head.Repo.FullName
+		}
 		var mergedAt *time.Time
 		if fetchedPR.MergedAt != nil {
 			closedAt = &fetchedPR.MergedAt.Time
@@ -158,7 +162,7 @@ func (w *worker) handleGitHubRepoPRsAndCommits(ctx context.Context, j *db.Dequeu
 			EditorLogin:         nil,
 			HeadRefName:         fetchedPR.Head.Ref,
 			HeadRefOID:          fetchedPR.Head.SHA,
-			HeadRepositoryName:  fetchedPR.Head.Repo.FullName,
+			HeadRepositoryName:  headRepositoryName,
 			IsDraft:             fetchedPR.Draft,
 			LabelCount:          &labelCount,
 			LastEditedAt:        nil,
@@ -195,7 +199,11 @@ func (w *worker) handleGitHubRepoPRsAndCommits(ctx context.Context, j *db.Dequeu
 			helper.RestRatelimitHandler(ctx, resp, w.logger, queries.NewQuerier(w.db), true)
 
 			for _, commit := range page {
-
+				var additions, deletions *int
+				if commit.Stats != nil {
+					additions = commit.Stats.Additions
+					deletions = commit.Stats.Deletions
+				}
 				allPRCommitsToInsert = append(allPRCommitsToInsert, &githubPRCommit{
 					PRNumber:       pr.Number,
 					Hash:           commit.SHA,
@@ -206,8 +214,8 @@ func (w *worker) handleGitHubRepoPRsAndCommits(ctx context.Context, j *db.Dequeu
 					CommitterName:  commit.Commit.Committer.Name,
 					CommitterEmail: commit.Commit.Committer.Email,
 					CommitterWhen:  &commit.Commit.Committer.Date.Time,
-					Additions:      commit.Stats.Additions,
-					Deletions:      commit.Stats.Deletions,
+					Additions:      additions,
+					Deletions:      deletions,
 					ChangedFiles:   nil,
 					URL:            commit.URL,
 				})
