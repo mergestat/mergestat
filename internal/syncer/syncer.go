@@ -38,6 +38,7 @@ const (
 	syncTypeGitHubRepoStars           = "GITHUB_REPO_STARS"
 	syncTypeGitHubPRReviews           = "GITHUB_PR_REVIEWS"
 	syncTypeGitHubPRCommits           = "GITHUB_PR_COMMITS"
+	syncTypeGitHubPRsAndCommits       = "GITHUB_PRS_AND_COMMITS"
 	syncTypeTrivyRepoScan             = "TRIVY_REPO_SCAN"
 	syncTypeSyftRepoScan              = "SYFT_REPO_SCAN"
 	syncTypeGitHubActions             = "GITHUB_ACTIONS"
@@ -184,6 +185,8 @@ func (w *worker) handle(ctx context.Context, j *db.DequeueSyncJobRow) error {
 		return w.handleGitHubPRReviews(ctx, j)
 	case syncTypeGitHubPRCommits:
 		return w.handleGitHubPRCommits(ctx, j)
+	case syncTypeGitHubPRsAndCommits:
+		return w.handleGitHubRepoPRsAndCommits(ctx, j)
 	case syncTypeTrivyRepoScan:
 		return w.handleTrivyRepoScan(ctx, j)
 	case syncTypeSyftRepoScan:
