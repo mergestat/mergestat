@@ -20,17 +20,18 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
 
     // 2. Sort the syncs
     const sortedSyncs: JobData[] = latestRuns
-      ? getLatestRunOrdered(
-        Object.entries(latestRuns).map(([jobId, jobData]) => ({
-          id: jobId,
-          repoId,
-          syncId: syncData?.id,
-          durationMs: jobData.duration_ms,
-          runningTime: jobData.duration_ms,
-          status: jobData.status,
-          doneAt: jobData.completed_at ? new Date(jobData.completed_at) : undefined
-        }))
-      )
+      ? Object.entries(latestRuns).map(([jobId, jobData]) => ({
+        id: jobId,
+        repoId,
+        syncId: syncData?.id,
+        durationMs: jobData.duration_ms,
+        runningTime: jobData.duration_ms,
+        status: jobData.status,
+        createdAt: jobData.created_at ? new Date(jobData.created_at) : undefined,
+        doneAt: jobData.completed_at ? new Date(jobData.completed_at) : undefined
+      })).sort((a, b) => (
+        (b.createdAt ? b.createdAt.getTime() : new Date().getTime()) - (a.createdAt ? a.createdAt.getTime() : new Date().getTime())
+      ))
       : []
 
     // 3. Get sync info
@@ -65,13 +66,9 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
     syncsData.push(sync)
   })
 
-  return syncsData.sort((a, b) => a.image.name.localeCompare(b.image.name))
-}
+  console.log('Data: ', syncsData)
 
-const getLatestRunOrdered = (latestRuns: JobData[]): JobData[] => {
-  const runningJob = latestRuns.find(job => !job.doneAt)
-  const completedJobs = latestRuns.filter(job => job.doneAt).sort((a, b) => ((b.doneAt ? b.doneAt.getTime() : new Date().getTime()) - (a.doneAt ? a.doneAt.getTime() : new Date().getTime())))
-  return runningJob ? [runningJob, ...completedJobs] : completedJobs
+  return syncsData.sort((a, b) => a.image.name.localeCompare(b.image.name))
 }
 
 export { mapToRepoContainerSyncsData }

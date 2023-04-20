@@ -434,12 +434,14 @@ export type JobData = {
   runningTime: number
   runningTimeReadable?: string
   status: string
+  createdAt?: Date
   doneAt?: Date
 }
 
 export interface JobSyncRun {
   [key: string]: {
     status: string,
+    created_at: string,
     started_at: string,
     duration_ms: number,
     completed_at: string
