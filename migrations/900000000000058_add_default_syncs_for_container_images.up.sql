@@ -83,6 +83,7 @@ BEGIN
     
 END; $$;
 
+--Updating the logic to prevent concurrent syncs for the same container sync
 CREATE OR REPLACE FUNCTION mergestat.sync_now(container_sync_id UUID)
 RETURNS BOOLEAN
 LANGUAGE PLPGSQL VOLATILE
@@ -140,5 +141,49 @@ BEGIN
     RETURN TRUE;
     
 END; $$;
+
+--Seeding container images
+INSERT INTO mergestat.container_images(name, description, type, url, version, queue)
+VALUES
+('git-blame', 'Retrieves the git blame of all lines in all files of a git repository', 'docker', 'ghcr.io/mergestat/sync-git-blame', 'latest', 'default'),
+('git-commit-stats', 'Retrieves commit stats for a repo', 'docker', 'ghcr.io/mergestat/sync-git-commit-stats', 'latest', 'default'),
+('git-commits', 'Retrieves the commit history of a repo', 'docker', 'ghcr.io/mergestat/sync-git-commits', 'latest', 'default'),
+('git-files', 'Retrieves files (content and paths) of a git repo', 'docker', 'ghcr.io/mergestat/sync-git-files', 'latest', 'default'),
+('git-refs', 'Retrieves all the refs of a git repo', 'docker', 'ghcr.io/mergestat/sync-git-refs', 'latest', 'default'),
+('github-issues', 'Retrieves all the issues of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-issues', 'latest', 'github'),
+('github-pull-request-commits', 'Retrieves commits for all pull requests in a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-pull-request-commits', 'latest', 'github'),
+('github-pull-request-reviews', 'Retrieves the reviews of all pull requests in a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-pull-request-reviews', 'latest', 'github'),
+('github-pull-requests', 'Retrieves all the pull requests of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-pull-requests', 'latest', 'github'),
+('github-repo-info', 'Retrieves info/metadata about a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-repo-info', 'latest', 'github'),
+('github-repo-stargazers', 'Retrieves all stargazers of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-repo-stargazers', 'latest', 'github'),
+('scan-gitleaks', 'Executes a gitleaks scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-gitleaks', 'latest', 'default'),
+('scan-gosec', 'Executes a gosec scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-gosec', 'latest', 'default'),
+('scan-grype', 'Executes a grype scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-grype', 'latest', 'default'),
+('scan-syft', 'Executes a syft scan on a git repository to generate an SBOM', 'docker', 'ghcr.io/mergestat/sync-scan-syft', 'latest', 'default'),
+('scan-trivy', 'Executes a trivy scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-trivy', 'latest', 'default'),
+('scan-yelp-detect-secrets', 'Executes a Yelp detect-secrets scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-yelp-detect-secrets', 'latest', 'default')
+ON CONFLICT DO NOTHING;
+
+--Adding more columns to the response of the function
+DROP FUNCTION IF EXISTS public.getFilesOlderThan;
+CREATE OR REPLACE FUNCTION public.getFilesOlderThan(file_pattern TEXT, older_than_days INTEGER)
+RETURNS TABLE (repo TEXT, file_path TEXT, author_when TIMESTAMP(6) WITH TIME ZONE, author_name TEXT, author_email TEXT, hash TEXT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    WITH top_author_when AS (
+        SELECT DISTINCT ON (repos.repo, git_commit_stats.file_path) repos.repo, git_commit_stats.file_path, git_commits.author_when, git_commits.author_name, git_commits.author_email, git_commits.hash
+        FROM git_commits 
+        INNER JOIN repos ON git_commits.repo_id = repos.id 
+        INNER JOIN git_commit_stats ON git_commit_stats.repo_id = git_commits.repo_id AND git_commit_stats.commit_hash = git_commits.hash and parents < 2
+        WHERE git_commit_stats.file_path LIKE file_pattern
+        ORDER BY repos.repo, git_commit_stats.file_path, git_commits.author_when DESC
+    )
+    SELECT * FROM top_author_when
+    WHERE top_author_when.author_when < NOW() - (older_than_days || ' day')::INTERVAL
+    ORDER BY top_author_when.author_when DESC;
+END
+$$;
 
 COMMIT;
