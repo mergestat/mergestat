@@ -66,8 +66,6 @@ const mapToRepoContainerSyncsData = (data: GetContainerSyncsQuery | undefined, r
     syncsData.push(sync)
   })
 
-  console.log('Data: ', syncsData)
-
   return syncsData.sort((a, b) => a.image.name.localeCompare(b.image.name))
 }
 
