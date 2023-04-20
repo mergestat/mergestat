@@ -35,8 +35,6 @@ You can manage a single PAT for your instance in the `Settings` area of the mana
 
 Take a look at all of our [examples](./examples)
 
-You can also visit `http://localhost:3000/` to access a local [Grafana](https://grafana.com/) instance with example dashboards using the data from MergeStat 🎉 :
-
 ### Resetting a Local Instance
 
 If you'd like to "start from scratch" (i.e. reset the DB and start with a fresh deployment), run the following:
