@@ -14,15 +14,16 @@ const ADD_SAVED_QUERY = gql`
 `
 
 const UPDATE_SAVED_QUERY = gql`
-  mutation updateSavedQuery($id: UUID!, $name: String, $description: String, $sql: String) {
+  mutation updateSavedQuery($id: UUID!, $name: String, $description: String, $sql: String, $metadata: JSON) {
     updateSavedQuery(
-      input: {patch: {name: $name, description: $description, sql: $sql}, id: $id}
+      input: {patch: {name: $name, description: $description, sql: $sql, metadata: $metadata}, id: $id}
     ) {
       savedQuery {
         id
         name
         description
         sql
+        metadata
       }
     }
   }

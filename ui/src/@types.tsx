@@ -1,6 +1,7 @@
 import { ApexOptions } from 'apexcharts'
 import { ReactElement } from 'react'
 import { RepoSyncQueue } from './api-logic/graphql/generated/schema'
+import { TAB_TYPE } from './utils/constants'
 
 export type RepoSyncStateT = 'disabled' | 'running' | 'queued' | 'succeeded' | 'warning' | 'error' | 'empty'
 
@@ -16,7 +17,7 @@ export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
 
 export type ImportStatusType = 'SUCCESS' | 'FAILURE'
 
-export type ChartType = 'line' | 'bar'
+export type ChartType = TAB_TYPE.BAR | TAB_TYPE.LINE
 
 export type TagType = {
   title: string
@@ -254,6 +255,7 @@ export type ChartData = {
   yAxis?: string
   options?: ApexOptions
   series?: ApexSerie[]
+  chartType: string
 }
 
 export type SingleMetricData = {
@@ -272,6 +274,11 @@ export type ActionType = {
 
 export type TabsState = {
   [key: string]: SingleMetricData | ChartData
+}
+
+export function isChartData(maybeChart: SingleMetricData | ChartData | undefined): maybeChart is ChartData {
+  if (maybeChart === undefined) return false
+  return (maybeChart as ChartData).xAxis !== undefined
 }
 
 export interface TabData {

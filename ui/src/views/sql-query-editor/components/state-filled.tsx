@@ -1,6 +1,7 @@
 import { Badge, Button, HoverCard, Menu, Tabs, Toolbar } from '@mergestat/blocks'
 import { ArrowCollapseIcon, ArrowExpandIcon, CaretDownIcon, ChartBarIcon, ChartLineIcon, CircleCheckFilledIcon, PlusIcon, SingleMetricIcon } from '@mergestat/icons'
 import { cloneElement } from 'react'
+import { ChartData } from 'src/@types'
 import { TAB_TYPE } from 'src/utils/constants'
 import useTabs from 'src/views/hooks/useTabs'
 
@@ -9,10 +10,11 @@ type QueryEditorFilledProps = {
   rowLimitReached: boolean
   time: string
   children?: React.ReactNode
+  charts: ChartData[]
 }
 
-const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, time }: QueryEditorFilledProps) => {
-  const { tabs, expanded, activeTab, setActiveTab, setExpanded, addTab, removeTab } = useTabs(rowLimit, rowLimitReached)
+const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, time, charts }: QueryEditorFilledProps) => {
+  const { tabs, expanded, activeTab, setActiveTab, setExpanded, addTab, removeTab } = useTabs(rowLimit, rowLimitReached, charts)
 
   return (
     <div className="flex flex-col flex-1 w-full bg-white" style={{ minHeight: '48px' }}>

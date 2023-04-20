@@ -1,9 +1,11 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { isChartData } from 'src/@types'
 import { AddSavedQueryMutation, GetSavedQueryQuery } from 'src/api-logic/graphql/generated/schema'
 import { ADD_SAVED_QUERY, UPDATE_SAVED_QUERY } from 'src/api-logic/graphql/mutations/saved-query'
 import { GET_SAVED_QUERY } from 'src/api-logic/graphql/queries/get-saved-query'
+import { useQueryContext, useQueryTabsContext } from 'src/state/contexts'
 import { showSuccessAlert } from 'src/utils/alerts'
 import useCurrentUser from './useCurrentUser'
 
@@ -12,12 +14,15 @@ type useSavedQueryProps = {
   title?: string
   desc?: string
   query?: string
+  saveChartMetadata?: boolean
 }
 
-const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps) => {
+const useSavedQuery = ({ savedQueryId, title, desc, query, saveChartMetadata }: useSavedQueryProps) => {
   const router = useRouter()
   const { data: userData } = useCurrentUser()
   const [titleError, setTitleError] = useState<boolean>(false)
+  const tabsState = useQueryTabsContext()
+  const [{ tabs }] = useQueryContext()
 
   const [getSavedQuery, { loading, data }] = useLazyQuery<GetSavedQueryQuery>(GET_SAVED_QUERY, { fetchPolicy: 'no-cache' })
 
@@ -40,6 +45,18 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
     }
   })
 
+  const chartsMetadata = useMemo(() => {
+    if (!saveChartMetadata) return data?.savedQuery?.metadata?.charts
+
+    const tabIds = tabs.map(({ tabId }) => tabId)
+    const chartsData = tabIds.map((id) => tabsState[id]).filter(isChartData)
+
+    return chartsData.map((chart) => {
+      const { xAxis, xAxisType, yAxis, chartType, serie } = chart
+      return { xAxis, xAxisType, yAxis, chartType, serie }
+    })
+  }, [saveChartMetadata, data, tabs, tabsState])
+
   const addSavedQueryHandler = () => {
     if (title) {
       addSavedQuery({
@@ -48,7 +65,10 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
           createdAt: 'now',
           name: title,
           description: desc,
-          sql: query
+          sql: query,
+          metadata: {
+            charts: chartsMetadata
+          }
         }
       })
     } else {
@@ -63,7 +83,10 @@ const useSavedQuery = ({ savedQueryId, title, desc, query }: useSavedQueryProps)
           id: savedQueryId,
           name: title,
           description: desc,
-          sql: query
+          sql: query,
+          metadata: {
+            charts: chartsMetadata
+          }
         }
       })
     } else {
