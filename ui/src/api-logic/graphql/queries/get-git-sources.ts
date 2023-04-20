@@ -145,7 +145,7 @@ const GET_DEFAULT_REPO_SYNCS = gql`
 
 const GET_ALL_CONTAINER_IMAGES = gql`
   query getAllContainerImages {
-    containerImages {
+    containerImages(orderBy: NAME_ASC) {
       totalCount
       nodes {
         id

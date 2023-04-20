@@ -94,7 +94,7 @@ const GET_REPO_IMPORT_CONTAINER = gql`
         settings
       }
     }
-    containerImages {
+    containerImages(orderBy: NAME_ASC) {
       totalCount
       nodes {
         id
