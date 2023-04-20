@@ -189,7 +189,7 @@ BEGIN
         INNER JOIN mergestat.container_images ci ON cs.image_id = ci.id
         INNER JOIN sqlq.jobs j ON cse.job_id = j.id
         WHERE cs.id = container_syncs.id
-        ORDER BY cs.id, j.completed_at DESC
+        ORDER BY cs.id, j.created_at DESC
         LIMIT 15
     )
     SELECT 
