@@ -165,27 +165,6 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 --Adding more columns to the response of the function
-DROP FUNCTION IF EXISTS public.getFilesOlderThan;
-CREATE OR REPLACE FUNCTION public.getFilesOlderThan(file_pattern TEXT, older_than_days INTEGER)
-RETURNS TABLE (repo TEXT, file_path TEXT, author_when TIMESTAMP(6) WITH TIME ZONE, author_name TEXT, author_email TEXT, hash TEXT)
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    RETURN QUERY
-    WITH top_author_when AS (
-        SELECT DISTINCT ON (repos.repo, git_commit_stats.file_path) repos.repo, git_commit_stats.file_path, git_commits.author_when, git_commits.author_name, git_commits.author_email, git_commits.hash
-        FROM git_commits 
-        INNER JOIN repos ON git_commits.repo_id = repos.id 
-        INNER JOIN git_commit_stats ON git_commit_stats.repo_id = git_commits.repo_id AND git_commit_stats.commit_hash = git_commits.hash and parents < 2
-        WHERE git_commit_stats.file_path LIKE file_pattern
-        ORDER BY repos.repo, git_commit_stats.file_path, git_commits.author_when DESC
-    )
-    SELECT * FROM top_author_when
-    WHERE top_author_when.author_when < NOW() - (older_than_days || ' day')::INTERVAL
-    ORDER BY top_author_when.author_when DESC;
-END
-$$;
-
 --https://www.graphile.org/postgraphile/computed-columns/
 CREATE OR REPLACE FUNCTION mergestat.container_syncs_latest_sync_runs(container_syncs mergestat.CONTAINER_SYNCS)
 RETURNS JSONB
@@ -200,6 +179,7 @@ BEGIN
             ci.name AS container_image_name,
             j.id AS job_id,
             j.status,
+            j.created_at,
             j.started_at,
             j.completed_at,
             (SELECT COUNT(1) FROM sqlq.job_logs WHERE sqlq.job_logs.job = j.id AND level = 'warn') warning_count,
@@ -216,7 +196,7 @@ BEGIN
         JSONB_OBJECT_AGG(job_id, TO_JSONB(t) - 'job_id')
     INTO response
     FROM (
-        SELECT job_id, started_at, completed_at, ((EXTRACT('epoch' FROM completed_at)-EXTRACT('epoch' FROM started_at))*1000)::INTEGER AS duration_ms, status FROM last_completed_syncs    
+        SELECT job_id, created_at, started_at, completed_at, ((EXTRACT('epoch' FROM completed_at)-EXTRACT('epoch' FROM started_at))*1000)::INTEGER AS duration_ms, status FROM last_completed_syncs    
     )t;
 
     RETURN response;
