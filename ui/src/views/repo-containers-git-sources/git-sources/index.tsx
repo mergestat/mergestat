@@ -33,7 +33,7 @@ const GitSourcesView: React.FC = () => {
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
+        onClick: () => router.push('/repos-containers'),
       },
     ]
 

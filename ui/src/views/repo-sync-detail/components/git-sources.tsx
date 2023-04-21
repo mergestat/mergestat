@@ -52,11 +52,15 @@ const GitSourcesContainer: React.FC<GitSourcesContainerProps> = ({ containerSync
           </div>
         </Panel.Header>
 
-        <Panel.Body className={cx(records ? 'bg-gray-50' : 'bg-white', { 'p-0': records })}>
+        <Panel.Body className={cx(
+          'flex flex-col',
+          records ? 'bg-gray-50' : 'bg-white',
+          { 'p-0': records })
+        }>
           {records && <FilterHeader setSearch={setSearch} />}
 
           {loading
-            ? <Loading />
+            ? <div className='py-8'><Loading /></div>
             : records
               ? <GitSourcesTable gitSources={gitSources} />
               : <div className='flex justify-center bg-white p-6'>

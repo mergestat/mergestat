@@ -46,6 +46,7 @@ const GET_CONTAINER_IMAGES = gql`
       totalCount
     }
     containerImages(
+      orderBy: NAME_ASC
       filter: {
         or: [
           {name: {includesInsensitive: $search}}
