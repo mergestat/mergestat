@@ -151,26 +151,37 @@ BEGIN
     
 END; $$;
 
+--Delete duplicate container images and add unique constraint
+DELETE FROM
+    mergestat.container_images a
+    USING mergestat.container_images b
+WHERE
+    a.id < b.id
+    AND a.name = b.name;
+
+ALTER TABLE mergestat.container_images DROP CONSTRAINT IF EXISTS unique_container_images_name;
+ALTER TABLE mergestat.container_images ADD CONSTRAINT unique_container_images_name UNIQUE (name);
+
 --Seeding container images
 INSERT INTO mergestat.container_images(name, description, type, url, version, queue)
 VALUES
-('git-blame', 'Retrieves the git blame of all lines in all files of a git repository', 'docker', 'ghcr.io/mergestat/sync-git-blame', 'latest', 'default'),
-('git-commit-stats', 'Retrieves commit stats for a repo', 'docker', 'ghcr.io/mergestat/sync-git-commit-stats', 'latest', 'default'),
-('git-commits', 'Retrieves the commit history of a repo', 'docker', 'ghcr.io/mergestat/sync-git-commits', 'latest', 'default'),
-('git-files', 'Retrieves files (content and paths) of a git repo', 'docker', 'ghcr.io/mergestat/sync-git-files', 'latest', 'default'),
-('git-refs', 'Retrieves all the refs of a git repo', 'docker', 'ghcr.io/mergestat/sync-git-refs', 'latest', 'default'),
-('github-issues', 'Retrieves all the issues of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-issues', 'latest', 'github'),
-('github-pull-request-commits', 'Retrieves commits for all pull requests in a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-pull-request-commits', 'latest', 'github'),
-('github-pull-request-reviews', 'Retrieves the reviews of all pull requests in a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-pull-request-reviews', 'latest', 'github'),
-('github-pull-requests', 'Retrieves all the pull requests of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-pull-requests', 'latest', 'github'),
-('github-repo-info', 'Retrieves info/metadata about a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-repo-info', 'latest', 'github'),
-('github-repo-stargazers', 'Retrieves all stargazers of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-repo-stargazers', 'latest', 'github'),
-('scan-gitleaks', 'Executes a gitleaks scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-gitleaks', 'latest', 'default'),
-('scan-gosec', 'Executes a gosec scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-gosec', 'latest', 'default'),
-('scan-grype', 'Executes a grype scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-grype', 'latest', 'default'),
-('scan-syft', 'Executes a syft scan on a git repository to generate an SBOM', 'docker', 'ghcr.io/mergestat/sync-scan-syft', 'latest', 'default'),
-('scan-trivy', 'Executes a trivy scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-trivy', 'latest', 'default'),
-('scan-yelp-detect-secrets', 'Executes a Yelp detect-secrets scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-yelp-detect-secrets', 'latest', 'default')
+('Git Blame', 'Retrieves the git blame of all lines in all files of a git repository', 'docker', 'ghcr.io/mergestat/sync-git-blame', 'latest', 'default'),
+('Git Commit Stats', 'Retrieves commit stats for a repo', 'docker', 'ghcr.io/mergestat/sync-git-commit-stats', 'latest', 'default'),
+('Git Commits', 'Retrieves the commit history of a repo', 'docker', 'ghcr.io/mergestat/sync-git-commits', 'latest', 'default'),
+('Git Files', 'Retrieves files (content and paths) of a git repo', 'docker', 'ghcr.io/mergestat/sync-git-files', 'latest', 'default'),
+('Git Refs', 'Retrieves all the refs of a git repo', 'docker', 'ghcr.io/mergestat/sync-git-refs', 'latest', 'default'),
+('GitHub Issues', 'Retrieves all the issues of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-issues', 'latest', 'github'),
+('GitHub PR Commits', 'Retrieves commits for all pull requests in a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-pull-request-commits', 'latest', 'github'),
+('GitHub PR Reviews', 'Retrieves the reviews of all pull requests in a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-pull-request-reviews', 'latest', 'github'),
+('GitHub Pull Requests', 'Retrieves all the pull requests of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-pull-requests', 'latest', 'github'),
+('GitHub Repo Info', 'Retrieves info/metadata of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-repo-info', 'latest', 'github'),
+('GitHub Stargazers', 'Retrieves all stargazers of a GitHub repo', 'docker', 'ghcr.io/mergestat/sync-github-repo-stargazers', 'latest', 'github'),
+('Scan Gitleaks', 'Executes a gitleaks scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-gitleaks', 'latest', 'default'),
+('Scan Gosec', 'Executes a gosec scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-gosec', 'latest', 'default'),
+('Scan Grype', 'Executes a grype scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-grype', 'latest', 'default'),
+('Scan Syft', 'Executes a syft scan on a git repository to generate an SBOM', 'docker', 'ghcr.io/mergestat/sync-scan-syft', 'latest', 'default'),
+('Scan Trivy', 'Executes a trivy scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-trivy', 'latest', 'default'),
+('Scan Yelp Detect Secrets', 'Executes a Yelp detect-secrets scan on a git repository', 'docker', 'ghcr.io/mergestat/sync-scan-yelp-detect-secrets', 'latest', 'default')
 ON CONFLICT DO NOTHING;
 
 --Adding more columns to the response of the function
