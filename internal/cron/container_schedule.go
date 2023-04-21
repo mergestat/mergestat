@@ -20,12 +20,14 @@ func ContainerSync(ctx context.Context, dur time.Duration, upstream *sql.DB) {
 		ID          uuid.UUID
 		Queue       sqlq.Queue
 		Concurrency int32
+		Priority    int32
 	}
 
 	const listSyncsQuery = `
-WITH schedules(id, queue, job, status) AS (
+WITH schedules(id, queue, job, status, concurrency, priority) AS (
 	SELECT DISTINCT ON (syncs.id) syncs.id, (image.queue || '-' || repo.provider) AS queue, exec.job_id, job.status,
-		CASE WHEN image.queue = 'github' THEN 1 ELSE 0 END AS concurrency
+		CASE WHEN image.queue = 'github' THEN 1 ELSE 0 END AS concurrency,
+		CASE WHEN image.queue = 'github' THEN 1 ELSE 2 END AS priority
 		FROM mergestat.container_sync_schedules schd, mergestat.container_syncs syncs
 			INNER JOIN mergestat.container_images image ON image.id = syncs.image_id
 			INNER JOIN public.repos repo ON repo.id = syncs.repo_id
@@ -34,11 +36,11 @@ WITH schedules(id, queue, job, status) AS (
 	WHERE syncs.id = schd.sync_id
 	ORDER BY syncs.id, exec.created_at DESC
 )
-SELECT id, queue, concurrency FROM schedules
+SELECT id, queue, concurrency, priority FROM schedules
 	WHERE (status IS NULL OR status NOT IN ('pending', 'running'));`
 
 	const createExecutionQuery = "INSERT INTO mergestat.container_sync_executions (sync_id, job_id) VALUES ($1, $2)"
-	const createQueueQuery = "INSERT INTO sqlq.queues (name, concurrency) VALUES ($1, NULLIF($2,0)) ON CONFLICT (name) DO UPDATE SET concurrency = excluded.concurrency"
+	const createQueueQuery = "INSERT INTO sqlq.queues (name, concurrency, priority) VALUES ($1, NULLIF($2,0), $3) ON CONFLICT (name) DO UPDATE SET concurrency = excluded.concurrency, priority = excluded.priority"
 
 	var fn = func() error {
 		var err error
@@ -57,7 +59,7 @@ SELECT id, queue, concurrency FROM schedules
 
 		for rows.Next() {
 			var sync Sync
-			if err = rows.Scan(&sync.ID, &sync.Queue, &sync.Concurrency); err != nil {
+			if err = rows.Scan(&sync.ID, &sync.Queue, &sync.Concurrency, &sync.Priority); err != nil {
 				return err
 			}
 			syncs = append(syncs, sync)
@@ -76,7 +78,7 @@ SELECT id, queue, concurrency FROM schedules
 		defer createExecution.Close()
 
 		for _, sync := range syncs {
-			if _, err = createQueue.ExecContext(ctx, sync.Queue, sync.Concurrency); err != nil {
+			if _, err = createQueue.ExecContext(ctx, sync.Queue, sync.Concurrency, sync.Priority); err != nil {
 				return err
 			}
 

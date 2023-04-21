@@ -91,6 +91,7 @@ AS $$
 DECLARE 
     queue_name TEXT;
     queue_concurrency INTEGER;
+    queue_priority INTEGER;
     job_id UUID;
     is_sync_already_running BOOLEAN;
 BEGIN
@@ -127,9 +128,17 @@ BEGIN
         INNER JOIN mergestat.container_images ci ON ci.id = cs.image_id
         INNER JOIN public.repos r ON r.id = cs.repo_id
         WHERE cs.id = container_sync_id;
+
+        --Get the queue priority
+        SELECT DISTINCT CASE WHEN ci.queue = 'github' THEN 1 ELSE 2 END
+        INTO queue_priority
+        FROM mergestat.container_syncs cs
+        INNER JOIN mergestat.container_images ci ON ci.id = cs.image_id
+        INNER JOIN public.repos r ON r.id = cs.repo_id
+        WHERE cs.id = container_sync_id;
         
         --Add the queue if missing
-        INSERT INTO sqlq.queues (name, concurrency) VALUES (queue_name, queue_concurrency) ON CONFLICT (name) DO UPDATE SET concurrency = excluded.concurrency;
+        INSERT INTO sqlq.queues (name, concurrency, priority) VALUES (queue_name, queue_concurrency, queue_priority) ON CONFLICT (name) DO UPDATE SET concurrency = excluded.concurrency, priority = excluded.priority;
         
         --Add the job
         INSERT INTO sqlq.jobs (queue, typename, parameters, priority) VALUES (queue_name, 'container/sync', jsonb_build_object('ID', container_sync_id), 0) RETURNING id INTO job_id;
