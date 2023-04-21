@@ -129,7 +129,7 @@ func (w *worker) handleGitHubRepoPRsAndCommits(ctx context.Context, j *db.Dequeu
 		}
 		var mergedAt *time.Time
 		if fetchedPR.MergedAt != nil {
-			closedAt = &fetchedPR.MergedAt.Time
+			mergedAt = &fetchedPR.MergedAt.Time
 		}
 		var mergedByLogin *string
 		if fetchedPR.MergedBy != nil {
@@ -137,7 +137,7 @@ func (w *worker) handleGitHubRepoPRsAndCommits(ctx context.Context, j *db.Dequeu
 		}
 		var updatedAt *time.Time
 		if fetchedPR.UpdatedAt != nil {
-			closedAt = &fetchedPR.UpdatedAt.Time
+			updatedAt = &fetchedPR.UpdatedAt.Time
 		}
 
 		prsToInsert = append(prsToInsert, &githubRepoPR{
