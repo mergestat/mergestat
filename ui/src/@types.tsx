@@ -200,6 +200,20 @@ export type SyncType = {
   checked: boolean
 }
 
+export type ContainerImage = {
+  id: string
+  description: string | null | undefined
+  name: string
+  checked: boolean
+}
+
+export type ImportContainerImage = {
+  name: string
+  type: string
+  opened?: boolean
+  defaultSyncs: Array<ContainerImage>
+}
+
 export type ImportSync = {
   name: string
   type: string
@@ -423,15 +437,18 @@ export type JobData = {
   id: string
   repoId: string
   syncId: string
+  durationMs: number
   runningTime: number
   runningTimeReadable?: string
   status: string
+  createdAt?: Date
   doneAt?: Date
 }
 
 export interface JobSyncRun {
   [key: string]: {
     status: string,
+    created_at: string,
     started_at: string,
     duration_ms: number,
     completed_at: string

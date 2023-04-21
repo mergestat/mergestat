@@ -143,10 +143,24 @@ const GET_DEFAULT_REPO_SYNCS = gql`
   }
 `
 
+const GET_ALL_CONTAINER_IMAGES = gql`
+  query getAllContainerImages {
+    containerImages(orderBy: NAME_ASC) {
+      totalCount
+      nodes {
+        id
+        name
+        description
+      }
+    }
+  }
+`
+
 export {
   GET_GIT_SOURCES_LIST,
   GET_GIT_SOURCES_LIST_CS,
   GET_GIT_SOURCES,
   GET_GIT_SOURCE,
-  GET_DEFAULT_REPO_SYNCS
+  GET_DEFAULT_REPO_SYNCS,
+  GET_ALL_CONTAINER_IMAGES
 }

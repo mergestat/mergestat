@@ -81,4 +81,34 @@ const GET_REPO_IMPORT = gql`
   }
 `
 
-export { GET_REPO_AUTO_IMPORTS, GET_ALL_REPO_MANUAL_IMPORTS, GET_REPO_MANUAL_IMPORTS, GET_REPO_IMPORT }
+const GET_REPO_IMPORT_CONTAINER = gql`
+  query getRepoImportContainer($id: UUID!) {
+    repoImport(id: $id) {
+      id
+      lastImport
+      settings
+      provider: providerByProvider {
+        id
+        name
+        vendor
+        settings
+      }
+    }
+    containerImages(orderBy: NAME_ASC) {
+      totalCount
+      nodes {
+        id
+        name
+        description
+      }
+    }
+  }
+`
+
+export {
+  GET_REPO_AUTO_IMPORTS,
+  GET_ALL_REPO_MANUAL_IMPORTS,
+  GET_REPO_MANUAL_IMPORTS,
+  GET_REPO_IMPORT,
+  GET_REPO_IMPORT_CONTAINER
+}

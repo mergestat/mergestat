@@ -412,3 +412,6 @@ FROM mergestat.repo_imports AS dq
     INNER JOIN mergestat.providers pr ON pr.id = dq.provider
     INNER JOIN mergestat.vendors vd ON vd.name = pr.vendor
 WHERE dq.id = @id;
+
+-- name: EnableContainerSync :exec
+SELECT mergestat.enable_container_sync(@RepoID::UUID, @ContainerImageID::UUID);

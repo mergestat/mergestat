@@ -124,6 +124,20 @@ func (mr *MockQuerierMockRecorder) DequeueSyncJob(ctx interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DequeueSyncJob", reflect.TypeOf((*MockQuerier)(nil).DequeueSyncJob), ctx)
 }
 
+// EnableContainerSync mocks base method.
+func (m *MockQuerier) EnableContainerSync(ctx context.Context, arg db.EnableContainerSyncParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "EnableContainerSync", ctx, arg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// EnableContainerSync indicates an expected call of EnableContainerSync.
+func (mr *MockQuerierMockRecorder) EnableContainerSync(ctx, arg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EnableContainerSync", reflect.TypeOf((*MockQuerier)(nil).EnableContainerSync), ctx, arg)
+}
+
 // EnqueueAllSyncs mocks base method.
 func (m *MockQuerier) EnqueueAllSyncs(ctx context.Context) error {
 	m.ctrl.T.Helper()

@@ -21,6 +21,31 @@ export type Scalars = {
   YesOrNo: any;
 };
 
+/** All input for the `addRepoImport` mutation. */
+export type AddRepoImportInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  defaultContainerImageIds?: InputMaybe<Array<InputMaybe<Scalars['UUID']>>>;
+  importType?: InputMaybe<Scalars['String']>;
+  importTypeName?: InputMaybe<Scalars['String']>;
+  providerId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `addRepoImport` mutation. */
+export type AddRepoImportPayload = {
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
 export type BigIntFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -2626,6 +2651,16 @@ export type DatetimeFilter = {
   notIn?: InputMaybe<Array<Scalars['Datetime']>>;
 };
 
+/** All input for the `deleteContainerImageByName` mutation. */
+export type DeleteContainerImageByNameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
 /** All input for the `deleteContainerImageByNodeId` mutation. */
 export type DeleteContainerImageByNodeIdInput = {
   /**
@@ -5076,6 +5111,29 @@ export type DisplayDatabaseConnection = {
   user?: Maybe<Scalars['String']>;
 };
 
+/** All input for the `enableContainerSync` mutation. */
+export type EnableContainerSyncInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  containerImageId?: InputMaybe<Scalars['UUID']>;
+  repoIdParam?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `enableContainerSync` mutation. */
+export type EnableContainerSyncPayload = {
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 export type ExecSqlInput = {
   disableReadOnly?: InputMaybe<Scalars['Boolean']>;
   query?: InputMaybe<Scalars['String']>;
@@ -5121,6 +5179,39 @@ export type FetchServiceAuthCredentialRecord = {
   id?: Maybe<Scalars['UUID']>;
   token?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
+};
+
+/** All input for the `getfilesolderthan` mutation. */
+export type GetfilesolderthanInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  filePattern?: InputMaybe<Scalars['String']>;
+  olderThanDays?: InputMaybe<Scalars['Int']>;
+};
+
+/** The output of our `getfilesolderthan` mutation. */
+export type GetfilesolderthanPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  results?: Maybe<Array<Maybe<GetfilesolderthanRecord>>>;
+};
+
+/** The return type of our `getfilesolderthan` mutation. */
+export type GetfilesolderthanRecord = {
+  authorEmail?: Maybe<Scalars['String']>;
+  authorName?: Maybe<Scalars['String']>;
+  authorWhen?: Maybe<Scalars['Datetime']>;
+  filePath?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  repo?: Maybe<Scalars['String']>;
 };
 
 /** git blame of all lines in all files of a repo */
@@ -10705,6 +10796,7 @@ export type MarkSuccessPayload = {
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
+  addRepoImport?: Maybe<AddRepoImportPayload>;
   addToken?: Maybe<Scalars['Boolean']>;
   bulkDisableSync?: Maybe<Scalars['Boolean']>;
   bulkEnableSync?: Maybe<Scalars['Boolean']>;
@@ -10822,6 +10914,8 @@ export type Mutation = {
   createYelpDetectSecretsRepoScan?: Maybe<CreateYelpDetectSecretsRepoScanPayload>;
   /** Deletes a single `ContainerImage` using a unique key. */
   deleteContainerImage?: Maybe<DeleteContainerImagePayload>;
+  /** Deletes a single `ContainerImage` using a unique key. */
+  deleteContainerImageByName?: Maybe<DeleteContainerImagePayload>;
   /** Deletes a single `ContainerImage` using its globally unique id. */
   deleteContainerImageByNodeId?: Maybe<DeleteContainerImagePayload>;
   /** Deletes a single `ContainerImageType` using a unique key. */
@@ -11041,7 +11135,9 @@ export type Mutation = {
   /** Deletes a single `YelpDetectSecretsRepoScan` using its globally unique id. */
   deleteYelpDetectSecretsRepoScanByNodeId?: Maybe<DeleteYelpDetectSecretsRepoScanPayload>;
   dequeueJob?: Maybe<DequeueJobPayload>;
+  enableContainerSync?: Maybe<EnableContainerSyncPayload>;
   fetchServiceAuthCredential?: Maybe<FetchServiceAuthCredentialPayload>;
+  getfilesolderthan?: Maybe<GetfilesolderthanPayload>;
   jsonbRecursiveMerge?: Maybe<JsonbRecursiveMergePayload>;
   markFailed?: Maybe<MarkFailedPayload>;
   markSuccess?: Maybe<MarkSuccessPayload>;
@@ -11052,6 +11148,8 @@ export type Mutation = {
   syncNow?: Maybe<SyncNowPayload>;
   /** Updates a single `ContainerImage` using a unique key and a patch. */
   updateContainerImage?: Maybe<UpdateContainerImagePayload>;
+  /** Updates a single `ContainerImage` using a unique key and a patch. */
+  updateContainerImageByName?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImage` using its globally unique id and a patch. */
   updateContainerImageByNodeId?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImageType` using a unique key and a patch. */
@@ -11190,6 +11288,7 @@ export type Mutation = {
   updateRepoImport?: Maybe<UpdateRepoImportPayload>;
   /** Updates a single `RepoImport` using its globally unique id and a patch. */
   updateRepoImportByNodeId?: Maybe<UpdateRepoImportPayload>;
+  updateRepoImportDefaultContainerImages?: Maybe<UpdateRepoImportDefaultContainerImagesPayload>;
   /** Updates a single `RepoImportType` using a unique key and a patch. */
   updateRepoImportType?: Maybe<UpdateRepoImportTypePayload>;
   /** Updates a single `RepoImportType` using its globally unique id and a patch. */
@@ -11274,6 +11373,12 @@ export type Mutation = {
   userMgmtRemoveUser?: Maybe<UserMgmtRemoveUserPayload>;
   userMgmtSetUserRole?: Maybe<UserMgmtSetUserRolePayload>;
   userMgmtUpdateUserPassword?: Maybe<UserMgmtUpdateUserPasswordPayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationAddRepoImportArgs = {
+  input: AddRepoImportInput;
 };
 
 
@@ -11645,6 +11750,12 @@ export type MutationCreateYelpDetectSecretsRepoScanArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteContainerImageArgs = {
   input: DeleteContainerImageInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteContainerImageByNameArgs = {
+  input: DeleteContainerImageByNameInput;
 };
 
 
@@ -12309,8 +12420,20 @@ export type MutationDequeueJobArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationEnableContainerSyncArgs = {
+  input: EnableContainerSyncInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationFetchServiceAuthCredentialArgs = {
   input: FetchServiceAuthCredentialInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationGetfilesolderthanArgs = {
+  input: GetfilesolderthanInput;
 };
 
 
@@ -12365,6 +12488,12 @@ export type MutationSyncNowArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateContainerImageArgs = {
   input: UpdateContainerImageInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateContainerImageByNameArgs = {
+  input: UpdateContainerImageByNameInput;
 };
 
 
@@ -12779,6 +12908,12 @@ export type MutationUpdateRepoImportArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRepoImportByNodeIdArgs = {
   input: UpdateRepoImportByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepoImportDefaultContainerImagesArgs = {
+  input: UpdateRepoImportDefaultContainerImagesInput;
 };
 
 
@@ -13537,6 +13672,7 @@ export enum ProvidersOrderBy {
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
   containerImage?: Maybe<ContainerImage>;
+  containerImageByName?: Maybe<ContainerImage>;
   /** Reads a single `ContainerImage` using its globally unique `ID`. */
   containerImageByNodeId?: Maybe<ContainerImage>;
   containerImageType?: Maybe<ContainerImageType>;
@@ -13846,6 +13982,12 @@ export type Query = Node & {
 /** The root query type which gives access points into the data universe. */
 export type QueryContainerImageArgs = {
   id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryContainerImageByNameArgs = {
+  name: Scalars['String'];
 };
 
 
@@ -18594,6 +18736,18 @@ export type UuidFilter = {
   notIn?: InputMaybe<Array<Scalars['UUID']>>;
 };
 
+/** All input for the `updateContainerImageByName` mutation. */
+export type UpdateContainerImageByNameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  /** An object where the defined keys will be set on the `ContainerImage` being updated. */
+  patch: ContainerImagePatch;
+};
+
 /** All input for the `updateContainerImageByNodeId` mutation. */
 export type UpdateContainerImageByNodeIdInput = {
   /**
@@ -20176,6 +20330,29 @@ export type UpdateRepoImportByNodeIdInput = {
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `RepoImport` being updated. */
   patch: RepoImportPatch;
+};
+
+/** All input for the `updateRepoImportDefaultContainerImages` mutation. */
+export type UpdateRepoImportDefaultContainerImagesInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  defaultContainerImageIds?: InputMaybe<Array<InputMaybe<Scalars['UUID']>>>;
+  repoImportId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `updateRepoImportDefaultContainerImages` mutation. */
+export type UpdateRepoImportDefaultContainerImagesPayload = {
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 /** All input for the `updateRepoImport` mutation. */
@@ -21912,6 +22089,24 @@ export type UpdateRepoImportMutationVariables = Exact<{
 
 export type UpdateRepoImportMutation = { updateRepoImport?: { repoImport?: { id: any, settings: any } | null } | null };
 
+export type AddRepoImportContainerMutationVariables = Exact<{
+  providerId: Scalars['UUID'];
+  importType: Scalars['String'];
+  importTypeName: Scalars['String'];
+  defaultContainerImageIds: Array<InputMaybe<Scalars['UUID']>> | InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type AddRepoImportContainerMutation = { addRepoImport?: { boolean?: boolean | null } | null };
+
+export type UpdateRepoImportContainerMutationVariables = Exact<{
+  repoImportId: Scalars['UUID'];
+  defaultContainerImageIds: Array<InputMaybe<Scalars['UUID']>> | InputMaybe<Scalars['UUID']>;
+}>;
+
+
+export type UpdateRepoImportContainerMutation = { updateRepoImportDefaultContainerImages?: { boolean?: boolean | null } | null };
+
 export type AddTokenMutationVariables = Exact<{
   provider: Scalars['UUID'];
   token: Scalars['String'];
@@ -22192,6 +22387,11 @@ export type GetDefaultRepoSyncsQueryVariables = Exact<{
 
 export type GetDefaultRepoSyncsQuery = { all?: { totalCount: number } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null, containerSyncs: { nodes: Array<{ repo?: { provider: any } | null, scheduled?: { id: any } | null }> } }> } | null };
 
+export type GetAllContainerImagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllContainerImagesQuery = { containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
+
 export type GetQueryHistoryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -22227,6 +22427,13 @@ export type GetRepoImportQueryVariables = Exact<{
 
 
 export type GetRepoImportQuery = { repoImport?: { id: any, lastImport?: any | null, settings: any, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null, repoSyncTypes?: { nodes: Array<{ type: string, description?: string | null, shortName: string }> } | null };
+
+export type GetRepoImportContainerQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetRepoImportContainerQuery = { repoImport?: { id: any, lastImport?: any | null, settings: any, provider?: { id: any, name: string, vendor: string, settings: any } | null } | null, containerImages?: { totalCount: number, nodes: Array<{ id: any, name: string, description?: string | null }> } | null };
 
 export type GetRepoDataQueryVariables = Exact<{
   id: Scalars['UUID'];

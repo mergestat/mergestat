@@ -147,9 +147,10 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 
 			var args []string
 			args = append(args, "run", "--quiet", "--rm")
-			args = append(args, "--pull", "never")     // run never pulls an image!
-			args = append(args, "--env-file", envFile) // set environment variables from envFile
-			args = append(args, "--network", "host")   // use host networking
+			args = append(args, "--restart", "on-failure") // run never pulls an image!
+			args = append(args, "--pull", "never")         // run never pulls an image!
+			args = append(args, "--env-file", envFile)     // set environment variables from envFile
+			args = append(args, "--network", "host")       // use host networking
 
 			// if opted-in by setting com.mergestat.sync.clone to true, we perform a full clone
 			// of the repository to a temporary directory and mount that directory into the container

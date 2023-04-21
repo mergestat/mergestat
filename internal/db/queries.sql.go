@@ -137,6 +137,20 @@ func (q *Queries) DequeueSyncJob(ctx context.Context) (DequeueSyncJobRow, error)
 	return i, err
 }
 
+const enableContainerSync = `-- name: EnableContainerSync :exec
+SELECT mergestat.enable_container_sync($1::UUID, $2::UUID)
+`
+
+type EnableContainerSyncParams struct {
+	Repoid           uuid.UUID
+	Containerimageid uuid.UUID
+}
+
+func (q *Queries) EnableContainerSync(ctx context.Context, arg EnableContainerSyncParams) error {
+	_, err := q.db.Exec(ctx, enableContainerSync, arg.Repoid, arg.Containerimageid)
+	return err
+}
+
 const enqueueAllSyncs = `-- name: EnqueueAllSyncs :exec
 WITH ranked_queue AS (
     SELECT

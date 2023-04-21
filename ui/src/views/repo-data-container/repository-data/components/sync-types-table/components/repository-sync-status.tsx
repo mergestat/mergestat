@@ -53,7 +53,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
     { length: 15 },
     (x, i) => (i in data)
       ? data[i]
-      : { id: '', repoId: '', syncId: '', runningTime: 3, runningTimeReadable: '', status: SYNC_STATUS.empty, doneAt: undefined }
+      : { id: '', repoId: '', syncId: '', durationMs: 0, runningTime: 3, runningTimeReadable: '', status: SYNC_STATUS.empty, doneAt: undefined }
   )
 
   const valueArray = chartArray.map((d: JobData) => d.runningTime)
