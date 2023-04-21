@@ -6,6 +6,8 @@
 
 # mergestat <a href="https://docs.mergestat.com/"><img align="right" src="https://github.com/mergestat/mergestat/raw/main/docs/logo.png" alt="MergeStat Logo" height="100"></a>
 
+![Banner describing MergeStat](docs/banner.png)
+
 MergeStat enables SQL queries for data in git repositories (and related sources, such as the GitHub API). It allows you to ask questions about the history and contents of your source code.
 
 **If you are looking for our CLI, which runs SQL queries against local git repositories, it's now called [`mergestat-lite`](https://github.com/mergestat/mergestat-lite)**
