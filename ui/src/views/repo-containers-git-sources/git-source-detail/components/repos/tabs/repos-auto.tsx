@@ -89,7 +89,7 @@ const ReposAuto: React.FC = () => {
       {records && <FilterHeader initValue={searchImport} setSearch={setSearchImport} />}
 
       {loading
-        ? <Loading />
+        ? <div className='py-8'><Loading /></div>
         : records
           ? <AutoImportTable imports={imports} />
           : <div className='bg-white p-6 pt-0'>
