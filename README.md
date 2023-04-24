@@ -29,7 +29,7 @@ Now if you visit `http://localhost:3300/` you should be able to access our manag
 **NOTE** if you'd like to make use of GitHub API data (any sync type that uses the GitHub API **including repo auto imports**) or any private GitHub repos you will need to supply a GitHub [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 We are working on GitHub auth alternatives, but for now a PAT is your best bet.
 
-<img alt="MergeStat GitHub PAT Management UI" src="docs/github-pat-local.png" />
+<img alt="MergeStat GitHub PAT Management UI" src="docs/github-pat-local.jpg" />
 
 You can manage a single PAT for your instance in the `Settings` area of the management UI.
 
