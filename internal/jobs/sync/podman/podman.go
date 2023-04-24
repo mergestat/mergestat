@@ -66,6 +66,8 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 
 		// used below to send stdout and stderr to job logs
 		infof, debugf := func(str string) { logger.Info(str) }, func(str string) { logger.Debug(str) }
+		// used below to send stdout and stderr to worker logs
+		wInfof, wDebugf := func(str string) { l.Info().Msg(str) }, func(str string) { l.Debug().Msg(str) }
 
 		var image = fmt.Sprintf("%s:%s", containerSync.ImageUrl, containerSync.ImageVersion)
 		var url = fmt.Sprintf("docker://%s", image)
@@ -81,8 +83,8 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 
 			var wg sync.WaitGroup
 			wg.Add(2)
-			go func() { defer wg.Done(); log(infof, stdout) }()
-			go func() { defer wg.Done(); log(debugf, stderr) }()
+			go func() { defer wg.Done(); log(wInfof, stdout) }()
+			go func() { defer wg.Done(); log(wDebugf, stderr) }()
 
 			wg.Wait()
 			if err = pull.Wait(); err != nil {
@@ -195,6 +197,8 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 				logger.Errorf("failed to run image: %s", err.Error())
 				return errors.Wrapf(err, "failed to run image")
 			}
+
+			logger.Infof("finished running image %s", url)
 		}
 
 		return nil
@@ -209,6 +213,9 @@ func podman(ctx context.Context, args ...string) *exec.Cmd {
 // log sends lines from src to the given sqlq.Logger
 func log(fn func(string), src io.Reader) {
 	var scanner = bufio.NewScanner(src)
+	// TODO(patrickdevivo,riyaz-ali) we think there could be a bug here where the scanner.Scan() call blocks forever/for a long time
+	// when the output of the container doesn't include a newline character. We should investigate this further.
+	// See here: https://github.com/golang/go/issues/35474. part of this might be we need to handle scanner.Err() as well.
 	for scanner.Scan() {
 		fn(scanner.Text())
 	}
