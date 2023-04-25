@@ -12,7 +12,7 @@ export const EnableAllReposModal: React.FC = () => {
 
   const [{
     idContainerSync,
-    gitSourceToEnable: { id, name: nameGitSource },
+    gitSourceToEnable: { id, name: nameGitSource, totalRepos },
     containerSyncDetail: { name: nameImage }
   }] = useContainerSyncDetailContext()
   const { setShowEnableAllReposModal } = useContainerSyncDetailSetState()
@@ -52,7 +52,8 @@ export const EnableAllReposModal: React.FC = () => {
       <Modal.Body className='p-6 space-y-6'>
         <div>
           Do you want to enable the scheduling of <strong className="font-semibold text-gray-800">{nameImage}</strong>{' '}
-          for all 50 repos inside the <strong className="font-semibold text-gray-800">{nameGitSource}</strong> git source?
+          for all <strong className="font-semibold text-gray-800">{totalRepos}</strong> repos inside the {' '}
+          <strong className="font-semibold text-gray-800">{nameGitSource}</strong> git source?
         </div>
 
         <Alert type='default' theme='light'>
