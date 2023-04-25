@@ -22,13 +22,13 @@ const SidebarView: React.FC = () => {
           subNav={
             <>
               <Sidebar.Item compact={false}
-                onClick={() => push('/repos/repo-syncs')}
-                active={isSidebarActive('/repos/repo-syncs')}
-                label='Repo Syncs' level='sub' />
-              <Sidebar.Item compact={false}
                 onClick={() => push('/repos/git-sources')}
                 active={isSidebarActive('/repos/git-sources') || isSidebarActive('/repos/add-git-source')}
                 label='Git Sources' level='sub' />
+              <Sidebar.Item compact={false}
+                onClick={() => push('/repos/repo-syncs')}
+                active={isSidebarActive('/repos/repo-syncs')}
+                label='Repo Syncs' level='sub' />
             </>
           }
         />
