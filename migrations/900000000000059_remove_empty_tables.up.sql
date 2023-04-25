@@ -12,7 +12,7 @@ BEGIN
             relpages = 0 
             AND
             -- only select tables
-            relam <> 0
+            relkind = 'r'
             AND 
             pg_namespace.nspname = 'public'
             AND 
