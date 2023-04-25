@@ -26,7 +26,7 @@ export const RepositoryStatus: React.FC<RepositoryStatusProps> = ({ idRepo, stat
             key={`repo-status-${index}`}
             status={item.type}
             data={item.syncs?.map((sync) => ({
-              url: `/repos/${idRepo}/${sync.idType}/${sync.idLastSync}`,
+              url: `/v1/repos/${idRepo}/${sync.idType}/${sync.idLastSync}`,
               title: sync.type,
               lastSync: getLastSync(item.type, sync.lastSync),
             })) || []}

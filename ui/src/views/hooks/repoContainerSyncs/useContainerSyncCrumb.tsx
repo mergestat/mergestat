@@ -14,7 +14,7 @@ const useContainerSyncCrumb = (repo: RepoBasicData) => {
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos-containers'),
+        onClick: () => router.push('/repos'),
       },
       {
         text: repo.name,
@@ -25,7 +25,7 @@ const useContainerSyncCrumb = (repo: RepoBasicData) => {
           </a>
           : undefined
         ),
-        onClick: () => router.push(`/repos-containers/${repo.id}`),
+        onClick: () => router.push(`/repos/${repo.id}`),
       },
     ]
 

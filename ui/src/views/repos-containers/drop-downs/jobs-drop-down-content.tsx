@@ -50,7 +50,7 @@ export const JobsDropDownContent: React.FC<JobsDropDownContentProps> = ({ repoId
           <Spinner size='sm' />
         </div>
         : jobs && Object.keys(jobs).map(jobId => (
-          jobs[jobId] && <Link key={jobId} href={`/repos-containers/${repoId}/${jobs[jobId].container_sync_id}/${jobId}`}>
+          jobs[jobId] && <Link key={jobId} href={`/repos/${repoId}/${jobs[jobId].container_sync_id}/${jobId}`}>
             <div data-testid={TEST_IDS.repoDataDropdown}
               className="hover_bg-gray-50 py-3 px-4 flex items-center justify-between gap-3 focus-within_ text-base cursor-pointer">
               <div className="flex items-center gap-3">

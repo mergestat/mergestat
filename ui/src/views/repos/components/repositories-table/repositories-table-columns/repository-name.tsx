@@ -25,7 +25,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
         size='10'
       />
       <div>
-        <Link href={`/repos/${props.id}`}>
+        <Link href={`/v1/repos/${props.id}`}>
           <h4 data-testid={TEST_IDS.repoNameTable} className='font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600'>
             {props.name}
           </h4>
@@ -40,7 +40,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
                 {getGitSourceIcon(props.provider.vendor, 't-icon-muted w-4')}
               </a>
             </Tooltip>
-            <Link href={`/repos/git-sources/${props.provider.id}`}>
+            <Link href={`/v1/repos/git-sources/${props.provider.id}`}>
               <span className='cursor-pointer text-sm t-text-muted border-b border-gray-300 whitespace-nowrap'>
                 {props.provider.name}
               </span>

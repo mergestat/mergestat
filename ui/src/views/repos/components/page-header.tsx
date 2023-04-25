@@ -20,7 +20,7 @@ export const PageHeader: React.FC = () => {
           <Button className='whitespace-nowrap'
             label='Add Repos'
             startIcon={<PlusIcon className='t-icon' />}
-            onClick={() => router.push('/repos/add-git-source')}
+            onClick={() => router.push('/v1/repos/add-git-source')}
           />
         </Toolbar.Right>
       </Toolbar>

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { Fragment } from 'react'
 import { GitSourceDetailProvider } from 'src/state/contexts/git-source-detail.context'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
-import GitSourceDetailView from 'src/views/repo-git-sources/git-source-detail'
+import GitSourceDetailView from 'src/views/repo-containers-git-sources/git-source-detail'
 
 const GitSourceDetailPage: NextPage = () => {
   const router = useRouter()

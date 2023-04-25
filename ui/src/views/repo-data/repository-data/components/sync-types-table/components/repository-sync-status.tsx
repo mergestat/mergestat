@@ -83,7 +83,7 @@ export const RepositorySyncStatus: React.FC<RepositorySyncStatusProps> = (
   }
 
   const onBarClick = (p: SyncStatusDataT) => {
-    router.push(`/repos/${p.repoId}/${p.syncTypeId}/${p.id}`)
+    router.push(`/v1/repos/${p.repoId}/${p.syncTypeId}/${p.id}`)
   }
 
   return (

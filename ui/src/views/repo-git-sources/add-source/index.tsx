@@ -22,7 +22,7 @@ const AddSourceView: React.FC = () => {
 
   const [addGitSource] = useMutation(ADD_GIT_SOURCE, {
     onCompleted: (data: AddGitSourceMutation) => {
-      router.push(`/repos/git-sources/${data.createProvider?.provider?.id}`)
+      router.push(`/v1/git-sources/${data.createProvider?.provider?.id}`)
     }
   })
 
@@ -35,7 +35,7 @@ const AddSourceView: React.FC = () => {
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
+        onClick: () => router.push('/v1/repos'),
       },
     ]
 
@@ -189,12 +189,12 @@ const AddSourceView: React.FC = () => {
                           title={provider.name}
                           className={'px-4 h-20 border-b'}
                           startIcon={getGitSourceIcon(provider.vendor)}
-                          onClick={() => router.push(`/repos/git-sources/${provider.id}`)}
+                          onClick={() => router.push(`/v1/repos/git-sources/${provider.id}`)}
                           action={
                             <Button label='Go to Git Source' skin="borderless-muted"
                               className='hover_text-blue-600 font-normal'
                               endIcon={<ChevronRightIcon className="t-icon" />}
-                              onClick={() => router.push(`/repos/git-sources/${provider.id}`)}
+                              onClick={() => router.push(`/v1/repos/git-sources/${provider.id}`)}
                             />
                           }
                         />

@@ -22,7 +22,7 @@ export const PageHeader = ({ name, vendor, vendorUrl, externalRepoLink }: PageHe
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
+        onClick: () => router.push('/v1/repos'),
       },
     ]
 

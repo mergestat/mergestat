@@ -12,11 +12,11 @@ const useGitSourceCrumb = () => {
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
+        onClick: () => router.push('/v1/repos'),
       },
       {
         text: 'Git Sources',
-        onClick: () => router.push('/repos/git-sources'),
+        onClick: () => router.push('/v1/repos/git-sources'),
       },
     ]
 

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Fragment } from 'react'
 import Loading from 'src/components/Loading'
 import useRepoData from 'src/views/hooks/repoSyncs/useRepoData'
-import RepoDataView from 'src/views/repo-data/repository-data'
+import RepoDataView from 'src/views/repo-data-container/repository-data'
 
 const RepoDetailsPage = () => {
   const { loading, repo, title } = useRepoData()

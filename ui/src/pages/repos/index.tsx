@@ -1,11 +1,11 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Fragment } from 'react'
-import { RepositoriesProvider } from 'src/state/contexts'
+import { RepoContainersProvider } from 'src/state/contexts/repo-containers.context'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
-import RepositoriesView from 'src/views/repos'
+import RepositoriesView from 'src/views/repos-containers'
 
-const ReposPage: NextPage = () => {
+const ReposContainersPage: NextPage = () => {
   const title = `Repos ${MERGESTAT_TITLE}`
 
   return (
@@ -13,11 +13,11 @@ const ReposPage: NextPage = () => {
       <Head>
         <title>{title}</title>
       </Head>
-      <RepositoriesProvider>
+      <RepoContainersProvider>
         <RepositoriesView />
-      </RepositoriesProvider>
+      </RepoContainersProvider>
     </Fragment>
   )
 }
 
-export default ReposPage
+export default ReposContainersPage
