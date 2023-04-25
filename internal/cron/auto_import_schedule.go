@@ -94,5 +94,6 @@ func newAutoImportJob(id uuid.UUID) *sqlq.JobDescription {
 	var p = struct{ ID uuid.UUID }{ID: id}
 	var params, _ = json.Marshal(p)
 
-	return sqlq.NewJobDesc("repos/auto-import", sqlq.WithParameters(params))
+	// run imports with -1 priority so they take top priority even ahead of sync now (priority 0)
+	return sqlq.NewJobDesc("repos/auto-import", sqlq.WithParameters(params), sqlq.WithPriority(-1))
 }
