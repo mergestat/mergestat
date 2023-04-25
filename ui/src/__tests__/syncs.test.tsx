@@ -4,12 +4,12 @@ import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import 'intersection-observer'
 import { useRouter } from 'next/router'
-import RepoDetailsPage from 'src/pages/repos/[repository]'
-import { GlobalProvider, RepositoriesProvider } from 'src/state/contexts'
-import { TEST_IDS } from 'src/utils/constants'
 import { DynamicValues } from 'src/__mocks__/constants.mock'
 import { apolloMockReposWithData } from 'src/__mocks__/repos.mock'
 import { apolloMockAddTag, apolloMockSyncsTypesData } from 'src/__mocks__/syncs.mock'
+import RepoDetailsPage from 'src/pages/v1/repos/[repository]'
+import { GlobalProvider, RepositoriesProvider } from 'src/state/contexts'
+import { TEST_IDS } from 'src/utils/constants'
 
 jest.mock('next/router', () => ({
   __esModule: true,

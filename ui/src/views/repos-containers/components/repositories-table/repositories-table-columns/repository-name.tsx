@@ -25,7 +25,7 @@ export const RepositoryName: React.FC<RepositoryNameProps> = (props) => {
         size='10'
       />
       <div>
-        <Link href={`/repos-containers/${props.id}`}>
+        <Link href={`/repos/${props.id}`}>
           <h4 data-testid={TEST_IDS.repoNameTable} className='font-medium mb-0.5 t-text-default cursor-pointer hover_text-blue-600'>
             {props.name}
           </h4>

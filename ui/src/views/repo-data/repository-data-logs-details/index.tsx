@@ -22,7 +22,7 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
+        onClick: () => router.push('/v1/repos'),
       },
       {
         text: repo.name,
@@ -33,12 +33,12 @@ const RepoDataLogsDetailsView: React.FC<SyncTypeData> = ({ repo, sync, logs }) =
           </a>
           : undefined
         ),
-        onClick: () => router.push(`/repos/${repo.id}`),
+        onClick: () => router.push(`/v1/repos/${repo.id}`),
       },
       {
         text: sync?.title || '',
         startIcon: <RepoSyncIcon type={sync?.syncState || SYNC_STATUS.empty} />,
-        onClick: () => router.push(`/repos/${repo.id}/${sync?.id}`),
+        onClick: () => router.push(`/v1/repos/${repo.id}/${sync?.id}`),
       },
     ]
 

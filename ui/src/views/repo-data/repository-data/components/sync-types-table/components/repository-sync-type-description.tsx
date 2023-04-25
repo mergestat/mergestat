@@ -37,7 +37,7 @@ export const RepoSyncTypeDesc: React.FC<RepoSyncTypeDescProps> = (props) => {
 
       <div className={cx('py-5 flex flex-col justify-center items-start h-full', { 'bg-gray-50': props.disabled })}>
         {props.id
-          ? <Link href={`/repos/${repository}/${props.id}`}>
+          ? <Link href={`/v1/repos/${repository}/${props.id}`}>
             <h4 className="font-semibold mb-0.5 t-text-default cursor-pointer hover_text-blue-600">
               {props.title} <LabelBadgeList labels={props.labels} />
             </h4>

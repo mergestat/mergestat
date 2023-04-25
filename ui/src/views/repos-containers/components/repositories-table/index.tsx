@@ -80,8 +80,8 @@ export const RepositoriesTable: React.FC<RepositoriesTableProps> = ({ repos }: R
                         <div className='t-button-toolbar gap-6'>
                           <div className='flex items-center justify-center gap-2'>
                             <CircleInformationFilledIcon className='t-icon t-icon-muted' />
-                            <Link href={`/repos-containers/${repo.id}`}>
-                              <a href={`/repos-containers/${repo.id}`} className='t-text-muted'>Set up sync types</a>
+                            <Link href={`/repos/${repo.id}`}>
+                              <a href={`/repos/${repo.id}`} className='t-text-muted'>Set up sync types</a>
                             </Link>
                             <ChevronRightIcon className='t-icon t-icon-muted' />
                           </div>

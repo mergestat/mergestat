@@ -33,7 +33,7 @@ const GitSourcesView: React.FC = () => {
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
+        onClick: () => router.push('/v1/repos'),
       },
     ]
 
@@ -76,7 +76,7 @@ const GitSourcesView: React.FC = () => {
               <Button className='whitespace-nowrap'
                 label='Add Repos'
                 startIcon={<PlusIcon className='t-icon' />}
-                onClick={() => router.push('/repos/add-git-source')}
+                onClick={() => router.push('/v1/repos/add-git-source')}
               />
             </Toolbar.Item>
           </Toolbar.Right>

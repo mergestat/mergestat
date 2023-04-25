@@ -20,7 +20,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
       {
         text: 'Repos',
         startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
+        onClick: () => router.push('/v1/repos'),
       },
       {
         text: repo.name,
@@ -31,7 +31,7 @@ const RepoDataTypeView: React.FC<SyncTypeData> = ({ repo, sync, logs, syncNow })
           </a>
           : undefined
         ),
-        onClick: () => router.push(`/repos/${repo.id}`),
+        onClick: () => router.push(`/v1/repos/${repo.id}`),
       },
     ]
 

@@ -17,7 +17,7 @@ const RepoDataView = ({ data }: RepoDataViewProps) => {
   const router = useRouter()
 
   useEffect(() => {
-    !data?.id && router.push('/repos')
+    !data?.id && router.push('/v1/repos')
   }, [data, router])
 
   return (
