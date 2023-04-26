@@ -517,3 +517,35 @@ export type ContainerBasicData = {
     name: string
   }
 }
+
+/** Explore page */
+
+export interface TopRepos {
+  file_count: number
+}
+
+export interface TopAuthors {
+  file_count: number
+}
+
+export interface LastModified {
+  last_modified: Date
+}
+
+export interface ExploreData {
+  files: number
+  repos: number
+  authors: number
+  top_10_repos: {
+    [key: string]: TopRepos
+  }
+  top_10_authors: {
+    [key: string]: TopAuthors
+  }
+  file_last_modified: {
+    [key: string]: LastModified
+  }
+  repo_last_modified: {
+    [key: string]: LastModified
+  }
+}

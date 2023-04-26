@@ -1,20 +1,26 @@
-import { Stat } from '@mergestat/blocks'
-import { CircleInformationFilledIcon } from '@mergestat/icons'
+import { Button, Stat } from '@mergestat/blocks'
+import { CircleInformationFilledIcon, CodeIcon } from '@mergestat/icons'
+import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
 import { MetricNumber } from 'src/views/shared/metric-number'
 
-type StatsExploreProps = {
-  loading: boolean
-  repos: number
-  files: number
-  authors: number
-}
+const StatsExplore: React.FC = () => {
+  const [{ loading, exploreData: { repos, files, authors } }] = useRepoExploreContext()
 
-const StatsExplore: React.FC<StatsExploreProps> = ({ loading, repos, files, authors }: StatsExploreProps) => {
   return (
     <div className='md_grid md_grid-cols-3 gap-6 space-y-4 md_space-y-0'>
       <Stat className='shadow-sm w-full'>
-        <Stat.Left>
-          <Stat.Label>Repos</Stat.Label>
+        <Stat.Left className='mr-0'>
+          <Stat.Label>
+            <div className='flex justify-between items-center'>
+              Repos
+              <Button
+                isIconOnly
+                className='my-0'
+                skin='borderless-muted'
+                startIcon={<CodeIcon className="t-icon" />}
+              />
+            </div>
+          </Stat.Label>
           <Stat.Number>
             <MetricNumber loading={loading} metric={repos || 0}
               icon={<CircleInformationFilledIcon className="t-icon t-icon-info" />}
@@ -27,16 +33,30 @@ const StatsExplore: React.FC<StatsExploreProps> = ({ loading, repos, files, auth
         </Stat.Left>
       </Stat>
       <Stat className='shadow-sm w-full'>
-        <Stat.Left>
-          <Stat.Label>Files</Stat.Label>
+        <Stat.Left className='mr-0'>
+          <div className='flex justify-between items-center'>
+            Files
+            <Button
+              isIconOnly
+              skin='borderless-muted'
+              startIcon={<CodeIcon className="t-icon" />}
+            />
+          </div>
           <Stat.Number>
             <MetricNumber loading={loading} metric={files || 0} />
           </Stat.Number>
         </Stat.Left>
       </Stat>
       <Stat className='shadow-sm w-full'>
-        <Stat.Left>
-          <Stat.Label>Unique authors</Stat.Label>
+        <Stat.Left className='mr-0'>
+          <div className='flex justify-between items-center'>
+            Unique authors
+            <Button
+              isIconOnly
+              skin='borderless-muted'
+              startIcon={<CodeIcon className="t-icon" />}
+            />
+          </div>
           <Stat.Number>
             <MetricNumber loading={loading} metric={authors || 0} />
           </Stat.Number>

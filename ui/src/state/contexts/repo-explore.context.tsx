@@ -1,8 +1,11 @@
 import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
+import { ExploreData } from 'src/@types'
 
 type RepoExploreContext = {
+  loading: boolean
   search: string
+  exploreData: ExploreData
 }
 
 type UseRepoExploreContext = [
@@ -11,7 +14,9 @@ type UseRepoExploreContext = [
 ]
 
 const initialState: RepoExploreContext = {
+  loading: true,
   search: '',
+  exploreData: {} as ExploreData
 }
 
 function useRepoExplore(): UseRepoExploreContext {
@@ -36,6 +41,13 @@ const RepoExploreProvider: React.FC<PropsWithChildren> = (props: PropsWithChildr
 function useRepoExploreSetState() {
   const [_, setState] = useRepoExploreContext()
 
+  const setLoading = (loading: boolean) => {
+    setState(prev => ({
+      ...prev,
+      loading
+    }))
+  }
+
   const setSearch = (search: string) => {
     setState(prev => ({
       ...prev,
@@ -43,9 +55,18 @@ function useRepoExploreSetState() {
     }))
   }
 
+  const setExploreData = (exploreData: ExploreData) => {
+    setState(prev => ({
+      ...prev,
+      exploreData
+    }))
+  }
+
   return {
     _,
+    setLoading,
     setSearch,
+    setExploreData,
   }
 }
 

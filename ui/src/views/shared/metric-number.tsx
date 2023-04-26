@@ -11,10 +11,12 @@ interface MetricNumberProp {
 
 export const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric, className, icon, tooltip }: MetricNumberProp) => {
   return (
-    <div className={cx('flex items-center', className)}>
-      {loading ? <Spinner size="sm" /> : new Intl.NumberFormat().format(metric)}
+    <div className={cx('flex items-center h-8', className)}>
+      <div className='w-8'>
+        {loading ? <Spinner size="sm" /> : new Intl.NumberFormat().format(metric)}
+      </div>
 
-      <div className='ml-4'>
+      <div className='ml-1'>
         {icon && tooltip &&
           <Tooltip placement='bottom' offset={[0, 10]}
             content={tooltip}>

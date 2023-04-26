@@ -1,19 +1,35 @@
+import { useMutation } from '@apollo/client'
 import { Alert, Button, Input, Label, Toolbar } from '@mergestat/blocks'
 import { CogIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { ExploreData } from 'src/@types'
+import { ExploreMutation } from 'src/api-logic/graphql/generated/schema'
+import { EXPLORE } from 'src/api-logic/graphql/mutations/explore'
 import { useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
 
 const HeaderExplore: React.FC = () => {
   const router = useRouter()
 
   const [{ search }] = useRepoExploreContext()
-  const { setSearch } = useRepoExploreSetState()
+  const { setLoading, setSearch, setExploreData } = useRepoExploreSetState()
+
+  const [explore, { loading }] = useMutation(EXPLORE, {
+    onCompleted: (data: ExploreMutation) => {
+      setExploreData(data.explore?.json as ExploreData)
+    }
+  })
+
+  useEffect(() => {
+    setLoading(loading)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading])
 
   return (
     <div className='flex flex-col bg-white w-full border-b px-8 py-4 gap-4'>
       <Toolbar className='h-full'>
         <Toolbar.Left>
-          <h2 className='t-h2 mb-0'>Repo Explorer</h2>
+          <h2 className='t-h2 mb-0'>Repo Explore</h2>
         </Toolbar.Left>
         <Toolbar.Right>
           <Toolbar.Item>
@@ -46,7 +62,7 @@ const HeaderExplore: React.FC = () => {
           label='Search'
           disabled={!search}
           className='whitespace-nowrap'
-          onClick={() => null}
+          onClick={() => explore({ variables: { params: search } })}
         />
       </div>
     </div>
