@@ -62,7 +62,11 @@ const HeaderExplore: React.FC = () => {
           label='Search'
           disabled={!search}
           className='whitespace-nowrap'
-          onClick={() => explore({ variables: { params: search } })}
+          onClick={() => explore({
+            variables: {
+              params: { file_pattern: search }
+            }
+          })}
         />
       </div>
     </div>

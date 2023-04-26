@@ -5,6 +5,12 @@ import RepoImage from 'src/components/RepoImage'
 import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
 import { getRepoFromUrl } from 'src/utils'
 
+const CardLoading: React.FC = () => {
+  return (
+    <div className='flex min-h-xs items-center'><Loading /></div>
+  )
+}
+
 const CardsStatsExplore: React.FC = () => {
   const [{ loading, exploreData: { top_10_repos: top10Repos, top_10_authors: top10Authors } }] = useRepoExploreContext()
 
@@ -23,11 +29,10 @@ const CardsStatsExplore: React.FC = () => {
           </Panel.Header>
           <Panel.Body>
             {loading
-              ? <div className='h-56'><Loading /></div>
-              : <div className='flex justify-between h-56'>
+              ? <CardLoading />
+              : <div className='flex justify-between min-h-xs'>
                 <div className='flex flex-col space-y-2'>
-                  {/* {Object.entries(JSON.parse('{"https://github.com/mergestat/syncs":{"file_count":29},"https://github.com/mergestat/pqueue":{"file_count":1},"https://github.com/mergestat/mergestat":{"file_count":3},"https://github.com/mergestat/git-delivery":{"file_count":1},"https://github.com/mergestat/mysql-server":{"file_count":1},"https://github.com/mergestat/mergestat-lite":{"file_count":1},"https://github.com/mergestat/mergestat-gitstart":{"file_count":3}}')).map(([repo, data], index) => ( */}
-                  {top10Repos && Object.entries(top10Repos).map(([repo, data], index) => (
+                  {top10Repos && Object.entries(top10Repos).map(([repo], index) => (
                     <div className='flex items-center space-x-2' key={`top-repos-${index}`}>
                       <RepoImage vendor={'github'} vendorUrl={'https://github.com'} orgName={getRepoFromUrl(repo).split('/')[0]} size="6" />
                       <span className='text-gray-400 text-xs'>{getRepoFromUrl(repo)}</span>
@@ -52,11 +57,10 @@ const CardsStatsExplore: React.FC = () => {
           </Panel.Header>
           <Panel.Body>
             {loading
-              ? <div className='h-56'><Loading /></div>
-              : <div className='flex justify-between h-56'>
+              ? <CardLoading />
+              : <div className='flex justify-between min-h-xs'>
                 <div className='flex flex-col space-y-3'>
-                  {/* {Object.entries(JSON.parse('{"Ramiro":{"commits_count":4},"RiyazAli":{"commits_count":19},"GermanCanon":{"commits_count":1},"renovate[bot]":{"commits_count":3},"PatrickDeVivo":{"commits_count":71},"MichielKalkman":{"commits_count":1},"german-mergestat":{"commits_count":1},"KrzysztofHasiński":{"commits_count":1}}')).map(([repo, data], index) => ( */}
-                  {top10Authors && Object.entries(top10Authors).map(([repo, data], index) => (
+                  {top10Authors && Object.entries(top10Authors).map(([repo], index) => (
                     <div className='flex items-center space-x-2' key={`top-repos-${index}`}>
                       <span className='text-gray-400 text-xs'>{getRepoFromUrl(repo)}</span>
                     </div>
@@ -82,8 +86,8 @@ const CardsStatsExplore: React.FC = () => {
           </Panel.Header>
           <Panel.Body>
             {loading
-              ? <div className='h-56'><Loading /></div>
-              : <div className='flex justify-between h-56'>
+              ? <CardLoading />
+              : <div className='flex justify-between min-h-xs'>
 
               </div>
             }
@@ -102,8 +106,8 @@ const CardsStatsExplore: React.FC = () => {
           </Panel.Header>
           <Panel.Body>
             {loading
-              ? <div className='h-56'><Loading /></div>
-              : <div className='flex justify-between h-56'>
+              ? <CardLoading />
+              : <div className='flex justify-between min-h-xs'>
 
               </div>
             }
