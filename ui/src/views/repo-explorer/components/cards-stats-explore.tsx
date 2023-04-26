@@ -23,8 +23,8 @@ const CardsStatsExplore: React.FC = () => {
           </Panel.Header>
           <Panel.Body>
             {loading
-              ? <div className='my-14'><Loading /></div>
-              : <div className='flex justify-between'>
+              ? <div className='h-56'><Loading /></div>
+              : <div className='flex justify-between h-56'>
                 <div className='flex flex-col space-y-2'>
                   {/* {Object.entries(JSON.parse('{"https://github.com/mergestat/syncs":{"file_count":29},"https://github.com/mergestat/pqueue":{"file_count":1},"https://github.com/mergestat/mergestat":{"file_count":3},"https://github.com/mergestat/git-delivery":{"file_count":1},"https://github.com/mergestat/mysql-server":{"file_count":1},"https://github.com/mergestat/mergestat-lite":{"file_count":1},"https://github.com/mergestat/mergestat-gitstart":{"file_count":3}}')).map(([repo, data], index) => ( */}
                   {top10Repos && Object.entries(top10Repos).map(([repo, data], index) => (
@@ -42,7 +42,7 @@ const CardsStatsExplore: React.FC = () => {
 
         <Panel className="w-full w-2/4">
           <Panel.Header className='flex justify-between items-center'>
-            <Label>Top 10 Repos</Label>
+            <Label>Top 10 Authors</Label>
             <Button
               isIconOnly
               className='my-0'
@@ -52,8 +52,8 @@ const CardsStatsExplore: React.FC = () => {
           </Panel.Header>
           <Panel.Body>
             {loading
-              ? <div className='my-14'><Loading /></div>
-              : <div className='flex justify-between'>
+              ? <div className='h-56'><Loading /></div>
+              : <div className='flex justify-between h-56'>
                 <div className='flex flex-col space-y-3'>
                   {/* {Object.entries(JSON.parse('{"Ramiro":{"commits_count":4},"RiyazAli":{"commits_count":19},"GermanCanon":{"commits_count":1},"renovate[bot]":{"commits_count":3},"PatrickDeVivo":{"commits_count":71},"MichielKalkman":{"commits_count":1},"german-mergestat":{"commits_count":1},"KrzysztofHasiński":{"commits_count":1}}')).map(([repo, data], index) => ( */}
                   {top10Authors && Object.entries(top10Authors).map(([repo, data], index) => (
@@ -72,7 +72,7 @@ const CardsStatsExplore: React.FC = () => {
       <div className='md_grid md_grid-cols-2 gap-6 space-y-4 md_space-y-0 pt-6'>
         <Panel className="w-full w-2/4">
           <Panel.Header className='flex justify-between items-center'>
-            <Label>Top 10 Repos</Label>
+            <Label>Repo Last Modified</Label>
             <Button
               isIconOnly
               className='my-0'
@@ -81,12 +81,18 @@ const CardsStatsExplore: React.FC = () => {
             />
           </Panel.Header>
           <Panel.Body>
+            {loading
+              ? <div className='h-56'><Loading /></div>
+              : <div className='flex justify-between h-56'>
+
+              </div>
+            }
           </Panel.Body>
         </Panel>
 
         <Panel className="w-full w-2/4">
           <Panel.Header className='flex justify-between items-center'>
-            <Label>Top 10 Repos</Label>
+            <Label>File Last Modified</Label>
             <Button
               isIconOnly
               className='my-0'
@@ -95,6 +101,12 @@ const CardsStatsExplore: React.FC = () => {
             />
           </Panel.Header>
           <Panel.Body>
+            {loading
+              ? <div className='h-56'><Loading /></div>
+              : <div className='flex justify-between h-56'>
+
+              </div>
+            }
           </Panel.Body>
         </Panel>
       </div>
