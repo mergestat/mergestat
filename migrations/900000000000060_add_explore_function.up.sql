@@ -71,19 +71,18 @@ BEGIN
     ),
     authors AS (
         SELECT 
-            COUNT(DISTINCT author_when) AS count
+            COUNT(DISTINCT author_name) AS count
         FROM base_query
     )
     SELECT 
-        jsonb_build_object('top_10_repos', JSONB_OBJECT_AGG(top_10_repos.repo, TO_JSONB(top_10_repos) - 'repo')) ||
-        jsonb_build_object('top_10_authors', JSONB_OBJECT_AGG(top_10_authors.author_name, TO_JSONB(top_10_authors) - 'author_name')) ||
-        jsonb_build_object('repo_last_modified', JSONB_OBJECT_AGG(repo_last_modified.repo, TO_JSONB(repo_last_modified) - 'repo')) ||
-        jsonb_build_object('file_last_modified', JSONB_OBJECT_AGG(file_last_modified.file_path, TO_JSONB(file_last_modified) - 'file_path')) ||
-        jsonb_build_object('repos', MAX(repos.count)) ||
-        jsonb_build_object('files', MAX(files.count)) ||
-        jsonb_build_object('authors', MAX(authors.count))
-    INTO response
-    FROM top_10_repos, top_10_authors, repo_last_modified, file_last_modified, repos, files, authors;
+        jsonb_build_object('top_10_repos', (SELECT JSONB_OBJECT_AGG(top_10_repos.repo, TO_JSONB(top_10_repos) - 'repo') FROM top_10_repos)) ||
+        jsonb_build_object('top_10_authors', (SELECT JSONB_OBJECT_AGG(top_10_authors.author_name, TO_JSONB(top_10_authors) - 'author_name') FROM top_10_authors)) ||
+        jsonb_build_object('repo_last_modified', (SELECT JSONB_OBJECT_AGG(repo_last_modified.repo, TO_JSONB(repo_last_modified) - 'repo') FROM repo_last_modified)) ||
+        jsonb_build_object('file_last_modified', (SELECT JSONB_OBJECT_AGG(file_last_modified.file_path, TO_JSONB(file_last_modified) - 'file_path') FROM file_last_modified)) ||
+        jsonb_build_object('repos', (SELECT count FROM repos)) ||
+        jsonb_build_object('files', (SELECT count FROM files)) ||
+        jsonb_build_object('authors', (SELECT count FROM authors))
+    INTO response;
 
     RETURN response;
 END; $$;
