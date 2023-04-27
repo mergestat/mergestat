@@ -20,9 +20,9 @@
   "dependencies": {
     "@apollo/client": "^3.7.7",
     "@apollo/react-testing": "^4.0.0",
+    "@blueprintjs/table": "^4.7.20",
     "@mergestat/blocks": "^1.5.79",
     "@mergestat/icons": "1.2.18",
-    "@blueprintjs/table": "^4.7.20",
     "@monaco-editor/react": "^4.4.6",
     "@next/bundle-analyzer": "^12.3.4",
     "@tailwindcss/line-clamp": "^0.4.2",
@@ -47,6 +47,7 @@
     "react-dom": "18.2.0",
     "react-error-boundary": "^3.1.4",
     "react-syntax-highlighter": "^15.5.0",
+    "recharts": "^2.5.0",
     "sharp": "^0.31.0",
     "styled-components": "^5.3.7",
     "uuid": "^9.0.0"

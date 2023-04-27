@@ -1,18 +1,28 @@
 import { Button, Label, Panel } from '@mergestat/blocks'
 import { CodeIcon } from '@mergestat/icons'
-import Loading from 'src/components/Loading'
-import RepoImage from 'src/components/RepoImage'
+import { useEffect, useState } from 'react'
+import { TopDataBarChart, mapTop10Authors, mapTop10Repos } from 'src/api-logic/mappers/charts/recharts'
 import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
-import { getRepoFromUrl } from 'src/utils'
-
-const CardLoading: React.FC = () => {
-  return (
-    <div className='flex min-h-xs items-center'><Loading /></div>
-  )
-}
+import { BarChartVertical } from './barchart-vertical'
+import { CardLoading } from './custom-shared'
 
 const CardsStatsExplore: React.FC = () => {
   const [{ loading, exploreData: { top_10_repos: top10Repos, top_10_authors: top10Authors } }] = useRepoExploreContext()
+
+  const [top10ReposChart, settop10ReposChart] = useState<TopDataBarChart[]>()
+  const [top10AuthorsChart, settop10AuthorsChart] = useState<TopDataBarChart[]>()
+
+  useEffect(() => {
+    if (top10Repos) {
+      settop10ReposChart(mapTop10Repos(top10Repos))
+    }
+  }, [top10Repos])
+
+  useEffect(() => {
+    if (top10Authors) {
+      settop10AuthorsChart(mapTop10Authors(top10Authors))
+    }
+  }, [top10Authors])
 
   return (
     <div className='py-8'>
@@ -30,16 +40,8 @@ const CardsStatsExplore: React.FC = () => {
           <Panel.Body>
             {loading
               ? <CardLoading />
-              : <div className='flex justify-between min-h-xs'>
-                <div className='flex flex-col space-y-2'>
-                  {top10Repos && Object.entries(top10Repos).map(([repo], index) => (
-                    <div className='flex items-center space-x-2' key={`top-repos-${index}`}>
-                      <RepoImage vendor={'github'} vendorUrl={'https://github.com'} orgName={getRepoFromUrl(repo).split('/')[0]} size="6" />
-                      <span className='text-gray-400 text-xs'>{getRepoFromUrl(repo)}</span>
-                    </div>
-                  ))}
-                </div>
-                <div></div>
+              : <div className='flex justify-center min-h-xs'>
+                {top10ReposChart && <BarChartVertical data={top10ReposChart} dataKey='fileCount' xAxisLabel='Files' />}
               </div>
             }
           </Panel.Body>
@@ -58,15 +60,8 @@ const CardsStatsExplore: React.FC = () => {
           <Panel.Body>
             {loading
               ? <CardLoading />
-              : <div className='flex justify-between min-h-xs'>
-                <div className='flex flex-col space-y-3'>
-                  {top10Authors && Object.entries(top10Authors).map(([repo], index) => (
-                    <div className='flex items-center space-x-2' key={`top-repos-${index}`}>
-                      <span className='text-gray-400 text-xs'>{getRepoFromUrl(repo)}</span>
-                    </div>
-                  ))}
-                </div>
-                <div></div>
+              : <div className='flex justify-center min-h-xs'>
+                {top10AuthorsChart && <BarChartVertical data={top10AuthorsChart} dataKey='commitsCount' xAxisLabel='Commits' />}
               </div>
             }
           </Panel.Body>

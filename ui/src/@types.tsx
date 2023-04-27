@@ -520,12 +520,9 @@ export type ContainerBasicData = {
 
 /** Explore page */
 
-export interface TopRepos {
-  file_count: number
-}
-
-export interface TopAuthors {
-  file_count: number
+export interface TopTenData {
+  file_count?: number
+  commits_count?: number
 }
 
 export interface LastModified {
@@ -537,10 +534,10 @@ export interface ExploreData {
   repos: number
   authors: number
   top_10_repos: {
-    [key: string]: TopRepos
+    [key: string]: TopTenData
   }
   top_10_authors: {
-    [key: string]: TopAuthors
+    [key: string]: TopTenData
   }
   file_last_modified: {
     [key: string]: LastModified
