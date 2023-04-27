@@ -266,7 +266,7 @@ func main() {
 
 	// register job handlers for types implemented by this worker
 	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
-	_ = worker.Register("container/sync", podman.ContainerSync(postgresConnection, &logger, db.New(pool)))
+	_ = worker.Register("container/sync", podman.ContainerSync(u.String(), &logger, db.New(pool)))
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars
