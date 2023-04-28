@@ -1,11 +1,11 @@
 import { Bar, BarChart, CartesianGrid, Label, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { TopDataBarChart } from 'src/api-logic/mappers/charts/recharts'
+import { AuthorBarChart, RepoBarChart } from 'src/api-logic/mappers/charts/recharts'
 import { CustomTooltip } from './custom-shared'
 import { CustomizedTick } from './custom-top-repos'
 
 interface Props {
-  data: TopDataBarChart[]
-  dataKey: string
+  data: RepoBarChart[] | AuthorBarChart[]
+  dataKey: keyof RepoBarChart | keyof AuthorBarChart
   xAxisLabel: string
 }
 
@@ -24,7 +24,7 @@ export const BarChartVertical: React.FC<Props> = ({ data, dataKey, xAxisLabel }:
         <YAxis type="category"
           axisLine={false}
           tickLine={{ opacity: 0.1 }}
-          dataKey='name'
+          dataKey={(record) => (JSON.stringify(record))}
           tick={<CustomizedTick />}
         />
         <CartesianGrid opacity={0.2} horizontal={false} />

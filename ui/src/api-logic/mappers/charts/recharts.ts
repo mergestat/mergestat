@@ -1,34 +1,55 @@
-import { TopTenData } from 'src/@types'
-import { getRepoFromUrl } from 'src/utils'
+import { LastModified, Top10Author, Top10Repo } from 'src/@types'
+import { formatMonth, getRepoFromUrl } from 'src/utils'
 
-interface Params {
-  [key: string]: TopTenData
-}
-
-export interface TopDataBarChart {
+export interface RepoBarChart {
   name: string
-  fileCount?: number
-  commitsCount?: number
+  vendor: string
+  vendorUrl: string
+  fileCount: number
 }
 
-export const mapTop10Repos = (topRepos: Params): TopDataBarChart[] => {
-  const labels: TopDataBarChart[] = []
-  Object.entries(topRepos).forEach(([repo, value]) => {
-    labels.push({
-      name: getRepoFromUrl(repo),
-      fileCount: value.file_count
-    })
-  })
-  return labels
+export interface AuthorBarChart {
+  name: string
+  commitsCount: number
 }
 
-export const mapTop10Authors = (topAuthors: Params): TopDataBarChart[] => {
-  const labels: TopDataBarChart[] = []
-  Object.entries(topAuthors).forEach(([author, value]) => {
-    labels.push({
-      name: author,
-      commitsCount: value.commits_count
-    })
-  })
-  return labels
+export interface YearData {
+  year: string
+  count: number
+}
+
+export interface MonthData {
+  yearMonth: string
+  count: number
+}
+
+export interface LasModifiedBarChart {
+  year: YearData[]
+  month: MonthData[]
+}
+
+export const mapTop10Repos = (topRepos: Top10Repo[]): RepoBarChart[] => {
+  return topRepos.map(data => ({
+    name: getRepoFromUrl(data.repo),
+    vendor: data.vendor,
+    vendorUrl: data.vendor,
+    fileCount: data.file_count
+  }))
+}
+
+export const mapTop10Authors = (topAuthors: Top10Author[]): AuthorBarChart[] => {
+  return topAuthors.map(data => ({
+    name: data.author_name,
+    commitsCount: data.commits_count
+  }))
+}
+
+export const mapLastModified = (fileLastModified: LastModified): LasModifiedBarChart => {
+  return {
+    year: fileLastModified.year,
+    month: fileLastModified.month.map(data => ({
+      yearMonth: formatMonth(data.year_month),
+      count: data.count
+    }))
+  }
 }

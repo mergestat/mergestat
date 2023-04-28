@@ -348,3 +348,24 @@ export function stringifyJsonCode(code?: JSON) {
     // eslint-disable-next-line no-useless-escape
   }, 2).replace(/\"\[ /g, '[').replace(/\]\"/g, ']')
 }
+
+/**
+ * Method to map months in letter abbreviation
+ * @param data Data to process
+ * @returns months in letter abbreviation
+ */
+export function formatMonth(data: string) {
+  return data
+    .replace(/-01/ig, '-Jan')
+    .replace(/-02/ig, '-Feb')
+    .replace(/-03/ig, '-Mar')
+    .replace(/-04/ig, '-Apr')
+    .replace(/-05/ig, '-May')
+    .replace(/-06/ig, '-Jun')
+    .replace(/-07/ig, '-Jul')
+    .replace(/-08/ig, '-Aug')
+    .replace(/-09/ig, '-Sep')
+    .replace(/-10/ig, '-Oct')
+    .replace(/-11/ig, '-Nov')
+    .replace(/-12/ig, '-Dec')
+}
