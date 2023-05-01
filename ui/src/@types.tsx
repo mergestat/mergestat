@@ -17,6 +17,8 @@ export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
 
 export type ImportStatusType = 'SUCCESS' | 'FAILURE'
 
+export type TimeGrain = 'Months' | 'Years'
+
 export type ChartType = TAB_TYPE.BAR | TAB_TYPE.LINE
 
 export type TagType = {

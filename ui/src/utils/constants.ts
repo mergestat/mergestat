@@ -190,3 +190,8 @@ export enum VENDOR_URL {
   GITLAB = 'https://gitlab.com',
   GITHUB = 'https://github.com'
 }
+
+export enum TIME_GRAIN {
+  MONTHS = 'Months',
+  YEARS = 'Years',
+}

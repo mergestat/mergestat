@@ -1,11 +1,13 @@
 import { Button, Label, Panel } from '@mergestat/blocks'
 import { CodeIcon } from '@mergestat/icons'
-import { useEffect, useState } from 'react'
-import { AuthorBarChart, LasModifiedBarChart, RepoBarChart, mapLastModified, mapTop10Authors, mapTop10Repos } from 'src/api-logic/mappers/charts/recharts'
 import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
+import { useFileLastModified } from 'src/views/hooks/repoExplore/useFileLastModified'
+import { useRepoLastModified } from 'src/views/hooks/repoExplore/useRepoLastModified'
+import { useTop10 } from 'src/views/hooks/repoExplore/useTop10'
 import { BarChartHorizontal } from './barchart-horizontal'
 import { BarChartVertical } from './barchart-vertical'
 import { CardLoading } from './custom-shared'
+import { TimeGrainDropdown } from './time-grain-dropdown'
 
 const CardsStatsExplore: React.FC = () => {
   const [{
@@ -18,34 +20,9 @@ const CardsStatsExplore: React.FC = () => {
     }
   }] = useRepoExploreContext()
 
-  const [top10ReposChart, setTop10ReposChart] = useState<RepoBarChart[]>()
-  const [top10AuthorsChart, setTop10AuthorsChart] = useState<AuthorBarChart[]>()
-  const [fileLastModifiedChart, setFileLastModifiedChart] = useState<LasModifiedBarChart>()
-  const [repoLastModifiedChart, setRepoLastModifiedChart] = useState<LasModifiedBarChart>()
-
-  useEffect(() => {
-    if (top10Repos) {
-      setTop10ReposChart(mapTop10Repos(top10Repos))
-    }
-  }, [top10Repos])
-
-  useEffect(() => {
-    if (top10Authors) {
-      setTop10AuthorsChart(mapTop10Authors(top10Authors))
-    }
-  }, [top10Authors])
-
-  useEffect(() => {
-    if (repoLastModified) {
-      setRepoLastModifiedChart(mapLastModified(repoLastModified))
-    }
-  }, [repoLastModified])
-
-  useEffect(() => {
-    if (fileLastModified) {
-      setFileLastModifiedChart(mapLastModified(fileLastModified))
-    }
-  }, [fileLastModified])
+  const { top10AuthorsChart, top10ReposChart } = useTop10(top10Repos, top10Authors)
+  const { xAxisRepo, timeGrainRepo, dataLastModifiedRepo, changeTimeGrainRepo } = useRepoLastModified(repoLastModified)
+  const { xAxisFile, timeGrainFile, dataLastModifiedFile, changeTimeGrainFile } = useFileLastModified(fileLastModified)
 
   return (
     <div className='py-8'>
@@ -95,18 +72,13 @@ const CardsStatsExplore: React.FC = () => {
         <Panel className="w-full w-2/4">
           <Panel.Header className='flex justify-between items-center'>
             <Label>Repo Last Modified</Label>
-            <Button
-              isIconOnly
-              className='my-0'
-              skin='borderless-muted'
-              startIcon={<CodeIcon className="t-icon" />}
-            />
+            <TimeGrainDropdown selected={timeGrainRepo} changeTimeGrain={changeTimeGrainRepo} />
           </Panel.Header>
           <Panel.Body>
             {loading
               ? <CardLoading />
               : <div className='flex justify-between min-h-xs'>
-                {fileLastModifiedChart && <BarChartHorizontal data={fileLastModifiedChart.month} dataKey='count' />}
+                {dataLastModifiedRepo && <BarChartHorizontal data={dataLastModifiedRepo} dataKey='count' dataXAxis={xAxisRepo} />}
               </div>
             }
           </Panel.Body>
@@ -115,18 +87,13 @@ const CardsStatsExplore: React.FC = () => {
         <Panel className="w-full w-2/4">
           <Panel.Header className='flex justify-between items-center'>
             <Label>File Last Modified</Label>
-            <Button
-              isIconOnly
-              className='my-0'
-              skin='borderless-muted'
-              startIcon={<CodeIcon className="t-icon" />}
-            />
+            <TimeGrainDropdown selected={timeGrainFile} changeTimeGrain={changeTimeGrainFile} />
           </Panel.Header>
           <Panel.Body>
             {loading
               ? <CardLoading />
               : <div className='flex justify-between min-h-xs'>
-                {repoLastModifiedChart && <BarChartHorizontal data={repoLastModifiedChart.month} dataKey='count' />}
+                {dataLastModifiedFile && <BarChartHorizontal data={dataLastModifiedFile} dataKey='count' dataXAxis={xAxisFile} />}
               </div>
             }
           </Panel.Body>

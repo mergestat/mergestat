@@ -28,7 +28,7 @@ export const BarChartVertical: React.FC<Props> = ({ data, dataKey, xAxisLabel }:
           tick={<CustomizedTick />}
         />
         <CartesianGrid opacity={0.2} horizontal={false} />
-        <Bar dataKey={dataKey} fill="#95D8F8" stroke='#3BB6F1' radius={[4, 4, 4, 4]} />
+        <Bar dataKey={dataKey} fill="#95D8F8" stroke='#3BB6F1' radius={[4, 4, 4, 4]} maxBarSize={40} />
         <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
       </BarChart>
     </ResponsiveContainer>
