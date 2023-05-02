@@ -73,6 +73,8 @@ module.exports = (0, graphile_utils_1.makeExtendSchemaPlugin)({
             END
             $do$;`);
                     }
+                    //Then set the session timeout
+                    yield context.pgClient.query("SET statement_timeout = '30s';");
                     // then create a cursor https://node-postgres.com/api/cursor for the user supplied query
                     const cursor = context.pgClient.query(new pg_cursor_1.default(input.query, input.variables, { rowMode: 'array' }));
                     // use the default row limit if none is provided
