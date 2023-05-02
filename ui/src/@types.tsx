@@ -17,6 +17,8 @@ export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
 
 export type ImportStatusType = 'SUCCESS' | 'FAILURE'
 
+export type TimeGrain = 'Months' | 'Years'
+
 export type ChartType = TAB_TYPE.BAR | TAB_TYPE.LINE
 
 export type TagType = {
@@ -516,4 +518,43 @@ export type ContainerBasicData = {
   sync: {
     name: string
   }
+}
+
+/** Explore page */
+
+export interface Month {
+  count: number
+  year_month: string
+}
+
+export interface Year {
+  year: string
+  count: number
+}
+
+export interface LastModified {
+  year: Year[]
+  month: Month[]
+}
+
+export interface Top10Author {
+  author_name: string
+  commits_count: number
+}
+
+export interface Top10Repo {
+  repo: string
+  vendor: string
+  file_count: number
+  vendor_url: string
+}
+
+export interface ExploreData {
+  files: number
+  repos: number
+  authors: number
+  top_10_repos: Top10Repo[]
+  top_10_authors: Top10Author[]
+  file_last_modified: LastModified
+  repo_last_modified: LastModified
 }

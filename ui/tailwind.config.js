@@ -31,7 +31,8 @@ module.exports = {
         'content-layout': 'auto 1fr',
       },
       minHeight: {
-        40: '10rem',
+        xs: '18rem',
+        sm: '24rem',
       },
       minWidth: {
         sm: '24rem',

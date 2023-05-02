@@ -15,7 +15,10 @@ const SidebarView: React.FC = () => {
         <Sidebar.Item
           label='Repos'
           compact={false}
-          active={isSidebarActive(/^\/repos/) && !isSidebarActive(/^\/repos\/git-sources/) && !isSidebarActive(/^\/repos\/repo-syncs/) && !isSidebarActive(/^\/repos\/add-git-source/)}
+          active={
+            isSidebarActive(/^\/repos/) && !isSidebarActive(/^\/repos\/git-sources/) && !isSidebarActive(/^\/repos\/repo-syncs/) &&
+            !isSidebarActive(/^\/repos\/add-git-source/) && !isSidebarActive(/^\/repos\/repo-explore/)
+          }
           defaultOpen={isSidebarActive(/^\/repos/)}
           icon={<RepositoryIcon className='t-icon' />}
           onClick={() => push('/repos')}
@@ -29,6 +32,10 @@ const SidebarView: React.FC = () => {
                 onClick={() => push('/repos/repo-syncs')}
                 active={isSidebarActive('/repos/repo-syncs')}
                 label='Repo Syncs' level='sub' />
+              {/* <Sidebar.Item compact={false}
+                onClick={() => push('/repos/repo-explore')}
+                active={isSidebarActive('/repos/repo-explore')}
+                label='Repo Explore' level='sub' /> */}
             </>
           }
         />
