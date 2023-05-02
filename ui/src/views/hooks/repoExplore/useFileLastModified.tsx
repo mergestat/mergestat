@@ -13,8 +13,9 @@ export const useFileLastModified = (fileLastModified: LastModified) => {
     if (fileLastModified) {
       const data = mapLastModified(fileLastModified)
       setFileLastModifiedChart(data)
-      setDataLastModifiedFile(data.month)
+      setDataLastModifiedFile((timeGrainFile === TIME_GRAIN.MONTHS ? data?.month : data?.year) || [])
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileLastModified])
 
   useEffect(() => {
@@ -25,12 +26,12 @@ export const useFileLastModified = (fileLastModified: LastModified) => {
 
   useEffect(() => {
     setDataLastModifiedFile((timeGrainFile === TIME_GRAIN.MONTHS ? fileLastModifiedChart?.month : fileLastModifiedChart?.year) || [])
+    setXAxisFile(timeGrainFile === TIME_GRAIN.MONTHS ? 'yearMonth' : 'year')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeGrainFile])
 
   const changeTimeGrainFile = (name: TimeGrain, close: () => void) => {
     setTimeGrainFile(name)
-    setXAxisFile(name === TIME_GRAIN.MONTHS ? 'yearMonth' : 'year')
     close()
   }
 

@@ -32,10 +32,10 @@ const SidebarView: React.FC = () => {
                 onClick={() => push('/repos/repo-syncs')}
                 active={isSidebarActive('/repos/repo-syncs')}
                 label='Repo Syncs' level='sub' />
-              <Sidebar.Item compact={false}
+              {/* <Sidebar.Item compact={false}
                 onClick={() => push('/repos/repo-explore')}
                 active={isSidebarActive('/repos/repo-explore')}
-                label='Repo Explore' level='sub' />
+                label='Repo Explore' level='sub' /> */}
             </>
           }
         />

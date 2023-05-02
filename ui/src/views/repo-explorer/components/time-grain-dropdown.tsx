@@ -1,6 +1,5 @@
-import { Button, Dropdown, Menu } from '@mergestat/blocks'
+import { Button, Dropdown, Label, Menu } from '@mergestat/blocks'
 import { CaretDownIcon, CodeIcon } from '@mergestat/icons'
-import { Label } from 'recharts'
 import { TimeGrain } from 'src/@types'
 import { TIME_GRAIN } from 'src/utils/constants'
 

@@ -14,17 +14,19 @@ export const useRepoLastModified = (repoLastModified: LastModified) => {
       const data = mapLastModified(repoLastModified)
       setRepoLastModifiedChart(data)
       setDataLastModifiedRepo(data.month)
+      setDataLastModifiedRepo((timeGrainRepo === TIME_GRAIN.MONTHS ? data?.month : data?.year) || [])
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repoLastModified])
 
   useEffect(() => {
     setDataLastModifiedRepo((timeGrainRepo === TIME_GRAIN.MONTHS ? repoLastModifiedChart?.month : repoLastModifiedChart?.year) || [])
+    setXAxisRepo(timeGrainRepo === TIME_GRAIN.MONTHS ? 'yearMonth' : 'year')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeGrainRepo])
 
   const changeTimeGrainRepo = (name: TimeGrain, close: () => void) => {
     setTimeGrainRepo(name)
-    setXAxisRepo(name === TIME_GRAIN.MONTHS ? 'yearMonth' : 'year')
     close()
   }
 
