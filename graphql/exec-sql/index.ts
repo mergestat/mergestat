@@ -50,6 +50,34 @@ module.exports = makeExtendSchemaPlugin({
         if (!input.disableReadOnly) {
           await context.pgClient.query("SET TRANSACTION READ ONLY;")
         }
+        else
+        {
+            // Check if the user is a mergestat_role_demo user and if so, set the transaction to read only
+            await context.pgClient.query(
+            `DO
+            $do$
+            BEGIN
+                --Check if user has role of mergestat_role_demo and raise and error if they do
+                IF EXISTS (
+                    SELECT 
+                        a.oid AS user_role_id
+                        , a.rolname AS user_role_name
+                        , b.roleid AS other_role_id
+                        , c.rolname AS other_role_name
+                    FROM pg_roles a
+                    INNER JOIN pg_auth_members b ON a.oid=b.member
+                    INNER JOIN pg_roles c ON b.roleid=c.oid 
+                    WHERE a.rolname = current_user AND c.rolname = 'mergestat_role_demo'
+                )
+                THEN SET TRANSACTION READ ONLY;
+                END IF;
+            END
+            $do$;`
+            );
+        }
+
+        //Then set the session timeout
+        await context.pgClient.query("SET statement_timeout = '30s';")
 
         // then create a cursor https://node-postgres.com/api/cursor for the user supplied query
         const cursor = context.pgClient.query(new Cursor(input.query, input.variables, { rowMode: 'array' }))
