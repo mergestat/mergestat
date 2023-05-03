@@ -47,7 +47,7 @@ export const mapTop10Authors = (topAuthors: Top10Author[]): AuthorBarChart[] => 
 export const mapLastModified = (fileLastModified: LastModified): LasModifiedBarChart => {
   return {
     year: fileLastModified.year,
-    month: fileLastModified.month.map(data => ({
+    month: fileLastModified.month?.map(data => ({
       yearMonth: formatMonth(data.year_month),
       count: data.count
     }))

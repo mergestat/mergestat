@@ -6,10 +6,11 @@ import { CustomizedTick } from './custom-top-repos'
 interface Props {
   data: RepoBarChart[] | AuthorBarChart[]
   dataKey: keyof RepoBarChart | keyof AuthorBarChart
-  xAxisLabel: string
+  xAxisLabel: string,
+  showIcon?: boolean
 }
 
-export const BarChartVertical: React.FC<Props> = ({ data, dataKey, xAxisLabel }: Props) => {
+export const BarChartVertical: React.FC<Props> = ({ data, dataKey, xAxisLabel, showIcon = true }: Props) => {
   return (
     <ResponsiveContainer width="95%" height={400}>
       <BarChart data={data} barCategoryGap={6} layout='vertical' margin={{ left: 190, bottom: 30 }}>
@@ -25,11 +26,11 @@ export const BarChartVertical: React.FC<Props> = ({ data, dataKey, xAxisLabel }:
           axisLine={false}
           tickLine={{ opacity: 0.1 }}
           dataKey={(record) => (JSON.stringify(record))}
-          tick={<CustomizedTick />}
+          tick={(props) => <CustomizedTick showIcon={showIcon} {...props} />}
         />
         <CartesianGrid opacity={0.2} horizontal={false} />
         <Bar dataKey={dataKey} fill="#95D8F8" stroke='#3BB6F1' radius={[4, 4, 4, 4]} maxBarSize={40} />
-        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
       </BarChart>
     </ResponsiveContainer>
   )
