@@ -27,7 +27,7 @@ export const BarChartHorizontal: React.FC<Props> = ({ data, dataKey, dataXAxis }
         />
         <CartesianGrid opacity={0.2} vertical={false} />
         <Bar dataKey={dataKey} fill="#95D8F8" stroke='#3BB6F1' radius={[4, 4, 4, 4]} maxBarSize={40} />
-        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
       </BarChart>
     </ResponsiveContainer>
   )

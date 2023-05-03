@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import { Alert, Button, Input, Label, Toolbar } from '@mergestat/blocks'
 import { CogIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { KeyboardEvent, useEffect } from 'react'
 import { ExploreData } from 'src/@types'
 import { ExploreMutation } from 'src/api-logic/graphql/generated/schema'
 import { EXPLORE } from 'src/api-logic/graphql/mutations/explore'
@@ -24,6 +24,14 @@ const HeaderExplore: React.FC = () => {
     setLoading(loading)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading])
+
+  const executeExplore = () => {
+    explore({
+      variables: {
+        params: { file_pattern: search }
+      }
+    })
+  }
 
   return (
     <div className='flex flex-col bg-white w-full border-b px-8 py-4 gap-4'>
@@ -51,10 +59,10 @@ const HeaderExplore: React.FC = () => {
           <Label className='whitespace-nowrap text-gray-500 pr-8'>File Path</Label>
           <Input
             id='search'
-            type='text'
-            placeholder='*.go'
+            placeholder='%.go'
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyUp={(e: KeyboardEvent<HTMLInputElement>) => (e.key === 'Enter' && executeExplore())}
           />
         </div>
 
@@ -62,11 +70,7 @@ const HeaderExplore: React.FC = () => {
           label='Search'
           disabled={!search}
           className='whitespace-nowrap'
-          onClick={() => explore({
-            variables: {
-              params: { file_pattern: search }
-            }
-          })}
+          onClick={() => executeExplore()}
         />
       </div>
     </div>

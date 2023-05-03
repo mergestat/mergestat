@@ -61,7 +61,7 @@ const CardsStatsExplore: React.FC = () => {
             {loading
               ? <CardLoading />
               : <div className='flex justify-center min-h-xs'>
-                {top10AuthorsChart && <BarChartVertical data={top10AuthorsChart} dataKey='commitsCount' xAxisLabel='Commits' />}
+                {top10AuthorsChart && <BarChartVertical data={top10AuthorsChart} dataKey='commitsCount' xAxisLabel='Commits' showIcon={false} />}
               </div>
             }
           </Panel.Body>
