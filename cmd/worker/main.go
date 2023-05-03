@@ -264,6 +264,9 @@ func main() {
 		Concurrency: concurrency,
 	})
 
+	// resets the query params to avoid downstream issues
+	u.RawQuery = ""
+
 	// register job handlers for types implemented by this worker
 	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
 	_ = worker.Register("container/sync", podman.ContainerSync(u.String(), &logger, db.New(pool)))
