@@ -14,7 +14,7 @@ PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ mak
 FROM zricethezav/gitleaks:v8.15.3 AS gitleaks
 
 FROM alpine:3.16
-RUN apk upgrade && apk add --no-cache curl postgresql-client ca-certificates git go podman fuse-overlayfs
+RUN apk upgrade && apk add --no-cache curl postgresql-client ca-certificates git go podman fuse-overlayfs tini
 
 # copy over migrations
 RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.1/migrate.linux-amd64.tar.gz | tar xvz
@@ -61,4 +61,4 @@ RUN addgroup --gid 1002 mergestat; \
 
 USER mergestat
 
-ENTRYPOINT [ "/worker" ]
+ENTRYPOINT ["/sbin/tini", "/worker" ]

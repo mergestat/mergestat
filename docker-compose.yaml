@@ -28,7 +28,6 @@ services:
     # image: mergestat/worker:2.1.0-beta
     image: images.mergestat.com/mergestat/worker:2.1.0-beta
     privileged: true
-    init: true
     stop_grace_period: 10m
     restart: always
     depends_on:
