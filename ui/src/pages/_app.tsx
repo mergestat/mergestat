@@ -2,18 +2,16 @@ import { ApolloProvider } from '@apollo/client'
 import { useApollo } from 'lib/apollo'
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
-import LayoutWrapper from 'src/layouts/LayoutWrapper'
 import '../styles/globals.css'
+import AppWrapper from './AppWrapper'
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
-  const apolloClient = useApollo(pageProps.initialApolloState)
+const MyApp = (props: AppProps) => {
+  const apolloClient = useApollo(props.pageProps.initialApolloState)
   useEffect(() => { document.body.classList.add('overflow-hidden') })
 
   return (
     <ApolloProvider client={apolloClient}>
-      <LayoutWrapper {...pageProps}>
-        <Component {...pageProps} />
-      </LayoutWrapper>
+      <AppWrapper {...props} />
     </ApolloProvider>
   )
 }
