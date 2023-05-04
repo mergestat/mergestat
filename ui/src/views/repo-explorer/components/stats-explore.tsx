@@ -24,7 +24,7 @@ const StatsExplore: React.FC = () => {
           <Stat.Number>
             <MetricNumber loading={loading} metric={repos || 0}
               icon={<CircleInformationFilledIcon className="t-icon t-icon-info" />}
-              tooltip={<div className='w-80 font-thin'>
+              tooltip={<div className='w-80 font-thin leading-4 p-2'>
                 Not all repos have been index, please modify
                 the repo explore sync to search across all repos
               </div>}

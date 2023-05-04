@@ -41,7 +41,15 @@ const HeaderExplore: React.FC = () => {
         </Toolbar.Left>
         <Toolbar.Right>
           <Toolbar.Item>
-            <Alert isInline type="info" className='text-gray-400'>100/1000 repos indexed</Alert>
+            <Alert isInline
+              type="info"
+              className='text-gray-400'
+              tooltip={<div className='w-80 font-thin leading-4 p-2'>
+                Not all repos have been index, please modify the repo explore sync to search across all repos
+              </div>}
+            >
+              100/1000 repos indexed
+            </Alert>
           </Toolbar.Item>
           <Toolbar.Item>
             <Button className='whitespace-nowrap'
