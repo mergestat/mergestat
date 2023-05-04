@@ -12955,6 +12955,7 @@ export type ExecuteSqlQueryVariables = Exact<{
   sql: Scalars['String'];
   disableReadOnly?: InputMaybe<Scalars['Boolean']>;
   trackHistory?: InputMaybe<Scalars['Boolean']>;
+  rowLimit?: InputMaybe<Scalars['Int']>;
 }>;
 
 

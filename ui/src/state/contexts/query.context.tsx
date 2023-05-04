@@ -17,6 +17,7 @@ type QueryContextT = {
   projection: string[]
   showSettingsModal: boolean
   showQueryHistoryModal: boolean
+  rowLimitReached: boolean
 }
 
 type UseQueryContextT = [
@@ -33,7 +34,8 @@ const initialState: QueryContextT = {
   dataQuery: {},
   projection: [],
   showSettingsModal: false,
-  showQueryHistoryModal: false
+  showQueryHistoryModal: false,
+  rowLimitReached: false
 }
 
 function useQueryEditor(): UseQueryContextT {
@@ -121,6 +123,13 @@ function useQuerySetState() {
     }))
   }
 
+  const setRowLimitReached = (rowLimitReached: boolean) => {
+    setState(prev => ({
+      ...prev,
+      rowLimitReached
+    }))
+  }
+
   return {
     _,
     setQuery,
@@ -132,6 +141,7 @@ function useQuerySetState() {
     setProjection,
     setShowSettingsModal,
     setShowQueryHistoryModal,
+    setRowLimitReached
   }
 }
 

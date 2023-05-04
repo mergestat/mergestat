@@ -1,4 +1,7 @@
-import { Alert, Button, Dropdown, Input, Label, Menu, Select, Toolbar, Tooltip } from '@mergestat/blocks'
+import '@blueprintjs/popover2/lib/css/blueprint-popover2.css'
+import { Cell, Column, SelectionModes, Table2 } from '@blueprintjs/table'
+import '@blueprintjs/table/lib/css/table.css'
+import { Button, Dropdown, Input, Label, Menu, Select, Toolbar, Tooltip } from '@mergestat/blocks'
 import { CaretDownIcon, ChevronLeftIcon, ChevronRightIcon, ClipboardIcon, DownloadIcon, SearchIcon } from '@mergestat/icons'
 import { debounce } from 'lodash'
 import Papa from 'papaparse'
@@ -6,17 +9,8 @@ import { KeyboardEvent, useEffect, useState } from 'react'
 import { useQueryContext } from 'src/state/contexts'
 import { copy, filterByAllFields, getMaxPagination, paginate } from 'src/utils'
 import { EXPORT_FORMAT } from 'src/utils/constants'
-import { Table2, Column, Cell, SelectionModes } from '@blueprintjs/table'
-import '@blueprintjs/table/lib/css/table.css'
-import '@blueprintjs/popover2/lib/css/blueprint-popover2.css'
 
-type TabTableProps = {
-  rowLimit: number
-  rowLimitReached: boolean
-  children?: React.ReactNode
-}
-
-const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTableProps) => {
+const TabTable: React.FC = () => {
   const [{ dataQuery: data }] = useQueryContext()
 
   const [result, setResult] = useState<Array<Array<string | number | boolean>>>(data.rows || [])
@@ -111,15 +105,15 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
                 trigger={
                   window.isSecureContext
                     ? <Button label='Copy' skin='secondary' size='small'
+                      startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
+                      endIcon={<CaretDownIcon className='t-icon' />}
+                    />
+                    : <Tooltip content='Copy is only available on HTTPs connections'>
+                      <Button disabled label='Copy' skin='secondary' size='small'
                         startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
                         endIcon={<CaretDownIcon className='t-icon' />}
                       />
-                    : <Tooltip content='Copy is only available on HTTPs connections'>
-                        <Button disabled label='Copy' skin='secondary' size='small'
-                          startIcon={<ClipboardIcon className='t-icon t-icon-heroicons-clipboard' />}
-                          endIcon={<CaretDownIcon className='t-icon' />}
-                        />
-                      </Tooltip>
+                    </Tooltip>
                 }
                 overlay={(close) => (
                   <Menu className='whitespace-nowrap w-full'>
@@ -161,11 +155,6 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
 
       {/* Table section */}
       <div className='overflow-hidden flex-1 flex flex-col bg-white h-full w-full'>
-        {rowLimitReached && (
-          <Alert theme="light" type="warning" className='t-alert-full-width items-center' >
-            Query results are limited to {rowLimit} rows.
-          </Alert>
-        )}
         <div className='overflow-auto w-full flex-1'>
           <Table2
             enableGhostCells
@@ -174,7 +163,7 @@ const TabTable: React.FC<TabTableProps> = ({ rowLimit, rowLimitReached }: TabTab
           >
             {data.columns
               ? data.columns.map((col, index) => (
-                <Column key={index} name={col.name.toString()} cellRenderer={renderDataCell}/>
+                <Column key={index} name={col.name.toString()} cellRenderer={renderDataCell} />
               ))
               : []}
           </Table2>

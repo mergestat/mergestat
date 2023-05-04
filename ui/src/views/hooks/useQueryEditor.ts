@@ -8,13 +8,14 @@ import { useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { formatTimeExecution } from 'src/utils'
 import { States } from 'src/utils/constants'
 
-const useQueryEditor = (rowsLimit: number) => {
+const useQueryEditor = () => {
+  const ROWS_LIMIT = 1000
+
   const [{ query, readOnly, expanded, dataQuery, projection, showSettingsModal, showQueryHistoryModal }] = useQueryContext()
-  const { setQuery, setDataQuery, setProjection, setTabs, setActiveTab, setShowSettingsModal, setShowQueryHistoryModal } = useQuerySetState()
+  const { setQuery, setDataQuery, setProjection, setTabs, setActiveTab, setShowSettingsModal, setShowQueryHistoryModal, setRowLimitReached } = useQuerySetState()
   const dispatch = useQueryTabsDispatch()
 
   const [state, setState] = useState<States>(States.Empty)
-  const [rowLimitReached, setRowLimitReached] = useState(true)
   const [executed, setExecuted] = useState(false)
   const [aborterRef, setAbortRef] = useState(new AbortController())
   const [loading, setLoading] = useState(false)
@@ -66,7 +67,7 @@ const useQueryEditor = (rowsLimit: number) => {
       setTime(formatTimeExecution(data?.execSQL.queryRunningTimeMs || 0))
       setState(currentState)
       if (data?.execSQL.rows?.length) {
-        setRowLimitReached(data?.execSQL.rows?.length > rowsLimit)
+        setRowLimitReached(data?.execSQL.rows?.length > ROWS_LIMIT)
       } else {
         setRowLimitReached(false)
       }
@@ -79,7 +80,7 @@ const useQueryEditor = (rowsLimit: number) => {
   const executeSQLQuery = () => {
     setLoading(true)
     setAbortRef(new AbortController())
-    executeSQL({ variables: { sql: query, disableReadOnly: !readOnly, trackHistory: true } })
+    executeSQL({ variables: { sql: query, disableReadOnly: !readOnly, trackHistory: true, rowLimit: 1001 } })
     setExecuted(true)
   }
 
@@ -102,7 +103,6 @@ const useQueryEditor = (rowsLimit: number) => {
     showSettingsModal,
     showQueryHistoryModal,
     state,
-    rowLimitReached,
     executed,
     readOnly,
     loading,

@@ -9,7 +9,7 @@ import TabChart from '../sql-query-editor/tabs/tab-chart'
 import TabSingleMetric from '../sql-query-editor/tabs/tab-single-metric'
 import TabTable from '../sql-query-editor/tabs/tab-table'
 
-const useTabs = (rowLimit: number, rowLimitReached: boolean, charts: ChartData[]) => {
+const useTabs = (charts: ChartData[]) => {
   const [{ expanded, activeTab, tabs }] = useQueryContext()
   const { setExpanded, setActiveTab, setTabs } = useQuerySetState()
   const dispatch = useQueryTabsDispatch()
@@ -18,7 +18,7 @@ const useTabs = (rowLimit: number, rowLimitReached: boolean, charts: ChartData[]
     const tableTab = {
       tabId: uuidv4(),
       title: <><TableIcon className='t-icon' /> <span className='ml-2'>Table</span></>,
-      content: <TabTable rowLimit={rowLimit} rowLimitReached={rowLimitReached} />
+      content: <TabTable />
     }
     let tabData = [tableTab]
 
@@ -31,7 +31,7 @@ const useTabs = (rowLimit: number, rowLimitReached: boolean, charts: ChartData[]
     })
     setTabs(tabData)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

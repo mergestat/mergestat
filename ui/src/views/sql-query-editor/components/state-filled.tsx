@@ -1,20 +1,20 @@
-import { Badge, Button, HoverCard, Menu, Tabs, Toolbar } from '@mergestat/blocks'
+import { Alert, Badge, Button, HoverCard, Menu, Tabs, Toolbar, Tooltip } from '@mergestat/blocks'
 import { ArrowCollapseIcon, ArrowExpandIcon, CaretDownIcon, ChartBarIcon, ChartLineIcon, CircleCheckFilledIcon, PlusIcon, SingleMetricIcon } from '@mergestat/icons'
 import { cloneElement } from 'react'
 import { ChartData } from 'src/@types'
+import { useQueryContext } from 'src/state/contexts'
 import { TAB_TYPE } from 'src/utils/constants'
 import useTabs from 'src/views/hooks/useTabs'
 
 type QueryEditorFilledProps = {
-  rowLimit: number
-  rowLimitReached: boolean
   time: string
   children?: React.ReactNode
   charts: ChartData[]
 }
 
-const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimitReached, time, charts }: QueryEditorFilledProps) => {
-  const { tabs, expanded, activeTab, setActiveTab, setExpanded, addTab, removeTab } = useTabs(rowLimit, rowLimitReached, charts)
+const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ time, charts }: QueryEditorFilledProps) => {
+  const [{ rowLimitReached }] = useQueryContext()
+  const { tabs, expanded, activeTab, setActiveTab, setExpanded, addTab, removeTab } = useTabs(charts)
 
   return (
     <div className="flex flex-col flex-1 w-full bg-white" style={{ minHeight: '48px' }}>
@@ -73,7 +73,17 @@ const QueryEditorFilled: React.FC<QueryEditorFilledProps> = ({ rowLimit, rowLimi
             <Toolbar.Right className='flex-1 pr-8 space-x-4'>
               <Toolbar.Item>
                 <span className='text-sm t-text-muted pl-3 pr-1'>{time}</span>
-              </Toolbar.Item >
+              </Toolbar.Item>
+              {rowLimitReached && <Toolbar.Item>
+                <Alert isInline type="warning" className='text-gray-400'>
+                  <Tooltip placement='bottom' offset={[0, 10]}
+                    content={<div className='w-56 font-thin pl-2 pr-1 py-3 leading-2'>
+                      Result set exceeds the limits of the UI. Please use another SQL client to access more rows
+                    </div>}>
+                    <span className='border-b-2 border-dotted border-gray-400'>Limited to 1000 rows</span>
+                  </Tooltip>
+                </Alert>
+              </Toolbar.Item>}
               <Toolbar.Item>
                 <Badge
                   label='Success'
