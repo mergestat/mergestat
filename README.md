@@ -7,7 +7,7 @@
 # mergestat <a href="https://docs.mergestat.com/"><img align="right" src="https://github.com/mergestat/mergestat/raw/main/docs/logo.png" alt="MergeStat Logo" height="100"></a>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/banner-dark-moe.png">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/banner-dark-mode.png">
   <img alt="Banner describing MergeStat" src="docs/banner-light-mode.png">
 </picture>
 
