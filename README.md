@@ -6,7 +6,10 @@
 
 # mergestat <a href="https://docs.mergestat.com/"><img align="right" src="https://github.com/mergestat/mergestat/raw/main/docs/logo.png" alt="MergeStat Logo" height="100"></a>
 
-![Banner describing MergeStat](docs/banner.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/banner-dark-mode.png">
+  <img alt="Banner describing MergeStat" src="docs/banner-light-mode.png">
+</picture>
 
 MergeStat enables SQL queries for data in git repositories (and related sources, such as the GitHub API). It allows you to ask questions about the history and contents of your source code.
 
