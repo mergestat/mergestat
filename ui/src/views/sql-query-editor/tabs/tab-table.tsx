@@ -160,6 +160,7 @@ const TabTable: React.FC = () => {
             enableGhostCells
             numRows={result.length}
             selectionModes={SelectionModes.COLUMNS_AND_CELLS}
+            cellRendererDependencies={[result]}
           >
             {data.columns
               ? data.columns.map((col, index) => (
