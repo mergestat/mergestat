@@ -1,5 +1,5 @@
 import { Button, Stat } from '@mergestat/blocks'
-import { CircleInformationFilledIcon, CodeIcon } from '@mergestat/icons'
+import { CircleInformationFilledIcon, TableIcon } from '@mergestat/icons'
 import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
 import { MetricNumber } from 'src/views/shared/metric-number'
 
@@ -17,7 +17,7 @@ const StatsExplore: React.FC = () => {
                 isIconOnly
                 className='my-0'
                 skin='borderless-muted'
-                startIcon={<CodeIcon className="t-icon" />}
+                startIcon={<TableIcon className="t-icon" />}
               />
             </div>
           </Stat.Label>
@@ -34,14 +34,16 @@ const StatsExplore: React.FC = () => {
       </Stat>
       <Stat className='shadow-sm w-full'>
         <Stat.Left className='mr-0'>
-          <div className='flex justify-between items-center'>
-            Files
-            <Button
-              isIconOnly
-              skin='borderless-muted'
-              startIcon={<CodeIcon className="t-icon" />}
-            />
-          </div>
+          <Stat.Label>
+            <div className='flex justify-between items-center'>
+              Files
+              <Button
+                isIconOnly
+                skin='borderless-muted'
+                startIcon={<TableIcon className="t-icon" />}
+              />
+            </div>
+          </Stat.Label>
           <Stat.Number>
             <MetricNumber loading={loading} metric={files || 0} />
           </Stat.Number>
@@ -49,14 +51,16 @@ const StatsExplore: React.FC = () => {
       </Stat>
       <Stat className='shadow-sm w-full'>
         <Stat.Left className='mr-0'>
-          <div className='flex justify-between items-center'>
-            Unique authors
-            <Button
-              isIconOnly
-              skin='borderless-muted'
-              startIcon={<CodeIcon className="t-icon" />}
-            />
-          </div>
+          <Stat.Label>
+            <div className='flex justify-between items-center'>
+              Unique authors
+              <Button
+                isIconOnly
+                skin='borderless-muted'
+                startIcon={<TableIcon className="t-icon" />}
+              />
+            </div>
+          </Stat.Label>
           <Stat.Number>
             <MetricNumber loading={loading} metric={authors || 0} />
           </Stat.Number>
