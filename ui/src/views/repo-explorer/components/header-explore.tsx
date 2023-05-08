@@ -62,7 +62,7 @@ const HeaderExplore: React.FC = () => {
         </Toolbar.Right>
       </Toolbar>
 
-      <div className='flex justify-between gap-4'>
+      <div className='flex justify-between gap-3'>
         <div className='flex flex-1'>
           <Label className='whitespace-nowrap text-gray-500 pr-8'>File Path</Label>
           <Input

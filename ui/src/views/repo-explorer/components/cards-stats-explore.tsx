@@ -1,5 +1,5 @@
-import { Button, Label, Panel } from '@mergestat/blocks'
-import { CodeIcon } from '@mergestat/icons'
+import { Button, Panel } from '@mergestat/blocks'
+import { TableIcon } from '@mergestat/icons'
 import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
 import { useFileLastModified } from 'src/views/hooks/repoExplore/useFileLastModified'
 import { useRepoLastModified } from 'src/views/hooks/repoExplore/useRepoLastModified'
@@ -25,19 +25,19 @@ const CardsStatsExplore: React.FC = () => {
   const { xAxisFile, timeGrainFile, dataLastModifiedFile, changeTimeGrainFile } = useFileLastModified(fileLastModified)
 
   return (
-    <div className='py-8'>
-      <div className='md_grid md_grid-cols-2 gap-6 space-y-4 md_space-y-0'>
-        <Panel className="w-full w-2/4">
+    <div className='pt-6'>
+      <div className='lg_grid lg_grid-cols-2 gap-6 space-y-4 lg_space-y-0'>
+        <Panel className="w-full">
           <Panel.Header className='flex justify-between items-center'>
-            <Label>Top 10 Repos</Label>
+            <h3 className='t-panel-title'>Top 10 repos</h3>
             <Button
               isIconOnly
               className='my-0'
               skin='borderless-muted'
-              startIcon={<CodeIcon className="t-icon" />}
+              startIcon={<TableIcon className="t-icon" />}
             />
           </Panel.Header>
-          <Panel.Body>
+          <Panel.Body className='overflow-hidden'>
             {loading
               ? <CardLoading />
               : <div className='flex justify-center min-h-xs'>
@@ -47,17 +47,17 @@ const CardsStatsExplore: React.FC = () => {
           </Panel.Body>
         </Panel>
 
-        <Panel className="w-full w-2/4">
+        <Panel className="w-full">
           <Panel.Header className='flex justify-between items-center'>
-            <Label>Top 10 Authors</Label>
+            <h3 className='t-panel-title'>Top 10 Authors</h3>
             <Button
               isIconOnly
               className='my-0'
               skin='borderless-muted'
-              startIcon={<CodeIcon className="t-icon" />}
+              startIcon={<TableIcon className="t-icon" />}
             />
           </Panel.Header>
-          <Panel.Body>
+          <Panel.Body className='overflow-hidden'>
             {loading
               ? <CardLoading />
               : <div className='flex justify-center min-h-xs'>
@@ -68,13 +68,13 @@ const CardsStatsExplore: React.FC = () => {
         </Panel>
       </div>
 
-      <div className='md_grid md_grid-cols-2 gap-6 space-y-4 md_space-y-0 pt-6'>
-        <Panel className="w-full w-2/4">
+      <div className='lg_grid lg_grid-cols-2 gap-6 space-y-4 lg_space-y-0 pt-6'>
+        <Panel className="w-full">
           <Panel.Header className='flex justify-between items-center'>
-            <Label>Repo Last Modified</Label>
+            <h3 className='t-panel-title'>Repo Last Modified</h3>
             <TimeGrainDropdown selected={timeGrainRepo} changeTimeGrain={changeTimeGrainRepo} />
           </Panel.Header>
-          <Panel.Body>
+          <Panel.Body className='overflow-hidden'>
             {loading
               ? <CardLoading />
               : <div className='flex justify-between min-h-xs'>
@@ -84,12 +84,12 @@ const CardsStatsExplore: React.FC = () => {
           </Panel.Body>
         </Panel>
 
-        <Panel className="w-full w-2/4">
+        <Panel className="w-full">
           <Panel.Header className='flex justify-between items-center'>
-            <Label>File Last Modified</Label>
+            <h3 className='t-panel-title'>File Last Modified</h3>
             <TimeGrainDropdown selected={timeGrainFile} changeTimeGrain={changeTimeGrainFile} />
           </Panel.Header>
-          <Panel.Body>
+          <Panel.Body className='overflow-hidden'>
             {loading
               ? <CardLoading />
               : <div className='flex justify-between min-h-xs'>
