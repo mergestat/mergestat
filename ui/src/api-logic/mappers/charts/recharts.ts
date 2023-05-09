@@ -1,8 +1,9 @@
 import { LastModified, Top10Author, Top10Repo } from 'src/@types'
-import { formatMonth, getRepoFromUrl } from 'src/utils'
+import { formatMonth, getExternalRepoLink, getRepoFromUrl } from 'src/utils'
 
 export interface RepoBarChart {
   name: string
+  link: string
   vendor: string
   vendorUrl: string
   fileCount: number
@@ -31,6 +32,7 @@ export interface LasModifiedBarChart {
 export const mapTop10Repos = (topRepos: Top10Repo[]): RepoBarChart[] => {
   return topRepos.map(data => ({
     name: getRepoFromUrl(data.repo),
+    link: getExternalRepoLink(data?.repo) || '',
     vendor: data.vendor,
     vendorUrl: data.vendor,
     fileCount: data.file_count

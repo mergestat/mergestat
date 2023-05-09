@@ -1,4 +1,4 @@
-import { Input, Label } from '@mergestat/blocks'
+import { Button, Input, Label } from '@mergestat/blocks'
 import React, { ChangeEvent, PropsWithChildren } from 'react'
 import { useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
 import Filter from './filter'
@@ -19,8 +19,16 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({ executeExplore }: Filte
     }
   }
 
+  const clearFilters = () => {
+    setFilterRepo(undefined)
+    setFilterFile(undefined)
+    setFilterAuthor(undefined)
+    setFilterRepoDays(undefined)
+    setFilterFileDays(undefined)
+  }
+
   return (
-    <div className='flex flex-wrap'>
+    <div className='flex flex-wrap items-center'>
       <Filter label='Repo' value={filterRepo} setValue={setFilterRepo} apply={executeExplore}>
         <Label>Matches pattern</Label>
         <Input value={filterRepo || ''} placeholder="mergestat/mergestat%"
@@ -42,7 +50,7 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({ executeExplore }: Filte
         />
       </Filter>
 
-      <Filter label='Repo last modified' value={filterRepoDays} setValue={setFilterRepoDays} apply={executeExplore}>
+      <Filter label='Repo modified last' value={filterRepoDays ? `${filterRepoDays}d` : undefined} setValue={setFilterRepoDays} apply={executeExplore}>
         <Label>Is in the last</Label>
         <div className='flex space-x-4'>
           <Input
@@ -53,7 +61,7 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({ executeExplore }: Filte
         </div>
       </Filter>
 
-      <Filter label='File last modified' value={filterFileDays} setValue={setFilterFileDays} apply={executeExplore}>
+      <Filter label='File modified last' value={filterFileDays ? `${filterFileDays}d` : undefined} setValue={setFilterFileDays} apply={executeExplore}>
         <Label>Is in the last</Label>
         <div className='flex space-x-4'>
           <Input
@@ -63,6 +71,15 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({ executeExplore }: Filte
           <Label>Days</Label>
         </div>
       </Filter>
+
+      <Button
+        style={{ minHeight: '2.2rem' }}
+        className='ml-2 text-thin my-1 p-0 h-2'
+        label="Clear filters"
+        skin="borderless"
+        size='small'
+        onClick={clearFilters}
+      />
     </div>
   )
 }

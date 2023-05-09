@@ -13,7 +13,10 @@ const Filter: React.FC<FilterProps> = ({ label, value, setValue, apply, children
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    value === undefined && apply()
+    if (value === undefined) {
+      apply()
+      setShow(false)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 

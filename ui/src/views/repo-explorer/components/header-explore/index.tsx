@@ -31,8 +31,8 @@ const HeaderExplore: React.FC = () => {
           repo_pattern: filterRepo,
           file_contents_pattern: filterFile,
           author_name_pattern: filterAuthor,
-          repo_older_than_days: filterRepoDays,
-          file_older_than_days: filterFileDays
+          days_since_repo_modified_last: filterRepoDays,
+          days_since_file_modified_last: filterFileDays
         }
       }
     })
