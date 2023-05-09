@@ -4,7 +4,7 @@ BEGIN;
 DROP FUNCTION IF EXISTS public.explore;
 
 ----https://www.graphile.org/postgraphile/custom-queries/
---Example: select explore_ui('{"file_path_pattern":"%Dockerfile", "file_contents_pattern":"%apiVersion%", "author_name_pattern":"John", "repo_older_than_days":30, "file_older_than_days":30, "repo_pattern":"%mergestat/%"}')
+--Example: select explore_ui('{"file_path_pattern":"%Dockerfile", "file_contents_pattern":"%apiVersion%", "author_name_pattern":"John", "days_since_repo_modified_last":30, "days_since_file_modified_last":30, "repo_pattern":"%mergestat/%"}')
 CREATE OR REPLACE FUNCTION public.explore_ui(params JSONB)
 RETURNS JSONB
 LANGUAGE PLPGSQL VOLATILE
@@ -14,21 +14,25 @@ DECLARE
    FILE_PATH_PATTERN_PARAM TEXT;
    FILE_CONTENTS_PATTERN_PARAM TEXT;
    AUTHOR_NAME_PATTERN_PARAM TEXT;
-   REPO_OLDER_THAN_DAYS_PARAM INTEGER;
-   FILE_OLDER_THAN_DAYS_PARAM INTEGER;
+   DAYS_SINCE_REPO_MODIFIED_LAST_PARAM INTEGER;
+   DAYS_SINCE_REPO_NOT_MODIFIED_LAST_PARAM INTEGER;
+   DAYS_SINCE_FILE_MODIFIED_LAST_PARAM INTEGER;
+   DAYS_SINCE_FILE_NOT_MODIFIED_LAST_PARAM INTEGER;
    REPO_PATTERN_PARAM TEXT;
 BEGIN
     SELECT params->>'file_path_pattern' INTO FILE_PATH_PATTERN_PARAM;
     SELECT params->>'file_contents_pattern' INTO FILE_CONTENTS_PATTERN_PARAM;
     SELECT params->>'author_name_pattern' INTO AUTHOR_NAME_PATTERN_PARAM;
-    SELECT params->>'repo_older_than_days' INTO REPO_OLDER_THAN_DAYS_PARAM;
-    SELECT params->>'file_older_than_days' INTO FILE_OLDER_THAN_DAYS_PARAM;
+    SELECT params->>'days_since_repo_modified_last' INTO DAYS_SINCE_REPO_MODIFIED_LAST_PARAM;
+    SELECT params->>'days_since_repo_not_modified_last' INTO DAYS_SINCE_REPO_NOT_MODIFIED_LAST_PARAM;
+    SELECT params->>'days_since_file_modified_last' INTO DAYS_SINCE_FILE_MODIFIED_LAST_PARAM;
+    SELECT params->>'days_since_file_not_modified_last' INTO DAYS_SINCE_FILE_NOT_MODIFIED_LAST_PARAM;
     SELECT params->>'repo_pattern' INTO REPO_PATTERN_PARAM;
     
     WITH base_query AS (
         SELECT 
             repos.repo,
-            git_commit_stats.file_path,
+            git_files.path AS file_path,
             git_commits.author_when,
             git_commits.author_name,
             git_commits.hash,
@@ -45,7 +49,7 @@ BEGIN
             FROM git_commits 
             INNER JOIN repos ON git_commits.repo_id = repos.id 
             ORDER BY 1, 2 DESC
-        ) repo_last_modified ON repo_last_modified.repo_id = repos.id
+        ) repo_last_modified ON repo_last_modified.repo_id = git_commits.repo_id
         INNER JOIN (
             SELECT DISTINCT ON (repos.id, git_commit_stats.file_path)
                 repos.id AS repo_id,
@@ -55,17 +59,21 @@ BEGIN
             INNER JOIN repos ON git_commits.repo_id = repos.id 
             INNER JOIN git_commit_stats ON git_commit_stats.repo_id = git_commits.repo_id AND git_commit_stats.commit_hash = git_commits.hash and parents < 2
             ORDER BY 1, 2, 3 DESC        
-        )file_last_modified ON file_last_modified.repo_id = repos.id AND file_last_modified.file_path = git_commit_stats.file_path
+        )file_last_modified ON file_last_modified.repo_id = git_commits.repo_id AND file_last_modified.file_path = git_files.path
         WHERE
             (FILE_PATH_PATTERN_PARAM IS NULL OR git_files.path LIKE FILE_PATH_PATTERN_PARAM)
             AND
             (FILE_CONTENTS_PATTERN_PARAM IS NULL OR git_files.contents LIKE FILE_CONTENTS_PATTERN_PARAM)
             AND
-            (AUTHOR_NAME_PATTERN_PARAM IS NULL OR git_commits.author_name = AUTHOR_NAME_PATTERN_PARAM)
+            (AUTHOR_NAME_PATTERN_PARAM IS NULL OR git_commits.author_name LIKE AUTHOR_NAME_PATTERN_PARAM)
             AND
-            (REPO_OLDER_THAN_DAYS_PARAM IS NULL OR repo_last_modified.last_modified < NOW() - (REPO_OLDER_THAN_DAYS_PARAM || ' day')::INTERVAL)
+            (DAYS_SINCE_REPO_NOT_MODIFIED_LAST_PARAM IS NULL OR repo_last_modified.last_modified < NOW() - (DAYS_SINCE_REPO_NOT_MODIFIED_LAST_PARAM || ' day')::INTERVAL)
             AND
-            (FILE_OLDER_THAN_DAYS_PARAM IS NULL OR file_last_modified.last_modified < NOW() - (FILE_OLDER_THAN_DAYS_PARAM || ' day')::INTERVAL)
+            (DAYS_SINCE_FILE_NOT_MODIFIED_LAST_PARAM IS NULL OR file_last_modified.last_modified < NOW() - (DAYS_SINCE_FILE_NOT_MODIFIED_LAST_PARAM || ' day')::INTERVAL)
+            AND
+            (DAYS_SINCE_REPO_MODIFIED_LAST_PARAM IS NULL OR repo_last_modified.last_modified >= NOW() - (DAYS_SINCE_REPO_MODIFIED_LAST_PARAM || ' day')::INTERVAL)
+            AND
+            (DAYS_SINCE_FILE_MODIFIED_LAST_PARAM IS NULL OR file_last_modified.last_modified >= NOW() - (DAYS_SINCE_FILE_MODIFIED_LAST_PARAM || ' day')::INTERVAL)
             AND
             (REPO_PATTERN_PARAM IS NULL OR repos.repo LIKE REPO_PATTERN_PARAM)
     )
