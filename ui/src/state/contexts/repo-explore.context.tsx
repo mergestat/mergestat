@@ -5,6 +5,11 @@ import { ExploreData } from 'src/@types'
 type RepoExploreContext = {
   loading: boolean
   search: string
+  filterRepo: string | undefined
+  filterFile: string | undefined
+  filterAuthor: string | undefined
+  filterRepoDays: string | undefined
+  filterFileDays: string | undefined
   exploreData: ExploreData
 }
 
@@ -16,6 +21,11 @@ type UseRepoExploreContext = [
 const initialState: RepoExploreContext = {
   loading: true,
   search: '',
+  filterRepo: undefined,
+  filterFile: undefined,
+  filterAuthor: undefined,
+  filterRepoDays: undefined,
+  filterFileDays: undefined,
   exploreData: {} as ExploreData
 }
 
@@ -55,6 +65,41 @@ function useRepoExploreSetState() {
     }))
   }
 
+  const setFilterRepo = (filterRepo: string | undefined) => {
+    setState(prev => ({
+      ...prev,
+      filterRepo
+    }))
+  }
+
+  const setFilterFile = (filterFile: string | undefined) => {
+    setState(prev => ({
+      ...prev,
+      filterFile
+    }))
+  }
+
+  const setFilterAuthor = (filterAuthor: string | undefined) => {
+    setState(prev => ({
+      ...prev,
+      filterAuthor
+    }))
+  }
+
+  const setFilterRepoDays = (filterRepoDays: string | undefined) => {
+    setState(prev => ({
+      ...prev,
+      filterRepoDays
+    }))
+  }
+
+  const setFilterFileDays = (filterFileDays: string | undefined) => {
+    setState(prev => ({
+      ...prev,
+      filterFileDays
+    }))
+  }
+
   const setExploreData = (exploreData: ExploreData) => {
     setState(prev => ({
       ...prev,
@@ -66,6 +111,11 @@ function useRepoExploreSetState() {
     _,
     setLoading,
     setSearch,
+    setFilterRepo,
+    setFilterFile,
+    setFilterAuthor,
+    setFilterRepoDays,
+    setFilterFileDays,
     setExploreData,
   }
 }

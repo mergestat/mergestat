@@ -4,10 +4,10 @@ import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
 import { useFileLastModified } from 'src/views/hooks/repoExplore/useFileLastModified'
 import { useRepoLastModified } from 'src/views/hooks/repoExplore/useRepoLastModified'
 import { useTop10 } from 'src/views/hooks/repoExplore/useTop10'
-import { BarChartHorizontal } from './barchart-horizontal'
-import { BarChartVertical } from './barchart-vertical'
-import { CardLoading } from './custom-shared'
-import { TimeGrainDropdown } from './time-grain-dropdown'
+import { BarChartHorizontal } from './components/barchart-horizontal'
+import { BarChartVertical } from './components/barchart-vertical'
+import { CardLoading } from './components/custom-shared'
+import { TimeGrainDropdown } from './components/time-grain-dropdown'
 
 const CardsStatsExplore: React.FC = () => {
   const [{

@@ -3495,6 +3495,28 @@ export type ExplorePayload = {
   query?: Maybe<Query>;
 };
 
+/** All input for the `exploreUi` mutation. */
+export type ExploreUiInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  params?: InputMaybe<Scalars['JSON']>;
+};
+
+/** The output of our `exploreUi` mutation. */
+export type ExploreUiPayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  json?: Maybe<Scalars['JSON']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** All input for the `fetchServiceAuthCredential` mutation. */
 export type FetchServiceAuthCredentialInput = {
   /**
@@ -5111,6 +5133,7 @@ export type Mutation = {
   dequeueJob?: Maybe<DequeueJobPayload>;
   enableContainerSync?: Maybe<EnableContainerSyncPayload>;
   explore?: Maybe<ExplorePayload>;
+  exploreUi?: Maybe<ExploreUiPayload>;
   fetchServiceAuthCredential?: Maybe<FetchServiceAuthCredentialPayload>;
   getfilesolderthan?: Maybe<GetfilesolderthanPayload>;
   jsonbRecursiveMerge?: Maybe<JsonbRecursiveMergePayload>;
@@ -5935,6 +5958,12 @@ export type MutationEnableContainerSyncArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationExploreArgs = {
   input: ExploreInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationExploreUiArgs = {
+  input: ExploreUiInput;
 };
 
 
@@ -12456,12 +12485,12 @@ export type DeleteCredentialMutationVariables = Exact<{
 
 export type DeleteCredentialMutation = { deleteServiceAuthCredential?: { deletedServiceAuthCredentialNodeId?: string | null } | null };
 
-export type ExploreMutationVariables = Exact<{
+export type ExploreUiMutationVariables = Exact<{
   params: Scalars['JSON'];
 }>;
 
 
-export type ExploreMutation = { explore?: { json?: any | null } | null };
+export type ExploreUiMutation = { exploreUi?: { json?: any | null } | null };
 
 export type AddGitSourceMutationVariables = Exact<{
   name: Scalars['String'];
