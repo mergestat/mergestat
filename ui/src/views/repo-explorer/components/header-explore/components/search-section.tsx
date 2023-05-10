@@ -1,14 +1,16 @@
+import { MutationFunctionOptions } from '@apollo/client'
 import { Button, Input, Label } from '@mergestat/blocks'
 import React, { KeyboardEvent, PropsWithChildren } from 'react'
+import { ExploreUiMutation } from 'src/api-logic/graphql/generated/schema'
 import { useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
 
 type SearchSectionProps = PropsWithChildren<{
-  executeExplore: () => void
+  explore: (options?: MutationFunctionOptions<ExploreUiMutation> | undefined) => void
 }>
 
-const SearchSection: React.FC<SearchSectionProps> = ({ executeExplore }: SearchSectionProps) => {
-  const [{ search }] = useRepoExploreContext()
-  const { setSearch } = useRepoExploreSetState()
+const SearchSection: React.FC<SearchSectionProps> = ({ explore }: SearchSectionProps) => {
+  const [{ params }] = useRepoExploreContext()
+  const { setParams } = useRepoExploreSetState()
 
   return (
     <div className='flex justify-between gap-3'>
@@ -17,17 +19,21 @@ const SearchSection: React.FC<SearchSectionProps> = ({ executeExplore }: SearchS
         <Input
           id='search'
           placeholder='%.go'
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyUp={(e: KeyboardEvent<HTMLInputElement>) => (search && e.key === 'Enter' && executeExplore())}
+          value={params.file_path_pattern}
+          onChange={(e) => setParams({
+            ...params,
+            file_path_pattern: e.target.value ? e.target.value : undefined
+          })}
+          onKeyUp={(e: KeyboardEvent<HTMLInputElement>) => (
+            e.key === 'Enter' && explore({ variables: { params } })
+          )}
         />
       </div>
 
       <Button
         label='Search'
-        disabled={!search}
         className='whitespace-nowrap'
-        onClick={() => executeExplore()}
+        onClick={() => explore({ variables: { params } })}
       />
     </div>
   )

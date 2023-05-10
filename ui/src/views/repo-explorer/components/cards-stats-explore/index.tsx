@@ -88,7 +88,7 @@ const CardsStatsExplore: React.FC = () => {
             <h3 className='t-panel-title'>Repo Last Modified</h3>
             <TimeGrainDropdown selected={timeGrainRepo} changeTimeGrain={changeTimeGrainRepo} />
           </Panel.Header>
-          <Panel.Body className='overflow-hidden'>
+          <Panel.Body className='overflow-x-auto ml-4 mr-6 px-0'>
             {loading
               ? <CardLoading />
               : <div className='flex justify-between min-h-xs' style={{ width: getWidth(dataLastModifiedRepo) }}>
@@ -103,7 +103,7 @@ const CardsStatsExplore: React.FC = () => {
             <h3 className='t-panel-title'>File Last Modified</h3>
             <TimeGrainDropdown selected={timeGrainFile} changeTimeGrain={changeTimeGrainFile} />
           </Panel.Header>
-          <Panel.Body className='overflow-x-auto'>
+          <Panel.Body className='overflow-x-auto ml-4 mr-6 px-0'>
             {loading
               ? <CardLoading />
               : <div className='flex justify-between min-h-xs' style={{ width: getWidth(dataLastModifiedFile) }}>

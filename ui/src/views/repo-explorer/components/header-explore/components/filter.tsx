@@ -5,19 +5,17 @@ import React, { PropsWithChildren, useEffect, useState } from 'react'
 type FilterProps = PropsWithChildren<{
   label: string
   value?: string | number
-  setValue: (value: string | undefined) => void
-  apply: () => void
+  reset: () => void
+  explore: () => void
 }>
 
-const Filter: React.FC<FilterProps> = ({ label, value, setValue, apply, children }: FilterProps) => {
+const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, children }: FilterProps) => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
     if (value === undefined) {
-      apply()
       setShow(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
   return (
@@ -38,7 +36,7 @@ const Filter: React.FC<FilterProps> = ({ label, value, setValue, apply, children
                   <Button skin='secondary' label='Reset' onClick={close} />
                   <Button label='Apply' disabled={!value} onClick={() => {
                     setShow(true)
-                    apply()
+                    explore()
                     close()
                   }} />
                 </div>
@@ -57,7 +55,7 @@ const Filter: React.FC<FilterProps> = ({ label, value, setValue, apply, children
           startIcon={<XIcon className="t-icon text-gray-500" />}
           onClick={() => {
             setShow(false)
-            setValue(undefined)
+            reset()
           }}
         />
       </div>}
