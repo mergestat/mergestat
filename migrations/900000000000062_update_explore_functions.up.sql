@@ -4,13 +4,13 @@ BEGIN;
 DROP FUNCTION IF EXISTS public.explore;
 
 ----https://www.graphile.org/postgraphile/custom-queries/
---Example for charts: select explore_ui_tables('{"file_path_pattern":"%Dockerfile", "file_contents_pattern":"%apiVersion%", "author_name_pattern":"John", "days_since_repo_modified_last":30, "days_since_file_modified_last":30, "repo_pattern":"%mergestat/%"}')
---Example for FILES table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_pattern":"%Dockerfile", "RESPONSE_TYPE":"FILES"}'))) AS specs(repo TEXT, file_path TEXT, author_when TIMESTAMP WITH TIME ZONE, author_name TEXT, commit_hash TEXT, file_last_modified TIMESTAMP WITH TIME ZONE, repo_last_modified TIMESTAMP WITH TIME ZONE)
+--Example for charts: select explore_ui('{"file_path_pattern":"%Dockerfile", "file_contents_pattern":"%apiVersion%", "author_name_pattern":"John", "days_since_repo_modified_last":30, "days_since_file_modified_last":30, "repo_pattern":"%mergestat/%"}')
+--Example for FILES table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_pattern":"%Dockerfile", "RESPONSE_TYPE":"FILES"}'))) AS specs(repo TEXT, file_path TEXT, author_name TEXT, author_when TIMESTAMP WITH TIME ZONE, committer_name TEXT, committer_when TIMESTAMP WITH TIME ZONE, commit_hash TEXT, file_last_modified TIMESTAMP WITH TIME ZONE, repo_last_modified TIMESTAMP WITH TIME ZONE)
 --Example for REPOS table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_pattern":"%Dockerfile", "RESPONSE_TYPE":"REPOS"}'))) AS specs(repo TEXT, repo_last_modified TIMESTAMP WITH TIME ZONE, file_count BIGINT)
 --Example fpr AUTHORS table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_pattern":"%Dockerfile", "RESPONSE_TYPE":"AUTHORS"}'))) AS specs(author_name TEXT, commits_count BIGINT)
 CREATE OR REPLACE FUNCTION public.explore_ui(params JSONB)
 RETURNS JSONB
-LANGUAGE PLPGSQL VOLATILE
+LANGUAGE PLPGSQL STABLE
 AS $$
 DECLARE
    RESPONSE JSONB;
@@ -40,28 +40,33 @@ BEGIN
             git_files.path AS file_path,
             git_commits.author_when,
             git_commits.author_name,
+            git_commits.committer_when,
+            git_commits.committer_name,
             git_commits.hash,
-            repo_last_modified.last_modified AS repo_last_modified,
-            file_last_modified.last_modified AS file_last_modified
+            _mergestat_explore_repo_metadata.last_commit_committer_when AS repo_last_modified,
+            _mergestat_explore_file_metadata.last_commit_committer_when AS file_last_modified
         FROM git_commits 
         INNER JOIN repos ON git_commits.repo_id = repos.id 
         INNER JOIN git_commit_stats ON git_commit_stats.repo_id = git_commits.repo_id AND git_commit_stats.commit_hash = git_commits.hash and parents < 2
         INNER JOIN git_files ON git_commit_stats.repo_id = git_files.repo_id AND git_commit_stats.file_path = git_files.path
-        INNER JOIN (
-            SELECT
-                _mergestat_explore_repo_metadata.repo_id AS repo_id,
-                git_commits.author_when AS last_modified
-            FROM git_commits 
-            INNER JOIN _mergestat_explore_repo_metadata ON git_commits.repo_id = _mergestat_explore_repo_metadata.repo_id AND git_commits.hash = _mergestat_explore_repo_metadata.last_commit_hash and parents < 2
-        ) repo_last_modified ON repo_last_modified.repo_id = git_commits.repo_id
-        INNER JOIN (
-            SELECT
-                _mergestat_explore_file_metadata.repo_id AS repo_id,
-                _mergestat_explore_file_metadata.path,
-                git_commits.author_when AS last_modified
-            FROM git_commits
-            INNER JOIN _mergestat_explore_file_metadata ON git_commits.repo_id = _mergestat_explore_file_metadata.repo_id AND git_commits.hash = _mergestat_explore_file_metadata.last_commit_hash and parents < 2
-        )file_last_modified ON file_last_modified.repo_id = git_commits.repo_id AND file_last_modified.path = git_files.path
+        INNER JOIN _mergestat_explore_repo_metadata ON git_commits.repo_id = _mergestat_explore_repo_metadata.repo_id
+        INNER JOIN _mergestat_explore_file_metadata ON git_commits.repo_id = _mergestat_explore_file_metadata.repo_id AND _mergestat_explore_file_metadata.path = git_files.path
+        WHERE
+            (FILE_PATH_PATTERN_PARAM IS NULL OR git_files.path LIKE FILE_PATH_PATTERN_PARAM)
+            AND
+            (FILE_CONTENTS_PATTERN_PARAM IS NULL OR git_files.contents LIKE FILE_CONTENTS_PATTERN_PARAM)
+            AND
+            (AUTHOR_NAME_PATTERN_PARAM IS NULL OR git_commits.author_name LIKE AUTHOR_NAME_PATTERN_PARAM)
+            AND
+            (DAYS_SINCE_REPO_NOT_MODIFIED_LAST_PARAM IS NULL OR _mergestat_explore_repo_metadata.last_commit_committer_when < NOW() - (DAYS_SINCE_REPO_NOT_MODIFIED_LAST_PARAM || ' day')::INTERVAL)
+            AND
+            (DAYS_SINCE_FILE_NOT_MODIFIED_LAST_PARAM IS NULL OR _mergestat_explore_file_metadata.last_commit_committer_when < NOW() - (DAYS_SINCE_FILE_NOT_MODIFIED_LAST_PARAM || ' day')::INTERVAL)
+            AND
+            (DAYS_SINCE_REPO_MODIFIED_LAST_PARAM IS NULL OR _mergestat_explore_repo_metadata.last_commit_committer_when >= NOW() - (DAYS_SINCE_REPO_MODIFIED_LAST_PARAM || ' day')::INTERVAL)
+            AND
+            (DAYS_SINCE_FILE_MODIFIED_LAST_PARAM IS NULL OR _mergestat_explore_file_metadata.last_commit_committer_when >= NOW() - (DAYS_SINCE_FILE_MODIFIED_LAST_PARAM || ' day')::INTERVAL)
+            AND
+            (REPO_PATTERN_PARAM IS NULL OR repos.repo LIKE REPO_PATTERN_PARAM)
     )
     SELECT
         CASE
@@ -74,6 +79,8 @@ BEGIN
                         file_path,
                         author_name,
                         author_when,
+                        committer_name,
+                        committer_when,
                         hash as commit_hash,
                         file_last_modified,
                         repo_last_modified
