@@ -42,24 +42,21 @@ BEGIN
         INNER JOIN repos ON git_commits.repo_id = repos.id 
         INNER JOIN git_commit_stats ON git_commit_stats.repo_id = git_commits.repo_id AND git_commit_stats.commit_hash = git_commits.hash and parents < 2
         INNER JOIN git_files ON git_commit_stats.repo_id = git_files.repo_id AND git_commit_stats.file_path = git_files.path
-        INNER JOIN (    
-            SELECT DISTINCT ON (repos.id)
-                repos.id AS repo_id,
+        INNER JOIN (
+            SELECT
+                _mergestat_explore_repo_metadata.repo_id AS repo_id,
                 git_commits.author_when AS last_modified
             FROM git_commits 
-            INNER JOIN repos ON git_commits.repo_id = repos.id 
-            ORDER BY 1, 2 DESC
+            INNER JOIN _mergestat_explore_repo_metadata ON git_commits.repo_id = _mergestat_explore_repo_metadata.repo_id AND git_commits.hash = _mergestat_explore_repo_metadata.last_commit_hash and parents < 2
         ) repo_last_modified ON repo_last_modified.repo_id = git_commits.repo_id
         INNER JOIN (
-            SELECT DISTINCT ON (repos.id, git_commit_stats.file_path)
-                repos.id AS repo_id,
-                git_commit_stats.file_path,
+            SELECT
+                _mergestat_explore_file_metadata.repo_id AS repo_id,
+                _mergestat_explore_file_metadata.path,
                 git_commits.author_when AS last_modified
-            FROM git_commits 
-            INNER JOIN repos ON git_commits.repo_id = repos.id 
-            INNER JOIN git_commit_stats ON git_commit_stats.repo_id = git_commits.repo_id AND git_commit_stats.commit_hash = git_commits.hash and parents < 2
-            ORDER BY 1, 2, 3 DESC        
-        )file_last_modified ON file_last_modified.repo_id = git_commits.repo_id AND file_last_modified.file_path = git_files.path
+            FROM git_commits
+            INNER JOIN _mergestat_explore_file_metadata ON git_commits.repo_id = _mergestat_explore_file_metadata.repo_id AND git_commits.hash = _mergestat_explore_file_metadata.last_commit_hash and parents < 2
+        )file_last_modified ON file_last_modified.repo_id = git_commits.repo_id AND file_last_modified.path = git_files.path
         WHERE
             (FILE_PATH_PATTERN_PARAM IS NULL OR git_files.path LIKE FILE_PATH_PATTERN_PARAM)
             AND
