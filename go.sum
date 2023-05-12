@@ -218,8 +218,8 @@ github.com/clbanning/mxj/v2 v2.5.7 h1:7q5lvUpaPF/WOkqgIDiwjBJaznaLCCBd78pi8ZyAnE
 github.com/clbanning/mxj/v2 v2.5.7/go.mod h1:hNiWqW14h+kc+MdF9C6/YoRfjEJoR3ou6tn/Qo+ve2s=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudflare/circl v1.1.0/go.mod h1:prBCrKB9DV4poKZY1l9zBXg2QJY7mvgRvtMxxK7fi4I=
-github.com/cloudflare/circl v1.3.0 h1:Anq00jxDtoyX3+aCaYUZ0vXC5r4k4epberfWGDXV1zE=
-github.com/cloudflare/circl v1.3.0/go.mod h1:+CauBF6R70Jqcyl8N2hC8pAXYbWkGIezuSbuGLtRhnw=
+github.com/cloudflare/circl v1.3.3 h1:fE/Qz0QdIGqeWfnwq0RE0R7MI51s0M2E4Ga9kq5AEMs=
+github.com/cloudflare/circl v1.3.3/go.mod h1:5XYMA4rFBvNIrhs50XuiBJ15vF2pZn4nnUKZrLbUZFA=
 github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58/go.mod h1:EOBUe0h4xcZ5GoxqC5SDxFQ8gwyZPKQoEzownBlhI80=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
@@ -916,10 +916,6 @@ github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b h1:iKHgNnVLgSzw
 github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
 github.com/mergestat/mergestat-lite v0.5.10 h1:3KBUQoRwC27bLHLXUWU7UDjP9IBtumb4vE44bZ3H9Ls=
 github.com/mergestat/mergestat-lite v0.5.10/go.mod h1:tQYFBsEpWDfJ37DQIh3I9ZC2qmVpES9mtJPMDUG64zM=
-github.com/mergestat/sqlq v0.0.0-20230414231219-7f18f23fdb8f h1:8bkpXtgLvEBUUeoP3ud4Ax5NcaMSHk+Ae/EHySejp2U=
-github.com/mergestat/sqlq v0.0.0-20230414231219-7f18f23fdb8f/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
-github.com/mergestat/sqlq v0.0.0-20230425160904-45e1db12ecca h1:veXimx/N+GAXzF2gcqMNqsV6EKWStMQu/iysxTHdNmA=
-github.com/mergestat/sqlq v0.0.0-20230425160904-45e1db12ecca/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
 github.com/mergestat/sqlq v0.0.0-20230425180115-120423492ec4 h1:TlB58s+3O/W0XiZe4nosALGNbhzgntz3SWwENIu2n0s=
 github.com/mergestat/sqlq v0.0.0-20230425180115-120423492ec4/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
 github.com/mergestat/timediff v0.0.3 h1:ucCNh4/ZrTPjFZ081PccNbhx9spymCJkFxSzgVuPU+Y=
