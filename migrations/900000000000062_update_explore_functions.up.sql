@@ -10,7 +10,7 @@ DROP FUNCTION IF EXISTS public.explore;
 --Example fpr AUTHORS table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_pattern":"%Dockerfile", "RESPONSE_TYPE":"AUTHORS"}'))) AS specs(author_name TEXT, commits_count BIGINT)
 CREATE OR REPLACE FUNCTION public.explore_ui(params JSONB)
 RETURNS JSONB
-LANGUAGE PLPGSQL STABLE
+LANGUAGE PLPGSQL VOLATILE
 AS $$
 DECLARE
    RESPONSE JSONB;
