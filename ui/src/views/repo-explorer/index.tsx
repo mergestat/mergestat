@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useGlobalSetState } from 'src/state/contexts'
 import CardsStatsExplore from './components/cards-stats-explore'
-import FilterExplore from './components/filter-explore'
 import HeaderExplore from './components/header-explore'
 import StatsExplore from './components/stats-explore'
 
@@ -31,8 +30,6 @@ const RepoExplorerView: React.FC = () => {
         <HeaderExplore />
 
         {/* Body */}
-        <FilterExplore />
-
         <div className='px-8 py-4 flex-1 overflow-auto'>
           <StatsExplore />
           <CardsStatsExplore />

@@ -1,13 +1,14 @@
 import { Button, Panel } from '@mergestat/blocks'
 import { TableIcon } from '@mergestat/icons'
+import { MonthData, YearData } from 'src/api-logic/mappers/charts/recharts'
 import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
 import { useFileLastModified } from 'src/views/hooks/repoExplore/useFileLastModified'
 import { useRepoLastModified } from 'src/views/hooks/repoExplore/useRepoLastModified'
 import { useTop10 } from 'src/views/hooks/repoExplore/useTop10'
-import { BarChartHorizontal } from './barchart-horizontal'
-import { BarChartVertical } from './barchart-vertical'
-import { CardLoading } from './custom-shared'
-import { TimeGrainDropdown } from './time-grain-dropdown'
+import { BarChartHorizontal } from './components/barchart-horizontal'
+import { BarChartVertical } from './components/barchart-vertical'
+import { CardLoading } from './components/custom-shared'
+import { TimeGrainDropdown } from './components/time-grain-dropdown'
 
 const CardsStatsExplore: React.FC = () => {
   const [{
@@ -23,6 +24,19 @@ const CardsStatsExplore: React.FC = () => {
   const { top10AuthorsChart, top10ReposChart } = useTop10(top10Repos, top10Authors)
   const { xAxisRepo, timeGrainRepo, dataLastModifiedRepo, changeTimeGrainRepo } = useRepoLastModified(repoLastModified)
   const { xAxisFile, timeGrainFile, dataLastModifiedFile, changeTimeGrainFile } = useFileLastModified(fileLastModified)
+
+  const getWidth = (data: MonthData[] | YearData[]) => {
+    if (data) {
+      const dataSize = data.length
+      if (dataSize < 15) {
+        return '100%'
+      } else if (dataSize > 15) {
+        return `${dataSize * 2}rem`
+      }
+    } else {
+      return '100%'
+    }
+  }
 
   return (
     <div className='pt-6'>
@@ -74,10 +88,10 @@ const CardsStatsExplore: React.FC = () => {
             <h3 className='t-panel-title'>Repo Last Modified</h3>
             <TimeGrainDropdown selected={timeGrainRepo} changeTimeGrain={changeTimeGrainRepo} />
           </Panel.Header>
-          <Panel.Body className='overflow-hidden'>
+          <Panel.Body className='overflow-x-auto ml-4 mr-6 px-0'>
             {loading
               ? <CardLoading />
-              : <div className='flex justify-between min-h-xs'>
+              : <div className='flex justify-between min-h-xs' style={{ width: getWidth(dataLastModifiedRepo) }}>
                 {dataLastModifiedRepo && <BarChartHorizontal data={dataLastModifiedRepo} dataKey='count' dataXAxis={xAxisRepo} />}
               </div>
             }
@@ -89,10 +103,10 @@ const CardsStatsExplore: React.FC = () => {
             <h3 className='t-panel-title'>File Last Modified</h3>
             <TimeGrainDropdown selected={timeGrainFile} changeTimeGrain={changeTimeGrainFile} />
           </Panel.Header>
-          <Panel.Body className='overflow-hidden'>
+          <Panel.Body className='overflow-x-auto ml-4 mr-6 px-0'>
             {loading
               ? <CardLoading />
-              : <div className='flex justify-between min-h-xs'>
+              : <div className='flex justify-between min-h-xs' style={{ width: getWidth(dataLastModifiedFile) }}>
                 {dataLastModifiedFile && <BarChartHorizontal data={dataLastModifiedFile} dataKey='count' dataXAxis={xAxisFile} />}
               </div>
             }

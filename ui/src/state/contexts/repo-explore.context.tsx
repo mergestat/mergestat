@@ -2,9 +2,20 @@ import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
 import { ExploreData } from 'src/@types'
 
+export interface ExploreParams {
+  file_path_pattern?: string
+  repo_pattern?: string
+  file_contents_pattern?: string
+  author_name_pattern?: string
+  days_since_repo_modified_last?: string
+  days_since_repo_not_modified_last?: string
+  days_since_file_modified_last?: string
+  days_since_file_not_modified_last?: string
+}
+
 type RepoExploreContext = {
   loading: boolean
-  search: string
+  params: ExploreParams
   exploreData: ExploreData
 }
 
@@ -15,7 +26,7 @@ type UseRepoExploreContext = [
 
 const initialState: RepoExploreContext = {
   loading: true,
-  search: '',
+  params: {} as ExploreParams,
   exploreData: {} as ExploreData
 }
 
@@ -48,10 +59,10 @@ function useRepoExploreSetState() {
     }))
   }
 
-  const setSearch = (search: string) => {
+  const setParams = (params: ExploreParams) => {
     setState(prev => ({
       ...prev,
-      search
+      params
     }))
   }
 
@@ -65,7 +76,7 @@ function useRepoExploreSetState() {
   return {
     _,
     setLoading,
-    setSearch,
+    setParams,
     setExploreData,
   }
 }

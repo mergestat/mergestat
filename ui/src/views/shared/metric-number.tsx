@@ -12,7 +12,7 @@ interface MetricNumberProp {
 export const MetricNumber: React.FC<MetricNumberProp> = ({ loading, metric, className, icon, tooltip }: MetricNumberProp) => {
   return (
     <div className={cx('flex items-center h-8', className)}>
-      <div className='w-8'>
+      <div style={{ minWidth: '1.5rem' }}>
         {loading ? <Spinner size="sm" /> : new Intl.NumberFormat().format(metric)}
       </div>
 
