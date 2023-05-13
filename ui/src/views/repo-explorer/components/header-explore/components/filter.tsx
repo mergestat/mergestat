@@ -7,9 +7,10 @@ type FilterProps = PropsWithChildren<{
   value?: string | number
   reset: () => void
   explore: () => void
+  overlay: (close: () => void, show: () => void) => React.ReactNode
 }>
 
-const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, children }: FilterProps) => {
+const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, overlay }: FilterProps) => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
@@ -28,14 +29,22 @@ const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, children 
         }
         overlay={(close) => (
           <div className='mt-1 p-5 w-80 bg-white shadow-lg rounded-md border border-gray-200'>
+            {/* Header */}
             <h2 className='t-h2 mb-2'>{label}</h2>
-            {children}
+
+            {/* Body */}
+            {overlay(
+              close,
+              () => setShow(true)
+            )}
+
+            {/* Bottom buttons */}
             <Toolbar className='mt-5'>
               <Toolbar.Right>
                 <div className='t-button-toolbar'>
                   <Button skin='secondary' label='Reset' onClick={close} />
-                  <Button label='Apply' disabled={!value} onClick={() => {
-                    setShow(true)
+                  <Button label='Apply' onClick={() => {
+                    value && setShow(true)
                     explore()
                     close()
                   }} />

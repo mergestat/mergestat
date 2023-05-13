@@ -5,7 +5,6 @@ import { ExploreUiMutation } from 'src/api-logic/graphql/generated/schema'
 import { EXPLORE } from 'src/api-logic/graphql/mutations/explore'
 import { useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
 import FiltersSection from './components/filters-section'
-import SearchSection from './components/search-section'
 import TitleSection from './components/title-section'
 
 const HeaderExplore: React.FC = () => {
@@ -26,7 +25,6 @@ const HeaderExplore: React.FC = () => {
   return (
     <div className='flex flex-col bg-white w-full border-b px-8 py-4 gap-4'>
       <TitleSection />
-      <SearchSection explore={explore} />
       <FiltersSection explore={explore} />
     </div>
   )

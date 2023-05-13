@@ -3,7 +3,6 @@ import { gql } from '@apollo/client'
 const GET_SCHEMA_INFO = gql`
   query getSchema($search: SqlIdentifier) {
     schemaIntrospections(
-      orderBy: [SCHEMA_DESC, TABLE_NAME_ASC, COLUMN_NAME_ASC]
       filter: {
         or: [
           {schema: {includesInsensitive: $search}},
