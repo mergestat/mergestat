@@ -1,6 +1,6 @@
 import { MutationFunctionOptions } from '@apollo/client'
 import { Button, Input, Label } from '@mergestat/blocks'
-import React, { ChangeEvent, PropsWithChildren } from 'react'
+import React, { ChangeEvent, KeyboardEvent, PropsWithChildren } from 'react'
 import { ExploreUiMutation } from 'src/api-logic/graphql/generated/schema'
 import { ExploreParams, useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
 import Filter from './filter'
@@ -13,6 +13,7 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({ explore }: FiltersSecti
   const [{
     params,
     params: {
+      file_path_pattern: filePath,
       repo_pattern: filterRepo,
       file_contents_pattern: filterFile,
       author_name_pattern: filterAuthor,
@@ -32,6 +33,7 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({ explore }: FiltersSecti
   const clearFilters = () => {
     setParamsAndExplore({
       ...params,
+      file_path_pattern: undefined,
       repo_pattern: undefined,
       file_contents_pattern: undefined,
       author_name_pattern: undefined,
@@ -50,9 +52,10 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({ explore }: FiltersSecti
   }
 
   const onChangeParam = (filter: keyof ExploreParams, value: string | undefined) => {
+    const valueCheck = value || undefined
     setParams({
       ...params,
-      [filter]: value,
+      [filter]: valueCheck,
     })
   }
 
@@ -63,6 +66,19 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({ explore }: FiltersSecti
     }
   }
 
+  const onKeyEnter = (
+    param: keyof ExploreParams,
+    value?: string,
+    close?: () => void,
+    show?: () => void
+  ) => (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      filter(param, value)
+      value && show && show()
+      close && close()
+    }
+  }
+
   return (
     <div className='flex flex-wrap items-center'>
       <Filter
@@ -70,100 +86,144 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({ explore }: FiltersSecti
         value={filterRepo}
         reset={() => filter('repo_pattern', undefined)}
         explore={() => filter('repo_pattern', filterRepo)}
-      >
-        <Label>Matches pattern</Label>
-        <Input value={filterRepo || ''} placeholder="mergestat/mergestat%"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeParam('repo_pattern', e.target.value)}
-        />
-      </Filter>
+        overlay={(close, show) => (
+          <>
+            <Label>Matches pattern</Label>
+            <Input value={filterRepo || ''} placeholder="mergestat/mergestat%"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeParam('repo_pattern', e.target.value)}
+              onKeyUp={onKeyEnter('repo_pattern', filterRepo, close, show)}
+            />
+          </>
+        )}
+      />
+
+      <Filter
+        label='File path'
+        value={filePath}
+        reset={() => filter('file_path_pattern', undefined)}
+        explore={() => filter('file_path_pattern', filePath)}
+        overlay={(close, show) => (
+          <>
+            <Label>Matches pattern</Label>
+            <Input value={filePath || ''} placeholder="%.go"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeParam('file_path_pattern', e.target.value)}
+              onKeyUp={onKeyEnter('file_path_pattern', filePath, close, show)}
+            />
+          </>
+        )}
+      />
 
       <Filter
         label='File contents'
         value={filterFile}
         reset={() => filter('file_contents_pattern', undefined)}
         explore={() => filter('file_contents_pattern', filterFile)}
-      >
-        <Label>Matches pattern</Label>
-        <Input value={filterFile || ''} placeholder="example%"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeParam('file_contents_pattern', e.target.value)}
-        />
-      </Filter>
+        overlay={(close, show) => (
+          <>
+            <Label>Matches pattern</Label>
+            <Input value={filterFile || ''} placeholder="example%"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeParam('file_contents_pattern', e.target.value)}
+              onKeyUp={onKeyEnter('file_contents_pattern', filterFile, close, show)}
+            />
+          </>
+        )}
+      />
 
       <Filter
         label='Author'
         value={filterAuthor}
         reset={() => filter('author_name_pattern', undefined)}
         explore={() => filter('author_name_pattern', filterAuthor)}
-      >
-        <Label>Matches pattern</Label>
-        <Input value={filterAuthor || ''} placeholder="author-name%"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeParam('author_name_pattern', e.target.value)}
-        />
-      </Filter>
+        overlay={(close, show) => (
+          <>
+            <Label>Matches pattern</Label>
+            <Input value={filterAuthor || ''} placeholder="author-name%"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeParam('author_name_pattern', e.target.value)}
+              onKeyUp={onKeyEnter('author_name_pattern', filterAuthor, close, show)}
+            />
+          </>
+        )}
+      />
 
       <Filter
         label='Repo modified last'
         value={filterRepoDays ? `${filterRepoDays}d` : undefined}
         reset={() => filter('days_since_repo_modified_last', undefined)}
         explore={() => filter('days_since_repo_modified_last', filterRepoDays)}
-      >
-        <Label>Is in the last</Label>
-        <div className='flex space-x-4'>
-          <Input
-            value={filterRepoDays || ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleDaysChange('days_since_repo_modified_last', e.target.value)}
-          />
-          <Label>Days</Label>
-        </div>
-      </Filter>
+        overlay={(close, show) => (
+          <>
+            <Label>Is in the last</Label>
+            <div className='flex space-x-4'>
+              <Input
+                value={filterRepoDays || ''}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => handleDaysChange('days_since_repo_modified_last', e.target.value)}
+                onKeyUp={onKeyEnter('days_since_repo_modified_last', filterRepoDays, close, show)}
+              />
+              <Label>Days</Label>
+            </div>
+          </>
+        )}
+      />
 
       <Filter
         label='Repo not modified last'
         value={filterNotRepoDays ? `${filterNotRepoDays}d` : undefined}
         reset={() => filter('days_since_repo_not_modified_last', undefined)}
         explore={() => filter('days_since_repo_not_modified_last', filterNotRepoDays)}
-      >
-        <Label>Is not in the last</Label>
-        <div className='flex space-x-4'>
-          <Input
-            value={filterNotRepoDays || ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleDaysChange('days_since_repo_not_modified_last', e.target.value)}
-          />
-          <Label>Days</Label>
-        </div>
-      </Filter>
+        overlay={(close, show) => (
+          <>
+            <Label>Is not in the last</Label>
+            <div className='flex space-x-4'>
+              <Input
+                value={filterNotRepoDays || ''}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => handleDaysChange('days_since_repo_not_modified_last', e.target.value)}
+                onKeyUp={onKeyEnter('days_since_repo_not_modified_last', filterNotRepoDays, close, show)}
+              />
+              <Label>Days</Label>
+            </div>
+          </>
+        )}
+      />
 
       <Filter
         label='File modified last'
         value={filterFileDays ? `${filterFileDays}d` : undefined}
         reset={() => filter('days_since_file_modified_last', undefined)}
         explore={() => filter('days_since_file_modified_last', filterFileDays)}
-      >
-        <Label>Is in the last</Label>
-        <div className='flex space-x-4'>
-          <Input
-            value={filterFileDays || ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleDaysChange('days_since_file_modified_last', e.target.value)}
-          />
-          <Label>Days</Label>
-        </div>
-      </Filter>
+        overlay={(close, show) => (
+          <>
+            <Label>Is in the last</Label>
+            <div className='flex space-x-4'>
+              <Input
+                value={filterFileDays || ''}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => handleDaysChange('days_since_file_modified_last', e.target.value)}
+                onKeyUp={onKeyEnter('days_since_file_modified_last', filterFileDays, close, show)}
+              />
+              <Label>Days</Label>
+            </div>
+          </>
+        )}
+      />
 
       <Filter
         label='File not modified last'
         value={filterNotFileDays ? `${filterNotFileDays}d` : undefined}
         reset={() => filter('days_since_file_not_modified_last', undefined)}
         explore={() => filter('days_since_file_not_modified_last', filterNotFileDays)}
-      >
-        <Label>Is not in the last</Label>
-        <div className='flex space-x-4'>
-          <Input
-            value={filterNotFileDays || ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleDaysChange('days_since_file_not_modified_last', e.target.value)}
-          />
-          <Label>Days</Label>
-        </div>
-      </Filter>
+        overlay={(close, show) => (
+          <>
+            <Label>Is not in the last</Label>
+            <div className='flex space-x-4'>
+              <Input
+                value={filterNotFileDays || ''}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => handleDaysChange('days_since_file_not_modified_last', e.target.value)}
+                onKeyUp={onKeyEnter('days_since_file_not_modified_last', filterNotFileDays, close, show)}
+              />
+              <Label>Days</Label>
+            </div>
+          </>
+        )}
+      />
 
       <Button
         style={{ minHeight: '2.2rem' }}

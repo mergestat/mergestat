@@ -91,7 +91,7 @@ const CardsStatsExplore: React.FC = () => {
           <Panel.Body className='overflow-x-auto ml-4 mr-6 px-0'>
             {loading
               ? <CardLoading />
-              : <div className='flex justify-between min-h-xs' style={{ width: getWidth(dataLastModifiedRepo) }}>
+              : <div className='flex justify-between min-h-xs' style={{ minWidth: getWidth(dataLastModifiedRepo) }}>
                 {dataLastModifiedRepo && <BarChartHorizontal data={dataLastModifiedRepo} dataKey='count' dataXAxis={xAxisRepo} />}
               </div>
             }
@@ -106,7 +106,7 @@ const CardsStatsExplore: React.FC = () => {
           <Panel.Body className='overflow-x-auto ml-4 mr-6 px-0'>
             {loading
               ? <CardLoading />
-              : <div className='flex justify-between min-h-xs' style={{ width: getWidth(dataLastModifiedFile) }}>
+              : <div className='flex justify-between min-h-xs' style={{ minWidth: getWidth(dataLastModifiedFile) }}>
                 {dataLastModifiedFile && <BarChartHorizontal data={dataLastModifiedFile} dataKey='count' dataXAxis={xAxisFile} />}
               </div>
             }
