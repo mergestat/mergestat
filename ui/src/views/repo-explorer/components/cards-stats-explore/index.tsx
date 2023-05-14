@@ -1,5 +1,5 @@
-import { Button, Panel } from '@mergestat/blocks'
-import { TableIcon } from '@mergestat/icons'
+import { Button, Panel, Tooltip } from '@mergestat/blocks'
+import { CircleInformationFilledIcon, TableIcon } from '@mergestat/icons'
 import { MonthData, YearData } from 'src/api-logic/mappers/charts/recharts'
 import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
 import { useFileLastModified } from 'src/views/hooks/repoExplore/useFileLastModified'
@@ -43,7 +43,7 @@ const CardsStatsExplore: React.FC = () => {
       <div className='lg_grid lg_grid-cols-2 gap-6 space-y-4 lg_space-y-0'>
         <Panel className="w-full">
           <Panel.Header className='flex justify-between items-center'>
-            <h3 className='t-panel-title'>Top 10 repos</h3>
+            <h3 className='t-panel-title'>Top 10 Repos by File Matches <Tooltip content={<span className="font-normal">Repos by number of file matches</span>}><CircleInformationFilledIcon className="t-icon t-icon-info inline-block align-middle" /></Tooltip></h3>
             <Button
               isIconOnly
               className='my-0'
@@ -55,7 +55,7 @@ const CardsStatsExplore: React.FC = () => {
             {loading
               ? <CardLoading />
               : <div className='flex justify-center min-h-xs'>
-                {top10ReposChart && <BarChartVertical data={top10ReposChart} dataKey='fileCount' xAxisLabel='Files' />}
+                {top10ReposChart && <BarChartVertical data={top10ReposChart} dataKey='fileCount' xAxisLabel='File Count' />}
               </div>
             }
           </Panel.Body>
@@ -63,7 +63,7 @@ const CardsStatsExplore: React.FC = () => {
 
         <Panel className="w-full">
           <Panel.Header className='flex justify-between items-center'>
-            <h3 className='t-panel-title'>Top 10 Authors</h3>
+            <h3 className='t-panel-title'>Top 10 Authors by Commits <Tooltip content={<span className="font-normal">Authors by number of commits that havemodified matching files</span>}><CircleInformationFilledIcon className="t-icon t-icon-info inline-block align-middle" /></Tooltip></h3>
             <Button
               isIconOnly
               className='my-0'

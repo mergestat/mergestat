@@ -25,8 +25,7 @@ const StatsExplore: React.FC = () => {
             <MetricNumber loading={loading} metric={repos || 0}
               icon={<CircleInformationFilledIcon className="t-icon t-icon-info" />}
               tooltip={<div className='w-80 font-thin leading-4 p-2'>
-                Not all repos have been index, please modify
-                the repo explore sync to search across all repos
+                Total count of repos matching the selected filters
               </div>}
             />
           </Stat.Number>
@@ -45,7 +44,13 @@ const StatsExplore: React.FC = () => {
             </div>
           </Stat.Label>
           <Stat.Number>
-            <MetricNumber loading={loading} metric={files || 0} />
+            <MetricNumber
+              loading={loading} metric={files || 0}
+              icon={<CircleInformationFilledIcon className="t-icon t-icon-info" />}
+              tooltip={<div className='w-80 font-thin leading-4 p-2'>
+                Total count of files matching the selected filters
+              </div>}
+            />
           </Stat.Number>
         </Stat.Left>
       </Stat>
@@ -62,7 +67,12 @@ const StatsExplore: React.FC = () => {
             </div>
           </Stat.Label>
           <Stat.Number>
-            <MetricNumber loading={loading} metric={authors || 0} />
+            <MetricNumber loading={loading} metric={authors || 0}
+              icon={<CircleInformationFilledIcon className="t-icon t-icon-info" />}
+              tooltip={<div className='w-80 font-thin leading-4 p-2'>
+                Unique authors who have modified files matching the selected filters
+              </div>}
+            />
           </Stat.Number>
         </Stat.Left>
       </Stat>

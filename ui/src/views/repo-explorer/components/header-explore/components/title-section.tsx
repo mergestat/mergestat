@@ -9,7 +9,7 @@ const TitleSection: React.FC = () => {
   return (
     <Toolbar className='h-full'>
       <Toolbar.Left>
-        <h2 className='t-h2 mb-0'>Repo Explore</h2>
+        <h2 className='t-h2 mb-0'>Explore</h2>
       </Toolbar.Left>
       <Toolbar.Right>
         <Toolbar.Item>
@@ -26,7 +26,7 @@ const TitleSection: React.FC = () => {
         <Toolbar.Item>
           <Button className='whitespace-nowrap'
             skin="secondary"
-            label='Manage Syncs'
+            label='Manage'
             startIcon={<CogIcon className="t-icon" />}
             onClick={() => router.push('/repos/repo-syncs')}
           />
