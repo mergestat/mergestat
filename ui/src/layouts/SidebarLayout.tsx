@@ -2,14 +2,18 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import React, { PropsWithChildren, useEffect } from 'react'
 import Loading from 'src/components/Loading'
-import useCurrentUser from 'src/views/hooks/useCurrentUser'
+import { useMonacoProvider } from 'src/hooks/useMonacoProvider'
 import { GlobalProvider } from 'src/state/contexts'
+import useCurrentUser from 'src/views/hooks/useCurrentUser'
 
 const NavHeader = dynamic(() => import('../components/NavHeader'))
 const Sidebar = dynamic(() => import('../components/Sidebar'))
 
 const SidebarLayout: React.FC = ({ children }: PropsWithChildren) => {
   const router = useRouter()
+
+  // Register SQL language suggestions just once
+  useMonacoProvider()
 
   const { loading, data } = useCurrentUser()
 
