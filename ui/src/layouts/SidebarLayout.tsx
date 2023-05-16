@@ -13,13 +13,20 @@ const SidebarLayout: React.FC = ({ children }: PropsWithChildren) => {
   const router = useRouter()
 
   // Register SQL language suggestions just once
-  useMonacoProvider()
+  const { getSchemaInfo } = useMonacoProvider()
 
   const { loading, data } = useCurrentUser()
 
   useEffect(() => {
-    data?.currentMergeStatUser === 'mergestat_anonymous' && router.push('/login')
-  }, [data, router])
+    if (data) {
+      if (data.currentMergeStatUser === 'mergestat_anonymous') {
+        router.push('/login')
+      } else {
+        getSchemaInfo()
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
 
   return (
     <div className="h-screen">
