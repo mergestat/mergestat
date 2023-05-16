@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { useMonaco } from '@monaco-editor/react'
 import { useEffect } from 'react'
 import { GetSchemaQuery } from 'src/api-logic/graphql/generated/schema'
@@ -9,7 +9,7 @@ import { sqlKeywords } from 'src/utils/monaco-editor/autocomplete/sql-keywords'
 export const useMonacoProvider = () => {
   const monaco = useMonaco()
 
-  const { data } = useQuery<GetSchemaQuery>(GET_SCHEMA_INFO, {
+  const [getSchemaInfo, { data }] = useLazyQuery<GetSchemaQuery>(GET_SCHEMA_INFO, {
     variables: { search: '' },
     fetchPolicy: 'no-cache'
   })
@@ -73,4 +73,8 @@ export const useMonacoProvider = () => {
       })
     }
   }, [monaco, data])
+
+  return {
+    getSchemaInfo
+  }
 }
