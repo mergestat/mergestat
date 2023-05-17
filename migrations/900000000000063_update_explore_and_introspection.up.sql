@@ -2,9 +2,9 @@ BEGIN;
 
 ----https://www.graphile.org/postgraphile/custom-queries/
 --Example for charts: select explore_ui('{"file_path_pattern":"%Dockerfile", "file_contents_pattern":"%apiVersion%", "author_name_pattern":"John", "days_since_repo_modified_last":30, "days_since_file_modified_last":30, "repo_pattern":"%mergestat/%", "days_since_authored_last":30, "days_since_not_authored_last":30, "days_since_committed_last":30, "days_since_not_committed_last":30}')
---Example for FILES table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_pattern":"%Dockerfile", "RESPONSE_TYPE":"FILES"}'))) AS specs(repo TEXT, file_path TEXT, author_name TEXT, author_when TIMESTAMP WITH TIME ZONE, committer_name TEXT, committer_when TIMESTAMP WITH TIME ZONE, commit_hash TEXT, file_last_modified TIMESTAMP WITH TIME ZONE, repo_last_modified TIMESTAMP WITH TIME ZONE)
---Example for REPOS table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_pattern":"%Dockerfile", "RESPONSE_TYPE":"REPOS"}'))) AS specs(repo TEXT, repo_last_modified TIMESTAMP WITH TIME ZONE, file_count BIGINT)
---Example fpr AUTHORS table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_pattern":"%Dockerfile", "RESPONSE_TYPE":"AUTHORS"}'))) AS specs(author_name TEXT, commits_count BIGINT)
+--Example for FILES table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_path_pattern":"%Dockerfile", "RESPONSE_TYPE":"FILES"}'))) AS specs(repo TEXT, file_path TEXT, file_last_modified TIMESTAMP WITH TIME ZONE)
+--Example for REPOS table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_path_pattern":"%Dockerfile", "RESPONSE_TYPE":"REPOS"}'))) AS specs(repo TEXT, repo_last_modified TIMESTAMP WITH TIME ZONE, file_count BIGINT)
+--Example fpr AUTHORS table: SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{"file_path_pattern":"%Dockerfile", "RESPONSE_TYPE":"AUTHORS"}'))) AS specs(author_name TEXT, commits_count BIGINT)
 CREATE OR REPLACE FUNCTION public.explore_ui(params JSONB)
 RETURNS JSONB
 LANGUAGE PLPGSQL VOLATILE
@@ -38,7 +38,7 @@ BEGIN
     SELECT params->>'days_since_committed_last' INTO DAYS_SINCE_COMMITTED_LAST_PARAM;
     SELECT params->>'days_since_not_committed_last' INTO DAYS_SINCE_NOT_COMMITTED_LAST_PARAM;
     SELECT params->>'repo_pattern' INTO REPO_PATTERN_PARAM;
-    -- "days_since_authored_last":30, "days_since_not_authored_last":30, "days_since_committed_last":30, "days_since_not_committed_last":30
+
     WITH base_query AS (
         SELECT 
             repos.repo,
@@ -87,18 +87,12 @@ BEGIN
             THEN (
                 SELECT jsonb_agg(b) AS agg
                 FROM (
-                    SELECT
+                    SELECT DISTINCT
                         repo,
                         file_path,
-                        author_name,
-                        author_when,
-                        committer_name,
-                        committer_when,
-                        hash as commit_hash,
-                        file_last_modified,
-                        repo_last_modified
+                        file_last_modified
                     FROM base_query
-                    ORDER BY 6 DESC
+                    ORDER BY 3 DESC
                     LIMIT 1000
                 )b
             )

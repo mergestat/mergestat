@@ -29,7 +29,7 @@ const StatsExplore: React.FC = () => {
   }
 
   const queryFiles = () => {
-    return `SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{${computeParams()} "RESPONSE_TYPE":"FILES"}'))) AS specs(repo TEXT, file_path TEXT, author_name TEXT, author_when TIMESTAMP WITH TIME ZONE, committer_name TEXT, committer_when TIMESTAMP WITH TIME ZONE, commit_hash TEXT, file_last_modified TIMESTAMP WITH TIME ZONE, repo_last_modified TIMESTAMP WITH TIME ZONE)`
+    return `SELECT * FROM jsonb_to_recordset((SELECT explore_ui('{${computeParams()} "RESPONSE_TYPE":"FILES"}'))) AS specs(repo TEXT, file_path TEXT, file_last_modified TIMESTAMP WITH TIME ZONE)`
   }
 
   const queryAuthors = () => {
