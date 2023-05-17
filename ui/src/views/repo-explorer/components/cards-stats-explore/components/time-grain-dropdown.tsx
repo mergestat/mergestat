@@ -1,5 +1,5 @@
 import { Button, Dropdown, Label, Menu } from '@mergestat/blocks'
-import { CaretDownIcon, TableIcon } from '@mergestat/icons'
+import { CaretDownIcon } from '@mergestat/icons'
 import { TimeGrain } from 'src/@types'
 import { TIME_GRAIN } from 'src/utils/constants'
 
@@ -27,12 +27,6 @@ export const TimeGrainDropdown: React.FC<Props> = ({ selected, changeTimeGrain }
             <Menu.Item text="Years" onClick={() => changeTimeGrain(TIME_GRAIN.YEARS, close)} />
           </Menu>
         )}
-      />
-      <Button
-        isIconOnly
-        className='my-0'
-        skin='borderless-muted'
-        startIcon={<TableIcon className="t-icon" />}
       />
     </div>
   )

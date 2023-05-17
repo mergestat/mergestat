@@ -1,5 +1,5 @@
-import { Button, Panel, Tooltip } from '@mergestat/blocks'
-import { CircleInformationFilledIcon, TableIcon } from '@mergestat/icons'
+import { Panel, Tooltip } from '@mergestat/blocks'
+import { CircleInformationFilledIcon } from '@mergestat/icons'
 import { MonthData, YearData } from 'src/api-logic/mappers/charts/recharts'
 import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
 import { useFileLastModified } from 'src/views/hooks/repoExplore/useFileLastModified'
@@ -44,12 +44,6 @@ const CardsStatsExplore: React.FC = () => {
         <Panel className="w-full">
           <Panel.Header className='flex justify-between items-center'>
             <h3 className='t-panel-title'>Top 10 Repos by File Matches <Tooltip content={<span className="font-normal">Repos by number of file matches</span>}><CircleInformationFilledIcon className="t-icon t-icon-info inline-block align-middle" /></Tooltip></h3>
-            <Button
-              isIconOnly
-              className='my-0'
-              skin='borderless-muted'
-              startIcon={<TableIcon className="t-icon" />}
-            />
           </Panel.Header>
           <Panel.Body className='overflow-hidden'>
             {loading
@@ -64,12 +58,6 @@ const CardsStatsExplore: React.FC = () => {
         <Panel className="w-full">
           <Panel.Header className='flex justify-between items-center'>
             <h3 className='t-panel-title'>Top 10 Authors by Commits <Tooltip content={<span className="font-normal">Authors by number of commits that havemodified matching files</span>}><CircleInformationFilledIcon className="t-icon t-icon-info inline-block align-middle" /></Tooltip></h3>
-            <Button
-              isIconOnly
-              className='my-0'
-              skin='borderless-muted'
-              startIcon={<TableIcon className="t-icon" />}
-            />
           </Panel.Header>
           <Panel.Body className='overflow-hidden'>
             {loading
