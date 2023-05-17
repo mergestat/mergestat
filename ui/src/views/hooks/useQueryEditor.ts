@@ -1,12 +1,10 @@
-import { useLazyQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { ColumnInfo } from 'src/@types'
-import { ExecuteSqlQuery } from 'src/api-logic/graphql/generated/schema'
-import { EXECUTE_SQL } from 'src/api-logic/graphql/queries/sql-queries'
 import { useQueryContext, useQuerySetState } from 'src/state/contexts'
 import { useQueryTabsDispatch } from 'src/state/contexts/query-tabs.context'
 import { formatTimeExecution } from 'src/utils'
 import { States } from 'src/utils/constants'
+import useExecuteSQL from './useExecuteSQL'
 
 const useQueryEditor = () => {
   const ROWS_LIMIT = 1000
@@ -17,21 +15,12 @@ const useQueryEditor = () => {
 
   const [state, setState] = useState<States>(States.Empty)
   const [executed, setExecuted] = useState(false)
-  const [aborterRef, setAbortRef] = useState(new AbortController())
   const [loading, setLoading] = useState(false)
   const [time, setTime] = useState('')
   const [title, setTitle] = useState<string>('')
   const [desc, setDesc] = useState<string>('')
 
-  const [executeSQL, { loading: loadingQuery, error, data }] = useLazyQuery<ExecuteSqlQuery>(EXECUTE_SQL, {
-    fetchPolicy: 'no-cache',
-    context: {
-      fetchOptions: {
-        signal: aborterRef.signal
-      },
-      queryDeduplication: false
-    }
-  })
+  const { loadingQuery, error, data, aborterRef, setAbortRef, executeSQL } = useExecuteSQL()
 
   const projectionChanged = (newProjection: string[]) => {
     for (const p of newProjection) {

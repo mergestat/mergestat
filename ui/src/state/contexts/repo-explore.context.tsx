@@ -17,6 +17,8 @@ type RepoExploreContext = {
   loading: boolean
   params: ExploreParams
   exploreData: ExploreData
+  queryModal: string
+  showDataTableModal: boolean
 }
 
 type UseRepoExploreContext = [
@@ -27,7 +29,9 @@ type UseRepoExploreContext = [
 const initialState: RepoExploreContext = {
   loading: true,
   params: {} as ExploreParams,
-  exploreData: {} as ExploreData
+  exploreData: {} as ExploreData,
+  queryModal: '',
+  showDataTableModal: false,
 }
 
 function useRepoExplore(): UseRepoExploreContext {
@@ -73,11 +77,27 @@ function useRepoExploreSetState() {
     }))
   }
 
+  const setQueryModal = (queryModal: string) => {
+    setState(prev => ({
+      ...prev,
+      queryModal
+    }))
+  }
+
+  const setShowDataTableModal = (showDataTableModal: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showDataTableModal
+    }))
+  }
+
   return {
     _,
     setLoading,
     setParams,
     setExploreData,
+    setQueryModal,
+    setShowDataTableModal
   }
 }
 
