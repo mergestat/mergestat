@@ -38,7 +38,7 @@ BEGIN
     SELECT params->>'days_since_committed_last' INTO DAYS_SINCE_COMMITTED_LAST_PARAM;
     SELECT params->>'days_since_not_committed_last' INTO DAYS_SINCE_NOT_COMMITTED_LAST_PARAM;
     SELECT params->>'repo_pattern' INTO REPO_PATTERN_PARAM;
-    "days_since_authored_last":30, "days_since_not_authored_last":30, "days_since_committed_last":30, "days_since_not_committed_last":30
+    -- "days_since_authored_last":30, "days_since_not_authored_last":30, "days_since_committed_last":30, "days_since_not_committed_last":30
     WITH base_query AS (
         SELECT 
             repos.repo,
