@@ -11,6 +11,10 @@ export interface ExploreParams {
   days_since_repo_not_modified_last?: string
   days_since_file_modified_last?: string
   days_since_file_not_modified_last?: string
+  days_since_authored_last?: string
+  days_since_not_authored_last?: string
+  days_since_committed_last?: string
+  days_since_not_committed_last?: string
 }
 
 type RepoExploreContext = {

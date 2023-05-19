@@ -1,4 +1,4 @@
-import { Button, Modal, Toolbar } from '@mergestat/blocks'
+import { Alert, Button, Modal, Toolbar, Tooltip } from '@mergestat/blocks'
 import { XIcon } from '@mergestat/icons'
 import React, { useCallback, useEffect } from 'react'
 import Loading from 'src/components/Loading'
@@ -31,6 +31,18 @@ export const DataTableModal: React.FC = () => {
             </Toolbar.Item>
           </Toolbar.Left>
           <Toolbar.Right>
+            {data?.execSQL.rows && data?.execSQL.rows.length > 1000 &&
+              <Toolbar.Item>
+                <Alert isInline type="warning" className='text-gray-400'>
+                  <Tooltip placement='bottom' offset={[0, 10]}
+                    content={<div className='w-56 font-thin pl-2 pr-1 py-3 leading-2'>
+                      Result set exceeds the limits of the UI. Please use another SQL client to access more rows
+                    </div>}>
+                    <span className='border-b-2 border-dotted border-gray-400'>Limited to 1000 rows</span>
+                  </Tooltip>
+                </Alert>
+              </Toolbar.Item>
+            }
             <Toolbar.Item>
               <Button
                 skin="borderless-muted"

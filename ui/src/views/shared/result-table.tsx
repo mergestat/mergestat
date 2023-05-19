@@ -21,6 +21,12 @@ const ResultTable: React.FC<Props> = ({ data }: Props) => {
   const [total, setTotal] = useState<number>(data.rows?.length || 0)
   const [search, setSearch] = useState<string>('')
 
+  useEffect(() => {
+    if (data?.rows && data.rows.length > 1000) {
+      data.rows.pop()
+    }
+  }, [data])
+
   const getData = (value: string | number | boolean) => {
     if (value === null) {
       return 'null'

@@ -93,7 +93,7 @@ BEGIN
                         file_last_modified
                     FROM base_query
                     ORDER BY 3 DESC
-                    LIMIT 1000
+                    LIMIT 1001
                 )b
             )
         WHEN RESPONSE_TYPE = 'REPOS'
@@ -107,7 +107,7 @@ BEGIN
                     FROM base_query
                     GROUP BY 1, 2
                     ORDER BY 3 DESC
-                    LIMIT 1000
+                    LIMIT 1001
                 )b
             )
         WHEN RESPONSE_TYPE = 'AUTHORS'
@@ -120,7 +120,7 @@ BEGIN
                     FROM base_query
                     GROUP BY 1
                     ORDER BY 2 DESC
-                    LIMIT 1000
+                    LIMIT 1001
                 )b
             )
         ELSE (
