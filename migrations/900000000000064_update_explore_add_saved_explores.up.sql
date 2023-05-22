@@ -222,4 +222,19 @@ CREATE POLICY saved_explores_all_view ON mergestat.saved_explores FOR SELECT USI
 -- GRANT the ability to mergestat_role_user role to INSERT, UPDATE AND DELETE on table saved_explores.
 GRANT INSERT, UPDATE, DELETE ON TABLE mergestat.saved_explores TO mergestat_role_user;
 
+
+-- Seeding mergestat explore sync and removing overlapping syncs
+-- Not checking for duplicates before adding the constraint as handling this will require intervention
+ALTER TABLE mergestat.container_images DROP CONSTRAINT IF EXISTS unique_container_images_url;
+ALTER TABLE mergestat.container_images ADD CONSTRAINT unique_container_images_url UNIQUE (url);
+INSERT INTO mergestat.container_images(name, description, type, url, version, queue)
+VALUES
+('MergeStat Explore', 'Retrieves the git commit history, stats, and files (content and paths) for a repo used for MergeStat Explore', 'docker', 'ghcr.io/mergestat/sync-mergestat-explore', 'latest', 'default')
+ON CONFLICT (url) DO NOTHING;
+
+DELETE FROM mergestat.container_images
+WHERE
+    url in ('ghcr.io/mergestat/sync-git-commit-stats', 'ghcr.io/mergestat/sync-git-commits', 'ghcr.io/mergestat/sync-git-files')
+    AND id NOT IN (SELECT image_id FROM mergestat.container_syncs) -- Do not delete syncs in use
+
 COMMIT;
