@@ -29,7 +29,7 @@ const RepoExplorerView: React.FC = () => {
             <StatsExplore />
             <CardsStatsExplore />
           </div>
-          : <EmptyData message='No charts yet' icon={<ChartSquareBarIcon className="t-icon" />} />
+          : <EmptyData message='Select a filter to get started' icon={<ChartSquareBarIcon className="t-icon" />} />
         }
       </div>
     </>
