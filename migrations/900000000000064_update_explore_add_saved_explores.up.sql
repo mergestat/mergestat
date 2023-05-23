@@ -235,6 +235,6 @@ ON CONFLICT (url) DO NOTHING;
 DELETE FROM mergestat.container_images
 WHERE
     url in ('ghcr.io/mergestat/sync-git-commit-stats', 'ghcr.io/mergestat/sync-git-commits', 'ghcr.io/mergestat/sync-git-files')
-    AND id NOT IN (SELECT image_id FROM mergestat.container_syncs) -- Do not delete syncs in use
+    AND id NOT IN (SELECT image_id FROM mergestat.container_syncs); -- Do not delete syncs in use
 
 COMMIT;
