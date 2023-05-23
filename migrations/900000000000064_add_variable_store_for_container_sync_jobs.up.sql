@@ -15,7 +15,7 @@ CREATE TABLE mergestat.sync_variables (
 
 
 -- encrypt and store the given variable
-CREATE OR REPLACE FUNCTION mergestat.add_sync_variable(repo_id uuid, key text, value text, secret text)
+CREATE OR REPLACE FUNCTION mergestat.add_sync_variable(repo_id UUID, key TEXT, value TEXT, secret TEXT)
 RETURNS mergestat.SYNC_VARIABLES AS $$
 DECLARE _inserted_row mergestat.sync_variables;
 BEGIN
@@ -27,7 +27,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- decrypt and fetch the named variable for the given repository
-CREATE OR REPLACE FUNCTION mergestat.fetch_sync_variable(uuid, text, text)
+CREATE OR REPLACE FUNCTION mergestat.fetch_sync_variable(UUID, TEXT, TEXT)
 RETURNS TABLE(repo_id UUID, key TEXT, value TEXT) AS $$
 BEGIN
     RETURN QUERY SELECT var.repo_id, var.key::text, pgp_sym_decrypt(var.value, $3)
