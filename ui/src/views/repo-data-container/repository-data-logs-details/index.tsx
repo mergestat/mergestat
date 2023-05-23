@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { LogBox, Panel } from '@mergestat/blocks'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ContainerSyncLogData, RepoBasicData, SyncContainerLogsType } from 'src/@types'
 import { GET_LOGS_OF_A_CONTAINER_SYNC } from 'src/api-logic/graphql/queries/get-sync-history-logs'
 import { mapToContainerSyncLogsData } from 'src/api-logic/mappers/repo-container/container-syncs-logs'
@@ -29,7 +29,7 @@ const RepoDataLogsDetailsView: React.FC<RepoDataLogsDetailsViewProps> = ({ repo 
     pollInterval: 5000,
   })
 
-  const repoData: ContainerSyncLogData = mapToContainerSyncLogsData(data)
+  const repoData: ContainerSyncLogData = useMemo(() => mapToContainerSyncLogsData(data), [data])
 
   useContainerSyncLogsCrumb(repo, repoData?.sync, data)
 

@@ -2030,6 +2030,16 @@ export type DeleteContainerImageByNodeIdInput = {
   nodeId: Scalars['ID'];
 };
 
+/** All input for the `deleteContainerImageByUrl` mutation. */
+export type DeleteContainerImageByUrlInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  url: Scalars['String'];
+};
+
 /** All input for the `deleteContainerImage` mutation. */
 export type DeleteContainerImageInput = {
   /**
@@ -3794,7 +3804,7 @@ export type GitCommit = Node & {
   /** hash of the commit */
   hash: Scalars['String'];
   /** message of the commit */
-  message: Scalars['String'];
+  message?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** the number of parents of the commit */
@@ -3885,7 +3895,7 @@ export type GitCommitInput = {
   /** hash of the commit */
   hash: Scalars['String'];
   /** message of the commit */
-  message: Scalars['String'];
+  message?: InputMaybe<Scalars['String']>;
   /** the number of parents of the commit */
   parents: Scalars['Int'];
   /** foreign key for public.repos.id */
@@ -5197,6 +5207,8 @@ export type Mutation = {
   deleteContainerImageByName?: Maybe<DeleteContainerImagePayload>;
   /** Deletes a single `ContainerImage` using its globally unique id. */
   deleteContainerImageByNodeId?: Maybe<DeleteContainerImagePayload>;
+  /** Deletes a single `ContainerImage` using a unique key. */
+  deleteContainerImageByUrl?: Maybe<DeleteContainerImagePayload>;
   /** Deletes a single `ContainerImageType` using a unique key. */
   deleteContainerImageType?: Maybe<DeleteContainerImageTypePayload>;
   /** Deletes a single `ContainerImageType` using its globally unique id. */
@@ -5359,6 +5371,8 @@ export type Mutation = {
   updateContainerImageByName?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImage` using its globally unique id and a patch. */
   updateContainerImageByNodeId?: Maybe<UpdateContainerImagePayload>;
+  /** Updates a single `ContainerImage` using a unique key and a patch. */
+  updateContainerImageByUrl?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImageType` using a unique key and a patch. */
   updateContainerImageType?: Maybe<UpdateContainerImageTypePayload>;
   /** Updates a single `ContainerImageType` using its globally unique id and a patch. */
@@ -5783,6 +5797,12 @@ export type MutationDeleteContainerImageByNameArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteContainerImageByNodeIdArgs = {
   input: DeleteContainerImageByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteContainerImageByUrlArgs = {
+  input: DeleteContainerImageByUrlInput;
 };
 
 
@@ -6305,6 +6325,12 @@ export type MutationUpdateContainerImageByNameArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateContainerImageByNodeIdArgs = {
   input: UpdateContainerImageByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateContainerImageByUrlArgs = {
+  input: UpdateContainerImageByUrlInput;
 };
 
 
@@ -6958,6 +6984,7 @@ export type Query = Node & {
   containerImageByName?: Maybe<ContainerImage>;
   /** Reads a single `ContainerImage` using its globally unique `ID`. */
   containerImageByNodeId?: Maybe<ContainerImage>;
+  containerImageByUrl?: Maybe<ContainerImage>;
   containerImageType?: Maybe<ContainerImageType>;
   /** Reads a single `ContainerImageType` using its globally unique `ID`. */
   containerImageTypeByNodeId?: Maybe<ContainerImageType>;
@@ -7215,6 +7242,12 @@ export type QueryContainerImageByNameArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryContainerImageByNodeIdArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryContainerImageByUrlArgs = {
+  url: Scalars['String'];
 };
 
 
@@ -10871,6 +10904,18 @@ export type UpdateContainerImageByNodeIdInput = {
   patch: ContainerImagePatch;
 };
 
+/** All input for the `updateContainerImageByUrl` mutation. */
+export type UpdateContainerImageByUrlInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `ContainerImage` being updated. */
+  patch: ContainerImagePatch;
+  url: Scalars['String'];
+};
+
 /** All input for the `updateContainerImage` mutation. */
 export type UpdateContainerImageInput = {
   /**
@@ -13800,6 +13845,11 @@ export type GetDatabaseConnectionQueryVariables = Exact<{ [key: string]: never; 
 
 
 export type GetDatabaseConnectionQuery = { databaseConnection?: { database?: string | null, host?: string | null, port?: number | null, user?: string | null } | null };
+
+export type GetExploreMetadataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetExploreMetadataQuery = { repos?: { totalCount: number } | null, exploreContainer?: { id: any, name: string } | null, metadata?: { totalCount: number, nodes: Array<{ _mergestatSyncedAt: any }> } | null };
 
 export type GetGitSourcesListQueryVariables = Exact<{
   search: Scalars['String'];

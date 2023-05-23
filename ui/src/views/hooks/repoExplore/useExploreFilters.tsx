@@ -23,11 +23,12 @@ export const useExploreFilters = (
       days_since_not_committed_last: filterNotCommittedDays,
     }
   }] = useRepoExploreContext()
-  const { setParams } = useRepoExploreSetState()
+  const { setParams, setExploreExecuted } = useRepoExploreSetState()
 
   const setParamsAndExplore = (params: ExploreParams) => {
     setParams(params)
     explore({ variables: { params } })
+    setExploreExecuted(true)
   }
 
   const clearFilters = () => {

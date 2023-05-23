@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { GetRepoDataQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_REPO_DATA } from 'src/api-logic/graphql/queries/get-repo-syncs'
 import { mapToRepoData } from 'src/api-logic/mappers/repo/repo-syncs'
@@ -14,7 +15,8 @@ const useRepoData = () => {
     fetchPolicy: 'no-cache',
   })
 
-  const repo = mapToRepoData(data)
+  const repo = useMemo(() => mapToRepoData(data), [data])
+
   const title = `${repo?.name} - Repos ${MERGESTAT_TITLE}`
 
   return { loading, repo, title }

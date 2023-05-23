@@ -1,25 +1,19 @@
-import { RepositoryIcon } from '@mergestat/icons'
-import { useRouter } from 'next/router'
+import { ChartSquareBarIcon } from '@mergestat/icons'
 import { useEffect } from 'react'
 import { useGlobalSetState } from 'src/state/contexts'
+import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
+import { EmptyData } from '../shared/empty-data'
 import CardsStatsExplore from './components/cards-stats-explore'
 import HeaderExplore from './components/header-explore'
 import StatsExplore from './components/stats-explore'
 
 const RepoExplorerView: React.FC = () => {
-  const router = useRouter()
+  const [{ exploreExecuted }] = useRepoExploreContext()
+
   const { setCrumbs } = useGlobalSetState()
 
   useEffect(() => {
-    const crumbs = [
-      {
-        text: 'Repos',
-        startIcon: <RepositoryIcon className='t-icon t-icon-default' />,
-        onClick: () => router.push('/repos'),
-      },
-    ]
-
-    setCrumbs(crumbs)
+    setCrumbs([])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -30,10 +24,13 @@ const RepoExplorerView: React.FC = () => {
         <HeaderExplore />
 
         {/* Body */}
-        <div className='px-8 py-4 flex-1 overflow-auto'>
-          <StatsExplore />
-          <CardsStatsExplore />
-        </div>
+        {exploreExecuted
+          ? <div className='px-8 py-4 flex-1 overflow-auto'>
+            <StatsExplore />
+            <CardsStatsExplore />
+          </div>
+          : <EmptyData message='No charts yet' icon={<ChartSquareBarIcon className="t-icon" />} />
+        }
       </div>
     </>
   )

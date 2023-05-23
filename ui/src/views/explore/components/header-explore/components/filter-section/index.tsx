@@ -3,7 +3,7 @@ import { Button } from '@mergestat/blocks'
 import React, { useEffect } from 'react'
 import { ExploreData } from 'src/@types'
 import { EXPLORE } from 'src/api-logic/graphql/mutations/explore'
-import { useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
+import { useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
 import { useExploreFilters } from 'src/views/hooks/repoExplore/useExploreFilters'
 import FiltersAuthored from './components/filters-authored'
 import FiltersCommitted from './components/filters-committed'
@@ -13,6 +13,7 @@ import FiltersRepoModified from './components/filters-repo-modified'
 
 const FiltersSection: React.FC = () => {
   const { setLoading, setExploreData } = useRepoExploreSetState()
+  const [{ exploreExecuted }] = useRepoExploreContext()
 
   const [explore, { loading, data }] = useLazyQuery(EXPLORE)
 
@@ -42,6 +43,7 @@ const FiltersSection: React.FC = () => {
         label="Clear filters"
         skin="borderless"
         size='small'
+        disabled={!exploreExecuted}
         onClick={clearFilters}
       />
     </div>

@@ -1,5 +1,5 @@
 import { Sidebar } from '@mergestat/blocks'
-import { CogIcon, DatabaseIcon, RepositoryIcon, TerminalIcon } from '@mergestat/icons'
+import { ChartSquareBarIcon, CogIcon, DatabaseIcon, RepositoryIcon, TerminalIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -12,6 +12,20 @@ const SidebarView: React.FC = () => {
     <Sidebar compact={false} dark={true} collapsible={true} className='flex-none'>
       <Sidebar.Header onClick={() => push('/repos')} />
       <Sidebar.Main>
+        <Sidebar.Item
+          label='Explore'
+          compact={false}
+          active={isSidebarActive(/^\/explore$/)}
+          defaultOpen={isSidebarActive(/^\/explore/)}
+          onClick={() => push('/explore')}
+          icon={<ChartSquareBarIcon className='t-icon' />}
+        // subNav={
+        //   <Sidebar.Item compact={false}
+        //     onClick={() => push('/explore/saved')}
+        //     active={isSidebarActive('/explore/saved')}
+        //     label='Saved Explore' level='sub' />
+        // }
+        />
         <Sidebar.Item
           label='Repos'
           compact={false}
@@ -32,10 +46,6 @@ const SidebarView: React.FC = () => {
                 onClick={() => push('/repos/repo-syncs')}
                 active={isSidebarActive('/repos/repo-syncs')}
                 label='Repo Syncs' level='sub' />
-              {/* <Sidebar.Item compact={false}
-                onClick={() => push('/repos/repo-explore')}
-                active={isSidebarActive('/repos/repo-explore')}
-                label='Repo Explore' level='sub' /> */}
             </>
           }
         />
