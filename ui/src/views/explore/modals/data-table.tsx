@@ -27,7 +27,7 @@ export const DataTableModal: React.FC = () => {
         <Toolbar className="h-16 px-6">
           <Toolbar.Left>
             <Toolbar.Item>
-              <Modal.Title>Data Table</Modal.Title>
+              <Modal.Title>Data</Modal.Title>
             </Toolbar.Item>
           </Toolbar.Left>
           <Toolbar.Right>
