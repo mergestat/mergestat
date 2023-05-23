@@ -132,6 +132,17 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 			environment["MERGESTAT_AUTH_TOKEN"] = token
 			environment["MERGESTAT_PARAMS"] = string(containerSync.Params.Bytes)
 
+			// add user-configured environment variables
+			var userEnv map[string]string
+			if userEnv, err = querier.FetchSyncVars(ctx, containerSync.ID); err != nil {
+				l.Err(err).Msg("failed to read user provided environment variables")
+				return err
+			}
+
+			for key, value := range userEnv {
+				environment[key] = value
+			}
+
 			var env bytes.Buffer
 			for key, value := range environment {
 				_, _ = fmt.Fprintf(&env, "%s=%s\n", key, value)
@@ -156,7 +167,7 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 
 			// if opted-in by setting com.mergestat.sync.clone to true, we perform a full clone
 			// of the repository to a temporary directory and mount that directory into the container
-			if opt := metadata[0].Labels["com.mergestat.sync.clone"]; opt == "true" {
+			if opt, exists := metadata[0].Labels["com.mergestat.sync.clone"]; exists && opt == "true" {
 				var tmpPath string
 				var cleanup func() error
 				// create a new temporary location to clone the repository
