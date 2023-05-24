@@ -43,11 +43,15 @@ const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, overlay }
               <Toolbar.Right>
                 <div className='t-button-toolbar'>
                   <Button skin='secondary' label='Reset' onClick={close} />
-                  <Button label='Apply' onClick={() => {
-                    value && setShow(true)
-                    explore()
-                    close()
-                  }} />
+                  <Button
+                    label='Apply'
+                    disabled={!value}
+                    onClick={() => {
+                      value && setShow(true)
+                      explore()
+                      close()
+                    }}
+                  />
                 </div>
               </Toolbar.Right>
             </Toolbar>

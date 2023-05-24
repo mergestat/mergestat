@@ -8,7 +8,7 @@ import HeaderExplore from './components/header-explore'
 import StatsExplore from './components/stats-explore'
 
 const RepoExplorerView: React.FC = () => {
-  const [{ exploreExecuted }] = useRepoExploreContext()
+  const [{ empty, results }] = useRepoExploreContext()
 
   const { setCrumbs } = useGlobalSetState()
 
@@ -24,12 +24,13 @@ const RepoExplorerView: React.FC = () => {
         <HeaderExplore />
 
         {/* Body */}
-        {exploreExecuted
-          ? <div className='px-8 py-4 flex-1 overflow-auto'>
+        {!results && !empty && <EmptyData message='No results' icon={<ChartSquareBarIcon className="t-icon" />} />}
+        {empty && <EmptyData message='Select a filter to get started' icon={<ChartSquareBarIcon className="t-icon" />} />}
+        {results &&
+          <div className='px-8 py-4 flex-1 overflow-auto'>
             <StatsExplore />
             <CardsStatsExplore />
           </div>
-          : <EmptyData message='Select a filter to get started' icon={<ChartSquareBarIcon className="t-icon" />} />
         }
       </div>
     </>

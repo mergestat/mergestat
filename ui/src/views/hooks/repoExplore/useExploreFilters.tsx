@@ -2,6 +2,7 @@ import { MutationFunctionOptions } from '@apollo/client'
 import { KeyboardEvent } from 'react'
 import { ExploreUiQuery } from 'src/api-logic/graphql/generated/schema'
 import { ExploreParams, useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
+import { cleanObject } from 'src/utils'
 
 export const useExploreFilters = (
   explore: (options?: MutationFunctionOptions<ExploreUiQuery> | undefined) => void
@@ -23,30 +24,23 @@ export const useExploreFilters = (
       days_since_not_committed_last: filterNotCommittedDays,
     }
   }] = useRepoExploreContext()
-  const { setParams, setExploreExecuted } = useRepoExploreSetState()
+  const { setParams, setEmpty } = useRepoExploreSetState()
 
   const setParamsAndExplore = (params: ExploreParams) => {
-    setParams(params)
-    explore({ variables: { params } })
-    setExploreExecuted(true)
+    const cleanedParams = cleanObject(params)
+    setParams(cleanedParams)
+
+    if (Object.keys(cleanedParams).length > 0) {
+      explore({ variables: { params: cleanedParams } })
+      setEmpty(false)
+    } else {
+      setEmpty(true)
+    }
   }
 
   const clearFilters = () => {
-    setParamsAndExplore({
-      ...params,
-      file_path_pattern: undefined,
-      repo_pattern: undefined,
-      file_contents_pattern: undefined,
-      author_name_pattern: undefined,
-      days_since_repo_modified_last: undefined,
-      days_since_repo_not_modified_last: undefined,
-      days_since_file_modified_last: undefined,
-      days_since_file_not_modified_last: undefined,
-      days_since_authored_last: undefined,
-      days_since_not_authored_last: undefined,
-      days_since_committed_last: undefined,
-      days_since_not_committed_last: undefined,
-    })
+    setParamsAndExplore({})
+    setEmpty(true)
   }
 
   const filter = (filter: keyof ExploreParams, value: string | undefined) => {

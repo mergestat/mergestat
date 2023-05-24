@@ -2,6 +2,7 @@ import { useLazyQuery } from '@apollo/client'
 import { Button } from '@mergestat/blocks'
 import React, { useEffect } from 'react'
 import { ExploreData } from 'src/@types'
+import { ExploreUiQuery } from 'src/api-logic/graphql/generated/schema'
 import { EXPLORE } from 'src/api-logic/graphql/mutations/explore'
 import { useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
 import { useExploreFilters } from 'src/views/hooks/repoExplore/useExploreFilters'
@@ -12,10 +13,19 @@ import FiltersGenerals from './components/filters-generals'
 import FiltersRepoModified from './components/filters-repo-modified'
 
 const FiltersSection: React.FC = () => {
-  const { setLoading, setExploreData } = useRepoExploreSetState()
-  const [{ exploreExecuted }] = useRepoExploreContext()
+  const { setLoading, setExploreData, setResults } = useRepoExploreSetState()
+  const [{ empty }] = useRepoExploreContext()
 
-  const [explore, { loading, data }] = useLazyQuery(EXPLORE)
+  const [explore, { loading, data }] = useLazyQuery(EXPLORE, {
+    onCompleted: (data: ExploreUiQuery) => {
+      const { authors, files, repos, top_10_authors: topFiles, top_10_repos: topRepos } = data.exploreUi
+      if (!authors && !files && !repos && !topFiles && !topRepos) {
+        setResults(false)
+      } else {
+        setResults(true)
+      }
+    }
+  })
 
   useEffect(() => {
     setLoading(loading)
@@ -43,7 +53,7 @@ const FiltersSection: React.FC = () => {
         label="Clear filters"
         skin="borderless"
         size='small'
-        disabled={!exploreExecuted}
+        disabled={empty}
         onClick={clearFilters}
       />
     </div>

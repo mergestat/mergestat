@@ -18,7 +18,7 @@ const LoginPage = () => {
   const handleLogin = async () => {
     setError(false)
     const login = await auth(user, password)
-    login ? router.push('/repos') : setError(true)
+    login ? router.push('/explore') : setError(true)
   }
 
   return (

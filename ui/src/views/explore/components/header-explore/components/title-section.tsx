@@ -25,7 +25,7 @@ const TitleSection: React.FC = () => {
             type="info"
             className='text-gray-400'
             tooltip={<div className='flex font-thin leading-4 p-2'>
-              All {data?.metadata?.totalCount} repos indexed as of {<RelativeTimeField date={data?.metadata?.nodes[0]._mergestatSyncedAt} styles={'ml-1 whitespace-nowrap'} />}
+              All {data?.metadata?.totalCount} repos indexed as of {<RelativeTimeField date={data?.metadata?.nodes[0]?._mergestatSyncedAt} styles={'ml-1 whitespace-nowrap'} />}
             </div>}
           >
             {`${data?.metadata?.totalCount}/${data?.repos?.totalCount} repos indexed`}

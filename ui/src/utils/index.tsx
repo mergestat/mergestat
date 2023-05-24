@@ -369,3 +369,14 @@ export function formatMonth(data: string) {
     .replace(/-11/ig, '-Nov')
     .replace(/-12/ig, '-Dec')
 }
+
+/**
+ * Method to clean undefined vaues from an object
+ * @param obj Object to clean
+ * @returns the cleaned object
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function cleanObject(obj: any) {
+  Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key])
+  return obj
+}

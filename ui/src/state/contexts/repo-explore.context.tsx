@@ -19,7 +19,8 @@ export interface ExploreParams {
 
 type RepoExploreContext = {
   loading: boolean
-  exploreExecuted: boolean
+  empty: boolean
+  results: boolean
   params: ExploreParams
   exploreData: ExploreData
   queryModal: string
@@ -33,7 +34,8 @@ type UseRepoExploreContext = [
 
 const initialState: RepoExploreContext = {
   loading: true,
-  exploreExecuted: false,
+  empty: true,
+  results: true,
   params: {} as ExploreParams,
   exploreData: {} as ExploreData,
   queryModal: '',
@@ -76,10 +78,17 @@ function useRepoExploreSetState() {
     }))
   }
 
-  const setExploreExecuted = (exploreExecuted: boolean) => {
+  const setEmpty = (empty: boolean) => {
     setState(prev => ({
       ...prev,
-      exploreExecuted
+      empty
+    }))
+  }
+
+  const setResults = (results: boolean) => {
+    setState(prev => ({
+      ...prev,
+      results
     }))
   }
 
@@ -108,7 +117,8 @@ function useRepoExploreSetState() {
     _,
     setLoading,
     setParams,
-    setExploreExecuted,
+    setEmpty,
+    setResults,
     setExploreData,
     setQueryModal,
     setShowDataTableModal
