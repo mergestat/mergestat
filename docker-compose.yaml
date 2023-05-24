@@ -67,8 +67,6 @@ services:
       worker:
         # this is to ensure all migrations are run before the API starts up
         condition: service_healthy
-    links:
-      - worker
     ports:
       - 5433:5433
     command:
