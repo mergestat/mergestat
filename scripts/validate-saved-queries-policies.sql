@@ -4,7 +4,7 @@
 -- AS a mergestat_role_admin level or above
 -- create users with mergestat_role_user and mergestat_role_admin level.
 SELECT mergestat.user_mgmt_add_user('test', '1234', 'USER');
-SELECT mergestat.user_mgmt_add_user('adminTest1', '1234', 'admin');
+SELECT mergestat.user_mgmt_add_user('adminTest1', '1234', 'ADMIN');
 
 -- Insert values in the table mergestat.saved_queries.
 INSERT INTO mergestat.saved_queries (created_by) VALUES('test2');

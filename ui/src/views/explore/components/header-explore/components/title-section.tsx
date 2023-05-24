@@ -1,10 +1,18 @@
+import { useQuery } from '@apollo/client'
 import { Alert, Button, Toolbar } from '@mergestat/blocks'
 import { CogIcon } from '@mergestat/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { GetExploreMetadataQuery } from 'src/api-logic/graphql/generated/schema'
+import { GET_EXPLORE_METADATA } from 'src/api-logic/graphql/queries/explore'
+import { RelativeTimeField } from 'src/components/Fields/relative-time-field'
 
 const TitleSection: React.FC = () => {
   const router = useRouter()
+
+  const { data } = useQuery<GetExploreMetadataQuery>(GET_EXPLORE_METADATA, {
+    fetchPolicy: 'no-cache',
+  })
 
   return (
     <Toolbar className='h-full'>
@@ -16,11 +24,11 @@ const TitleSection: React.FC = () => {
           <Alert isInline
             type="info"
             className='text-gray-400'
-            tooltip={<div className='w-80 font-thin leading-4 p-2'>
-              Not all repos have been index, please modify the repo explore sync to search across all repos
+            tooltip={<div className='flex font-thin leading-4 p-2'>
+              All {data?.metadata?.totalCount} repos indexed as of {<RelativeTimeField date={data?.metadata?.nodes[0]?._mergestatSyncedAt} styles={'ml-1 whitespace-nowrap'} />}
             </div>}
           >
-            100/1000 repos indexed
+            {`${data?.metadata?.totalCount}/${data?.repos?.totalCount} repos indexed`}
           </Alert>
         </Toolbar.Item>
         <Toolbar.Item>
@@ -28,7 +36,7 @@ const TitleSection: React.FC = () => {
             skin="secondary"
             label='Manage'
             startIcon={<CogIcon className="t-icon" />}
-            onClick={() => router.push('/repos/repo-syncs')}
+            onClick={() => router.push(`/repos/repo-syncs/${data?.exploreContainer?.id}`)}
           />
         </Toolbar.Item>
       </Toolbar.Right>

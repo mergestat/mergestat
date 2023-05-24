@@ -11,10 +11,16 @@ export interface ExploreParams {
   days_since_repo_not_modified_last?: string
   days_since_file_modified_last?: string
   days_since_file_not_modified_last?: string
+  days_since_authored_last?: string
+  days_since_not_authored_last?: string
+  days_since_committed_last?: string
+  days_since_not_committed_last?: string
 }
 
 type RepoExploreContext = {
   loading: boolean
+  empty: boolean
+  results: boolean
   params: ExploreParams
   exploreData: ExploreData
   queryModal: string
@@ -28,6 +34,8 @@ type UseRepoExploreContext = [
 
 const initialState: RepoExploreContext = {
   loading: true,
+  empty: true,
+  results: true,
   params: {} as ExploreParams,
   exploreData: {} as ExploreData,
   queryModal: '',
@@ -70,6 +78,20 @@ function useRepoExploreSetState() {
     }))
   }
 
+  const setEmpty = (empty: boolean) => {
+    setState(prev => ({
+      ...prev,
+      empty
+    }))
+  }
+
+  const setResults = (results: boolean) => {
+    setState(prev => ({
+      ...prev,
+      results
+    }))
+  }
+
   const setExploreData = (exploreData: ExploreData) => {
     setState(prev => ({
       ...prev,
@@ -95,6 +117,8 @@ function useRepoExploreSetState() {
     _,
     setLoading,
     setParams,
+    setEmpty,
+    setResults,
     setExploreData,
     setQueryModal,
     setShowDataTableModal

@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { GetRepoSyncsQuery } from 'src/api-logic/graphql/generated/schema'
 import { GET_REPO_SYNCS } from 'src/api-logic/graphql/queries/get-repo-syncs'
 import { mapToRepoSyncsData } from 'src/api-logic/mappers/repo/repo-syncs'
@@ -22,7 +22,7 @@ const useRepoSyncs = () => {
     pollInterval: 5000,
   })
 
-  const syncs = mapToRepoSyncsData(data)
+  const syncs = useMemo(() => mapToRepoSyncsData(data), [data])
 
   useEffect(() => {
     setTotal(data?.repoSyncTypes?.totalCount || 0)

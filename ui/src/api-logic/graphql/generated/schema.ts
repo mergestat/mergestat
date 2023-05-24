@@ -1179,6 +1179,74 @@ export type CreateLabelPayloadLabelEdgeArgs = {
   orderBy?: InputMaybe<Array<LabelsOrderBy>>;
 };
 
+/** All input for the create `_MergestatExploreFileMetadatum` mutation. */
+export type CreateMergestatExploreFileMetadatumInput = {
+  /** The `_MergestatExploreFileMetadatum` to be created by this mutation. */
+  _mergestatExploreFileMetadatum: _MergestatExploreFileMetadatumInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our create `_MergestatExploreFileMetadatum` mutation. */
+export type CreateMergestatExploreFileMetadatumPayload = {
+  /** The `_MergestatExploreFileMetadatum` that was created by this mutation. */
+  _mergestatExploreFileMetadatum?: Maybe<_MergestatExploreFileMetadatum>;
+  /** An edge for our `_MergestatExploreFileMetadatum`. May be used by Relay 1. */
+  _mergestatExploreFileMetadatumEdge?: Maybe<_MergestatExploreFileMetadataEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `_MergestatExploreFileMetadatum`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our create `_MergestatExploreFileMetadatum` mutation. */
+export type CreateMergestatExploreFileMetadatumPayload_MergestatExploreFileMetadatumEdgeArgs = {
+  orderBy?: InputMaybe<Array<_MergestatExploreFileMetadataOrderBy>>;
+};
+
+/** All input for the create `_MergestatExploreRepoMetadatum` mutation. */
+export type CreateMergestatExploreRepoMetadatumInput = {
+  /** The `_MergestatExploreRepoMetadatum` to be created by this mutation. */
+  _mergestatExploreRepoMetadatum: _MergestatExploreRepoMetadatumInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our create `_MergestatExploreRepoMetadatum` mutation. */
+export type CreateMergestatExploreRepoMetadatumPayload = {
+  /** The `_MergestatExploreRepoMetadatum` that was created by this mutation. */
+  _mergestatExploreRepoMetadatum?: Maybe<_MergestatExploreRepoMetadatum>;
+  /** An edge for our `_MergestatExploreRepoMetadatum`. May be used by Relay 1. */
+  _mergestatExploreRepoMetadatumEdge?: Maybe<_MergestatExploreRepoMetadataEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `_MergestatExploreRepoMetadatum`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our create `_MergestatExploreRepoMetadatum` mutation. */
+export type CreateMergestatExploreRepoMetadatumPayload_MergestatExploreRepoMetadatumEdgeArgs = {
+  orderBy?: InputMaybe<Array<_MergestatExploreRepoMetadataOrderBy>>;
+};
+
 /** All input for the create `Provider` mutation. */
 export type CreateProviderInput = {
   /**
@@ -1621,6 +1689,38 @@ export type CreateRepoSyncTypePayloadRepoSyncTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<RepoSyncTypesOrderBy>>;
 };
 
+/** All input for the create `SavedExplore` mutation. */
+export type CreateSavedExploreInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `SavedExplore` to be created by this mutation. */
+  savedExplore: SavedExploreInput;
+};
+
+/** The output of our create `SavedExplore` mutation. */
+export type CreateSavedExplorePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SavedExplore` that was created by this mutation. */
+  savedExplore?: Maybe<SavedExplore>;
+  /** An edge for our `SavedExplore`. May be used by Relay 1. */
+  savedExploreEdge?: Maybe<SavedExploresEdge>;
+};
+
+
+/** The output of our create `SavedExplore` mutation. */
+export type CreateSavedExplorePayloadSavedExploreEdgeArgs = {
+  orderBy?: InputMaybe<Array<SavedExploresOrderBy>>;
+};
+
 /** All input for the create `SavedQuery` mutation. */
 export type CreateSavedQueryInput = {
   /**
@@ -1928,6 +2028,16 @@ export type DeleteContainerImageByNodeIdInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `ContainerImage` to be deleted. */
   nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteContainerImageByUrl` mutation. */
+export type DeleteContainerImageByUrlInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  url: Scalars['String'];
 };
 
 /** All input for the `deleteContainerImage` mutation. */
@@ -2436,6 +2546,100 @@ export type DeleteLabelPayload = {
 /** The output of our delete `Label` mutation. */
 export type DeleteLabelPayloadLabelEdgeArgs = {
   orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
+/** All input for the `deleteMergestatExploreFileMetadatumByNodeId` mutation. */
+export type DeleteMergestatExploreFileMetadatumByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `_MergestatExploreFileMetadatum` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteMergestatExploreFileMetadatum` mutation. */
+export type DeleteMergestatExploreFileMetadatumInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** path to the file */
+  path: Scalars['String'];
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `_MergestatExploreFileMetadatum` mutation. */
+export type DeleteMergestatExploreFileMetadatumPayload = {
+  /** The `_MergestatExploreFileMetadatum` that was deleted by this mutation. */
+  _mergestatExploreFileMetadatum?: Maybe<_MergestatExploreFileMetadatum>;
+  /** An edge for our `_MergestatExploreFileMetadatum`. May be used by Relay 1. */
+  _mergestatExploreFileMetadatumEdge?: Maybe<_MergestatExploreFileMetadataEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedMergestatExploreFileMetadatumNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `_MergestatExploreFileMetadatum`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our delete `_MergestatExploreFileMetadatum` mutation. */
+export type DeleteMergestatExploreFileMetadatumPayload_MergestatExploreFileMetadatumEdgeArgs = {
+  orderBy?: InputMaybe<Array<_MergestatExploreFileMetadataOrderBy>>;
+};
+
+/** All input for the `deleteMergestatExploreRepoMetadatumByNodeId` mutation. */
+export type DeleteMergestatExploreRepoMetadatumByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `_MergestatExploreRepoMetadatum` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteMergestatExploreRepoMetadatum` mutation. */
+export type DeleteMergestatExploreRepoMetadatumInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our delete `_MergestatExploreRepoMetadatum` mutation. */
+export type DeleteMergestatExploreRepoMetadatumPayload = {
+  /** The `_MergestatExploreRepoMetadatum` that was deleted by this mutation. */
+  _mergestatExploreRepoMetadatum?: Maybe<_MergestatExploreRepoMetadatum>;
+  /** An edge for our `_MergestatExploreRepoMetadatum`. May be used by Relay 1. */
+  _mergestatExploreRepoMetadatumEdge?: Maybe<_MergestatExploreRepoMetadataEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedMergestatExploreRepoMetadatumNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `_MergestatExploreRepoMetadatum`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our delete `_MergestatExploreRepoMetadatum` mutation. */
+export type DeleteMergestatExploreRepoMetadatumPayload_MergestatExploreRepoMetadatumEdgeArgs = {
+  orderBy?: InputMaybe<Array<_MergestatExploreRepoMetadataOrderBy>>;
 };
 
 /** All input for the `deleteProviderByName` mutation. */
@@ -3045,6 +3249,49 @@ export type DeleteRepoSyncTypePayloadRepoSyncTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<RepoSyncTypesOrderBy>>;
 };
 
+/** All input for the `deleteSavedExploreByNodeId` mutation. */
+export type DeleteSavedExploreByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SavedExplore` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteSavedExplore` mutation. */
+export type DeleteSavedExploreInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `SavedExplore` mutation. */
+export type DeleteSavedExplorePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedSavedExploreNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SavedExplore` that was deleted by this mutation. */
+  savedExplore?: Maybe<SavedExplore>;
+  /** An edge for our `SavedExplore`. May be used by Relay 1. */
+  savedExploreEdge?: Maybe<SavedExploresEdge>;
+};
+
+
+/** The output of our delete `SavedExplore` mutation. */
+export type DeleteSavedExplorePayloadSavedExploreEdgeArgs = {
+  orderBy?: InputMaybe<Array<SavedExploresOrderBy>>;
+};
+
 /** All input for the `deleteSavedQueryByNodeId` mutation. */
 export type DeleteSavedQueryByNodeIdInput = {
   /**
@@ -3473,50 +3720,6 @@ export type ExecSqlResult = {
   rows?: Maybe<Array<Scalars['JSON']>>;
 };
 
-/** All input for the `explore` mutation. */
-export type ExploreInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  params?: InputMaybe<Scalars['JSON']>;
-};
-
-/** The output of our `explore` mutation. */
-export type ExplorePayload = {
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  json?: Maybe<Scalars['JSON']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-/** All input for the `exploreUi` mutation. */
-export type ExploreUiInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  params?: InputMaybe<Scalars['JSON']>;
-};
-
-/** The output of our `exploreUi` mutation. */
-export type ExploreUiPayload = {
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  json?: Maybe<Scalars['JSON']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
 /** All input for the `fetchServiceAuthCredential` mutation. */
 export type FetchServiceAuthCredentialInput = {
   /**
@@ -3587,21 +3790,21 @@ export type GitCommit = Node & {
   /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt: Scalars['Datetime'];
   /** email of the author of the modification */
-  authorEmail: Scalars['String'];
+  authorEmail?: Maybe<Scalars['String']>;
   /** name of the author of the the modification */
-  authorName: Scalars['String'];
+  authorName?: Maybe<Scalars['String']>;
   /** timestamp of when the modifcation was authored */
   authorWhen: Scalars['Datetime'];
   /** email of the author who committed the modification */
-  committerEmail: Scalars['String'];
+  committerEmail?: Maybe<Scalars['String']>;
   /** name of the author who committed the modification */
-  committerName: Scalars['String'];
+  committerName?: Maybe<Scalars['String']>;
   /** timestamp of when the commit was made */
   committerWhen: Scalars['Datetime'];
   /** hash of the commit */
   hash: Scalars['String'];
   /** message of the commit */
-  message: Scalars['String'];
+  message?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** the number of parents of the commit */
@@ -3678,21 +3881,21 @@ export type GitCommitInput = {
   /** timestamp when record was synced into the MergeStat database */
   _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
   /** email of the author of the modification */
-  authorEmail: Scalars['String'];
+  authorEmail?: InputMaybe<Scalars['String']>;
   /** name of the author of the the modification */
-  authorName: Scalars['String'];
+  authorName?: InputMaybe<Scalars['String']>;
   /** timestamp of when the modifcation was authored */
   authorWhen: Scalars['Datetime'];
   /** email of the author who committed the modification */
-  committerEmail: Scalars['String'];
+  committerEmail?: InputMaybe<Scalars['String']>;
   /** name of the author who committed the modification */
-  committerName: Scalars['String'];
+  committerName?: InputMaybe<Scalars['String']>;
   /** timestamp of when the commit was made */
   committerWhen: Scalars['Datetime'];
   /** hash of the commit */
   hash: Scalars['String'];
   /** message of the commit */
-  message: Scalars['String'];
+  message?: InputMaybe<Scalars['String']>;
   /** the number of parents of the commit */
   parents: Scalars['Int'];
   /** foreign key for public.repos.id */
@@ -4950,6 +5153,10 @@ export type Mutation = {
   createLabel?: Maybe<CreateLabelPayload>;
   /** Creates a single `LabelAssociation`. */
   createLabelAssociation?: Maybe<CreateLabelAssociationPayload>;
+  /** Creates a single `_MergestatExploreFileMetadatum`. */
+  createMergestatExploreFileMetadatum?: Maybe<CreateMergestatExploreFileMetadatumPayload>;
+  /** Creates a single `_MergestatExploreRepoMetadatum`. */
+  createMergestatExploreRepoMetadatum?: Maybe<CreateMergestatExploreRepoMetadatumPayload>;
   /** Creates a single `Provider`. */
   createProvider?: Maybe<CreateProviderPayload>;
   /** Creates a single `QueryHistory`. */
@@ -4976,6 +5183,8 @@ export type Mutation = {
   createRepoSyncType?: Maybe<CreateRepoSyncTypePayload>;
   /** Creates a single `RepoSyncTypeGroup`. */
   createRepoSyncTypeGroup?: Maybe<CreateRepoSyncTypeGroupPayload>;
+  /** Creates a single `SavedExplore`. */
+  createSavedExplore?: Maybe<CreateSavedExplorePayload>;
   /** Creates a single `SavedQuery`. */
   createSavedQuery?: Maybe<CreateSavedQueryPayload>;
   /** Creates a single `SchemaMigration`. */
@@ -4998,6 +5207,8 @@ export type Mutation = {
   deleteContainerImageByName?: Maybe<DeleteContainerImagePayload>;
   /** Deletes a single `ContainerImage` using its globally unique id. */
   deleteContainerImageByNodeId?: Maybe<DeleteContainerImagePayload>;
+  /** Deletes a single `ContainerImage` using a unique key. */
+  deleteContainerImageByUrl?: Maybe<DeleteContainerImagePayload>;
   /** Deletes a single `ContainerImageType` using a unique key. */
   deleteContainerImageType?: Maybe<DeleteContainerImageTypePayload>;
   /** Deletes a single `ContainerImageType` using its globally unique id. */
@@ -5040,6 +5251,14 @@ export type Mutation = {
   deleteLabelAssociationByLabelAndRepoSyncType?: Maybe<DeleteLabelAssociationPayload>;
   /** Deletes a single `Label` using its globally unique id. */
   deleteLabelByNodeId?: Maybe<DeleteLabelPayload>;
+  /** Deletes a single `_MergestatExploreFileMetadatum` using a unique key. */
+  deleteMergestatExploreFileMetadatum?: Maybe<DeleteMergestatExploreFileMetadatumPayload>;
+  /** Deletes a single `_MergestatExploreFileMetadatum` using its globally unique id. */
+  deleteMergestatExploreFileMetadatumByNodeId?: Maybe<DeleteMergestatExploreFileMetadatumPayload>;
+  /** Deletes a single `_MergestatExploreRepoMetadatum` using a unique key. */
+  deleteMergestatExploreRepoMetadatum?: Maybe<DeleteMergestatExploreRepoMetadatumPayload>;
+  /** Deletes a single `_MergestatExploreRepoMetadatum` using its globally unique id. */
+  deleteMergestatExploreRepoMetadatumByNodeId?: Maybe<DeleteMergestatExploreRepoMetadatumPayload>;
   /** Deletes a single `Provider` using a unique key. */
   deleteProvider?: Maybe<DeleteProviderPayload>;
   /** Deletes a single `Provider` using a unique key. */
@@ -5096,6 +5315,10 @@ export type Mutation = {
   deleteRepoSyncTypeGroup?: Maybe<DeleteRepoSyncTypeGroupPayload>;
   /** Deletes a single `RepoSyncTypeGroup` using its globally unique id. */
   deleteRepoSyncTypeGroupByNodeId?: Maybe<DeleteRepoSyncTypeGroupPayload>;
+  /** Deletes a single `SavedExplore` using a unique key. */
+  deleteSavedExplore?: Maybe<DeleteSavedExplorePayload>;
+  /** Deletes a single `SavedExplore` using its globally unique id. */
+  deleteSavedExploreByNodeId?: Maybe<DeleteSavedExplorePayload>;
   /** Deletes a single `SavedQuery` using a unique key. */
   deleteSavedQuery?: Maybe<DeleteSavedQueryPayload>;
   /** Deletes a single `SavedQuery` using its globally unique id. */
@@ -5132,8 +5355,6 @@ export type Mutation = {
   deleteVendorTypeByNodeId?: Maybe<DeleteVendorTypePayload>;
   dequeueJob?: Maybe<DequeueJobPayload>;
   enableContainerSync?: Maybe<EnableContainerSyncPayload>;
-  explore?: Maybe<ExplorePayload>;
-  exploreUi?: Maybe<ExploreUiPayload>;
   fetchServiceAuthCredential?: Maybe<FetchServiceAuthCredentialPayload>;
   getfilesolderthan?: Maybe<GetfilesolderthanPayload>;
   jsonbRecursiveMerge?: Maybe<JsonbRecursiveMergePayload>;
@@ -5150,6 +5371,8 @@ export type Mutation = {
   updateContainerImageByName?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImage` using its globally unique id and a patch. */
   updateContainerImageByNodeId?: Maybe<UpdateContainerImagePayload>;
+  /** Updates a single `ContainerImage` using a unique key and a patch. */
+  updateContainerImageByUrl?: Maybe<UpdateContainerImagePayload>;
   /** Updates a single `ContainerImageType` using a unique key and a patch. */
   updateContainerImageType?: Maybe<UpdateContainerImageTypePayload>;
   /** Updates a single `ContainerImageType` using its globally unique id and a patch. */
@@ -5192,6 +5415,14 @@ export type Mutation = {
   updateLabelAssociationByLabelAndRepoSyncType?: Maybe<UpdateLabelAssociationPayload>;
   /** Updates a single `Label` using its globally unique id and a patch. */
   updateLabelByNodeId?: Maybe<UpdateLabelPayload>;
+  /** Updates a single `_MergestatExploreFileMetadatum` using a unique key and a patch. */
+  updateMergestatExploreFileMetadatum?: Maybe<UpdateMergestatExploreFileMetadatumPayload>;
+  /** Updates a single `_MergestatExploreFileMetadatum` using its globally unique id and a patch. */
+  updateMergestatExploreFileMetadatumByNodeId?: Maybe<UpdateMergestatExploreFileMetadatumPayload>;
+  /** Updates a single `_MergestatExploreRepoMetadatum` using a unique key and a patch. */
+  updateMergestatExploreRepoMetadatum?: Maybe<UpdateMergestatExploreRepoMetadatumPayload>;
+  /** Updates a single `_MergestatExploreRepoMetadatum` using its globally unique id and a patch. */
+  updateMergestatExploreRepoMetadatumByNodeId?: Maybe<UpdateMergestatExploreRepoMetadatumPayload>;
   /** Updates a single `Provider` using a unique key and a patch. */
   updateProvider?: Maybe<UpdateProviderPayload>;
   /** Updates a single `Provider` using a unique key and a patch. */
@@ -5249,6 +5480,10 @@ export type Mutation = {
   updateRepoSyncTypeGroup?: Maybe<UpdateRepoSyncTypeGroupPayload>;
   /** Updates a single `RepoSyncTypeGroup` using its globally unique id and a patch. */
   updateRepoSyncTypeGroupByNodeId?: Maybe<UpdateRepoSyncTypeGroupPayload>;
+  /** Updates a single `SavedExplore` using a unique key and a patch. */
+  updateSavedExplore?: Maybe<UpdateSavedExplorePayload>;
+  /** Updates a single `SavedExplore` using its globally unique id and a patch. */
+  updateSavedExploreByNodeId?: Maybe<UpdateSavedExplorePayload>;
   /** Updates a single `SavedQuery` using a unique key and a patch. */
   updateSavedQuery?: Maybe<UpdateSavedQueryPayload>;
   /** Updates a single `SavedQuery` using its globally unique id and a patch. */
@@ -5404,6 +5639,18 @@ export type MutationCreateLabelAssociationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateMergestatExploreFileMetadatumArgs = {
+  input: CreateMergestatExploreFileMetadatumInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateMergestatExploreRepoMetadatumArgs = {
+  input: CreateMergestatExploreRepoMetadatumInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateProviderArgs = {
   input: CreateProviderInput;
 };
@@ -5482,6 +5729,12 @@ export type MutationCreateRepoSyncTypeGroupArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateSavedExploreArgs = {
+  input: CreateSavedExploreInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateSavedQueryArgs = {
   input: CreateSavedQueryInput;
 };
@@ -5544,6 +5797,12 @@ export type MutationDeleteContainerImageByNameArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteContainerImageByNodeIdArgs = {
   input: DeleteContainerImageByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteContainerImageByUrlArgs = {
+  input: DeleteContainerImageByUrlInput;
 };
 
 
@@ -5670,6 +5929,30 @@ export type MutationDeleteLabelAssociationByLabelAndRepoSyncTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteLabelByNodeIdArgs = {
   input: DeleteLabelByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteMergestatExploreFileMetadatumArgs = {
+  input: DeleteMergestatExploreFileMetadatumInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteMergestatExploreFileMetadatumByNodeIdArgs = {
+  input: DeleteMergestatExploreFileMetadatumByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteMergestatExploreRepoMetadatumArgs = {
+  input: DeleteMergestatExploreRepoMetadatumInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteMergestatExploreRepoMetadatumByNodeIdArgs = {
+  input: DeleteMergestatExploreRepoMetadatumByNodeIdInput;
 };
 
 
@@ -5842,6 +6125,18 @@ export type MutationDeleteRepoSyncTypeGroupByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSavedExploreArgs = {
+  input: DeleteSavedExploreInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSavedExploreByNodeIdArgs = {
+  input: DeleteSavedExploreByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteSavedQueryArgs = {
   input: DeleteSavedQueryInput;
 };
@@ -5956,18 +6251,6 @@ export type MutationEnableContainerSyncArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationExploreArgs = {
-  input: ExploreInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationExploreUiArgs = {
-  input: ExploreUiInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationFetchServiceAuthCredentialArgs = {
   input: FetchServiceAuthCredentialInput;
 };
@@ -6042,6 +6325,12 @@ export type MutationUpdateContainerImageByNameArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateContainerImageByNodeIdArgs = {
   input: UpdateContainerImageByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateContainerImageByUrlArgs = {
+  input: UpdateContainerImageByUrlInput;
 };
 
 
@@ -6168,6 +6457,30 @@ export type MutationUpdateLabelAssociationByLabelAndRepoSyncTypeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateLabelByNodeIdArgs = {
   input: UpdateLabelByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateMergestatExploreFileMetadatumArgs = {
+  input: UpdateMergestatExploreFileMetadatumInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateMergestatExploreFileMetadatumByNodeIdArgs = {
+  input: UpdateMergestatExploreFileMetadatumByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateMergestatExploreRepoMetadatumArgs = {
+  input: UpdateMergestatExploreRepoMetadatumInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateMergestatExploreRepoMetadatumByNodeIdArgs = {
+  input: UpdateMergestatExploreRepoMetadatumByNodeIdInput;
 };
 
 
@@ -6342,6 +6655,18 @@ export type MutationUpdateRepoSyncTypeGroupArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRepoSyncTypeGroupByNodeIdArgs = {
   input: UpdateRepoSyncTypeGroupByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSavedExploreArgs = {
+  input: UpdateSavedExploreInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSavedExploreByNodeIdArgs = {
+  input: UpdateSavedExploreByNodeIdInput;
 };
 
 
@@ -6645,10 +6970,21 @@ export enum ProvidersOrderBy {
 
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
+  /** Reads and enables pagination through a set of `_MergestatExploreFileMetadatum`. */
+  _mergestatExploreFileMetadata?: Maybe<_MergestatExploreFileMetadataConnection>;
+  _mergestatExploreFileMetadatum?: Maybe<_MergestatExploreFileMetadatum>;
+  /** Reads a single `_MergestatExploreFileMetadatum` using its globally unique `ID`. */
+  _mergestatExploreFileMetadatumByNodeId?: Maybe<_MergestatExploreFileMetadatum>;
+  /** Reads and enables pagination through a set of `_MergestatExploreRepoMetadatum`. */
+  _mergestatExploreRepoMetadata?: Maybe<_MergestatExploreRepoMetadataConnection>;
+  _mergestatExploreRepoMetadatum?: Maybe<_MergestatExploreRepoMetadatum>;
+  /** Reads a single `_MergestatExploreRepoMetadatum` using its globally unique `ID`. */
+  _mergestatExploreRepoMetadatumByNodeId?: Maybe<_MergestatExploreRepoMetadatum>;
   containerImage?: Maybe<ContainerImage>;
   containerImageByName?: Maybe<ContainerImage>;
   /** Reads a single `ContainerImage` using its globally unique `ID`. */
   containerImageByNodeId?: Maybe<ContainerImage>;
+  containerImageByUrl?: Maybe<ContainerImage>;
   containerImageType?: Maybe<ContainerImageType>;
   /** Reads a single `ContainerImageType` using its globally unique `ID`. */
   containerImageTypeByNodeId?: Maybe<ContainerImageType>;
@@ -6673,6 +7009,7 @@ export type Query = Node & {
   currentMergeStatUser?: Maybe<Scalars['String']>;
   databaseConnection?: Maybe<DisplayDatabaseConnection>;
   execSQL: ExecSqlResult;
+  exploreUi?: Maybe<Scalars['JSON']>;
   getReposPageHeaderStats?: Maybe<Scalars['JSON']>;
   getReposSyncsByStatus?: Maybe<Scalars['JSON']>;
   gitCommit?: Maybe<GitCommit>;
@@ -6711,7 +7048,7 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `LatestRepoSync`. */
   latestRepoSyncs?: Maybe<LatestRepoSyncsConnection>;
   /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<ContainerImage | ContainerImageType | ContainerSync | ContainerSyncSchedule | GitCommit | GitCommitStat | GitFile | Job | JobLog | Label | Provider | Query | QueryHistory | Queue | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SavedQuery | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SqlqMigration | Vendor | VendorType>;
+  node?: Maybe<ContainerImage | ContainerImageType | ContainerSync | ContainerSyncSchedule | GitCommit | GitCommitStat | GitFile | Job | JobLog | Label | Provider | Query | QueryHistory | Queue | Repo | RepoImport | RepoImportType | RepoSync | RepoSyncLog | RepoSyncLogType | RepoSyncQueue | RepoSyncQueueStatusType | RepoSyncType | RepoSyncTypeGroup | SavedExplore | SavedQuery | SchemaMigration | SchemaMigrationsHistory | ServiceAuthCredential | ServiceAuthCredentialType | SqlqMigration | Vendor | VendorType | _MergestatExploreFileMetadatum | _MergestatExploreRepoMetadatum>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
   provider?: Maybe<Provider>;
@@ -6786,6 +7123,11 @@ export type Query = Node & {
   repoSyncs?: Maybe<RepoSyncsConnection>;
   /** Reads and enables pagination through a set of `Repo`. */
   repos?: Maybe<ReposConnection>;
+  savedExplore?: Maybe<SavedExplore>;
+  /** Reads a single `SavedExplore` using its globally unique `ID`. */
+  savedExploreByNodeId?: Maybe<SavedExplore>;
+  /** Reads and enables pagination through a set of `SavedExplore`. */
+  savedExplores?: Maybe<SavedExploresConnection>;
   /** Reads and enables pagination through a set of `SavedQuery`. */
   savedQueries?: Maybe<SavedQueriesConnection>;
   savedQuery?: Maybe<SavedQuery>;
@@ -6835,6 +7177,57 @@ export type Query = Node & {
 
 
 /** The root query type which gives access points into the data universe. */
+export type Query_MergestatExploreFileMetadataArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<_MergestatExploreFileMetadatumCondition>;
+  filter?: InputMaybe<_MergestatExploreFileMetadatumFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<_MergestatExploreFileMetadataOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type Query_MergestatExploreFileMetadatumArgs = {
+  path: Scalars['String'];
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type Query_MergestatExploreFileMetadatumByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type Query_MergestatExploreRepoMetadataArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<_MergestatExploreRepoMetadatumCondition>;
+  filter?: InputMaybe<_MergestatExploreRepoMetadatumFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<_MergestatExploreRepoMetadataOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type Query_MergestatExploreRepoMetadatumArgs = {
+  repoId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type Query_MergestatExploreRepoMetadatumByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryContainerImageArgs = {
   id: Scalars['UUID'];
 };
@@ -6849,6 +7242,12 @@ export type QueryContainerImageByNameArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryContainerImageByNodeIdArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryContainerImageByUrlArgs = {
+  url: Scalars['String'];
 };
 
 
@@ -6969,6 +7368,12 @@ export type QueryContainerSyncsArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryExecSqlArgs = {
   input: ExecSqlInput;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryExploreUiArgs = {
+  params?: InputMaybe<Scalars['JSON']>;
 };
 
 
@@ -7512,6 +7917,31 @@ export type QueryReposArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QuerySavedExploreArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySavedExploreByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySavedExploresArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SavedExploreCondition>;
+  filter?: InputMaybe<SavedExploreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SavedExploresOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QuerySavedQueriesArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -7972,6 +8402,10 @@ export type ReapPayload = {
 
 /** git repositories to track */
 export type Repo = Node & {
+  /** Reads and enables pagination through a set of `_MergestatExploreFileMetadatum`. */
+  _mergestatExploreFileMetadata: _MergestatExploreFileMetadataConnection;
+  /** Reads a single `_MergestatExploreRepoMetadatum` that is related to this `Repo`. */
+  _mergestatExploreRepoMetadatum?: Maybe<_MergestatExploreRepoMetadatum>;
   /** Reads and enables pagination through a set of `ContainerSync`. */
   containerSyncs: ContainerSyncsConnection;
   /** timestamp of when the MergeStat repo entry was created */
@@ -8004,6 +8438,19 @@ export type Repo = Node & {
   stats?: Maybe<Scalars['JSON']>;
   /** array of tags for the repo for topics in GitHub as well as tags added in MergeStat */
   tags: Scalars['JSON'];
+};
+
+
+/** git repositories to track */
+export type Repo_MergestatExploreFileMetadataArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<_MergestatExploreFileMetadatumCondition>;
+  filter?: InputMaybe<_MergestatExploreFileMetadatumFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<_MergestatExploreFileMetadataOrderBy>>;
 };
 
 
@@ -9275,6 +9722,133 @@ export enum ReposOrderBy {
   TagsDesc = 'TAGS_DESC'
 }
 
+/** Table to save explores */
+export type SavedExplore = Node & {
+  /** timestamp when explore was created */
+  createdAt?: Maybe<Scalars['Datetime']>;
+  /** explore creator */
+  createdBy?: Maybe<Scalars['String']>;
+  /** explore description */
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** explore metadata */
+  metadata?: Maybe<Scalars['JSON']>;
+  /** explore name */
+  name?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+};
+
+/**
+ * A condition to be used against `SavedExplore` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type SavedExploreCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `createdBy` field. */
+  createdBy?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `metadata` field. */
+  metadata?: InputMaybe<Scalars['JSON']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `SavedExplore` object types. All fields are combined with a logical ‘and.’ */
+export type SavedExploreFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SavedExploreFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdBy` field. */
+  createdBy?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `metadata` field. */
+  metadata?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SavedExploreFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SavedExploreFilter>>;
+};
+
+/** An input for mutations affecting `SavedExplore` */
+export type SavedExploreInput = {
+  /** timestamp when explore was created */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** explore creator */
+  createdBy?: InputMaybe<Scalars['String']>;
+  /** explore description */
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  /** explore metadata */
+  metadata?: InputMaybe<Scalars['JSON']>;
+  /** explore name */
+  name?: InputMaybe<Scalars['String']>;
+};
+
+/** Represents an update to a `SavedExplore`. Fields that are set will be updated. */
+export type SavedExplorePatch = {
+  /** timestamp when explore was created */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** explore creator */
+  createdBy?: InputMaybe<Scalars['String']>;
+  /** explore description */
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  /** explore metadata */
+  metadata?: InputMaybe<Scalars['JSON']>;
+  /** explore name */
+  name?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `SavedExplore` values. */
+export type SavedExploresConnection = {
+  /** A list of edges which contains the `SavedExplore` and cursor to aid in pagination. */
+  edges: Array<SavedExploresEdge>;
+  /** A list of `SavedExplore` objects. */
+  nodes: Array<SavedExplore>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SavedExplore` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `SavedExplore` edge in the connection. */
+export type SavedExploresEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SavedExplore` at the end of the edge. */
+  node: SavedExplore;
+};
+
+/** Methods to use when ordering `SavedExplore`. */
+export enum SavedExploresOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  CreatedByAsc = 'CREATED_BY_ASC',
+  CreatedByDesc = 'CREATED_BY_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  MetadataAsc = 'METADATA_ASC',
+  MetadataDesc = 'METADATA_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
 /** A connection to a list of `SavedQuery` values. */
 export type SavedQueriesConnection = {
   /** A list of edges which contains the `SavedQuery` and cursor to aid in pagination. */
@@ -10330,6 +10904,18 @@ export type UpdateContainerImageByNodeIdInput = {
   patch: ContainerImagePatch;
 };
 
+/** All input for the `updateContainerImageByUrl` mutation. */
+export type UpdateContainerImageByUrlInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `ContainerImage` being updated. */
+  patch: ContainerImagePatch;
+  url: Scalars['String'];
+};
+
 /** All input for the `updateContainerImage` mutation. */
 export type UpdateContainerImageInput = {
   /**
@@ -10869,6 +11455,106 @@ export type UpdateLabelPayload = {
 /** The output of our update `Label` mutation. */
 export type UpdateLabelPayloadLabelEdgeArgs = {
   orderBy?: InputMaybe<Array<LabelsOrderBy>>;
+};
+
+/** All input for the `updateMergestatExploreFileMetadatumByNodeId` mutation. */
+export type UpdateMergestatExploreFileMetadatumByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `_MergestatExploreFileMetadatum` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `_MergestatExploreFileMetadatum` being updated. */
+  patch: _MergestatExploreFileMetadatumPatch;
+};
+
+/** All input for the `updateMergestatExploreFileMetadatum` mutation. */
+export type UpdateMergestatExploreFileMetadatumInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `_MergestatExploreFileMetadatum` being updated. */
+  patch: _MergestatExploreFileMetadatumPatch;
+  /** path to the file */
+  path: Scalars['String'];
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `_MergestatExploreFileMetadatum` mutation. */
+export type UpdateMergestatExploreFileMetadatumPayload = {
+  /** The `_MergestatExploreFileMetadatum` that was updated by this mutation. */
+  _mergestatExploreFileMetadatum?: Maybe<_MergestatExploreFileMetadatum>;
+  /** An edge for our `_MergestatExploreFileMetadatum`. May be used by Relay 1. */
+  _mergestatExploreFileMetadatumEdge?: Maybe<_MergestatExploreFileMetadataEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `_MergestatExploreFileMetadatum`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our update `_MergestatExploreFileMetadatum` mutation. */
+export type UpdateMergestatExploreFileMetadatumPayload_MergestatExploreFileMetadatumEdgeArgs = {
+  orderBy?: InputMaybe<Array<_MergestatExploreFileMetadataOrderBy>>;
+};
+
+/** All input for the `updateMergestatExploreRepoMetadatumByNodeId` mutation. */
+export type UpdateMergestatExploreRepoMetadatumByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `_MergestatExploreRepoMetadatum` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `_MergestatExploreRepoMetadatum` being updated. */
+  patch: _MergestatExploreRepoMetadatumPatch;
+};
+
+/** All input for the `updateMergestatExploreRepoMetadatum` mutation. */
+export type UpdateMergestatExploreRepoMetadatumInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `_MergestatExploreRepoMetadatum` being updated. */
+  patch: _MergestatExploreRepoMetadatumPatch;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** The output of our update `_MergestatExploreRepoMetadatum` mutation. */
+export type UpdateMergestatExploreRepoMetadatumPayload = {
+  /** The `_MergestatExploreRepoMetadatum` that was updated by this mutation. */
+  _mergestatExploreRepoMetadatum?: Maybe<_MergestatExploreRepoMetadatum>;
+  /** An edge for our `_MergestatExploreRepoMetadatum`. May be used by Relay 1. */
+  _mergestatExploreRepoMetadatumEdge?: Maybe<_MergestatExploreRepoMetadataEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Repo` that is related to this `_MergestatExploreRepoMetadatum`. */
+  repo?: Maybe<Repo>;
+};
+
+
+/** The output of our update `_MergestatExploreRepoMetadatum` mutation. */
+export type UpdateMergestatExploreRepoMetadatumPayload_MergestatExploreRepoMetadatumEdgeArgs = {
+  orderBy?: InputMaybe<Array<_MergestatExploreRepoMetadataOrderBy>>;
 };
 
 /** All input for the `updateProviderByName` mutation. */
@@ -11542,6 +12228,52 @@ export type UpdateRepoSyncTypePayload = {
 /** The output of our update `RepoSyncType` mutation. */
 export type UpdateRepoSyncTypePayloadRepoSyncTypeEdgeArgs = {
   orderBy?: InputMaybe<Array<RepoSyncTypesOrderBy>>;
+};
+
+/** All input for the `updateSavedExploreByNodeId` mutation. */
+export type UpdateSavedExploreByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `SavedExplore` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `SavedExplore` being updated. */
+  patch: SavedExplorePatch;
+};
+
+/** All input for the `updateSavedExplore` mutation. */
+export type UpdateSavedExploreInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `SavedExplore` being updated. */
+  patch: SavedExplorePatch;
+};
+
+/** The output of our update `SavedExplore` mutation. */
+export type UpdateSavedExplorePayload = {
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SavedExplore` that was updated by this mutation. */
+  savedExplore?: Maybe<SavedExplore>;
+  /** An edge for our `SavedExplore`. May be used by Relay 1. */
+  savedExploreEdge?: Maybe<SavedExploresEdge>;
+};
+
+
+/** The output of our update `SavedExplore` mutation. */
+export type UpdateSavedExplorePayloadSavedExploreEdgeArgs = {
+  orderBy?: InputMaybe<Array<SavedExploresOrderBy>>;
 };
 
 /** All input for the `updateSavedQueryByNodeId` mutation. */
@@ -12426,6 +13158,402 @@ export type YesOrNoFilter = {
   startsWithInsensitive?: InputMaybe<Scalars['YesOrNo']>;
 };
 
+/** A connection to a list of `_MergestatExploreFileMetadatum` values. */
+export type _MergestatExploreFileMetadataConnection = {
+  /** A list of edges which contains the `_MergestatExploreFileMetadatum` and cursor to aid in pagination. */
+  edges: Array<_MergestatExploreFileMetadataEdge>;
+  /** A list of `_MergestatExploreFileMetadatum` objects. */
+  nodes: Array<_MergestatExploreFileMetadatum>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `_MergestatExploreFileMetadatum` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `_MergestatExploreFileMetadatum` edge in the connection. */
+export type _MergestatExploreFileMetadataEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `_MergestatExploreFileMetadatum` at the end of the edge. */
+  node: _MergestatExploreFileMetadatum;
+};
+
+/** Methods to use when ordering `_MergestatExploreFileMetadatum`. */
+export enum _MergestatExploreFileMetadataOrderBy {
+  LastCommitAuthorEmailAsc = 'LAST_COMMIT_AUTHOR_EMAIL_ASC',
+  LastCommitAuthorEmailDesc = 'LAST_COMMIT_AUTHOR_EMAIL_DESC',
+  LastCommitAuthorNameAsc = 'LAST_COMMIT_AUTHOR_NAME_ASC',
+  LastCommitAuthorNameDesc = 'LAST_COMMIT_AUTHOR_NAME_DESC',
+  LastCommitAuthorWhenAsc = 'LAST_COMMIT_AUTHOR_WHEN_ASC',
+  LastCommitAuthorWhenDesc = 'LAST_COMMIT_AUTHOR_WHEN_DESC',
+  LastCommitCommitterEmailAsc = 'LAST_COMMIT_COMMITTER_EMAIL_ASC',
+  LastCommitCommitterEmailDesc = 'LAST_COMMIT_COMMITTER_EMAIL_DESC',
+  LastCommitCommitterNameAsc = 'LAST_COMMIT_COMMITTER_NAME_ASC',
+  LastCommitCommitterNameDesc = 'LAST_COMMIT_COMMITTER_NAME_DESC',
+  LastCommitCommitterWhenAsc = 'LAST_COMMIT_COMMITTER_WHEN_ASC',
+  LastCommitCommitterWhenDesc = 'LAST_COMMIT_COMMITTER_WHEN_DESC',
+  LastCommitHashAsc = 'LAST_COMMIT_HASH_ASC',
+  LastCommitHashDesc = 'LAST_COMMIT_HASH_DESC',
+  LastCommitMessageAsc = 'LAST_COMMIT_MESSAGE_ASC',
+  LastCommitMessageDesc = 'LAST_COMMIT_MESSAGE_DESC',
+  LastCommitParentsAsc = 'LAST_COMMIT_PARENTS_ASC',
+  LastCommitParentsDesc = 'LAST_COMMIT_PARENTS_DESC',
+  Natural = 'NATURAL',
+  PathAsc = 'PATH_ASC',
+  PathDesc = 'PATH_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+/** file metadata for explore experience */
+export type _MergestatExploreFileMetadatum = Node & {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt: Scalars['Datetime'];
+  /** email of the author of the modification */
+  lastCommitAuthorEmail?: Maybe<Scalars['String']>;
+  /** name of the author of the the modification */
+  lastCommitAuthorName?: Maybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
+  lastCommitAuthorWhen?: Maybe<Scalars['Datetime']>;
+  /** email of the author who committed the modification */
+  lastCommitCommitterEmail?: Maybe<Scalars['String']>;
+  /** name of the author who committed the modification */
+  lastCommitCommitterName?: Maybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
+  lastCommitCommitterWhen?: Maybe<Scalars['Datetime']>;
+  /** hash based reference to last commit */
+  lastCommitHash?: Maybe<Scalars['String']>;
+  /** message of the commit */
+  lastCommitMessage?: Maybe<Scalars['String']>;
+  /** the number of parents of the commit */
+  lastCommitParents?: Maybe<Scalars['Int']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** path to the file */
+  path: Scalars['String'];
+  /** Reads a single `Repo` that is related to this `_MergestatExploreFileMetadatum`. */
+  repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/**
+ * A condition to be used against `_MergestatExploreFileMetadatum` object types.
+ * All fields are tested for equality and combined with a logical ‘and.’
+ */
+export type _MergestatExploreFileMetadatumCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `lastCommitAuthorEmail` field. */
+  lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitAuthorName` field. */
+  lastCommitAuthorName?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitAuthorWhen` field. */
+  lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `lastCommitCommitterEmail` field. */
+  lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitCommitterName` field. */
+  lastCommitCommitterName?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitCommitterWhen` field. */
+  lastCommitCommitterWhen?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `lastCommitHash` field. */
+  lastCommitHash?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitMessage` field. */
+  lastCommitMessage?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitParents` field. */
+  lastCommitParents?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `path` field. */
+  path?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `_MergestatExploreFileMetadatum` object types. All fields are combined with a logical ‘and.’ */
+export type _MergestatExploreFileMetadatumFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<_MergestatExploreFileMetadatumFilter>>;
+  /** Filter by the object’s `lastCommitAuthorEmail` field. */
+  lastCommitAuthorEmail?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitAuthorName` field. */
+  lastCommitAuthorName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitAuthorWhen` field. */
+  lastCommitAuthorWhen?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `lastCommitCommitterEmail` field. */
+  lastCommitCommitterEmail?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitCommitterName` field. */
+  lastCommitCommitterName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitCommitterWhen` field. */
+  lastCommitCommitterWhen?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `lastCommitHash` field. */
+  lastCommitHash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitMessage` field. */
+  lastCommitMessage?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitParents` field. */
+  lastCommitParents?: InputMaybe<IntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<_MergestatExploreFileMetadatumFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<_MergestatExploreFileMetadatumFilter>>;
+  /** Filter by the object’s `path` field. */
+  path?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+};
+
+/** An input for mutations affecting `_MergestatExploreFileMetadatum` */
+export type _MergestatExploreFileMetadatumInput = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author of the modification */
+  lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author of the the modification */
+  lastCommitAuthorName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
+  lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author who committed the modification */
+  lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author who committed the modification */
+  lastCommitCommitterName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
+  lastCommitCommitterWhen?: InputMaybe<Scalars['Datetime']>;
+  /** hash based reference to last commit */
+  lastCommitHash?: InputMaybe<Scalars['String']>;
+  /** message of the commit */
+  lastCommitMessage?: InputMaybe<Scalars['String']>;
+  /** the number of parents of the commit */
+  lastCommitParents?: InputMaybe<Scalars['Int']>;
+  /** path to the file */
+  path: Scalars['String'];
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** Represents an update to a `_MergestatExploreFileMetadatum`. Fields that are set will be updated. */
+export type _MergestatExploreFileMetadatumPatch = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author of the modification */
+  lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author of the the modification */
+  lastCommitAuthorName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
+  lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author who committed the modification */
+  lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author who committed the modification */
+  lastCommitCommitterName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
+  lastCommitCommitterWhen?: InputMaybe<Scalars['Datetime']>;
+  /** hash based reference to last commit */
+  lastCommitHash?: InputMaybe<Scalars['String']>;
+  /** message of the commit */
+  lastCommitMessage?: InputMaybe<Scalars['String']>;
+  /** the number of parents of the commit */
+  lastCommitParents?: InputMaybe<Scalars['Int']>;
+  /** path to the file */
+  path?: InputMaybe<Scalars['String']>;
+  /** foreign key for public.repos.id */
+  repoId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A connection to a list of `_MergestatExploreRepoMetadatum` values. */
+export type _MergestatExploreRepoMetadataConnection = {
+  /** A list of edges which contains the `_MergestatExploreRepoMetadatum` and cursor to aid in pagination. */
+  edges: Array<_MergestatExploreRepoMetadataEdge>;
+  /** A list of `_MergestatExploreRepoMetadatum` objects. */
+  nodes: Array<_MergestatExploreRepoMetadatum>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `_MergestatExploreRepoMetadatum` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `_MergestatExploreRepoMetadatum` edge in the connection. */
+export type _MergestatExploreRepoMetadataEdge = {
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `_MergestatExploreRepoMetadatum` at the end of the edge. */
+  node: _MergestatExploreRepoMetadatum;
+};
+
+/** Methods to use when ordering `_MergestatExploreRepoMetadatum`. */
+export enum _MergestatExploreRepoMetadataOrderBy {
+  LastCommitAuthorEmailAsc = 'LAST_COMMIT_AUTHOR_EMAIL_ASC',
+  LastCommitAuthorEmailDesc = 'LAST_COMMIT_AUTHOR_EMAIL_DESC',
+  LastCommitAuthorNameAsc = 'LAST_COMMIT_AUTHOR_NAME_ASC',
+  LastCommitAuthorNameDesc = 'LAST_COMMIT_AUTHOR_NAME_DESC',
+  LastCommitAuthorWhenAsc = 'LAST_COMMIT_AUTHOR_WHEN_ASC',
+  LastCommitAuthorWhenDesc = 'LAST_COMMIT_AUTHOR_WHEN_DESC',
+  LastCommitCommitterEmailAsc = 'LAST_COMMIT_COMMITTER_EMAIL_ASC',
+  LastCommitCommitterEmailDesc = 'LAST_COMMIT_COMMITTER_EMAIL_DESC',
+  LastCommitCommitterNameAsc = 'LAST_COMMIT_COMMITTER_NAME_ASC',
+  LastCommitCommitterNameDesc = 'LAST_COMMIT_COMMITTER_NAME_DESC',
+  LastCommitCommitterWhenAsc = 'LAST_COMMIT_COMMITTER_WHEN_ASC',
+  LastCommitCommitterWhenDesc = 'LAST_COMMIT_COMMITTER_WHEN_DESC',
+  LastCommitHashAsc = 'LAST_COMMIT_HASH_ASC',
+  LastCommitHashDesc = 'LAST_COMMIT_HASH_DESC',
+  LastCommitMessageAsc = 'LAST_COMMIT_MESSAGE_ASC',
+  LastCommitMessageDesc = 'LAST_COMMIT_MESSAGE_DESC',
+  LastCommitParentsAsc = 'LAST_COMMIT_PARENTS_ASC',
+  LastCommitParentsDesc = 'LAST_COMMIT_PARENTS_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepoIdAsc = 'REPO_ID_ASC',
+  RepoIdDesc = 'REPO_ID_DESC',
+  MergestatSyncedAtAsc = '_MERGESTAT_SYNCED_AT_ASC',
+  MergestatSyncedAtDesc = '_MERGESTAT_SYNCED_AT_DESC'
+}
+
+/** repo metadata for explore experience */
+export type _MergestatExploreRepoMetadatum = Node & {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt: Scalars['Datetime'];
+  /** email of the author of the modification */
+  lastCommitAuthorEmail?: Maybe<Scalars['String']>;
+  /** name of the author of the the modification */
+  lastCommitAuthorName?: Maybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
+  lastCommitAuthorWhen?: Maybe<Scalars['Datetime']>;
+  /** email of the author who committed the modification */
+  lastCommitCommitterEmail?: Maybe<Scalars['String']>;
+  /** name of the author who committed the modification */
+  lastCommitCommitterName?: Maybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
+  lastCommitCommitterWhen?: Maybe<Scalars['Datetime']>;
+  /** hash based reference to last commit */
+  lastCommitHash?: Maybe<Scalars['String']>;
+  /** message of the commit */
+  lastCommitMessage?: Maybe<Scalars['String']>;
+  /** the number of parents of the commit */
+  lastCommitParents?: Maybe<Scalars['Int']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `Repo` that is related to this `_MergestatExploreRepoMetadatum`. */
+  repo?: Maybe<Repo>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/**
+ * A condition to be used against `_MergestatExploreRepoMetadatum` object types.
+ * All fields are tested for equality and combined with a logical ‘and.’
+ */
+export type _MergestatExploreRepoMetadatumCondition = {
+  /** Checks for equality with the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `lastCommitAuthorEmail` field. */
+  lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitAuthorName` field. */
+  lastCommitAuthorName?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitAuthorWhen` field. */
+  lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `lastCommitCommitterEmail` field. */
+  lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitCommitterName` field. */
+  lastCommitCommitterName?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitCommitterWhen` field. */
+  lastCommitCommitterWhen?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `lastCommitHash` field. */
+  lastCommitHash?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitMessage` field. */
+  lastCommitMessage?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `lastCommitParents` field. */
+  lastCommitParents?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `repoId` field. */
+  repoId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `_MergestatExploreRepoMetadatum` object types. All fields are combined with a logical ‘and.’ */
+export type _MergestatExploreRepoMetadatumFilter = {
+  /** Filter by the object’s `_mergestatSyncedAt` field. */
+  _mergestatSyncedAt?: InputMaybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<_MergestatExploreRepoMetadatumFilter>>;
+  /** Filter by the object’s `lastCommitAuthorEmail` field. */
+  lastCommitAuthorEmail?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitAuthorName` field. */
+  lastCommitAuthorName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitAuthorWhen` field. */
+  lastCommitAuthorWhen?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `lastCommitCommitterEmail` field. */
+  lastCommitCommitterEmail?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitCommitterName` field. */
+  lastCommitCommitterName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitCommitterWhen` field. */
+  lastCommitCommitterWhen?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `lastCommitHash` field. */
+  lastCommitHash?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitMessage` field. */
+  lastCommitMessage?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `lastCommitParents` field. */
+  lastCommitParents?: InputMaybe<IntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<_MergestatExploreRepoMetadatumFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<_MergestatExploreRepoMetadatumFilter>>;
+  /** Filter by the object’s `repoId` field. */
+  repoId?: InputMaybe<UuidFilter>;
+};
+
+/** An input for mutations affecting `_MergestatExploreRepoMetadatum` */
+export type _MergestatExploreRepoMetadatumInput = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author of the modification */
+  lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author of the the modification */
+  lastCommitAuthorName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
+  lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author who committed the modification */
+  lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author who committed the modification */
+  lastCommitCommitterName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
+  lastCommitCommitterWhen?: InputMaybe<Scalars['Datetime']>;
+  /** hash based reference to last commit */
+  lastCommitHash?: InputMaybe<Scalars['String']>;
+  /** message of the commit */
+  lastCommitMessage?: InputMaybe<Scalars['String']>;
+  /** the number of parents of the commit */
+  lastCommitParents?: InputMaybe<Scalars['Int']>;
+  /** foreign key for public.repos.id */
+  repoId: Scalars['UUID'];
+};
+
+/** Represents an update to a `_MergestatExploreRepoMetadatum`. Fields that are set will be updated. */
+export type _MergestatExploreRepoMetadatumPatch = {
+  /** timestamp when record was synced into the MergeStat database */
+  _mergestatSyncedAt?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author of the modification */
+  lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author of the the modification */
+  lastCommitAuthorName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the modifcation was authored */
+  lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
+  /** email of the author who committed the modification */
+  lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
+  /** name of the author who committed the modification */
+  lastCommitCommitterName?: InputMaybe<Scalars['String']>;
+  /** timestamp of when the commit was made */
+  lastCommitCommitterWhen?: InputMaybe<Scalars['Datetime']>;
+  /** hash based reference to last commit */
+  lastCommitHash?: InputMaybe<Scalars['String']>;
+  /** message of the commit */
+  lastCommitMessage?: InputMaybe<Scalars['String']>;
+  /** the number of parents of the commit */
+  lastCommitParents?: InputMaybe<Scalars['Int']>;
+  /** foreign key for public.repos.id */
+  repoId?: InputMaybe<Scalars['UUID']>;
+};
+
 export type AddRepoMutationVariables = Exact<{
   repo: Scalars['String'];
   idProvider: Scalars['UUID'];
@@ -12485,12 +13613,12 @@ export type DeleteCredentialMutationVariables = Exact<{
 
 export type DeleteCredentialMutation = { deleteServiceAuthCredential?: { deletedServiceAuthCredentialNodeId?: string | null } | null };
 
-export type ExploreUiMutationVariables = Exact<{
+export type ExploreUiQueryVariables = Exact<{
   params: Scalars['JSON'];
 }>;
 
 
-export type ExploreUiMutation = { exploreUi?: { json?: any | null } | null };
+export type ExploreUiQuery = { exploreUi?: any | null };
 
 export type AddGitSourceMutationVariables = Exact<{
   name: Scalars['String'];
@@ -12717,6 +13845,11 @@ export type GetDatabaseConnectionQueryVariables = Exact<{ [key: string]: never; 
 
 
 export type GetDatabaseConnectionQuery = { databaseConnection?: { database?: string | null, host?: string | null, port?: number | null, user?: string | null } | null };
+
+export type GetExploreMetadataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetExploreMetadataQuery = { repos?: { totalCount: number } | null, exploreContainer?: { id: any, name: string } | null, metadata?: { totalCount: number, nodes: Array<{ _mergestatSyncedAt: any }> } | null };
 
 export type GetGitSourcesListQueryVariables = Exact<{
   search: Scalars['String'];
