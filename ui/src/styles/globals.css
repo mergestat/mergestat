@@ -101,3 +101,7 @@ code[class*="language-"] ::selection {
           pointer-events-none
           cursor-not-allowed;
 }
+
+.t-modal-xl {
+  @apply max-w-7xl;
+}
