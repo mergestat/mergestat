@@ -56,7 +56,7 @@ const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, overlay }
             <Toolbar className='mt-5'>
               <Toolbar.Right>
                 <div className='t-button-toolbar'>
-                  <Button skin='secondary' label='Reset' onClick={close} />
+                  <Button skin='secondary' label='Reset' onClick={reset} />
                   <Button
                     label='Apply'
                     disabled={!value}
