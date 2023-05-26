@@ -13,7 +13,7 @@ const useSavedExplore = (explore: (options?: MutationFunctionOptions<ExploreUiQu
   const router = useRouter()
   const { data: userData } = useCurrentUser()
   const [{ savedExploreId, params }] = useExploreContext()
-  const { setParams } = useExploreSetState()
+  const { setParams, setSavedParams } = useExploreSetState()
   const { setParamsAndExplore } = useExploreFilters(explore)
 
   const [title, setTitle] = useState<string>('')
@@ -46,7 +46,8 @@ const useSavedExplore = (explore: (options?: MutationFunctionOptions<ExploreUiQu
     setDesc(data?.savedExplore?.description || '')
 
     if (savedExploreId) {
-      setParams(data?.savedExplore?.metadata?.params || '')
+      setSavedParams(data?.savedExplore?.metadata?.params || '') // The first state of the saved params (just to show selected filter at first time)
+      setParams(data?.savedExplore?.metadata?.params || '') // Dynamic params once the page has been loaded
       setParamsAndExplore(data?.savedExplore?.metadata?.params)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

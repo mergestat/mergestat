@@ -13,6 +13,8 @@ const FiltersAuthored: React.FC<Props> = ({ explore }: Props) => {
   const {
     filterAuthoredDays,
     filterNotAuthoredDays,
+    filterAuthoredDaysSaved,
+    filterNotAuthoredDaysSaved,
     filter,
     handleDaysChange,
     onKeyEnter
@@ -22,6 +24,7 @@ const FiltersAuthored: React.FC<Props> = ({ explore }: Props) => {
     <>
       <Filter
         label='Authored last'
+        defaultValue={filterAuthoredDaysSaved}
         value={filterAuthoredDays ? `${filterAuthoredDays}d` : undefined}
         reset={() => filter('days_since_authored_last', undefined)}
         explore={() => filter('days_since_authored_last', filterAuthoredDays)}
@@ -42,6 +45,7 @@ const FiltersAuthored: React.FC<Props> = ({ explore }: Props) => {
 
       <Filter
         label='Not authored last'
+        defaultValue={filterNotAuthoredDaysSaved}
         value={filterNotAuthoredDays ? `${filterNotAuthoredDays}d` : undefined}
         reset={() => filter('days_since_not_authored_last', undefined)}
         explore={() => filter('days_since_not_authored_last', filterNotAuthoredDays)}

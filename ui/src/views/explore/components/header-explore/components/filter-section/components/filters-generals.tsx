@@ -15,6 +15,10 @@ const FiltersGenerals: React.FC<Props> = ({ explore }: Props) => {
     filterRepo,
     filterFile,
     filterAuthor,
+    filePathSaved,
+    filterRepoSaved,
+    filterFileSaved,
+    filterAuthorSaved,
     filter,
     onChangeParam,
     onKeyEnter
@@ -24,6 +28,7 @@ const FiltersGenerals: React.FC<Props> = ({ explore }: Props) => {
     <>
       <Filter
         label='Repo'
+        defaultValue={filterRepoSaved}
         value={filterRepo}
         reset={() => filter('repo_pattern', undefined)}
         explore={() => filter('repo_pattern', filterRepo)}
@@ -40,6 +45,7 @@ const FiltersGenerals: React.FC<Props> = ({ explore }: Props) => {
 
       <Filter
         label='File path'
+        defaultValue={filePathSaved}
         value={filePath}
         reset={() => filter('file_path_pattern', undefined)}
         explore={() => filter('file_path_pattern', filePath)}
@@ -56,6 +62,7 @@ const FiltersGenerals: React.FC<Props> = ({ explore }: Props) => {
 
       <Filter
         label='File contents'
+        defaultValue={filterFileSaved}
         value={filterFile}
         reset={() => filter('file_contents_pattern', undefined)}
         explore={() => filter('file_contents_pattern', filterFile)}
@@ -72,6 +79,7 @@ const FiltersGenerals: React.FC<Props> = ({ explore }: Props) => {
 
       <Filter
         label='Author'
+        defaultValue={filterAuthorSaved}
         value={filterAuthor}
         reset={() => filter('author_name_pattern', undefined)}
         explore={() => filter('author_name_pattern', filterAuthor)}

@@ -22,6 +22,7 @@ type ExploreContext = {
   empty: boolean
   results: boolean
   params: ExploreParams
+  savedParams: ExploreParams
   exploreData: ExploreData
   queryModal: string
   showDataTableModal: boolean
@@ -38,6 +39,7 @@ const initialState: ExploreContext = {
   empty: true,
   results: true,
   params: {} as ExploreParams,
+  savedParams: {} as ExploreParams,
   exploreData: {} as ExploreData,
   queryModal: '',
   showDataTableModal: false,
@@ -77,6 +79,13 @@ function useExploreSetState() {
     setState(prev => ({
       ...prev,
       params
+    }))
+  }
+
+  const setSavedParams = (savedParams: ExploreParams) => {
+    setState(prev => ({
+      ...prev,
+      savedParams
     }))
   }
 
@@ -126,6 +135,7 @@ function useExploreSetState() {
     _,
     setLoading,
     setParams,
+    setSavedParams,
     setEmpty,
     setResults,
     setExploreData,

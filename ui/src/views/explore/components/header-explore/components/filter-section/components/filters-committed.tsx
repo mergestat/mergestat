@@ -13,6 +13,8 @@ const FiltersCommitted: React.FC<Props> = ({ explore }: Props) => {
   const {
     filterCommittedDays,
     filterNotCommittedDays,
+    filterCommittedDaysSaved,
+    filterNotCommittedDaysSaved,
     filter,
     handleDaysChange,
     onKeyEnter
@@ -22,6 +24,7 @@ const FiltersCommitted: React.FC<Props> = ({ explore }: Props) => {
     <>
       <Filter
         label='Committed last'
+        defaultValue={filterCommittedDaysSaved}
         value={filterCommittedDays ? `${filterCommittedDays}d` : undefined}
         reset={() => filter('days_since_committed_last', undefined)}
         explore={() => filter('days_since_committed_last', filterCommittedDays)}
@@ -42,6 +45,7 @@ const FiltersCommitted: React.FC<Props> = ({ explore }: Props) => {
 
       <Filter
         label='Not committed last'
+        defaultValue={filterNotCommittedDaysSaved}
         value={filterNotCommittedDays ? `${filterNotCommittedDays}d` : undefined}
         reset={() => filter('days_since_not_committed_last', undefined)}
         explore={() => filter('days_since_not_committed_last', filterNotCommittedDays)}

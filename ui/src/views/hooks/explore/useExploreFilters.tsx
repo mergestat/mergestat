@@ -22,14 +22,29 @@ export const useExploreFilters = (
       days_since_not_authored_last: filterNotAuthoredDays,
       days_since_committed_last: filterCommittedDays,
       days_since_not_committed_last: filterNotCommittedDays,
+    },
+    savedParams: {
+      file_path_pattern: filePathSaved,
+      repo_pattern: filterRepoSaved,
+      file_contents_pattern: filterFileSaved,
+      author_name_pattern: filterAuthorSaved,
+      days_since_repo_modified_last: filterRepoDaysSaved,
+      days_since_repo_not_modified_last: filterNotRepoDaysSaved,
+      days_since_file_modified_last: filterFileDaysSaved,
+      days_since_file_not_modified_last: filterNotFileDaysSaved,
+      days_since_authored_last: filterAuthoredDaysSaved,
+      days_since_not_authored_last: filterNotAuthoredDaysSaved,
+      days_since_committed_last: filterCommittedDaysSaved,
+      days_since_not_committed_last: filterNotCommittedDaysSaved,
     }
   }] = useExploreContext()
-  const { setParams, setEmpty } = useExploreSetState()
+  const { setParams, setSavedParams, setEmpty } = useExploreSetState()
 
   const setParamsAndExplore = (params: ExploreParams) => {
     if (params) {
       const cleanedParams = cleanObject(params)
       setParams(cleanedParams)
+      setSavedParams(cleanedParams)
 
       if (Object.keys(cleanedParams).length > 0) {
         explore({ variables: { params: cleanedParams } })
@@ -53,7 +68,7 @@ export const useExploreFilters = (
   }
 
   const onChangeParam = (filter: keyof ExploreParams, value: string | undefined) => {
-    const valueCheck = value || undefined
+    const valueCheck = value || null
     setParams({
       ...params,
       [filter]: valueCheck,
@@ -93,6 +108,18 @@ export const useExploreFilters = (
     filterNotAuthoredDays,
     filterCommittedDays,
     filterNotCommittedDays,
+    filePathSaved,
+    filterRepoSaved,
+    filterFileSaved,
+    filterAuthorSaved,
+    filterRepoDaysSaved,
+    filterNotRepoDaysSaved,
+    filterFileDaysSaved,
+    filterNotFileDaysSaved,
+    filterAuthoredDaysSaved,
+    filterNotAuthoredDaysSaved,
+    filterCommittedDaysSaved,
+    filterNotCommittedDaysSaved,
     filter,
     clearFilters,
     onChangeParam,

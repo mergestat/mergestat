@@ -13,6 +13,8 @@ const FiltersRepoModified: React.FC<Props> = ({ explore }: Props) => {
   const {
     filterRepoDays,
     filterNotRepoDays,
+    filterRepoDaysSaved,
+    filterNotRepoDaysSaved,
     filter,
     handleDaysChange,
     onKeyEnter
@@ -22,6 +24,7 @@ const FiltersRepoModified: React.FC<Props> = ({ explore }: Props) => {
     <>
       <Filter
         label='Repo modified last'
+        defaultValue={filterRepoDaysSaved}
         value={filterRepoDays ? `${filterRepoDays}d` : undefined}
         reset={() => filter('days_since_repo_modified_last', undefined)}
         explore={() => filter('days_since_repo_modified_last', filterRepoDays)}
@@ -42,6 +45,7 @@ const FiltersRepoModified: React.FC<Props> = ({ explore }: Props) => {
 
       <Filter
         label='Repo not modified last'
+        defaultValue={filterNotRepoDaysSaved}
         value={filterNotRepoDays ? `${filterNotRepoDays}d` : undefined}
         reset={() => filter('days_since_repo_not_modified_last', undefined)}
         explore={() => filter('days_since_repo_not_modified_last', filterNotRepoDays)}
