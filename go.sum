@@ -916,8 +916,6 @@ github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b h1:iKHgNnVLgSzw
 github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
 github.com/mergestat/mergestat-lite v0.5.10 h1:3KBUQoRwC27bLHLXUWU7UDjP9IBtumb4vE44bZ3H9Ls=
 github.com/mergestat/mergestat-lite v0.5.10/go.mod h1:tQYFBsEpWDfJ37DQIh3I9ZC2qmVpES9mtJPMDUG64zM=
-github.com/mergestat/sqlq v0.0.0-20230425180115-120423492ec4 h1:TlB58s+3O/W0XiZe4nosALGNbhzgntz3SWwENIu2n0s=
-github.com/mergestat/sqlq v0.0.0-20230425180115-120423492ec4/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
 github.com/mergestat/sqlq v0.0.0-20230519174807-3352087e8a70 h1:6SiHHeocG4B2IXxHiaV8g3w/nT/t+RISGN7tOd+2kTg=
 github.com/mergestat/sqlq v0.0.0-20230519174807-3352087e8a70/go.mod h1:zAYNS4EWE+yQGz1vIfqUV0V6MIYobv446Gc3toCHmZs=
 github.com/mergestat/timediff v0.0.3 h1:ucCNh4/ZrTPjFZ081PccNbhx9spymCJkFxSzgVuPU+Y=
