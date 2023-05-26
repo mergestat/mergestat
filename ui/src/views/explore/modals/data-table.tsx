@@ -22,7 +22,7 @@ export const DataTableModal: React.FC = () => {
   }, [])
 
   return (
-    <Modal open onClose={close} size="lg">
+    <Modal open onClose={close} size="xl">
       <Modal.Header>
         <Toolbar className="h-16 px-6">
           <Toolbar.Left>

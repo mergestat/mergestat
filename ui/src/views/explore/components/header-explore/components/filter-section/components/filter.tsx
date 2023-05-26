@@ -20,17 +20,31 @@ const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, overlay }
   }, [value])
 
   return (
-    <div className='flex mr-3 my-1'>
-      {!show && <Dropdown
-        trigger={
-          <Button isBlockBetween skin='secondary' label={label} className='whitespace-nowrap'
-            endIcon={<ChevronDownIcon className="t-icon t-icon-muted" />}
-          />
+    <div className='flex mr-2 my-1'>
+      <Dropdown
+        trigger={!show
+          ? <Button isBlockBetween skin='secondary' label={label} className='whitespace-nowrap t-button-small'
+              endIcon={<ChevronDownIcon className="t-icon t-icon-muted" />}
+            />
+          : <div className='border inline-flex items-center rounded t-button-small t-button-secondary pr-1 cursor-pointer'>
+              <span className='pr-1.5 font-medium'>{label}</span>
+              <div className='border-l border-r border-gray-200 font-medium px-1.5 text-gray-500'>{value}</div>
+              <Button isIconOnly
+                className='mx-0 py-0 pl-0.5'
+                skin='borderless'
+                startIcon={<XIcon className="t-icon text-gray-500" />}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setShow(false)
+                  reset()
+                }}
+              />
+            </div>
         }
         overlay={(close) => (
           <div className='mt-1 p-5 w-80 bg-white shadow-lg rounded-md border border-gray-200'>
             {/* Header */}
-            <h2 className='t-h2 mb-2'>{label}</h2>
+            <h4 className='t-h4 mb-2'>{label}</h4>
 
             {/* Body */}
             {overlay(
@@ -42,7 +56,7 @@ const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, overlay }
             <Toolbar className='mt-5'>
               <Toolbar.Right>
                 <div className='t-button-toolbar'>
-                  <Button skin='secondary' label='Reset' onClick={close} />
+                  <Button skin='secondary' label='Reset' onClick={reset} />
                   <Button
                     label='Apply'
                     disabled={!value}
@@ -57,21 +71,7 @@ const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, overlay }
             </Toolbar>
           </div>
         )}
-      />}
-
-      {show && <div className='flex border inline-flex items-center py-1 px-3 rounded t-button-secondary'>
-        <span className='mr-2'>{label}</span>
-        <div className='border-l border-r border-gray-200 px-2 text-gray-500'>{value}</div>
-        <Button isIconOnly
-          className='ml-2 p-0'
-          skin='borderless'
-          startIcon={<XIcon className="t-icon text-gray-500" />}
-          onClick={() => {
-            setShow(false)
-            reset()
-          }}
-        />
-      </div>}
+      />
     </div>
   )
 }
