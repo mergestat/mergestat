@@ -2,7 +2,7 @@ import { MutationFunctionOptions } from '@apollo/client'
 import { Input, Label } from '@mergestat/blocks'
 import React, { ChangeEvent, PropsWithChildren } from 'react'
 import { ExploreUiQuery } from 'src/api-logic/graphql/generated/schema'
-import { useExploreFilters } from 'src/views/hooks/repoExplore/useExploreFilters'
+import { useExploreFilters } from 'src/views/hooks/explore/useExploreFilters'
 import Filter from './filter'
 
 type Props = PropsWithChildren<{

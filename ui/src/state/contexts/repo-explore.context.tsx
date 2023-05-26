@@ -17,7 +17,7 @@ export interface ExploreParams {
   days_since_not_committed_last?: string
 }
 
-type RepoExploreContext = {
+type ExploreContext = {
   loading: boolean
   empty: boolean
   results: boolean
@@ -25,14 +25,15 @@ type RepoExploreContext = {
   exploreData: ExploreData
   queryModal: string
   showDataTableModal: boolean
+  savedExploreId?: string | string[]
 }
 
-type UseRepoExploreContext = [
-  RepoExploreContext,
-  React.Dispatch<React.SetStateAction<RepoExploreContext>>
+type UseExploreContext = [
+  ExploreContext,
+  React.Dispatch<React.SetStateAction<ExploreContext>>
 ]
 
-const initialState: RepoExploreContext = {
+const initialState: ExploreContext = {
   loading: true,
   empty: true,
   results: true,
@@ -40,29 +41,30 @@ const initialState: RepoExploreContext = {
   exploreData: {} as ExploreData,
   queryModal: '',
   showDataTableModal: false,
+  savedExploreId: undefined
 }
 
-function useRepoExplore(): UseRepoExploreContext {
-  const [state, setState] = React.useState<RepoExploreContext>(initialState)
+function useExplore(): UseExploreContext {
+  const [state, setState] = React.useState<ExploreContext>(initialState)
   return [state, setState]
 }
 
 // Generate context
-const [useRepoExploreContext, RepoExploreContextProvider] = createGenericContext<UseRepoExploreContext>()
+const [useExploreContext, ExploreContextProvider] = createGenericContext<UseExploreContext>()
 
 // Generate provider
-const RepoExploreProvider: React.FC<PropsWithChildren> = (props: PropsWithChildren) => {
-  const [repoExplore, setRepoExplore] = useRepoExplore()
+const ExploreProvider: React.FC<PropsWithChildren> = (props: PropsWithChildren) => {
+  const [explore, setExplore] = useExplore()
 
   return (
-    <RepoExploreContextProvider value={[repoExplore, setRepoExplore]}>
+    <ExploreContextProvider value={[explore, setExplore]}>
       {props.children}
-    </RepoExploreContextProvider>
+    </ExploreContextProvider>
   )
 }
 
-function useRepoExploreSetState() {
-  const [_, setState] = useRepoExploreContext()
+function useExploreSetState() {
+  const [_, setState] = useExploreContext()
 
   const setLoading = (loading: boolean) => {
     setState(prev => ({
@@ -113,6 +115,13 @@ function useRepoExploreSetState() {
     }))
   }
 
+  const setSavedExloreId = (savedExploreId: string | string[]) => {
+    setState(prev => ({
+      ...prev,
+      savedExploreId
+    }))
+  }
+
   return {
     _,
     setLoading,
@@ -121,12 +130,13 @@ function useRepoExploreSetState() {
     setResults,
     setExploreData,
     setQueryModal,
-    setShowDataTableModal
+    setShowDataTableModal,
+    setSavedExloreId
   }
 }
 
 export {
-  useRepoExploreContext,
-  RepoExploreProvider,
-  useRepoExploreSetState,
+  useExploreContext,
+  ExploreProvider,
+  useExploreSetState,
 }

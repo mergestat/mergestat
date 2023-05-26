@@ -11,11 +11,13 @@ type FilterProps = PropsWithChildren<{
 }>
 
 const Filter: React.FC<FilterProps> = ({ label, value, reset, explore, overlay }: FilterProps) => {
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(true)
 
   useEffect(() => {
+    console.log('Value for: ', label, ': ', value)
     if (value === undefined) {
       setShow(false)
+      console.log('Entre!!')
     }
   }, [value])
 

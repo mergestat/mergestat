@@ -1,7 +1,7 @@
 import { MutationFunctionOptions } from '@apollo/client'
 import { KeyboardEvent } from 'react'
 import { ExploreUiQuery } from 'src/api-logic/graphql/generated/schema'
-import { ExploreParams, useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
+import { ExploreParams, useExploreContext, useExploreSetState } from 'src/state/contexts/repo-explore.context'
 import { cleanObject } from 'src/utils'
 
 export const useExploreFilters = (
@@ -23,18 +23,20 @@ export const useExploreFilters = (
       days_since_committed_last: filterCommittedDays,
       days_since_not_committed_last: filterNotCommittedDays,
     }
-  }] = useRepoExploreContext()
-  const { setParams, setEmpty } = useRepoExploreSetState()
+  }] = useExploreContext()
+  const { setParams, setEmpty } = useExploreSetState()
 
   const setParamsAndExplore = (params: ExploreParams) => {
-    const cleanedParams = cleanObject(params)
-    setParams(cleanedParams)
+    if (params) {
+      const cleanedParams = cleanObject(params)
+      setParams(cleanedParams)
 
-    if (Object.keys(cleanedParams).length > 0) {
-      explore({ variables: { params: cleanedParams } })
-      setEmpty(false)
-    } else {
-      setEmpty(true)
+      if (Object.keys(cleanedParams).length > 0) {
+        explore({ variables: { params: cleanedParams } })
+        setEmpty(false)
+      } else {
+        setEmpty(true)
+      }
     }
   }
 
@@ -95,6 +97,7 @@ export const useExploreFilters = (
     clearFilters,
     onChangeParam,
     handleDaysChange,
-    onKeyEnter
+    onKeyEnter,
+    setParamsAndExplore
   }
 }
