@@ -60,7 +60,7 @@ func handleBitbucketImport(ctx context.Context, qry *db.Queries, imp db.FetchImp
 
 	// capture list of existing repositories before we do the upsert below
 	var existing []string
-	if len(settings.DefaultSyncTypes) > 0 { // only if defaultSyncTypes is configured
+	if len(settings.DefaultSyncTypes) > 0 || len(settings.DefaultContainerImages) > 0 { // only if default syncs are configured
 		if existing, err = qry.GetRepoUrlFromImport(ctx, imp.ID); err != nil {
 			return errors.Wrapf(err, "failed to enable default sync")
 		}
