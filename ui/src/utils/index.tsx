@@ -47,7 +47,7 @@ export function validateGitHubPAT(token: string) {
  * @returns true if token is a right GitLab PAT, otherwise return false
  */
 export function validateGitLabPAT(token: string) {
-  return /^glpat-[0-9a-zA-Z_-]{20}$/ig.test(token)
+  return /^(PAT_|glpat-)[0-9a-zA-Z_-]{20}$/ig.test(token)
 }
 
 /**
