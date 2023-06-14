@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1-experimental
+
+FROM golang:1.19-alpine3.16
+
+RUN set -x && apk add --no-cache cmake git make gcc libtool g++ openssl1.1-compat-dev musl
+
+COPY scripts/install_libgit2.sh install_libgit2.sh
+RUN ./install_libgit2.sh
+
+RUN apk upgrade && apk add --no-cache curl postgresql-client ca-certificates git go podman fuse-overlayfs
+
+# copy over migrations
+COPY migrations migrations
+
+COPY scripts/docker-init-entrypoint.sh docker-init-entrypoint.sh
+
+RUN addgroup --gid 1002 mergestat; \
+    adduser -Ds /bin/sh -G mergestat --uid 1001 mergestat; \
+    echo mergestat:10000:5000 > /etc/subuid; \
+    echo mergestat:10000:5000 > /etc/subgid;
+
+USER mergestat:mergestat
+
+WORKDIR /home/mergestat/src
+COPY go.mod go.sum /home/mergestat/src/
+RUN GOMODCACHE=/home/mergestat/go/pkg/mod go mod download
