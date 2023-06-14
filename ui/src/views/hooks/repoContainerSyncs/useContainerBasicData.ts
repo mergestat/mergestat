@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { GET_CONTAINER_BASIC_DATA } from 'src/api-logic/graphql/queries/get-sync-history-logs'
 import { mapToContainerBasicData } from 'src/api-logic/mappers/repo-container/container-syncs-logs'
 import { MERGESTAT_TITLE } from 'src/utils/constants'
@@ -15,7 +16,7 @@ const useContainerBasicData = () => {
     fetchPolicy: 'no-cache'
   })
 
-  const basicData: ContainerBasicData = mapToContainerBasicData(data)
+  const basicData: ContainerBasicData = useMemo(() => mapToContainerBasicData(data), [data])
   const title = `${basicData.sync?.name} - ${basicData.repo.name} - Repos  ${MERGESTAT_TITLE}`
 
   return { loading, title, basicData }

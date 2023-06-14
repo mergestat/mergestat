@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import { SyncTypeData } from 'src/@types'
 import { GET_LOGS_OF_A_SYNC } from 'src/api-logic/graphql/queries/get-sync-history-logs'
 import { mapToSyncLogsData } from 'src/api-logic/mappers/repo/syncs-logs'
@@ -19,7 +19,7 @@ const LogsDetailsPage = () => {
     pollInterval: 5000,
   })
 
-  const repoData: SyncTypeData = mapToSyncLogsData(data)
+  const repoData: SyncTypeData = useMemo(() => mapToSyncLogsData(data), [data])
   const title = `${repoData.logs?.[0].syncStartText} - ${repoData.sync?.title} - ${repoData.repo.name} - Repos ${MERGESTAT_TITLE}`
 
   return (

@@ -43,7 +43,7 @@ module.exports = withBundleAnalyzer(
       return [
         {
           source: '/',
-          destination: '/repos',
+          destination: '/explore',
           permanent: false,
         },
       ]

@@ -47,7 +47,7 @@ export function validateGitHubPAT(token: string) {
  * @returns true if token is a right GitLab PAT, otherwise return false
  */
 export function validateGitLabPAT(token: string) {
-  return /^glpat-[0-9a-zA-Z_-]{20}$/ig.test(token)
+  return /^(PAT_|glpat-)[0-9a-zA-Z_-]{20}$/ig.test(token)
 }
 
 /**
@@ -368,4 +368,15 @@ export function formatMonth(data: string) {
     .replace(/-10/ig, '-Oct')
     .replace(/-11/ig, '-Nov')
     .replace(/-12/ig, '-Dec')
+}
+
+/**
+ * Method to clean undefined vaues from an object
+ * @param obj Object to clean
+ * @returns the cleaned object
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function cleanObject(obj: any) {
+  Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key])
+  return obj
 }

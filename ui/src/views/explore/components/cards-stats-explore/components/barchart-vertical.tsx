@@ -12,15 +12,15 @@ interface Props {
 
 export const BarChartVertical: React.FC<Props> = ({ data, dataKey, xAxisLabel, showIcon = true }: Props) => {
   return (
-    <ResponsiveContainer width="95%" height={400}>
+    <ResponsiveContainer width="100%" height={440}>
       <BarChart data={data} barCategoryGap={6} layout='vertical' margin={{ left: 190, bottom: 30 }}>
         <XAxis type="number"
           tickSize={15}
           tickLine={false}
           axisLine={{ opacity: 0.1 }}
-          tick={{ fontSize: 12, fill: '#9CA3AF' }}
+          tick={{ fontSize: 12, fill: '#727C8D' }}
         >
-          <Label value={xAxisLabel} position="bottom" dy={10} fill='black' />
+          <Label value={xAxisLabel} position="bottom" dy={10} fill='#111827' style={{ fontWeight: '500' }} />
         </XAxis>
         <YAxis type="category"
           axisLine={false}

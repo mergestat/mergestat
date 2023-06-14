@@ -2,8 +2,9 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import React, { PropsWithChildren, useEffect } from 'react'
 import Loading from 'src/components/Loading'
-import useCurrentUser from 'src/views/hooks/useCurrentUser'
+import { useMonacoProvider } from 'src/hooks/useMonacoProvider'
 import { GlobalProvider } from 'src/state/contexts'
+import useCurrentUser from 'src/views/hooks/useCurrentUser'
 
 const NavHeader = dynamic(() => import('../components/NavHeader'))
 const Sidebar = dynamic(() => import('../components/Sidebar'))
@@ -11,11 +12,21 @@ const Sidebar = dynamic(() => import('../components/Sidebar'))
 const SidebarLayout: React.FC = ({ children }: PropsWithChildren) => {
   const router = useRouter()
 
+  // Register SQL language suggestions just once
+  const { getSchemaInfo } = useMonacoProvider()
+
   const { loading, data } = useCurrentUser()
 
   useEffect(() => {
-    data?.currentMergeStatUser === 'mergestat_anonymous' && router.push('/login')
-  }, [data, router])
+    if (data) {
+      if (data.currentMergeStatUser === 'mergestat_anonymous') {
+        router.push('/login')
+      } else {
+        getSchemaInfo()
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
 
   return (
     <div className="h-screen">

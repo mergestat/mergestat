@@ -9,12 +9,16 @@ export const useTop10 = (top10Repos: Top10Repo[], top10Authors: Top10Author[]) =
   useEffect(() => {
     if (top10Repos) {
       setTop10ReposChart(mapTop10Repos(top10Repos))
+    } else {
+      setTop10ReposChart(undefined)
     }
   }, [top10Repos])
 
   useEffect(() => {
     if (top10Authors) {
       setTop10AuthorsChart(mapTop10Authors(top10Authors))
+    } else {
+      setTop10AuthorsChart(undefined)
     }
   }, [top10Authors])
 

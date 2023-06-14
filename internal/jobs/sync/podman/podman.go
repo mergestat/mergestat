@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"os/exec"
 	"sync"
@@ -31,8 +32,11 @@ import (
 
 // ContainerSync implements a sqlq.Handler that utilizes a Container-based execution environment
 // to run user-provided, custom sync jobs.
-func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db.Queries) sqlq.Handler {
+func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queries) sqlq.Handler {
 	type ImageMetadata = struct{ Labels map[string]string } // used to un-marshal output from podman-image-inspect
+
+	postgresUrl, _ := url.Parse(pgUrl)
+	postgresUrl.Scheme = "postgresql"
 
 	return sqlq.HandlerFunc(func(ctx context.Context, job *sqlq.Job) (err error) {
 		var logger = job.Logger()
@@ -126,11 +130,22 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 			var environment = make(map[string]string)
 			environment["MERGESTAT_REPO_ID"] = repo.ID.String()
 			environment["MERGESTAT_REPO_URL"] = repo.Repo
-			environment["MERGESTAT_POSTGRES_URL"] = postgresUrl
+			environment["MERGESTAT_POSTGRES_URL"] = postgresUrl.String()
 			environment["MERGESTAT_PROVIDER_ID"] = repo.Provider.String()
 			environment["MERGESTAT_AUTH_USERNAME"] = username
 			environment["MERGESTAT_AUTH_TOKEN"] = token
 			environment["MERGESTAT_PARAMS"] = string(containerSync.Params.Bytes)
+
+			// add user-configured environment variables
+			var userEnv map[string]string
+			if userEnv, err = querier.FetchSyncVars(ctx, containerSync.ID); err != nil {
+				l.Err(err).Msg("failed to read user provided environment variables")
+				return err
+			}
+
+			for key, value := range userEnv {
+				environment[key] = value
+			}
 
 			var env bytes.Buffer
 			for key, value := range environment {
@@ -156,7 +171,7 @@ func ContainerSync(postgresUrl string, workerLogger *zerolog.Logger, querier *db
 
 			// if opted-in by setting com.mergestat.sync.clone to true, we perform a full clone
 			// of the repository to a temporary directory and mount that directory into the container
-			if opt := metadata[0].Labels["com.mergestat.sync.clone"]; opt == "true" {
+			if opt, exists := metadata[0].Labels["com.mergestat.sync.clone"]; exists && opt == "true" {
 				var tmpPath string
 				var cleanup func() error
 				// create a new temporary location to clone the repository

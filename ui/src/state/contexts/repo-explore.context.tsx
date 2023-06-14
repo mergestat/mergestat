@@ -2,10 +2,29 @@ import { createGenericContext } from 'lib/createGenericContext'
 import React, { PropsWithChildren } from 'react'
 import { ExploreData } from 'src/@types'
 
+export interface ExploreParams {
+  file_path_pattern?: string
+  repo_pattern?: string
+  file_contents_pattern?: string
+  author_name_pattern?: string
+  days_since_repo_modified_last?: string
+  days_since_repo_not_modified_last?: string
+  days_since_file_modified_last?: string
+  days_since_file_not_modified_last?: string
+  days_since_authored_last?: string
+  days_since_not_authored_last?: string
+  days_since_committed_last?: string
+  days_since_not_committed_last?: string
+}
+
 type RepoExploreContext = {
   loading: boolean
-  search: string
+  empty: boolean
+  results: boolean
+  params: ExploreParams
   exploreData: ExploreData
+  queryModal: string
+  showDataTableModal: boolean
 }
 
 type UseRepoExploreContext = [
@@ -15,8 +34,12 @@ type UseRepoExploreContext = [
 
 const initialState: RepoExploreContext = {
   loading: true,
-  search: '',
-  exploreData: {} as ExploreData
+  empty: true,
+  results: true,
+  params: {} as ExploreParams,
+  exploreData: {} as ExploreData,
+  queryModal: '',
+  showDataTableModal: false,
 }
 
 function useRepoExplore(): UseRepoExploreContext {
@@ -48,10 +71,24 @@ function useRepoExploreSetState() {
     }))
   }
 
-  const setSearch = (search: string) => {
+  const setParams = (params: ExploreParams) => {
     setState(prev => ({
       ...prev,
-      search
+      params
+    }))
+  }
+
+  const setEmpty = (empty: boolean) => {
+    setState(prev => ({
+      ...prev,
+      empty
+    }))
+  }
+
+  const setResults = (results: boolean) => {
+    setState(prev => ({
+      ...prev,
+      results
     }))
   }
 
@@ -62,11 +99,29 @@ function useRepoExploreSetState() {
     }))
   }
 
+  const setQueryModal = (queryModal: string) => {
+    setState(prev => ({
+      ...prev,
+      queryModal
+    }))
+  }
+
+  const setShowDataTableModal = (showDataTableModal: boolean) => {
+    setState(prev => ({
+      ...prev,
+      showDataTableModal
+    }))
+  }
+
   return {
     _,
     setLoading,
-    setSearch,
+    setParams,
+    setEmpty,
+    setResults,
     setExploreData,
+    setQueryModal,
+    setShowDataTableModal
   }
 }
 

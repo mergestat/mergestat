@@ -1,5 +1,5 @@
 import { Button, Dropdown, Label, Menu } from '@mergestat/blocks'
-import { CaretDownIcon, CodeIcon } from '@mergestat/icons'
+import { CaretDownIcon } from '@mergestat/icons'
 import { TimeGrain } from 'src/@types'
 import { TIME_GRAIN } from 'src/utils/constants'
 
@@ -11,13 +11,13 @@ interface Props {
 export const TimeGrainDropdown: React.FC<Props> = ({ selected, changeTimeGrain }: Props) => {
   return (
     <div className='flex space-x-4'>
-      <Label className='text-gray-500'>Time Grain</Label>
+      <Label>Time Grain</Label>
       <Dropdown
         alignEnd
         trigger={<Button
           endIcon={<CaretDownIcon className="t-icon" />}
           isBlockBetween
-          className='text-gray-500 w-32'
+          className='t-text-default font-normal hover_from-white hover_to-white w-32'
           label={selected}
           skin="ghost"
         />}
@@ -27,12 +27,6 @@ export const TimeGrainDropdown: React.FC<Props> = ({ selected, changeTimeGrain }
             <Menu.Item text="Years" onClick={() => changeTimeGrain(TIME_GRAIN.YEARS, close)} />
           </Menu>
         )}
-      />
-      <Button
-        isIconOnly
-        className='my-0'
-        skin='borderless-muted'
-        startIcon={<CodeIcon className="t-icon" />}
       />
     </div>
   )

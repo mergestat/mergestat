@@ -1,10 +1,8 @@
 import { gql } from '@apollo/client'
 
 const EXPLORE = gql`
-  mutation explore($params: JSON!) {
-    explore(input: {params: $params}) {
-      json
-    }
+  query exploreUI($params: JSON!) {
+    exploreUi(params: $params)
   }
 `
 
