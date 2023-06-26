@@ -27,7 +27,7 @@ require (
 	github.com/mergestat/sqlq v0.0.0-20230519174807-3352087e8a70
 	github.com/prometheus/client_golang v1.14.0
 	github.com/satori/go.uuid v1.2.0
-	github.com/shurcooL/githubv4 v0.0.0-20221229060216-a8d4a561cc93
+	github.com/shurcooL/githubv4 v0.0.0-20230424031643-6cea62ecd5a9
 	github.com/xanzy/go-gitlab v0.15.0
 	go.riyazali.net/sqlite v0.0.0-20221017074244-77a6464e0c2a
 	golang.org/x/oauth2 v0.3.0
