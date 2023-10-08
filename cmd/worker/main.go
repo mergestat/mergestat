@@ -273,9 +273,17 @@ func main() {
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars
-	go scheduler.New(&logger, pool).Start(ctx, 1*time.Minute)
+	schedulerInterval := os.Getenv("SCHEDULER_INTERVAL_MINUTES")
+	if len(schedulerInterval) == 0 {
+		schedulerInterval = 1
+	}
+	syncerInterval := os.Getenv("SYNCER_INTERVAL_SECONDS")
+	if len(syncerInterval) == 0 {
+		syncerInterval = 3
+	}
+	go scheduler.New(&logger, pool).Start(ctx, schedulerInterval*time.Minute)
 	go timeout.New(&logger, pool).Start(ctx, time.Minute)
-	go syncer.New(pool, embedded, &logger, concurrency, 3*time.Second).Start(ctx)
+	go syncer.New(pool, embedded, &logger, concurrency, schedulerInterval*time.Second).Start(ctx)
 
 	// run a basic cron every minute to schedule a repos/auto-import job
 	// these jobs are idempotent, and so, multiple instances can run at same time without conflict
