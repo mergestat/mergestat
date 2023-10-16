@@ -97,7 +97,7 @@ const getSyncStatuses = (r: Repo, repoInfo: RepoDataPropsT): Array<RepoDataStatu
     mapSyncs.set(st.status, syncCounter)
   })
 
-  // 3. Previous info is transform to necesary RepoDataStatusT object
+  // 3. Previous info is transform to necessary RepoDataStatusT object
   const mappedSyncs: Array<RepoDataStatusT> = []
   mapSyncs?.forEach((value, key) => {
     mappedSyncs.push({ type: key, count: value.count, syncs: value.syncs })

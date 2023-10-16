@@ -3793,7 +3793,7 @@ export type GitCommit = Node & {
   authorEmail?: Maybe<Scalars['String']>;
   /** name of the author of the the modification */
   authorName?: Maybe<Scalars['String']>;
-  /** timestamp of when the modifcation was authored */
+  /** timestamp of when the modification was authored */
   authorWhen: Scalars['Datetime'];
   /** email of the author who committed the modification */
   committerEmail?: Maybe<Scalars['String']>;
@@ -3884,7 +3884,7 @@ export type GitCommitInput = {
   authorEmail?: InputMaybe<Scalars['String']>;
   /** name of the author of the the modification */
   authorName?: InputMaybe<Scalars['String']>;
-  /** timestamp of when the modifcation was authored */
+  /** timestamp of when the modification was authored */
   authorWhen: Scalars['Datetime'];
   /** email of the author who committed the modification */
   committerEmail?: InputMaybe<Scalars['String']>;
@@ -3910,7 +3910,7 @@ export type GitCommitPatch = {
   authorEmail?: InputMaybe<Scalars['String']>;
   /** name of the author of the the modification */
   authorName?: InputMaybe<Scalars['String']>;
-  /** timestamp of when the modifcation was authored */
+  /** timestamp of when the modification was authored */
   authorWhen?: InputMaybe<Scalars['Datetime']>;
   /** email of the author who committed the modification */
   committerEmail?: InputMaybe<Scalars['String']>;
@@ -13217,7 +13217,7 @@ export type _MergestatExploreFileMetadatum = Node & {
   lastCommitAuthorEmail?: Maybe<Scalars['String']>;
   /** name of the author of the the modification */
   lastCommitAuthorName?: Maybe<Scalars['String']>;
-  /** timestamp of when the modifcation was authored */
+  /** timestamp of when the modification was authored */
   lastCommitAuthorWhen?: Maybe<Scalars['Datetime']>;
   /** email of the author who committed the modification */
   lastCommitCommitterEmail?: Maybe<Scalars['String']>;
@@ -13314,7 +13314,7 @@ export type _MergestatExploreFileMetadatumInput = {
   lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
   /** name of the author of the the modification */
   lastCommitAuthorName?: InputMaybe<Scalars['String']>;
-  /** timestamp of when the modifcation was authored */
+  /** timestamp of when the modification was authored */
   lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
   /** email of the author who committed the modification */
   lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
@@ -13342,7 +13342,7 @@ export type _MergestatExploreFileMetadatumPatch = {
   lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
   /** name of the author of the the modification */
   lastCommitAuthorName?: InputMaybe<Scalars['String']>;
-  /** timestamp of when the modifcation was authored */
+  /** timestamp of when the modification was authored */
   lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
   /** email of the author who committed the modification */
   lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
@@ -13419,7 +13419,7 @@ export type _MergestatExploreRepoMetadatum = Node & {
   lastCommitAuthorEmail?: Maybe<Scalars['String']>;
   /** name of the author of the the modification */
   lastCommitAuthorName?: Maybe<Scalars['String']>;
-  /** timestamp of when the modifcation was authored */
+  /** timestamp of when the modification was authored */
   lastCommitAuthorWhen?: Maybe<Scalars['Datetime']>;
   /** email of the author who committed the modification */
   lastCommitCommitterEmail?: Maybe<Scalars['String']>;
@@ -13510,7 +13510,7 @@ export type _MergestatExploreRepoMetadatumInput = {
   lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
   /** name of the author of the the modification */
   lastCommitAuthorName?: InputMaybe<Scalars['String']>;
-  /** timestamp of when the modifcation was authored */
+  /** timestamp of when the modification was authored */
   lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
   /** email of the author who committed the modification */
   lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
@@ -13536,7 +13536,7 @@ export type _MergestatExploreRepoMetadatumPatch = {
   lastCommitAuthorEmail?: InputMaybe<Scalars['String']>;
   /** name of the author of the the modification */
   lastCommitAuthorName?: InputMaybe<Scalars['String']>;
-  /** timestamp of when the modifcation was authored */
+  /** timestamp of when the modification was authored */
   lastCommitAuthorWhen?: InputMaybe<Scalars['Datetime']>;
   /** email of the author who committed the modification */
   lastCommitCommitterEmail?: InputMaybe<Scalars['String']>;
