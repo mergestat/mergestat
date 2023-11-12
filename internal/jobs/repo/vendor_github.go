@@ -36,6 +36,7 @@ func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.FetchImport
 		Type                   string      `json:"type"`
 		Login                  string      `json:"userOrOrg"`
 		RemoveDeletedRepos     bool        `json:"removeDeletedRepos"`
+		IgnoreArchivedRepos    bool        `json:"ignoreArchivedRepos"`
 		DefaultSyncTypes       []string    `json:"defaultSyncTypes"`
 		DefaultContainerImages []uuid.UUID `json:"defaultContainerImages"`
 	}
@@ -90,6 +91,12 @@ func handleGithubImport(ctx context.Context, qry *db.Queries, imp db.FetchImport
 
 	// upsert all fetched repositories
 	for _, repo := range repos {
+
+		// if the import is configured to ignore archived repos, skip them here
+		if settings.IgnoreArchivedRepos && repo.Archived != nil && *repo.Archived {
+			continue
+		}
+
 		var topics, _ = json.Marshal(repo.Topics)
 		var opts = db.UpsertRepoParams{
 			Repo:         fmt.Sprintf("https://github.com/%s/%s", *repo.Owner.Login, *repo.Name),
