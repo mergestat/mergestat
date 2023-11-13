@@ -75,7 +75,7 @@ DROP VIEW mergestat.user_mgmt_pg_users;
 
 -- View to list all users in the database and their roles
 -- Adapted from https://www.folkstalk.com/2022/09/postgres-list-users-and-roles-with-code-examples.html
--- noqa: disable=L011,L031,L051
+-- noqa: disable=L011,L031,L051,L063
 CREATE OR REPLACE VIEW mergestat.user_mgmt_pg_users AS (
     WITH users AS (
         SELECT
@@ -105,6 +105,6 @@ CREATE OR REPLACE VIEW mergestat.user_mgmt_pg_users AS (
     WHERE (memberof && ARRAY['mergestat_role_admin', 'mergestat_role_user', 'mergestat_role_queries_only', 'mergestat_role_readonly']::name[])
         AND users.rolname != 'mergestat_admin'
 );
--- noqa: enable=L011,L031,L051
+-- noqa: enable=L011,L031,L051,L063
 
 COMMIT;
