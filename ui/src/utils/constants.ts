@@ -176,7 +176,7 @@ export const USER_ROLES = [
   {
     key: 'QUERIES_ONLY',
     name: 'Queries Only',
-    desc: 'Queries Only users can only read data except for queries'
+    desc: 'Queries Only users can only read data and manage their own saved queries'
   },
   {
     key: 'READ_ONLY',
