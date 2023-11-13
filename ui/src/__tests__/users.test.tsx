@@ -166,7 +166,7 @@ describe('GraphQL queries: (Users)', () => {
       }
 
       // Change role to 'Read Only'
-      const roleRadioInput = screen.getByTestId(`${TEST_IDS.usersEditRole}-2`)
+      const roleRadioInput = screen.getByTestId(`${TEST_IDS.usersEditRole}-3`)
       if (roleRadioInput) {
         fireEvent.click(roleRadioInput)
         expect(roleRadioInput).toBeChecked()
