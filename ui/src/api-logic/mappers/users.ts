@@ -29,6 +29,8 @@ const getRole = (roles: Array<string | null>) => {
     return USER_TYPE_UI.ADMIN
   } else if (roles.includes('mergestat_role_user')) {
     return USER_TYPE_UI.USER
+  } else if (roles.includes('mergestat_role_queries_only')) {
+    return USER_TYPE_UI.QUERIES_ONLY
   } else if (roles.includes('mergestat_role_readonly')) {
     return USER_TYPE_UI.READ_ONLY
   } else {

@@ -246,6 +246,8 @@ export const mapToUserType = (role: UserTypeUI) => {
       return USER_TYPE.ADMIN
     case USER_TYPE_UI.USER:
       return USER_TYPE.USER
+    case USER_TYPE_UI.QUERIES_ONLY:
+      return USER_TYPE.QUERIES_ONLY
     case USER_TYPE_UI.READ_ONLY:
       return USER_TYPE.READ_ONLY
     default:

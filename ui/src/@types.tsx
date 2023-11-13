@@ -11,9 +11,9 @@ export type RepoExportT = 'url' | 'gh-org' | 'gh-user' | 'gh-auto' | 'csv'
 
 export type AlertType = 'warning' | 'info' | 'success' | 'error'
 
-export type UserTypeUI = 'Admin' | 'User' | 'Read Only' | 'Unknown'
+export type UserTypeUI = 'Admin' | 'User' | 'Queries Only' | 'Read Only' | 'Unknown'
 
-export type UserType = 'ADMIN' | 'USER' | 'READ_ONLY'
+export type UserType = 'ADMIN' | 'USER' | 'QUERIES_ONLY' | 'READ_ONLY'
 
 export type ImportStatusType = 'SUCCESS' | 'FAILURE'
 
