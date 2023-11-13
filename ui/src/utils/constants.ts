@@ -127,6 +127,7 @@ export const REPOS_CONTAINERS_REFETCHES = ['getReposContainers', 'getRepoTotalCo
 export enum USER_TYPE_UI {
   ADMIN = 'Admin',
   USER = 'User',
+  QUERIES_ONLY = 'Queries Only',
   READ_ONLY = 'Read Only',
   UNKNOWN = 'Unknown'
 }
@@ -134,6 +135,7 @@ export enum USER_TYPE_UI {
 export enum USER_TYPE {
   ADMIN = 'ADMIN',
   USER = 'USER',
+  QUERIES_ONLY = 'QUERIES_ONLY',
   READ_ONLY = 'READ_ONLY'
 }
 
@@ -170,6 +172,11 @@ export const USER_ROLES = [
     key: 'USER',
     name: 'User',
     desc: 'Users can take most actions, but cannot create new users'
+  },
+  {
+    key: 'QUERIES_ONLY',
+    name: 'Queries Only',
+    desc: 'Queries Only users can only read data and manage their own saved queries'
   },
   {
     key: 'READ_ONLY',
