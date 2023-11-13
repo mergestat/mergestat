@@ -1,6 +1,5 @@
 BEGIN;
 
-BEGIN;
 -- https://stackoverflow.com/questions/8092086/create-postgresql-role-user-if-it-doesnt-exist
 -- idempotent role creation
 DO
