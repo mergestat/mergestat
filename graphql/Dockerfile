@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:21.2-alpine3.18
 LABEL description="Instant high-performance GraphQL API for your PostgreSQL database https://github.com/graphile/postgraphile"
 
 WORKDIR /graphql
