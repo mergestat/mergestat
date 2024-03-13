@@ -379,6 +379,6 @@ export function formatMonth(data: string) {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function cleanObject(obj: any) {
-  Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key])
+  Object.keys(obj).forEach((key) => (obj[key] === undefined || obj[key] === null) && delete obj[key])
   return obj
 }

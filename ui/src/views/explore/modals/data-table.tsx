@@ -2,13 +2,13 @@ import { Alert, Button, Modal, Toolbar, Tooltip } from '@mergestat/blocks'
 import { XIcon } from '@mergestat/icons'
 import React, { useCallback, useEffect } from 'react'
 import Loading from 'src/components/Loading'
-import { useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
+import { useExploreContext, useExploreSetState } from 'src/state/contexts/repo-explore.context'
 import useExecuteSQL from 'src/views/hooks/useExecuteSQL'
 import ResultTable from 'src/views/shared/result-table'
 
 export const DataTableModal: React.FC = () => {
-  const [{ queryModal }] = useRepoExploreContext()
-  const { setShowDataTableModal } = useRepoExploreSetState()
+  const [{ queryModal }] = useExploreContext()
+  const { setShowDataTableModal } = useExploreSetState()
 
   const { loadingQuery, data, executeSQL } = useExecuteSQL()
 

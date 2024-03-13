@@ -1,42 +1,21 @@
-import { useLazyQuery } from '@apollo/client'
+import { MutationFunctionOptions } from '@apollo/client'
 import { Button } from '@mergestat/blocks'
-import React, { useEffect } from 'react'
-import { ExploreData } from 'src/@types'
+import React, { PropsWithChildren } from 'react'
 import { ExploreUiQuery } from 'src/api-logic/graphql/generated/schema'
-import { EXPLORE } from 'src/api-logic/graphql/mutations/explore'
-import { useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
-import { useExploreFilters } from 'src/views/hooks/repoExplore/useExploreFilters'
+import { useExploreContext } from 'src/state/contexts/repo-explore.context'
+import { useExploreFilters } from 'src/views/hooks/explore/useExploreFilters'
 import FiltersAuthored from './components/filters-authored'
 import FiltersCommitted from './components/filters-committed'
 import FiltersFileModified from './components/filters-file-modified'
 import FiltersGenerals from './components/filters-generals'
 import FiltersRepoModified from './components/filters-repo-modified'
 
-const FiltersSection: React.FC = () => {
-  const { setLoading, setExploreData, setResults } = useRepoExploreSetState()
-  const [{ empty }] = useRepoExploreContext()
+type Props = PropsWithChildren<{
+  explore: (options?: MutationFunctionOptions<ExploreUiQuery> | undefined) => void
+}>
 
-  const [explore, { loading, data }] = useLazyQuery(EXPLORE, {
-    onCompleted: (data: ExploreUiQuery) => {
-      const { authors, files, repos, top_10_authors: topFiles, top_10_repos: topRepos } = data.exploreUi
-      if (!authors && !files && !repos && !topFiles && !topRepos) {
-        setResults(false)
-      } else {
-        setResults(true)
-      }
-    }
-  })
-
-  useEffect(() => {
-    setLoading(loading)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading])
-
-  useEffect(() => {
-    data && setExploreData(data.exploreUi as ExploreData)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
-
+const FiltersSection: React.FC<Props> = ({ explore }: Props) => {
+  const [{ empty }] = useExploreContext()
   const { clearFilters } = useExploreFilters(explore)
 
   return (

@@ -1,5 +1,11 @@
 import { gql } from '@apollo/client'
 
+const EXPLORE = gql`
+  query exploreUI($params: JSON!) {
+    exploreUi(params: $params)
+  }
+`
+
 const GET_EXPLORE_METADATA = gql`
   query getExploreMetadata {
     repos {
@@ -18,4 +24,16 @@ const GET_EXPLORE_METADATA = gql`
   }
 `
 
-export { GET_EXPLORE_METADATA }
+const GET_SAVED_EXPLORE = gql`
+  query getSavedExplore($id: UUID!) {
+    savedExplore(id: $id) {
+      createdAt
+      createdBy
+      name
+      description
+      metadata
+    }
+  }
+`
+
+export { EXPLORE, GET_EXPLORE_METADATA, GET_SAVED_EXPLORE }

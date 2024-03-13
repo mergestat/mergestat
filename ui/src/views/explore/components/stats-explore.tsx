@@ -1,6 +1,6 @@
 import { Button, Stat } from '@mergestat/blocks'
 import { CircleInformationFilledIcon, TableIcon } from '@mergestat/icons'
-import { useRepoExploreContext, useRepoExploreSetState } from 'src/state/contexts/repo-explore.context'
+import { useExploreContext, useExploreSetState } from 'src/state/contexts/repo-explore.context'
 import { MetricNumber } from 'src/views/shared/metric-number'
 import { DataTableModal } from '../modals/data-table'
 
@@ -10,9 +10,9 @@ const StatsExplore: React.FC = () => {
     loading,
     showDataTableModal,
     exploreData: { repos, files, authors }
-  }] = useRepoExploreContext()
+  }] = useExploreContext()
 
-  const { setQueryModal, setShowDataTableModal } = useRepoExploreSetState()
+  const { setQueryModal, setShowDataTableModal } = useExploreSetState()
 
   const openTableModal = (query: string) => {
     setQueryModal(query)

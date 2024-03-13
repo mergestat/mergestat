@@ -1,10 +1,10 @@
 import { Panel, Tooltip } from '@mergestat/blocks'
 import { CircleInformationFilledIcon } from '@mergestat/icons'
 import { MonthData, YearData } from 'src/api-logic/mappers/charts/recharts'
-import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
-import { useFileLastModified } from 'src/views/hooks/repoExplore/useFileLastModified'
-import { useRepoLastModified } from 'src/views/hooks/repoExplore/useRepoLastModified'
-import { useTop10 } from 'src/views/hooks/repoExplore/useTop10'
+import { useExploreContext } from 'src/state/contexts/repo-explore.context'
+import { useFileLastModified } from 'src/views/hooks/explore/useFileLastModified'
+import { useRepoLastModified } from 'src/views/hooks/explore/useRepoLastModified'
+import { useTop10 } from 'src/views/hooks/explore/useTop10'
 import { BarChartHorizontal } from './components/barchart-horizontal'
 import { BarChartVertical } from './components/barchart-vertical'
 import { CardLoading } from './components/custom-shared'
@@ -19,7 +19,7 @@ const CardsStatsExplore: React.FC = () => {
       file_last_modified: fileLastModified,
       repo_last_modified: repoLastModified
     }
-  }] = useRepoExploreContext()
+  }] = useExploreContext()
 
   const { top10AuthorsChart, top10ReposChart } = useTop10(top10Repos, top10Authors)
   const { xAxisRepo, timeGrainRepo, dataLastModifiedRepo, changeTimeGrainRepo } = useRepoLastModified(repoLastModified)
