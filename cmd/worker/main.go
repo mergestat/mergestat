@@ -295,7 +295,7 @@ func main() {
 	go cron.AutoImport(ctx, 15*time.Second, upstream)
 
 	// run container sync scheduler every minute
-	go cron.ContainerSync(ctx, 1*time.Minute, upstream)
+	go cron.ContainerSync(ctx, time.Duration(schedulerInterval)*time.Minute, upstream)
 
 	if os.Getenv("DEBUG") != "" {
 		go func() {
