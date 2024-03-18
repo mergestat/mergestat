@@ -52,6 +52,7 @@ var (
 	postgresConnection = os.Getenv("POSTGRES_CONNECTION")
 	// baseCloneDir       = os.Getenv("BASE_CLONE_DIR")
 	concurrencyEnv = os.Getenv("CONCURRENCY")
+	dockerNetwork  = os.Getenv("DOCKER_NETWORK_NAME")
 )
 
 func repoLocator() services.RepoLocator {
@@ -269,7 +270,7 @@ func main() {
 
 	// register job handlers for types implemented by this worker
 	_ = worker.Register("repos/auto-import", repo.AutoImport(pool))
-	_ = worker.Register("container/sync", podman.ContainerSync(u.String(), &logger, db.New(pool)))
+	_ = worker.Register("container/sync", podman.ContainerSync(u.String(), &logger, db.New(pool), dockerNetwork))
 
 	// TODO all of the following "params" should be configurable
 	// either via the database/app or possibly with env vars

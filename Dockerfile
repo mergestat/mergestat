@@ -54,11 +54,4 @@ EXPOSE 8080
 
 COPY --from=builder /src/.build/worker /worker
 
-RUN addgroup --gid 1002 mergestat; \
-    adduser -Ds /bin/sh -G mergestat --uid 1001 mergestat; \
-    echo mergestat:10000:5000 > /etc/subuid; \
-    echo mergestat:10000:5000 > /etc/subgid;
-
-USER mergestat
-
 ENTRYPOINT ["/sbin/tini", "/worker" ]
