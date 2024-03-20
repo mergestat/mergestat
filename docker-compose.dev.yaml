@@ -1,10 +1,128 @@
+version: "3.6"
+
+volumes:
+  db_data:
+  # grafana_lib:
+  # grafana_etc:
+  # grafana_log:
+
 services:
+  postgres:
+    image: postgres:14
+    restart: always
+    ports:
+      - 7777:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+
   worker:
+    # NOTE: to opt out of basic image pull tracking, comment out the current image
+    # and uncomment the next line (which will pull from Docker Hub directly).
+    # image: mergestat/worker:2.3.2-beta
     image: ""
     build: .
+    stop_grace_period: 10m
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/metrics"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_CONNECTION: postgres://postgres:${POSTGRES_PASSWORD:-password}@postgres:5432/postgres?sslmode=disable
+      CONCURRENCY: 5
+      GITHUB_RATE_LIMIT: 1/2
+      ENCRYPTION_SECRET: ${ENCRYPTION_SECRET:-password}
+      LOG_LEVEL: debug
+      DEBUG: 1
+      PRETTY_LOGS: 1
+      GITHUB_WORKFLOW_PER_PAGE: 30
+      GITHUB_WORKFLOW_RUNS_PER_PAGE: 30
+      GITHUB_WORKFLOW_JOBS_PER_PAGE: 30
+      # This is used when scan containers are created so that they can access the services defined here.
+      # This network should have the postgres container.
+      DOCKER_NETWORK_NAME: mergestat
+    ports:
+      - 3301:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # NOTE: Uncomment the following to mount a path on disk to the container to access local git repos.
+    # When adding a the repo in the UI, use file:///projects/<repo-name> to access the repo.
+    # volumes:
+    #   - ~/projects:/projects
+
   graphql:
+    # See NOTE above in worker service.
+    # image: mergestat/graphql:2.3.2-beta
     image: ""
     build: ./graphql
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      worker:
+        # this is to ensure all migrations are run before the API starts up
+        condition: service_healthy
+    ports:
+      - 5433:5433
+    command:
+      - "--connection"
+      - "postgres://postgres:${POSTGRES_PASSWORD:-password}@postgres:5432/postgres?sslmode=disable"
+      - "--port"
+      - "5433"
+      - "--schema"
+      - "mergestat,sqlq,public"
+      - "--append-plugins"
+      - "@graphile-contrib/pg-simplify-inflector,postgraphile-plugin-connection-filter,/graphql/container-sync-jobs/index.js,/graphql/exec-sql/index.js,/graphql/service-credentials/index.js"
+      - "-o"
+      - "--subscriptions"
+      - "--retry-on-init-fail"
+      - "--dynamic-json"
+      - "--no-setof-functions-contain-nulls"
+      - "--no-ignore-rbac"
+      - "--extended-errors=errcode"
+      - "--disable-graphiql"
+      - "--enable-query-batching"
+      - "--disable-query-log"
+      - "--legacy-relations=omit"
+      - "--jwt-secret=${JWT_SECRET:-secret}"
+      - "--default-role=mergestat_anonymous"
+    environment:
+      ENCRYPTION_SECRET: ${ENCRYPTION_SECRET:-password}
+      DISPLAY_PG_HOSTNAME: localhost
+      DISPLAY_PG_PORT: 5432
+      DISPLAY_PG_DATABASE: postgres
+      DISPLAY_PG_USER: postgres
+
   ui:
+    # See NOTE above in worker service.
+    # image: mergestat/console:2.3.2-beta
     image: ""
     build: ./ui
+    restart: always
+    depends_on:
+      - graphql
+    ports:
+      - 3300:3000
+    environment:
+      POSTGRAPHILE_API: http://graphql:5433/graphql
+      POSTGRES_CONNECTION: postgres://postgres:${POSTGRES_PASSWORD:-password}@postgres:5432/postgres?sslmode=disable
+      JWT_SECRET: ${JWT_SECRET:-secret} # should match - "--jwt-secret=secret" flag in graphql service
+      INSECURE_SESSION_COOKIE: 1
+    labels:
+      shipyard.route: '/'
+
+# This network should be added to worker env variable DOCKER_NETWORK_NAME
+networks:
+  default:
+    name: mergestat

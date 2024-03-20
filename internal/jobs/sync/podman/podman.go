@@ -4,17 +4,21 @@ package podman
 
 import (
 	"bufio"
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/url"
 	"os"
-	"os/exec"
 	"sync"
 	"time"
 
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/filters"
+	"github.com/docker/docker/api/types/network"
+	"github.com/docker/docker/client"
+	"github.com/docker/docker/pkg/archive"
 	"github.com/go-git/go-billy/v5/osfs"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/cache"
@@ -32,8 +36,7 @@ import (
 
 // ContainerSync implements a sqlq.Handler that utilizes a Container-based execution environment
 // to run user-provided, custom sync jobs.
-func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queries) sqlq.Handler {
-	type ImageMetadata = struct{ Labels map[string]string } // used to un-marshal output from podman-image-inspect
+func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queries, dockerNetwork string) sqlq.Handler {
 
 	postgresUrl, _ := url.Parse(pgUrl)
 	postgresUrl.Scheme = "postgresql"
@@ -41,6 +44,11 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 	return sqlq.HandlerFunc(func(ctx context.Context, job *sqlq.Job) (err error) {
 		var logger = job.Logger()
 		go job.SendKeepAlive(ctx, job.KeepAlive-2*time.Second) //nolint:errcheck
+
+		cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+		if err != nil {
+			return fmt.Errorf("unable to create docker client %v", err)
+		}
 
 		l := workerLogger.With().
 			Str("job-id", job.ID.String()).
@@ -69,21 +77,20 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 		}
 
 		// used below to send stdout and stderr to job logs
-		infof, debugf := func(str string) { logger.Info(str) }, func(str string) { logger.Debug(str) }
+		infof := func(str string) { logger.Info(str) }
 		// used below to send stdout and stderr to worker logs
 		wInfof, wDebugf := func(str string) { l.Info().Msg(str) }, func(str string) { l.Debug().Msg(str) }
 
 		var image = fmt.Sprintf("%s:%s", containerSync.ImageUrl, containerSync.ImageVersion)
-		var url = fmt.Sprintf("docker://%s", image)
 		{ // pull the container image locally
-			logger.Infof("pulling image %s", url)
-			var pull = podman(ctx, "pull", url)
-			stdout, _ := pull.StdoutPipe()
-			stderr, _ := pull.StderrPipe()
-			if err = pull.Start(); err != nil {
-				logger.Errorf("failed to pull image: %s", err.Error())
-				return errors.Wrapf(err, "failed to pull image")
+			logger.Infof("pulling image %s", image)
+			imagePullResults, err := cli.ImagePull(ctx, image, types.ImagePullOptions{})
+			if err != nil {
+				logger.Errorf("could not pull image %s: %v", image, err)
+				return err
 			}
+			stdout := imagePullResults
+			stderr := imagePullResults
 
 			var wg sync.WaitGroup
 			wg.Add(2)
@@ -91,36 +98,23 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 			go func() { defer wg.Done(); log(wDebugf, stderr) }()
 
 			wg.Wait()
-			if err = pull.Wait(); err != nil {
-				logger.Errorf("failed to pull image: %s", err.Error())
-				return errors.Wrapf(err, "failed to pull image")
-			}
 		}
 
 		// output is in form of an array
-		var metadata []ImageMetadata
+		var metadata map[string]string
 		{ // read image metadata
-			var inspect = podman(ctx, "image", "inspect", image)
-			stdout, _ := inspect.StdoutPipe()
-			if err = inspect.Start(); err != nil {
-				logger.Errorf("failed to inspect image: %s", err.Error())
+			inspect, _, err := cli.ImageInspectWithRaw(ctx, image)
+			if err != nil {
+				logger.Errorf("failed to inspect image %s: %v", image, err)
 				return errors.Wrapf(err, "failed to inspect image")
 			}
 
-			if err = json.NewDecoder(stdout).Decode(&metadata); err != nil {
-				logger.Errorf("failed to inspect image: %s", err.Error())
-				return errors.Wrapf(err, "failed to inspect image")
-			}
-
-			if err = inspect.Wait(); err != nil {
-				logger.Errorf("failed to inspect image: %s", err.Error())
-				return errors.Wrapf(err, "failed to inspect image")
-			}
+			metadata = inspect.Config.Labels
 		}
 
 		{ // run the image locally
-			l.Info().Msgf("running image %s", url)
-			logger.Infof("running image %s", url)
+			l.Info().Msgf("running image %s", image)
+			logger.Infof("running image %s", image)
 
 			var username, token string
 			if username, token, err = querier.FetchCredential(ctx, repo.Provider); err != nil {
@@ -147,31 +141,33 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 				environment[key] = value
 			}
 
-			var env bytes.Buffer
+			var env []string
 			for key, value := range environment {
-				_, _ = fmt.Fprintf(&env, "%s=%s\n", key, value)
+				env = append(env, fmt.Sprintf("%s=%s", key, value))
 			}
 
-			var envFile string
-			if envFile, err = writeToTempFile(env.Bytes()); err != nil {
-				return errors.Wrapf(err, "failed to create file with environment variables")
+			ns, err := cli.NetworkList(ctx, types.NetworkListOptions{
+				Filters: filters.NewArgs(filters.KeyValuePair{Key: "name", Value: dockerNetwork}),
+			})
+			if err != nil || len(ns) != 1 {
+				logger.Errorf("could not find docker network %s: %v", dockerNetwork, err)
+				return errors.New("could not find docker network")
 			}
-			defer func() {
-				if err := os.Remove(envFile); err != nil {
-					workerLogger.Err(err).Msg("failed to remove temporary file")
-				}
-			}()
 
-			var args []string
-			args = append(args, "run", "--quiet", "--rm")
-			args = append(args, "--restart", "on-failure") // run never pulls an image!
-			args = append(args, "--pull", "never")         // run never pulls an image!
-			args = append(args, "--env-file", envFile)     // set environment variables from envFile
-			args = append(args, "--network", "host")       // use host networking
+			resp, err := cli.ContainerCreate(ctx, &container.Config{
+				Image:      image,
+				Env:        env,
+				WorkingDir: "/mergestat/repo",
+			}, nil, &network.NetworkingConfig{EndpointsConfig: map[string]*network.EndpointSettings{dockerNetwork: {NetworkID: ns[0].ID}}}, nil, "")
+
+			if err != nil {
+				logger.Errorf("could not create container with image %s: %v", image, err)
+				return errors.Wrap(err, "could not create container")
+			}
 
 			// if opted-in by setting com.mergestat.sync.clone to true, we perform a full clone
 			// of the repository to a temporary directory and mount that directory into the container
-			if opt, exists := metadata[0].Labels["com.mergestat.sync.clone"]; exists && opt == "true" {
+			if opt, exists := metadata["com.mergestat.sync.clone"]; exists && opt == "true" {
 				var tmpPath string
 				var cleanup func() error
 				// create a new temporary location to clone the repository
@@ -189,40 +185,58 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 
 				// TODO(patrickdevivo) we could use `com.mergestat.sync.clonePath` to specify a path to mount the repo into once cloned.
 				logger.Infof("cloned repository to %s and mounting it at /mergestat/repo", tmpPath)
-				args = append(args, "-v", fmt.Sprintf("%s:/mergestat/repo", tmpPath)) // mount the cloned repository under /mergestat/repo
+
+				// copy the cloned repository into the container
+				tarPath, err := archive.TarWithOptions(tmpPath, &archive.TarOptions{})
+				if err != nil {
+					logger.Errorf("failed to create tar reader: %v", err)
+					return errors.Wrap(err, "failed to create tar reader")
+				}
+				err = cli.CopyToContainer(ctx, resp.ID, "/mergestat/repo", tarPath, types.CopyToContainerOptions{})
+				if err != nil {
+					logger.Errorf("failed to copy files to container %s: %v", resp.ID, err)
+					return errors.Wrap(err, "failed to copy files to container")
+				}
 			}
 
-			args = append(args, url) // the url of the image to run
-
-			var run = podman(ctx, args...)
-			stdout, _ := run.StdoutPipe()
-			stderr, _ := run.StderrPipe()
-			if err = run.Start(); err != nil {
-				logger.Errorf("failed to run image: %s", err.Error())
+			err = cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{})
+			if err != nil {
+				logger.Errorf("failed to run image: %s, %v", image, err)
 				return errors.Wrapf(err, "failed to run image")
+			}
+
+			logs, err := cli.ContainerLogs(ctx, resp.ID, types.ContainerLogsOptions{
+				ShowStdout: true,
+				ShowStderr: true,
+				Follow:     true,
+			})
+			if err != nil {
+				logger.Errorf("could not attach logs for container %s: %v", resp.ID, err)
+				return errors.Wrap(err, "could not read logs")
 			}
 
 			var wg sync.WaitGroup
-			wg.Add(2)
-			go func() { defer wg.Done(); log(infof, stdout) }()
-			go func() { defer wg.Done(); log(debugf, stderr) }()
+			wg.Add(1)
+			go func() { defer wg.Done(); log(infof, logs) }()
+			defer wg.Wait()
 
-			wg.Wait()
-			if err = run.Wait(); err != nil {
-				logger.Errorf("failed to run image: %s", err.Error())
-				return errors.Wrapf(err, "failed to run image")
+			statusCh, errCh := cli.ContainerWait(ctx, resp.ID, container.WaitConditionNotRunning)
+			select {
+			case err := <-errCh:
+				logger.Errorf("error waiting for container %s: %v", resp.ID, err)
+				return errors.Wrapf(err, "error waiting for container")
+			case status := <-statusCh:
+				if status.StatusCode != 0 {
+					return errors.Wrapf(err, "container exited with non-zero status code: %d", status.StatusCode)
+				}
+				logger.Infof("finished running image %s", image)
+			case <-ctx.Done():
+				return fmt.Errorf("context deadline exceeded")
 			}
-
-			logger.Infof("finished running image %s", url)
 		}
 
 		return nil
 	})
-}
-
-// podman creates a new exec.Cmd to execute podman. It's primarily used to improve readability of code above :)
-func podman(ctx context.Context, args ...string) *exec.Cmd {
-	return exec.CommandContext(ctx, "podman", args...)
 }
 
 // log sends lines from src to the given sqlq.Logger
@@ -293,21 +307,6 @@ func clone(ctx context.Context, logger *sqlq.Logger, q *db.Queries, path string,
 		logger.Infof("finished git fetch successfully: %s", repo.Repo)
 	}
 	return nil
-}
-
-func writeToTempFile(data []byte) (_ string, err error) {
-	var tempFile *os.File
-	if tempFile, err = os.CreateTemp(os.TempDir(), "mergestat-*"); err != nil {
-		return "", err
-	}
-	defer tempFile.Close()
-
-	if _, err = io.Copy(tempFile, bytes.NewReader(data)); err != nil {
-		return "", err
-	}
-
-	return tempFile.Name(), tempFile.Close()
-
 }
 
 // NewContainerSync creates a new sqlq.JobDescription for the given sync id.
