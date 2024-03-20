@@ -4,19 +4,18 @@ package podman
 
 import (
 	"bufio"
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/url"
 	"os"
-	"os/exec"
 	"sync"
 	"time"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
@@ -147,15 +146,23 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 				env = append(env, fmt.Sprintf("%s=%s", key, value))
 			}
 
+			ns, err := cli.NetworkList(ctx, types.NetworkListOptions{
+				Filters: filters.NewArgs(filters.KeyValuePair{Key: "name", Value: dockerNetwork}),
+			})
+			if err != nil || len(ns) != 1 {
+				logger.Errorf("could not find docker network %s: %v", dockerNetwork, err)
+				return errors.New("could not find docker network")
+			}
+
 			resp, err := cli.ContainerCreate(ctx, &container.Config{
 				Image:      image,
 				Env:        env,
 				WorkingDir: "/mergestat/repo",
-			}, nil, &network.NetworkingConfig{EndpointsConfig: map[string]*network.EndpointSettings{dockerNetwork: {NetworkID: dockerNetwork}}}, nil, "")
+			}, nil, &network.NetworkingConfig{EndpointsConfig: map[string]*network.EndpointSettings{dockerNetwork: {NetworkID: ns[0].ID}}}, nil, "")
 
 			if err != nil {
 				logger.Errorf("could not create container with image %s: %v", image, err)
-				errors.Wrap(err, "could not create container")
+				return errors.Wrap(err, "could not create container")
 			}
 
 			// if opted-in by setting com.mergestat.sync.clone to true, we perform a full clone
@@ -232,11 +239,6 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 	})
 }
 
-// podman creates a new exec.Cmd to execute podman. It's primarily used to improve readability of code above :)
-func podman(ctx context.Context, args ...string) *exec.Cmd {
-	return exec.CommandContext(ctx, "podman", args...)
-}
-
 // log sends lines from src to the given sqlq.Logger
 func log(fn func(string), src io.Reader) {
 	var scanner = bufio.NewScanner(src)
@@ -305,21 +307,6 @@ func clone(ctx context.Context, logger *sqlq.Logger, q *db.Queries, path string,
 		logger.Infof("finished git fetch successfully: %s", repo.Repo)
 	}
 	return nil
-}
-
-func writeToTempFile(data []byte) (_ string, err error) {
-	var tempFile *os.File
-	if tempFile, err = os.CreateTemp(os.TempDir(), "mergestat-*"); err != nil {
-		return "", err
-	}
-	defer tempFile.Close()
-
-	if _, err = io.Copy(tempFile, bytes.NewReader(data)); err != nil {
-		return "", err
-	}
-
-	return tempFile.Name(), tempFile.Close()
-
 }
 
 // NewContainerSync creates a new sqlq.JobDescription for the given sync id.
