@@ -33,9 +33,9 @@ const UPDATE_AUTO_IMPORT_REPOS = gql`
 `
 
 const AUTO_IMPORT_REPOS_CONTAINER = gql`
-  mutation addRepoImportContainer($providerId: UUID!, $importType: String!, $importTypeName: String!, $defaultContainerImageIds: [UUID]!) {
+  mutation addRepoImportContainer($providerId: UUID!, $importType: String!, $importTypeName: String!, $defaultContainerImageIds: [UUID]!, $baseUrl: String!) {
     addRepoImport(
-      input: {providerId: $providerId, importType: $importType, importTypeName: $importTypeName, defaultContainerImageIds: $defaultContainerImageIds}
+      input: {providerId: $providerId, importType: $importType, importTypeName: $importTypeName, defaultContainerImageIds: $defaultContainerImageIds, baseUrl: $baseUrl}
     ) {
       boolean
     }

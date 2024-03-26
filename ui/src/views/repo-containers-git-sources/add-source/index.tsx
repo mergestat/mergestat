@@ -16,9 +16,11 @@ const AddSourceView: React.FC = () => {
   const { setCrumbs } = useGlobalSetState()
 
   const [name, setName] = useState('')
+  const [gitURL, setGitURL] = useState('')
   const [vendor, setVendor] = useState('')
   const [errorName, setErrorName] = useState<boolean>(false)
   const [errorVendor, setErrorVendor] = useState<boolean>(false)
+  console.log(gitURL)
 
   const [addGitSource] = useMutation(ADD_GIT_SOURCE, {
     onCompleted: (data: AddGitSourceMutation) => {
@@ -60,7 +62,7 @@ const AddSourceView: React.FC = () => {
         ? VENDOR_URL.BITBUCKET
         : vendor === VENDOR_TYPE.GITHUB
           ? VENDOR_URL.GITHUB
-          : vendor === VENDOR_TYPE.GITLAB ? VENDOR_URL.GITLAB : undefined
+          : vendor === VENDOR_TYPE.GITLAB ? (gitURL.length > 0 ? gitURL : VENDOR_URL.GITLAB) : undefined
 
       addGitSource({
         variables: {
@@ -105,6 +107,16 @@ const AddSourceView: React.FC = () => {
                 <HelpText variant="error">Name is required</HelpText>
               )}
             </div>
+            { vendor === VENDOR_TYPE.GITLAB &&
+            <div className=''>
+              <Label className='text-gray-500'>Git Source URL</Label>
+              <Input
+                value={gitURL}
+                placeholder='https://gitlab.example.com'
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setGitURL(e.target.value)}
+              />
+            </div>
+            }
             <div className='mt-6'>
               <Label className='text-gray-500' aria-required>Choose provider</Label>
               <div className='flex flex-wrap justify-between'>

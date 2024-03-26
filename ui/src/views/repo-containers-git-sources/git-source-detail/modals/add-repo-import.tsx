@@ -39,13 +39,13 @@ export const AddRepoImportModal: React.FC = () => {
 
   const addImport = () => {
     const defaultSyncs = importAutoContainer.defaultSyncs.filter(ds => ds.checked).map(ds => ds.id)
-
     autoImportRepos({
       variables: {
         providerId: id,
         importType: importAutoContainer.type,
         importTypeName: importAutoContainer.name,
-        defaultContainerImageIds: defaultSyncs
+        defaultContainerImageIds: defaultSyncs,
+        baseUrl: importAutoContainer.baseURL,
       }
     })
   }

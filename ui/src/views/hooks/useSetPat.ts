@@ -5,7 +5,7 @@ import { validateGitHubPAT, validateGitLabPAT } from 'src/utils'
 import { showSuccessAlert } from 'src/utils/alerts'
 import useCredentials from './useCredentials'
 
-const useSetPat = (idProvider: string, auth?: AuthDetail, isGithub = true) => {
+const useSetPat = (idProvider: string, auth?: AuthDetail, isGithub = true, baseURL?: string) => {
   const [showValidation, setShowValidation] = useState(false)
   const [isTokenValid, setIsTokenValid] = useState(false)
   const [pat, setPAT] = useState<string>('')
@@ -31,7 +31,7 @@ const useSetPat = (idProvider: string, auth?: AuthDetail, isGithub = true) => {
    * @returns true if token is right, otherwise return false
    */
   const isARightToken = async () => {
-    const isRigthToken = await validateToken(pat, isGithub)
+    const isRigthToken = await validateToken(pat, isGithub, baseURL ?? '')
 
     if (isGithub) {
       return validateGitHubPAT(pat) && isRigthToken
