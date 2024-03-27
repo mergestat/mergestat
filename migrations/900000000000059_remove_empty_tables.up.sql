@@ -1,5 +1,5 @@
 BEGIN;
--- code to drop empty tables in public schema as tables are now declared by their coresponding sync
+-- code to drop empty tables in public schema as tables are now declared by their corresponding sync
 DO $$
 DECLARE empty_tables_sql TEXT;
 BEGIN    

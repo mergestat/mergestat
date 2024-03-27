@@ -8,7 +8,7 @@ import { COOKIE } from 'src/utils/constants'
 const { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_UNAUTHORIZED } = HTTP_CONSTANTS
 const { POSTGRES_CONNECTION, JWT_SECRET, INSECURE_SESSION_COOKIE } = process.env
 
-// adminAuth (/api/admin-auth) recieves a user and a password from the client
+// adminAuth (/api/admin-auth) receives a user and a password from the client
 // and returns a JWT if the password is correct (user exists in the DB)
 const adminAuth = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

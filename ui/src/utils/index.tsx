@@ -61,7 +61,7 @@ export function capitalize(phrase: string) {
 
 /**
  * Method to get time ago relative to current date
- * @param baseDate Date to evaluete
+ * @param baseDate Date to evaluate
  * @returns Date time ago relative to current date (e.g.: 'less than 20 seconds ago', '1 minute ago')
  */
 export function getRelativeTime(baseDate: Date): string {
@@ -257,17 +257,17 @@ export const mapToUserType = (role: UserTypeUI) => {
 
 /**
  * Method to format execution time
- * @param millisecounds Time to format
- * @returns Time formatted to millisecounds or secounds
+ * @param milliseconds Time to format
+ * @returns Time formatted to milliseconds or seconds
  */
-export const formatTimeExecution = (millisecounds: number) => {
-  return millisecounds > 1000 ? `${Math.round((millisecounds / 1000) * 100) / 100}s` : `${Math.trunc(millisecounds * 100) / 100}ms`
+export const formatTimeExecution = (milliseconds: number) => {
+  return milliseconds > 1000 ? `${Math.round((milliseconds / 1000) * 100) / 100}s` : `${Math.trunc(milliseconds * 100) / 100}ms`
 }
 
 /**
  * Method to get git source icon
  * @param vendor vendor to evaluate
- * @param className aditional classes
+ * @param className additional classes
  * @returns corresponding icon vendor
  */
 export const getGitSourceIcon = (vendor: string, className?: string) => {
@@ -339,9 +339,9 @@ export function isJSONValid(str: string) {
 }
 
 /**
- * Method to format a Json code with identation
+ * Method to format a Json code with indentation
  * @param code Code to process
- * @returns Json code formated with identation
+ * @returns Json code formatted with indentation
  */
 export function stringifyJsonCode(code?: JSON) {
   return code && JSON.stringify(code, (k, v) => {

@@ -64,7 +64,7 @@ type GitCommit struct {
 	AuthorName string
 	// email of the author of the modification
 	AuthorEmail string
-	// timestamp of when the modifcation was authored
+	// timestamp of when the modification was authored
 	AuthorWhen time.Time
 	// name of the author who committed the modification
 	CommitterName string
@@ -391,7 +391,7 @@ type GithubPullRequestCommit struct {
 	AuthorName sql.NullString
 	// email of the author of the modification
 	AuthorEmail sql.NullString
-	// timestamp of when the modifcation was authored
+	// timestamp of when the modification was authored
 	AuthorWhen sql.NullTime
 	// name of the author who committed the modification
 	CommitterName sql.NullString
