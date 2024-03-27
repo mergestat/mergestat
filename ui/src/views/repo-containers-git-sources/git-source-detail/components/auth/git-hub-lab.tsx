@@ -7,11 +7,9 @@ import SettedAuth from './setted-auth'
 
 const GitHubOrLabAuth: React.FC = () => {
   const [{ gsDetail: { id, auth, vendor, settings } }] = useGitSourceDetailContext()
-  console.log(settings)
   let baseURL = ''
   if (vendor === VENDOR_TYPE.GITLAB && 'url' in settings) {
     baseURL = settings.url as string
-    console.log(settings.url)
   }
   const {
     pat,

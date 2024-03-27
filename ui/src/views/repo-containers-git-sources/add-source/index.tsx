@@ -20,7 +20,6 @@ const AddSourceView: React.FC = () => {
   const [vendor, setVendor] = useState('')
   const [errorName, setErrorName] = useState<boolean>(false)
   const [errorVendor, setErrorVendor] = useState<boolean>(false)
-  console.log(gitURL)
 
   const [addGitSource] = useMutation(ADD_GIT_SOURCE, {
     onCompleted: (data: AddGitSourceMutation) => {

@@ -23,7 +23,6 @@ const handleAxiosError = (error: AxiosError) => {
  */
 export const validateToken = async (pat: string, isGithub: boolean, baseURL: string) => {
   try {
-    console.log('Received gitlab url: ' + baseURL)
     const url = isGithub ? API.GITHUB_GRAPHQL : (baseURL.length > 0 ? new URL('/api/graphql', baseURL).href : API.GITLAB_GRAPHQL)
     const query = isGithub ? 'query { viewer { login }}' : 'query { currentUser { name }}'
 
