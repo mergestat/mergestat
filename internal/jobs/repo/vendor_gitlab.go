@@ -34,7 +34,10 @@ func handleGitlabImport(ctx context.Context, qry *db.Queries, imp db.FetchImport
 	}
 
 	if len(settings.BaseURL) > 0 {
-		client.SetBaseURL(settings.BaseURL)
+		err = client.SetBaseURL(settings.BaseURL)
+		if err != nil {
+			return errors.Wrapf(err, "failed to set gitlab base url")
+		}
 	}
 
 	var fetchFunction func(int) ([]*gitlab.Project, *gitlab.Response, error)
