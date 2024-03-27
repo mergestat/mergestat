@@ -26,10 +26,18 @@ func handleGitlabImport(ctx context.Context, qry *db.Queries, imp db.FetchImport
 		RemoveDeletedRepos     bool        `json:"removeDeletedRepos"`
 		DefaultSyncTypes       []string    `json:"defaultSyncTypes"`
 		DefaultContainerImages []uuid.UUID `json:"defaultContainerImages"`
+		BaseURL                string      `json:"url"`
 	}
 
 	if err = json.Unmarshal(imp.Settings.Bytes, &settings); err != nil {
 		return errors.Wrapf(err, "failed to parse import settings")
+	}
+
+	if len(settings.BaseURL) > 0 {
+		err = client.SetBaseURL(settings.BaseURL)
+		if err != nil {
+			return errors.Wrapf(err, "failed to set gitlab base url")
+		}
 	}
 
 	var fetchFunction func(int) ([]*gitlab.Project, *gitlab.Response, error)

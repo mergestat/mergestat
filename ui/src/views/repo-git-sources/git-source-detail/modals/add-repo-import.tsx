@@ -9,7 +9,7 @@ import { VENDOR_TYPE } from 'src/utils/constants'
 
 export const AddRepoImportModal: React.FC = () => {
   const { setImportAuto, setShowAddRepoModal } = useGitSourceDetailSetState()
-  const [{ gsDetail: { id, vendor }, importAuto }] = useGitSourceDetailContext()
+  const [{ gsDetail: { id, vendor, settings }, importAuto }] = useGitSourceDetailContext()
 
   const close = useCallback(() => {
     setShowAddRepoModal(false)
@@ -36,21 +36,22 @@ export const AddRepoImportModal: React.FC = () => {
 
   const addImport = () => {
     const defaultSyncs = importAuto.defaultSyncs.filter(ds => ds.checked).map(ds => ds.type)
-    let settings
+    let importSettings
 
     if (vendor === VENDOR_TYPE.BITBUCKET) {
-      settings = {
+      importSettings = {
         owner: importAuto.name,
         defaultSyncTypes: defaultSyncs
       }
     } else if (vendor === VENDOR_TYPE.GITLAB) {
-      settings = {
+      importSettings = {
         type: importAuto.type,
         userOrGroup: importAuto.name,
-        defaultSyncTypes: defaultSyncs
+        defaultSyncTypes: defaultSyncs,
+        url: ('url' in settings ? settings.url : '')
       }
     } else {
-      settings = {
+      importSettings = {
         type: importAuto.type,
         userOrOrg: importAuto.name,
         defaultSyncTypes: defaultSyncs

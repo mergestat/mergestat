@@ -214,6 +214,7 @@ export type ImportContainerImage = {
   type: string
   opened?: boolean
   defaultSyncs: Array<ContainerImage>
+  baseURL?: string
 }
 
 export type ImportSync = {
