@@ -3,7 +3,7 @@ name: CI Frontend (UI)
 on: [push, pull_request]
 
 env: # environment variables (available in any part of the action)
-  NODE_VERSION: 16
+  NODE_VERSION: 20
 
 jobs:
   ui-frontend:
@@ -20,7 +20,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Check out source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: npm install
