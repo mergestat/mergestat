@@ -939,6 +939,8 @@ github.com/matttproud/golang_protobuf_extensions v1.0.4/go.mod h1:BSXmuO+STAnVfr
 github.com/maxbrunsfeld/counterfeiter/v6 v6.2.2/go.mod h1:eD9eIE7cdwcMi9rYluz88Jz2VyhSmden33/aXg4oVIY=
 github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b h1:iKHgNnVLgSzw6eGa/mWd1SDeYuTV1aMyTTbA63PID4U=
 github.com/mergestat/gitutils v0.0.0-20221108145951-dde3591e4b3b/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
+github.com/mergestat/gitutils v0.0.0-20240425035455-29f92caba770 h1:YX4ETqc3Djlb5o3KaQmvHck4jv3mSmvJRN6zlpXVjXs=
+github.com/mergestat/gitutils v0.0.0-20240425035455-29f92caba770/go.mod h1:5d4bkPk7xkGw9u9uyz9g0Q38gwOoD4Q1ocY5/CFl9J8=
 github.com/mergestat/mergestat-lite v0.5.10 h1:3KBUQoRwC27bLHLXUWU7UDjP9IBtumb4vE44bZ3H9Ls=
 github.com/mergestat/mergestat-lite v0.5.10/go.mod h1:tQYFBsEpWDfJ37DQIh3I9ZC2qmVpES9mtJPMDUG64zM=
 github.com/mergestat/sqlq v0.0.0-20230519174807-3352087e8a70 h1:6SiHHeocG4B2IXxHiaV8g3w/nT/t+RISGN7tOd+2kTg=
