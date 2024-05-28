@@ -12,7 +12,7 @@ import { FilterHeader } from 'src/views/shared/filter-header'
 import { ManualImportTable } from '../components/manual-import-table'
 
 const ReposManual: React.FC = () => {
-  const [{ gsDetail: { vendor }, rowsManualRepos, pageManualRepos, totalManualRepos, searchManualImport, showBulk }] = useGitSourceDetailContext()
+  const [{ gsDetail: { vendor, settings }, rowsManualRepos, pageManualRepos, totalManualRepos, searchManualImport, showBulk }] = useGitSourceDetailContext()
   const { setSearchManualImport, setRowsManualRepos, setPageManualRepos, setShowBulk } = useGitSourceDetailSetState()
   const { loading, repos, records } = useRepoManualImports()
   const { addFromURL, addFromCSV } = useAddRepos()
@@ -31,6 +31,9 @@ const ReposManual: React.FC = () => {
   }
 
   const getVendorUrl = () => {
+    if ('url' in settings) {
+      return settings.url
+    }
     return vendor === VENDOR_TYPE.BITBUCKET
       ? VENDOR_URL.BITBUCKET
       : vendor === VENDOR_TYPE.GITHUB

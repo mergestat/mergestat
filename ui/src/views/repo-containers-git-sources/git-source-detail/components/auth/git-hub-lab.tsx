@@ -6,8 +6,11 @@ import useSetPat from 'src/views/hooks/useSetPat'
 import SettedAuth from './setted-auth'
 
 const GitHubOrLabAuth: React.FC = () => {
-  const [{ gsDetail: { id, auth, vendor } }] = useGitSourceDetailContext()
-
+  const [{ gsDetail: { id, auth, vendor, settings } }] = useGitSourceDetailContext()
+  let baseURL = ''
+  if (vendor === VENDOR_TYPE.GITLAB && 'url' in settings) {
+    baseURL = settings.url as string
+  }
   const {
     pat,
     showValidation,
@@ -15,7 +18,7 @@ const GitHubOrLabAuth: React.FC = () => {
     validatePAT,
     changeToken,
     handleSavePAT,
-  } = useSetPat(id, auth, vendor === VENDOR_TYPE.GITHUB)
+  } = useSetPat(id, auth, vendor === VENDOR_TYPE.GITHUB, baseURL)
 
   return (
     <Panel className='rounded-md shadow-sm m-auto'>

@@ -14,7 +14,7 @@ import { AutoImportTable } from '../components/auto-import-table'
 
 const ReposAuto: React.FC = () => {
   const { containerImages } = useContainerImages()
-  const [{ showAddRepoModal, searchImport, gsDetail: { vendor } }] = useGitSourceDetailContext()
+  const [{ showAddRepoModal, searchImport, gsDetail: { vendor, settings } }] = useGitSourceDetailContext()
   const { setImportAutoContainer, setShowAddRepoModal, setSearchImport } = useGitSourceDetailSetState()
 
   const { loading, imports, records } = useRepoImports()
@@ -23,7 +23,7 @@ const ReposAuto: React.FC = () => {
   const [userOrOrg, setUserOrOrg] = useState('')
 
   const addImport = () => {
-    setImportAutoContainer({ name: userOrOrg, type: importType, defaultSyncs: containerImages })
+    setImportAutoContainer({ name: userOrOrg, type: importType, defaultSyncs: containerImages, baseURL: ('url' in settings ? settings.url as string : '') })
     setImportType(vendor === VENDOR_TYPE.GITHUB ? SYNC_REPO_METHOD.GH_ORG : SYNC_REPO_METHOD.GL_GROUP)
     setUserOrOrg('')
     setShowAddRepoModal(true)
