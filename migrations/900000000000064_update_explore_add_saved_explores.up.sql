@@ -260,7 +260,7 @@ COMMENT ON COLUMN git_commits.hash IS 'hash of the commit';
 COMMENT ON COLUMN git_commits.message IS 'message of the commit';
 COMMENT ON COLUMN git_commits.author_name IS 'name of the author of the the modification';
 COMMENT ON COLUMN git_commits.author_email IS 'email of the author of the modification';
-COMMENT ON COLUMN git_commits.author_when IS 'timestamp of when the modifcation was authored';
+COMMENT ON COLUMN git_commits.author_when IS 'timestamp of when the modification was authored';
 COMMENT ON COLUMN git_commits.committer_name IS 'name of the author who committed the modification';
 COMMENT ON COLUMN git_commits.committer_email IS 'email of the author who committed the modification';
 COMMENT ON COLUMN git_commits.committer_when IS 'timestamp of when the commit was made';
@@ -355,7 +355,7 @@ ALTER TABLE IF EXISTS _mergestat_explore_repo_metadata ADD IF NOT EXISTS _merges
 COMMENT ON COLUMN _mergestat_explore_repo_metadata.last_commit_message IS 'message of the commit';
 COMMENT ON COLUMN _mergestat_explore_repo_metadata.last_commit_author_name IS 'name of the author of the the modification';
 COMMENT ON COLUMN _mergestat_explore_repo_metadata.last_commit_author_email IS 'email of the author of the modification';
-COMMENT ON COLUMN _mergestat_explore_repo_metadata.last_commit_author_when IS 'timestamp of when the modifcation was authored';
+COMMENT ON COLUMN _mergestat_explore_repo_metadata.last_commit_author_when IS 'timestamp of when the modification was authored';
 COMMENT ON COLUMN _mergestat_explore_repo_metadata.last_commit_committer_name IS 'name of the author who committed the modification';
 COMMENT ON COLUMN _mergestat_explore_repo_metadata.last_commit_committer_email IS 'email of the author who committed the modification';
 COMMENT ON COLUMN _mergestat_explore_repo_metadata.last_commit_committer_when IS 'timestamp of when the commit was made';
@@ -375,7 +375,7 @@ ALTER TABLE IF EXISTS _mergestat_explore_file_metadata ADD IF NOT EXISTS _merges
 COMMENT ON COLUMN _mergestat_explore_file_metadata.last_commit_message IS 'message of the commit';
 COMMENT ON COLUMN _mergestat_explore_file_metadata.last_commit_author_name IS 'name of the author of the the modification';
 COMMENT ON COLUMN _mergestat_explore_file_metadata.last_commit_author_email IS 'email of the author of the modification';
-COMMENT ON COLUMN _mergestat_explore_file_metadata.last_commit_author_when IS 'timestamp of when the modifcation was authored';
+COMMENT ON COLUMN _mergestat_explore_file_metadata.last_commit_author_when IS 'timestamp of when the modification was authored';
 COMMENT ON COLUMN _mergestat_explore_file_metadata.last_commit_committer_name IS 'name of the author who committed the modification';
 COMMENT ON COLUMN _mergestat_explore_file_metadata.last_commit_committer_email IS 'email of the author who committed the modification';
 COMMENT ON COLUMN _mergestat_explore_file_metadata.last_commit_committer_when IS 'timestamp of when the commit was made';

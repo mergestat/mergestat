@@ -25,7 +25,7 @@ COMMENT ON COLUMN public.git_commits.hash IS 'hash of the commit';
 COMMENT ON COLUMN public.git_commits.message IS 'message of the commit';
 COMMENT ON COLUMN public.git_commits.author_email IS 'email of the author of the modification';
 COMMENT ON COLUMN public.git_commits.author_name IS 'name of the author of the the modification';
-COMMENT ON COLUMN public.git_commits.author_when IS 'timestamp of when the modifcation was authored';
+COMMENT ON COLUMN public.git_commits.author_when IS 'timestamp of when the modification was authored';
 COMMENT ON COLUMN public.git_commits.committer_email IS 'email of the author who committed the modification';
 COMMENT ON COLUMN public.git_commits.committer_name IS 'name of the author who committed the modification';
 COMMENT ON COLUMN public.git_commits.committer_when IS 'timestamp of when the commit was made';
@@ -101,7 +101,7 @@ COMMENT ON COLUMN public.github_pull_request_commits.hash IS 'hash of the commit
 COMMENT ON COLUMN public.github_pull_request_commits.message IS 'message of the commit';
 COMMENT ON COLUMN public.github_pull_request_commits.author_email IS 'email of the author of the modification';
 COMMENT ON COLUMN public.github_pull_request_commits.author_name IS 'name of the author of the the modification';
-COMMENT ON COLUMN public.github_pull_request_commits.author_when IS 'timestamp of when the modifcation was authored';
+COMMENT ON COLUMN public.github_pull_request_commits.author_when IS 'timestamp of when the modification was authored';
 COMMENT ON COLUMN public.github_pull_request_commits.committer_email IS 'email of the author who committed the modification';
 COMMENT ON COLUMN public.github_pull_request_commits.committer_name IS 'name of the author who committed the modification';
 COMMENT ON COLUMN public.github_pull_request_commits.committer_when IS 'timestamp of when the commit was made';
