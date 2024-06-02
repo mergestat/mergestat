@@ -2,7 +2,7 @@ import { MutationFunctionOptions } from '@apollo/client'
 import { Input, Label } from '@mergestat/blocks'
 import React, { ChangeEvent, PropsWithChildren } from 'react'
 import { ExploreUiQuery } from 'src/api-logic/graphql/generated/schema'
-import { useExploreFilters } from 'src/views/hooks/repoExplore/useExploreFilters'
+import { useExploreFilters } from 'src/views/hooks/explore/useExploreFilters'
 import Filter from './filter'
 
 type Props = PropsWithChildren<{
@@ -13,6 +13,8 @@ const FiltersFileModified: React.FC<Props> = ({ explore }: Props) => {
   const {
     filterFileDays,
     filterNotFileDays,
+    filterFileDaysSaved,
+    filterNotFileDaysSaved,
     filter,
     handleDaysChange,
     onKeyEnter
@@ -22,6 +24,7 @@ const FiltersFileModified: React.FC<Props> = ({ explore }: Props) => {
     <>
       <Filter
         label='File modified last'
+        defaultValue={filterFileDaysSaved}
         value={filterFileDays ? `${filterFileDays}d` : undefined}
         reset={() => filter('days_since_file_modified_last', undefined)}
         explore={() => filter('days_since_file_modified_last', filterFileDays)}
@@ -42,6 +45,7 @@ const FiltersFileModified: React.FC<Props> = ({ explore }: Props) => {
 
       <Filter
         label='File not modified last'
+        defaultValue={filterNotFileDaysSaved}
         value={filterNotFileDays ? `${filterNotFileDays}d` : undefined}
         reset={() => filter('days_since_file_not_modified_last', undefined)}
         explore={() => filter('days_since_file_not_modified_last', filterNotFileDays)}

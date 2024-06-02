@@ -1,21 +1,28 @@
 import { ChartSquareBarIcon } from '@mergestat/icons'
-import { useEffect } from 'react'
-import { useGlobalSetState } from 'src/state/contexts'
-import { useRepoExploreContext } from 'src/state/contexts/repo-explore.context'
+import { PropsWithChildren, useEffect } from 'react'
+import { useExploreContext, useExploreSetState } from 'src/state/contexts/repo-explore.context'
+import useCrumbsInit from '../hooks/useCrumbsInit'
 import { EmptyData } from '../shared/empty-data'
 import CardsStatsExplore from './components/cards-stats-explore'
 import HeaderExplore from './components/header-explore'
 import StatsExplore from './components/stats-explore'
 
-const RepoExplorerView: React.FC = () => {
-  const [{ empty, results }] = useRepoExploreContext()
+type Props = PropsWithChildren<{
+  savedExploreId?: string | string[]
+}>
 
-  const { setCrumbs } = useGlobalSetState()
+const ExploreView: React.FC<Props> = ({ savedExploreId }: Props) => {
+  useCrumbsInit()
+
+  const [{ empty, results }] = useExploreContext()
+  const { setSavedExloreId } = useExploreSetState()
 
   useEffect(() => {
-    setCrumbs([])
+    if (savedExploreId) {
+      setSavedExloreId(savedExploreId)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [savedExploreId])
 
   return (
     <>
@@ -37,4 +44,4 @@ const RepoExplorerView: React.FC = () => {
   )
 }
 
-export default RepoExplorerView
+export default ExploreView

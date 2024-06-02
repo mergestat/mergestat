@@ -13994,12 +13994,33 @@ export type DeleteCredentialMutationVariables = Exact<{
 
 export type DeleteCredentialMutation = { deleteServiceAuthCredential?: { deletedServiceAuthCredentialNodeId?: string | null } | null };
 
-export type ExploreUiQueryVariables = Exact<{
-  params: Scalars['JSON'];
+export type AddSavedExploreMutationVariables = Exact<{
+  createdBy: Scalars['String'];
+  createdAt: Scalars['Datetime'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+  metadata?: InputMaybe<Scalars['JSON']>;
 }>;
 
 
-export type ExploreUiQuery = { exploreUi?: any | null };
+export type AddSavedExploreMutation = { createSavedExplore?: { savedExplore?: { id: any, name?: string | null } | null } | null };
+
+export type UpdateSavedExploreMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  metadata?: InputMaybe<Scalars['JSON']>;
+}>;
+
+
+export type UpdateSavedExploreMutation = { updateSavedExplore?: { savedExplore?: { id: any, name?: string | null, description?: string | null, metadata?: any | null } | null } | null };
+
+export type RemoveSavedExploreMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type RemoveSavedExploreMutation = { deleteSavedExplore?: { deletedSavedExploreNodeId?: string | null } | null };
 
 export type AddGitSourceMutationVariables = Exact<{
   name: Scalars['String'];
@@ -14227,10 +14248,24 @@ export type GetDatabaseConnectionQueryVariables = Exact<{ [key: string]: never; 
 
 export type GetDatabaseConnectionQuery = { databaseConnection?: { database?: string | null, host?: string | null, port?: number | null, user?: string | null } | null };
 
+export type ExploreUiQueryVariables = Exact<{
+  params: Scalars['JSON'];
+}>;
+
+
+export type ExploreUiQuery = { exploreUi?: any | null };
+
 export type GetExploreMetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetExploreMetadataQuery = { repos?: { totalCount: number } | null, exploreContainer?: { id: any, name: string } | null, metadata?: { totalCount: number, nodes: Array<{ _mergestatSyncedAt: any }> } | null };
+
+export type GetSavedExploreQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetSavedExploreQuery = { savedExplore?: { createdAt?: any | null, createdBy?: string | null, name?: string | null, description?: string | null, metadata?: any | null } | null };
 
 export type GetGitSourcesListQueryVariables = Exact<{
   search: Scalars['String'];
