@@ -109,7 +109,7 @@ func (w *worker) handleGitHubRepoPRsAndCommits(ctx context.Context, j *db.Dequeu
 		w.logger.Info().Msgf("fetched GitHub pull request %d", fetchedPR.GetNumber())
 
 		closed := fetchedPR.ClosedAt != nil
-		dbID := int(fetchedPR.GetID())
+		dbID := fetchedPR.GetID()
 		var closedAt *time.Time
 		if fetchedPR.ClosedAt != nil {
 			closedAt = &fetchedPR.ClosedAt.Time

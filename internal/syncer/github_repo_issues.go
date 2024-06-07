@@ -25,7 +25,7 @@ type githubRepoIssue struct {
 	CommentCount        *int       `db:"comment_count"`
 	CreatedAt           *time.Time `db:"created_at"`
 	CreatedViaEmail     *bool      `db:"created_via_email"`
-	DatabaseID          *int       `db:"database_id"`
+	DatabaseID          *int64     `db:"database_id"`
 	EditorLogin         *string    `db:"editor_login"`
 	IncludesCreatedEdit *bool      `db:"includes_created_edit"`
 	LabelCount          *int       `db:"label_count"`
