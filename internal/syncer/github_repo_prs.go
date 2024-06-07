@@ -34,7 +34,7 @@ type githubRepoPR struct {
 	CommitCount         *int       `db:"commit_count"`
 	CreatedAt           *time.Time `db:"created_at"`
 	CreatedViaEmail     *bool      `db:"created_via_email"`
-	DatabaseID          *int       `db:"database_id"`
+	DatabaseID          *int64     `db:"database_id"`
 	Deletions           *int       `db:"deletions"`
 	EditorLogin         *string    `db:"editor_login"`
 	HeadRefName         *string    `db:"head_ref_name"`
