@@ -13,7 +13,7 @@ PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig/libgit2/lib/pkgconfig/ mak
 
 FROM zricethezav/gitleaks:v8.15.3 AS gitleaks
 
-FROM alpine:3.18
+FROM alpine:3.21.0
 RUN apk upgrade && apk add --no-cache curl postgresql-client ca-certificates git go podman fuse-overlayfs tini openssl1.1-compat
 
 # copy over migrations
