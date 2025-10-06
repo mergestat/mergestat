@@ -33,7 +33,11 @@ import (
 // ContainerSync implements a sqlq.Handler that utilizes a Container-based execution environment
 // to run user-provided, custom sync jobs.
 func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queries) sqlq.Handler {
-	type ImageMetadata = struct{ Labels map[string]string } // used to un-marshal output from podman-image-inspect
+	// ImageMetadata is used to unmarshal output from docker/podman image inspect
+	type ImageMetadata struct {
+		Labels map[string]string            // Podman format
+		Config *struct{ Labels map[string]string } // Docker format
+	}
 
 	postgresUrl, _ := url.Parse(pgUrl)
 	postgresUrl.Scheme = "postgresql"
@@ -74,10 +78,9 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 		wInfof, wDebugf := func(str string) { l.Info().Msg(str) }, func(str string) { l.Debug().Msg(str) }
 
 		var image = fmt.Sprintf("%s:%s", containerSync.ImageUrl, containerSync.ImageVersion)
-		var url = fmt.Sprintf("docker://%s", image)
 		{ // pull the container image locally
-			logger.Infof("pulling image %s", url)
-			var pull = podman(ctx, "pull", url)
+			logger.Infof("pulling image %s", image)
+			var pull = podman(ctx, "pull", image)
 			stdout, _ := pull.StdoutPipe()
 			stderr, _ := pull.StderrPipe()
 			if err = pull.Start(); err != nil {
@@ -119,8 +122,8 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 		}
 
 		{ // run the image locally
-			l.Info().Msgf("running image %s", url)
-			logger.Infof("running image %s", url)
+			l.Info().Msgf("running image %s", image)
+			logger.Infof("running image %s", image)
 
 			var username, token string
 			if username, token, err = querier.FetchCredential(ctx, repo.Provider); err != nil {
@@ -164,14 +167,21 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 
 			var args []string
 			args = append(args, "run", "--quiet", "--rm")
-			args = append(args, "--restart", "on-failure") // run never pulls an image!
-			args = append(args, "--pull", "never")         // run never pulls an image!
-			args = append(args, "--env-file", envFile)     // set environment variables from envFile
-			args = append(args, "--network", "host")       // use host networking
+			args = append(args, "--pull", "never")            // run never pulls an image!
+			args = append(args, "--env-file", envFile)        // set environment variables from envFile
+			args = append(args, "--network", "mergestat_default") // use same network as postgres
 
 			// if opted-in by setting com.mergestat.sync.clone to true, we perform a full clone
 			// of the repository to a temporary directory and mount that directory into the container
-			if opt, exists := metadata[0].Labels["com.mergestat.sync.clone"]; exists && opt == "true" {
+			// Get labels from either Docker format (Config.Labels) or Podman format (Labels)
+			var labels map[string]string
+			if metadata[0].Config != nil && metadata[0].Config.Labels != nil {
+				labels = metadata[0].Config.Labels // Docker format
+			} else {
+				labels = metadata[0].Labels // Podman format
+			}
+
+			if opt, exists := labels["com.mergestat.sync.clone"]; exists && opt == "true" {
 				var tmpPath string
 				var cleanup func() error
 				// create a new temporary location to clone the repository
@@ -192,7 +202,7 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 				args = append(args, "-v", fmt.Sprintf("%s:/mergestat/repo", tmpPath)) // mount the cloned repository under /mergestat/repo
 			}
 
-			args = append(args, url) // the url of the image to run
+			args = append(args, image) // the image to run
 
 			var run = podman(ctx, args...)
 			stdout, _ := run.StdoutPipe()
@@ -213,15 +223,19 @@ func ContainerSync(pgUrl string, workerLogger *zerolog.Logger, querier *db.Queri
 				return errors.Wrapf(err, "failed to run image")
 			}
 
-			logger.Infof("finished running image %s", url)
+			logger.Infof("finished running image %s", image)
 		}
 
 		return nil
 	})
 }
 
-// podman creates a new exec.Cmd to execute podman. It's primarily used to improve readability of code above :)
+// podman creates a new exec.Cmd to execute docker (or podman). It's primarily used to improve readability of code above :)
 func podman(ctx context.Context, args ...string) *exec.Cmd {
+	// Use docker if available, otherwise fall back to podman
+	if _, err := exec.LookPath("docker"); err == nil {
+		return exec.CommandContext(ctx, "docker", args...)
+	}
 	return exec.CommandContext(ctx, "podman", args...)
 }
 

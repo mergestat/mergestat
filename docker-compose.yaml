@@ -26,7 +26,11 @@ services:
     # NOTE: to opt out of basic image pull tracking, comment out the current image
     # and uncomment the next line (which will pull from Docker Hub directly).
     # image: mergestat/worker:2.3.2-beta
-    image: images.mergestat.com/mergestat/worker:2.3.2-beta
+    # image: images.mergestat.com/mergestat/worker:2.3.2-beta
+    build:
+      context: .
+      dockerfile: Dockerfile
+    user: root
     privileged: true
     stop_grace_period: 10m
     restart: always
@@ -38,11 +42,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - ${HOME}/mergestat-git-repos:${HOME}/mergestat-git-repos
     environment:
       POSTGRES_CONNECTION: postgres://postgres:${POSTGRES_PASSWORD:-password}@postgres:5432/postgres?sslmode=disable
       CONCURRENCY: 5
       GITHUB_RATE_LIMIT: 1/2
       ENCRYPTION_SECRET: ${ENCRYPTION_SECRET:-password}
+      GIT_CLONE_PATH: ${HOME}/mergestat-git-repos
       LOG_LEVEL: debug
       DEBUG: 1
       PRETTY_LOGS: 1
